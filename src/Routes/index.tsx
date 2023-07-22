@@ -1,5 +1,5 @@
 import { icons } from '@Assets'
-import { Dashboard, Group,WeightageCountForm,CreateQuestionForm } from '@Modules';
+import { Dashboard, Designation, WeightageCountForm, CreateQuestionForm } from '@Modules';
 
 
 export const ROUTES = {
@@ -13,33 +13,35 @@ export const ROUTES = {
   'group-module': {
     Dashboard: "/dashboard",
     SCHEDULE: "/schedule",
-    WEIGHTAGECOUNTFORM:"/weightage-count-form",
-    CREATEQUESTIONFORM:"/create-question-form"
+    'weightage-count-form': "/weightage-count-form",
+    'create-question-form': "/create-question-form",
+    dashboard: "/dashboard",
+    group: "/group",
   }
 }
 
+export const DASHBOARD_ROUTES = [
+  {
+    id:1,
+    path: ROUTES['group-module']['weightage-count-form'],
+    component: <WeightageCountForm />
+  },
+  {
+    id:2,
+    path: ROUTES['group-module']['create-question-form'],
+    component: <CreateQuestionForm />
+  },
+]
+
 export const HOME_ROUTES = [
   {
-    path: ROUTES['group-module'].SCHEDULE,
+    path: ROUTES['group-module'].group,
     name: "Group",
     icon: icons.task,
     layout: "",
-    component: <Group />
+    component: <Designation />
   },
-  {
-    path: ROUTES['group-module'].WEIGHTAGECOUNTFORM,
-    name: "Form",
-    icon: icons.company,
-    layout: "",
-    component: <WeightageCountForm/>
-  },
-  {
-    path: ROUTES['group-module'].CREATEQUESTIONFORM,
-    name: "Create Question Form",
-    icon: icons.company,
-    layout: "",
-    component: <CreateQuestionForm/>
-  },
+
   // {
   //   path: ROUTES['ticket-module'].tickets,
   //   name: translate("sideNav.Tickets"),

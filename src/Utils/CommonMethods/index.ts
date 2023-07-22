@@ -89,20 +89,20 @@ export const getDeviceInfo = () => {
 }
 
 
-export  async function imagePickerConvertBase64(array) {
+export async function imagePickerConvertBase64(array) {
   const promises = array.map(async (each) => {
-    let photo = await getPhoto(each. photo);
+    let photo = await getPhoto(each.photo);
     const base64 = await fetch(photo)
-.then(response => response.blob())
-  .then(blob => {
-      const reader = new FileReader();
-      reader.readAsDataURL(blob);
-      return new Promise((res) => {
+      .then(response => response.blob())
+      .then(blob => {
+        const reader = new FileReader();
+        reader.readAsDataURL(blob);
+        return new Promise((res) => {
           reader.onloadend = () => {
-              res(reader.result);
+            res(reader.result);
           }
+        })
       })
-  })
     return {
       ...each,
       base64: base64
@@ -113,3 +113,13 @@ export  async function imagePickerConvertBase64(array) {
   return Promise.all(promises);
 }
 
+
+
+export function getDropDownCompanyDisplayData(data: any) {
+  return data && data?.map((item: any) => {
+    return {
+      ...item,
+      text: item.name
+    }
+  })
+}

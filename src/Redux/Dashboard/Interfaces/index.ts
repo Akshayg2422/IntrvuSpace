@@ -3,4 +3,7 @@ export interface DashboardProp {
   chat: any
   GroupDetails:any
   selectedGroupId:any
+  knowledgeGroups: any
+  sectors: any
+  questionForm:any
 }

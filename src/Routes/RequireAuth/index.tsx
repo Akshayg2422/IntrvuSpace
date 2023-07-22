@@ -12,18 +12,12 @@ type RequireAuthProps = {
 }
 
 export const RequireAuth = ({ children }: RequireAuthProps) => {
-    const dispatch = useDispatch()
+
 
     const [sideNavOpen, setSideNavOpen] = useState(true);
     const mainContentRef = React.useRef<HTMLDivElement | null>(null);
     const location = useLocation();
 
-
-    const fcmToken = localStorage.getItem(FCM_TOKEN)
-
-    const { loginDetails, token } = useSelector(
-        (state: any) => state.AppReducer
-    );
 
 
     useEffect(() => {
