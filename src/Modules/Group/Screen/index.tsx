@@ -8,10 +8,10 @@ import { icons } from '@Assets';
 
 
 function Group() {
-    const { GroupDetails } = useSelector((state: any) => state.DashboardReducer);
-
     const title = useInput("");
     const description = useInput("");
+    const variantTitle = useInput("");
+    const variantDescription = useInput("");
     const { goTo } = useNavigation()
     const editModal = useModal(false);
     const variantModal = useModal(false);
@@ -19,10 +19,10 @@ function Group() {
     const dynamicHeight: any = useDynamicHeight()
     const GroupSubmitLoader = useLoader(false);
     const [variant, setVariant] = useState<any>();
+    const [editVariant, setEditVariant] = useState(undefined)
     const VariantSubmitLoader = useLoader(false);
     const [selectedGroupDetails, setSelectedGroupDetails] = useState<any>({})
     const [convertedGroupDetails, setConvertedGroupDetails] = useState<any>([])
-    const [selectedGroup, setSelectedGroup] = useState<any>(undefined);
     const [selectedGroupVariant, setSelectedGroupVariant] = useState<any>();
     const MENU = [{ id: '0', name: "Edit", icon: icons.edit }]
 
@@ -83,6 +83,8 @@ function Group() {
                 onSuccess: (success: any) => () => {
                     GroupSubmitLoader.hide()
                     editModal.hide()
+                    getKnowledgeGroupDetails()
+                    getKnowledgeGroupVariantDetails()
                 },
                 onError: (error: string) => () => {
                     GroupSubmitLoader.hide()
@@ -93,10 +95,9 @@ function Group() {
 
     const createKnowledgeGroupVariantDetails = () => {
         VariantSubmitLoader.show()
-
         const params = {
-            name: title?.value,
-            description: description?.value,
+            name: variantTitle?.value,
+            description: variantDescription?.value,
             knowledge_group_id: selectedGroupDetails?.id
         };
         dispatch(
@@ -141,7 +142,7 @@ function Group() {
         setSelectedGroupVariant(filteredVariant)
     }
 
-    const editVariant = (item: any) => {
+    const editVariantHandler = (item: any) => {
         console.log("edit variant", item);
 
     }
@@ -156,7 +157,7 @@ function Group() {
                 </div >,
                 "": <MenuBar menuData={MENU} onClick={(el) => {
                     if (el.id === 0) {
-                        editVariant(variant)
+                        editVariantHandler(variant)
                     }
                 }}
                 />
@@ -181,7 +182,7 @@ function Group() {
                     {convertedGroupDetails && convertedGroupDetails.length > 0 ?
                         convertedGroupDetails.map((el: any, index: number) => {
                             return (
-                                <div className={'card  col mx-2 py-3'} style={{ height: el.show ? dynamicHeight.dynamicHeight : '5em' }}>
+                                <div className={'card col mx-1 py-3'} style={{ height: el.show ? dynamicHeight.dynamicHeight : '5em' }}>
                                     <div className="row justify-content-center  m-2" >
                                         <div className="col">
                                             <h3>{el.name}</h3>
@@ -225,7 +226,7 @@ function Group() {
                                 </div>
                             )
                         })
-                        : <div className={'d-flex justify-content-center align-items-center'} style={{ height: '90vh' }}><NoDataFound text={"No Data Found"} /></div>
+                        : <div className={'d-flex  col justify-content-center align-items-center'} style={{ height: '90vh' }}><NoDataFound text={"No Data Found"} /></div>
                     }
                 </div>
             </div>
@@ -260,15 +261,15 @@ function Group() {
                     <div className="mt--2">
                         <Input
                             heading={"Name"}
-                            value={title.value}
-                            onChange={title.onChange}
+                            value={variantTitle.value}
+                            onChange={variantTitle.onChange}
                         />
                     </div>
                     <div className="mt--2">
                         <Input
                             heading={"Description"}
-                            value={description.value}
-                            onChange={description.onChange}
+                            value={variantDescription.value}
+                            onChange={variantDescription.onChange}
                         />
                     </div>
 
