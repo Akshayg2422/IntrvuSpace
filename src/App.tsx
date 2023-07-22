@@ -1,6 +1,6 @@
 import { PageNotFound, ScreenWrapper, VoiceRecognition } from "@Components";
 import { Route, Routes } from "react-router-dom";
-import { HOME_ROUTES, RequireAuth, RequireHome } from "@Routes";
+import { HOME_ROUTES, RequireAuth, RequireHome, DASHBOARD_ROUTES } from "@Routes";
 import { ToastContainer } from "react-toastify";
 import { useSelector } from "react-redux";
 import { changeLanguage } from "@I18n";
@@ -47,6 +47,7 @@ function App() {
     <ScreenWrapper>
       <Routes>
         {getRoutes(HOME_ROUTES)}
+        {getRoutes(DASHBOARD_ROUTES)}
       </Routes>
     </ScreenWrapper>
 

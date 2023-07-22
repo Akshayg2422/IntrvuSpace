@@ -141,6 +141,37 @@ export const getSectorsFailure = (error: any) => {
   }
 }
 
+// selectedGroupIds
+
+export const selectedGroupIds=(params)=>{
+  return {
+      type: ActionTypes.SELECTED_GROUP_ID,
+      payload: params
+  }
+}
+
+// CREATE QUESTION FORM
+
+export const createQuestionForm = (params: any) => {
+  return {
+    type: ActionTypes.CREATE_QUESTION_FORM,
+    payload: params,
+  };
+};
+
+export const createQuestionFormSuccess = (response: any) => {
+  return {
+    type: ActionTypes.CREATE_QUESTION_FORM_SUCCESS,
+    payload: response
+  }
+}
+
+export const createQuestionFormFailure = (error: any) => {
+  return {
+    type: ActionTypes.CREATE_QUESTION_FORM_FAILURE,
+    payload: error
+  }
+}
 
 /**
  *  selected client sector
