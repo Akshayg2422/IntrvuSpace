@@ -8,7 +8,7 @@ function* getChatSaga(action) {
     const response = yield call(Api.getStartChatApi, action.payload.params);
     if (response.success) {
       yield put(Action.getStartChatSuccess(response));
-      yield call(action.payload.onSuccess(response));
+      yield call(action.payload.onSuccess(response.details));
     } else {
       yield put(Action.getStartChatFailure(response.error_message));
       yield call(action.payload.onError(response));
@@ -91,6 +91,20 @@ function* getKnowledgeGroupVariantSaga(action) {
   }
 }
 
+function* createSectorSaga(action) {
+  try {
+    const response = yield call(Api.createSectorApi, action.payload.params);
+    if (response.success) {
+      yield put(Action.createSectorSuccess(response));
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield put(Action.createSectorFailure(response.error_message));
+      yield call(action.payload.onError(response));
+    }
+  } catch (error) {
+    yield put(Action.createSectorFailure(error));
+  }
+}
 
 // get sectors
 
@@ -152,6 +166,7 @@ function* DashboardSaga() {
   yield takeLatest(Action.CREATE_KNOWLEDGE_GROUP, createKnowledgeGroupSaga);
   yield takeLatest(Action.GET_KNOWLEDGE_GROUP, getKnowledgeGroupSaga);
   yield takeLatest(Action.GET_KNOWLEDGE_GROUP_VARIANT, getKnowledgeGroupVariantSaga);
+  yield takeLatest(Action.CREATE_SECTOR, createSectorSaga);
   yield takeLatest(Action.GET_SECTORS, getSectorsSaga);
   yield takeLatest(Action.CREATE_QUESTION_FORM, createQuestionFormSaga);
   yield takeLatest(Action.GET_QUESTIONS_FORM, getQuestionFormSaga);

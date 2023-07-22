@@ -27,14 +27,10 @@ function Designation() {
     const [convertedGroupDetails, setConvertedGroupDetails] = useState<any>([])
     const [selectedGroup, setSelectedGroup] = useState<any>(undefined);
     const [selectedGroupVariant, setSelectedGroupVariant] = useState<any>();
-    const MENU = [{ id: '0', name: "Edit", icon: icons.edit }]
+    const MENU = [{ id: 0, name: "Edit", icon: icons.edit }]
 
 
     const sector = useDropDown({});
-
-
-
-
 
     useEffect(() => {
         getKnowledgeGroupDetailsApiHandler();
@@ -163,10 +159,6 @@ function Designation() {
         setSelectedGroupVariant(filteredVariant)
     }
 
-    const editVariant = (item: any) => {
-        console.log("edit variant", item);
-
-    }
 
     const normalizedTaskGroupData = (data: any) => {
         return data && data.length > 0 && data.map((variant: any) => {
@@ -178,16 +170,14 @@ function Designation() {
                 </div >,
                 "": <MenuBar menuData={MENU} onClick={(el) => {
                     if (el.id === 0) {
-                        editVariant(variant)
+                        // editVariant(variant)
+                        // onClickAddVariant(variant)
                     }
                 }}
                 />
             }
         })
     };
-
-
-    console.log(JSON.stringify(sectors) + '====sectors');
 
 
     return (
@@ -202,14 +192,30 @@ function Designation() {
                             editModal.show()
                         }}
                     />
+                    <Button
+                        className={'text-white shadow-none'}
+                        size={'sm'}
+                        text={"Sector"}
+                        onClick={() => {
+                            goTo(ROUTES['group-module']['sector'])
+                        }}
+                    />
+                    <Button
+                        className={'text-white shadow-none'}
+                        size={'sm'}
+                        text={"Call"}
+                        onClick={() => {
+                            goTo(ROUTES['group-module']['call'])
+                        }}
+                    />
                 </div>
                 <div className='mx-3'>
-                    <div className='row'>
+                    <div className='row justify-content-center '>
                         {convertedGroupDetails && convertedGroupDetails.length > 0 ?
                             convertedGroupDetails.map((el: any, index: number) => {
                                 return (
-                                    <div className='col'>
-                                        <div className={'card py-3'}
+                                    <div className='col-6 '>
+                                        <div className={'card  py-3'}
                                             style={{ height: el.show ? dynamicHeight.dynamicHeight : '5em' }}>
                                             <div className="row justify-content-center  m-2" >
                                                 <div className="col">
@@ -263,24 +269,18 @@ function Designation() {
                     </div>
                 </div>
                 < Modal size={'lg'} title={"Add Group"} isOpen={editModal.visible} onClose={editModal.hide} >
-
-
-
                     <Input
 
                         heading={"Name"}
                         value={title.value}
                         onChange={title.onChange}
                     />
-
                     <Input
 
                         heading={"Description"}
                         value={description.value}
                         onChange={description.onChange}
                     />
-
-
                     {sectors && sectors.length > 0 &&
                         <DropDown
                             heading={'Sectors'}

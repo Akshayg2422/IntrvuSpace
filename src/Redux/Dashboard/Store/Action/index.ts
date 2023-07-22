@@ -118,7 +118,7 @@ export const getKnowledgeGroupsFailure = (error: any) => {
   }
 }
 
-// getKnowledgeGroups
+// getSectors
 
 export const getSectors = (params: any) => {
   return {
@@ -141,12 +141,38 @@ export const getSectorsFailure = (error: any) => {
   }
 }
 
+
+
+
 // selectedGroupIds
 
 export const selectedGroupIds = (params) => {
   return {
     type: ActionTypes.SELECTED_GROUP_ID,
     payload: params
+  }
+}
+
+// createSector
+
+
+export const createSector = (params: any) => {
+  return {
+    type: ActionTypes.CREATE_SECTOR,
+    payload: params,
+  }
+}
+export const createSectorSuccess = (response: any) => {
+  return {
+    type: ActionTypes.CREATE_SECTOR_SUCCESS,
+    payload: response
+  }
+}
+
+export const createSectorFailure = (error: any) => {
+  return {
+    type: ActionTypes.CREATE_SECTOR_FAILURE,
+    payload: error
   }
 }
 
