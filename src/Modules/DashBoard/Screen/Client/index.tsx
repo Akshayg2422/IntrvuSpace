@@ -12,9 +12,11 @@ function Clients() {
 
     const dispatch = useDispatch()
 
-    const { knowledgeGroups } = useSelector((state: any) => state.DashboardReducer)
+    const { knowledgeGroups, selectedClientSector } = useSelector((state: any) => state.DashboardReducer)
     const addJd = useModal(false);
     const filter = useDropDown(FILTER[0]);
+    const search = useInput('');
+
 
 
     const sector = useInput('');
@@ -34,10 +36,13 @@ function Clients() {
 
     useEffect(() => {
         getKnowledgeGroupDetailsApiHandler();
-    }, [])
+    }, [search.value, selectedClientSector])
 
     const getKnowledgeGroupDetailsApiHandler = () => {
-        const params = {}
+        const params = { sector_id: selectedClientSector?.id, q: search.value }
+
+        console.log(JSON.stringify(params));
+
         dispatch(
             getKnowledgeGroups({
                 params,
@@ -50,24 +55,23 @@ function Clients() {
     };
 
 
-    console.log(JSON.stringify(knowledgeGroups));
 
     return (
         <>
             <div className='m-3'>
                 <div className='row'>
                     <div className='col-7'>
-                        <SearchInput onSearch={() => { }} />
+                        <SearchInput defaultValue={search.value} onSearch={search.set} />
                     </div>
                     <div className='col text-right'>
                         <Button className={'text-white'} text={'From JD'} onClick={addJd.show} />
                     </div>
                 </div>
                 <div className='col text-right mt-3'>
-                    <ButtonGroup sortData={FILTER} selected={filter.value} onClick={filter.onChange} />
+                    <ButtonGroup size={'btn-sm'} sortData={FILTER} selected={filter.value} onClick={filter.onChange} />
                 </div>
 
-                <div className='m-3'>
+                <div className='mx-3'>
                     <Sectors />
                     <div className='row'>
                         {

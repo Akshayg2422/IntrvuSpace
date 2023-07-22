@@ -11,7 +11,7 @@ function Sectors({ }: SectorsProps) {
     const { sectors, selectedClientSector } = useSelector((state: any) => state.DashboardReducer)
     const dispatch = useDispatch()
     const DEFAULT_SECTOR = {
-        id: "ALL",
+        id: "-1",
         name: "All"
     }
 
