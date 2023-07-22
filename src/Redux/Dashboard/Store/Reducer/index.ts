@@ -109,6 +109,18 @@ const DashboardReducer = (state = initialState, action: any) => {
       state = { ...state, selectedClientSector: action.payload };
       break;
 
+      // GET QUESTION FORM
+
+      case ActionTypes.GET_QUESTIONS_FORM:
+        state = { ...state, questionForm: undefined };
+        break;
+      case ActionTypes.GET_QUESTIONS_FORM_SUCCESS:
+        state = { ...state, questionForm: action.payload.details.question_forms };
+        break;
+      case ActionTypes.GET_QUESTIONS_FORM_FAILURE:
+        state = { ...state };
+        break;
+
 
     default:
       state = state;

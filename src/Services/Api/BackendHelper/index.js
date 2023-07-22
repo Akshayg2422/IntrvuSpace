@@ -21,8 +21,12 @@ export const getKnowledgeGroupApi = payload => post(URL.GET_KNOWLEDGE_GROUP_URL,
 export const getKnowledgeGroupVariantApi = payload => post(URL.GET_KNOWLEDGE_GROUP_VARIANT_URL, payload, {});
 export const getSectorsApi = payload => post(URL.URL_GET_SECTORS, payload, {});
 
-//createQuestionForm
+// createQuestionForm
 export const createQuestionForm = payload => post(URL.URL_CREATE_QUESTION_FORM, payload, {});
+
+// getQuestionsForm
+export const getQuestionForm = payload => post(URL.URL_GET_QUESTION_FORMS, payload, {});
+
 
 
 
