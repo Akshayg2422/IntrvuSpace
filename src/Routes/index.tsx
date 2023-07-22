@@ -1,5 +1,5 @@
 import { icons } from '@Assets'
-import { Dashboard, Group } from '@Modules';
+import { Dashboard, Group,WeightageCountForm } from '@Modules';
 
 
 export const ROUTES = {
@@ -13,6 +13,7 @@ export const ROUTES = {
   'group-module': {
     Dashboard: "/dashboard",
     SCHEDULE: "/schedule",
+    WEIGHTAGECOUNTFORM:"/weightage-count-form"
   }
 }
 
@@ -23,6 +24,13 @@ export const HOME_ROUTES = [
     icon: icons.task,
     layout: "",
     component: <Group />
+  },
+  {
+    path: ROUTES['group-module'].WEIGHTAGECOUNTFORM,
+    name: "Form",
+    icon: icons.company,
+    layout: "",
+    component: <WeightageCountForm/>
   },
   // {
   //   path: ROUTES['ticket-module'].tickets,
