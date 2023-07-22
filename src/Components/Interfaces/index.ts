@@ -3,7 +3,7 @@ export type { ButtonProps as RsButtonProps, BadgeProps as RsBadgeProps, Breadcru
 export type Variants = 'default' | 'primary' | 'secondary' | 'success' | 'info' | 'warning' | 'danger' | 'white' | 'neutral' | 'dark' | 'darker' | 'inline'
 export type Color = 'default' | 'primary' | 'secondary' | 'success' | 'info' | 'warning' | 'danger' | 'white' | 'neutral' | 'dark' | 'darker' | 'black'
 export type ButtonVariants = 'default' | 'icon' | 'icon-with-text' | 'icon-rounded'
-export type InputVariants = 'default' | 'alternative' | 'flush' | 'muted'
+export type InputVariants = 'default' | 'alternative' | 'flush' | 'muted' | 'text-area'
 
 export type Option = {
     id?: number | string;

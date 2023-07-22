@@ -3,7 +3,7 @@ import { ModalProps } from "./interfaces";
 import { Modal as RsModal } from "reactstrap";
 import { useDynamicHeight } from "@Hooks";
 
-function Modal({ isOpen, children, title, size = "lg",style, onClose, ...rest }: ModalProps) {
+function Modal({ isOpen, children, title, size = "lg", style, onClose, ...rest }: ModalProps) {
 
   return (
     <RsModal
@@ -30,7 +30,7 @@ function Modal({ isOpen, children, title, size = "lg",style, onClose, ...rest }:
       </div>
       <div className="modal-body scroll-hidden" style={style}>
         {children}
-        </div>
+      </div>
     </RsModal>
   );
 }
