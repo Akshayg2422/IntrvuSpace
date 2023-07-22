@@ -29,4 +29,9 @@ export const URL_CREATE_SECTOR = ASSISTANT + 'createSector';
 
 // getSector
 export const URL_GET_SECTORS = ASSISTANT + 'getSectors';
+
+// createQuestionFrom
 export const URL_CREATE_QUESTION_FORM = ASSISTANT + 'createQuestionForm'
+
+// getQuestionForm
+export const URL_GET_QUESTION_FORMS = ASSISTANT + 'getQuestionForms'

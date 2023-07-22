@@ -251,10 +251,12 @@ function Designation() {
                                                     isPagination
                                                     displayDataSet={normalizedTaskGroupData(selectedGroupVariant)}
                                                     tableDataSet={selectedGroupVariant}
-                                                    tableOnClick={(event, index, item) => {
+                                                    tableOnClick={(index, id, item) => {
+                                                        console.log(item)
                                                         dispatch(selectedGroupIds(item))
-                                                        goTo(ROUTES['group-module']['create-question-form'])
+                                                        goTo(ROUTES['group-module']['questions'])
                                                     }}
+
                                                 />
                                             )
                                             }
