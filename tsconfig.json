@@ -1,0 +1,92 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "noImplicitAny": false,
+    "jsx": "react-jsx",
+    "paths": {
+      "@Assets/*": [
+        "./src/Assets*"
+      ],
+      "@Assets": [
+        "./src/Assets"
+      ],
+      "@Components/*": [
+        "./src/Components*"
+      ],
+      "@Components": [
+        "./src/Components"
+      ],
+      "@Hooks/*": [
+        "./src/Hooks*"
+      ],
+      "@Hooks": [
+        "./src/Hooks"
+      ],
+      "@Utils/*": [
+        "./src/Utils*"
+      ],
+      "@Utils": [
+        "./src/Utils"
+      ],
+      "@Contexts/*": [
+        "./src/Contexts*"
+      ],
+      "@Contexts": [
+        "./src/Contexts"
+      ],
+      "@Redux/*": [
+        "./src/Redux*"
+      ],
+      "@Redux": [
+        "./src/Redux"
+      ],
+      "@I18n/*": [
+        "./src/I18n*"
+      ],
+      "@I18n": [
+        "./src/I18n"
+      ],
+      "@Modules/*": [
+        "./src/Modules*"
+      ],
+      "@Modules": [
+        "./src/Modules"
+      ],
+      "@Routes/*": [
+        "./src/Routes*"
+      ],
+      "@Routes": [
+        "./src/Routes"
+      ],
+      "@Services/*": [
+        "./src/Services*"
+      ],
+      "@Services": [
+        "./src/Services"
+      ],
+      "@Themes/*": [
+        "./src/Themes*"
+      ],
+      "@Themes": [
+        "./src/Themes"
+      ],
+    },
+  },
+}

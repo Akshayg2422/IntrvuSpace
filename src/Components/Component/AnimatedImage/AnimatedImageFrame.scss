@@ -1,0 +1,28 @@
+.animated-image {
+  border-radius: 50%;
+  border: 2px solid green;
+  transition: border-color 0.3s;
+  padding: 150%;
+  &.blink {
+    animation: blinkAnimation 1s infinite;
+  }
+}
+
+@keyframes blinkAnimation {
+  0% {
+    border-color: green;
+  }
+  50% {
+    border-color: transparent;
+  }
+  100% {
+    border-color: green;
+  }
+}
+
+.name-overlay {
+  font-weight: 600;
+  font-size: 50px;
+  text-align: center;
+  color: #000;
+}

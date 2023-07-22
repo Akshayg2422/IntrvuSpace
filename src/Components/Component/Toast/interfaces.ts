@@ -1,0 +1,1 @@
+export type ToastVariant = "success" | "error" | "default" | "info" | undefined | null
