@@ -15,15 +15,15 @@ import "@fullcalendar/daygrid/main.min.css";
 import "sweetalert2/dist/sweetalert2.min.css";
 import "quill/dist/quill.core.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
-import { Dashboard } from "@Modules";
+
 
 
 
 function App() {
 
   const AUTH = 1
-  const HOME = 2
-  
+
+
   const getRoutes = (routes, type?: any) => {
     return routes.map((prop, key) => {
       if (prop.collapse) {
@@ -35,7 +35,7 @@ function App() {
       return (
         <Route
           path={path}
-          element={type === AUTH ? <RequireHome>{prop.component}</RequireHome> : <RequireAuth>{prop.component}</RequireAuth>}  
+          element={<RequireAuth>{prop.component}</RequireAuth>}
           key={key}
         />
       );
@@ -46,12 +46,11 @@ function App() {
   return (
     <ScreenWrapper>
       <Routes>
-      {getRoutes(HOME_ROUTES)}
+        {getRoutes(HOME_ROUTES)}
       </Routes>
     </ScreenWrapper>
 
   );
 }
 
-export default App; 
-// initial code
+export default App;

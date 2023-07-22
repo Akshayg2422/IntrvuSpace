@@ -1,5 +1,5 @@
 import { icons } from '@Assets'
-import { Dashboard, Group } from '@Modules';
+import { Designation } from '@Modules'
 
 
 export const ROUTES = {
@@ -11,27 +11,27 @@ export const ROUTES = {
     landing: '/'
   },
   'group-module': {
-    Dashboard: "/dashboard",
-    SCHEDULE: "/schedule",
+    dashboard: "/dashboard",
+    group: "/group",
     sector:'/sector'
   }
 }
 
 export const HOME_ROUTES = [
   {
-    path: ROUTES['group-module'].SCHEDULE,
+    path: ROUTES['group-module'].group,
     name: "Group",
     icon: icons.task,
     layout: "",
-    component: <Group />
+    component: <Designation />
   },
-  {
-    path: ROUTES['group-module'].Dashboard,
-    name: "Dashboard",
-    icon: icons.issue,
-    layout: "",
-    component: <Dashboard />
-  },
+  // {
+  //   path: ROUTES['group-module'].Dashboard,
+  //   name: "Dashboard",
+  //   icon: icons.issue,
+  //   layout: "",
+  //   component: <Dashboard />
+  // },
 ];
 
 export * from "./RequireAuth";

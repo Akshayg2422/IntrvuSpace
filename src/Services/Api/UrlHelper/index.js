@@ -26,3 +26,6 @@ export const GET_KNOWLEDGE_GROUP_VARIANT_URL = ASSISTANT + 'getKnowledgeGroupVar
 // createSector
 
 export const URL_CREATE_SECTOR = ASSISTANT + 'createSector';
+
+// getSector
+export const URL_GET_SECTORS = ASSISTANT + 'getSectors';
