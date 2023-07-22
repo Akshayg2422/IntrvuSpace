@@ -200,6 +200,14 @@ function Designation() {
                             goTo(ROUTES['group-module']['sector'])
                         }}
                     />
+                    <Button
+                        className={'text-white shadow-none'}
+                        size={'sm'}
+                        text={"Call"}
+                        onClick={() => {
+                            goTo(ROUTES['group-module']['call'])
+                        }}
+                    />
                 </div>
                 <div className='mx-3'>
                     <div className='row justify-content-center '>

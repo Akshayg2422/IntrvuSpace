@@ -1,5 +1,5 @@
 import { icons } from '@Assets'
-import {  Designation, WeightageCountForm, CreateQuestionForm,Clients, Sector } from '@Modules';
+import { Designation, WeightageCountForm, CreateQuestionForm, Clients, Sector, Call } from '@Modules';
 
 
 export const ROUTES = {
@@ -16,27 +16,34 @@ export const ROUTES = {
     'weightage-count-form': "/weightage-count-form",
     'create-question-form': "/create-question-form",
     'sector': "/sector",
+    'call': '/call',
     dashboard: "/dashboard",
     group: "/group",
     client: "/client",
+
   }
 }
 
 export const DASHBOARD_ROUTES = [
   {
-    id:1,
+    id: 1,
     path: ROUTES['group-module']['weightage-count-form'],
     component: <WeightageCountForm />
   },
   {
-    id:2,
+    id: 2,
     path: ROUTES['group-module']['create-question-form'],
     component: <CreateQuestionForm />
   },
   {
-    id:3,
+    id: 3,
     path: ROUTES['group-module']['sector'],
     component: <Sector />
+  },
+  {
+    id: 5,
+    path: ROUTES['group-module']['call'],
+    component: <Call />
   }
 
 ]

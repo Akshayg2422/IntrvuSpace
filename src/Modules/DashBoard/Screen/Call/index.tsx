@@ -15,20 +15,24 @@ function Call() {
     const [stream, setStream] = useState<any>(null);
     const [recording, setRecording] = useState(false);
     const [audioData, setAudioData] = useState(null);
+    const MINUTE_MS = 60000;
 
     const { isSpeaking, speak } = useTextToSpeech();
     const { startRecording, stopRecording, videoRef, output, isScreenRecording } = useScreenRecorder();
 
     useEffect(() => {
         getMicrophonePermission()
-        // getChatDetails('hello','text')
         startRecording()
+        return () => {
+            stopVoiceRecording()
+            isScreenRecording && stopRecording()
+        }
     }, [])
 
 
     useEffect(() => {
         isScreenRecording &&
-            getChatDetails('ask interview in stream of react js', 'text')
+            getChatDetails('', 'text')
     }, [isScreenRecording])
 
     const getMicrophonePermission = async () => {
@@ -88,18 +92,21 @@ function Call() {
         const params = {
             ...(type === 'text' && { "message": file }),
             ...(type === 'audio' && { voice_message: file }),
+            schedule_id: '79f59eb9-f9cb-4473-823b-f62f62cff4ce'
         };
 
         dispatch(
             getStartChat({
                 params,
                 onSuccess: (success: any) => () => {
-                    if (success?.response[0]?.is_by_interviewer) {
-                        speak(success?.response[0]?.message);
+                    if (success?.next_step[0].response_type === "SPEAK") {
+                        speak(success?.next_step[0]?.response_text);
+                    } else if (success?.next_step[0].response_type === 'COMMAND') {
+                        commandVariant(success?.next_step[0]?.response_text)
                     }
                 },
                 onError: (error: string) => () => {
-                    speak("Something Went Wrong Please Try After Some Times");
+                    // speak("Something Went Wrong Please Try After Some Times");
                 },
             })
         );
@@ -108,6 +115,17 @@ function Call() {
     const handleVideo = () => {
         setShowVideo(!showVideo)
     }
+
+    const commandVariant = (type: any) => {
+        if (type === 'WAIT_1') {
+
+        } else if (type === 'END_CAll') {
+            stopVoiceRecording()
+            isScreenRecording && stopRecording()
+            goBack()
+        }
+    }
+
 
     return (
         <div className='h-100vh bg-gray d-flex  align-items-center justify-content-center'>

@@ -4,7 +4,7 @@
 const ASSISTANT = '/ivoassistant/'
 
 
-export const GET_START_CHAT = ASSISTANT + 'startChat';
+export const GET_START_CHAT = ASSISTANT + 'processCall';
 
 // createKnowledgeGroupVariant
 
