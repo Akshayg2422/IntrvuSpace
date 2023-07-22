@@ -154,7 +154,7 @@ function* DashboardSaga() {
   yield takeLatest(Action.GET_KNOWLEDGE_GROUP_VARIANT, getKnowledgeGroupVariantSaga);
   yield takeLatest(Action.GET_SECTORS, getSectorsSaga);
   yield takeLatest(Action.CREATE_QUESTION_FORM, createQuestionFormSaga);
-  yield takeLatest(Action.CREATE_QUESTION_FORM, getQuestionFormSaga);
+  yield takeLatest(Action.GET_QUESTIONS_FORM, getQuestionFormSaga);
 
 }
 
