@@ -1,5 +1,5 @@
 import { icons } from '@Assets'
-import { Dashboard, Group } from '@Modules';
+import {  Designation, WeightageCountForm, CreateQuestionForm,Clients, Sector } from '@Modules';
 
 
 export const ROUTES = {
@@ -13,23 +13,56 @@ export const ROUTES = {
   'group-module': {
     Dashboard: "/dashboard",
     SCHEDULE: "/schedule",
+    'weightage-count-form': "/weightage-count-form",
+    'create-question-form': "/create-question-form",
+    'sector': "/sector",
+    dashboard: "/dashboard",
+    group: "/group",
+    client: "/client",
   }
 }
 
+export const DASHBOARD_ROUTES = [
+  {
+    id:1,
+    path: ROUTES['group-module']['weightage-count-form'],
+    component: <WeightageCountForm />
+  },
+  {
+    id:2,
+    path: ROUTES['group-module']['create-question-form'],
+    component: <CreateQuestionForm />
+  },
+  {
+    id:3,
+    path: ROUTES['group-module']['sector'],
+    component: <Sector />
+  }
+
+]
+
 export const HOME_ROUTES = [
   {
-    path: ROUTES['group-module'].SCHEDULE,
+    path: ROUTES['group-module'].group,
     name: "Group",
     icon: icons.task,
     layout: "",
-    component: <Group />
+    component: <Designation />
+  },
+
+  {
+    path: ROUTES['group-module'].client,
+    name: "Clients",
+    icon: icons.company,
+    layout: "",
+    component: <Clients />
   },
   // {
-  //   path: ROUTES['ticket-module'].tickets,
-  //   name: translate("sideNav.Tickets"),
+  //   path: ROUTES['group-module'].Dashboard,
+  //   name: "Dashboard",
   //   icon: icons.issue,
   //   layout: "",
-  //   component: <Tickets />
+  //   component: <Dashboard />
   // },
 ];
 

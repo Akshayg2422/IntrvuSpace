@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux'
 
 function SearchInput({ defaultValue, heading, onSearch }: SearchInputProps) {
     const search = useInput('')
-    const { taskParams } = useSelector((state: any) => state.TaskReducer);
+
 
 
     useEffect(() => {

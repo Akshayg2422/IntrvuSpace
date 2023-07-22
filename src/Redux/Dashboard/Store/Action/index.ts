@@ -1,10 +1,7 @@
-import { CREATE_KNOWLEDGE_GROUP, CREATE_KNOWLEDGE_GROUP_FAILURE, CREATE_KNOWLEDGE_GROUP_SUCCESS, CREATE_KNOWLEDGE_GROUP_VARIANT, CREATE_KNOWLEDGE_GROUP_VARIANT_FAILURE, CREATE_KNOWLEDGE_GROUP_VARIANT_SUCCESS, GET_KNOWLEDGE_GROUP, GET_KNOWLEDGE_GROUP_FAILURE, GET_KNOWLEDGE_GROUP_SUCCESS, GET_KNOWLEDGE_GROUP_VARIANT, GET_KNOWLEDGE_GROUP_VARIANT_FAILURE, GET_KNOWLEDGE_GROUP_VARIANT_SUCCESS, GET_START_CHAT, GET_START_CHAT_FAILURE, GET_START_CHAT_SUCCESS } from '../ActionTypes';
-
-
-
+import * as ActionTypes from '../ActionTypes'
 export const getStartChat = (params: any) => {
   return {
-    type: GET_START_CHAT,
+    type: ActionTypes.GET_START_CHAT,
     payload: params,
   };
 };
@@ -12,14 +9,14 @@ export const getStartChat = (params: any) => {
 export const getStartChatSuccess = (response: any) => {
 
   return {
-    type: GET_START_CHAT_SUCCESS,
+    type: ActionTypes.GET_START_CHAT_SUCCESS,
     payload: response
   }
 }
 
 export const getStartChatFailure = (error: any) => {
   return {
-    type: GET_START_CHAT_FAILURE,
+    type: ActionTypes.GET_START_CHAT_FAILURE,
     payload: error
   }
 }
@@ -29,7 +26,7 @@ export const getStartChatFailure = (error: any) => {
 
 export const createKnowledgeGroup = (params: any) => {
   return {
-    type: CREATE_KNOWLEDGE_GROUP,
+    type: ActionTypes.CREATE_KNOWLEDGE_GROUP,
     payload: params,
   };
 };
@@ -37,14 +34,14 @@ export const createKnowledgeGroup = (params: any) => {
 export const createKnowledgeGroupSuccess = (response: any) => {
 
   return {
-    type: CREATE_KNOWLEDGE_GROUP_SUCCESS,
+    type: ActionTypes.CREATE_KNOWLEDGE_GROUP_SUCCESS,
     payload: response
   }
 }
 
 export const createKnowledgeGroupFailure = (error: any) => {
   return {
-    type: CREATE_KNOWLEDGE_GROUP_FAILURE,
+    type: ActionTypes.CREATE_KNOWLEDGE_GROUP_FAILURE,
     payload: error
   }
 }
@@ -53,7 +50,7 @@ export const createKnowledgeGroupFailure = (error: any) => {
 
 export const createKnowledgeGroupVariant = (params: any) => {
   return {
-    type: CREATE_KNOWLEDGE_GROUP_VARIANT,
+    type: ActionTypes.CREATE_KNOWLEDGE_GROUP_VARIANT,
     payload: params,
   };
 };
@@ -61,14 +58,14 @@ export const createKnowledgeGroupVariant = (params: any) => {
 export const createKnowledgeGroupVariantSuccess = (response: any) => {
 
   return {
-    type: CREATE_KNOWLEDGE_GROUP_VARIANT_SUCCESS,
+    type: ActionTypes.CREATE_KNOWLEDGE_GROUP_VARIANT_SUCCESS,
     payload: response
   }
 }
 
 export const createKnowledgeGroupVariantFailure = (error: any) => {
   return {
-    type: CREATE_KNOWLEDGE_GROUP_VARIANT_FAILURE,
+    type: ActionTypes.CREATE_KNOWLEDGE_GROUP_VARIANT_FAILURE,
     payload: error
   }
 }
@@ -78,7 +75,7 @@ export const createKnowledgeGroupVariantFailure = (error: any) => {
 
 export const getKnowledgeGroupVariant = (params: any) => {
   return {
-    type: GET_KNOWLEDGE_GROUP_VARIANT,
+    type: ActionTypes.GET_KNOWLEDGE_GROUP_VARIANT,
     payload: params,
   };
 };
@@ -86,37 +83,130 @@ export const getKnowledgeGroupVariant = (params: any) => {
 export const getKnowledgeGroupVariantSuccess = (response: any) => {
 
   return {
-    type: GET_KNOWLEDGE_GROUP_VARIANT_SUCCESS,
+    type: ActionTypes.GET_KNOWLEDGE_GROUP_VARIANT_SUCCESS,
     payload: response
   }
 }
 
 export const getKnowledgeGroupVariantFailure = (error: any) => {
   return {
-    type: GET_KNOWLEDGE_GROUP_VARIANT_FAILURE,
+    type: ActionTypes.GET_KNOWLEDGE_GROUP_VARIANT_FAILURE,
     payload: error
   }
 }
 
-// getKnowledgeGroup
+// getKnowledgeGroups
 
-export const getKnowledgeGroup = (params: any) => {
+export const getKnowledgeGroups = (params: any) => {
   return {
-    type: GET_KNOWLEDGE_GROUP,
+    type: ActionTypes.GET_KNOWLEDGE_GROUP,
     payload: params,
   };
 };
 
-export const getKnowledgeGroupSuccess = (response: any) => {
+export const getKnowledgeGroupsSuccess = (response: any) => {
   return {
-    type: GET_KNOWLEDGE_GROUP_SUCCESS,
+    type: ActionTypes.GET_KNOWLEDGE_GROUP_SUCCESS,
     payload: response
   }
 }
 
-export const getKnowledgeGroupFailure = (error: any) => {
+export const getKnowledgeGroupsFailure = (error: any) => {
   return {
-    type: GET_KNOWLEDGE_GROUP_FAILURE,
+    type: ActionTypes.GET_KNOWLEDGE_GROUP_FAILURE,
     payload: error
   }
 }
+
+// getSectors
+
+export const getSectors = (params: any) => {
+  return {
+    type: ActionTypes.GET_SECTORS,
+    payload: params,
+  };
+};
+
+export const getSectorsSuccess = (response: any) => {
+  return {
+    type: ActionTypes.GET_SECTORS_SUCCESS,
+    payload: response
+  }
+}
+
+export const getSectorsFailure = (error: any) => {
+  return {
+    type: ActionTypes.GET_SECTORS_FAILURE,
+    payload: error
+  }
+}
+
+
+
+
+// selectedGroupIds
+
+export const selectedGroupIds=(params)=>{
+  return {
+      type: ActionTypes.SELECTED_GROUP_ID,
+      payload: params
+  }
+}
+
+// createSector
+
+
+export const createSector = (params: any) => {
+  return {
+    type: ActionTypes.CREATE_SECTOR,
+    payload: params,
+  }
+}
+export const createSectorSuccess = (response: any) => {
+  return {
+    type: ActionTypes.CREATE_SECTOR_SUCCESS,
+    payload: response
+  }
+}
+
+export const createSectorFailure = (error: any) => {
+  return {
+    type: ActionTypes.CREATE_SECTOR_FAILURE,
+    payload: error
+  }
+}
+
+// CREATE QUESTION FORM
+
+export const createQuestionForm = (params: any) => {
+  return {
+    type: ActionTypes.CREATE_QUESTION_FORM,
+    payload: params,
+  };
+};
+
+export const createQuestionFormSuccess = (response: any) => {
+  return {
+    type: ActionTypes.CREATE_QUESTION_FORM_SUCCESS,
+    payload: response
+  }
+}
+
+export const createQuestionFormFailure = (error: any) => {
+  return {
+    type: ActionTypes.CREATE_QUESTION_FORM_FAILURE,
+    payload: error
+  }
+}
+
+/**
+ *  selected client sector
+ */
+
+
+export const setClientSector = (params: any) => {
+  return {
+    type: ActionTypes.SET_CLIENT_SECTORS,
+    payload: params,
+  };
+};
