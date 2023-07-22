@@ -24,7 +24,7 @@ function Group() {
     const [selectedGroupDetails, setSelectedGroupDetails] = useState<any>({})
     const [convertedGroupDetails, setConvertedGroupDetails] = useState<any>([])
     const [selectedGroupVariant, setSelectedGroupVariant] = useState<any>();
-    const MENU = [{ id: '0', name: "Edit", icon: icons.edit }]
+    const MENU = [{ id: 0, name: "Edit", icon: icons.edit }]
 
 
     // createKnowledgeGroupVariant
@@ -97,27 +97,30 @@ function Group() {
 
     const createKnowledgeGroupVariantDetails = () => {
         VariantSubmitLoader.show()
+        console.log("=========params====>", selectedGroupDetails);
+
         const params = {
             name: variantTitle?.value,
             description: variantDescription?.value,
             knowledge_group_id: selectedGroupDetails?.id
         };
-        dispatch(
-            createKnowledgeGroupVariant({
-                params,
-                onSuccess: (success: any) => () => {
-                    VariantSubmitLoader.hide()
-                    variantModal.hide()
-                    getKnowledgeGroupDetails()
-                    getKnowledgeGroupVariantDetails()
-                    variantTitle.set('')
-                    variantDescription.set('')
-                },
-                onError: (error: string) => () => {
-                    VariantSubmitLoader.hide()
-                },
-            })
-        );
+
+        // dispatch(
+        //     createKnowledgeGroupVariant({
+        //         params,
+        //         onSuccess: (success: any) => () => {
+        //             VariantSubmitLoader.hide()
+        //             variantModal.hide()
+        //             getKnowledgeGroupDetails()
+        //             getKnowledgeGroupVariantDetails()
+        //             variantTitle.set('')
+        //             variantDescription.set('')
+        //         },
+        //         onError: (error: string) => () => {
+        //             VariantSubmitLoader.hide()
+        //         },
+        //     })
+        // );
     };
 
     const onClickAddVariant = (group: any) => {
@@ -146,10 +149,7 @@ function Group() {
         setSelectedGroupVariant(filteredVariant)
     }
 
-    const editVariantHandler = (item: any) => {
-        console.log("edit variant", item);
 
-    }
 
     const normalizedTaskGroupData = (data: any) => {
         return data && data.length > 0 && data.map((variant: any) => {
@@ -161,13 +161,16 @@ function Group() {
                 </div >,
                 "": <MenuBar menuData={MENU} onClick={(el) => {
                     if (el.id === 0) {
-                        editVariantHandler(variant)
+                        onClickAddVariant(variant)
                     }
                 }}
                 />
             }
         })
     };
+
+
+
 
     return (
         <div>
@@ -211,7 +214,6 @@ function Group() {
                                                 size={"sm"}
                                                 onClick={() => {
                                                     onClickAddVariant(el)
-                                                    // addTaskGroupModal.show()
                                                 }}
                                             />
                                         </div>
@@ -220,6 +222,7 @@ function Group() {
                                         <CommonTable
                                             isPagination
                                             displayDataSet={normalizedTaskGroupData(selectedGroupVariant)}
+                                            // tableOnClick={}
                                         />
                                     )
                                         // : 

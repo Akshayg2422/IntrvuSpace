@@ -13,6 +13,7 @@ export const ROUTES = {
   'group-module': {
     Dashboard: "/dashboard",
     SCHEDULE: "/schedule",
+    sector:'/sector'
   }
 }
 
@@ -24,13 +25,13 @@ export const HOME_ROUTES = [
     layout: "",
     component: <Group />
   },
-  // {
-  //   path: ROUTES['ticket-module'].tickets,
-  //   name: translate("sideNav.Tickets"),
-  //   icon: icons.issue,
-  //   layout: "",
-  //   component: <Tickets />
-  // },
+  {
+    path: ROUTES['group-module'].Dashboard,
+    name: "Dashboard",
+    icon: icons.issue,
+    layout: "",
+    component: <Dashboard />
+  },
 ];
 
 export * from "./RequireAuth";

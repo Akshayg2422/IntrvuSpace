@@ -22,3 +22,7 @@ export const GET_KNOWLEDGE_GROUP_URL = ASSISTANT + 'getKnowledgeGroups';
 // getKnowledgeGroupVariants
 
 export const GET_KNOWLEDGE_GROUP_VARIANT_URL = ASSISTANT + 'getKnowledgeGroupVariants';
+
+// createSector
+
+export const URL_CREATE_SECTOR = ASSISTANT + 'createSector';

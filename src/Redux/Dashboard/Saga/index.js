@@ -91,15 +91,29 @@ function* getKnowledgeGroupVariantSaga(action) {
   }
 }
 
+function* createSectorSaga(action) {
+  try {
+    const response = yield call(Api.createSectorApi, action.payload.params);
+    if (response.success) {
+      yield put(Action.createSectorSuccess(response));
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield put(Action.createSectorFailure(response.error_message));
+      yield call(action.payload.onError(response));
+    }
+  } catch (error) {
+    yield put(Action.createSectorFailure(error));
+    yield call(action.payload.onError(error));
+  }
+}
+
 function* DashboardSaga() {
   yield takeLatest(Action.GET_START_CHAT, getChatSaga);
   yield takeLatest(Action.CREATE_KNOWLEDGE_GROUP_VARIANT, createKnowledgeGroupVariantSaga);
   yield takeLatest(Action.CREATE_KNOWLEDGE_GROUP, createKnowledgeGroupSaga);
   yield takeLatest(Action.GET_KNOWLEDGE_GROUP, getKnowledgeGroupSaga);
   yield takeLatest(Action.GET_KNOWLEDGE_GROUP_VARIANT, getKnowledgeGroupVariantSaga);
-
-
-
+  yield takeLatest(Action.CREATE_SECTOR, createSectorSaga);
 }
 
 export default DashboardSaga;
