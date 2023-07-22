@@ -85,6 +85,8 @@ function Group() {
                     editModal.hide()
                     getKnowledgeGroupDetails()
                     getKnowledgeGroupVariantDetails()
+                    title.set('')
+                    description.set('')
                 },
                 onError: (error: string) => () => {
                     GroupSubmitLoader.hide()
@@ -108,6 +110,8 @@ function Group() {
                     variantModal.hide()
                     getKnowledgeGroupDetails()
                     getKnowledgeGroupVariantDetails()
+                    variantTitle.set('')
+                    variantDescription.set('')
                 },
                 onError: (error: string) => () => {
                     VariantSubmitLoader.hide()
