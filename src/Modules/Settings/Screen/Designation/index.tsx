@@ -1,18 +1,19 @@
 import { icons } from '@Assets';
 import { Button, CommonTable, DropDown, Input, MenuBar, Modal, NoDataFound } from '@Components';
-import { useDropDown, useDynamicHeight, useInput, useLoader, useModal } from '@Hooks';
+import { useDropDown, useDynamicHeight, useInput, useLoader, useModal, useNavigation } from '@Hooks';
 import { translate } from "@I18n";
-import { createKnowledgeGroup, createKnowledgeGroupVariant, getKnowledgeGroups, getKnowledgeGroupVariant, getSectors } from '@Redux';
+import { createKnowledgeGroup, createKnowledgeGroupVariant, getKnowledgeGroups, getKnowledgeGroupVariant, getSectors, selectedGroupIds } from '@Redux';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getDropDownCompanyDisplayData } from '@Utils';
+import { ROUTES } from '@Routes';
 
 
 function Designation() {
 
 
     const { knowledgeGroups, sectors } = useSelector((state: any) => state.DashboardReducer)
-
+    const { goTo } = useNavigation()
     const title = useInput("");
     const description = useInput("");
     const editModal = useModal(false);
@@ -190,6 +191,7 @@ function Designation() {
 
 
     return (
+        <>
         <div>
             <div className="row justify-content-end m-2 mb-3">
                 <Button
@@ -242,6 +244,13 @@ function Designation() {
                                             <CommonTable
                                                 isPagination
                                                 displayDataSet={normalizedTaskGroupData(selectedGroupVariant)}
+                                                tableDataSet={selectedGroupVariant}
+                                                tableOnClick={(index, id, item) => {
+                                                    console.log(item)
+                                                    dispatch(selectedGroupIds(item))
+                                                    goTo(ROUTES['group-module']['create-question-form'])
+                                                }}
+
                                             />
                                         )
                                         }
@@ -314,6 +323,7 @@ function Designation() {
                 </div>
             </Modal >
         </div >
+        </>
     )
 }
 

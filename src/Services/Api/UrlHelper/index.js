@@ -23,3 +23,4 @@ export const GET_KNOWLEDGE_GROUP_URL = ASSISTANT + 'getKnowledgeGroups';
 
 export const GET_KNOWLEDGE_GROUP_VARIANT_URL = ASSISTANT + 'getKnowledgeGroupVariants';
 export const URL_GET_SECTORS = ASSISTANT + 'getSectors';
+export const URL_CREATE_QUESTION_FORM = ASSISTANT + 'createQuestionForm'
