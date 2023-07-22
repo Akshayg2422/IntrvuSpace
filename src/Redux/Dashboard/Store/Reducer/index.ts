@@ -51,7 +51,7 @@ const DashboardReducer = (state = initialState, action: any) => {
       state = { ...state, knowledgeGroups: undefined };
       break;
     case ActionTypes.GET_KNOWLEDGE_GROUP_SUCCESS:
-      state = { ...state, knowledgeGroups: action.payload };
+      state = { ...state, knowledgeGroups: action.payload.details.knowledege_groups };
       break;
     case ActionTypes.GET_KNOWLEDGE_GROUP_FAILURE:
       state = { ...state };

@@ -61,7 +61,7 @@ function* getKnowledgeGroupSaga(action) {
   try {
     const response = yield call(Api.getKnowledgeGroupApi, action.payload.params);
     if (response.success) {
-      yield put(Action.getKnowledgeGroupsSuccess(response.details));
+      yield put(Action.getKnowledgeGroupsSuccess(response));
       yield call(action.payload.onSuccess(response));
     } else {
       yield put(Action.getKnowledgeGroupsFailure(response.error_message));
