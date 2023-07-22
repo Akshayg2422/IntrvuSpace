@@ -1,4 +1,4 @@
-import { Button, Modal, Input, CommonTable, NoDataFound, Card, DropDown, NoRecordsFound, Spinner } from '@Components';
+import { Button, Modal, Input, CommonTable, NoDataFound, Card, DropDown, NoRecordsFound, Spinner, DragAndReorder } from '@Components';
 import { useDynamicHeight, useInput, useLoader, useModal, useNavigation } from '@Hooks'
 import { createKnowledgeGroup, createKnowledgeGroupVariant, getKnowledgeGroup, getKnowledgeGroupVariant } from '@Redux';
 import React, { useEffect, useState } from 'react'
@@ -22,6 +22,20 @@ function Group() {
     const [selectedGroupDetails, setSelectedGroupDetails] = useState<any>({})
     const [convertedGroupDetails, setConvertedGroupDetails] = useState<any>([])
     const [selectedGroup, setSelectedGroup] = useState<any>(undefined);
+    const [dragAndReorderData, setDragAndReorder] = useState<any>([
+        {id:1, name: 'Full stack development with React', description: 'Minimum 1 year experience in full stack development with React.', weightage: '15', display_order: '1' },
+        {id:2, name: 'Front-end UI integration with API', description: 'Knowledge about integrating front-end UI with the constructed API.', weightage: '10', display_order: '2' },
+        {id:3, name: 'NodeJS', description: 'Mandatory skill in NodeJS.', weightage: '10', display_order: '3' },
+        // {id:4, name: 'ReactJS', description: 'Mandatory skill in ReactJS.', weightage: '10', display_order: '4' },
+        // {id:5, name: 'ExpressJS', description: 'Mandatory skill in ExpressJS.', weightage: '5', display_order: '5' },
+        // {id:6, name: 'AngularJS', description: 'Mandatory skill in AngularJS.', weightage: '5', display_order: '6' },
+        // {id:7, name: 'RESTful web services', description: 'Professional exposure to RESTful web services.', weightage: '5', display_order: '7' },
+        // {id:8, name: 'JavaScript development with React', description: 'Functional and object oriented JavaScript development including application development with React.', weightage: '10', display_order: '8' },
+        // {id:9, name: 'Databases', description: 'Knowledge of databases like MySQL, PostgreSQL, MongoDB.', weightage: '5', display_order: '9' },
+        // {id:10, name: 'Front-end development tools', description: 'Experience with common front-end development tools such as Babel, Webpack, NPM, etc.', weightage: '10', display_order: '10' },
+        // {id:11, name: 'Business requirements translation', description: 'Ability to understand business requirements and translate them into technical requirements.', weightage: '5', display_order: '11' },
+        // {id:12, name: 'Code versioning tools', description: 'Familiarity with code versioning tools (such as Git).', weightage: '5', display_order: '12' }
+    ])
 
     // createKnowledgeGroupVariant
     useEffect(() => {
@@ -119,6 +133,42 @@ function Group() {
     const onClickAddVariant = (group: any) => {
         setSelectedGroupDetails(group)
         variantModal.show()
+    }
+
+
+    function onSubmitDnd(params: any, key: string) {
+        // courseSectionModalLoader.showLoader()
+        // dispatch(postGenericBatchCrudDetails({
+        //   params,
+        //   onSuccess: (success: any) => () => {
+        //     if (key === 'courseSection') {
+        //       courseSectionModalLoader.hideLoader()
+        //       showToast('success', success.message)
+        //       dispatch(handleDndModal(true))
+        //       getCourses()
+
+        //     }
+        //     else if (key === 'courseTopic') {
+        //       courseSectionModalLoader.hideLoader()
+        //       showToast('success', success.message)
+        //       dispatch(handleDndModal(true))
+        //       getCourseTopics(currentCourseSection)
+        //     }
+        //     else {
+        //       modal.onChange(!modal.visible)
+        //       courseSectionModalLoader.hideLoader()
+        //       showToast('success', success.message)
+        //       dispatch(handleDndModal(false))
+        //       getCourseTopics(currentCourseSection)
+
+        //     }
+
+        //   },
+        //   onError: (error: any) => () => {
+        //     courseSectionModalLoader.hideLoader()
+        //     dispatch(handleDndModal(true))
+        //   }
+        // }))
     }
 
     // const normalizedTaskGroupData = (data: any) => {
@@ -288,7 +338,6 @@ function Group() {
                             onChange={description.onChange}
                         />
                     </div>
-
                 </div>
                 <div className="col text-right">
                     <Button size={'md'}
@@ -298,6 +347,20 @@ function Group() {
                     />
                 </div>
             </Modal >
+            {/* <DragAndReorder
+                title={'testing'}
+                isDndModalOpen={!true}
+                dndData={dragAndReorderData}
+                onSubmitClick={(topic) => {
+                    const params = {
+                        mq: "course__Topic",
+                        data: topic
+                    }
+
+                    console.log("000000000000",topic)
+                    onSubmitDnd(params, "courseTopic")
+                }}
+            /> */}
         </div >
     )
 }
