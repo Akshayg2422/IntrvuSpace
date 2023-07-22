@@ -1,1 +1,2 @@
-export* from './WeightageCountForm'
+export * from './WeightageCountForm'
+export * from './CreateQuestionForm'

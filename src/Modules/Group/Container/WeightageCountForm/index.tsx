@@ -71,11 +71,11 @@ function WeightageCountForm() {
 
   return (
     <>
-      <Card className="m-3" style={{ height: height - 30 }}>
+      <Card className="m-3 overflow-auto overflow-hide" style={{ height: height - 30 }}>
         <div className="col">
           <div className="row mt--2">
             <Back />
-            <h3 className="ml-3">FORM</h3>
+            <h3 className="ml-3">Create Sections</h3>
           </div>
         </div>
         <hr className="mt-2"></hr>
