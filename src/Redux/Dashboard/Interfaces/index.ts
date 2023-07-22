@@ -1,5 +1,6 @@
 export interface DashboardProp {
   userLoggedIn: boolean
   chat: any
-  GroupDetails:any
+  knowledgeGroups: any
+  sectors: any
 }
