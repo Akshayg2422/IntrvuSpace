@@ -7,7 +7,8 @@ const initialState: DashboardProp = {
   userLoggedIn: false,
   chat: [],
   knowledgeGroups: undefined,
-  sectors: undefined
+  sectors: undefined,
+  selectedClientSector: undefined
 };
 
 const DashboardReducer = (state = initialState, action: any) => {
@@ -76,6 +77,15 @@ const DashboardReducer = (state = initialState, action: any) => {
       break;
     case ActionTypes.GET_SECTORS_FAILURE:
       state = { ...state, sectors: undefined };
+      break;
+
+
+    /**
+ *  set client sectors
+ */
+
+    case ActionTypes.SET_CLIENT_SECTORS:
+      state = { ...state, selectedClientSector: action.payload };
       break;
 
 

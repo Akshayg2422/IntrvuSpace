@@ -15,7 +15,7 @@ export const CREATE_KNOWLEDGE_GROUP_VARIANT_URL = ASSISTANT + 'createKnowledgeGr
 
 export const CREATE_KNOWLEDGE_GROUP_URL = ASSISTANT + 'createKnowledgeGroup';
 
-// getKnowledgeGroup
+// getKnowledgeGroups
 
 export const GET_KNOWLEDGE_GROUP_URL = ASSISTANT + 'getKnowledgeGroups';
 
