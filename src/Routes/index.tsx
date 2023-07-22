@@ -1,5 +1,5 @@
 import { icons } from '@Assets'
-import { Dashboard, Designation, WeightageCountForm, CreateQuestionForm } from '@Modules';
+import {  Designation, WeightageCountForm, CreateQuestionForm,Clients } from '@Modules';
 
 
 export const ROUTES = {
@@ -17,6 +17,7 @@ export const ROUTES = {
     'create-question-form': "/create-question-form",
     dashboard: "/dashboard",
     group: "/group",
+    client: "/client",
   }
 }
 
@@ -42,6 +43,13 @@ export const HOME_ROUTES = [
     component: <Designation />
   },
 
+  {
+    path: ROUTES['group-module'].client,
+    name: "Clients",
+    icon: icons.company,
+    layout: "",
+    component: <Clients />
+  },
   // {
   //   path: ROUTES['ticket-module'].tickets,
   //   name: translate("sideNav.Tickets"),

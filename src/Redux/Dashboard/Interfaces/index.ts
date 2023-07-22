@@ -6,4 +6,5 @@ export interface DashboardProp {
   knowledgeGroups: any
   sectors: any
   questionForm:any
+  selectedClientSector: any
 }

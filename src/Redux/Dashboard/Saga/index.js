@@ -55,16 +55,16 @@ function* createKnowledgeGroupSaga(action) {
   }
 }
 
-// getKnowledgeGroup
+// getKnowledgeGroups
 
 function* getKnowledgeGroupSaga(action) {
   try {
     const response = yield call(Api.getKnowledgeGroupApi, action.payload.params);
     if (response.success) {
-      yield put(Action.getKnowledgeGroupSuccess(response.details));
+      yield put(Action.getKnowledgeGroupsSuccess(response.details));
       yield call(action.payload.onSuccess(response));
     } else {
-      yield put(Action.getKnowledgeGroupFailure(response.error_message));
+      yield put(Action.getKnowledgeGroupsFailure(response.error_message));
       yield call(action.payload.onError(response));
     }
   } catch (error) {

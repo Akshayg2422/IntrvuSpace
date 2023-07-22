@@ -12,7 +12,7 @@ export const createKnowledgeGroupApi = payload => post(URL.CREATE_KNOWLEDGE_GROU
 
 export const createKnowledgeGroupVariantApi = payload => post(URL.CREATE_KNOWLEDGE_GROUP_VARIANT_URL, payload, {});
 
-// getKnowledgeGroup
+// getKnowledgeGroups
 
 export const getKnowledgeGroupApi = payload => post(URL.GET_KNOWLEDGE_GROUP_URL, payload, {});
 

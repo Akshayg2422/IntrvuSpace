@@ -10,7 +10,8 @@ const initialState: DashboardProp = {
   selectedGroupId: undefined,
   knowledgeGroups: undefined,
   sectors: undefined,
-  questionForm: undefined
+  questionForm: undefined,
+  selectedClientSector: undefined
 };
 
 const DashboardReducer = (state = initialState, action: any) => {
@@ -98,6 +99,15 @@ const DashboardReducer = (state = initialState, action: any) => {
       state = { ...state };
       break;
 
+
+
+    /**
+ *  set client sectors
+ */
+
+    case ActionTypes.SET_CLIENT_SECTORS:
+      state = { ...state, selectedClientSector: action.payload };
+      break;
 
 
     default:

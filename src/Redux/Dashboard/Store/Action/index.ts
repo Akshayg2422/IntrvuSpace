@@ -95,30 +95,30 @@ export const getKnowledgeGroupVariantFailure = (error: any) => {
   }
 }
 
-// getKnowledgeGroup
+// getKnowledgeGroups
 
-export const getKnowledgeGroup = (params: any) => {
+export const getKnowledgeGroups = (params: any) => {
   return {
     type: ActionTypes.GET_KNOWLEDGE_GROUP,
     payload: params,
   };
 };
 
-export const getKnowledgeGroupSuccess = (response: any) => {
+export const getKnowledgeGroupsSuccess = (response: any) => {
   return {
     type: ActionTypes.GET_KNOWLEDGE_GROUP_SUCCESS,
     payload: response
   }
 }
 
-export const getKnowledgeGroupFailure = (error: any) => {
+export const getKnowledgeGroupsFailure = (error: any) => {
   return {
     type: ActionTypes.GET_KNOWLEDGE_GROUP_FAILURE,
     payload: error
   }
 }
 
-// getKnowledgeGroup
+// getKnowledgeGroups
 
 export const getSectors = (params: any) => {
   return {
@@ -172,3 +172,15 @@ export const createQuestionFormFailure = (error: any) => {
     payload: error
   }
 }
+
+/**
+ *  selected client sector
+ */
+
+
+export const setClientSector = (params: any) => {
+  return {
+    type: ActionTypes.SET_CLIENT_SECTORS,
+    payload: params,
+  };
+};

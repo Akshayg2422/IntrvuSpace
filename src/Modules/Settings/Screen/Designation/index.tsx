@@ -2,7 +2,7 @@ import { icons } from '@Assets';
 import { Button, CommonTable, DropDown, Input, MenuBar, Modal, NoDataFound } from '@Components';
 import { useDropDown, useDynamicHeight, useInput, useLoader, useModal, useNavigation } from '@Hooks';
 import { translate } from "@I18n";
-import { createKnowledgeGroup, createKnowledgeGroupVariant, getKnowledgeGroup, getKnowledgeGroupVariant, getSectors, selectedGroupIds } from '@Redux';
+import { createKnowledgeGroup, createKnowledgeGroupVariant, getKnowledgeGroups, getKnowledgeGroupVariant, getSectors, selectedGroupIds } from '@Redux';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getDropDownCompanyDisplayData } from '@Utils';
@@ -45,7 +45,7 @@ function Designation() {
     const getKnowledgeGroupDetailsApiHandler = () => {
         const params = {}
         dispatch(
-            getKnowledgeGroup({
+            getKnowledgeGroups({
                 params,
                 onSuccess: (success: any) => () => {
                     const normalizedArray = success?.details?.knowledege_groups && success?.details?.knowledege_groups.length > 0
