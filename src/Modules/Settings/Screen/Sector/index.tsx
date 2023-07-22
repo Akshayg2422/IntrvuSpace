@@ -1,9 +1,10 @@
 import React, { Component, useEffect, useRef, useState } from 'react'
-import { useDispatch } from 'react-redux';
-import { createSector, getStartChat } from '@Redux';
-import { useInput, useModal } from '@Hooks';
+import { useDispatch, useSelector } from 'react-redux';
+import { createSector, getSectors, getStartChat } from '@Redux';
+import { useInput, useLoader, useModal } from '@Hooks';
 import { translate } from "@I18n";
-import { Button, ImagePicker, Input, Modal } from '@Components';
+import { Button, Card, CommonTable, Image, ImagePicker, Input, Modal } from '@Components';
+import { getPhoto } from '@Utils';
 
 
 function Sector() {
@@ -14,32 +15,68 @@ function Sector() {
   const name = useInput("");
   const description = useInput("");
   const [image, setImage] = useState("");
+  const addSectorLoader = useLoader(false);
+
   const [photo, setPhoto] = useState<any>();
+  const { sectors } = useSelector((state: any) => state.DashboardReducer)
 
 
+  useEffect(() => {
+    getSectorDetailsApiHandler()
+  }, [])
 
-  const addSectorDetails = () => {
+  const addSectorDetailsApiHandler = () => {
     const params = {
       name: name.value,
       description: description.value,
       photo: photo
     }
+    addSectorLoader.show()
     
     dispatch(
       createSector({
-            params,
-            onSuccess: (success: any) => () => {
-              addSector.hide()
-              description.set('')
-              name.set('')
-              setPhoto('')
-            },
-            onError: (error: string) => () => {
-            },
-        })
+        params,
+        onSuccess: (success: any) => () => {
+          addSector.hide()
+          description.set('')
+          name.set('')
+          setPhoto('')
+          addSectorLoader.hide()
+          getSectorDetailsApiHandler()
+        },
+        onError: (error: string) => () => {
+          addSectorLoader.hide()
+        },
+      })
     );
   };
 
+  const getSectorDetailsApiHandler = () => {
+    const params = {}
+    dispatch(
+      getSectors({
+        params,
+        onSuccess: (success: any) => () => {
+        },
+        onError: (error: string) => () => {
+        },
+      })
+    );
+  };
+
+  const normalizedTableData = (data: any) => {
+    return data?.map((el: any) => {
+      return {
+        Name:
+          <div className="row"> <div>
+            <Image variant={'rounded'} src={getPhoto(el?.photo)} />
+          </div>
+            <div className="text-center pt-3 pl-1"> {el.name}<div></div></div>
+          </div>,
+        description: el?.description,
+      };
+    });
+  };
 
   return (
     <>
@@ -53,8 +90,14 @@ function Sector() {
           }}
         />
       </div>
+      <CommonTable
+        card
+        isPagination
+        title={'Sectors'}
+        displayDataSet={normalizedTableData(sectors)}
+      />
       < Modal size={'lg'} title={"Add Sector"} isOpen={addSector.visible} onClose={addSector.hide} >
-        <div className="col-md-9 col-lg-5">
+        <div className="col-md-9">
           <div className="mt--2">
             <Input
               heading={"Name"}
@@ -79,28 +122,16 @@ function Sector() {
                 onSelect={(image) => {
                   let file = image.toString().replace(/^data:(.*,)?/, "")
                   setPhoto(file)
-              }}
-                // onSelectImagePickers={(el) => {
-                //   let array: any = []
-
-                //   for (let i = 0; i <= el.length; i++) {
-                //     let eventPickers = el[i]?.base64?.toString().replace(/^data:(.*,)?/, "")
-                //     if (eventPickers !== undefined) {
-                //       array.push(eventPickers)
-                //     }
-
-                //   }
-                //   setPhoto(array)
-                // }}
+                }}
               />
             </div>
           </div>
         </div>
         <div className="col text-right ">
           <Button size={'md'}
-            // loading={GroupSubmitLoader.loader}
+            loading={addSectorLoader.loader}
             text={"Submit"}
-            onClick={() => addSectorDetails()}
+            onClick={addSectorDetailsApiHandler}
           />
         </div>
       </Modal >

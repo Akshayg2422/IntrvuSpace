@@ -1,5 +1,5 @@
 import { icons } from '@Assets'
-import { Designation } from '@Modules'
+import {  Designation, WeightageCountForm, CreateQuestionForm,Clients, Sector } from '@Modules';
 
 
 export const ROUTES = {
@@ -11,11 +11,35 @@ export const ROUTES = {
     landing: '/'
   },
   'group-module': {
+    Dashboard: "/dashboard",
+    SCHEDULE: "/schedule",
+    'weightage-count-form': "/weightage-count-form",
+    'create-question-form': "/create-question-form",
+    'sector': "/sector",
     dashboard: "/dashboard",
     group: "/group",
-    sector:'/sector'
+    client: "/client",
   }
 }
+
+export const DASHBOARD_ROUTES = [
+  {
+    id:1,
+    path: ROUTES['group-module']['weightage-count-form'],
+    component: <WeightageCountForm />
+  },
+  {
+    id:2,
+    path: ROUTES['group-module']['create-question-form'],
+    component: <CreateQuestionForm />
+  },
+  {
+    id:3,
+    path: ROUTES['group-module']['sector'],
+    component: <Sector />
+  }
+
+]
 
 export const HOME_ROUTES = [
   {
@@ -24,6 +48,14 @@ export const HOME_ROUTES = [
     icon: icons.task,
     layout: "",
     component: <Designation />
+  },
+
+  {
+    path: ROUTES['group-module'].client,
+    name: "Clients",
+    icon: icons.company,
+    layout: "",
+    component: <Clients />
   },
   // {
   //   path: ROUTES['group-module'].Dashboard,

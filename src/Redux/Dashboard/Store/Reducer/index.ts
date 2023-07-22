@@ -7,8 +7,12 @@ import * as ActionTypes from '../ActionTypes'
 const initialState: DashboardProp = {
   userLoggedIn: false,
   chat: [],
+  GroupDetails: undefined,
+  selectedGroupId: undefined,
   knowledgeGroups: undefined,
-  sectors: undefined
+  sectors: undefined,
+  questionForm: undefined,
+  selectedClientSector: undefined
 };
 
 const DashboardReducer = (state = initialState, action: any) => {
@@ -75,6 +79,11 @@ const DashboardReducer = (state = initialState, action: any) => {
     case CREATE_SECTOR_FAILURE:
       state = { ...state };
       break;
+    //selected Group Id
+
+    case ActionTypes.SELECTED_GROUP_ID:
+      state = { ...state, selectedGroupId: action.payload }
+      break;
 
 
     /**
@@ -89,6 +98,27 @@ const DashboardReducer = (state = initialState, action: any) => {
       break;
     case ActionTypes.GET_SECTORS_FAILURE:
       state = { ...state, sectors: undefined };
+      break;
+
+    //create question form
+    case ActionTypes.CREATE_QUESTION_FORM:
+      state = { ...state };
+      break;
+    case ActionTypes.CREATE_QUESTION_FORM_SUCCESS:
+      state = { ...state, };
+      break;
+    case ActionTypes.CREATE_QUESTION_FORM_FAILURE:
+      state = { ...state };
+      break;
+
+
+
+    /**
+ *  set client sectors
+ */
+
+    case ActionTypes.SET_CLIENT_SECTORS:
+      state = { ...state, selectedClientSector: action.payload };
       break;
 
 

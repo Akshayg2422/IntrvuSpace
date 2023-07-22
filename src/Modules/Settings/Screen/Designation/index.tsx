@@ -1,18 +1,19 @@
 import { icons } from '@Assets';
 import { Button, CommonTable, DropDown, Input, MenuBar, Modal, NoDataFound } from '@Components';
-import { useDropDown, useDynamicHeight, useInput, useLoader, useModal } from '@Hooks';
+import { useDropDown, useDynamicHeight, useInput, useLoader, useModal, useNavigation } from '@Hooks';
 import { translate } from "@I18n";
-import { createKnowledgeGroup, createKnowledgeGroupVariant, getKnowledgeGroup, getKnowledgeGroupVariant, getSectors } from '@Redux';
+import { createKnowledgeGroup, createKnowledgeGroupVariant, getKnowledgeGroups, getKnowledgeGroupVariant, getSectors, selectedGroupIds } from '@Redux';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getDropDownCompanyDisplayData } from '@Utils';
+import { ROUTES } from '@Routes';
 
 
 function Designation() {
 
 
     const { knowledgeGroups, sectors } = useSelector((state: any) => state.DashboardReducer)
-
+    const { goTo } = useNavigation()
     const title = useInput("");
     const description = useInput("");
     const editModal = useModal(false);
@@ -31,10 +32,6 @@ function Designation() {
 
     const sector = useDropDown({});
 
-
-
-
-
     useEffect(() => {
         getKnowledgeGroupDetailsApiHandler();
         getKnowledgeGroupVariantDetails();
@@ -44,7 +41,7 @@ function Designation() {
     const getKnowledgeGroupDetailsApiHandler = () => {
         const params = {}
         dispatch(
-            getKnowledgeGroup({
+            getKnowledgeGroups({
                 params,
                 onSuccess: (success: any) => () => {
                     const normalizedArray = success?.details?.knowledege_groups && success?.details?.knowledege_groups.length > 0
@@ -162,10 +159,6 @@ function Designation() {
         setSelectedGroupVariant(filteredVariant)
     }
 
-    const editVariant = (item: any) => {
-        console.log("edit variant", item);
-
-    }
 
     const normalizedTaskGroupData = (data: any) => {
         return data && data.length > 0 && data.map((variant: any) => {
@@ -177,7 +170,7 @@ function Designation() {
                 </div >,
                 "": <MenuBar menuData={MENU} onClick={(el) => {
                     if (el.id === 0) {
-                        editVariant(variant)
+                        // editVariant(variant)
                     }
                 }}
                 />
@@ -186,10 +179,8 @@ function Designation() {
     };
 
 
-    console.log(JSON.stringify(sectors) + '====sectors');
-
-
     return (
+        <>
         <div>
             <div className="row justify-content-end m-2 mb-3">
                 <Button
@@ -200,14 +191,22 @@ function Designation() {
                         editModal.show()
                     }}
                 />
+                <Button
+                    className={'text-white shadow-none'}
+                    size={'sm'}
+                    text={"Sector"}
+                    onClick={() => {
+                        goTo(ROUTES['group-module']['sector'])
+                    }}
+                />
             </div>
             <div className='mx-3'>
                 <div className='row'>
                     {convertedGroupDetails && convertedGroupDetails.length > 0 ?
                         convertedGroupDetails.map((el: any, index: number) => {
                             return (
-                                <div className='col'>
-                                    <div className={'card py-3'}
+                                <div className='col-6'>
+                                    <div className={'card  py-3'}
                                         style={{ height: el.show ? dynamicHeight.dynamicHeight : '5em' }}>
                                         <div className="row justify-content-center  m-2" >
                                             <div className="col">
@@ -242,6 +241,13 @@ function Designation() {
                                             <CommonTable
                                                 isPagination
                                                 displayDataSet={normalizedTaskGroupData(selectedGroupVariant)}
+                                                tableDataSet={selectedGroupVariant}
+                                                tableOnClick={(index, id, item) => {
+                                                    console.log(item)
+                                                    dispatch(selectedGroupIds(item))
+                                                    goTo(ROUTES['group-module']['create-question-form'])
+                                                }}
+
                                             />
                                         )
                                         }
@@ -314,6 +320,7 @@ function Designation() {
                 </div>
             </Modal >
         </div >
+        </>
     )
 }
 

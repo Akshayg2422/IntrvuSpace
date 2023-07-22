@@ -95,30 +95,30 @@ export const getKnowledgeGroupVariantFailure = (error: any) => {
   }
 }
 
-// getKnowledgeGroup
+// getKnowledgeGroups
 
-export const getKnowledgeGroup = (params: any) => {
+export const getKnowledgeGroups = (params: any) => {
   return {
     type: ActionTypes.GET_KNOWLEDGE_GROUP,
     payload: params,
   };
 };
 
-export const getKnowledgeGroupSuccess = (response: any) => {
+export const getKnowledgeGroupsSuccess = (response: any) => {
   return {
     type: ActionTypes.GET_KNOWLEDGE_GROUP_SUCCESS,
     payload: response
   }
 }
 
-export const getKnowledgeGroupFailure = (error: any) => {
+export const getKnowledgeGroupsFailure = (error: any) => {
   return {
     type: ActionTypes.GET_KNOWLEDGE_GROUP_FAILURE,
     payload: error
   }
 }
 
-// getKnowledgeGroup
+// getSectors
 
 export const getSectors = (params: any) => {
   return {
@@ -142,15 +142,26 @@ export const getSectorsFailure = (error: any) => {
 }
 
 
+
+
+// selectedGroupIds
+
+export const selectedGroupIds=(params)=>{
+  return {
+      type: ActionTypes.SELECTED_GROUP_ID,
+      payload: params
+  }
+}
+
 // createSector
+
 
 export const createSector = (params: any) => {
   return {
     type: ActionTypes.CREATE_SECTOR,
     payload: params,
-  };
-};
-
+  }
+}
 export const createSectorSuccess = (response: any) => {
   return {
     type: ActionTypes.CREATE_SECTOR_SUCCESS,
@@ -164,3 +175,38 @@ export const createSectorFailure = (error: any) => {
     payload: error
   }
 }
+
+// CREATE QUESTION FORM
+
+export const createQuestionForm = (params: any) => {
+  return {
+    type: ActionTypes.CREATE_QUESTION_FORM,
+    payload: params,
+  };
+};
+
+export const createQuestionFormSuccess = (response: any) => {
+  return {
+    type: ActionTypes.CREATE_QUESTION_FORM_SUCCESS,
+    payload: response
+  }
+}
+
+export const createQuestionFormFailure = (error: any) => {
+  return {
+    type: ActionTypes.CREATE_QUESTION_FORM_FAILURE,
+    payload: error
+  }
+}
+
+/**
+ *  selected client sector
+ */
+
+
+export const setClientSector = (params: any) => {
+  return {
+    type: ActionTypes.SET_CLIENT_SECTORS,
+    payload: params,
+  };
+};

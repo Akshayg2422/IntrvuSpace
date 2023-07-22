@@ -55,16 +55,16 @@ function* createKnowledgeGroupSaga(action) {
   }
 }
 
-// getKnowledgeGroup
+// getKnowledgeGroups
 
 function* getKnowledgeGroupSaga(action) {
   try {
     const response = yield call(Api.getKnowledgeGroupApi, action.payload.params);
     if (response.success) {
-      yield put(Action.getKnowledgeGroupSuccess(response.details));
+      yield put(Action.getKnowledgeGroupsSuccess(response.details));
       yield call(action.payload.onSuccess(response));
     } else {
-      yield put(Action.getKnowledgeGroupFailure(response.error_message));
+      yield put(Action.getKnowledgeGroupsFailure(response.error_message));
       yield call(action.payload.onError(response));
     }
   } catch (error) {
@@ -124,6 +124,24 @@ function* getSectorsSaga(action) {
   }
 }
 
+// create question form
+
+function* createQuestionFormSaga(action) {
+  try {
+    const response = yield call(Api.createQuestionForm, action.payload.params);
+    if (response.success) {
+      yield put(Action.createQuestionFormSuccess(response));
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield put(Action.createQuestionFormFailure(response.error_message));
+      yield call(action.payload.onError(response));
+    }
+  } catch (error) {
+    yield put(Action.createQuestionFormFailure(error));
+    yield call(action.payload.onError(error));
+  }
+}
+
 function* DashboardSaga() {
   yield takeLatest(Action.GET_START_CHAT, getChatSaga);
   yield takeLatest(Action.CREATE_KNOWLEDGE_GROUP_VARIANT, createKnowledgeGroupVariantSaga);
@@ -132,6 +150,7 @@ function* DashboardSaga() {
   yield takeLatest(Action.GET_KNOWLEDGE_GROUP_VARIANT, getKnowledgeGroupVariantSaga);
   yield takeLatest(Action.CREATE_SECTOR, createSectorSaga);
   yield takeLatest(Action.GET_SECTORS, getSectorsSaga);
+  yield takeLatest(Action.CREATE_QUESTION_FORM, createQuestionFormSaga);
 
 }
 

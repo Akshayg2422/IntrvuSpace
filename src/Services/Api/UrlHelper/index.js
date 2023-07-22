@@ -15,7 +15,7 @@ export const CREATE_KNOWLEDGE_GROUP_VARIANT_URL = ASSISTANT + 'createKnowledgeGr
 
 export const CREATE_KNOWLEDGE_GROUP_URL = ASSISTANT + 'createKnowledgeGroup';
 
-// getKnowledgeGroup
+// getKnowledgeGroups
 
 export const GET_KNOWLEDGE_GROUP_URL = ASSISTANT + 'getKnowledgeGroups';
 
@@ -29,3 +29,4 @@ export const URL_CREATE_SECTOR = ASSISTANT + 'createSector';
 
 // getSector
 export const URL_GET_SECTORS = ASSISTANT + 'getSectors';
+export const URL_CREATE_QUESTION_FORM = ASSISTANT + 'createQuestionForm'
