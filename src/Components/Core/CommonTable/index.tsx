@@ -126,7 +126,7 @@ function CommonTable({ card = false, title, displayDataSet, tableDataSet, isPagi
   }
   return (
     <CommonHeader>
-      {displayDataSet && displayDataSet.length > 0 ? <Table tableDataSet={tableDataSet} displayDataSet={displayDataSet} tableOnClick={tableOnClick}  /> : <NoRecordsFound />}
+      {displayDataSet && displayDataSet.length > 0 ? <Table tableDataSet={tableDataSet} displayDataSet={displayDataSet} tableOnClick={tableOnClick}  /> : <div className='mb-4'><NoRecordsFound /></div>}
       {isPagination && <GetPaginatorSet currentPage={currentPage} totalPages={noOfPage} />}
     </CommonHeader >
 
