@@ -143,10 +143,10 @@ export const getSectorsFailure = (error: any) => {
 
 // selectedGroupIds
 
-export const selectedGroupIds=(params)=>{
+export const selectedGroupIds = (params) => {
   return {
-      type: ActionTypes.SELECTED_GROUP_ID,
-      payload: params
+    type: ActionTypes.SELECTED_GROUP_ID,
+    payload: params
   }
 }
 
@@ -181,6 +181,19 @@ export const createQuestionFormFailure = (error: any) => {
 export const setClientSector = (params: any) => {
   return {
     type: ActionTypes.SET_CLIENT_SECTORS,
+    payload: params,
+  };
+};
+
+
+
+/**
+ * createQuestionSection
+ */
+
+export const createQuestionSection = (params: any) => {
+  return {
+    type: ActionTypes.CREATE_QUESTION_SECTION,
     payload: params,
   };
 };

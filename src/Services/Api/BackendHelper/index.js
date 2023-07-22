@@ -25,4 +25,8 @@ export const getSectorsApi = payload => post(URL.URL_GET_SECTORS, payload, {});
 export const createQuestionForm = payload => post(URL.URL_CREATE_QUESTION_FORM, payload, {});
 
 
+export const createQuestionSectionApi = payload => post(URL.URL_CREATE_QUESTION_SECTION, payload, {});
+
+
+
 

@@ -128,6 +128,33 @@ function* createQuestionFormSaga(action) {
   }
 }
 
+
+
+
+
+
+/**
+ * form
+ * 
+ */
+
+
+// create question section
+
+function* createQuestionSectionSage(action) {
+  try {
+    const response = yield call(Api.createQuestionSectionApi, action.payload.params);
+    if (response.success) {
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield call(action.payload.onError(response));
+    }
+  } catch (error) {
+    yield call(action.payload.onError(error));
+  }
+}
+
+
 function* DashboardSaga() {
   yield takeLatest(Action.GET_START_CHAT, getChatSaga);
   yield takeLatest(Action.CREATE_KNOWLEDGE_GROUP_VARIANT, createKnowledgeGroupVariantSaga);
@@ -136,6 +163,7 @@ function* DashboardSaga() {
   yield takeLatest(Action.GET_KNOWLEDGE_GROUP_VARIANT, getKnowledgeGroupVariantSaga);
   yield takeLatest(Action.GET_SECTORS, getSectorsSaga);
   yield takeLatest(Action.CREATE_QUESTION_FORM, createQuestionFormSaga);
+  yield takeLatest(Action.CREATE_QUESTION_SECTION, createQuestionSectionSage);
 
 }
 
