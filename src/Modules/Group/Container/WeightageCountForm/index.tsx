@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Input, Card, Back, Button, CommonTable } from '@Components';
-import { useInput } from '@Hooks';
-import { CardHeader } from 'reactstrap';
+import { useInput, useWindowDimensions } from '@Hooks';
 
 type Task = {
   name: string;
@@ -10,6 +9,7 @@ type Task = {
 };
 
 function WeightageCountForm() {
+  const { height } = useWindowDimensions()
   const [tasks, setTasks] = useState<Task[]>([]);
   const nameInput = useInput('');
   const descriptionInput = useInput('');
@@ -57,17 +57,21 @@ function WeightageCountForm() {
             </div>,
 
           "weightage count":
-            <div className="text-center m-0"> {el?.weightage} </div>,
+            <div className="ml-5 m-0">
+              {el?.weightage}
+            </div>,
 
           "total weightage count":
-            <div className=" text-center mb-0"> {getTotalWeightage()}</div>
+            <div className="ml-6 mb-0">
+              {getTotalWeightage()}
+            </div>
         };
       });
   };
 
   return (
     <>
-      <Card className="m-3 row ">
+      <Card className="m-3" style={{ height: height - 30 }}>
         <div className="col">
           <div className="row mt--2">
             <Back />
@@ -98,7 +102,7 @@ function WeightageCountForm() {
 
         {
           tasks.length > 0 && (
-            <div className={'col-5'}>
+            <div className={'mt-4 mx-3'} >
               <CommonTable
                 tableDataSet={tasks}
                 displayDataSet={normalizedTableData(tasks)}
