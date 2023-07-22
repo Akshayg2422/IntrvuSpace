@@ -1,5 +1,5 @@
 import { icons } from '@Assets'
-import { Designation } from '@Modules'
+import { Designation, Clients } from '@Modules'
 
 
 export const ROUTES = {
@@ -13,6 +13,7 @@ export const ROUTES = {
   'group-module': {
     dashboard: "/dashboard",
     group: "/group",
+    client: "/client",
   }
 }
 
@@ -23,6 +24,13 @@ export const HOME_ROUTES = [
     icon: icons.task,
     layout: "",
     component: <Designation />
+  },
+  {
+    path: ROUTES['group-module'].client,
+    name: "Clients",
+    icon: icons.company,
+    layout: "",
+    component: <Clients />
   },
   // {
   //   path: ROUTES['ticket-module'].tickets,
