@@ -192,137 +192,137 @@ function Designation() {
 
     return (
         <>
-        <div>
-            <div className="row justify-content-end m-2 mb-3">
-                <Button
-                    className={'text-white shadow-none'}
-                    size={'sm'}
-                    text={"Add Group"}
-                    onClick={() => {
-                        editModal.show()
-                    }}
-                />
-            </div>
-            <div className='mx-3'>
-                <div className='row'>
-                    {convertedGroupDetails && convertedGroupDetails.length > 0 ?
-                        convertedGroupDetails.map((el: any, index: number) => {
-                            return (
-                                <div className='col'>
-                                    <div className={'card py-3'}
-                                        style={{ height: el.show ? dynamicHeight.dynamicHeight : '5em' }}>
-                                        <div className="row justify-content-center  m-2" >
-                                            <div className="col">
-                                                <h3>{el.name}</h3>
-                                            </div>
-                                            <div className="text-right mr-3">
-                                                <Button
-                                                    className={'text-white'}
-                                                    text={
-                                                        el?.show
-                                                            ? translate("course.hide")
-                                                            : translate("course.view")
-                                                    }
-                                                    size={"sm"}
-                                                    onClick={() => {
-                                                        onClickShow(el, index)
-                                                        selectedVariant(el)
-                                                    }}
-                                                />
-                                                <Button
-                                                    className={'text-white'}
-                                                    text={translate("product.addItem")}
-                                                    size={"sm"}
-                                                    onClick={() => {
-                                                        onClickAddVariant(el)
-                                                        // addTaskGroupModal.show()
-                                                    }}
-                                                />
-                                            </div>
-                                        </div>
-                                        {el.show && selectedGroupVariant && selectedGroupVariant.length > 0 && (
-                                            <CommonTable
-                                                isPagination
-                                                displayDataSet={normalizedTaskGroupData(selectedGroupVariant)}
-                                                tableDataSet={selectedGroupVariant}
-                                                tableOnClick={(index, id, item) => {
-                                                    console.log(item)
-                                                    dispatch(selectedGroupIds(item))
-                                                    goTo(ROUTES['group-module']['create-question-form'])
-                                                }}
-
-                                            />
-                                        )
-                                        }
-                                    </div>
-                                </div>
-                            )
-                        })
-                        : <div className={'d-flex justify-content-center align-items-center'} style={{ height: '90vh' }}><NoDataFound text={"No Data Found"} /></div>
-                    }
-                </div>
-            </div>
-            < Modal size={'lg'} title={"Add Group"} isOpen={editModal.visible} onClose={editModal.hide} >
-
-
-
-                <Input
-
-                    heading={"Name"}
-                    value={title.value}
-                    onChange={title.onChange}
-                />
-
-                <Input
-
-                    heading={"Description"}
-                    value={description.value}
-                    onChange={description.onChange}
-                />
-
-
-                {sectors && sectors.length > 0 &&
-                    <DropDown
-                        heading={'Sectors'}
-                        data={getDropDownCompanyDisplayData(sectors)}
-                        selected={sector.value}
-                        onChange={sector.onChange} />
-                }
-
-                <div className="col text-right ">
-                    <Button size={'md'}
-                        loading={GroupSubmitLoader.loader}
-                        text={"Submit"}
-                        onClick={() => createKnowledgeGroupDetails()} />
-                </div>
-            </Modal >
-
-            < Modal size={'lg'} title={"Add Variant"} isOpen={variantModal.visible} onClose={variantModal.hide} >
-
-
-                <Input
-                    className={'col-6'}
-                    heading={"Name"}
-                    value={title.value}
-                    onChange={title.onChange}
-                />
-                <Input
-                    className={'col-6'}
-                    heading={"Description"}
-                    value={description.value}
-                    onChange={description.onChange}
-                />
-
-
-                <div className="col text-right">
-                    <Button size={'md'}
-                        loading={VariantSubmitLoader.loader}
-                        text={"Submit"}
-                        onClick={() => createKnowledgeGroupVariantDetails()}
+            <div>
+                <div className="row justify-content-end m-2 mb-3">
+                    <Button
+                        className={'text-white shadow-none'}
+                        size={'sm'}
+                        text={"Add Group"}
+                        onClick={() => {
+                            editModal.show()
+                        }}
                     />
                 </div>
-            </Modal >
-        </div >
+                <div className='mx-3'>
+                    <div className='row'>
+                        {convertedGroupDetails && convertedGroupDetails.length > 0 ?
+                            convertedGroupDetails.map((el: any, index: number) => {
+                                return (
+                                    <div className='col'>
+                                        <div className={'card py-3'}
+                                            style={{ height: el.show ? dynamicHeight.dynamicHeight : '5em' }}>
+                                            <div className="row justify-content-center  m-2" >
+                                                <div className="col">
+                                                    <h3>{el.name}</h3>
+                                                </div>
+                                                <div className="text-right mr-3">
+                                                    <Button
+                                                        className={'text-white'}
+                                                        text={
+                                                            el?.show
+                                                                ? translate("course.hide")
+                                                                : translate("course.view")
+                                                        }
+                                                        size={"sm"}
+                                                        onClick={() => {
+                                                            onClickShow(el, index)
+                                                            selectedVariant(el)
+                                                        }}
+                                                    />
+                                                    <Button
+                                                        className={'text-white'}
+                                                        text={translate("product.addItem")}
+                                                        size={"sm"}
+                                                        onClick={() => {
+                                                            onClickAddVariant(el)
+                                                            // addTaskGroupModal.show()
+                                                        }}
+                                                    />
+                                                </div>
+                                            </div>
+                                            {el.show && selectedGroupVariant && selectedGroupVariant.length > 0 && (
+                                                <CommonTable
+                                                    isPagination
+                                                    displayDataSet={normalizedTaskGroupData(selectedGroupVariant)}
+                                                    tableDataSet={selectedGroupVariant}
+                                                    tableOnClick={(index, id, item) => {
+                                                        console.log(item)
+                                                        dispatch(selectedGroupIds(item))
+                                                        goTo(ROUTES['group-module']['questions'])
+                                                    }}
+
+                                                />
+                                            )
+                                            }
+                                        </div>
+                                    </div>
+                                )
+                            })
+                            : <div className={'d-flex justify-content-center align-items-center'} style={{ height: '90vh' }}><NoDataFound text={"No Data Found"} /></div>
+                        }
+                    </div>
+                </div>
+                < Modal size={'lg'} title={"Add Group"} isOpen={editModal.visible} onClose={editModal.hide} >
+
+
+
+                    <Input
+
+                        heading={"Name"}
+                        value={title.value}
+                        onChange={title.onChange}
+                    />
+
+                    <Input
+
+                        heading={"Description"}
+                        value={description.value}
+                        onChange={description.onChange}
+                    />
+
+
+                    {sectors && sectors.length > 0 &&
+                        <DropDown
+                            heading={'Sectors'}
+                            data={getDropDownCompanyDisplayData(sectors)}
+                            selected={sector.value}
+                            onChange={sector.onChange} />
+                    }
+
+                    <div className="col text-right ">
+                        <Button size={'md'}
+                            loading={GroupSubmitLoader.loader}
+                            text={"Submit"}
+                            onClick={() => createKnowledgeGroupDetails()} />
+                    </div>
+                </Modal >
+
+                < Modal size={'lg'} title={"Add Variant"} isOpen={variantModal.visible} onClose={variantModal.hide} >
+
+
+                    <Input
+                        className={'col-6'}
+                        heading={"Name"}
+                        value={title.value}
+                        onChange={title.onChange}
+                    />
+                    <Input
+                        className={'col-6'}
+                        heading={"Description"}
+                        value={description.value}
+                        onChange={description.onChange}
+                    />
+
+
+                    <div className="col text-right">
+                        <Button size={'md'}
+                            loading={VariantSubmitLoader.loader}
+                            text={"Submit"}
+                            onClick={() => createKnowledgeGroupVariantDetails()}
+                        />
+                    </div>
+                </Modal >
+            </div >
         </>
     )
 }
