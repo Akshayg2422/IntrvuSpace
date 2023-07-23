@@ -53,6 +53,12 @@ function Report() {
 
     return (
         <>
+
+            <ReactToPrint
+                trigger={() => <a href="#">Print this out!</a>}
+                content={() => componentRef.current}
+            />
+
             <div ref={componentRef} className='container-fluid'>
                 <div className='row justify-content-end mr-1 mt-3'>
                     <Button
@@ -397,11 +403,6 @@ function Report() {
                     </div>
                 </div>
             </div >
-
-            <ReactToPrint
-                trigger={() => <a href="#">Print this out!</a>}
-                content={() => componentRef.current}
-            />
 
         </>
     )
