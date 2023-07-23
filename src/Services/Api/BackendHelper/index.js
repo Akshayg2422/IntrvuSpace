@@ -29,6 +29,10 @@ export const getQuestionForm = payload => post(URL.URL_GET_QUESTION_FORMS, paylo
 
 
 
+export const createQuestionSectionApi = payload => post(URL.URL_CREATE_QUESTION_SECTION, payload, {});
+
+
+
 
 // createSector
 

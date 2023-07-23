@@ -38,6 +38,7 @@ export const SELECTED_GROUP_ID = 'SELECTED_GROUP_ID'
 
 
 
+
 // GET SECTOR 
 
 export const GET_SECTORS = 'GET_SECTORS'
@@ -56,8 +57,21 @@ export const CREATE_QUESTION_FORM_FAILURE = 'CREATE_QUESTION_FORM_FAILURE'
 
 export const SET_CLIENT_SECTORS = 'SET_CLIENT_SECTORS'
 
+
+
+
+
+/**
+ *  create question section
+ */
+
+
+export const CREATE_QUESTION_SECTION = 'CREATE_QUESTION_SECTION'
 // get question forms
 
 export const GET_QUESTIONS_FORM = 'GET_QUESTIONS_FORM'
 export const GET_QUESTIONS_FORM_SUCCESS = 'GET_QUESTIONS_FORM_SUCCESS'
 export const GET_QUESTIONS_FORM_FAILURE = 'GET_QUESTIONS_FORM_FAILURE'
+
+
+

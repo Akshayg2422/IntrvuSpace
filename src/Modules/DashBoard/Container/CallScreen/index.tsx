@@ -16,7 +16,7 @@ type CallScreenProps = {
 
 const CallScreen = ({ onMicControl, onVolumeControl, onCallEnd, isMute = false, speaker, status, video = false, onVideoControl }: CallScreenProps) => {
 
-    const imageUrl = "https://www.pngitem.com/pimgs/m/581-5813504_avatar-dummy-png-transparent-png.png"
+    // const imageUrl = "https://www.pngitem.com/pimgs/m/581-5813504_avatar-dummy-png-transparent-png.png"
     return (
         <div>
             <div className=''>

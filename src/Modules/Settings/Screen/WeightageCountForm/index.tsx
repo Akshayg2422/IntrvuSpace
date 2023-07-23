@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Input, Card, Back, Button, CommonTable } from '@Components';
 import { useInput, useWindowDimensions } from '@Hooks';
+import { createQuestionSection } from '@Redux'
 
 type Task = {
   name: string;
@@ -9,6 +10,8 @@ type Task = {
 };
 
 function WeightageCountForm() {
+
+
   const { height } = useWindowDimensions()
   const [tasks, setTasks] = useState<Task[]>([]);
   const nameInput = useInput('');
@@ -25,6 +28,12 @@ function WeightageCountForm() {
       };
 
       setTasks([...tasks, newTask]);
+
+
+
+
+
+
 
       nameInput.set('');
       descriptionInput.set('');

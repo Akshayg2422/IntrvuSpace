@@ -35,3 +35,5 @@ export const URL_CREATE_QUESTION_FORM = ASSISTANT + 'createQuestionForm'
 
 // getQuestionForm
 export const URL_GET_QUESTION_FORMS = ASSISTANT + 'getQuestionForms'
+export const URL_CREATE_QUESTION_SECTION = ASSISTANT + 'createQuestionSection'
+
