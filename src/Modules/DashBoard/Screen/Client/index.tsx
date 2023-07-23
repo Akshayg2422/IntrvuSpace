@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { SearchInput, Button, Modal, Divider, NoDataFound, ButtonGroup, Input, TextArea } from '@Components'
+import { SearchInput, Button, Modal, Divider, NoDataFound, ButtonGroup, Input, TextArea, DesignationItem } from '@Components'
 import { useDropDown, useInput, useModal } from '@Hooks'
 import { useSelector, useDispatch } from 'react-redux'
 import { Sectors } from '@Modules'
@@ -76,28 +76,10 @@ function Clients() {
                     <div className='row'>
                         {
                             knowledgeGroups && knowledgeGroups.length > 0 && knowledgeGroups.map(item => {
-                                const { id, name, description, knowledge_group_variant } = item;
+                                const { id, } = item;
                                 return (
                                     <div className='col-4' key={id}>
-                                        <div className='card justify-content-center p-3'>
-                                            <h3 className='mb-0'>{capitalizeFirstLetter(name)}</h3>
-                                            <Divider space={'3'} />
-                                            <div className='overflow-auto  overflow-hide' style={{
-                                                height: 150
-                                            }}>
-                                                {
-                                                    knowledge_group_variant && knowledge_group_variant.length > 0 ? knowledge_group_variant.map((each: any, index: number) => {
-                                                        const { id, name } = each;
-                                                        const isFirst = index === 0
-
-                                                        return <div key={id} className={isFirst ? '' : 'my-2'}>
-                                                            <small className='text-sm'>{capitalizeFirstLetter(name)}</small>
-                                                        </div>
-                                                    }) : <div className='d-flex align-items-center justify-content-center h-100'> <NoDataFound /></div>
-                                                }
-                                            </div>
-
-                                        </div>
+                                        <DesignationItem item={item} />
                                     </div>
 
                                 )

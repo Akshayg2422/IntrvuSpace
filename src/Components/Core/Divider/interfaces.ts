@@ -1,3 +1,4 @@
 export interface DividerProps {
-    space?: '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9'|'0'
+    className?: string
+    space?: '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '0'
 }

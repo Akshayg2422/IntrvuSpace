@@ -49,7 +49,7 @@ function App() {
         {getRoutes(HOME_ROUTES)}
         {getRoutes(DASHBOARD_ROUTES)}
       </Routes>
-      <ToastContainer/>
+      <ToastContainer />
     </ScreenWrapper>
 
   );

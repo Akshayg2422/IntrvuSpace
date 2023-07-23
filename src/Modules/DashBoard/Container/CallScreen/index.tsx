@@ -49,7 +49,6 @@ const CallScreen = ({ onMicControl, onVolumeControl, onCallEnd, isMute = false, 
                                 {video ? <i className="fas fa-video"></i> : <i className="fas fa-video-slash"></i>}
                             </Button>
                             <Button className='bg-red' type="button" onClick={onCallEnd}>
-                                {/* <i className="fas fa-phone-slash"></i> */}
                                 <span>{'End Call'}</span>
                             </Button>
                         </ButtonGroup>

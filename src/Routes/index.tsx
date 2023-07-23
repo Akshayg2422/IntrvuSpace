@@ -19,7 +19,7 @@ export const ROUTES = {
     'sector': "/sector",
     'call': '/call',
     dashboard: "/dashboard",
-    group: "/group",
+    group: "/",
     client: "/client",
     questions: "/questions",
     report: '/report'
