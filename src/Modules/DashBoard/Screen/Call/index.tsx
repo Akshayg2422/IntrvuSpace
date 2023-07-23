@@ -1,10 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { CallScreen } from '@Modules';
-import { Col, Row } from 'reactstrap';
 import { useDispatch } from 'react-redux';
 import { getStartChat } from '@Redux';
 import { useNavigation, useScreenRecorder, useTextToSpeech } from '@Hooks';
-
 
 function Call() {
     const { goBack } = useNavigation();
@@ -18,10 +16,10 @@ function Call() {
     const MINUTE_MS = 60000;
 
     const { isSpeaking, speak } = useTextToSpeech();
-    const { startRecording, stopRecording, videoRef, output, isScreenRecording } = useScreenRecorder();
+    const { startRecording, stopRecording, isScreenRecording } = useScreenRecorder();
 
     useEffect(() => {
-        getMicrophonePermission()
+        getMicrophonePermission();
         startRecording()
         return () => {
             stopVoiceRecording()
@@ -129,14 +127,20 @@ function Call() {
 
     return (
         <div className='h-100vh bg-gray d-flex  align-items-center justify-content-center'>
-            <CallScreen status='Connected' isMute={recording} video={showVideo} onVideoControl={() => handleVideo()} speaker={isHear} onMicControl={() => handleMicControl()
-            } onCallEnd={() => {
-                stopVoiceRecording()
-                isScreenRecording && stopRecording()
-                goBack()
-            }} onVolumeControl={() =>
-                startRecording()
-            } />
+            <CallScreen
+                status='Connected'
+                isMute={recording}
+                video={showVideo}
+                onVideoControl={() => handleVideo()}
+                speaker={isHear}
+                onMicControl={() => handleMicControl()
+                } onCallEnd={() => {
+                    stopVoiceRecording()
+                    isScreenRecording && stopRecording()
+                    goBack()
+                }} onVolumeControl={() =>
+                    startRecording()
+                } />
         </div>
     )
 }
