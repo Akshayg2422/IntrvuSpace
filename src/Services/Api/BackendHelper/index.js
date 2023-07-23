@@ -34,3 +34,6 @@ export const createQuestionSectionApi = payload => post(URL.URL_CREATE_QUESTION_
 
 
 
+// createSector
+
+export const createSectorApi = payload => post(URL.URL_CREATE_SECTOR, payload, {});
