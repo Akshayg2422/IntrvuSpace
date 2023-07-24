@@ -20,7 +20,7 @@ function MenuBar({ toggleIcon, menuData, onClick }: TripleDotProps) {
 
                         return (
                             <>
-                                <DropdownItem onClick={() => {
+                                <DropdownItem onClick={(e) => {
                                     if (onClick) {
                                         onClick(el)
                                     }

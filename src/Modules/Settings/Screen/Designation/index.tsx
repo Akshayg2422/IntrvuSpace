@@ -1,7 +1,7 @@
 
 import { Button, DropDown, DesignationItem, Input, Modal, NoDataFound } from '@Components';
 import { useDropDown, useInput, useLoader, useModal, useNavigation } from '@Hooks';
-import { createKnowledgeGroup, createKnowledgeGroupVariant, getKnowledgeGroups, getSectors } from '@Redux';
+import { createKnowledgeGroup, createKnowledgeGroupVariant, getKnowledgeGroups, getSectors, setSelectedRole } from '@Redux';
 import { ROUTES } from '@Routes';
 import { getDropDownCompanyDisplayData } from '@Utils';
 import { useEffect, useState } from 'react';
@@ -10,13 +10,13 @@ import { useDispatch, useSelector } from 'react-redux';
 
 function Designation() {
 
-    const { knowledgeGroups, sectors } = useSelector((state: any) => state.DashboardReducer)
+    const { knowledgeGroups, sectors, selectedRole } = useSelector((state: any) => state.DashboardReducer)
 
     const { goTo } = useNavigation()
     const dispatch = useDispatch()
 
     const [selectedDesignation, setSelectedDesignation] = useState<any>({})
-    const [selectedRole, setSelectedRole] = useState<any>({})
+
 
 
     const addDesignationModal = useModal(false);
@@ -165,7 +165,7 @@ function Designation() {
 
                                             onEdit={(designation, role) => {
                                                 setSelectedDesignation(designation)
-                                                setSelectedRole(role)
+                                                dispatch(setSelectedRole(role))
                                                 const { name, description } = role
                                                 title.set(name)
                                                 if (description) {
@@ -174,8 +174,8 @@ function Designation() {
                                                 addRoleModal.show();
                                             }}
                                             onView={(designation, role) => {
-                                                console.log(JSON.stringify(designation) + '=====' + JSON.stringify(role));
-
+                                                dispatch(setSelectedRole(role))
+                                                goTo(ROUTES['group-module']['questions'])
                                             }
                                             }
                                         />

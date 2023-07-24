@@ -144,12 +144,12 @@ export const getSectorsFailure = (error: any) => {
 
 
 
-// selectedGroupIds
+// setSelectedRole
 
 
-export const selectedGroupIds = (params) => {
+export const setSelectedRole = (params) => {
   return {
-    type: ActionTypes.SELECTED_GROUP_ID,
+    type: ActionTypes.SET_SELECTED_ROLE,
     payload: params
 
   }
@@ -250,3 +250,18 @@ export const getQuestionFormFailure = (error: any) => {
     payload: error
   }
 }
+
+
+
+/**
+ * 
+ */
+
+
+export const generateForm = (params: any) => {
+  return {
+    type: ActionTypes.GENERATE_FORM,
+    payload: params
+  }
+}
+

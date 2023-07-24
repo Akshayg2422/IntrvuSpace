@@ -1,10 +1,10 @@
 export interface DashboardProp {
   userLoggedIn: boolean
   chat: any
-  GroupDetails:any
-  selectedGroupId:any
+  GroupDetails: any
+  selectedRole: any
   knowledgeGroups: any
   sectors: any
-  questionForm:any
+  questions: any
   selectedClientSector: any
 }

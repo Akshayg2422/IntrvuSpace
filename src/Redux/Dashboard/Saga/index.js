@@ -146,7 +146,8 @@ function* createQuestionFormSaga(action) {
 
 function* getQuestionFormSaga(action) {
   try {
-    const response = yield call(Api.getQuestionForm, action.payload.params);
+    const response = yield call(Api.getQuestionFormApi, action.payload.params);
+    console.log(JSON.stringify(response));
     if (response.success) {
       yield put(Action.getQuestionFormSuccess(response));
       yield call(action.payload.onSuccess(response));
@@ -186,6 +187,20 @@ function* createQuestionSectionSage(action) {
   }
 }
 
+function* generateFormSaga(action) {
+  try {
+    const response = yield call(Api.generateFormApi, action.payload.params);
+    if (response.success) {
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield call(action.payload.onError(response));
+    }
+  } catch (error) {
+    yield call(action.payload.onError(error));
+  }
+}
+
+
 
 function* DashboardSaga() {
   yield takeLatest(Action.GET_START_CHAT, getChatSaga);
@@ -198,6 +213,8 @@ function* DashboardSaga() {
   yield takeLatest(Action.CREATE_QUESTION_FORM, createQuestionFormSaga);
   yield takeLatest(Action.CREATE_QUESTION_SECTION, createQuestionSectionSage);
   yield takeLatest(Action.GET_QUESTIONS_FORM, getQuestionFormSaga);
+  yield takeLatest(Action.GENERATE_FORM, generateFormSaga);
+
 
 }
 

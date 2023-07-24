@@ -1,90 +1,119 @@
-import React, { useEffect } from 'react'
-import { Button, Card, Divider, NoDataFound } from '@Components'
-import { useNavigation, useWindowDimensions } from '@Hooks'
-import { ROUTES } from '@Routes'
-import { icons } from '@Assets';
-import { useDispatch, useSelector } from 'react-redux';
-import { getQuestionForm } from '@Redux';
+
+import { Button, Divider, Modal, Input } from '@Components';
+import { useModal, useNavigation, useInput, useLoader } from '@Hooks';
+import { generateForm, getQuestionForm } from '@Redux';
+import { ROUTES } from '@Routes';
 import { capitalizeFirstLetter } from '@Utils';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
+
 
 function Questions() {
 
     const { goTo } = useNavigation();
     const dispatch = useDispatch()
-    const { selectedGroupId, questionForm } = useSelector((state: any) => state.DashboardReducer)
+
+    const addGenerateFormModal = useModal(false);
+
+    const { selectedRole, questions } = useSelector((state: any) => state.DashboardReducer)
+    const name = useInput('');
+
 
     useEffect(() => {
         getQuestionsFormApi()
     }, [])
 
 
+    const loader = useLoader(false);
+
+
     const getQuestionsFormApi = () => {
         const params = {
-            knowledge_group_variant_id: selectedGroupId?.id
+            knowledge_group_variant_id: selectedRole?.id
         };
 
         dispatch(
             getQuestionForm({
                 params,
-                onSuccess: (response: any) => () => {
+                onSuccess: () => () => {
                 },
-                onError: (error) => () => {
+                onError: () => () => {
                 },
             })
         );
     }
 
 
-    console.log(JSON.stringify(questionForm) + '====questionForm');
+    function proceedGenerateFormApiHandler() {
+
+        const params = {
+            form_name: name.value,
+            group_variant_id: selectedRole?.id
+        }
+
+        console.log(JSON.stringify(params) + '===params');
+
+
+        dispatch(
+            generateForm({
+                params,
+                onSuccess: () => () => {
+                },
+                onError: () => () => {
+                },
+            })
+        );
+
+    }
 
 
     return (
         <>
-            <div className='mx-3'>
-                <div className='m-3'>
-                    <div className='row'>
-                        <div className='col text-right'>
-                            <Button
-                                className="text-white"
-                                size={'md'}
-                                variant={'icon-rounded'}
-                                icon={icons.addFill}
-                                onClick={() => {
-                                    goTo(ROUTES['group-module']['create-question-form'])
-                                }}
-                            />
-                        </div>
-                    </div>
+            <div className='m-3'>
+                <div className='col text-right ml-3'>
 
+                    <Button
+                        text={'Generate by User'}
+                        className="text-white"
+                        onClick={addGenerateFormModal.show}
+                    />
 
-                    <div className='row mt-2'>
-                        {
-                            questionForm && questionForm.length > 0 && questionForm?.map(item => {
-                                console.log('0000000000', item)
-                                const { id, name, description } = item;
-                                return (
-                                    <div className='col-4' key={id}>
-                                        <div className='card justify-content-center p-3'>
-                                            <h3 className='mb-0'>{'Questions'}</h3>
-                                            <div className={'mx--3'}><Divider space={'3'}/></div>
-                                            <div className='mb-0'>{capitalizeFirstLetter(name)}</div>
-                                            <div className='mb-0'>{capitalizeFirstLetter(description)}</div>
-                                            <div className='overflow-auto  overflow-hide' style={{ height: 150 }}>
-                                            </div>
-                                        </div>
-                                    </div>
-                                )
-                            })
-
-                        }
-
-                    </div>
+                    <Button
+                        text={'Generate using AI'}
+                        className="text-white"
+                        onClick={() => {
+                            goTo(ROUTES['group-module']['create-question-form'])
+                        }}
+                    />
                 </div>
+
+
+
+                <div className='row mt-3'>
+                    {
+                        questions && questions.length > 0 && questions?.map((item: any) => {
+                            const { id, name, description } = item;
+                            return (
+                                <div className='col-4' key={id}>
+                                    <div className='card justify-content-center p-3'>
+                                        <h4 className='mb-0'>{capitalizeFirstLetter(name)}</h4>
+                                        <div className={'mx--3'}><Divider space={'3'} /></div>
+                                        <small className='mb-0'>{capitalizeFirstLetter(description)}</small>
+                                    </div>
+                                </div>
+                            )
+                        })
+                    }
+                </div>
+
             </div >
-
-
+            <Modal title={'Generate Form'} isOpen={addGenerateFormModal.visible} onClose={addGenerateFormModal.hide}>
+                <Input className={'col-6'} heading={'Name'} value={name.value} onChange={name.onChange} />
+                <Button text={'Submit'} onClick={proceedGenerateFormApiHandler} />
+            </Modal>
         </>
     )
 }
 
-export { Questions }
+export { Questions };

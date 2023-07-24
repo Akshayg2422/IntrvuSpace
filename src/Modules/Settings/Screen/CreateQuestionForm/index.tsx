@@ -20,8 +20,8 @@ function CreateQuestionForm() {
     const [loading, setLoading] = useState(false)
     const loginLoader = useLoader(false);
     const { goBack } = useNavigation();
-    const { selectedGroupId,questionForm } = useSelector((state: any) => state.DashboardReducer)
-    const {goTo} = useNavigation()
+    const { selectedRole, questions } = useSelector((state: any) => state.DashboardReducer)
+    const { goTo } = useNavigation()
 
     useEffect(() => {
         if (isEnterPressed) {
@@ -34,36 +34,36 @@ function CreateQuestionForm() {
         const params = {
             name: nameInput?.value,
             description: descriptionInput?.value,
-            knowledge_group_variant_id: selectedGroupId?.id
+            knowledge_group_variant_id: selectedRole?.id
         }
-        const validation = validate(CREATE_QUESTION_FORM_RULES,params)
+        const validation = validate(CREATE_QUESTION_FORM_RULES, params)
 
         console.log(JSON.stringify(validation));
-        
+
         if (ifObjectExist(validation)) {
-        loginLoader.show()
-        setLoading(true)
-        dispatch(
-            createQuestionForm({
-                params,
-                onSuccess: (response: any) => () => {
-                    if (response.success) {
-                        resetValues()
+            loginLoader.show()
+            setLoading(true)
+            dispatch(
+                createQuestionForm({
+                    params,
+                    onSuccess: (response: any) => () => {
+                        if (response.success) {
+                            resetValues()
+                            loginLoader.hide()
+                            goTo(ROUTES['group-module']['questions'])
+                            showToast(response.message, "success");
+                        }
+                        setLoading(false)
+
+                    },
+                    onError: (error) => () => {
+                        showToast(error.error_message);
+                        setLoading(false)
+
                         loginLoader.hide()
-                        goTo(ROUTES['group-module']['questions'])
-                        showToast(response.message, "success");
-                    }
-                    setLoading(false)
-
-                },
-                onError: (error) => () => {
-                    showToast(error.error_message);
-                    setLoading(false)
-
-                    loginLoader.hide()
-                },
-            })
-        );
+                    },
+                })
+            );
         } else {
             showToast(getValidateError(validation));
         }

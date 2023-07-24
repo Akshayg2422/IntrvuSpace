@@ -40,26 +40,32 @@ function DesignationItem({ item, onAdd, onEdit, onView }: DesignationItemProps) 
                             return (
                                 <div
                                     key={id}
-                                    className={`${isFirst ? '' : 'my-2'} row justify-content-between align-items-center mx-2 pointer`}
-                                    onClick={onView ?
-                                        () => {
-                                            if (onView) {
-                                                onView(item, each)
-                                            }
-                                        } : undefined
-                                    }>
-                                    <small className='text-sm'>{capitalizeFirstLetter(name)}</small>
-                                    {onEdit &&
-                                        < MenuBar
-                                            menuData={MENU}
-                                            onClick={(selected) => {
-                                                if (selected?.id === MENU[0].id) {
-                                                    if (onEdit) {
-                                                        onEdit(item, each)
-                                                    }
+                                    className={`${isFirst ? '' : 'my-2'} row pointer`}>
+                                    <small className='text-sm col'
+                                        onClick={onView ?
+                                            (e) => {
+                                                if (onView) {
+                                                    e.preventDefault();
+                                                    e.stopPropagation();
+                                                    onView(item, each)
                                                 }
-                                            }}
-                                        />
+                                            } : undefined
+                                        }
+                                    >{capitalizeFirstLetter(name)}</small>
+                                    {onEdit &&
+                                        <div className='mr-3'>
+                                            < MenuBar
+                                                menuData={MENU}
+                                                onClick={(selected) => {
+
+                                                    if (selected?.id === MENU[0].id) {
+                                                        if (onEdit) {
+                                                            onEdit(item, each)
+                                                        }
+                                                    }
+                                                }}
+                                            />
+                                        </div>
                                     }
                                 </div>
                             )
