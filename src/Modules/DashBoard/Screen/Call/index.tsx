@@ -7,7 +7,9 @@ import { useNavigation, useScreenRecorder, useTextToSpeech } from '@Hooks';
 function Call() {
     const { goBack } = useNavigation();
     const dispatch = useDispatch()
+
     const mediaRecorderRef = useRef<any>(null);
+
     const [isHear, setIsHear] = useState(true)
     const [showVideo, setShowVideo] = useState(false)
     const [stream, setStream] = useState<any>(null);
@@ -19,18 +21,25 @@ function Call() {
     const { startRecording, stopRecording, isScreenRecording } = useScreenRecorder();
 
     useEffect(() => {
+
         getMicrophonePermission();
-        startRecording()
+        // startRecording();
+
         return () => {
+
             stopVoiceRecording()
-            isScreenRecording && stopRecording()
+            if (isScreenRecording) {
+                stopRecording()
+            }
+
         }
     }, [])
 
 
     useEffect(() => {
-        isScreenRecording &&
+        if (isScreenRecording) {
             getChatDetails('', 'text')
+        }
     }, [isScreenRecording])
 
     const getMicrophonePermission = async () => {
@@ -39,6 +48,9 @@ function Call() {
                 const streamData = await navigator.mediaDevices.getUserMedia({
                     audio: true,
                 });
+
+                console.log(JSON.stringify(streamData) + '====streamData');
+
                 setStream(streamData);
             } catch (err) {
                 alert(err);
@@ -86,7 +98,7 @@ function Call() {
     }
 
 
-    const getChatDetails = (file: string, type: string) => {
+    const getChatDetails = (file: string, type: 'text' | 'audio') => {
         const params = {
             ...(type === 'text' && { "message": file }),
             ...(type === 'audio' && { voice_message: file }),
@@ -134,11 +146,13 @@ function Call() {
                 onVideoControl={() => handleVideo()}
                 speaker={isHear}
                 onMicControl={() => handleMicControl()
-                } onCallEnd={() => {
-                    stopVoiceRecording()
-                    isScreenRecording && stopRecording()
-                    goBack()
-                }} onVolumeControl={() =>
+                }
+                onCallEnd={() => {
+                    stopVoiceRecording();
+                    isScreenRecording && stopRecording();
+                    goBack();
+                }}
+                onVolumeControl={() =>
                     startRecording()
                 } />
         </div>

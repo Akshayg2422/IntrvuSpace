@@ -115,11 +115,11 @@ export async function imagePickerConvertBase64(array) {
 
 
 
-export function getDropDownCompanyDisplayData(data: any) {
+export function getDropDownCompanyDisplayData(data: any, key: 'name' | 'title' = 'name') {
   return data && data?.map((item: any) => {
     return {
       ...item,
-      text: item.name
+      text: item[key]
     }
   })
 }

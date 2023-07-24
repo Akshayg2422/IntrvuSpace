@@ -8,10 +8,10 @@ const initialState: DashboardProp = {
   userLoggedIn: false,
   chat: [],
   GroupDetails: undefined,
-  selectedGroupId: undefined,
+  selectedRole: undefined,
   knowledgeGroups: undefined,
   sectors: undefined,
-  questionForm: undefined,
+  questions: undefined,
   selectedClientSector: undefined
 };
 
@@ -81,8 +81,8 @@ const DashboardReducer = (state = initialState, action: any) => {
       break;
     //selected Group Id
 
-    case ActionTypes.SELECTED_GROUP_ID:
-      state = { ...state, selectedGroupId: action.payload }
+    case ActionTypes.SET_SELECTED_ROLE:
+      state = { ...state, selectedRole: action.payload }
       break;
 
 
@@ -121,17 +121,17 @@ const DashboardReducer = (state = initialState, action: any) => {
       state = { ...state, selectedClientSector: action.payload };
       break;
 
-      // GET QUESTION FORM
+    // GET QUESTION FORM
 
-      case ActionTypes.GET_QUESTIONS_FORM:
-        state = { ...state, questionForm: undefined };
-        break;
-      case ActionTypes.GET_QUESTIONS_FORM_SUCCESS:
-        state = { ...state, questionForm: action.payload.details.question_forms };
-        break;
-      case ActionTypes.GET_QUESTIONS_FORM_FAILURE:
-        state = { ...state };
-        break;
+    case ActionTypes.GET_QUESTIONS_FORM:
+      state = { ...state, questions: undefined };
+      break;
+    case ActionTypes.GET_QUESTIONS_FORM_SUCCESS:
+      state = { ...state, questions: action.payload.details.question_forms };
+      break;
+    case ActionTypes.GET_QUESTIONS_FORM_FAILURE:
+      state = { ...state, questions: undefined };
+      break;
 
 
     default:

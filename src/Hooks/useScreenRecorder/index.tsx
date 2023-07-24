@@ -25,6 +25,7 @@ const useScreenRecorder = () => {
         mimeType: 'video/webm',
         disableLogs: true,
       });
+
       recorder.startRecording();
       setRecordRTC(recorder);
       setScreenRecording(true)
