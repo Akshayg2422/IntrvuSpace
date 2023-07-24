@@ -25,11 +25,11 @@ function CreateQuestionForm() {
 
     useEffect(() => {
         if (isEnterPressed) {
-            submitTaskHandler()
+            submitQuestionFormHandler()
         }
     }, [isEnterPressed]);
 
-    const submitTaskHandler = () => {
+    const submitQuestionFormHandler = () => {
 
         const params = {
             name: nameInput?.value,
@@ -96,7 +96,7 @@ function CreateQuestionForm() {
                 </div>
 
                 <div className="col mt-4">
-                    <Button size={'md'} text={'Submit'} onClick={submitTaskHandler} />
+                    <Button size={'md'} text={'Submit'} onClick={submitQuestionFormHandler} />
                 </div>
 
 

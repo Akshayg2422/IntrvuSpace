@@ -51,7 +51,7 @@ function DesignationItem({ item, onAdd, onEdit, onView }: DesignationItemProps) 
                                                 }
                                             } : undefined
                                         }
-                                    >{capitalizeFirstLetter(name)}</small>
+                                    >{name}</small>
                                     {onEdit &&
                                         <div className='mr-3'>
                                             < MenuBar
