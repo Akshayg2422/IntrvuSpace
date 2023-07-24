@@ -83,7 +83,7 @@ function Questions() {
                         text={'Generate using AI'}
                         className="text-white"
                         onClick={() => {
-                            goTo(ROUTES['group-module']['create-question-form'])
+                            goTo(ROUTES['designation-module']['create-question-form'])
                         }}
                     />
                 </div>

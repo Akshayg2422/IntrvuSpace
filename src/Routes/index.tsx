@@ -11,7 +11,7 @@ export const ROUTES = {
     register: '/register',
     landing: '/'
   },
-  'group-module': {
+  'designation-module': {
     Dashboard: "/dashboard",
     SCHEDULE: "/schedule",
     'weightage-count-form': "/weightage-count-form",
@@ -29,27 +29,27 @@ export const ROUTES = {
 export const DASHBOARD_ROUTES = [
   {
     id: 1,
-    path: ROUTES['group-module']['weightage-count-form'],
+    path: ROUTES['designation-module']['weightage-count-form'],
     component: <WeightageCountForm />
   },
   {
     id: 2,
-    path: ROUTES['group-module']['create-question-form'],
+    path: ROUTES['designation-module']['create-question-form'],
     component: <CreateQuestionForm />
   },
   {
     id: 3,
-    path: ROUTES['group-module']['sector'],
+    path: ROUTES['designation-module']['sector'],
     component: <Sector />
   },
   {
     id: 5,
-    path: ROUTES['group-module']['call'],
+    path: ROUTES['designation-module']['call'],
     component: <Call />
   },
   {
     id: 4,
-    path: ROUTES['group-module']['questions'],
+    path: ROUTES['designation-module']['questions'],
     component: <Questions />
   },
 
@@ -57,28 +57,28 @@ export const DASHBOARD_ROUTES = [
 
 export const HOME_ROUTES = [
   {
-    path: ROUTES['group-module'].group,
+    path: ROUTES['designation-module'].group,
     name: "Group",
     icon: icons.task,
     layout: "",
     component: <Designation />
   },
   {
-    path: ROUTES['group-module'].client,
+    path: ROUTES['designation-module'].client,
     name: "Clients",
     icon: icons.company,
     layout: "",
     component: <Clients />
   },
   {
-    path: ROUTES['group-module'].report,
+    path: ROUTES['designation-module'].report,
     name: "Report",
     icon: icons.company,
     layout: "",
     component: <Report />
   },
   // {
-  //   path: ROUTES['group-module'].Dashboard,
+  //   path: ROUTES['designation-module'].Dashboard,
   //   name: "Dashboard",
   //   icon: icons.issue,
   //   layout: "",

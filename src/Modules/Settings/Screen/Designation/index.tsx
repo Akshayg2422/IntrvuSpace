@@ -175,7 +175,7 @@ function Designation() {
                                             }}
                                             onView={(designation, role) => {
                                                 dispatch(setSelectedRole(role))
-                                                goTo(ROUTES['group-module']['questions'])
+                                                goTo(ROUTES['designation-module']['questions'])
                                             }
                                             }
                                         />

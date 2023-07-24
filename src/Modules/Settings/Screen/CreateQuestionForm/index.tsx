@@ -50,7 +50,7 @@ function CreateQuestionForm() {
                         if (response.success) {
                             resetValues()
                             loginLoader.hide()
-                            goTo(ROUTES['group-module']['questions'])
+                            goTo(ROUTES['designation-module']['questions'])
                             showToast(response.message, "success");
                         }
                         setLoading(false)
