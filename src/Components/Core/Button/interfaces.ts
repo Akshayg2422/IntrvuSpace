@@ -6,5 +6,6 @@ export interface ButtonProps extends RsButtonProps {
     variant?: ButtonVariants
     size?: 'sm' | 'md' | 'lg'
     icon?: any
-    onEnter?: () => void 
+    onEnter?: () => void
+    icons?: any
 }

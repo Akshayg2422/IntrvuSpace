@@ -55,17 +55,25 @@ function Report() {
         <>
 
             <ReactToPrint
-                trigger={() => <a href="#">Print this out!</a>}
+                trigger={() =>
+                    <div className='d-flex position-absolute mr-4 pr-2'
+                        style={{
+                            right: '0px'
+                        }}
+                    >
+                        <Button
+                            variant={'icon-rounded'}
+                            color='info'
+                            icons={'bi bi-printer-fill text-white fa-lg'}
+                        />
+
+                    </div>
+                }
                 content={() => componentRef.current}
             />
 
             <div ref={componentRef} className='container-fluid'>
-                <div className='row justify-content-end mr-1 mt-3'>
-                    <Button
-                        variant={'icon-rounded'}
-                        color='info'
-                        icons={'bi bi-printer-fill text-white fa-lg'}
-                    />
+                <div className='row justify-content-end mr-4 pr-3 mt-3'>
                     <Button
                         variant={'icon-rounded'}
                         color='info'
@@ -76,7 +84,7 @@ function Report() {
                     <div className='col-sm-12'>
                         <Card>
                             <CardHeader>
-                                <div className='row pl-lg-5 pr-lg-5 pl-sm-0 pl-3 pr-sm-0 pr-3 justify-content-between'>
+                                <div className='row pl-lg-5 pr-lg-5 pl-sm-0 pl-3 pb-0 pr-sm-0 pr-3 justify-content-between'>
                                     <div className='h1 pt-1 font-weight-bolder text-black'>
                                         JayaKumar
                                         <h5 className='pt-1 font-weight-bolder text-black'>
@@ -93,7 +101,7 @@ function Report() {
                                         </h1>
                                     </div>
                                 </div>
-                                <div className='row   mx-lg-4'>
+                                <div className='row   mx-lg-4 pb-0 mb--2'>
 
                                     {headerData && headerData.map((el) => {
                                         return (
