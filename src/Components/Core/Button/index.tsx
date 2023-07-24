@@ -17,6 +17,7 @@ function Button({
   height = 15,
   width = 15,
   icon,
+  icons,
   onEnter,
   onClick,
   ...rest
@@ -68,7 +69,7 @@ function Button({
           onClick={onClick}
           {...rest}
         >
-          <img src={icon} alt="" height={height} width={width} />
+          {icons ? <i className={icons} /> : <img src={icon} alt="" height={height} width={width} />}
         </RSButton>
       )}
 

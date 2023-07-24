@@ -55,17 +55,25 @@ function Report() {
         <>
 
             <ReactToPrint
-                trigger={() => <a href="#">Print this out!</a>}
+                trigger={() =>
+                    <div className='d-flex position-absolute mr-4 pr-2'
+                        style={{
+                            right: '0px'
+                        }}
+                    >
+                        <Button
+                            variant={'icon-rounded'}
+                            color='info'
+                            icons={'bi bi-printer-fill text-white fa-lg'}
+                        />
+
+                    </div>
+                }
                 content={() => componentRef.current}
             />
 
             <div ref={componentRef} className='container-fluid'>
-                <div className='row justify-content-end mr-1 mt-3'>
-                    <Button
-                        variant={'icon-rounded'}
-                        color='info'
-                        icons={'bi bi-printer-fill text-white fa-lg'}
-                    />
+                <div className='row justify-content-end mr-4 pr-3 mt-3'>
                     <Button
                         variant={'icon-rounded'}
                         color='info'
