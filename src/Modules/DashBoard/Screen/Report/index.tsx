@@ -84,7 +84,7 @@ function Report() {
                     <div className='col-sm-12'>
                         <Card>
                             <CardHeader>
-                                <div className='row pl-lg-5 pr-lg-5 pl-sm-0 pl-3 pr-sm-0 pr-3 justify-content-between'>
+                                <div className='row pl-lg-5 pr-lg-5 pl-sm-0 pl-3 pb-0 pr-sm-0 pr-3 justify-content-between'>
                                     <div className='h1 pt-1 font-weight-bolder text-black'>
                                         JayaKumar
                                         <h5 className='pt-1 font-weight-bolder text-black'>
@@ -101,7 +101,7 @@ function Report() {
                                         </h1>
                                     </div>
                                 </div>
-                                <div className='row   mx-lg-4'>
+                                <div className='row   mx-lg-4 pb-0 mb--2'>
 
                                     {headerData && headerData.map((el) => {
                                         return (
