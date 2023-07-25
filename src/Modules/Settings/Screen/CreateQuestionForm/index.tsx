@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Input, Card, Back, Button, CommonTable, showToast } from '@Components';
+import { Input, Card, Back, Button, CommonTable, showToast, Breadcrumbs } from '@Components';
 import { useInput, useKeyPress, useLoader, useNavigation, useWindowDimensions } from '@Hooks';
 import { useDispatch, useSelector } from 'react-redux';
 import { CREATE_QUESTION_FORM_RULES, getValidateError, ifObjectExist, validate } from '@Utils';
@@ -75,13 +75,9 @@ function CreateQuestionForm() {
     }
     return (
         <>
+            <Breadcrumbs />
             <Card className="m-3" style={{ height: height - 30 }}>
-                <div className="col">
-                    <div className="row mt--2">
-                        <Back />
-                        <h3 className="ml-3">Create Question</h3>
-                    </div>
-                </div>
+
                 <hr className="mt-2"></hr>
 
                 <div className="col-md-9 col-lg-5">
