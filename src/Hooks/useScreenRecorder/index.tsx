@@ -3,11 +3,10 @@ import RecordRTC from 'recordrtc';
 
 const useScreenRecorder = () => {
   const [recordRTC, setRecordRTC] = useState<any>(null);
-  const [isScreenRecording, setScreenRecording] = useState(false)
-  const [permission, setPermission] = useState(false)
-
+  const [isScreenRecording, setScreenRecording] = useState(false);
+  const [permission, setPermission] = useState(false);
   const videoRef = useRef<any>(null);
-  const [output, setOutput] = useState<any>('')
+  const [output, setOutput] = useState<any>('');
 
   const startRecording = async () => {
     try {
@@ -15,10 +14,9 @@ const useScreenRecorder = () => {
         video: {
           chromeMediaSource: 'desktop', // or 'screen'
         },
-        audio: true,
+        audio: false, // Screen recording without audio
       };
       const stream = await navigator.mediaDevices.getDisplayMedia(constraints);
-
 
       const recorder = RecordRTC(stream, {
         type: 'video',
@@ -28,8 +26,10 @@ const useScreenRecorder = () => {
 
       recorder.startRecording();
       setRecordRTC(recorder);
-      setScreenRecording(true)
-      setPermission(true)
+      setScreenRecording(true);
+      setPermission(true);
+      console.log("==============>startScreenRecording");
+
     } catch (error: any) {
       if (error.name === 'NotAllowedError') {
         // Handle permission denied
@@ -42,19 +42,21 @@ const useScreenRecorder = () => {
   };
 
   const stopRecording = () => {
-    return new Promise((resolve, reject) => {
+    return new Promise((
+      resolve, reject) => {
       if (recordRTC) {
         recordRTC.stopRecording(() => {
-          const audioBlob = recordRTC.getBlob();
-          const reader: any = new FileReader();
+          const videoBlob = recordRTC.getBlob();
+          const reader:any = new FileReader();
           reader.onload = () => {
-            const base64Audio = reader.result.split(',')[1];
-            setOutput(base64Audio);
-            setScreenRecording(false)
-            resolve(base64Audio);
+            const base64Video = reader.result.split(',')[1];
+            setScreenRecording(false);
+            resolve(base64Video);
+            setOutput(base64Video);
+            console.log("==========base64Video=======>", base64Video);
           };
           reader.onerror = reject;
-          reader.readAsDataURL(audioBlob);
+          reader.readAsDataURL(videoBlob);
           setRecordRTC(null);
         });
       } else {

@@ -11,7 +11,7 @@ const useTextToSpeech = () => {
 
     utterance.onstart = handleSpeechStart;
     utterance.onend = handleSpeechEnd;
-    // utterance.rate = 0.8
+    utterance.rate = 0.8
     synth.speak(utterance);
   };
 

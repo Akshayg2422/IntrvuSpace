@@ -2,39 +2,39 @@ import React, { useEffect, useRef, useState } from 'react'
 import { CallScreen } from '@Modules';
 import { useDispatch } from 'react-redux';
 import { getStartChat } from '@Redux';
-import { useNavigation, useScreenRecorder, useTextToSpeech } from '@Hooks';
+import { useNavigation, useScreenRecorder, useTextToSpeech, useWebCamRecorder } from '@Hooks';
+import { AnimatedLoader, } from '@Components';
 
 function Call() {
     const { goBack } = useNavigation();
     const dispatch = useDispatch()
+    let isTriggeredRef = false
 
     const mediaRecorderRef = useRef<any>(null);
-
     const [isHear, setIsHear] = useState(true)
     const [showVideo, setShowVideo] = useState(false)
     const [stream, setStream] = useState<any>(null);
     const [recording, setRecording] = useState(false);
-    const [audioData, setAudioData] = useState(null);
-    const MINUTE_MS = 60000;
+    const [audioData, setAudioData] = useState<any>([]);
+    const [showLoader, setShowLoader] = useState(false)
+    const [type, setType] = useState('')
+
+    const WAIT_TIME_1 = 60000
+    const WAIT_TIME_3_SEC = 3000;
 
     const { isSpeaking, speak } = useTextToSpeech();
-    const { startRecording, stopRecording, isScreenRecording } = useScreenRecorder();
+    const { startRecording, stopRecording, isScreenRecording, output } = useScreenRecorder();
 
     useEffect(() => {
-
         getMicrophonePermission();
-        // startRecording();
-
+        startRecording()
         return () => {
-
             stopVoiceRecording()
             if (isScreenRecording) {
                 stopRecording()
             }
-
         }
     }, [])
-
 
     useEffect(() => {
         if (isScreenRecording) {
@@ -42,15 +42,31 @@ function Call() {
         }
     }, [isScreenRecording])
 
+
+    useEffect(() => {
+        if (type === 'wait_1' && !isTriggeredRef) {
+            isTriggeredRef = true;
+            const timer = setTimeout(() => {
+                getChatDetails(audioData, 'audio');
+                isTriggeredRef = false;
+            }, WAIT_TIME_1);
+            return () => clearTimeout(timer);
+        } else if (type === 'wait_3_sec' && !isTriggeredRef) {
+            isTriggeredRef = true;
+            const timer = setTimeout(() => {
+                getChatDetails(audioData, 'audio');
+                isTriggeredRef = false;
+            }, WAIT_TIME_3_SEC);
+            return () => clearTimeout(timer);
+        }
+    }, [type]);
+
     const getMicrophonePermission = async () => {
         if ("MediaRecorder" in window) {
             try {
                 const streamData = await navigator.mediaDevices.getUserMedia({
                     audio: true,
                 });
-
-                console.log(JSON.stringify(streamData) + '====streamData');
-
                 setStream(streamData);
             } catch (err) {
                 alert(err);
@@ -76,18 +92,22 @@ function Call() {
         }
     };
 
+
     const handleDataAvailable = (event: any) => {
         if (event.data.size > 0) {
             const audioBlob = new Blob([event.data], { type: 'audio/wav' });
             const reader: any = new FileReader();
-            reader.onload = () => {
+            reader.onload = () => {                
                 const base64Audio = reader.result.split(',')[1];
-                setAudioData(base64Audio)
-                getChatDetails(base64Audio, 'audio')
+                // setAudioData([...audioData, base64Audio])
+                getChatDetails([base64Audio], 'audio')
+                // BufferTime()
             };
             reader.readAsDataURL(audioBlob);
         }
+
     };
+
 
     const handleMicControl = () => {
         if (!recording) {
@@ -97,14 +117,19 @@ function Call() {
         }
     }
 
+    const BufferTime = () => {
+        if (!isSpeaking) {
+            setType('wait_3_sec')
+        }
+    }
 
-    const getChatDetails = (file: string, type: 'text' | 'audio') => {
+    const getChatDetails = (file: any, type: 'text' | 'audio') => {
         const params = {
             ...(type === 'text' && { "message": file }),
-            ...(type === 'audio' && { voice_message: file }),
+            ...(type === 'audio' && { message_b64: file }),
             schedule_id: '79f59eb9-f9cb-4473-823b-f62f62cff4ce'
         };
-
+        setShowLoader(true)
         dispatch(
             getStartChat({
                 params,
@@ -114,9 +139,12 @@ function Call() {
                     } else if (success?.next_step[0].response_type === 'COMMAND') {
                         commandVariant(success?.next_step[0]?.response_text)
                     }
+                    setAudioData([])
+                    setShowLoader(false)
                 },
                 onError: (error: string) => () => {
                     // speak("Something Went Wrong Please Try After Some Times");
+                    setShowLoader(false)
                 },
             })
         );
@@ -128,17 +156,17 @@ function Call() {
 
     const commandVariant = (type: any) => {
         if (type === 'WAIT_1') {
-
+            setType('wait_1')
         } else if (type === 'END_CAll') {
+            console.log("============>", output);
             stopVoiceRecording()
             isScreenRecording && stopRecording()
             goBack()
         }
     }
 
-
     return (
-        <div className='h-100vh bg-gray d-flex  align-items-center justify-content-center'>
+        <div className='h-100vh  d-flex  align-items-center justify-content-center' style={{ backgroundColor: '#54575c' }}>
             <CallScreen
                 status='Connected'
                 isMute={recording}
@@ -148,6 +176,8 @@ function Call() {
                 onMicControl={() => handleMicControl()
                 }
                 onCallEnd={() => {
+                    console.log("============>", output);
+
                     stopVoiceRecording();
                     isScreenRecording && stopRecording();
                     goBack();
@@ -155,8 +185,12 @@ function Call() {
                 onVolumeControl={() =>
                     startRecording()
                 } />
+
+            <AnimatedLoader loading={showLoader} />
         </div>
     )
 }
 
 export { Call }
+
+

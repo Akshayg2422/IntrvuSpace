@@ -123,3 +123,32 @@ export function getDropDownCompanyDisplayData(data: any, key: 'name' | 'title' =
     }
   })
 }
+
+
+export const combineBase64Strings = (stringsArray) => {
+  const decodedArray = stringsArray.map((base64String) => {
+    try {
+      const byteCharacters = atob(base64String);
+      const byteArray = new Uint8Array(byteCharacters.length);
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteArray[i] = byteCharacters.charCodeAt(i);
+      }
+      return byteArray;
+    } catch (error) {
+      console.error('Error decoding base64 string:', error);
+      return null;
+    }
+  });
+
+  console.log('Decoded Array:', decodedArray); // Log the decoded arrays to check
+
+  const validDecodedArray = decodedArray.filter((item) => item !== null);
+
+  const combinedArray:any = new Uint8Array(
+    validDecodedArray.reduce((acc, curr) => acc.concat(Array.from(curr)), [])
+  );
+
+  const combinedBase64 = btoa(String.fromCharCode.apply(null, combinedArray));
+
+  return combinedBase64;
+};
