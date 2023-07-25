@@ -19,12 +19,13 @@ function WeightageCountForm() {
   const [displayOrderCount, setDisplayOrderCount] = useState(1);
   const loginLoader = useLoader(false);
   const [loading, setLoading] = useState(false)
-  const { selectedRole, questionSection } = useSelector((state: any) => state.DashboardReducer)
+  const { selectedRole, selectedQuestionForm,questionSection } = useSelector((state: any) => state.DashboardReducer)
+  console.log('questions----------->',selectedQuestionForm)
 
 
-  useEffect(() => {
-    getQuestionSectionApi()
-  }, [])
+  // useEffect(() => {
+  //   getQuestionSectionApi()
+  // }, [])
 
   const submitQuestionSectionHandler = () => {
 
@@ -47,8 +48,11 @@ function WeightageCountForm() {
       const params = {
         'sections': updatedParams
       }
-      console.log(params)
-      const validation = validate(CREATE_QUESTION_SECTION_RULES, params)
+
+      const validation = validate(CREATE_QUESTION_SECTION_RULES, {
+        name: nameInput?.value,
+        description: descriptionInput?.value,
+      })
 
       if (ifObjectExist(validation)) {
         loginLoader.show()
@@ -76,15 +80,13 @@ function WeightageCountForm() {
         showToast(getValidateError(validation));
       }
     }
-    else {
-      alert('Weightage should be between 1 and 100');
-    }
+
   }
 
 
   const getQuestionSectionApi = () => {
     const params = {
-      question_form_id: selectedRole?.id
+      question_form_id: selectedQuestionForm?.id
     };
 
     dispatch(
@@ -144,7 +146,6 @@ function WeightageCountForm() {
       <Card className="m-3 overflow-auto overflow-hide" style={{ height: height - 30 }}>
         <div className="col">
           <div className="row mt--2">
-            <Back />
             <h3 className="ml-3">Create Sections</h3>
           </div>
         </div>
@@ -161,8 +162,10 @@ function WeightageCountForm() {
 
           <Input
             heading={'Weightage'}
+            type={"number"}
             value={weightageInput.value}
             onChange={weightageInput.onChange}
+            maxLength={2}
           />
         </div>
 
@@ -171,7 +174,7 @@ function WeightageCountForm() {
         </div>
 
         {
-          questionSection.length > 0 ? (
+          questionSection?.length > 0 ? (
             <div className={'mt-4 mx-3'} >
               <CommonTable
                 tableDataSet={questionSection}
