@@ -18,6 +18,7 @@ function Call() {
     const [audioData, setAudioData] = useState<any>([]);
     const [showLoader, setShowLoader] = useState(false)
     const [type, setType] = useState('')
+    
 
     const WAIT_TIME_1 = 60000
     const WAIT_TIME_3_SEC = 3000;
@@ -97,11 +98,12 @@ function Call() {
         if (event.data.size > 0) {
             const audioBlob = new Blob([event.data], { type: 'audio/wav' });
             const reader: any = new FileReader();
-            reader.onload = () => {                
+            reader.onload = () => {
                 const base64Audio = reader.result.split(',')[1];
-                // setAudioData([...audioData, base64Audio])
-                getChatDetails([base64Audio], 'audio')
+                setAudioData([...audioData, base64Audio])
+                // getChatDetails([base64Audio], 'audio')
                 // BufferTime()
+                setType('wait_3_sec')
             };
             reader.readAsDataURL(audioBlob);
         }
@@ -117,11 +119,11 @@ function Call() {
         }
     }
 
-    const BufferTime = () => {
-        if (!isSpeaking) {
-            setType('wait_3_sec')
-        }
-    }
+    // const BufferTime = () => {
+    //     if (!isSpeaking) {
+    //         setType('wait_3_sec')
+    //     }
+    // }
 
     const getChatDetails = (file: any, type: 'text' | 'audio') => {
         const params = {

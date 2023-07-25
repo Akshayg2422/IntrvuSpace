@@ -55,7 +55,7 @@ export const DASHBOARD_ROUTES = [
   },
   {
     id: 6,
-    path: ROUTES['group-module']['question-sections'],
+    path: ROUTES['designation-module']['question-sections'],
     component: <QuestionSections />
   },
 

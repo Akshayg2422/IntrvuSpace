@@ -10,25 +10,25 @@ $size: 48px;
   box-sizing: border-box;
 }
 
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
+// ::-webkit-scrollbar {
+//   width: 8px;
+//   height: 8px;
+// }
 
-/* Track */
-::-webkit-scrollbar-track {
-  background: $base;
-}
+// /* Track */
+// ::-webkit-scrollbar-track {
+//   background: $base;
+// }
 
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: $brand;
-}
+// /* Handle */
+// ::-webkit-scrollbar-thumb {
+//   background: $brand;
+// }
 
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: #fff;
-}
+// /* Handle on hover */
+// ::-webkit-scrollbar-thumb:hover {
+//   background: #fff;
+// }
 
 .loader-38 {
   width: $size;
