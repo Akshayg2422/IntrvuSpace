@@ -11,7 +11,6 @@ function QuestionSections() {
     const { height } = useWindowDimensions()
     const dispatch = useDispatch()
     const { selectedRole, selectedQuestionForm, questionSection, formSectionQuestions } = useSelector((state: any) => state.DashboardReducer)
-    console.log('questionsquestions-------->', JSON.stringify(formSectionQuestions))
 
     useEffect(() => {
         getQuestionSectionsApi()
@@ -80,7 +79,7 @@ function QuestionSections() {
                         <h4 className='mb-0 pointer'>{'Sections'}</h4>
                         <div className={'mx--4'}><Divider space={'3'} /></div>
                         <Card className={'overflow-auto overflow-hide shadow-none mx--4'} style={{ height: height - 153 }}>
-                            {questionSection && questionSection.length > 0 && questionSection.map((section: any, index: number) => {
+                            {questionSection && questionSection?.length > 0 && questionSection?.map((section: any, index: number) => {
                                 const { id, name, description } = section;
                                 return (
                                     <div key={index}
@@ -106,7 +105,7 @@ function QuestionSections() {
                         <h4 className='mb-0 pointer'>{'Questions'}</h4>
                         <div className={'mx--4'}><Divider space={'3'} /></div>
                         <Card className={'overflow-auto overflow-hide shadow-none mx--4'} style={{ height: height - 153 }}>
-                            {formSectionQuestions && formSectionQuestions.questions.length > 0 && formSectionQuestions?.questions?.map((sectionQuestions: any, index: number) => {
+                            {formSectionQuestions && formSectionQuestions?.questions?.map((sectionQuestions: any, index: number) => {
                                 const { question } = sectionQuestions;
                                 return (
                                     <div key={index}>
@@ -114,7 +113,7 @@ function QuestionSections() {
                                             <small className='col mb-0 pointer'>{question}:</small>
                                         </div>
 
-                                        {index !== formSectionQuestions?.details?.sections?.length - 1 && <Divider space={'3'} />}
+                                        {index !== formSectionQuestions?.questions?.length - 1 && <Divider space={'3'} />}
                                     </div>
                                 )
                             })}

@@ -171,7 +171,7 @@ function WeightageCountForm() {
         </div>
 
         {
-          // questionSection.length > 0 ? (
+          questionSection.length > 0 ? (
             <div className={'mt-4 mx-3'} >
               <CommonTable
                 tableDataSet={questionSection}
@@ -179,10 +179,10 @@ function WeightageCountForm() {
               />
 
             </div>
-          // ) :
-          //   <div className={'d-flex justify-content-center align-items-center'} style={{ height: '90vh' }}>
-          //     <NoDataFound text={"No Data Found"} />
-          //   </div>
+          ) :
+            <div className={'d-flex justify-content-center align-items-center'} style={{ height: '90vh' }}>
+              <NoDataFound text={"No Data Found"} />
+            </div>
         }
       </Card>
     </>
