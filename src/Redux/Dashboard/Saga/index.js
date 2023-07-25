@@ -152,11 +152,11 @@ function* getQuestionFormSaga(action) {
       yield put(Action.getQuestionFormSuccess(response));
       yield call(action.payload.onSuccess(response));
     } else {
-      yield put(Action.getQuestionFormSuccess(response.error_message));
+      yield put(Action.getQuestionFormFailure(response.error_message));
       yield call(action.payload.onError(response));
     }
   } catch (error) {
-    yield put(Action.getQuestionFormSuccess(error));
+    yield put(Action.getQuestionFormFailure(error));
     yield call(action.payload.onError(error));
   }
 }
@@ -200,6 +200,42 @@ function* generateFormSaga(action) {
   }
 }
 
+// get question section
+
+function* getQuestionSectionSaga(action) {
+  try {
+    const response = yield call(Api.getQuestionSectionApi, action.payload.params);
+    if (response.success) {
+      yield put(Action.getQuestionSectionSuccess(response));
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield put(Action.getQuestionSectionFailure(response.error_message));
+      yield call(action.payload.onError(response));
+    }
+  } catch (error) {
+    yield put(Action.getQuestionSectionFailure(error));
+    yield call(action.payload.onError(error));
+  }
+}
+
+// GET_FORM_SECTION_QUESTIONS
+
+function* getFormSectionsQuestionsSaga(action) {
+  try {
+    const response = yield call(Api.getFormSectionsQuestionsApi, action.payload.params);
+    console.log(JSON.stringify(response) + '========getQuestionSectionSaga');
+    if (response.success) {
+      yield put(Action.getFormSectionQuestionsSuccess(response));
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield put(Action.getFormSectionQuestionsFailure(response.error_message));
+      yield call(action.payload.onError(response));
+    }
+  } catch (error) {
+    yield put(Action.getFormSectionQuestionsFailure(error));
+    yield call(action.payload.onError(error));
+  }
+}
 
 
 function* DashboardSaga() {
@@ -214,6 +250,8 @@ function* DashboardSaga() {
   yield takeLatest(Action.CREATE_QUESTION_SECTION, createQuestionSectionSage);
   yield takeLatest(Action.GET_QUESTIONS_FORM, getQuestionFormSaga);
   yield takeLatest(Action.GENERATE_FORM, generateFormSaga);
+  yield takeLatest(Action.GET_QUESTION_SECTION, getQuestionSectionSaga);
+  yield takeLatest(Action.GET_FORM_SECTION_QUESTIONS, getFormSectionsQuestionsSaga);
 
 
 }

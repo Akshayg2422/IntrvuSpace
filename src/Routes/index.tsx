@@ -1,5 +1,5 @@
 import { icons } from '@Assets'
-import { Designation, WeightageCountForm, CreateQuestionForm, Clients, Sector, Questions, Call, Report } from '@Modules';
+import { Designation, WeightageCountForm, CreateQuestionForm, Clients, Sector, Questions, Call, Report, QuestionSections } from '@Modules';
 
 
 
@@ -22,7 +22,8 @@ export const ROUTES = {
     group: "/",
     client: "/client",
     questions: "/questions",
-    report: '/report'
+    report: '/report',
+    'question-sections':'/question-sections'
   }
 }
 
@@ -51,6 +52,11 @@ export const DASHBOARD_ROUTES = [
     id: 4,
     path: ROUTES['group-module']['questions'],
     component: <Questions />
+  },
+  {
+    id: 6,
+    path: ROUTES['group-module']['question-sections'],
+    component: <QuestionSections />
   },
 
 ]

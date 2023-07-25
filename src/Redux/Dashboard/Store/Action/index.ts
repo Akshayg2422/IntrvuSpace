@@ -265,3 +265,62 @@ export const generateForm = (params: any) => {
   }
 }
 
+// GET QUESTION SECTIONS
+
+export const getQuestionSection = (params: any) => {
+  return {
+    type: ActionTypes.GET_QUESTION_SECTION,
+    payload: params,
+  };
+};
+
+
+
+export const getQuestionSectionSuccess = (response: any) => {
+  return {
+    type: ActionTypes.GET_QUESTION_SECTION_SUCCESS,
+    payload: response
+  }
+}
+
+export const getQuestionSectionFailure = (error: any) => {
+  return {
+    type: ActionTypes.GET_QUESTION_SECTION_FAILURE,
+    payload: error
+  }
+}
+
+// SET_SELECTED_QUESTION_FORM
+
+export const setSelectedQuestionForm = (params) => {
+  return {
+    type: ActionTypes.SET_SELECTED_QUESTION_FORM,
+    payload: params
+
+  }
+}
+
+// GET_FORM_SECTION_QUESTIONS
+
+export const getFormSectionQuestions = (params: any) => {
+  return {
+    type: ActionTypes.GET_FORM_SECTION_QUESTIONS,
+    payload: params,
+  };
+};
+
+
+
+export const getFormSectionQuestionsSuccess = (response: any) => {
+  return {
+    type: ActionTypes.GET_FORM_SECTION_QUESTIONS_SUCCESS,
+    payload: response
+  }
+}
+
+export const getFormSectionQuestionsFailure = (error: any) => {
+  return {
+    type: ActionTypes.GET_FORM_SECTION_QUESTIONS_FAILURE,
+    payload: error
+  }
+}

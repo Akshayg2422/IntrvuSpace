@@ -7,4 +7,7 @@ export interface DashboardProp {
   sectors: any
   questions: any
   selectedClientSector: any
+  questionSection: any
+  selectedQuestionForm: any
+  formSectionQuestions: any
 }
