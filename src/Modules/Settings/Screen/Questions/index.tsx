@@ -1,7 +1,7 @@
 
 import { Button, Divider, Modal, Input } from '@Components';
 import { useModal, useNavigation, useInput, useLoader } from '@Hooks';
-import { generateForm, getQuestionForm } from '@Redux';
+import { generateForm, getQuestionForm, setSelectedQuestionForm } from '@Redux';
 import { ROUTES } from '@Routes';
 import { capitalizeFirstLetter } from '@Utils';
 import { useEffect } from 'react';
@@ -52,8 +52,6 @@ function Questions() {
             group_variant_id: selectedRole?.id
         }
 
-        console.log(JSON.stringify(params) + '===params');
-
 
         dispatch(
             generateForm({
@@ -66,7 +64,7 @@ function Questions() {
         );
 
     }
-
+console.log('1111111111111111111111111111',JSON.stringify(questions))
 
     return (
         <>
@@ -74,13 +72,13 @@ function Questions() {
                 <div className='col text-right ml-3'>
 
                     <Button
-                        text={'Generate by User'}
+                        text={'Generate using AI'}
                         className="text-white"
                         onClick={addGenerateFormModal.show}
                     />
 
                     <Button
-                        text={'Generate using AI'}
+                        text={'Generate by User'}
                         className="text-white"
                         onClick={() => {
                             goTo(ROUTES['designation-module']['create-question-form'])
@@ -96,10 +94,14 @@ function Questions() {
                             const { id, name, description } = item;
                             return (
                                 <div className='col-4' key={id}>
-                                    <div className='card justify-content-center p-3'>
-                                        <h4 className='mb-0'>{capitalizeFirstLetter(name)}</h4>
+                                    <div className='card justify-content-center p-3'
+                                        onClick={() => {
+                                            goTo(ROUTES['group-module']['question-sections'])
+                                            dispatch(setSelectedQuestionForm(item))
+                                        }} >
+                                        <h4 className='mb-0 pointer'>{name}</h4>
                                         <div className={'mx--3'}><Divider space={'3'} /></div>
-                                        <small className='mb-0'>{capitalizeFirstLetter(description)}</small>
+                                        <small className='mb-0 pointer'>{description}</small>
                                     </div>
                                 </div>
                             )

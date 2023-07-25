@@ -12,7 +12,10 @@ const initialState: DashboardProp = {
   knowledgeGroups: undefined,
   sectors: undefined,
   questions: undefined,
-  selectedClientSector: undefined
+  selectedClientSector: undefined,
+  questionSection: undefined,
+  selectedQuestionForm: undefined,
+  formSectionQuestions: undefined,
 };
 
 const DashboardReducer = (state = initialState, action: any) => {
@@ -127,11 +130,42 @@ const DashboardReducer = (state = initialState, action: any) => {
       state = { ...state, questions: undefined };
       break;
     case ActionTypes.GET_QUESTIONS_FORM_SUCCESS:
-      state = { ...state, questions: action.payload.details.question_forms };
+      state = { ...state, questions: action.payload.details?.question_forms };
       break;
     case ActionTypes.GET_QUESTIONS_FORM_FAILURE:
       state = { ...state, questions: undefined };
       break;
+
+    // GET QUESTION SECTIONS
+
+    case ActionTypes.GET_QUESTION_SECTION:
+      state = { ...state, questionSection: undefined };
+      break;
+    case ActionTypes.GET_QUESTION_SECTION_SUCCESS:
+      state = { ...state, questionSection: action.payload.details?.sections };
+      break;
+    case ActionTypes.GET_QUESTION_SECTION_FAILURE:
+      state = { ...state, questionSection: undefined };
+      break;
+
+    //selected Question Form
+
+    case ActionTypes.SET_SELECTED_QUESTION_FORM:
+      state = { ...state, selectedQuestionForm: action.payload }
+      break;
+
+    //GET_FORM_SECTION_QUESTIONS
+
+    case ActionTypes.GET_FORM_SECTION_QUESTIONS:
+      state = { ...state, formSectionQuestions: undefined };
+      break;
+    case ActionTypes.GET_FORM_SECTION_QUESTIONS_SUCCESS:
+      state = { ...state, formSectionQuestions: action.payload.details?.questions };
+      break;
+    case ActionTypes.GET_FORM_SECTION_QUESTIONS_FAILURE:
+      state = { ...state, formSectionQuestions: undefined };
+      break;
+
 
 
     default:

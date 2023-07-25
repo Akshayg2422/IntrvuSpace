@@ -27,15 +27,17 @@ export const createQuestionForm = payload => post(URL.URL_CREATE_QUESTION_FORM, 
 // getQuestionsForm
 export const getQuestionFormApi = payload => post(URL.URL_GET_QUESTION_FORMS, payload, {});
 
-
-
 export const createQuestionSectionApi = payload => post(URL.URL_CREATE_QUESTION_SECTION, payload, {});
-
-
-
 
 // createSector
 
 export const createSectorApi = payload => post(URL.URL_CREATE_SECTOR, payload, {});
 export const generateFormApi = payload => post(URL.URL_GENERATE_FORM, payload, {});
+
+// GET_QUESTION_SECTIONS 
+export const getQuestionSectionApi = payload => post(URL.URL_GET_QUESTION_SECTIONS, payload, {});
+
+// URL_GET_FORM_SECTION_QUESTIONS
+export const getFormSectionsQuestionsApi = payload => post(URL.URL_GET_FORM_SECTION_QUESTIONS, payload, {});
+
 
