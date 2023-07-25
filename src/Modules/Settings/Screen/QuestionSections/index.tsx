@@ -55,12 +55,6 @@ function QuestionSections() {
 
         <div className="m-3">
             <div className="row">
-                <div className="col">
-                    <div className="row ml-2">
-                        <Back />
-                        {/* <h3 className="ml-2">Sections</h3> */}
-                    </div>
-                </div>
                 <div className="col text-right">
                     <Button
                         text={'Create'}
@@ -105,7 +99,7 @@ function QuestionSections() {
                         <h4 className='mb-0 pointer'>{'Questions'}</h4>
                         <div className={'mx--4'}><Divider space={'3'} /></div>
                         <Card className={'overflow-auto overflow-hide shadow-none mx--4'} style={{ height: height - 153 }}>
-                            {formSectionQuestions && formSectionQuestions?.questions?.map((sectionQuestions: any, index: number) => {
+                            {formSectionQuestions && formSectionQuestions?.questions?.length > 0 && formSectionQuestions?.questions?.map((sectionQuestions: any, index: number) => {
                                 const { question } = sectionQuestions;
                                 return (
                                     <div key={index}>
@@ -113,7 +107,7 @@ function QuestionSections() {
                                             <small className='col mb-0 pointer'>{question}:</small>
                                         </div>
 
-                                        {index !== formSectionQuestions?.questions?.length - 1 && <Divider space={'3'} />}
+                                        {index !== formSectionQuestions?.details?.sections?.length - 1 && <Divider space={'3'} />}
                                     </div>
                                 )
                             })}

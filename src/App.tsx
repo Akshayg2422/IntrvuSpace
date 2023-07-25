@@ -1,9 +1,7 @@
-import { PageNotFound, ScreenWrapper, VoiceRecognition } from "@Components";
+import { ScreenWrapper, Breadcrumbs, Back } from "@Components";
 import { Route, Routes } from "react-router-dom";
-import { HOME_ROUTES, RequireAuth, RequireHome, DASHBOARD_ROUTES } from "@Routes";
+import { HOME_ROUTES, RequireAuth, DASHBOARD_ROUTES } from "@Routes";
 import { ToastContainer } from "react-toastify";
-import { useSelector } from "react-redux";
-import { changeLanguage } from "@I18n";
 /**
  *  select-react  - important need to add this app.js
  */
@@ -35,7 +33,18 @@ function App() {
       return (
         <Route
           path={path}
-          element={<RequireAuth>{prop.component}</RequireAuth>}
+          element={
+            <RequireAuth>
+             <div className={'ml-3'}>
+             <div className="col">
+                    <div className="row">
+                        <Back />
+                        <h5 className="ml-2 mt-1 text-muted"><Breadcrumbs/></h5>
+                    </div>
+                </div>
+             </div>
+              {prop.component}
+            </RequireAuth>}
           key={key}
         />
       );

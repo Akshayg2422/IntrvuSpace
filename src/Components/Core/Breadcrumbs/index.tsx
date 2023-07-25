@@ -1,35 +1,27 @@
-import React from 'react';
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-} from 'reactstrap';
-import { BreadcrumbsProps, BreadCrumbItem } from './interfaces';
+import { Link, useLocation } from 'react-router-dom';
 
-function Breadcrumbs({ defaultSelected, items, ...rest }: BreadcrumbsProps) {
+const Breadcrumbs = () => {
+  const location = useLocation();
+  console.log('location---->', location)
+  const pathnames = location.pathname.split('/').filter((x) => x);
+  console.log('pathnames------->', pathnames)
+
+
   return (
-    <Breadcrumb {...rest}>
-      {
-        items?.map((breadCrumbItem: BreadCrumbItem) => {
-          const isSelected = defaultSelected?.id === breadCrumbItem.id
-          return (
-            <>{isSelected ?
-              <BreadcrumbItem key={breadCrumbItem.id} className={'active'}>
-                {breadCrumbItem.title}
-              </BreadcrumbItem>
-              :
-              <BreadcrumbItem key={breadCrumbItem.id}>
-                <a href={'/'} >
-                  {breadCrumbItem.title}
-                </a>
-              </BreadcrumbItem>
-            }
-            </>
-          )
-        })
+    <div>
+      {pathnames.map((path, index) => {
+        const routeTo = `/${pathnames.slice(0, index + 1).join('/')}`;
+        const isLast = index === pathnames.length - 1;
+        return isLast ? (
+          <span key={routeTo}>{path}</span>
+        ) : (
+          <Link key={routeTo} to={routeTo}>
+            {path}
+          </Link>
+        );
+      })}
+    </div>
+  );
+};
 
-
-      }
-    </Breadcrumb >
-  )
-}
 export { Breadcrumbs };
