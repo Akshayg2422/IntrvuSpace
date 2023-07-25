@@ -3,12 +3,14 @@ import { CallScreen } from '@Modules';
 import { useDispatch } from 'react-redux';
 import { getStartChat } from '@Redux';
 import { useNavigation, useScreenRecorder, useTextToSpeech, useWebCamRecorder } from '@Hooks';
-import { AnimatedLoader, } from '@Components';
+import { AnimatedLoader } from '@Components';
 
 function Call() {
     const { goBack } = useNavigation();
     const dispatch = useDispatch()
-    let isTriggeredRef = false
+    // let isTriggeredRef = false
+    const [isTriggeredRef, setIsTriggeredRef] = useState(false)
+
 
     const mediaRecorderRef = useRef<any>(null);
     const [isHear, setIsHear] = useState(true)
@@ -18,7 +20,7 @@ function Call() {
     const [audioData, setAudioData] = useState<any>([]);
     const [showLoader, setShowLoader] = useState(false)
     const [type, setType] = useState('')
-    
+
 
     const WAIT_TIME_1 = 60000
     const WAIT_TIME_3_SEC = 3000;
@@ -46,17 +48,15 @@ function Call() {
 
     useEffect(() => {
         if (type === 'wait_1' && !isTriggeredRef) {
-            isTriggeredRef = true;
+            setIsTriggeredRef(true)
             const timer = setTimeout(() => {
                 getChatDetails(audioData, 'audio');
-                isTriggeredRef = false;
             }, WAIT_TIME_1);
             return () => clearTimeout(timer);
         } else if (type === 'wait_3_sec' && !isTriggeredRef) {
-            isTriggeredRef = true;
+            setIsTriggeredRef(true)
             const timer = setTimeout(() => {
                 getChatDetails(audioData, 'audio');
-                isTriggeredRef = false;
             }, WAIT_TIME_3_SEC);
             return () => clearTimeout(timer);
         }
@@ -101,9 +101,9 @@ function Call() {
             reader.onload = () => {
                 const base64Audio = reader.result.split(',')[1];
                 setAudioData([...audioData, base64Audio])
-                // getChatDetails([base64Audio], 'audio')
+                getChatDetails([base64Audio], 'audio')
                 // BufferTime()
-                setType('wait_3_sec')
+                // setType('wait_3_sec')
             };
             reader.readAsDataURL(audioBlob);
         }
@@ -141,8 +141,10 @@ function Call() {
                     } else if (success?.next_step[0].response_type === 'COMMAND') {
                         commandVariant(success?.next_step[0]?.response_text)
                     }
+                    setIsTriggeredRef(false)
                     setAudioData([])
                     setShowLoader(false)
+                    setType('')
                 },
                 onError: (error: string) => () => {
                     // speak("Something Went Wrong Please Try After Some Times");

@@ -60,7 +60,7 @@ function QuestionSections() {
                         text={'Create'}
                         className="text-white"
                         onClick={() => {
-                            goTo(ROUTES['group-module']['weightage-count-form'])
+                            goTo(ROUTES['designation-module']['weightage-count-form'])
                         }}
                     />
                 </div>

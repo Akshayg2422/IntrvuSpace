@@ -96,7 +96,7 @@ console.log('1111111111111111111111111111',JSON.stringify(questions))
                                 <div className='col-4' key={id}>
                                     <div className='card justify-content-center p-3'
                                         onClick={() => {
-                                            goTo(ROUTES['group-module']['question-sections'])
+                                            goTo(ROUTES['designation-module']['question-sections'])
                                             dispatch(setSelectedQuestionForm(item))
                                         }} >
                                         <h4 className='mb-0 pointer'>{name}</h4>
