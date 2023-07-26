@@ -50,4 +50,7 @@ export const URL_GET_QUESTION_SECTIONS = ASSISTANT + 'getQuestionSections'
 export const URL_GET_FORM_SECTION_QUESTIONS = ASSISTANT + 'getFormSectionQuestions'
 
 
+export const URL_GET_BASIC_REPORT = ASSISTANT + 'getBasicReport'
+
+
 

@@ -164,6 +164,27 @@ function* getQuestionFormSaga(action) {
 
 
 
+// get basic report
+
+function* getBasicReportSaga(action) {
+  try {
+    const response = yield call(Api.getBasicReportApi, action.payload.params);
+    if (response.success) {
+      yield put(Action.fetchBasicReportSuccess(response));
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield put(Action.fetchBasicReportFailure(response.error_message));
+      yield call(action.payload.onError(response));
+    }
+  } catch (error) {
+    yield put(Action.fetchBasicReportFailure(error));
+    yield call(action.payload.onError(error));
+  }
+}
+
+
+
+
 
 
 /**
@@ -252,6 +273,8 @@ function* DashboardSaga() {
   yield takeLatest(Action.GENERATE_FORM, generateFormSaga);
   yield takeLatest(Action.GET_QUESTION_SECTION, getQuestionSectionSaga);
   yield takeLatest(Action.GET_FORM_SECTION_QUESTIONS, getFormSectionsQuestionsSaga);
+  yield takeLatest(Action.FETCH_BASIC_REPORT, getBasicReportSaga);
+
 
 
 }
