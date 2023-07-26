@@ -1,0 +1,114 @@
+/* CSS for search icon animation */
+@keyframes searchAnimation {
+    0% {
+        transform: translateX(0);
+    }
+
+    50% {
+        transform: translateX(70px);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+/* Define the animation */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Apply the animation to the h4 element */
+h4.topic-animation {
+    animation: fadeInUp 1s ease;
+}
+
+/* Define the animation */
+/* Define the animation */
+@keyframes pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+/* Apply the animation to the h4 element */
+h4.rule-animation {
+    animation: pulse 1s infinite;
+}
+
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* Apply the animation to the h4 element */
+h4.question-animation {
+    animation: bounce 1s infinite;
+}
+
+/* Define the animation */
+@keyframes pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+/* Apply the animation to the h4 element */
+h4.rule-animation {
+    animation: pulse 1s infinite;
+}
+
+/* Define the animation */
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Apply the animation to the h4 element */
+h4.criteria-animation {
+    animation: rotate 1s infinite;
+}
+
+/*span animation*/
+/* Define the keyframes for the loading animation */
+@keyframes loadingAnimation {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Style the loading span with the animation */
+.loading-animation {
+    animation: loadingAnimation 1s linear infinite; /* You can adjust the animation duration and other properties as needed */
+}
