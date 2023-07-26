@@ -49,10 +49,14 @@ function Report() {
     }
 
     const calculateRating = (data: any) => {
+        console.log("909090909090909090", data)
+
         let overallPercent = 0
-        data.filter((el) => {
-            overallPercent = el?.percent ? overallPercent + +el?.percent : overallPercent + +el?.rating
-        })
+        if (Array.isArray(data)) {
+            data.filter((el) => {
+                overallPercent = el?.percent ? overallPercent + +el?.percent : overallPercent + +el?.rating
+            })
+        }
         return overallPercent / data.length
     }
 
@@ -93,7 +97,7 @@ function Report() {
     return (
         <>
 
-            {basicReportLoader &&
+            {!basicReportLoader &&
                 <div className='row justify-content-center align-items-center mx-3'
                     style={{
                         height: '90vh'
@@ -103,7 +107,7 @@ function Report() {
                 </div>
             }
 
-            {!basicReportLoader && <div>
+            {basicReportLoader && <div>
 
                 <ReactToPrint
                     trigger={() =>
@@ -310,7 +314,7 @@ function Report() {
                                         else {
                                             return (
                                                 dataId.map((el) => {
-                                                    if (el === heading) {
+                                                    if (el === heading && heading !== "skill_matrix") {
                                                         return (
                                                             <>
                                                                 <div className='pl-lg-4 pr-lg-5 mr- pt-3 pb-2'>
