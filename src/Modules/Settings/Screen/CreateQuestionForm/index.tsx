@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Input, Card, Back, Button, CommonTable, showToast, Breadcrumbs } from '@Components';
+import { Input, Card, Back, Button, CommonTable, showToast, Breadcrumbs, } from '@Components';
 import { useInput, useKeyPress, useLoader, useNavigation, useWindowDimensions } from '@Hooks';
 import { useDispatch, useSelector } from 'react-redux';
 import { CREATE_QUESTION_FORM_RULES, getValidateError, ifObjectExist, validate } from '@Utils';
 import { createQuestionForm, generateForm } from '@Redux';
 import { ROUTES } from '@Routes';
+
 
 type Task = {
     name: string;
@@ -22,6 +23,14 @@ function CreateQuestionForm() {
     const { goBack } = useNavigation();
     const { selectedRole, questions } = useSelector((state: any) => state.DashboardReducer)
     const { goTo } = useNavigation()
+    const [dataGenerated, setDataGenerated] = useState(false);
+
+    useEffect(() => {
+        if (dataGenerated) {
+            goTo(ROUTES['group-module']['questions']);
+            showToast("Data generation completed!", "success");
+        }
+    }, [dataGenerated]);
 
     useEffect(() => {
         if (isEnterPressed) {
@@ -86,7 +95,10 @@ function CreateQuestionForm() {
                     if (response.success) {
                         resetValues()
                         loginLoader.hide()
-                        goTo(ROUTES['group-module']['questions'])
+                        goTo(ROUTES['group-module']['analyzing-animation']);
+                        if (response.dataGenerationCompleted) {
+                            setDataGenerated(true);
+                        }
                         showToast(response.message, "success");
                     }
                 },
@@ -131,10 +143,6 @@ function CreateQuestionForm() {
                     </div>
 
                 </div>
-
-
-
-
 
             </Card></>
     );
