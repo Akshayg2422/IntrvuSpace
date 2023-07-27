@@ -105,7 +105,7 @@ function Sidebar({ toggleSideNav, sideNavOpen, routes, logo, rtlActive }: Sideba
             >
               {prop.icon ? (
                 <>
-                  <Image src={prop?.icon} width={18} height={18} />
+                  <Image className="image-Color" src={prop?.icon} width={18} height={18} />
                   <span className="nav-link-text ml-3">{prop.name}</span>
                 </>
               ) : prop.miniName ? (
@@ -133,7 +133,7 @@ function Sidebar({ toggleSideNav, sideNavOpen, routes, logo, rtlActive }: Sideba
           >
             {prop.icon !== undefined ? (
               <>
-                <Image src={prop?.icon} width={18} height={18} />
+                <Image className="image-Color" src={prop?.icon} width={18} height={18} />
                 <span className="nav-link-text ml-3">{prop.name}</span>
               </>
             ) : prop.miniName !== undefined ? (

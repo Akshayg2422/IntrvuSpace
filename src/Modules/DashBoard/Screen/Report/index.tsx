@@ -15,8 +15,8 @@ function Report() {
     const [basicReportData, setBasicReportData] = useState<any>({})
     const componentRef = useRef(null);
     let basicReportLoader = useLoader(false);
+    const [check, setCheck] = useState<any>(0)
 
-    let array = 0
 
 
 
@@ -30,7 +30,7 @@ function Report() {
     const getBasicReportData = () => {
         basicReportLoader.show()
         const params = {
-            schedule_id: '8d111eef-ac94-4587-9060-fef0a5d90be1'
+            schedule_id: '60e15a22-fa2d-41b7-8fd3-9c2b3422d990'
         }
 
         dispatch(
@@ -48,13 +48,49 @@ function Report() {
         );
     }
 
-    const calculateRating = (data: any) => {
-        let overallPercent = 0
-        data.filter((el) => {
-            overallPercent = el?.percent ? overallPercent + +el?.percent : overallPercent + +el?.rating
-        })
-        return overallPercent / data.length
+
+    const tttt = () => {
+
     }
+    let array1: any = []
+
+    const calculateRating = (data: any) => {
+
+        let overallPercent = 0
+        if (Array.isArray(data)) {
+            data.filter((el) => {
+                console.log("909090909090909090", +el?.rating)
+
+                overallPercent = el?.percent ? +overallPercent + +el?.percent : +overallPercent + +el?.rating
+            })
+        }
+
+        array1.push(+overallPercent / data.length)
+
+        // removeDuplicates(array1)
+
+
+
+        return +overallPercent / data.length
+    }
+
+    // let nottu
+    // function removeDuplicates(data) {
+    //     let a = Array.from(new Set(data));
+    //     let b = 0
+
+    //     a && a.filter((el: any) => {
+    //         b = b + (el)
+    //     })
+
+    //     nottu = b
+    //     // setCheck(b)
+    //     console.log("+overallPercent / data.length", b)
+
+    // }
+    // console.log('oioioi',nottu)
+
+
 
 
     const normalizedTableData = (data: any,) => {
@@ -90,10 +126,14 @@ function Report() {
     }
 
 
+    let array = 0
+
+
+
     return (
         <>
 
-            {basicReportLoader &&
+            {!basicReportLoader &&
                 <div className='row justify-content-center align-items-center mx-3'
                     style={{
                         height: '90vh'
@@ -103,7 +143,7 @@ function Report() {
                 </div>
             }
 
-            {!basicReportLoader && <div>
+            {basicReportLoader && <div>
 
                 <ReactToPrint
                     trigger={() =>
@@ -148,17 +188,17 @@ function Report() {
                                         <div>
                                             <h1 className='font-weight-bolder display-3'
                                                 style={{
-                                                    color: colorVariant(+array * 10)
+                                                    color: colorVariant(+check * 10)
                                                 }}
                                             >
-                                                {array}
+                                                {check}
                                             </h1>
                                         </div>
                                     </div>
                                     <div className='row   mx-lg-4 pb-0 mb--2'>
 
                                         {basicReportData && Object.keys(basicReportData)?.map((heading) => {
-                                            array = array + heading === 'skill_matrix' ? +calculateRating(basicReportData[heading].sections) : +calculateRating(basicReportData[heading])
+
                                             return (
                                                 dataId.map((el) => {
 
@@ -215,8 +255,10 @@ function Report() {
                                 <CardBody className='ml-1 pb-5'>
                                     {Object.keys(basicReportData)?.map((heading, index) => {
 
+                                        console.log("array", array)
 
                                         if (heading === "skill_matrix") {
+                                            array = array + calculateRating(basicReportData[heading].sections)
                                             return (
                                                 <div className='pl-lg-4 pr-lg-5 mr- pt-3 pb-2'>
                                                     <div className='row justify-content-between pr-2 pl-3 pb-3'>
@@ -310,7 +352,8 @@ function Report() {
                                         else {
                                             return (
                                                 dataId.map((el) => {
-                                                    if (el === heading) {
+                                                    if (el === heading && heading !== "skill_matrix") {
+                                                        array = array + calculateRating(basicReportData[heading])
                                                         return (
                                                             <>
                                                                 <div className='pl-lg-4 pr-lg-5 mr- pt-3 pb-2'>
@@ -420,3 +463,5 @@ function Report() {
 }
 
 export { Report }
+
+
