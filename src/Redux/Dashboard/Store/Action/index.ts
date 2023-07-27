@@ -324,3 +324,28 @@ export const getFormSectionQuestionsFailure = (error: any) => {
     payload: error
   }
 }
+
+
+
+// get basic report 
+
+
+
+export const fetchBasicReport = (params: any) => {
+  return {
+    type: ActionTypes.FETCH_BASIC_REPORT,
+    payload: params,
+  };
+};
+export const fetchBasicReportSuccess = (response: any) => {
+  return {
+    type: ActionTypes.FETCH_BASIC_REPORT_SUCCESS,
+    payload: response
+  }
+}
+export const fetchBasicReportFailure = (error: any) => {
+  return {
+    type: ActionTypes.FETCH_BASIC_REPORT_FAILURE,
+    payload: error
+  }
+}

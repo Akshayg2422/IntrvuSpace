@@ -137,7 +137,7 @@ function CreateQuestionForm() {
                             <Button className={'text-white'} size={'md'} text={'Add Manually'} onClick={submitQuestionFormHandler} />
                         </div>
 
-                        <div className={'col mr-7'}>
+                        <div className={'col'}>
                             <Button className={'text-white'} size={'md'} text={'Generate'} onClick={proceedGenerateFormApiHandler} />
                         </div>
                     </div>

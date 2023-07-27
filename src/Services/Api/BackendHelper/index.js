@@ -41,3 +41,6 @@ export const getQuestionSectionApi = payload => post(URL.URL_GET_QUESTION_SECTIO
 export const getFormSectionsQuestionsApi = payload => post(URL.URL_GET_FORM_SECTION_QUESTIONS, payload, {});
 
 
+export const getBasicReportApi = payload => post(URL.URL_GET_BASIC_REPORT, payload, {});
+
+
