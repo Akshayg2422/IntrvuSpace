@@ -8,7 +8,7 @@ const useScreenRecorder = () => {
   const videoRef = useRef<any>(null);
   const [output, setOutput] = useState<any>('');
 
-  const startRecording = async () => {
+  const startScreenRecording = async () => {
     try {
       const constraints: any = {
         video: {
@@ -41,7 +41,7 @@ const useScreenRecorder = () => {
     }
   };
 
-  const stopRecording = () => {
+  const stopScreenRecording = () => {
     return new Promise((
       resolve, reject) => {
       if (recordRTC) {
@@ -65,7 +65,7 @@ const useScreenRecorder = () => {
     });
   };
 
-  return { startRecording, stopRecording, videoRef, output, isScreenRecording };
+  return { startScreenRecording, stopScreenRecording, videoRef, output, isScreenRecording };
 };
 
 export { useScreenRecorder };

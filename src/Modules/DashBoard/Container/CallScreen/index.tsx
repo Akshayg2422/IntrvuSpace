@@ -12,10 +12,12 @@ type CallScreenProps = {
     status?: string,
     video?: boolean
     onVideoControl?: any
+    startTimer: boolean
+    micDisable?: boolean
 }
 
 
-const CallScreen = ({ onMicControl, onVolumeControl, onCallEnd, isMute = false, speaker, status, video = false, onVideoControl }: CallScreenProps) => {
+const CallScreen = ({ onMicControl, startTimer = false, micDisable = false, onVolumeControl, onCallEnd, isMute = false, speaker, status, video = false, onVideoControl }: CallScreenProps) => {
     const { time, formatTime } = useTimer();
     // const imageUrl = "https://www.pngitem.com/pimgs/m/581-5813504_avatar-dummy-png-transparent-png.png"
     return (
@@ -34,14 +36,14 @@ const CallScreen = ({ onMicControl, onVolumeControl, onCallEnd, isMute = false, 
             <div className=" my-4">
                 <ButtonGroup>
                     <Button className='border-0' color="secondary" type="button">
-                        {formatTime(time)}
+                        {startTimer ? formatTime(time) : '00:00'}
                     </Button>
-                    <Button className='border-0' color="secondary" type="button" onClick={onMicControl}>
+                    <Button className='border-0' disabled={micDisable} color="secondary" type="button" onClick={onMicControl}>
                         {isMute ? <i className="fas fa-microphone"></i> : <i className="fas fa-microphone-slash"></i>}
                     </Button>
-                    <Button className='border-0' color="secondary" type="button" onClick={onVolumeControl}>
+                    {/* <Button className='border-0' color="secondary" type="button" onClick={onVolumeControl}>
                         {speaker ? <i className="fas fa-volume-up"></i> : <i className="fas fa-volume-xmark"></i>}
-                    </Button>
+                    </Button> */}
                     <Button className='border-0' color='secondary' type="button" onClick={onVideoControl}>
                         {video ? <i className="fas fa-video"></i> : <i className="fas fa-video-slash"></i>}
                     </Button>
@@ -52,7 +54,7 @@ const CallScreen = ({ onMicControl, onVolumeControl, onCallEnd, isMute = false, 
             </div>
             {
                 video && <div className='position-absolute row justify-content-end bottom-2 right-4'>
-                    <WebCamRecorder/>
+                    <WebCamRecorder />
                 </div>
             }
         </div >
