@@ -3,7 +3,7 @@ import { Input, Card, Back, Button, CommonTable, showToast, Breadcrumbs } from '
 import { useInput, useKeyPress, useLoader, useNavigation, useWindowDimensions } from '@Hooks';
 import { useDispatch, useSelector } from 'react-redux';
 import { CREATE_QUESTION_FORM_RULES, getValidateError, ifObjectExist, validate } from '@Utils';
-import { createQuestionForm } from '@Redux';
+import { createQuestionForm, generateForm } from '@Redux';
 import { ROUTES } from '@Routes';
 
 type Task = {
@@ -69,15 +69,46 @@ function CreateQuestionForm() {
         }
     }
 
+    function proceedGenerateFormApiHandler() {
+
+        const params = {
+            name: nameInput?.value,
+            description: descriptionInput?.value,
+            knowledge_group_variant_id: selectedRole?.id
+        }
+
+        loginLoader.show()
+        setLoading(true)
+        dispatch(
+            generateForm({
+                params,
+                onSuccess: (response) => () => {
+                    if (response.success) {
+                        resetValues()
+                        loginLoader.hide()
+                        goTo(ROUTES['group-module']['questions'])
+                        showToast(response.message, "success");
+                    }
+                },
+                onError: (error) => () => {
+                    showToast(error.error_message);
+                    setLoading(false)
+                    loginLoader.hide()
+                },
+            })
+        );
+
+    }
+
     function resetValues() {
         nameInput.set('')
-        nameInput.set('')
+        descriptionInput.set('')
     }
     return (
         <>
-            <Breadcrumbs />
-            <Card className="m-3" style={{ height: height - 30 }}>
 
+            <Card className="m-3" style={{ height: height - 30 }}>
+                <h3>CREATE FORM</h3>
                 <hr className="mt-2"></hr>
 
                 <div className="col-md-9 col-lg-5">
@@ -89,11 +120,19 @@ function CreateQuestionForm() {
                         onChange={descriptionInput.onChange}
                     />
 
+                    <div className={'row '}>
+                        <div className={'col'}>
+                            <Button className={'text-white'} size={'md'} text={'Add Manually'} onClick={submitQuestionFormHandler} />
+                        </div>
+
+                        <div className={'col mr-7'}>
+                            <Button className={'text-white'} size={'md'} text={'Generate'} onClick={proceedGenerateFormApiHandler} />
+                        </div>
+                    </div>
+
                 </div>
 
-                <div className="col mt-4">
-                    <Button size={'md'} text={'Submit'} onClick={submitQuestionFormHandler} />
-                </div>
+
 
 
 

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { translate } from '@I18n'
 import { InputHeading } from '@Components'
 import { useInput } from '@Hooks'
@@ -7,6 +7,8 @@ import { useSelector } from 'react-redux'
 
 function SearchInput({ defaultValue, heading, onSearch }: SearchInputProps) {
     const search = useInput('')
+    const [inputStyle, setInputStyle] = useState<any>(false)
+
 
 
 
@@ -19,13 +21,21 @@ function SearchInput({ defaultValue, heading, onSearch }: SearchInputProps) {
     return (
         <div>
             {heading && <InputHeading heading={heading} />}
-            <div className="input-group bg-white border">
+            <div className="input-group bg-white border"
+           
+            >
                 <input
                     type="text"
-                    className="form-control bg-transparent border border-0  form-control-sm"
+                    className="form-control bg-transparent border border-0  form-control-md"
                     placeholder={translate("auth.search")!}
                     value={search.value}
                     onChange={search.onChange}
+                    onFocus={(e) => {
+                        setInputStyle(true)
+                    }}
+                    onBlur={(e) => {
+                        setInputStyle(false)
+                    }}
                 />
                 <span
                     className="input-group-text pointer border border-0"
