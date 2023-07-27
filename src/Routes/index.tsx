@@ -1,5 +1,5 @@
 import { icons } from '@Assets'
-import { Designation, WeightageCountForm, CreateQuestionForm, Clients, Sector, Questions, Report, QuestionSections , Call} from '@Modules';
+import { Designation, WeightageCountForm, CreateQuestionForm, Clients, Sector, Questions, Call, Report, QuestionSections,Analyzer } from '@Modules';
 
 
 
@@ -23,7 +23,8 @@ export const ROUTES = {
     client: "/client",
     questions: "/questions",
     report: '/report',
-    'question-sections':'/question-sections'
+    'question-sections':'/question-sections',
+    analyzer:'/analyzer'
   }
 }
 
@@ -58,7 +59,11 @@ export const DASHBOARD_ROUTES = [
     path: ROUTES['designation-module']['question-sections'],
     component: <QuestionSections />
   },
-
+  {
+    id: 7,
+    path: ROUTES['group-module']['analyzer'],
+    component: <Analyzer />
+  },
 ]
 
 export const HOME_ROUTES = [

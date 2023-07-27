@@ -16,6 +16,7 @@ const initialState: DashboardProp = {
   questionSection: undefined,
   selectedQuestionForm: undefined,
   formSectionQuestions: undefined,
+  basicReport: undefined
 };
 
 const DashboardReducer = (state = initialState, action: any) => {
@@ -165,6 +166,24 @@ const DashboardReducer = (state = initialState, action: any) => {
     case ActionTypes.GET_FORM_SECTION_QUESTIONS_FAILURE:
       state = { ...state, formSectionQuestions: undefined };
       break;
+
+
+
+    //GET_FORM_SECTION_QUESTIONS
+
+    case ActionTypes.FETCH_BASIC_REPORT:
+      state = { ...state, basicReport: undefined };
+      break;
+    case ActionTypes.FETCH_BASIC_REPORT_SUCCESS:
+      state = { ...state, basicReport: action.payload.details };
+      break;
+    case ActionTypes.FETCH_BASIC_REPORT_FAILURE:
+      state = { ...state, basicReport: undefined };
+      break;
+
+
+
+
 
 
     default:

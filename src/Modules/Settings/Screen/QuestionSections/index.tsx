@@ -49,7 +49,7 @@ function QuestionSections() {
             })
         );
     }
-
+    console.log('formSectionQuestions--->',formSectionQuestions)
 
     return (
 
@@ -99,7 +99,8 @@ function QuestionSections() {
                         <h4 className='mb-0 pointer'>{'Questions'}</h4>
                         <div className={'mx--4'}><Divider space={'3'} /></div>
                         <Card className={'overflow-auto overflow-hide shadow-none mx--4'} style={{ height: height - 153 }}>
-                            {formSectionQuestions && formSectionQuestions?.questions?.length > 0 && formSectionQuestions?.questions?.map((sectionQuestions: any, index: number) => {
+                            {formSectionQuestions && formSectionQuestions?.length > 0 && formSectionQuestions?.map((sectionQuestions: any, index: number) => {
+                                
                                 const { question } = sectionQuestions;
                                 return (
                                     <div key={index}>
@@ -107,7 +108,7 @@ function QuestionSections() {
                                             <small className='col mb-0 pointer'>{question}:</small>
                                         </div>
 
-                                        {index !== formSectionQuestions?.details?.sections?.length - 1 && <Divider space={'3'} />}
+                                        {index !== formSectionQuestions?.length - 1 && <Divider space={'3'} />}
                                     </div>
                                 )
                             })}
