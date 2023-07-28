@@ -23,8 +23,8 @@ export const ROUTES = {
     client: "/client",
     questions: "/questions",
     report: '/report',
-    'question-sections':'/question-sections',
-    'analyzing-animation':'/analyzing-animation'
+    'question-sections': '/question-sections',
+    'analyzing-animation': '/analyzing-animation'
   }
 }
 
@@ -61,10 +61,6 @@ export const DASHBOARD_ROUTES = [
   },
   {
     id: 7,
-    path: ROUTES['designation-module']['analyzer'],
-    component: <Analyzer />
-  },
-    id:8,
     path: ROUTES['designation-module']['analyzing-animation'],
     component: <AnalyzingAnimation />
   },
