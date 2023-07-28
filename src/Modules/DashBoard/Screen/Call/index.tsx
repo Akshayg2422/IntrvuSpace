@@ -11,14 +11,13 @@ function Call() {
     const { goBack } = useNavigation();
     const dispatch = useDispatch()
     // let isTriggeredRef = false
-    const [isTriggeredRef, setIsTriggeredRef] = useState(false)
+    const [isTriggeredApi, setIsTriggeredApi] = useState(false)
     const proceedModal = useModal(false);
 
     const [isMicRecording, setIsMicRecording] = useState(false)
     const [isHear, setIsHear] = useState(true)
     const [showVideo, setShowVideo] = useState(false)
     // const [recording, setRecording] = useState(false);
-    const [transcriptText, setTranscriptText] = useState<any>('');
     const [showLoader, setShowLoader] = useState(false)
     const [type, setType] = useState('')
     const is_Start = false
@@ -27,6 +26,7 @@ function Call() {
 
 
     const { isSpeaking, speak } = useTextToSpeech();
+
     const { startScreenRecording, stopScreenRecording, isScreenRecording, output } = useScreenRecorder();
     const {
         recording,
@@ -36,10 +36,11 @@ function Call() {
         pauseRecording,
         startRecording,
         stopRecording,
+
     } = useWhisper({
         apiKey: OPENAI_API_TOKEN,
         removeSilence: true,
-        streaming: true,
+        streaming: true
     })
 
     useEffect(() => {
@@ -56,13 +57,14 @@ function Call() {
 
 
     useEffect(() => {
-        if (!transcribing && !recording && !isMicRecording && isScreenRecording) {
+        if (!recording && !isMicRecording && isScreenRecording && isTriggeredApi && transcribing) {
             getChatDetails(transcript.text, 'text')
         }
-    }, [transcribing, transcript])
+    }, [isTriggeredApi, transcribing])
+
 
     // useEffect(() => {
-    //     if (type === 'wait_1' && !isTriggeredRef) {
+    //     if (type === 'wait_1' && !isTriggeredRef) {6
     //         setIsTriggeredRef(true)
     //         const timer = setTimeout(() => {
     //             getChatDetails(audioData, 'audio');
@@ -76,6 +78,7 @@ function Call() {
     //         return () => clearTimeout(timer);
     //     }
     // }, [type]);
+    
 
     let timerId: any;
     const handleMicControl = () => {
@@ -83,11 +86,14 @@ function Call() {
             startRecording();
             setIsMicRecording(true)
             clearTimeout(timerId)
+            setIsTriggeredApi(false)
         } else if (isMicRecording) {
             pauseRecording()
             setIsMicRecording(false)
             timerId = setTimeout(() => {
                 stopRecording()
+                setIsTriggeredApi(true)
+                // setShowLoader(true)
             }, 3000);
         }
     }
@@ -97,10 +103,9 @@ function Call() {
             ...(type === 'text' && { "message": file }),
             schedule_id: '60e15a22-fa2d-41b7-8fd3-9c2b3422d990'
         };
-        console.log("==========>", params);
 
-        setTranscriptText('')
-        // setShowLoader(true)
+        console.log("==params==============>", params, transcript.text);
+
         // dispatch(
         //     getStartChat({
         //         params,
@@ -113,13 +118,9 @@ function Call() {
         //                 isScreenRecording && stopScreenRecording()
         //                 goBack()
         //             }
-        //             setIsTriggeredRef(false)
-        //             setTranscriptText('')
         //             setShowLoader(false)
-        //             setType('')
         //         },
         //         onError: (error: string) => () => {
-        //             // speak("Something Went Wrong Please Try After Some Times");
         //             setShowLoader(false)
         //         },
         //     })

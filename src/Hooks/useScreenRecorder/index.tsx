@@ -21,15 +21,13 @@ const useScreenRecorder = () => {
       const recorder = RecordRTC(stream, {
         type: 'video',
         mimeType: 'video/webm',
-        disableLogs: true,
+        // disableLogs: true,
       });
-
+      
       recorder.startRecording();
       setRecordRTC(recorder);
       setScreenRecording(true);
       setPermission(true);
-      console.log("==============>startScreenRecording");
-
     } catch (error: any) {
       if (error.name === 'NotAllowedError') {
         // Handle permission denied

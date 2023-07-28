@@ -61,7 +61,7 @@ export const DASHBOARD_ROUTES = [
   },
   {
     id: 7,
-    path: ROUTES['group-module']['analyzer'],
+    path: ROUTES['designation-module']['analyzer'],
     component: <Analyzer />
   },
 ]

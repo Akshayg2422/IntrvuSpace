@@ -1,9 +1,11 @@
+
+
 .animated-image {
   border-radius: 50%;
   padding: 100px;
-  border: 5px solid rgb(252, 201, 224);
+  border: 5px solid rgb(104, 215, 92);
   transition: border-color 0.3s, border-radius 2s;
-  box-shadow: 0 0 0 0 rgb(252, 201, 224)
+  box-shadow: 0 0 0 0 rgb(104, 215, 92)
 }
 
 .animated-image.blink {
@@ -17,35 +19,35 @@
   }
   15% {
     border-radius: 55%;
-    box-shadow: 0 0 5px 2.5px  rgb(252, 201, 224)
+    box-shadow: 0 0 5px 2.5px rgb(104, 215, 92)
   }
   25% {
     border-radius: 60%;
-    box-shadow: 0 0 10px 5px  rgb(252, 201, 224)
+    box-shadow: 0 0 10px 5px rgb(104, 215, 92)
   }
   35% {
     border-radius: 65%;
-    box-shadow: 0 0 15px 7.5px  rgb(252, 201, 224)
+    box-shadow: 0 0 15px 7.5px rgb(104, 215, 92)
   }
   50% {
     border-radius: 70%;
-    box-shadow: 0 0 20px 10px  rgb(252, 201, 224)
+    box-shadow: 0 0 20px 10px rgb(104, 215, 92)
   }
   65% {
     border-radius: 75%;
-    box-shadow: 0 0 25px 12.5px  rgb(252, 201, 224)
+    box-shadow: 0 0 25px 12.5px rgb(104, 215, 92)
   }
   75% {
     border-radius: 80%;
-    box-shadow: 0 0 30px 15px  rgb(252, 201, 224)
+    box-shadow: 0 0 30px 15px rgb(104, 215, 92)
   }
   85% {
     border-radius: 85%;
-    box-shadow: 0 0 35px 17.5px  rgb(252, 201, 224)
+    box-shadow: 0 0 35px 17.5px rgb(104, 215, 92)
   }
   100% {
     border-radius: 100%;
-    box-shadow: 0 0 40px 20px  rgb(252, 201, 224)
+    box-shadow: 0 0 40px 20px rgb(104, 215, 92)
   }
 }
 .name-overlay {
