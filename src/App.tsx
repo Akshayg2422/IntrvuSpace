@@ -1,6 +1,6 @@
 import { ScreenWrapper, Breadcrumbs, Back } from "@Components";
 import { Route, Routes } from "react-router-dom";
-import { HOME_ROUTES, RequireAuth, DASHBOARD_ROUTES } from "@Routes";
+import { HOME_ROUTES, RequireAuth, DASHBOARD_ROUTES, AUTH_ROUTES, RequireHome } from "@Routes";
 import { ToastContainer } from "react-toastify";
 /**
  *  select-react  - important need to add this app.js
@@ -30,24 +30,30 @@ function App() {
 
       const path = prop.layout ? prop.layout + prop.path : prop.path;
 
+
       return (
         <Route
           path={path}
-          element={
+          element={type === AUTH ?
+
+            <RequireHome>{prop.component}</RequireHome>
+            :
             <RequireAuth>
-             <div className={'ml-3'}>
-             <div className="col">
-                    <div className="row">
-                        <Back />
-                        <h5 className="ml-2 mt-1 text-muted"><Breadcrumbs/></h5>
-                    </div>
+              <div className={'ml-3'}>
+                <div className="col">
+                  <div className="row">
+                    <Back />
+                    <h5 className="ml-2 mt-1 text-muted"><Breadcrumbs /></h5>
+                  </div>
                 </div>
-             </div>
+              </div>
               {prop.component}
-            </RequireAuth>}
+            </RequireAuth>
+          }
           key={key}
         />
-      );
+
+      )
 
     });
   };
@@ -55,6 +61,7 @@ function App() {
   return (
     <ScreenWrapper>
       <Routes>
+        {getRoutes(AUTH_ROUTES, AUTH)}
         {getRoutes(HOME_ROUTES)}
         {getRoutes(DASHBOARD_ROUTES)}
       </Routes>
