@@ -1,5 +1,5 @@
 import { icons } from '@Assets'
-import { Designation, WeightageCountForm, CreateQuestionForm, Clients, Sector, Questions, Call, Report, QuestionSections, AnalyzingAnimation, Login } from '@Modules';
+import { Designation, WeightageCountForm, CreateQuestionForm, Clients, Sector, Questions, Call, Report, QuestionSections, AnalyzingAnimation } from '@Modules';
 
 
 
@@ -27,15 +27,6 @@ export const ROUTES = {
     'analyzing-animation': '/analyzing-animation'
   }
 }
-
-
-export const AUTH_ROUTES = [
-  {
-    id: 1,
-    path: ROUTES['auth-module'].login,
-    component: <Login />
-  }
-]
 
 export const DASHBOARD_ROUTES = [
   {
