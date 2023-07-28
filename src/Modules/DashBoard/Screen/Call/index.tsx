@@ -2,124 +2,129 @@ import React, { useEffect, useRef, useState } from 'react'
 import { CallScreen } from '@Modules';
 import { useDispatch } from 'react-redux';
 import { getStartChat } from '@Redux';
-import { useNavigation, useScreenRecorder, useTextToSpeech } from '@Hooks';
+import { useModal, useNavigation, useScreenRecorder, useTextToSpeech, useWebCamRecorder } from '@Hooks';
+import { AnimatedLoader, Button, Modal } from '@Components';
+import { useWhisper } from '@chengsokdara/use-whisper'
+import { log } from 'console';
 
 function Call() {
     const { goBack } = useNavigation();
     const dispatch = useDispatch()
+    // let isTriggeredRef = false
+    const [isTriggeredApi, setIsTriggeredApi] = useState(false)
+    const proceedModal = useModal(false);
 
-    const mediaRecorderRef = useRef<any>(null);
-
+    const [isMicRecording, setIsMicRecording] = useState(false)
     const [isHear, setIsHear] = useState(true)
     const [showVideo, setShowVideo] = useState(false)
-    const [stream, setStream] = useState<any>(null);
-    const [recording, setRecording] = useState(false);
-    const [audioData, setAudioData] = useState(null);
-    const MINUTE_MS = 60000;
+    // const [recording, setRecording] = useState(false);
+    const [showLoader, setShowLoader] = useState(false)
+    const [type, setType] = useState('')
+    const is_Start = false
+
+    const OPENAI_API_TOKEN = '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'
+
 
     const { isSpeaking, speak } = useTextToSpeech();
-    const { startRecording, stopRecording, isScreenRecording } = useScreenRecorder();
+
+    const { startScreenRecording, stopScreenRecording, isScreenRecording, output } = useScreenRecorder();
+    const {
+        recording,
+        speaking,
+        transcribing,
+        transcript,
+        pauseRecording,
+        startRecording,
+        stopRecording,
+
+    } = useWhisper({
+        apiKey: OPENAI_API_TOKEN,
+        removeSilence: true,
+        streaming: true
+    })
 
     useEffect(() => {
-
-        getMicrophonePermission();
-        // startRecording();
-
-        return () => {
-
-            stopVoiceRecording()
-            if (isScreenRecording) {
-                stopRecording()
-            }
-
+        if (is_Start === false) {
+            proceedModal.show()
         }
     }, [])
 
-
     useEffect(() => {
         if (isScreenRecording) {
-            getChatDetails('', 'text')
+            getChatDetails('start', 'text')
         }
     }, [isScreenRecording])
 
-    const getMicrophonePermission = async () => {
-        if ("MediaRecorder" in window) {
-            try {
-                const streamData = await navigator.mediaDevices.getUserMedia({
-                    audio: true,
-                });
 
-                console.log(JSON.stringify(streamData) + '====streamData');
-
-                setStream(streamData);
-            } catch (err) {
-                alert(err);
-            }
-        } else {
-            alert("The MediaRecorder API is not supported in your browser.");
+    useEffect(() => {
+        if (!recording && !isMicRecording && isScreenRecording && isTriggeredApi && transcribing) {
+            getChatDetails(transcript.text, 'text')
         }
-    };
+    }, [isTriggeredApi, transcribing])
 
-    const startVoiceRecording = () => {
-        if (!isSpeaking && stream) {
-            mediaRecorderRef.current = new MediaRecorder(stream);
-            mediaRecorderRef.current.addEventListener("dataavailable", handleDataAvailable);
-            mediaRecorderRef.current.start();
-            setRecording(true);
-        }
-    };
 
-    const stopVoiceRecording = () => {
-        if (mediaRecorderRef.current) {
-            mediaRecorderRef.current.stop();
-            setRecording(false);
-        }
-    };
+    // useEffect(() => {
+    //     if (type === 'wait_1' && !isTriggeredRef) {6
+    //         setIsTriggeredRef(true)
+    //         const timer = setTimeout(() => {
+    //             getChatDetails(audioData, 'audio');
+    //         }, WAIT_TIME_1);
+    //         return () => clearTimeout(timer);
+    //     } else if (type === 'wait_3_sec' && !isTriggeredRef) {
+    //         setIsTriggeredRef(true)
+    //         const timer = setTimeout(() => {
+    //             getChatDetails(audioData, 'audio');
+    //         }, WAIT_TIME_3_SEC);
+    //         return () => clearTimeout(timer);
+    //     }
+    // }, [type]);
+    
 
-    const handleDataAvailable = (event: any) => {
-        if (event.data.size > 0) {
-            const audioBlob = new Blob([event.data], { type: 'audio/wav' });
-            const reader: any = new FileReader();
-            reader.onload = () => {
-                const base64Audio = reader.result.split(',')[1];
-                setAudioData(base64Audio)
-                getChatDetails(base64Audio, 'audio')
-            };
-            reader.readAsDataURL(audioBlob);
-        }
-    };
-
+    let timerId: any;
     const handleMicControl = () => {
-        if (!recording) {
-            startVoiceRecording()
-        } else {
-            stopVoiceRecording()
+        if (!isMicRecording) {
+            startRecording();
+            setIsMicRecording(true)
+            clearTimeout(timerId)
+            setIsTriggeredApi(false)
+        } else if (isMicRecording) {
+            pauseRecording()
+            setIsMicRecording(false)
+            timerId = setTimeout(() => {
+                stopRecording()
+                setIsTriggeredApi(true)
+                // setShowLoader(true)
+            }, 3000);
         }
     }
 
-
-    const getChatDetails = (file: string, type: 'text' | 'audio') => {
+    const getChatDetails = (file: any, type: 'text') => {
         const params = {
             ...(type === 'text' && { "message": file }),
-            ...(type === 'audio' && { voice_message: file }),
-            schedule_id: '79f59eb9-f9cb-4473-823b-f62f62cff4ce'
+            schedule_id: '60e15a22-fa2d-41b7-8fd3-9c2b3422d990'
         };
 
-        dispatch(
-            getStartChat({
-                params,
-                onSuccess: (success: any) => () => {
-                    if (success?.next_step[0].response_type === "SPEAK") {
-                        speak(success?.next_step[0]?.response_text);
-                    } else if (success?.next_step[0].response_type === 'COMMAND') {
-                        commandVariant(success?.next_step[0]?.response_text)
-                    }
-                },
-                onError: (error: string) => () => {
-                    // speak("Something Went Wrong Please Try After Some Times");
-                },
-            })
-        );
+        console.log("==params==============>", params, transcript.text);
+
+        // dispatch(
+        //     getStartChat({
+        //         params,
+        //         onSuccess: (success: any) => () => {
+        //             if (success?.next_step[0].message_type === "SPEAK" && success?.next_step[0].response_type !== 'INTERVIEWER_END_CALL') {
+        //                 speak(success?.next_step[0]?.response_text);
+        //             } else if (success?.next_step[0].response_type === 'COMMAND') {
+        //                 commandVariant(success?.next_step[0]?.response_text)
+        //             } else if (success?.next_step[0].message_type === "SPEAK" && success?.next_step[0].response_type == 'INTERVIEWER_END_CALL') {
+        //                 isScreenRecording && stopScreenRecording()
+        //                 goBack()
+        //             }
+        //             setShowLoader(false)
+        //         },
+        //         onError: (error: string) => () => {
+        //             setShowLoader(false)
+        //         },
+        //     })
+        // );
     };
 
     const handleVideo = () => {
@@ -128,35 +133,67 @@ function Call() {
 
     const commandVariant = (type: any) => {
         if (type === 'WAIT_1') {
-
+            setType('wait_1')
         } else if (type === 'END_CAll') {
-            stopVoiceRecording()
-            isScreenRecording && stopRecording()
+            isScreenRecording && stopScreenRecording()
             goBack()
         }
     }
 
+    const handleStart = () => {
+        proceedModal.hide()
+        startScreenRecording()
+    }
+
+    const handleResume = () => {
+
+    }
+
+
 
     return (
-        <div className='h-100vh bg-gray d-flex  align-items-center justify-content-center'>
+        <div className='h-100vh  d-flex  align-items-center justify-content-center' style={{ backgroundColor: '#54575c' }}>
             <CallScreen
                 status='Connected'
-                isMute={recording}
+                startTimer={isScreenRecording}
+                micDisable={isSpeaking}
+                isMute={isMicRecording}
                 video={showVideo}
                 onVideoControl={() => handleVideo()}
                 speaker={isHear}
                 onMicControl={() => handleMicControl()
                 }
                 onCallEnd={() => {
-                    stopVoiceRecording();
-                    isScreenRecording && stopRecording();
+                    isScreenRecording && stopScreenRecording()
                     goBack();
                 }}
                 onVolumeControl={() =>
-                    startRecording()
+                // startRecording() 
+                { }
                 } />
+
+            <AnimatedLoader loading={showLoader} />
+            < Modal size={'sm'} isOpen={proceedModal.visible}
+                onClose={() => {
+                    proceedModal.hide()
+                    goBack()
+                    isScreenRecording && stopScreenRecording()
+                }} >
+                <div className="text-center ">
+                    <Button color='secondary' size={'md'}
+                        text={"RESUME"}
+                        onClick={() => handleResume()}
+                    />
+                    <Button size={'md'}
+                        text={"START"}
+                        onClick={() => handleStart()}
+                    />
+                </div>
+            </Modal >
         </div>
     )
 }
 
 export { Call }
+
+

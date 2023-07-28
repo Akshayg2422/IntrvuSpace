@@ -24,6 +24,7 @@ export * from './TextToSpeech'
 export * from './VoiceRecognition'
 export * from './AnimatedImage'
 export * from './WebCamRecorder'
+export * from './AnimatedLoader'
 
 
 
