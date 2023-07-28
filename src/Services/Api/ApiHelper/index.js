@@ -12,7 +12,7 @@ export const SERVER =
     : BUILD_TYPE === BUILD_TYPE_LIVE_DEMO
       ? 'live_local'
       : BUILD_TYPE === BUILD_TYPE_LOCAL
-        ? 'http://192.168.83.204:8001'
+        ? 'http://192.168.157.204:8002'
         : BUILD_TYPE === BUILD_TYPE_STAGING
           ? 'http://103.118.188.135:8003'
           : 'http://localhost:8000'
@@ -30,7 +30,9 @@ axios.interceptors.request.use(function (config) {
 const getHeaders = async () => {
   try {
 
-    const value = await localStorage.getItem(USER_TOKEN);
+    // const value = await localStorage.getItem(USER_TOKEN);
+    const value  = 'ed7dbfeb7b7dcf64f7f5e10e30234e4be31f7f93'
+    
 
     if (value) {
       return { Authorization: 'Token ' + value };

@@ -43,4 +43,12 @@ export const getFormSectionsQuestionsApi = payload => post(URL.URL_GET_FORM_SECT
 
 export const getBasicReportApi = payload => post(URL.URL_GET_BASIC_REPORT, payload, {});
 
+export const getMyPastInterviewsApi = payload => post(URL.URL_GET_MY_PAST_INTERVIEWS, payload, {});
 
+//register as member
+
+export const registerAsMemberAPi = payload => post(URL.URL_REGISTER_AS_MEMBER, payload, {});
+
+//URL_MEMBER_LOGIN_USING_PASSWORD
+
+export const memberLoginUsingPasswordApi = payload => post(URL.URL_MEMBER_LOGIN_USING_PASSWORD, payload, {});
