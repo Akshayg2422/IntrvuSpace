@@ -1,5 +1,5 @@
 import { icons } from '@Assets'
-import { Designation, WeightageCountForm, CreateQuestionForm, Clients, Sector, Questions, Call, Report, QuestionSections,Analyzer } from '@Modules';
+import { Designation, WeightageCountForm, CreateQuestionForm, Clients, Sector, Questions, Call, Report, QuestionSections, Analyzer, Login } from '@Modules';
 
 
 
@@ -23,10 +23,19 @@ export const ROUTES = {
     client: "/client",
     questions: "/questions",
     report: '/report',
-    'question-sections':'/question-sections',
-    analyzer:'/analyzer'
+    'question-sections': '/question-sections',
+    analyzer: '/analyzer'
   }
 }
+
+
+export const AUTH_ROUTES = [
+  {
+    id: 1,
+    path: ROUTES['auth-module'].login,
+    component: <Login />
+  }
+]
 
 export const DASHBOARD_ROUTES = [
   {
