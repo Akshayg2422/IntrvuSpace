@@ -16,7 +16,8 @@ const initialState: DashboardProp = {
   questionSection: undefined,
   selectedQuestionForm: undefined,
   formSectionQuestions: undefined,
-  basicReport: undefined
+  basicReport: undefined,
+  myPastInterviews: undefined,
 };
 
 const DashboardReducer = (state = initialState, action: any) => {
@@ -181,9 +182,16 @@ const DashboardReducer = (state = initialState, action: any) => {
       state = { ...state, basicReport: undefined };
       break;
 
-
-
-
+    // MyPastInterviews
+    case ActionTypes.GET_MY_PAST_INTERVIEWS:
+      state = { ...state, myPastInterviews: undefined };
+      break;
+    case ActionTypes.GET_MY_PAST_INTERVIEWS_SUCCESS:
+      state = { ...state, myPastInterviews: action.payload.details?.schedules };
+      break;
+    case ActionTypes.GET_MY_PAST_INTERVIEWS_FAILURE:
+      state = { ...state, myPastInterviews: undefined };
+      break;
 
 
     default:

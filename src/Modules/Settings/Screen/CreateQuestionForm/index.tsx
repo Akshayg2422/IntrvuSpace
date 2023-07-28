@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { CREATE_QUESTION_FORM_RULES, getValidateError, ifObjectExist, validate } from '@Utils';
 import { createQuestionForm, generateForm } from '@Redux';
 import { ROUTES } from '@Routes';
+import { AnalyzingAnimation } from '../../Container';
 
 
 type Task = {
@@ -24,13 +25,6 @@ function CreateQuestionForm() {
     const { selectedRole, questions } = useSelector((state: any) => state.DashboardReducer)
     const { goTo } = useNavigation()
     const [dataGenerated, setDataGenerated] = useState(false);
-
-    useEffect(() => {
-        if (dataGenerated) {
-            goTo(ROUTES['group-module']['questions']);
-            showToast("Data generation completed!", "success");
-        }
-    }, [dataGenerated]);
 
     useEffect(() => {
         if (isEnterPressed) {
@@ -85,8 +79,8 @@ function CreateQuestionForm() {
             description: descriptionInput?.value,
             knowledge_group_variant_id: selectedRole?.id
         }
-
         loginLoader.show()
+        setDataGenerated(true)
         setLoading(true)
         dispatch(
             generateForm({
@@ -95,17 +89,16 @@ function CreateQuestionForm() {
                     if (response.success) {
                         resetValues()
                         loginLoader.hide()
-                        goTo(ROUTES['group-module']['analyzing-animation']);
-                        if (response.dataGenerationCompleted) {
-                            setDataGenerated(true);
-                        }
                         showToast(response.message, "success");
+                        setDataGenerated(false)
+                        goTo(ROUTES['designation-module']['questions'])
                     }
                 },
                 onError: (error) => () => {
                     showToast(error.error_message);
                     setLoading(false)
                     loginLoader.hide()
+                    setDataGenerated(false)
                 },
             })
         );
@@ -119,7 +112,7 @@ function CreateQuestionForm() {
     return (
         <>
 
-            <Card className="m-3" style={{ height: height - 30 }}>
+            {!dataGenerated && <Card className="m-3" style={{ height: height - 30 }}>
                 <h3>CREATE FORM</h3>
                 <hr className="mt-2"></hr>
 
@@ -144,7 +137,9 @@ function CreateQuestionForm() {
 
                 </div>
 
-            </Card></>
+            </Card>}
+            {dataGenerated && <AnalyzingAnimation />}
+        </>
     );
 }
 

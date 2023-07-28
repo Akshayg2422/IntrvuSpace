@@ -182,11 +182,6 @@ function* getBasicReportSaga(action) {
   }
 }
 
-
-
-
-
-
 /**
  * form
  * 
@@ -258,6 +253,25 @@ function* getFormSectionsQuestionsSaga(action) {
   }
 }
 
+// getMyPastInterviews
+
+function* getMyPastInterviewsSaga(action) {
+  try {
+    const response = yield call(Api.getMyPastInterviewsApi, action.payload.params);
+    console.log(JSON.stringify(response) + '========getMyPastInterviewsSaga');
+    if (response.success) {
+      yield put(Action.getMyPastInterviewsSuccess(response));
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield put(Action.getMyPastInterviewsFailure(response.error_message));
+      yield call(action.payload.onError(response));
+    }
+  } catch (error) {
+    yield put(Action.getMyPastInterviewsFailure(error));
+    yield call(action.payload.onError(error));
+  }
+}
+
 
 function* DashboardSaga() {
   yield takeLatest(Action.GET_START_CHAT, getChatSaga);
@@ -274,6 +288,7 @@ function* DashboardSaga() {
   yield takeLatest(Action.GET_QUESTION_SECTION, getQuestionSectionSaga);
   yield takeLatest(Action.GET_FORM_SECTION_QUESTIONS, getFormSectionsQuestionsSaga);
   yield takeLatest(Action.FETCH_BASIC_REPORT, getBasicReportSaga);
+  yield takeLatest(Action.GET_MY_PAST_INTERVIEWS, getMyPastInterviewsSaga);
 
 
 
