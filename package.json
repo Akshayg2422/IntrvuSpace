@@ -4,7 +4,9 @@
   "private": true,
   "dependencies": {
     "@chengsokdara/use-whisper": "^0.2.0",
-    "@craco/craco": "^7.0.0-alpha.3",
+    "@craco/craco": "^7.1.0",
+    "@ffmpeg/core": "^0.10.0",
+    "@ffmpeg/ffmpeg": "^0.10.0",
     "@fortawesome/fontawesome-free": "5.15.3",
     "@fullcalendar/core": "^5.11.3",
     "@fullcalendar/daygrid": "^5.11.3",
@@ -126,10 +128,6 @@
     "@types/styled-components": "^5.1.26",
     "@typescript-eslint/eslint-plugin": "^5.39.0",
     "@typescript-eslint/parser": "^5.39.0",
-    "babel-plugin-module-resolver": "^4.1.0"
-  },
-  "overrides": {
-    "react": "$react",
-    "react-dom": "$react-dom"
+    "babel-plugin-module-resolver": "5.0.0"
   }
 }
