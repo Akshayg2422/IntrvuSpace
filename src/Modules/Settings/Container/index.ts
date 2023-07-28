@@ -1,1 +1,1 @@
-export * from './Analyzer'
+export * from './AnalyzingAnimation'
