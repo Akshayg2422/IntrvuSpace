@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { getMyPastInterviews } from '@Redux';
+import { getMyPastInterviews, selectedScheduleId } from '@Redux';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Card, Divider, Modal } from '@Components';
 import { useModal, useNavigation } from '@Hooks';
@@ -13,7 +13,6 @@ function Schedules() {
     const proceedModal = useModal(false);
     const { goBack } = useNavigation();
     const { goTo } = useNavigation();
-    console.log('--------->myPastInterviews.....>', JSON.stringify(myPastInterviews))
 
     useEffect(() => {
         getMypastInterviewApi()
@@ -35,11 +34,33 @@ function Schedules() {
     const handleNextStep = (item: any) => {
         const { id, is_complete, is_started } = item;
         if (is_complete === true) {
-            goTo(ROUTES['designation-module'].report)
+            return (
+                <>
+                    <Button text={'Report'} size='sm' onClick={() => {
+                        dispatch(selectedScheduleId(item))
+                        goTo(ROUTES['designation-module'].report)
+                    }} />
+                </>
+            )
         } else if (is_complete === false && is_started === true) {
+            return (
+                <>
+                    <Button text={'Resume'} size='sm' onClick={() => {
+                        dispatch(selectedScheduleId(item))
+                        goTo(ROUTES['designation-module'].call)
+                    }} />
+                </>
+            )
 
         } else if (is_started === false) {
-
+            return (
+                <>
+                    <Button text={'Start'} size='sm' onClick={() => {
+                        dispatch(selectedScheduleId(item))
+                        goTo(ROUTES['designation-module'].call)
+                    }} />
+                </>
+            )
         }
     }
 
@@ -52,14 +73,14 @@ function Schedules() {
                         return (
                             <div className='col-4' key={id}>
                                 <Card className='justify-content-center'
-                                    onClick={() => {
-                                        handleNextStep(item)
-                                    }}
                                 >
                                     <h4 className='mb-0 pointer mt--2'>{interviewee_expected_sector}</h4>
                                     <div className={'mx--4 mt--2'}><Divider space={'3'} /></div>
                                     <h5>{interviewee_expected_designation}</h5>
                                     <small className='mb-0 pointer'>{interviewee_expected_role}</small>
+                                    <div className='text-right'>
+                                        {handleNextStep(item)}
+                                    </div>
                                 </Card>
                             </div>
                         )
@@ -75,11 +96,11 @@ function Schedules() {
 
                     <Button color='secondary' size={'md'}
                         text={"RESUME"}
-                        // onClick={() => handleResume()}
+                    // onClick={() => handleResume()}
                     />
                     <Button size={'md'}
                         text={"START"}
-                        // onClick={() => handleStart()}
+                    // onClick={() => handleStart()}
                     />
                 </div>
             </Modal >

@@ -6,9 +6,9 @@ const WebCamRecorder = () => {
   const { webcamRef, handleStartCaptureClick, handleStopRecording, handleStop } = useWebCamRecorder();
 
   return (
-    <>
-      <Webcam style={{ height: '30%', width: '30%' }} audio={false} ref={webcamRef} screenshotFormat="image/jpeg" />
-    </>
+    <div>
+      <Webcam style={{ height:"20vh",width:'20vh', objectFit: "cover"}} className='avatar rounded-circle' audio={false} ref={webcamRef} screenshotFormat="image/jpeg" />
+    </div>
   );
 };
 

@@ -64,7 +64,6 @@ function Questions() {
         );
 
     }
-    console.log('1111111111111111111111111111', JSON.stringify(questions))
 
     return (
         <>

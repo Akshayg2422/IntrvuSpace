@@ -100,7 +100,7 @@ export const DASHBOARD_ROUTES = [
 export const HOME_ROUTES = [
   {
     path: ROUTES['designation-module'].designation,
-    name: "Group",
+    name: "Designation",
     icon: icons.task,
     layout: "",
     component: <Designation />

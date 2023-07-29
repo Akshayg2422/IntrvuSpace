@@ -66,3 +66,14 @@ export const URL_GET_BASIC_REPORT = ASSISTANT + 'getBasicReport'
 
   export const URL_MEMBER_LOGIN_USING_PASSWORD = EMPLOYEE + 'memberLoginUsingPassword'
 
+  // generateSectionQuestions
+
+  export const URL_GENERATE_SECTION_QUESTIONS = ASSISTANT + 'generateSectionQuestions'
+
+  // generateFormSectionsandQuestions
+
+  export const URL_GENERATE_FORM_SECTIONS_AND_QUESTIONS = ASSISTANT + 'generateFormSectionsandQuestions'
+
+  // updateQuestionDetails
+
+  export const URL_UPDATE_QUESTION_DETAILS = ASSISTANT + 'updateQuestionDetails'

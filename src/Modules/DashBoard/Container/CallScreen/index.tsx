@@ -14,14 +14,29 @@ type CallScreenProps = {
     startTimer: boolean
     micDisable?: boolean
     userName?: string
+    loading?: boolean
 }
 
-const CallScreen = ({ onMicControl, startTimer = false, userName = "Tamil Selvan", micDisable = false, onVolumeControl, onCallEnd, isMute = false, speaker, status, video = false, onVideoControl }: CallScreenProps) => {
+const CallScreen = ({ onMicControl, startTimer = false, loading = false, userName = '', micDisable = false, onVolumeControl, onCallEnd, isMute = false, speaker, status, video = false, onVideoControl }: CallScreenProps) => {
+
+    function getShortName(fullName: string) {
+        const names = fullName.split(' ');
+
+        if (names.length === 1) {
+            return names[0].substring(0, 2).toUpperCase();
+        }
+
+        const firstNameInitial = names[0][0].toUpperCase();
+        const lastNameInitial = names[names.length - 1][0].toUpperCase();
+        return `${firstNameInitial}${lastNameInitial}`;
+    }
+
+
     return (
         <div className='text-center'>
             <h1 className='display-2 mb-4'>{userName}</h1>
             <div>
-                <AnimatedImage name={"TS"} shouldBlink={isMute} />
+                <AnimatedImage show={loading} name={getShortName(userName)} shouldBlink={isMute} />
             </div>
             <div className='text-center my-3'>
                 <small className="h4 text-center text-black font-weight-bold">
@@ -88,7 +103,7 @@ const CallScreen = ({ onMicControl, startTimer = false, userName = "Tamil Selvan
                 </Button>
             </div>
             {
-                video && <div className='position-absolute row justify-content-end top-2 right-4'>
+                video && <div className='position-absolute  justify-content-end bottom-9 right-4'>
                     <WebCamRecorder />
                 </div>
             }

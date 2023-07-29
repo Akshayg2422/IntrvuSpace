@@ -10,6 +10,11 @@ export interface DashboardProp {
   questionSection: any
   selectedQuestionForm: any
   formSectionQuestions: any
-  basicReport:any
-  myPastInterviews:any
+  basicReport: any
+  myPastInterviews: any
+  scheduleId: any
+  generateQuestionSections: any
+  generateSectionsAndQuestions: any
+  questionDetails: any
+
 }

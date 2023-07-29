@@ -52,3 +52,19 @@ export const registerAsMemberAPi = payload => post(URL.URL_REGISTER_AS_MEMBER, p
 //URL_MEMBER_LOGIN_USING_PASSWORD
 
 export const memberLoginUsingPasswordApi = payload => post(URL.URL_MEMBER_LOGIN_USING_PASSWORD, payload, {});
+
+// GENERATE_SECTION_QUESTIONS
+
+export const generateSectionQuestionsApi = payload => post(URL.URL_GENERATE_SECTION_QUESTIONS, payload, {});
+
+// URL_GENERATE_FORM_SECTIONS_AND_QUESTIONS
+
+export const generateFormSectionsAndQuestionsApi = payload => post(URL.URL_GENERATE_FORM_SECTIONS_AND_QUESTIONS, payload, {});
+
+// UPDATE_QUESTION_DETAILS
+
+export const updateQuestionDetailsApi = payload => post(URL.URL_UPDATE_QUESTION_DETAILS, payload, {});
+
+
+
+

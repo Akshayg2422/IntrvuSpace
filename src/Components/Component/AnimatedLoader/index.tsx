@@ -23,14 +23,14 @@ const DarkBackground = styled.div<{ disappear: boolean }>`
     `}
 `;
 
-function AnimatedLoader({ loading }) {
+function AnimatedLoader() {
 
     return (
         <div className="">
-            <DarkBackground disappear={loading}>
-                <div className="loader-38">
+            {/* <DarkBackground disappear={loading}> */}
+                <div className="loader-64">
                 </div>
-            </DarkBackground>
+            {/* </DarkBackground> */}
         </div>
     );
 }

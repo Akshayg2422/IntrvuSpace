@@ -370,3 +370,76 @@ export const getMyPastInterviewsFailure = (error: any) => {
     payload: error
   }
 }
+
+
+// SELECTED_SCHEDULE_ID
+
+export const selectedScheduleId = (id: any) => {
+  return {
+    type: ActionTypes.SELECTED_SCHEDULE_ID,
+    payload: id
+  }
+}
+
+// GENERATE_SECTION_QUESTIONS
+
+export const fetchGenerateSectionQuestions = (params: any) => {
+  return {
+    type: ActionTypes.FETCH_GENERATE_SECTION_QUESTIONS,
+    payload: params,
+  };
+};
+export const fetchGenerateSectionQuestionsSuccess = (response: any) => {
+  return {
+    type: ActionTypes.FETCH_GENERATE_SECTION_QUESTIONS_SUCCESS,
+    payload: response
+  }
+}
+export const fetchGenerateSectionQuestionsFailure = (error: any) => {
+  return {
+    type: ActionTypes.FETCH_GENERATE_SECTION_QUESTIONS_FAILURE,
+    payload: error
+  }
+}
+
+// GENERATE_FORM_SECTIONS_AND_QUESTIONS 
+
+export const fetchGenerateFormSectionsAndQuestions = (params: any) => {
+  return {
+    type: ActionTypes.FETCH_GENERATE_FORM_SECTIONS_AND_QUESTIONS,
+    payload: params,
+  };
+};
+export const fetchGenerateFormSectionsAndQuestionsSuccess = (response: any) => {
+  return {
+    type: ActionTypes.FETCH_GENERATE_FORM_SECTIONS_AND_QUESTIONS_SUCCESS,
+    payload: response
+  }
+}
+export const fetchGenerateFormSectionsAndQuestionsFailure = (error: any) => {
+  return {
+    type: ActionTypes.FETCH_GENERATE_FORM_SECTIONS_AND_QUESTIONS_FAILURE,
+    payload: error
+  }
+}
+
+// FETCH_UPDATE_QUESTION_DETAILS
+
+export const fetchUpdateQuestionDetails = (params: any) => {
+  return {
+    type: ActionTypes.FETCH_UPDATE_QUESTION_DETAILS,
+    payload: params,
+  };
+};
+export const fetchUpdateQuestionDetailsSuccess = (response: any) => {
+  return {
+    type: ActionTypes.FETCH_UPDATE_QUESTION_DETAILS_SUCCESS,
+    payload: response
+  }
+}
+export const fetchUpdateQuestionDetailsFailure = (error: any) => {
+  return {
+    type: ActionTypes.FETCH_UPDATE_QUESTION_DETAILS_FAILURE,
+    payload: error
+  }
+}

@@ -1,8 +1,9 @@
 import classNames from "classnames";
 import "./AnimatedImageFrame.scss";
 import { Col, Row } from "reactstrap";
+import { AnimatedLoader } from "@Components";
 
-const AnimatedImage = ({ name, shouldBlink }) => {
+const AnimatedImage = ({ name, shouldBlink, show }) => {
   const imageClasses = classNames("animated-image", { blink: shouldBlink });
 
   return (
@@ -18,7 +19,7 @@ const AnimatedImage = ({ name, shouldBlink }) => {
             zIndex: '999'
           }}
         >
-          {name}
+          {!show ? name : <div style={{ marginLeft: 35 }}> <AnimatedLoader /></div>}
         </div>
       </a>
     </div>
