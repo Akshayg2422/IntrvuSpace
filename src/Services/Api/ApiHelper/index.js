@@ -31,7 +31,7 @@ const getHeaders = async () => {
   try {
 
     // const value = await localStorage.getItem(USER_TOKEN);
-    const value  = 'ed7dbfeb7b7dcf64f7f5e10e30234e4be31f7f93'
+    const value  = '31e514b7d36ecf2ca216a20c74e717ff7c4223ae'
     
 
     if (value) {
