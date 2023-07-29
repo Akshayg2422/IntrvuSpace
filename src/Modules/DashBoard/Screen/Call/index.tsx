@@ -22,6 +22,7 @@ function Call() {
     const [type, setType] = useState('')
     const is_Start = false
 
+    // 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
     const OPENAI_API_TOKEN = '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'
 
 
@@ -43,11 +44,11 @@ function Call() {
         streaming: true
     })
 
-    useEffect(() => {
-        if (is_Start === false) {
-            proceedModal.show()
-        }
-    }, [])
+    // useEffect(() => {
+    //     if (is_Start === false) {
+    //         proceedModal.show()
+    //     }
+    // }, [])
 
     useEffect(() => {
         if (isScreenRecording) {
@@ -78,7 +79,7 @@ function Call() {
     //         return () => clearTimeout(timer);
     //     }
     // }, [type]);
-    
+
 
     let timerId: any;
     const handleMicControl = () => {
@@ -150,9 +151,8 @@ function Call() {
     }
 
 
-
     return (
-        <div className='h-100vh  d-flex  align-items-center justify-content-center' style={{ backgroundColor: '#54575c' }}>
+            <Modal isOpen={true} size='xl'  onClose={() => goBack()} >
             <CallScreen
                 status='Connected'
                 startTimer={isScreenRecording}
@@ -173,24 +173,7 @@ function Call() {
                 } />
 
             <AnimatedLoader loading={showLoader} />
-            < Modal size={'sm'} isOpen={proceedModal.visible}
-                onClose={() => {
-                    proceedModal.hide()
-                    goBack()
-                    isScreenRecording && stopScreenRecording()
-                }} >
-                <div className="text-center ">
-                    <Button color='secondary' size={'md'}
-                        text={"RESUME"}
-                        onClick={() => handleResume()}
-                    />
-                    <Button size={'md'}
-                        text={"START"}
-                        onClick={() => handleStart()}
-                    />
-                </div>
-            </Modal >
-        </div>
+        </Modal>
     )
 }
 

@@ -4,10 +4,6 @@ import styled, { css } from 'styled-components';
 
 const DarkBackground = styled.div<{ disappear: boolean }>`
   display: none; /* Hidden by default */
-  // position: fixed; /* Stay in place */
-  // z-index: 999; /* Sit on top */
-  // left: 0;
-  // top: 0;
   position: fixed;
   top: 0;
   left: 0;
@@ -33,8 +29,6 @@ function AnimatedLoader({ loading }) {
         <div className="">
             <DarkBackground disappear={loading}>
                 <div className="loader-38">
-                    {/* <i className="fas fa-window-restore"></i> */}
-                    {/* fas fa-window-restore */}
                 </div>
             </DarkBackground>
         </div>

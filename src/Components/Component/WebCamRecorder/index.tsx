@@ -7,7 +7,7 @@ const WebCamRecorder = () => {
 
   return (
     <>
-      <Webcam style={{ height: '40%', width: '40%' }} audio={false} ref={webcamRef} screenshotFormat="image/jpeg" />
+      <Webcam style={{ height: '30%', width: '30%' }} audio={false} ref={webcamRef} screenshotFormat="image/jpeg" />
     </>
   );
 };

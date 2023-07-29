@@ -8,20 +8,20 @@ const AnimatedImage = ({ name, shouldBlink }) => {
   return (
 
     <div className="card-profile-image">
-      <a className={`avatar rounded-circle ${imageClasses}`}>
-        <div className="name-overlay">
+      <a className={`avatar rounded-circle ${imageClasses}`}
+        style={{
+          backgroundColor: '#42f542'
+        }}
+      >
+        <div className="name-overlay text-white position-absolute "
+          style={{
+            zIndex: '999'
+          }}
+        >
           {name}
         </div>
       </a>
     </div>
-    //   <div className="card-profile-image">
-    //     <a  className={`avatar rounded-circle ${imageClasses}`}>
-    //       <div className="name-overlay">
-    //         {name}
-    //       </div>
-    //     </a>
-    // </div>
-
   )
 };
 
