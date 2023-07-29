@@ -272,6 +272,62 @@ function* getMyPastInterviewsSaga(action) {
   }
 }
 
+// generateSectionQuestionsApi
+
+function* generateSectionQuestionsSaga(action) {
+  try {
+    const response = yield call(Api.generateSectionQuestionsApi, action.payload.params);
+    console.log(JSON.stringify(response) + '========getMyPastInterviewsSaga');
+    if (response.success) {
+      yield put(Action.fetchGenerateSectionQuestionsSuccess(response));
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield put(Action.fetchGenerateSectionQuestionsFailure(response.error_message));
+      yield call(action.payload.onError(response));
+    }
+  } catch (error) {
+    yield put(Action.fetchGenerateSectionQuestionsFailure(error));
+    yield call(action.payload.onError(error));
+  }
+}
+
+// generateFormSectionsandQuestions
+
+function* generateFormSectionsAndQuestionsSaga(action) {
+  try {
+    const response = yield call(Api.generateFormSectionsAndQuestionsApi, action.payload.params);
+    console.log(JSON.stringify(response) + '========getMyPastInterviewsSaga');
+    if (response.success) {
+      yield put(Action.fetchGenerateFormSectionsAndQuestionsSuccess(response));
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield put(Action.fetchGenerateFormSectionsAndQuestionsFailure(response.error_message));
+      yield call(action.payload.onError(response));
+    }
+  } catch (error) {
+    yield put(Action.fetchGenerateFormSectionsAndQuestionsFailure(error));
+    yield call(action.payload.onError(error));
+  }
+}
+
+// updateQuestionDetailsApi
+
+function* updateQuestionDetailsApiSaga(action) {
+  try {
+    const response = yield call(Api.updateQuestionDetailsApi, action.payload.params);
+    console.log(JSON.stringify(response) + '========getMyPastInterviewsSaga');
+    if (response.success) {
+      yield put(Action.fetchUpdateQuestionDetailsSuccess(response));
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield put(Action.fetchUpdateQuestionDetailsFailure(response.error_message));
+      yield call(action.payload.onError(response));
+    }
+  } catch (error) {
+    yield put(Action.fetchUpdateQuestionDetailsFailure(error));
+    yield call(action.payload.onError(error));
+  }
+}
 
 function* DashboardSaga() {
   yield takeLatest(Action.GET_START_CHAT, getChatSaga);
@@ -289,9 +345,9 @@ function* DashboardSaga() {
   yield takeLatest(Action.GET_FORM_SECTION_QUESTIONS, getFormSectionsQuestionsSaga);
   yield takeLatest(Action.FETCH_BASIC_REPORT, getBasicReportSaga);
   yield takeLatest(Action.GET_MY_PAST_INTERVIEWS, getMyPastInterviewsSaga);
-
-
-
+  yield takeLatest(Action.FETCH_GENERATE_SECTION_QUESTIONS, generateSectionQuestionsSaga);
+  yield takeLatest(Action.FETCH_GENERATE_FORM_SECTIONS_AND_QUESTIONS, generateFormSectionsAndQuestionsSaga);
+  yield takeLatest(Action.FETCH_UPDATE_QUESTION_DETAILS, updateQuestionDetailsApiSaga);
 }
 
 export default DashboardSaga;

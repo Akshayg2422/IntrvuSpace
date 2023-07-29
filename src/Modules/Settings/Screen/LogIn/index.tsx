@@ -12,7 +12,6 @@ import { registerAsMember, memberLoginUsingPassword, fetchOTP, settingRegisterDa
 
 
 function Login() {
-
     const { goTo } = useNavigation()
     const dispatch = useDispatch()
     const password = useInput('')
@@ -121,12 +120,10 @@ function Login() {
             <div className="container-fluid ">
                 <div className="row">
                     <LoginSideContent />
-
-                    {/*  */}
                     {!loginWithOtp ?
-                        <div className="col-sm-6 row align-items-center mx-auto pl-lg-8 pl-sm-0 pl-5 pt-6 ">
-                            <div className="row ">
-                                <div className="mb--2">
+                        <div className="col d-flex justify-content-center align-items-center ">
+                            <div className="col-8">
+                                <div className="mb--2 ml-4">
                                     <h2 className="text-black mb--3">Login in to your Account</h2><br></br>
                                     <h2 className="font-weight-normal display-4 text-black mt-0"
                                         style={{
@@ -138,7 +135,7 @@ function Login() {
                                         }}
                                     ><b>Register</b></a></h2>
                                 </div>
-                                <div className=" col-sm-9  pr-3 ml-lg--3 px-0 ml-sm-0 ml--2"
+                                <div className=""
                                     style={{
                                         // zoom:'90%'
                                         scale: '0.9'
@@ -243,13 +240,13 @@ function Login() {
                             </div>
                         </div>
                         :
-                        <div className="col-sm-6 row align-items-center mx-auto pl-lg-8 pl-sm-0 pl-5 pt-4"
+                        <div className="col d-flex justify-content-center align-items-center "
                             style={{
                                 scale: '0.97'
                             }}
                         >
-                            <div className="row ">
-                                <div className="mb--2">
+                            <div className="col-8">
+                                <div className="mb--2 ml-4">
                                     <h2 className="text-black mb--3">Login in to your Account</h2><br></br>
                                     <h2 className="font-weight-normal display-4 text-black mt-0"
                                         style={{
@@ -264,7 +261,7 @@ function Login() {
                                         }}
                                     ><b>Register</b></a></h2>
                                 </div>
-                                <div className=" col-sm-9  pr-3 ml-lg--3 px-0 ml-sm-0 ml--2"
+                                <div className=""
                                     style={{
                                         // zoom:'90%'
                                         scale: '0.9'

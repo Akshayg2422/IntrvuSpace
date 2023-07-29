@@ -87,7 +87,7 @@ function Report() {
             console.log('opopopopo', el)
             if (el === 'skill_matrix') {
                 basicReportData[el].sections.map((item) => {
-                    count = count + +item.rating / basicReportData[el].sections.length
+                    count = count + +basicReportData[el].overal_percent / basicReportData[el].sections.length
                 })
             }
             else if (Array.isArray(basicReportData[el])) {
@@ -232,18 +232,18 @@ function Report() {
                                                                                             style={{
                                                                                                 fontSize: '12px'
                                                                                             }}
-                                                                                        >{heading === 'skill_matrix' ? +calculateRating(basicReportData[heading].sections) : +calculateRating(basicReportData[heading])}%</span>
+                                                                                        >{heading === 'skill_matrix' ? +basicReportData[heading].overal_percent : +calculateRating(basicReportData[heading])}%</span>
                                                                                     </div>
                                                                                 </div>
                                                                                 <Progress
                                                                                     className='mt--2'
-                                                                                    max="100" value={heading === 'skill_matrix' ? +calculateRating(basicReportData[heading].sections) : +calculateRating(basicReportData[heading])}
+                                                                                    max="100" value={heading === 'skill_matrix' ? +basicReportData[heading].overal_percent : +calculateRating(basicReportData[heading])}
                                                                                     style={{
                                                                                         height: '6px',
                                                                                     }}
                                                                                     barStyle={
                                                                                         {
-                                                                                            backgroundColor: colorVariant(heading === 'skill_matrix' ? +calculateRating(basicReportData[heading].sections) : +calculateRating(basicReportData[heading]))
+                                                                                            backgroundColor: colorVariant(heading === 'skill_matrix' ? +basicReportData[heading].overal_percent : +calculateRating(basicReportData[heading]))
                                                                                         }
                                                                                     }
                                                                                 />
@@ -275,10 +275,10 @@ function Report() {
                                                         <h4 className='font-weight-bolder text-black mb-4 text-uppercase'>{'SKILL MATRIX'}</h4>
                                                         <div className='font-weight-bolder display-4'
                                                             style={{
-                                                                color: colorVariant(calculateRating(basicReportData[heading].sections))
+                                                                color: colorVariant(+basicReportData[heading].overal_percent)
                                                             }}
                                                         >
-                                                            {calculateRating(basicReportData[heading].sections)}
+                                                            {+basicReportData[heading].overal_percent}
                                                         </div>
                                                     </div>
 

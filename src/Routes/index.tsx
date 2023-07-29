@@ -1,5 +1,5 @@
 import { icons } from '@Assets'
-import { Designation, WeightageCountForm, CreateQuestionForm, Clients, Sector, Questions, Call, Report, QuestionSections, AnalyzingAnimation, Schedules, Login, Otp, Splash, Register, LoginWithOtp, AdminLogin } from '@Modules';
+import { Designation, WeightageCountForm, CreateQuestionForm, Clients, Sector, Questions, Call, Report, QuestionSections, AnalyzingAnimation, Schedules, Login, Otp, Splash, Register, LoginWithOtp, AdminLogin } from "@Modules";
 
 
 
@@ -112,7 +112,7 @@ export const DASHBOARD_ROUTES = [
 export const HOME_ROUTES = [
   {
     path: ROUTES['designation-module'].designation,
-    name: "Group",
+    name: "Designation",
     icon: icons.task,
     layout: "",
     component: <Designation />
@@ -139,6 +139,9 @@ export const HOME_ROUTES = [
   //   component: <Dashboard />
   // },
 ];
+
+
+
 
 export * from "./RequireAuth";
 export * from "./RequireHome";

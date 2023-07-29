@@ -2,7 +2,7 @@ import { Divider, Button, showToast } from '@Components'
 import React, { useEffect } from 'react'
 import { Input } from 'reactstrap'
 import { LoginSideContent } from '../../Container'
-import { OTP_RESEND_DEFAULT_TIME } from '@Utils';
+import { OTP_RESEND_DEFAULT_TIME, USER_TOKEN } from '@Utils';
 import { useInput, useNavigation, useTimer } from '@Hooks';
 import { ROUTES } from '@Routes';
 import { useDispatch, useSelector } from 'react-redux';
@@ -32,6 +32,7 @@ function Otp() {
             params,
             onSuccess: (response: any) => () => {
                 if (response.token) {
+                    localStorage.setItem(USER_TOKEN, response.token);
                     goTo(ROUTES['auth-module'].splash)
                 }
                 else {
