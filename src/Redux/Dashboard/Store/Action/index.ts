@@ -349,3 +349,24 @@ export const fetchBasicReportFailure = (error: any) => {
     payload: error
   }
 }
+
+// getMyPastInterviews
+
+export const getMyPastInterviews = (params: any) => {
+  return {
+    type: ActionTypes.GET_MY_PAST_INTERVIEWS,
+    payload: params,
+  };
+};
+export const getMyPastInterviewsSuccess = (response: any) => {
+  return {
+    type: ActionTypes.GET_MY_PAST_INTERVIEWS_SUCCESS,
+    payload: response
+  }
+}
+export const getMyPastInterviewsFailure = (error: any) => {
+  return {
+    type: ActionTypes.GET_MY_PAST_INTERVIEWS_FAILURE,
+    payload: error
+  }
+}

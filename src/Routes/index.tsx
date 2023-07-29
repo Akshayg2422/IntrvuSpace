@@ -1,5 +1,5 @@
 import { icons } from '@Assets'
-import { Designation, WeightageCountForm, CreateQuestionForm, Clients, Sector, Questions, Call, Report, QuestionSections, AnalyzingAnimation, Login } from '@Modules';
+import { Designation, WeightageCountForm, CreateQuestionForm, Clients, Sector, Questions, Call, Report, QuestionSections, AnalyzingAnimation, Schedules,Login, Otp, Splash, Register } from '@Modules';
 
 
 
@@ -13,18 +13,18 @@ export const ROUTES = {
   },
   'designation-module': {
     Dashboard: "/dashboard",
-    SCHEDULE: "/schedule",
     'weightage-count-form': "/weightage-count-form",
     'create-question-form': "/create-question-form",
     'sector': "/sector",
     'call': '/call',
     dashboard: "/dashboard",
-    group: "/group",
+    designation: "/designation",
     client: "/client",
     questions: "/questions",
     report: '/report',
     'question-sections': '/question-sections',
-    'analyzing-animation': '/analyzing-animation'
+    'analyzing-animation': '/analyzing-animation',
+    schedules:'/schedules'
   }
 }
 
@@ -34,7 +34,24 @@ export const AUTH_ROUTES = [
     id: 1,
     path: ROUTES['auth-module'].login,
     component: <Login />
+  },
+  {
+    id: 2,
+    path: ROUTES['auth-module'].otp,
+    component: <Otp />
+  },
+  {
+    id: 3,
+    path: ROUTES['auth-module'].splash,
+    component: <Splash />
+  },
+  {
+    id: 3,
+    path: ROUTES['auth-module'].register,
+    component: <Register />
   }
+
+
 ]
 
 export const DASHBOARD_ROUTES = [
@@ -73,11 +90,16 @@ export const DASHBOARD_ROUTES = [
     path: ROUTES['designation-module']['analyzing-animation'],
     component: <AnalyzingAnimation />
   },
+  {
+    id: 8,
+    path: ROUTES['designation-module']['schedules'],
+    component: <Schedules />
+  },
 ]
 
 export const HOME_ROUTES = [
   {
-    path: ROUTES['designation-module'].group,
+    path: ROUTES['designation-module'].designation,
     name: "Group",
     icon: icons.task,
     layout: "",

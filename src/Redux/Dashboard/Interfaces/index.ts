@@ -11,4 +11,5 @@ export interface DashboardProp {
   selectedQuestionForm: any
   formSectionQuestions: any
   basicReport:any
+  myPastInterviews:any
 }

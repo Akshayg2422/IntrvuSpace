@@ -2,6 +2,7 @@
  * sample api
  */
 const ASSISTANT = '/ivoassistant/'
+const EMPLOYEE = '/employee/'
 
 
 export const GET_START_CHAT = ASSISTANT + 'processCall';
@@ -52,5 +53,16 @@ export const URL_GET_FORM_SECTION_QUESTIONS = ASSISTANT + 'getFormSectionQuestio
 
 export const URL_GET_BASIC_REPORT = ASSISTANT + 'getBasicReport'
 
+// getMyPastInterviews
 
+ export const URL_GET_MY_PAST_INTERVIEWS = ASSISTANT + 'getMyPastInterviews'
+
+ // register as member
+
+ export const URL_REGISTER_AS_MEMBER = EMPLOYEE + 'registerAsMember'
+
+
+  // memberLoginUsingPassword
+
+  export const URL_MEMBER_LOGIN_USING_PASSWORD = EMPLOYEE + 'memberLoginUsingPassword'
 
