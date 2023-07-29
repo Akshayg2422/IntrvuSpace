@@ -18,7 +18,7 @@ type CallScreenProps = {
 
 
 const CallScreen = ({ onMicControl, startTimer = false, micDisable = false, onVolumeControl, onCallEnd, isMute = false, speaker, status, video = false, onVideoControl }: CallScreenProps) => {
-    const { time, formatTime } = useTimer();
+    // const { time, formatTime } = useTimer();
     // const imageUrl = "https://www.pngitem.com/pimgs/m/581-5813504_avatar-dummy-png-transparent-png.png"
     return (
         <div className='text-center'>
@@ -36,7 +36,7 @@ const CallScreen = ({ onMicControl, startTimer = false, micDisable = false, onVo
             <div className=" my-4">
                 <ButtonGroup>
                     <Button className='border-0' color="secondary" type="button">
-                        {startTimer ? formatTime(time) : '00:00'}
+                        {/* {startTimer ? formatTime(time) : '00:00'} */}
                     </Button>
                     <Button className='border-0' disabled={micDisable} color="secondary" type="button" onClick={onMicControl}>
                         {isMute ? <i className="fas fa-microphone"></i> : <i className="fas fa-microphone-slash"></i>}

@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from 'react'
 import { SearchInput, Button, Modal, Divider, NoDataFound, ButtonGroup, Input, TextArea, DesignationItem } from '@Components'
-import { useDropDown, useInput, useModal } from '@Hooks'
+import { useDropDown, useInput, useModal, useNavigation } from '@Hooks'
 import { useSelector, useDispatch } from 'react-redux'
 import { Sectors } from '@Modules'
 import { getKnowledgeGroups, getMyPastInterviews, getSectors } from '@Redux'
 import { capitalizeFirstLetter } from '@Utils'
 import { Card, CardBody, FormGroup, InputGroup, InputGroupAddon, InputGroupText, Nav, NavItem, NavLink } from 'reactstrap'
 import classnames from 'classnames'
+import { ROUTES } from '@Routes'
 function Clients() {
 
     const FILTER = [{ id: 1, title: 'All' }, { id: 2, title: 'Past' }]
 
     const dispatch = useDispatch()
+    const { goTo } = useNavigation()
 
-    const { knowledgeGroups, selectedClientSector,myPastInterviews } = useSelector((state: any) => state.DashboardReducer)
+    const { knowledgeGroups, selectedClientSector, myPastInterviews } = useSelector((state: any) => state.DashboardReducer)
     const addJd = useModal(false);
     const filter = useDropDown(FILTER[0]);
     const search = useInput('');
@@ -35,18 +37,19 @@ function Clients() {
     }, [])
 
 
-    console.log('--------->myPastInterviews.....>',myPastInterviews)
+    console.log('--------->myPastInterviews.....>', myPastInterviews)
     function submitJdApiHandler() {
     }
     // getMyPastInterviews
 
-    
+
     const getMypastInterviewApi = () => {
         const params = {}
 
         dispatch(getMyPastInterviews({
             params,
             onSuccess: (response: any) => () => {
+                goTo(ROUTES['auth-module'].otp)
             },
             onError: (error) => () => {
 
@@ -134,7 +137,7 @@ function Clients() {
                         >
                             <NavItem>
                                 <NavLink
-                                    className={"mb-sm-3 mb-md-0 bg-primary text-white font-weight-bold" }
+                                    className={"mb-sm-3 mb-md-0 bg-primary text-white font-weight-bold"}
                                     role="tab"
                                     onClick={
                                         addJd.show

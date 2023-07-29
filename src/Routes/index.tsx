@@ -1,5 +1,5 @@
 import { icons } from '@Assets'
-import { Designation, WeightageCountForm, CreateQuestionForm, Clients, Sector, Questions, Call, Report, QuestionSections, AnalyzingAnimation } from '@Modules';
+import { Designation, WeightageCountForm, CreateQuestionForm, Clients, Sector, Questions, Call, Report, QuestionSections, AnalyzingAnimation, Login, Otp, Splash, Register } from '@Modules';
 
 
 
@@ -19,7 +19,7 @@ export const ROUTES = {
     'sector': "/sector",
     'call': '/call',
     dashboard: "/dashboard",
-    group: "/group",
+    designation: "/designation",
     client: "/client",
     questions: "/questions",
     report: '/report',
@@ -27,6 +27,32 @@ export const ROUTES = {
     'analyzing-animation': '/analyzing-animation'
   }
 }
+
+
+export const AUTH_ROUTES = [
+  {
+    id: 1,
+    path: ROUTES['auth-module'].login,
+    component: <Login />
+  },
+  {
+    id: 2,
+    path: ROUTES['auth-module'].otp,
+    component: <Otp />
+  },
+  {
+    id: 3,
+    path: ROUTES['auth-module'].splash,
+    component: <Splash />
+  },
+  {
+    id: 3,
+    path: ROUTES['auth-module'].register,
+    component: <Register />
+  }
+
+
+]
 
 export const DASHBOARD_ROUTES = [
   {
@@ -68,7 +94,7 @@ export const DASHBOARD_ROUTES = [
 
 export const HOME_ROUTES = [
   {
-    path: ROUTES['designation-module'].group,
+    path: ROUTES['designation-module'].designation,
     name: "Group",
     icon: icons.task,
     layout: "",
