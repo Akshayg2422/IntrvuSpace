@@ -1,17 +1,19 @@
-import { Divider, Button } from '@Components'
+import { Divider, Button, showToast } from '@Components'
 import React, { useEffect } from 'react'
 import { Input } from 'reactstrap'
 import { LoginSideContent } from '../../Container'
 import { OTP_RESEND_DEFAULT_TIME } from '@Utils';
 import { useInput, useNavigation, useTimer } from '@Hooks';
 import { ROUTES } from '@Routes';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchMemberUsingLoginOtp } from '@Redux';
 
 function Otp() {
     const { seconds, setSeconds } = useTimer(OTP_RESEND_DEFAULT_TIME);
     const Otp = useInput('')
     const { goTo } = useNavigation()
     const { registerData } = useSelector((state: any) => state.DashboardReducer);
+    const dispatch = useDispatch()
 
     console.log("registerData", registerData)
     useEffect(() => {
@@ -20,9 +22,27 @@ function Otp() {
 
 
     const loginOtp = () => {
-        if (Otp.value === '1234') {
-            goTo(ROUTES['auth-module'].splash)
+
+        const params = {
+            mobile_number: registerData?.mobile_number,
+            otp: Otp.value
         }
+
+        dispatch(fetchMemberUsingLoginOtp({
+            params,
+            onSuccess: (response: any) => () => {
+                if (response.token) {
+                    goTo(ROUTES['auth-module'].splash)
+                }
+                else {
+                    showToast(response.error_message, 'error')
+                }
+            },
+            onError: (error) => () => {
+                showToast(error.error_message, 'error')
+            },
+        }))
+
     }
 
     return (
@@ -50,6 +70,7 @@ function Otp() {
                                 <div>
                                     <label className="h3 font-weight-bolder text-black">OTP</label>
                                     <Input
+                                        value={Otp.value}
                                         placeholder='Enter your OTP number'
                                         onChange={Otp.onChange}
                                     />

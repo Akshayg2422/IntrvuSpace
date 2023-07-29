@@ -61,11 +61,32 @@ function* fetchOtpSaga(action) {
     }
 }
 
+
+//get member using login otp
+
+function* fetchMemberLoginUsingOtpSaga(action) {
+    try {
+        const response = yield call(Api.fetchMemberLoginUsingOtpApi, action.payload.params);
+        console.log(JSON.stringify(response) + '========memberLoginUsingPasswordSuccess');
+        if (response) {
+            yield put(Action.fetchMemberUsingLoginOtpSuccess(response));
+            yield call(action.payload.onSuccess(response));
+        } else {
+            yield put(Action.fetchMemberUsingLoginOtpFailure(response.error_message));
+            yield call(action.payload.onError(response));
+        }
+    } catch (error) {
+        yield put(Action.fetchMemberUsingLoginOtpFailure(error));
+        yield call(action.payload.onError(error));
+    }
+}
+
 function* AuthSaga() {
 
     yield takeLatest(Action.MEMBER_LOGIN_USING_PASSWORD, memberLoginUsingPasswordSaga);
     yield takeLatest(Action.REGISTER_AS_MEMBER, registerAsMemberSaga);
     yield takeLatest(Action.FETCH_OTP, fetchOtpSaga);
+    yield takeLatest(Action.FETCH_MEMBER_USING_LOGIN_OTP, fetchMemberLoginUsingOtpSaga);
 
 
 }

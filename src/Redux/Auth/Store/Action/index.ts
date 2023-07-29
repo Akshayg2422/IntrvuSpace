@@ -74,3 +74,28 @@ export const fetchOTPFailure = (error: any) => {
         payload: error
     }
 }
+
+
+// get member login using otp
+
+export const fetchMemberUsingLoginOtp = (params: any) => {
+    return {
+        type: ActionTypes.FETCH_MEMBER_USING_LOGIN_OTP,
+        payload: params,
+    };
+};
+
+export const fetchMemberUsingLoginOtpSuccess = (response: any) => {
+
+    return {
+        type: ActionTypes.FETCH_MEMBER_USING_LOGIN_OTP_SUCCESS,
+        payload: response
+    }
+}
+
+export const fetchMemberUsingLoginOtpFailure = (error: any) => {
+    return {
+        type: ActionTypes.FETCH_MEMBER_USING_LOGIN_OTP_FAILURE,
+        payload: error
+    }
+}

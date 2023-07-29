@@ -67,7 +67,11 @@ export const URL_GET_BASIC_REPORT = ASSISTANT + 'getBasicReport'
   export const URL_MEMBER_LOGIN_USING_PASSWORD = EMPLOYEE + 'memberLoginUsingPassword'
 
 
-  // memberLoginUsingPassword
+  // memberLoginUsingPassword 
 
   export const URL_GET_OTP = EMPLOYEE + 'getOtp'
+
+  //memberLoginUsingOtp
+
+  export const URL_MEMBER_LOGIN_USING_OTP = EMPLOYEE + 'memberLoginUsingOtp'
 

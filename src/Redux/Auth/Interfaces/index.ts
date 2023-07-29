@@ -1,6 +1,7 @@
 export interface AuthProps {
-   
-    registerDetails:any
-    loginUser:any,
-    OTP:any
-  }
+
+  registerDetails: any
+  loginUser: any,
+  OTP: any,
+  memberUsingLoginOtp: any
+}

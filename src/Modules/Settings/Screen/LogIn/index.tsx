@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { ROUTES } from '@Routes'
 import { Card } from "reactstrap";
 import { LoginSideContent } from "../../Container";
-import { registerAsMember, memberLoginUsingPassword, fetchOTP } from '@Redux'
+import { registerAsMember, memberLoginUsingPassword, fetchOTP, settingRegisterData } from '@Redux'
 
 
 
@@ -64,19 +64,18 @@ function Login() {
 
     const memberLoginHandler = () => {
 
-console.log('9090909900000000000000000000000000000')
         if (loginWithOtp) {
             const params = {
-                mobileNumber: mobileNumber.value
+                mobile_number: mobileNumber.value
             }
             dispatch(fetchOTP({
                 params,
                 onSuccess: (response: any) => () => {
                     if (response.success) {
-                        localStorage.setItem(USER_TOKEN, response.token);
+                        dispatch(settingRegisterData(params))
                         goTo(ROUTES['auth-module'].otp)
                     }
-                    else if (!response.success) {
+                    else  {
                         showToast(response.error_message, 'error')
                     }
                 },

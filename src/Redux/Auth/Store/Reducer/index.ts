@@ -7,7 +7,8 @@ import * as ActionTypes from '../ActionTypes'
 const initialState: AuthProps = {
     registerDetails: undefined,
     loginUser: undefined,
-    OTP: undefined
+    OTP: undefined,
+    memberUsingLoginOtp: undefined
 };
 
 
@@ -49,6 +50,19 @@ const AuthReducer = (state = initialState, action: any) => {
             break;
         case ActionTypes.FETCH_OTP_FAILURE:
             state = { ...state, OTP: undefined };
+            break;
+
+
+        //get member using login otp
+
+        case ActionTypes.FETCH_MEMBER_USING_LOGIN_OTP:
+            state = { ...state, memberUsingLoginOtp: undefined };
+            break;
+        case ActionTypes.FETCH_MEMBER_USING_LOGIN_OTP_SUCCESS:
+            state = { ...state, memberUsingLoginOtp: action.payload };
+            break;
+        case ActionTypes.FETCH_MEMBER_USING_LOGIN_OTP_FAILURE:
+            state = { ...state, memberUsingLoginOtp: undefined };
             break;
 
 

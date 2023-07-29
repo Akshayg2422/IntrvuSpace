@@ -56,3 +56,7 @@ export const memberLoginUsingPasswordApi = payload => post(URL.URL_MEMBER_LOGIN_
 //get otp
 
 export const fetchOTPApi = payload => post(URL.URL_GET_OTP, payload, {});
+
+//member login using otp
+
+export const fetchMemberLoginUsingOtpApi = payload => post(URL.URL_MEMBER_LOGIN_USING_OTP, payload, {});
