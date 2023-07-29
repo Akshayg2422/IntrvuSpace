@@ -11,14 +11,14 @@ function* registerAsMemberSaga(action) {
         const response = yield call(Api.registerAsMemberAPi, action.payload.params);
         console.log(JSON.stringify(response) + '========getMyPastInterviewsSaga');
         if (response.success) {
-            yield put(Action.getMyPastInterviewsSuccess(response));
+            yield put(Action.registerAsMemberSuccess(response));
             yield call(action.payload.onSuccess(response));
         } else {
-            yield put(Action.getMyPastInterviewsFailure(response.error_message));
+            yield put(Action.registerAsMemberFailure(response.error_message));
             yield call(action.payload.onError(response));
         }
     } catch (error) {
-        yield put(Action.getMyPastInterviewsFailure(error));
+        yield put(Action.registerAsMemberFailure(error));
         yield call(action.payload.onError(error));
     }
 }
@@ -29,7 +29,7 @@ function* memberLoginUsingPasswordSaga(action) {
     try {
         const response = yield call(Api.memberLoginUsingPasswordApi, action.payload.params);
         console.log(JSON.stringify(response) + '========memberLoginUsingPasswordSuccess');
-        if (response.success) {
+        if (response) {
             yield put(Action.memberLoginUsingPasswordSuccess(response));
             yield call(action.payload.onSuccess(response));
         } else {
@@ -45,6 +45,7 @@ function* memberLoginUsingPasswordSaga(action) {
 function* AuthSaga() {
 
     yield takeLatest(Action.MEMBER_LOGIN_USING_PASSWORD, memberLoginUsingPasswordSaga);
+    yield takeLatest(Action.REGISTER_AS_MEMBER, registerAsMemberSaga);
 
 
 }

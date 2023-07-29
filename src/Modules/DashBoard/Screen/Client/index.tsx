@@ -9,20 +9,21 @@ import { Card, CardBody, FormGroup, InputGroup, InputGroupAddon, InputGroupText,
 import classnames from 'classnames'
 import { ROUTES } from '@Routes'
 
+
 function Clients() {
 
     const FILTER = [{ id: 1, title: 'All' }, { id: 2, title: 'Past' }]
 
     const dispatch = useDispatch()
+    const { goTo } = useNavigation()
 
-    const { knowledgeGroups, selectedClientSector } = useSelector((state: any) => state.DashboardReducer)
+    const { knowledgeGroups, selectedClientSector, myPastInterviews } = useSelector((state: any) => state.DashboardReducer)
     const addJd = useModal(false);
     const filter = useDropDown(FILTER[0]);
     const search = useInput('');
     const [navList, setNavList] = useState<any>([])
     const [cardData, setCardData] = useState<any>([])
     const [navIndex, setNavIndex] = useState<any>(0)
-    const { goTo } = useNavigation()
 
 
 
@@ -36,9 +37,25 @@ function Clients() {
         fetchSectorData()
     }, [])
 
+
+    console.log('--------->myPastInterviews.....>', myPastInterviews)
     function submitJdApiHandler() {
     }
 
+
+    const getMypastInterviewApi = () => {
+        const params = {}
+
+        dispatch(getMyPastInterviews({
+            params,
+            onSuccess: (response: any) => () => {
+                goTo(ROUTES['auth-module'].otp)
+            },
+            onError: (error) => () => {
+
+            },
+        }))
+    }
 
     const fetchSectorData = () => {
         const params = {}
