@@ -68,3 +68,6 @@ export const updateQuestionDetailsApi = payload => post(URL.URL_UPDATE_QUESTION_
 
 
 
+//get otp
+
+export const fetchOTPApi = payload => post(URL.URL_GET_OTP, payload, {});

@@ -22,6 +22,7 @@ const initialState: DashboardProp = {
   generateQuestionSections: undefined,
   generateSectionsAndQuestions: undefined,
   questionDetails: undefined,
+  registerData: undefined
 };
 
 const DashboardReducer = (state = initialState, action: any) => {
@@ -239,6 +240,10 @@ const DashboardReducer = (state = initialState, action: any) => {
       state = { ...state, questionDetails: undefined };
       break;
 
+    // GET REGISTER DATA
+    case ActionTypes.GET_REGISTER_DATA:
+      state = { ...state, registerData: action.payload };
+      break;
 
     default:
       state = state;

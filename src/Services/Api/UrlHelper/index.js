@@ -77,3 +77,8 @@ export const URL_GET_BASIC_REPORT = ASSISTANT + 'getBasicReport'
   // updateQuestionDetails
 
   export const URL_UPDATE_QUESTION_DETAILS = ASSISTANT + 'updateQuestionDetails'
+
+  // memberLoginUsingPassword
+
+  export const URL_GET_OTP = EMPLOYEE + 'getOtp'
+

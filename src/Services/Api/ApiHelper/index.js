@@ -30,8 +30,7 @@ axios.interceptors.request.use(function (config) {
 const getHeaders = async () => {
   try {
 
-    // const value = await localStorage.getItem(USER_TOKEN);
-    const value  = '31e514b7d36ecf2ca216a20c74e717ff7c4223ae'
+    const value = await localStorage.getItem(USER_TOKEN);
     
 
     if (value) {

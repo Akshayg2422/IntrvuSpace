@@ -5,12 +5,15 @@ import { LoginSideContent } from '../../Container'
 import { OTP_RESEND_DEFAULT_TIME } from '@Utils';
 import { useInput, useNavigation, useTimer } from '@Hooks';
 import { ROUTES } from '@Routes';
+import { useSelector } from 'react-redux';
 
 function Otp() {
     const { seconds, setSeconds } = useTimer(OTP_RESEND_DEFAULT_TIME);
     const Otp = useInput('')
     const { goTo } = useNavigation()
+    const { registerData } = useSelector((state: any) => state.DashboardReducer);
 
+    console.log("registerData", registerData)
     useEffect(() => {
         setSeconds(OTP_RESEND_DEFAULT_TIME);
     }, [])
@@ -36,7 +39,7 @@ function Otp() {
                                         fontSize: '3vh'
                                     }}
                                 >Mobile Number </h2>
-                                <h4 className='text-black font-weight-normal py-2'>+91 - 8637680415 <i className="bi bi-pencil text-primary ml-3"></i></h4>
+                                <h4 className='text-black font-weight-normal py-2'>+91 - {registerData?.mobile_number} <i className="bi bi-pencil text-primary ml-3"></i></h4>
                             </div>
                             <div className=" col-sm-9  pr-3 ml-lg--3 px-0 ml-sm-0 ml--2 pt-1"
                                 style={{
@@ -55,7 +58,7 @@ function Otp() {
                                     You OTP should arrive in {(seconds < 10 ? "0" + seconds : seconds)} Seconds
                                 </h3>
                                 <h4 className='text-black  font-weight-normal text-sm'>
-                                    An OTP has been sent to 8637680415. You may not receive the OTP if the email/number is not registered with Mockeasy.
+                                    An OTP has been sent to {registerData?.mobile_number}. You may not receive the OTP if the email/number is not registered with Mockeasy.
                                 </h4>
 
                                 <div className="py-3 ">

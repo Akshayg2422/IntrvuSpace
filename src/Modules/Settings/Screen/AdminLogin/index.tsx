@@ -7,11 +7,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { ROUTES } from '@Routes'
 import { Card } from "reactstrap";
 import { LoginSideContent } from "../../Container";
-import { registerAsMember, memberLoginUsingPassword, fetchOTP } from '@Redux'
+import { registerAsMember, memberLoginUsingPassword } from '@Redux'
 
 
 
-function Login() {
+function AdminLogin() {
+
     const { goTo } = useNavigation()
     const dispatch = useDispatch()
     const password = useInput('')
@@ -40,7 +41,7 @@ function Login() {
     }
 
     const onSubmit = () => {
-        if (loginWithOtp === false) {
+        if (!loginWithOtp) {
             if (email.value.length === 0) {
                 showToast('Email ID  Cannot be empty', 'error')
             }
@@ -55,6 +56,9 @@ function Login() {
             if (mobileNumber.value.length === 0) {
                 showToast('Mobile Number  Cannot be empty', 'error')
             }
+            else if (password.value.length === 0) {
+                showToast('Password  Cannot be empty', 'error')
+            }
             else {
                 memberLoginHandler()
             }
@@ -62,58 +66,34 @@ function Login() {
     }
 
     const memberLoginHandler = () => {
-
-console.log('9090909900000000000000000000000000000')
-        if (loginWithOtp) {
-            const params = {
-                mobileNumber: mobileNumber.value
-            }
-            dispatch(fetchOTP({
-                params,
-                onSuccess: (response: any) => () => {
-                    if (response.success) {
-                        localStorage.setItem(USER_TOKEN, response.token);
-                        goTo(ROUTES['auth-module'].otp)
-                    }
-                    else if (!response.success) {
-                        showToast(response.error_message, 'error')
-                    }
-                },
-                onError: (error) => () => {
-                    showToast(error.error_message, 'error')
-                },
-            }))
-        }
-        else {
-            const params = {
-                ...(email.value && { email: email.value }),
-                password: password.value
-            }
-            dispatch(memberLoginUsingPassword({
-                params,
-                onSuccess: (response: any) => () => {
-                    // if (response.success) {
-                    //     localStorage.setItem(USER_TOKEN, response.token);
-                    //     goTo(ROUTES['auth-module'].splash)
-                    // }
-                    // else {
-                    //     showToast(response.error_message, 'error')
-                    // }
-                    if (response.token) {
-                        localStorage.setItem(USER_TOKEN, response.token);
-                        goTo(ROUTES['auth-module'].splash)
-                    }
-                    else if (!response.success) {
-                        showToast(response.error_message, 'error')
-                    }
-                },
-                onError: (error) => () => {
-                    showToast(error.error_message, 'error')
-                },
-            }))
+        const params = {
+            ...(email.value && { email: email.value }),
+            ...(mobileNumber.value && { mobile_number: mobileNumber.value }),
+            password: password.value
         }
 
-
+        dispatch(memberLoginUsingPassword({
+            params,
+            onSuccess: (response: any) => () => {
+                // if (response.success) {
+                //     localStorage.setItem(USER_TOKEN, response.token);
+                //     goTo(ROUTES['auth-module'].splash)
+                // }
+                // else {
+                //     showToast(response.error_message, 'error')
+                // }
+                if (response.token) {
+                    localStorage.setItem(USER_TOKEN, response.token);
+                    goTo(ROUTES['auth-module'].splash)
+                }
+                else if (!response.success) {
+                    showToast(response.error_message, 'error')
+                }
+            },
+            onError: (error) => () => {
+                showToast(error.error_message, 'error')
+            },
+        }))
     }
 
     return (
@@ -128,15 +108,6 @@ console.log('9090909900000000000000000000000000000')
                             <div className="row ">
                                 <div className="mb--2">
                                     <h2 className="text-black mb--3">Login in to your Account</h2><br></br>
-                                    <h2 className="font-weight-normal display-4 text-black mt-0"
-                                        style={{
-                                            fontSize: '3vh'
-                                        }}
-                                    >Don't have an account ? <a href="/register" className="text-primary pointer"
-                                        style={{
-                                            fontSize: '20px'
-                                        }}
-                                    ><b>Register</b></a></h2>
                                 </div>
                                 <div className=" col-sm-9  pr-3 ml-lg--3 px-0 ml-sm-0 ml--2"
                                     style={{
@@ -387,4 +358,4 @@ console.log('9090909900000000000000000000000000000')
     );
 }
 
-export { Login };
+export { AdminLogin };

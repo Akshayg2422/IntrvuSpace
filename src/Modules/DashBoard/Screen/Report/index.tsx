@@ -26,6 +26,13 @@ function Report() {
         getBasicReportData()
     }, [])
 
+    useEffect(() => {
+        if (basicReportData) {
+            removeDuplicates()
+
+        }
+    }, [basicReportData])
+
 
     const getBasicReportData = () => {
         basicReportLoader.show()
@@ -74,21 +81,24 @@ function Report() {
         return +overallPercent / data.length
     }
 
-    // let nottu
-    // function removeDuplicates(data) {
-    //     let a = Array.from(new Set(data));
-    //     let b = 0
-
-    //     a && a.filter((el: any) => {
-    //         b = b + (el)
-    //     })
-
-    //     nottu = b
-    //     // setCheck(b)
-    //     console.log("+overallPercent / data.length", b)
-
-    // }
-    // console.log('oioioi',nottu)
+    function removeDuplicates() {
+        let count = 0
+        Object.keys(basicReportData).map((el) => {
+            console.log('opopopopo', el)
+            if (el === 'skill_matrix') {
+                basicReportData[el].sections.map((item) => {
+                    count = count + +basicReportData[el].overal_percent / basicReportData[el].sections.length
+                })
+            }
+            else if (Array.isArray(basicReportData[el])) {
+                basicReportData[el].map((it) => {
+                    count = it.percent ? count + +it.percent / basicReportData[el].length : count + +it.rating / basicReportData[el].length
+                })
+            }
+        })
+        console.log("09090======================>", count)
+        setCheck(count)
+    }
 
 
 
@@ -191,7 +201,7 @@ function Report() {
                                                     color: colorVariant(+check * 10)
                                                 }}
                                             >
-                                                {check}
+                                                {Math.round(check / 3)}
                                             </h1>
                                         </div>
                                     </div>
@@ -222,18 +232,18 @@ function Report() {
                                                                                             style={{
                                                                                                 fontSize: '12px'
                                                                                             }}
-                                                                                        >{heading === 'skill_matrix' ? +calculateRating(basicReportData[heading].sections) : +calculateRating(basicReportData[heading])}%</span>
+                                                                                        >{heading === 'skill_matrix' ? +basicReportData[heading].overal_percent : +calculateRating(basicReportData[heading])}%</span>
                                                                                     </div>
                                                                                 </div>
                                                                                 <Progress
                                                                                     className='mt--2'
-                                                                                    max="100" value={heading === 'skill_matrix' ? +calculateRating(basicReportData[heading].sections) : +calculateRating(basicReportData[heading])}
+                                                                                    max="100" value={heading === 'skill_matrix' ? +basicReportData[heading].overal_percent : +calculateRating(basicReportData[heading])}
                                                                                     style={{
                                                                                         height: '6px',
                                                                                     }}
                                                                                     barStyle={
                                                                                         {
-                                                                                            backgroundColor: colorVariant(heading === 'skill_matrix' ? +calculateRating(basicReportData[heading].sections) : +calculateRating(basicReportData[heading]))
+                                                                                            backgroundColor: colorVariant(heading === 'skill_matrix' ? +basicReportData[heading].overal_percent : +calculateRating(basicReportData[heading]))
                                                                                         }
                                                                                     }
                                                                                 />
@@ -265,10 +275,10 @@ function Report() {
                                                         <h4 className='font-weight-bolder text-black mb-4 text-uppercase'>{'SKILL MATRIX'}</h4>
                                                         <div className='font-weight-bolder display-4'
                                                             style={{
-                                                                color: colorVariant(calculateRating(basicReportData[heading].sections))
+                                                                color: colorVariant(+basicReportData[heading].overal_percent)
                                                             }}
                                                         >
-                                                            {calculateRating(basicReportData[heading].sections)}
+                                                            {+basicReportData[heading].overal_percent}
                                                         </div>
                                                     </div>
 

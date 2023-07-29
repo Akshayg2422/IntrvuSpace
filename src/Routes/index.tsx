@@ -1,5 +1,5 @@
 import { icons } from '@Assets'
-import { Designation, WeightageCountForm, CreateQuestionForm, Clients, Sector, Questions, Call, Report, QuestionSections, AnalyzingAnimation, Schedules,Login, Otp, Splash, Register } from '@Modules';
+import { Designation, WeightageCountForm, CreateQuestionForm, Clients, Sector, Questions, Call, Report, QuestionSections, AnalyzingAnimation, Schedules, Login, Otp, Splash, Register, LoginWithOtp, AdminLogin } from "@Modules";
 
 
 
@@ -8,8 +8,10 @@ export const ROUTES = {
     login: '/login',
     otp: '/otp',
     splash: '/splash',
+    loginWithOtp: '/login-with-otp',
     register: '/register',
-    landing: '/'
+    landing: '/',
+    admin_login: '/login-admin'
   },
   'designation-module': {
     Dashboard: "/dashboard",
@@ -24,7 +26,7 @@ export const ROUTES = {
     report: '/report',
     'question-sections': '/question-sections',
     'analyzing-animation': '/analyzing-animation',
-    schedules:'/schedules'
+    schedules: '/schedules'
   }
 }
 
@@ -46,10 +48,20 @@ export const AUTH_ROUTES = [
     component: <Splash />
   },
   {
-    id: 3,
+    id: 4,
     path: ROUTES['auth-module'].register,
     component: <Register />
-  }
+  },
+  {
+    id: 5,
+    path: ROUTES['auth-module'].loginWithOtp,
+    component: <LoginWithOtp />
+  },
+  {
+    id: 6,
+    path: ROUTES['auth-module'].admin_login,
+    component: <AdminLogin />
+  },
 
 
 ]
