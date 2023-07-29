@@ -117,10 +117,10 @@ function AnalyzingAnimation() {
                         {/* For the next 10 seconds */}
                         {generating && contentStep === 3 && (
                             <>
-                                <h4 className={'d-flex justify-content-center align-items-center topic-animation text-white h1'} >
+                                <h4 className={'d-flex justify-content-center align-items-center topic-animation text-white h3'} >
                                     1. Topics Generated <span><Image height={20} width={20} src={icons.tickGreen} /></span>
                                 </h4>
-                                <h4 className={'d-flex justify-content-center align-items-center text-white topic-animation h3'} style={{ backgroundColor: "#fabe2c" }}>Generating Questions</h4>
+                                <h4 className={'d-flex justify-content-center align-items-center text-white topic-animation h1'} style={{ backgroundColor: "#fabe2c" }}>Generating Questions</h4>
                                 {contentStep === 3 && (
                                     <span className={'loader2'}></span>
                                 )}
@@ -132,13 +132,13 @@ function AnalyzingAnimation() {
                         {/* For the next 10 seconds */}
                         {generating && contentStep === 4 && (
                             <>
-                                <h4 className={'d-flex justify-content-center align-items-center topic-animation text-white h1'}>
+                                <h4 className={'d-flex justify-content-center align-items-center topic-animation text-white h3'}>
                                     1. Topics Generated  <span><Image height={20} width={20} src={icons.tickGreen} /></span>
                                 </h4>
-                                <h4 className={'d-flex justify-content-center align-items-center topic-animation text-white h1'}>
+                                <h4 className={'d-flex justify-content-center align-items-center topic-animation text-white h3'}>
                                     2. Questions Generated <span><Image height={20} width={20} src={icons.tickGreen} /></span>
                                 </h4>
-                                <h4 className={'d-flex justify-content-center align-items-center text-white topic-animation h3'} style={{ backgroundColor: "#fabe2c" }}>Generating Rules</h4>
+                                <h4 className={'d-flex justify-content-center align-items-center text-white topic-animation h1'} style={{ backgroundColor: "#fabe2c" }}>Generating Rules</h4>
 
                                 {contentStep === 4 && (
                                     <span className={'loader2'}></span>
@@ -151,16 +151,16 @@ function AnalyzingAnimation() {
                         {/* For the next 10 seconds */}
                         {generating && contentStep === 5 && (
                             <>
-                                <h4 className={'d-flex justify-content-center align-items-center topic-animation text-white h1'}>
+                                <h4 className={'d-flex justify-content-center align-items-center topic-animation text-white h3'}>
                                     1. Topics Generated <span><Image height={20} width={20} src={icons.tickGreen} /></span>
                                 </h4>
-                                <h4 className={'d-flex justify-content-center align-items-center topic-animation text-white h1'}>
+                                <h4 className={'d-flex justify-content-center align-items-center topic-animation text-white h3'}>
                                     2. Questions Generated <span><Image height={20} width={20} src={icons.tickGreen} /></span>
                                 </h4>
-                                <h4 className={'d-flex justify-content-center align-items-center topic-animation text-white h1'}>
+                                <h4 className={'d-flex justify-content-center align-items-center topic-animation text-white h3'}>
                                     3. Rules Generated <span><Image height={20} width={20} src={icons.tickGreen} /></span>
                                 </h4>
-                                <h4 className={'d-flex justify-content-center align-items-center text-white topic-animation h3'} style={{ backgroundColor: "#fabe2c" }}>Preparing Criteria  </h4>
+                                <h4 className={'d-flex justify-content-center align-items-center text-white topic-animation h1'} style={{ backgroundColor: "#fabe2c" }}>Preparing Criteria  </h4>
 
                                 {contentStep === 5 && (
                                     <span className={'loader2'}></span>
@@ -171,24 +171,25 @@ function AnalyzingAnimation() {
 
                         {generating && contentStep === 6 && (
                             <>
-                                <h4 className={'d-flex justify-content-center align-items-center topic-animation text-white h1'}>
+                                <h4 className={'d-flex justify-content-center align-items-center topic-animation text-white h3'}>
                                     1. Topics Generated <span><Image height={20} width={20} src={icons.tickGreen} /></span>
                                 </h4>
-                                <h4 className={'d-flex justify-content-center align-items-center topic-animation text-white h1'}>
+                                <h4 className={'d-flex justify-content-center align-items-center topic-animation text-white h3'}>
                                     2. Questions Generated <span><Image height={20} width={20} src={icons.tickGreen} /></span>
                                 </h4>
-                                <h4 className={'d-flex justify-content-center align-items-center topic-animation text-white h1'}>
+                                <h4 className={'d-flex justify-content-center align-items-center topic-animation text-white h3'}>
                                     3. Rules Generated <span><Image height={20} width={20} src={icons.tickGreen} /></span>
                                 </h4>
-                                <h4 className={'d-flex justify-content-center align-items-center topic-animation text-white h1'}>
+                                <h4 className={'d-flex justify-content-center align-items-center topic-animation text-white h3'}>
                                     4. Criteria Prepared <span><Image height={20} width={20} src={icons.tickGreen} /></span>
                                 </h4>
-                                <h4 className={'d-flex justify-content-center align-items-center text-white topic-animation h3 loader5'} style={{ backgroundColor: "#fabe2c" }}>
-
-                                    {contentStep === 6 && (
-                                        <span className={' ml-4 loader4'}></span>
-                                    )}
-                                </h4>
+                            </>
+                        )}
+                        {generating && contentStep === 6 && (
+                            <>
+                                {contentStep === 6 && (
+                                    <span className={'loader7 mt-3'}></span>
+                                )}
                             </>
                         )}
                     </div>

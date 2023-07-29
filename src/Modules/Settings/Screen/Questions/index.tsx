@@ -1,5 +1,5 @@
 
-import { Button, Divider, Modal, Input } from '@Components';
+import { Button, Divider, Modal, Input, Card } from '@Components';
 import { useModal, useNavigation, useInput, useLoader } from '@Hooks';
 import { generateForm, getQuestionForm, setSelectedQuestionForm } from '@Redux';
 import { ROUTES } from '@Routes';
@@ -64,7 +64,7 @@ function Questions() {
         );
 
     }
-console.log('1111111111111111111111111111',JSON.stringify(questions))
+    console.log('1111111111111111111111111111', JSON.stringify(questions))
 
     return (
         <>
@@ -94,15 +94,15 @@ console.log('1111111111111111111111111111',JSON.stringify(questions))
                             const { id, name, description } = item;
                             return (
                                 <div className='col-4' key={id}>
-                                    <div className='card justify-content-center p-3'
+                                    <Card className='card justify-content-center '
                                         onClick={() => {
                                             goTo(ROUTES['designation-module']['question-sections'])
                                             dispatch(setSelectedQuestionForm(item))
                                         }} >
-                                        <h4 className='mb-0 pointer'>{name}</h4>
-                                        <div className={'mx--3'}><Divider space={'3'} /></div>
+                                        <h4 className='mb-0 pointer mt--2'>{name}</h4>
+                                        <div className={'mx--4'}><Divider space={'3'} /></div>
                                         <small className='mb-0 pointer'>{description}</small>
-                                    </div>
+                                    </Card>
                                 </div>
                             )
                         })

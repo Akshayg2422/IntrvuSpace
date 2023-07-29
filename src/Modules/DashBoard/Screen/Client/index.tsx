@@ -1,19 +1,23 @@
 import React, { useEffect, useState } from 'react'
 import { SearchInput, Button, Modal, Divider, NoDataFound, ButtonGroup, Input, TextArea, DesignationItem } from '@Components'
-import { useDropDown, useInput, useModal } from '@Hooks'
+import { useDropDown, useInput, useModal, useNavigation } from '@Hooks'
 import { useSelector, useDispatch } from 'react-redux'
-import { Sectors } from '@Modules'
+import { Schedules, Sectors } from '@Modules'
 import { getKnowledgeGroups, getMyPastInterviews, getSectors } from '@Redux'
 import { capitalizeFirstLetter } from '@Utils'
 import { Card, CardBody, FormGroup, InputGroup, InputGroupAddon, InputGroupText, Nav, NavItem, NavLink } from 'reactstrap'
 import classnames from 'classnames'
+import { ROUTES } from '@Routes'
+
+
 function Clients() {
 
     const FILTER = [{ id: 1, title: 'All' }, { id: 2, title: 'Past' }]
 
     const dispatch = useDispatch()
+    const { goTo } = useNavigation()
 
-    const { knowledgeGroups, selectedClientSector,myPastInterviews } = useSelector((state: any) => state.DashboardReducer)
+    const { knowledgeGroups, selectedClientSector, myPastInterviews } = useSelector((state: any) => state.DashboardReducer)
     const addJd = useModal(false);
     const filter = useDropDown(FILTER[0]);
     const search = useInput('');
@@ -31,22 +35,21 @@ function Clients() {
 
     useEffect(() => {
         fetchSectorData()
-        getMypastInterviewApi()
     }, [])
 
 
-    console.log('--------->myPastInterviews.....>',myPastInterviews)
+    console.log('--------->myPastInterviews.....>', myPastInterviews)
     function submitJdApiHandler() {
     }
-    // getMyPastInterviews
 
-    
+
     const getMypastInterviewApi = () => {
         const params = {}
 
         dispatch(getMyPastInterviews({
             params,
             onSuccess: (response: any) => () => {
+                goTo(ROUTES['auth-module'].otp)
             },
             onError: (error) => () => {
 
@@ -108,7 +111,12 @@ function Clients() {
         );
     };
 
-
+    const handleButtonClick = (selectedOption) => {
+        if (selectedOption.title === 'Past') {
+            goTo(ROUTES['designation-module']['schedules'])
+        }
+        filter.onChange(selectedOption);
+    };
 
     return (
         <>
@@ -118,7 +126,8 @@ function Clients() {
                         <h1 className='display-3 font-weight-bolder text-primary'>MOCK <b className='text-black'>EASY</b></h1>
                     </div>
                     <div className='col text-lg-right'>
-                        <ButtonGroup size={'btn-md'} sortData={FILTER} selected={filter.value} onClick={filter.onChange} />
+                        <ButtonGroup size={'btn-md'} sortData={FILTER} selected={filter.value} onClick={handleButtonClick} />
+                        {/* {filter.value?.title === 'Past' && <Schedules />} */}
                     </div>
                 </div>
                 <div className='row pb-3 pt-1'>
@@ -134,7 +143,7 @@ function Clients() {
                         >
                             <NavItem>
                                 <NavLink
-                                    className={"mb-sm-3 mb-md-0 bg-primary text-white font-weight-bold" }
+                                    className={"mb-sm-3 mb-md-0 bg-primary text-white font-weight-bold"}
                                     role="tab"
                                     onClick={
                                         addJd.show
