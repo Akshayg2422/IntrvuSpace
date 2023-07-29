@@ -370,3 +370,34 @@ export const getMyPastInterviewsFailure = (error: any) => {
     payload: error
   }
 }
+
+
+// GET REGISTER DATA 
+
+export const settingRegisterData = (response: any) => {
+  return {
+    type: ActionTypes.GET_REGISTER_DATA,
+    payload: response
+  }
+}
+
+// GENERATE_SECTIONS
+
+export const generateSections = (params: any) => {
+  return {
+    type: ActionTypes.GENERATE_SECTIONS,
+    payload: params,
+  };
+};
+export const generateSectionsSuccess = (response: any) => {
+  return {
+    type: ActionTypes.GENERATE_SECTIONS_SUCCESS,
+    payload: response
+  }
+}
+export const generateSectionsFailure = (error: any) => {
+  return {
+    type: ActionTypes.GENERATE_SECTIONS_FAILURE,
+    payload: error
+  }
+}

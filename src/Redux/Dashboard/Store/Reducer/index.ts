@@ -18,6 +18,7 @@ const initialState: DashboardProp = {
   formSectionQuestions: undefined,
   basicReport: undefined,
   myPastInterviews: undefined,
+  registerData: undefined
 };
 
 const DashboardReducer = (state = initialState, action: any) => {
@@ -193,6 +194,10 @@ const DashboardReducer = (state = initialState, action: any) => {
       state = { ...state, myPastInterviews: undefined };
       break;
 
+    // GET REGISTER DATA
+    case ActionTypes.GET_REGISTER_DATA:
+      state = { ...state, registerData: action.payload };
+      break;
 
     default:
       state = state;

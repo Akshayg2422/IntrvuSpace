@@ -8,6 +8,7 @@ export * from './LogIn'
 export * from './Otp'
 export * from './Register'
 export * from './Splash'
+export * from './AdminLogin'
 
 
 

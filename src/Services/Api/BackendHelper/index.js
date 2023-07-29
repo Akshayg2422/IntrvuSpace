@@ -52,3 +52,7 @@ export const registerAsMemberAPi = payload => post(URL.URL_REGISTER_AS_MEMBER, p
 //URL_MEMBER_LOGIN_USING_PASSWORD
 
 export const memberLoginUsingPasswordApi = payload => post(URL.URL_MEMBER_LOGIN_USING_PASSWORD, payload, {});
+
+//get otp
+
+export const fetchOTPApi = payload => post(URL.URL_GET_OTP, payload, {});

@@ -48,3 +48,29 @@ export const memberLoginUsingPasswordFailure = (error: any) => {
         payload: error
     }
 }
+
+
+
+// get otp
+
+export const fetchOTP = (params: any) => {
+    return {
+        type: ActionTypes.FETCH_OTP,
+        payload: params,
+    };
+};
+
+export const fetchOTPSuccess = (response: any) => {
+
+    return {
+        type: ActionTypes.FETCH_OTP_SUCCESS,
+        payload: response
+    }
+}
+
+export const fetchOTPFailure = (error: any) => {
+    return {
+        type: ActionTypes.FETCH_OTP_FAILURE,
+        payload: error
+    }
+}

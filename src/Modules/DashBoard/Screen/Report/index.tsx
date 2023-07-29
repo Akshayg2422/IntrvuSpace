@@ -26,6 +26,13 @@ function Report() {
         getBasicReportData()
     }, [])
 
+    useEffect(() => {
+        if (basicReportData) {
+            removeDuplicates()
+
+        }
+    }, [basicReportData])
+
 
     const getBasicReportData = () => {
         basicReportLoader.show()
@@ -74,21 +81,24 @@ function Report() {
         return +overallPercent / data.length
     }
 
-    // let nottu
-    // function removeDuplicates(data) {
-    //     let a = Array.from(new Set(data));
-    //     let b = 0
-
-    //     a && a.filter((el: any) => {
-    //         b = b + (el)
-    //     })
-
-    //     nottu = b
-    //     // setCheck(b)
-    //     console.log("+overallPercent / data.length", b)
-
-    // }
-    // console.log('oioioi',nottu)
+    function removeDuplicates() {
+        let count = 0
+        Object.keys(basicReportData).map((el) => {
+            console.log('opopopopo', el)
+            if (el === 'skill_matrix') {
+                basicReportData[el].sections.map((item) => {
+                    count = count + +item.rating / basicReportData[el].sections.length
+                })
+            }
+            else if (Array.isArray(basicReportData[el])) {
+                basicReportData[el].map((it) => {
+                    count = it.percent ? count + +it.percent / basicReportData[el].length : count + +it.rating / basicReportData[el].length
+                })
+            }
+        })
+        console.log("09090======================>", count)
+        setCheck(count)
+    }
 
 
 
@@ -191,7 +201,7 @@ function Report() {
                                                     color: colorVariant(+check * 10)
                                                 }}
                                             >
-                                                {check}
+                                                {Math.round(check / 3)}
                                             </h1>
                                         </div>
                                     </div>
