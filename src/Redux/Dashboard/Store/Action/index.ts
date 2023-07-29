@@ -472,3 +472,24 @@ export const generateSectionsFailure = (error: any) => {
     payload: error
   }
 }
+
+// CREATE_SCHEDULE
+
+export const createSchedule = (params: any) => {
+  return {
+    type: ActionTypes.CREATE_SCHEDULE,
+    payload: params,
+  };
+};
+export const createScheduleSuccess = (response: any) => {
+  return {
+    type: ActionTypes.CREATE_SCHEDULE_SUCCESS,
+    payload: response
+  }
+}
+export const createScheduleFailure = (error: any) => {
+  return {
+    type: ActionTypes.CREATE_SCHEDULE_FAILURE,
+    payload: error
+  }
+}

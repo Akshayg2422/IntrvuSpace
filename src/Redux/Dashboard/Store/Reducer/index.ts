@@ -245,6 +245,18 @@ const DashboardReducer = (state = initialState, action: any) => {
       state = { ...state, registerData: action.payload };
       break;
 
+    // CREATE_SCHEDULE
+
+    case ActionTypes.CREATE_SCHEDULE:
+      state = { ...state};
+      break;
+    case ActionTypes.CREATE_SCHEDULE_SUCCESS:
+      state = { ...state};
+      break;
+    case ActionTypes.CREATE_SCHEDULE_FAILURE:
+      state = { ...state };
+      break;
+
     default:
       state = state;
       break;
