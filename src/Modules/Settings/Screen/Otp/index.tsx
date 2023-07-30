@@ -3,7 +3,7 @@ import React, { useEffect } from 'react'
 import { Input } from 'reactstrap'
 import { LoginSideContent } from '../../Container'
 import { OTP_RESEND_DEFAULT_TIME, USER_TOKEN } from '@Utils';
-import { useInput, useNavigation, useTimer } from '@Hooks';
+import { useInput, useLoader, useNavigation, useTimer } from '@Hooks';
 import { ROUTES } from '@Routes';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchMemberUsingLoginOtp } from '@Redux';
@@ -14,6 +14,7 @@ function Otp() {
     const { goTo } = useNavigation()
     const { registerData } = useSelector((state: any) => state.DashboardReducer);
     const dispatch = useDispatch()
+    const loginLoader = useLoader(false);
 
     console.log("registerData", registerData)
     useEffect(() => {
@@ -22,7 +23,7 @@ function Otp() {
 
 
     const loginOtp = () => {
-
+        loginLoader.show()
         const params = {
             mobile_number: registerData?.mobile_number,
             otp: Otp.value
@@ -31,6 +32,7 @@ function Otp() {
         dispatch(fetchMemberUsingLoginOtp({
             params,
             onSuccess: (response: any) => () => {
+                loginLoader.hide()
                 if (response.token) {
                     localStorage.setItem(USER_TOKEN, response.token);
                     goTo(ROUTES['auth-module'].splash)
@@ -40,6 +42,7 @@ function Otp() {
                 }
             },
             onError: (error) => () => {
+                loginLoader.hide()
                 showToast(error.error_message, 'error')
             },
         }))
@@ -86,7 +89,7 @@ function Otp() {
                                 <div className="py-3 ">
                                     <Button
                                         className={'text-white font-weight-normal bg-primary text-lg'}
-                                        // loading={loginLoader.loader}
+                                        loading={loginLoader.loader}
                                         block
                                         size="md"
                                         text={'Login'}
