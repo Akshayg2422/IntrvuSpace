@@ -29,7 +29,7 @@ function Button({
           {...rest}
           onClick={loading ? undefined : onClick}
         >
-          {loading && <Spinner />}
+          {loading && <Spinner color='white' />}
           {!loading && text}
         </RSButton>
       )}

@@ -1,12 +1,21 @@
 import React from 'react'
 import { SpinnerProps } from './interfaces'
 import { Spinner as RsSpinner } from 'reactstrap'
+import './style.scss'
 
-function Spinner({ color = 'black' }: SpinnerProps) {
+function Spinner({ color = 'black', spinner = true }: SpinnerProps) {
     return (
-        <RsSpinner color={color} size={'sm'} >
-            Loading...
-        </RsSpinner>
+        <>
+            {spinner ?
+
+                <RsSpinner className='' color={color} size={'md'} >
+                    Loading...
+                </RsSpinner>
+                :
+                <span className="loader"></span>
+
+            }
+        </>
     )
 }
 
