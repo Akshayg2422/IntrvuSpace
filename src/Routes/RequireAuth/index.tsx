@@ -17,6 +17,7 @@ export const RequireAuth = ({ children }: RequireAuthProps) => {
     const [sideNavOpen, setSideNavOpen] = useState(true);
     const mainContentRef = React.useRef<HTMLDivElement | null>(null);
     const location = useLocation();
+    const { loginUser } = useSelector((state: any) => state.AuthReducer);
 
 
 
@@ -48,7 +49,7 @@ export const RequireAuth = ({ children }: RequireAuthProps) => {
 
     return (
         <>
-            <Sidebar
+           {loginUser?.details?.is_admin && <Sidebar
                 routes={HOME_ROUTES}
                 toggleSideNav={toggleSideNav}
                 sideNavOpen={sideNavOpen}
@@ -57,7 +58,7 @@ export const RequireAuth = ({ children }: RequireAuthProps) => {
                     imgSrc: icons.logo,
                     imgAlt: "...",
                 }}
-            />
+            />}
             <div className='main-content' ref={mainContentRef}>
                 <PushNotification />
                 {children}

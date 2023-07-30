@@ -10,7 +10,7 @@ import { registerAsMember, settingRegisterData } from '@Redux'
 import { REGISTER_AS_MEMBER_RULES, getValidateError, ifObjectExist, validate } from '@Utils'
 
 function Register() {
-    const { goTo } = useNavigation()
+    const { goTo, goBack } = useNavigation()
     const dispatch = useDispatch()
     const password = useInput('')
     const lastName = useInput('')
@@ -81,12 +81,25 @@ function Register() {
     return (
         <>
             <div className='container-fluid'>
+
                 <div className='row'>
+
                     <LoginSideContent />
                     <div className="col d-flex justify-content-center align-items-center"
                         style={{
                             scale: '0.9'
                         }}>
+                            <div className='position-absolute pointer '
+                            style={{
+                                top:-15,
+                                left:-15
+                            }}
+                            onClick={() => {
+                                goBack()
+                            }}
+                        >
+                            <i className="bi bi-arrow-left text-black fa-lg font-weight-bolder"></i>
+                        </div>
                         <div className="col-8">
                             <div className="mb-2">
                                 <h1 className="text-black mb--3"> Find a job & grow your career</h1><br></br>

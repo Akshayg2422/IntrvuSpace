@@ -16,6 +16,8 @@ function Clients() {
 
     const dispatch = useDispatch()
     const { goTo } = useNavigation()
+    const { loginUser } = useSelector((state: any) => state.AuthReducer);
+
     const { knowledgeGroups, selectedClientSector, myPastInterviews } = useSelector((state: any) => state.DashboardReducer)
     const addJd = useModal(false);
     const filter = useDropDown(FILTER[0]);
@@ -134,10 +136,10 @@ function Clients() {
 
     return (
         <>
-            <div className='container-fluid'>
+            <div className={`container-fluid ${loginUser?.details?.is_admin? ' ' : 'pt-4'}`}>
                 <div className='row justify-content-lg-between justify-content-sm-center  '>
                     <div className='col'>
-                        <h1 className='display-3 font-weight-bolder text-primary'>MOCK <b className='text-black'>EASY</b></h1>
+                        <h1 className='display-3 font-weight-bolder text-primary'>MOCK <b className='text-black'>EAZY</b></h1>
                     </div>
                     <div className='col text-lg-right'>
                         <ButtonGroup size={'btn-md'} sortData={FILTER} selected={filter.value} onClick={handleButtonClick} />
