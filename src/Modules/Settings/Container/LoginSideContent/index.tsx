@@ -6,7 +6,7 @@ function LoginSideContent() {
     return (
         <>
             <div className="col-sm-6 bg-primary h-100vh d-none d-sm-block">
-                <div className="row ml--4 justify-content-center pt-4 mt-1 align-items-center ">
+                <div className="row  justify-content-center pt-4 mt-1 align-items-center ">
                     <h1 className='pb-0 mb--1 font-weight-bolder text-white'
                         style={{
                             fontSize: '13vh'

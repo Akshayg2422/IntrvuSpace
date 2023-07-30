@@ -16,6 +16,8 @@ function Designation() {
     const dispatch = useDispatch()
 
     const [selectedDesignation, setSelectedDesignation] = useState<any>({})
+    const [selectedVariant, setSelectedVariant] = useState<any>({})
+
 
 
 
@@ -66,7 +68,7 @@ function Designation() {
         const params = {
             name: title?.value,
             description: description?.value,
-            sector_id: sector.value?.id
+            // sector_id: sector.value?.id
         };
 
         dispatch(

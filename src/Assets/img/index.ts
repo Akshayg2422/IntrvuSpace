@@ -25,7 +25,7 @@ export const image = {
     TMS_Img7: require('./brand/TMS_Img7.png'),
     TMS_Img8: require('./brand/TMS_Img8.png'),
     TMS_Img9: require('./brand/TMS_Img9.png'),
-
+    Login_Image: require('./brand/P007_1-2.png'),
 
     RED_DOT: require('./theme/full-stop.png'),
     LOGIN_SIDE_IMAGE: require('./brand/P007_1-2.png'),

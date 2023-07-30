@@ -1,32 +1,30 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { CallScreen } from '@Modules';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getStartChat } from '@Redux';
 import { useModal, useNavigation, useScreenRecorder, useTextToSpeech, useWebCamRecorder } from '@Hooks';
-import { AnimatedLoader, Button, Modal } from '@Components';
+import { AnimatedLoader, Breadcrumbs, Button, Modal } from '@Components';
 import { useWhisper } from '@chengsokdara/use-whisper'
-import { log } from 'console';
 
 function Call() {
     const { goBack } = useNavigation();
     const dispatch = useDispatch()
-    // let isTriggeredRef = false
+    const { scheduleId } = useSelector((state: any) => state.DashboardReducer)
+
     const [isTriggeredApi, setIsTriggeredApi] = useState(false)
     const proceedModal = useModal(false);
+    const [transcribedText, setTranscribedText] = useState('')
 
     const [isMicRecording, setIsMicRecording] = useState(false)
     const [isHear, setIsHear] = useState(true)
     const [showVideo, setShowVideo] = useState(false)
-    // const [recording, setRecording] = useState(false);
     const [showLoader, setShowLoader] = useState(false)
     const [type, setType] = useState('')
     const is_Start = false
 
-    const OPENAI_API_TOKEN = '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'
-
-
+    // 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
+    const OPENAI_API_TOKEN = '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'
     const { isSpeaking, speak } = useTextToSpeech();
-
     const { startScreenRecording, stopScreenRecording, isScreenRecording, output } = useScreenRecorder();
     const {
         recording,
@@ -44,21 +42,25 @@ function Call() {
     })
 
     useEffect(() => {
-        if (is_Start === false) {
-            proceedModal.show()
-        }
-    }, [])
-
-    useEffect(() => {
         if (isScreenRecording) {
             getChatDetails('start', 'text')
+        } else {
+            startScreenRecording()
         }
     }, [isScreenRecording])
 
 
     useEffect(() => {
-        if (!recording && !isMicRecording && isScreenRecording && isTriggeredApi && transcribing) {
-            getChatDetails(transcript.text, 'text')
+        if (!recording && !isMicRecording && isScreenRecording && transcribing) {
+            let mergerResponse = transcript.text
+            setTranscribedText(transcribedText + mergerResponse)
+        }
+    }, [transcript.text])
+
+    
+    useEffect(() => {
+        if (isTriggeredApi) {
+            getChatDetails(transcribedText, 'text')
         }
     }, [isTriggeredApi, transcribing])
 
@@ -78,7 +80,7 @@ function Call() {
     //         return () => clearTimeout(timer);
     //     }
     // }, [type]);
-    
+
 
     let timerId: any;
     const handleMicControl = () => {
@@ -93,18 +95,21 @@ function Call() {
             timerId = setTimeout(() => {
                 stopRecording()
                 setIsTriggeredApi(true)
-                // setShowLoader(true)
             }, 3000);
         }
     }
 
-    const getChatDetails = (file: any, type: 'text') => {
+
+    const getChatDetails = (file: any, type: string) => {
         const params = {
             ...(type === 'text' && { "message": file }),
-            schedule_id: '60e15a22-fa2d-41b7-8fd3-9c2b3422d990'
+            // ...(type === 'Ai' && { "message": transcribedText }),
+            schedule_id: scheduleId?.id
         };
 
-        console.log("==params==============>", params, transcript.text);
+        console.log("==Text==", params, transcribedText);
+
+        setTranscribedText('')
 
         // dispatch(
         //     getStartChat({
@@ -140,21 +145,12 @@ function Call() {
         }
     }
 
-    const handleStart = () => {
-        proceedModal.hide()
-        startScreenRecording()
-    }
-
-    const handleResume = () => {
-
-    }
-
-
-
     return (
-        <div className='h-100vh  d-flex  align-items-center justify-content-center' style={{ backgroundColor: '#54575c' }}>
+        <Modal isOpen={true} size='xl' onClose={() => goBack()} >
             <CallScreen
+                userName='Akshay G'
                 status='Connected'
+                loading={true}
                 startTimer={isScreenRecording}
                 micDisable={isSpeaking}
                 isMute={isMicRecording}
@@ -171,26 +167,7 @@ function Call() {
                 // startRecording() 
                 { }
                 } />
-
-            <AnimatedLoader loading={showLoader} />
-            < Modal size={'sm'} isOpen={proceedModal.visible}
-                onClose={() => {
-                    proceedModal.hide()
-                    goBack()
-                    isScreenRecording && stopScreenRecording()
-                }} >
-                <div className="text-center ">
-                    <Button color='secondary' size={'md'}
-                        text={"RESUME"}
-                        onClick={() => handleResume()}
-                    />
-                    <Button size={'md'}
-                        text={"START"}
-                        onClick={() => handleStart()}
-                    />
-                </div>
-            </Modal >
-        </div>
+        </Modal>
     )
 }
 

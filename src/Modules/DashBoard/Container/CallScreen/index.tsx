@@ -1,7 +1,6 @@
-import { AnimatedImage, Card, WebCamRecorder } from '@Components';
-import { useTimer } from '@Hooks';
-import React, { useState } from 'react';
-import { Button, ButtonGroup, CardBody } from 'reactstrap';
+import { AnimatedImage, Card, WebCamRecorder, Image } from '@Components';
+import { Button } from 'reactstrap';
+
 
 type CallScreenProps = {
     onMicControl?: any,
@@ -14,46 +13,97 @@ type CallScreenProps = {
     onVideoControl?: any
     startTimer: boolean
     micDisable?: boolean
+    userName?: string
+    loading?: boolean
 }
 
+const CallScreen = ({ onMicControl, startTimer = false, loading = false, userName = '', micDisable = false, onVolumeControl, onCallEnd, isMute = false, speaker, status, video = false, onVideoControl }: CallScreenProps) => {
 
-const CallScreen = ({ onMicControl, startTimer = false, micDisable = false, onVolumeControl, onCallEnd, isMute = false, speaker, status, video = false, onVideoControl }: CallScreenProps) => {
-    // const { time, formatTime } = useTimer();
-    // const imageUrl = "https://www.pngitem.com/pimgs/m/581-5813504_avatar-dummy-png-transparent-png.png"
+    function getShortName(fullName: string) {
+        const names = fullName.split(' ');
+
+        if (names.length === 1) {
+            return names[0].substring(0, 2).toUpperCase();
+        }
+
+        const firstNameInitial = names[0][0].toUpperCase();
+        const lastNameInitial = names[names.length - 1][0].toUpperCase();
+        return `${firstNameInitial}${lastNameInitial}`;
+    }
+
+
     return (
         <div className='text-center'>
+            <h1 className='display-2 mb-4'>{userName}</h1>
             <div>
-                <AnimatedImage name={"RT"} shouldBlink={isMute} />
+                <AnimatedImage show={loading} name={getShortName(userName)} shouldBlink={isMute} />
             </div>
-            <div className='text-center  my-3'>
-                <small className="h4 text-center text-secondary font-weight-light">
+            <div className='text-center my-3'>
+                <small className="h4 text-center text-black font-weight-bold">
                     {status}
                 </small>
             </div>
-            <small className="h4 text-secondary font-weight-light">
+            <small className="h4 text-black font-weight-bold">
                 {!isMute ? "On Mic To Speak" : "Finished Speaking Off The Mic"}
             </small>
-            <div className=" my-4">
-                <ButtonGroup>
-                    <Button className='border-0' color="secondary" type="button">
-                        {/* {startTimer ? formatTime(time) : '00:00'} */}
-                    </Button>
-                    <Button className='border-0' disabled={micDisable} color="secondary" type="button" onClick={onMicControl}>
-                        {isMute ? <i className="fas fa-microphone"></i> : <i className="fas fa-microphone-slash"></i>}
-                    </Button>
-                    {/* <Button className='border-0' color="secondary" type="button" onClick={onVolumeControl}>
-                        {speaker ? <i className="fas fa-volume-up"></i> : <i className="fas fa-volume-xmark"></i>}
-                    </Button> */}
-                    <Button className='border-0' color='secondary' type="button" onClick={onVideoControl}>
-                        {video ? <i className="fas fa-video"></i> : <i className="fas fa-video-slash"></i>}
-                    </Button>
-                    <Button className='bg-red border-0' type="button" onClick={onCallEnd}>
-                        <span>{'End Call'}</span>
-                    </Button>
-                </ButtonGroup>
+            <div className="my-4">
+                <Button
+                    className='border-0 shadow-none'
+                    style={{ borderRadius: 7, backgroundColor: '#f5f5f5' }}
+                >
+                    <div>
+                        <span className="btn-inner--icon">
+                            <i className="fas fa-circle mr-2 text-red" />
+                        </span>
+                        <span className="nav-link-inner--text ml-1 text-lg " style={{ color: '#c4c4c4' }}>{startTimer ? '1.20' : '00:00'}</span>
+                    </div>
+                </Button>
+                <Button
+                    className='border-0 shadow-none'
+                    style={{ borderRadius: 7, backgroundColor: '#f5f5f5', padding: 15 }}
+                    disabled={micDisable}
+                    onClick={onMicControl}
+                >
+                    <div className=''>
+                        <span className="btn-inner--icon">
+                            {isMute ? <i className="fas fa-microphone text-lg " style={{ color: '#c4c4c4' }}></i> : <i className="fas fa-microphone-slash text-lg " style={{ color: '#c4c4c4' }}></i>}
+                        </span>
+                    </div>
+                </Button>
+                <Button
+                    className='border-0 shadow-none bg-red'
+                    style={{ borderRadius: 7 }}
+                    onClick={onCallEnd}
+                >
+                    <div className=''>
+                        <span className="nav-link-inner--text mx-6 text-lg text-white" style={{ color: '#f5f5f5' }}>{'End Call'}</span>
+                    </div>
+                </Button>
+                <Button
+                    className='border-0 shadow-none'
+                    style={{ borderRadius: 7, backgroundColor: '#f5f5f5', padding: 15 }}
+                    onClick={onVolumeControl}
+                >
+                    <div className=''>
+                        <span className="btn-inner--icon">
+                            {speaker ? <i className="fas fa-volume-up text-lg " style={{ color: '#c4c4c4' }}></i> : <i className="fas fa-volume-xmark text-lg " style={{ color: '#c4c4c4' }}></i>}
+                        </span>
+                    </div>
+                </Button>
+                <Button
+                    className='border-0 shadow-none'
+                    style={{ borderRadius: 7, backgroundColor: '#f5f5f5', padding: 15 }}
+                    onClick={onVideoControl}
+                >
+                    <div className=''>
+                        <span className="btn-inner--icon">
+                            {video ? <i className="fas fa-video text-lg " style={{ color: '#c4c4c4' }}></i> : <i className="fas fa-video-slash text-lg " style={{ color: '#c4c4c4' }}></i>}
+                        </span>
+                    </div>
+                </Button>
             </div>
             {
-                video && <div className='position-absolute row justify-content-end bottom-2 right-4'>
+                video && <div className='position-absolute  justify-content-end bottom-9 right-4'>
                     <WebCamRecorder />
                 </div>
             }

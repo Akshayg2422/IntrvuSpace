@@ -51,41 +51,44 @@ function Register() {
             showToast('Mobile Number Cannot be empty', 'error');
         }
         else {
-            memberLoginHandler()
+            registerAsMemberHandler()
         }
     }
 
-    const memberLoginHandler = () => {
+    const registerAsMemberHandler = () => {
         const params = { first_name: firstName.value, last_name: lastName.value, email: email.value, mobile_number: mobileNumber.value, password: password.value }
 
         dispatch(registerAsMember({
             params,
             onSuccess: (response: any) => () => {
-                console.log('ioioioioio', response)
-                dispatch(settingRegisterData(params))
-                goTo(ROUTES['auth-module'].otp)
+                if (response.success) {
+                    dispatch(settingRegisterData(params))
+                    goTo(ROUTES['auth-module'].login)
+                    showToast(response.message, 'success')
+                }
+                else {
+                    showToast(response.error_message, 'error')
+                }
             },
             onError: (error) => () => {
-
+                showToast(error.error_message, 'error')
             },
         }))
 
     }
-    // {"first_name":"Azharudheen", "last_name":"K", "email":"test@gmail.com", "mobile_number":"90088008800","password":"test123"}
 
 
     return (
         <>
             <div className='container-fluid'>
-                <div className='row '>
+                <div className='row'>
                     <LoginSideContent />
-                    <div className="col-sm-6 row align-items-center mx-auto pl-lg-8 pl-sm-0 pl-5 mb--1 "
-
+                    <div className="col d-flex justify-content-center align-items-center"
                         style={{
                             scale: '0.9'
                         }}>
-                        <div className="row ">
-                            <div className="mb--2">
+                        <div className="col-8">
+                            <div className="mb-2">
                                 <h1 className="text-black mb--3"> Find a job & grow your career</h1><br></br>
                                 {/* <h2 className="font-weight-normal display-4 text-black mt-0"
                                     style={{
@@ -100,9 +103,9 @@ function Register() {
                                     }}
                                 ><b>Register</b></a></h2> */}
                             </div>
-                            <div className=" col-sm-9  pr-3 ml-lg--1 px-0 ml-sm-0 ml--2 pt-4 "
+                            <div
                                 style={{
-                                    zoom:'90%'
+                                    zoom: '90%'
                                 }}
                             >
                                 <div className='overflow-auto overflow-hide'
