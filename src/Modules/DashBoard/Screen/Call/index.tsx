@@ -11,14 +11,13 @@ function Call() {
     const dispatch = useDispatch()
     const { scheduleId } = useSelector((state: any) => state.DashboardReducer)
 
-    // let isTriggeredRef = false
     const [isTriggeredApi, setIsTriggeredApi] = useState(false)
     const proceedModal = useModal(false);
+    const [transcribedText, setTranscribedText] = useState('')
 
     const [isMicRecording, setIsMicRecording] = useState(false)
     const [isHear, setIsHear] = useState(true)
     const [showVideo, setShowVideo] = useState(false)
-    // const [recording, setRecording] = useState(false);
     const [showLoader, setShowLoader] = useState(false)
     const [type, setType] = useState('')
     const is_Start = false
@@ -52,8 +51,16 @@ function Call() {
 
 
     useEffect(() => {
-        if (!recording && !isMicRecording && isScreenRecording && isTriggeredApi && transcribing) {
-            getChatDetails(transcript.text, 'text')
+        if (!recording && !isMicRecording && isScreenRecording && transcribing) {
+            let mergerResponse = transcript.text
+            setTranscribedText(transcribedText + mergerResponse)
+        }
+    }, [transcript.text])
+
+    
+    useEffect(() => {
+        if (isTriggeredApi) {
+            getChatDetails(transcribedText, 'text')
         }
     }, [isTriggeredApi, transcribing])
 
@@ -88,21 +95,21 @@ function Call() {
             timerId = setTimeout(() => {
                 stopRecording()
                 setIsTriggeredApi(true)
-                // setShowLoader(true)
             }, 3000);
         }
     }
 
-    console.log("==Text==============>", transcript.text);
 
-
-    const getChatDetails = (file: any, type: 'text') => {
+    const getChatDetails = (file: any, type: string) => {
         const params = {
             ...(type === 'text' && { "message": file }),
+            // ...(type === 'Ai' && { "message": transcribedText }),
             schedule_id: scheduleId?.id
         };
 
-        console.log("==Text==============>", params, file);
+        console.log("==Text==", params, transcribedText);
+
+        setTranscribedText('')
 
         // dispatch(
         //     getStartChat({
@@ -143,7 +150,7 @@ function Call() {
             <CallScreen
                 userName='Akshay G'
                 status='Connected'
-                loading={showLoader}
+                loading={true}
                 startTimer={isScreenRecording}
                 micDisable={isSpeaking}
                 isMute={isMicRecording}
