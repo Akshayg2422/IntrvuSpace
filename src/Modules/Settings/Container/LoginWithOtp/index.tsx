@@ -8,7 +8,7 @@ import { useDispatch } from 'react-redux'
 import { fetchOTP, settingRegisterData } from '@Redux'
 
 function LoginWithOtp() {
-    const { goTo } = useNavigation()
+    const { goTo, goBack } = useNavigation()
     const dispatch = useDispatch()
     const mobileNumber = useInput('');
     const email = useInput('')
@@ -49,6 +49,7 @@ function LoginWithOtp() {
                 loginLoader.hide()
                 if (response.success) {
                     dispatch(settingRegisterData(params))
+                    showToast(response.message, 'success')
                     goTo(ROUTES['auth-module'].otp)
                 }
                 else {
@@ -73,7 +74,19 @@ function LoginWithOtp() {
                             scale: '0.97'
                         }}
                     >
+                        <div className=' position-absolute pointer '
+                            style={{
+                                top:0,
+                                left:5
+                            }}
+                            onClick={() => {
+                                goBack()
+                            }}
+                        >
+                            <i className="bi bi-arrow-left text-black fa-lg font-weight-bolder"></i>
+                        </div>
                         <div className="col-8">
+
                             <div className="mb--2 ml-4">
                                 <h2 className="text-black mb--3">Login in to your Account</h2><br></br>
                                 <h2 className="font-weight-normal display-4 text-black mt-0"

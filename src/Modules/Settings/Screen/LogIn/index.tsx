@@ -76,18 +76,11 @@ function Login() {
                 params,
                 onSuccess: (response: any) => () => {
                     loginLoader.hide()
-                    // if (response.success) {
-                    //     localStorage.setItem(USER_TOKEN, response.token);
-                    //     goTo(ROUTES['auth-module'].splash)
-                    // }
-                    // else {
-                    //     showToast(response.error_message, 'error')
-                    // }
-                    if (response.token) {
-                        localStorage.setItem(USER_TOKEN, response.token);
+                    if (response.success) {
+                        localStorage.setItem(USER_TOKEN, response.details.token);
                         goTo(ROUTES['auth-module'].splash)
                     }
-                    else if (!response.success) {
+                    else {
                         showToast(response.error_message, 'error')
                     }
                 },

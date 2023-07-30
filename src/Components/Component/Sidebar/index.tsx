@@ -18,6 +18,7 @@ import { Image } from '@Components'
 import { url } from "inspector";
 import { useSelector } from "react-redux";
 import { getPhoto } from "@Utils";
+import { icons } from "@Assets";
 function Sidebar({ toggleSideNav, sideNavOpen, routes, logo, rtlActive }: SidebarProps) {
   // const { dashboardDetails } = useSelector((state: any) => state.UserCompanyReducer);
   // const { user_details, } = dashboardDetails || ''
@@ -171,7 +172,7 @@ function Sidebar({ toggleSideNav, sideNavOpen, routes, logo, rtlActive }: Sideba
               <Image
                 alt={logo.imgAlt}
                 className="navbar-brand-img rounded-circle "
-                // src={getPhoto(user_details?.profile_photo)}
+                src={icons.logo}
                 height={33}
                 width={33}
 
@@ -203,7 +204,7 @@ function Sidebar({ toggleSideNav, sideNavOpen, routes, logo, rtlActive }: Sideba
         </Collapse>
       </div>
 
-      <div className="sidenav-header d-flex align-items-center ">
+      {/* <div className="sidenav-header d-flex align-items-center ">
         {logo && (
           <NavbarBrand {...navbarBrandProps}>
             <img
@@ -213,7 +214,7 @@ function Sidebar({ toggleSideNav, sideNavOpen, routes, logo, rtlActive }: Sideba
             />
           </NavbarBrand>
         )}
-      </div>
+      </div> */}
 
 
     </div>

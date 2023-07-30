@@ -11,7 +11,7 @@ function LoginSideContent() {
                         style={{
                             fontSize: '13vh'
                         }}
-                    >MOCK <b className='text-black'>EASY</b></h1>
+                    >MOCK <b className='text-black'>EAZY</b></h1>
                     <p className="text-center text-white "
                         style={{
                             maxWidth: '85vh'
