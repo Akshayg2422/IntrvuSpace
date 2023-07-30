@@ -51,27 +51,31 @@ function Register() {
             showToast('Mobile Number Cannot be empty', 'error');
         }
         else {
-            memberLoginHandler()
+            registerAsMemberHandler()
         }
     }
 
-    const memberLoginHandler = () => {
+    const registerAsMemberHandler = () => {
         const params = { first_name: firstName.value, last_name: lastName.value, email: email.value, mobile_number: mobileNumber.value, password: password.value }
 
         dispatch(registerAsMember({
             params,
             onSuccess: (response: any) => () => {
-                console.log('ioioioioio', response)
-                dispatch(settingRegisterData(params))
-                goTo(ROUTES['auth-module'].otp)
+                if (response.success) {
+                    dispatch(settingRegisterData(params))
+                    goTo(ROUTES['auth-module'].login)
+                    showToast(response.message, 'success')
+                }
+                else {
+                    showToast(response.error_message, 'error')
+                }
             },
             onError: (error) => () => {
-
+                showToast(error.error_message, 'error')
             },
         }))
 
     }
-    // {"first_name":"Azharudheen", "last_name":"K", "email":"test@gmail.com", "mobile_number":"90088008800","password":"test123"}
 
 
     return (
@@ -99,9 +103,9 @@ function Register() {
                                     }}
                                 ><b>Register</b></a></h2> */}
                             </div>
-                            <div 
+                            <div
                                 style={{
-                                    zoom:'90%'
+                                    zoom: '90%'
                                 }}
                             >
                                 <div className='overflow-auto overflow-hide'
