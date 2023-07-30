@@ -142,15 +142,6 @@ function Designation() {
                             goTo(ROUTES['designation-module']['sector']);
                         }}
                     />
-
-                    <Button
-                        className={'text-white shadow-none'}
-                        size={'sm'}
-                        text={"Call"}
-                        onClick={() => {
-                            goTo(ROUTES['designation-module']['call']);
-                        }}
-                    />
                 </div>
                 <div className='mx-3'>
                     <div className='row'>

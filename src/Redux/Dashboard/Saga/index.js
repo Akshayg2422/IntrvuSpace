@@ -315,7 +315,6 @@ function* generateFormSectionsAndQuestionsSaga(action) {
 function* updateQuestionDetailsApiSaga(action) {
   try {
     const response = yield call(Api.updateQuestionDetailsApi, action.payload.params);
-    console.log(JSON.stringify(response) + '========getMyPastInterviewsSaga');
     if (response.success) {
       yield put(Action.fetchUpdateQuestionDetailsSuccess(response));
       yield call(action.payload.onSuccess(response));
@@ -325,6 +324,24 @@ function* updateQuestionDetailsApiSaga(action) {
     }
   } catch (error) {
     yield put(Action.fetchUpdateQuestionDetailsFailure(error));
+    yield call(action.payload.onError(error));
+  }
+}
+
+// CREATE_SCHEDULE
+
+function* createScheduleSaga(action) {
+  try {
+    const response = yield call(Api.PostCreateScheduleApi, action.payload.params);
+    if (response.success) {
+      yield put(Action.createScheduleSuccess(response));
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield put(Action.createScheduleFailure(response.error_message));
+      yield call(action.payload.onError(response));
+    }
+  } catch (error) {
+    yield put(Action.createScheduleFailure(error));
     yield call(action.payload.onError(error));
   }
 }
@@ -348,6 +365,7 @@ function* DashboardSaga() {
   yield takeLatest(Action.FETCH_GENERATE_SECTION_QUESTIONS, generateSectionQuestionsSaga);
   yield takeLatest(Action.FETCH_GENERATE_FORM_SECTIONS_AND_QUESTIONS, generateFormSectionsAndQuestionsSaga);
   yield takeLatest(Action.FETCH_UPDATE_QUESTION_DETAILS, updateQuestionDetailsApiSaga);
+  yield takeLatest(Action.CREATE_SCHEDULE, createScheduleSaga);
 }
 
 export default DashboardSaga;

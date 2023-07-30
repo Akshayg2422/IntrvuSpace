@@ -3,7 +3,7 @@ import { CallScreen } from '@Modules';
 import { useDispatch, useSelector } from 'react-redux';
 import { getStartChat } from '@Redux';
 import { useModal, useNavigation, useScreenRecorder, useTextToSpeech, useWebCamRecorder } from '@Hooks';
-import { AnimatedLoader, Breadcrumbs, Button, Modal } from '@Components';
+import { AnimatedLoader, Breadcrumbs, Button, Modal, showToast } from '@Components';
 import { useWhisper } from '@chengsokdara/use-whisper'
 
 function Call() {
@@ -11,13 +11,14 @@ function Call() {
     const dispatch = useDispatch()
     const { scheduleId } = useSelector((state: any) => state.DashboardReducer)
 
+    // let isTriggeredRef = false
     const [isTriggeredApi, setIsTriggeredApi] = useState(false)
     const proceedModal = useModal(false);
-    const [transcribedText, setTranscribedText] = useState('')
 
     const [isMicRecording, setIsMicRecording] = useState(false)
     const [isHear, setIsHear] = useState(true)
     const [showVideo, setShowVideo] = useState(false)
+    // const [recording, setRecording] = useState(false);
     const [showLoader, setShowLoader] = useState(false)
     const [type, setType] = useState('')
     const is_Start = false
@@ -51,16 +52,8 @@ function Call() {
 
 
     useEffect(() => {
-        if (!recording && !isMicRecording && isScreenRecording && transcribing) {
-            let mergerResponse = transcript.text
-            setTranscribedText(transcribedText + mergerResponse)
-        }
-    }, [transcript.text])
-
-    
-    useEffect(() => {
-        if (isTriggeredApi) {
-            getChatDetails(transcribedText, 'text')
+        if (!recording && !isMicRecording && isScreenRecording && isTriggeredApi && transcribing) {
+            getChatDetails('', 'Ai')
         }
     }, [isTriggeredApi, transcribing])
 
@@ -100,36 +93,33 @@ function Call() {
     }
 
 
-    const getChatDetails = (file: any, type: string) => {
+
+    const getChatDetails = (file: any, type: 'text' | 'Ai') => {
         const params = {
             ...(type === 'text' && { "message": file }),
-            // ...(type === 'Ai' && { "message": transcribedText }),
+            ...(type === 'Ai' && { "message": transcript.text }),
             schedule_id: scheduleId?.id
         };
-
-        console.log("==Text==", params, transcribedText);
-
-        setTranscribedText('')
-
-        // dispatch(
-        //     getStartChat({
-        //         params,
-        //         onSuccess: (success: any) => () => {
-        //             if (success?.next_step[0].message_type === "SPEAK" && success?.next_step[0].response_type !== 'INTERVIEWER_END_CALL') {
-        //                 speak(success?.next_step[0]?.response_text);
-        //             } else if (success?.next_step[0].response_type === 'COMMAND') {
-        //                 commandVariant(success?.next_step[0]?.response_text)
-        //             } else if (success?.next_step[0].message_type === "SPEAK" && success?.next_step[0].response_type == 'INTERVIEWER_END_CALL') {
-        //                 isScreenRecording && stopScreenRecording()
-        //                 goBack()
-        //             }
-        //             setShowLoader(false)
-        //         },
-        //         onError: (error: string) => () => {
-        //             setShowLoader(false)
-        //         },
-        //     })
-        // );
+        dispatch(
+            getStartChat({
+                params,
+                onSuccess: (success: any) => () => {
+                    if (success?.next_step[0].message_type === "SPEAK" && success?.next_step[0].response_type !== 'INTERVIEWER_END_CALL') {
+                        speak(success?.next_step[0]?.response_text);
+                    } else if (success?.next_step[0].response_type === 'COMMAND') {
+                        commandVariant(success?.next_step[0]?.response_text)
+                    } else if (success?.next_step[0].message_type === "SPEAK" && success?.next_step[0].response_type == 'INTERVIEWER_END_CALL') {
+                        isScreenRecording && stopScreenRecording()
+                        goBack()
+                    }
+                    setShowLoader(false)
+                },
+                onError: (error: any) => () => {                    
+                    setShowLoader(false)
+                    showToast(error?.error_message, 'error')
+                },
+            })
+        );
     };
 
     const handleVideo = () => {
@@ -150,7 +140,7 @@ function Call() {
             <CallScreen
                 userName='Akshay G'
                 status='Connected'
-                loading={true}
+                loading={showLoader}
                 startTimer={isScreenRecording}
                 micDisable={isSpeaking}
                 isMute={isMicRecording}
