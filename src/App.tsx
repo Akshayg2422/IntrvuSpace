@@ -13,6 +13,8 @@ import "@fullcalendar/daygrid/main.min.css";
 import "sweetalert2/dist/sweetalert2.min.css";
 import "quill/dist/quill.core.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
+import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
 
 
 
@@ -20,6 +22,10 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 function App() {
 
   const AUTH = 1
+  const { loginUser } = useSelector((state: any) => state.AuthReducer);
+  const [pathName, setPathName] = useState<any>('/client')
+
+
 
 
   const getRoutes = (routes, type?: any) => {
@@ -30,8 +36,9 @@ function App() {
 
       const path = prop.layout ? prop.layout + prop.path : prop.path;
 
-
+      console.log("prop.component", prop.path)
       return (
+
         <Route
           path={path}
           element={type === AUTH ?
@@ -39,14 +46,25 @@ function App() {
             <RequireHome>{prop.component}</RequireHome>
             :
             <RequireAuth>
-              <div className={'ml-3'}>
-                <div className="col">
-                  <div className="row">
-                    <Back />
-                    <h5 className="ml-2 mt-1 text-muted"><Breadcrumbs /></h5>
+              {!loginUser?.details?.is_admin ? prop.path !== pathName &&
+                <div className={'ml-3'}>
+                  <div className="col">
+                    <div className="row">
+                      <Back />
+                      <h5 className="ml-2 mt-1 text-muted"><Breadcrumbs /></h5>
+                    </div>
                   </div>
                 </div>
-              </div>
+                :
+                <div className={'ml-3'}>
+                  <div className="col">
+                    <div className="row">
+                      <Back />
+                      <h5 className="ml-2 mt-1 text-muted"><Breadcrumbs /></h5>
+                    </div>
+                  </div>
+                </div>
+              }
               {prop.component}
             </RequireAuth>
           }

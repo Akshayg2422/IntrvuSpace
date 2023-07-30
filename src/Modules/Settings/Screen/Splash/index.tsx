@@ -16,9 +16,15 @@ function Splash() {
 
     useEffect(() => {
         setTimeout(() => {
-            if (loginUser?.token) {
+            if (loginUser?.details?.token) {
+                if (loginUser?.details?.is_admin) {
+                    goTo(ROUTES['designation-module'].designation, true)
+                }
+                else {
+                    goTo(ROUTES['designation-module'].client, true)
+                }
 
-                goTo(ROUTES['designation-module'].designation, true)
+
             }
             else {
                 goTo(ROUTES["auth-module"].login, true);
@@ -32,7 +38,7 @@ function Splash() {
                 style={{
                     fontSize: '13vh'
                 }}
-            >MOCK <b className='text-black'>EASY</b></div>
+            >MOCK <b className='text-black'>EAZY</b></div>
         </div>
     );
 }

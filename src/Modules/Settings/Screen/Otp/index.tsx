@@ -6,12 +6,12 @@ import { OTP_RESEND_DEFAULT_TIME, USER_TOKEN } from '@Utils';
 import { useInput, useLoader, useNavigation, useTimer } from '@Hooks';
 import { ROUTES } from '@Routes';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchMemberUsingLoginOtp } from '@Redux';
+import { fetchMemberUsingLoginOtp, settingRegisterData } from '@Redux';
 
 function Otp() {
     const { seconds, setSeconds } = useTimer(OTP_RESEND_DEFAULT_TIME);
     const Otp = useInput('')
-    const { goTo } = useNavigation()
+    const { goTo, goBack } = useNavigation()
     const { registerData } = useSelector((state: any) => state.DashboardReducer);
     const dispatch = useDispatch()
     const loginLoader = useLoader(false);
@@ -25,7 +25,8 @@ function Otp() {
     const loginOtp = () => {
         loginLoader.show()
         const params = {
-            mobile_number: registerData?.mobile_number,
+            ...(registerData?.mobile_number && { mobile_number: registerData?.mobile_number }),
+            ...(registerData?.email && { email: registerData?.email }),
             otp: Otp.value
         }
 
@@ -36,6 +37,7 @@ function Otp() {
                 if (response.token) {
                     localStorage.setItem(USER_TOKEN, response.token);
                     goTo(ROUTES['auth-module'].splash)
+                    dispatch(settingRegisterData(undefined))
                 }
                 else {
                     showToast(response.error_message, 'error')
@@ -63,7 +65,7 @@ function Otp() {
                                         fontSize: '3vh'
                                     }}
                                 >Mobile Number </h2>
-                                <h4 className='text-black font-weight-normal py-2'>+91 - {registerData?.mobile_number} <i className="bi bi-pencil text-primary ml-3"></i></h4>
+                                <h4 className='text-black font-weight-normal py-2'>{"+91 - " + registerData?.mobile_number || registerData?.email} <i className="bi bi-pencil text-primary ml-3 pointer" onClick={() => { goBack() }}></i></h4>
                             </div>
                             <div className=" col-sm-9  pr-3 ml-lg--3 px-0 ml-sm-0 ml--2 pt-1"
                                 style={{
@@ -80,10 +82,13 @@ function Otp() {
                                     />
                                 </div>
                                 <h3 className=' text-black pt-4 pb-2 font-weight-normal text-sm'>
-                                    You OTP should arrive in {(seconds < 10 ? "0" + seconds : seconds)} Seconds
+                                    {seconds <= 0 ?
+                                        <div className='d-flex '>
+                                            Didn't receive an OTP ? <h3 className='text-primary ml-2 pt-0 mt--1'>Resend OTP</h3>
+                                        </div> : `You OTP should arrive in ${(seconds < 10 ? "0" + seconds : seconds)} Seconds`}
                                 </h3>
                                 <h4 className='text-black  font-weight-normal text-sm'>
-                                    An OTP has been sent to {registerData?.mobile_number}. You may not receive the OTP if the email/number is not registered with Mockeasy.
+                                    An OTP has been sent to {registerData?.mobile_number || registerData?.email}. You may not receive the OTP if the email/number is not registered with Mockeasy.
                                 </h4>
 
                                 <div className="py-3 ">
