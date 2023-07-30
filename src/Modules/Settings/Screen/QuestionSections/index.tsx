@@ -1,27 +1,36 @@
 import React, { useEffect, useState } from 'react'
-import { Back, Button, Card, Checkbox, Divider, Input, Modal } from '@Components'
+import { Back, Button, Card, Checkbox, Divider, Input, Modal, TextArea } from '@Components'
 import { ROUTES } from '@Routes';
 import { useInput, useLoader, useModal, useNavigation, useWindowDimensions } from '@Hooks'
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchGenerateFormSectionsAndQuestions, fetchGenerateSectionQuestions, getFormSectionQuestions, getQuestionSection } from '@Redux';
+import { fetchGenerateFormSectionsAndQuestions, fetchGenerateSectionQuestions, fetchUpdateQuestionDetails, getFormSectionQuestions, getQuestionSection } from '@Redux';
 
 function QuestionSections() {
 
     const { goTo } = useNavigation();
     const { height } = useWindowDimensions()
     const dispatch = useDispatch()
-    const { selectedRole, selectedQuestionForm, questionSection, formSectionQuestions } = useSelector((state: any) => state.DashboardReducer)
+    const { selectedRole, selectedQuestionForm, questionSection } = useSelector((state: any) => state.DashboardReducer)
     const generateFormSectionsAndQuestionsModel = useModal(false);
     const generateQuestionsModel = useModal(false);
+    const editQuestionsModel = useModal(false);
+
 
     const [includeQuestions, setIncludeQuestions] = useState(true)
     const [selectedSectionId, SetSelectedSectionId] = useState('')
+    const [selectedSectionsDetails, setSelectedSectionDetails] = useState([])
+    const [selectedEditQuestionId, setSelectedEditQuestionId] = useState('')
 
     const sectionCount = useInput("");
     const questionCount = useInput("");
     const noOfQuestions = useInput("");
+    const question = useInput("");
+    const expectedAnswer = useInput("");
+
     const generateFormSectionsAndQuestionsLoader = useLoader(false);
     const generateQuestionsLoader = useLoader(false);
+    const editQuestionsLoader = useLoader(false);
+
 
 
 
@@ -56,7 +65,8 @@ function QuestionSections() {
         dispatch(
             getFormSectionQuestions({
                 params,
-                onSuccess: () => () => {
+                onSuccess: (success: any) => () => {
+                    setSelectedSectionDetails(success?.details?.questions)
                 },
                 onError: () => () => {
                 },
@@ -113,9 +123,42 @@ function QuestionSections() {
         );
     }
 
+    const SelectedQuestionsEditHandler = (items: any) => {
+        setSelectedEditQuestionId(items?.id)
+        question.set(items?.question)
+        expectedAnswer.set(items.expected_answer)
+        editQuestionsModel.show()
+    }
+
+    const editQuestionsApiHandler = () => {
+        const params = {
+            id: selectedEditQuestionId,
+            question: question.value,
+            expected_answer: expectedAnswer.value
+        };
+        editQuestionsLoader.show()
+        dispatch(
+            fetchUpdateQuestionDetails({
+                params,
+                onSuccess: () => () => {
+                    question.set('')
+                    expectedAnswer.set('')
+                    editQuestionsLoader.hide()
+                    editQuestionsModel.hide()
+                    getQuestionSectionsApi()
+                },
+                onError: () => () => {
+                    editQuestionsLoader.hide()
+                    editQuestionsModel.hide()
+                },
+            })
+        );
+    }
+
+
+
 
     return (
-
         <div className="m-3">
             {/* <div className="row">
                 <div className="col text-right">
@@ -144,12 +187,13 @@ function QuestionSections() {
                                             getFormSectionQuestionsApi(id)
                                             SetSelectedSectionId(id)
                                         }}
+                                        style={{ backgroundColor: selectedSectionId === id ? '#f6f9fc' : '' }}
                                     >
-                                        <div className={'row'}>
-                                            <small className='col mb-0 pointer'>{name}:</small>
-                                        </div>
-                                        <div className={'row'}>
-                                            <small className='col mb-0 pointer'>{description}:</small>
+                                            <div className={'row'}>
+                                                <small className='col mb-0 pointer'>{name}:</small>
+                                            </div>
+                                            <div className={'row'}>
+                                                <small className='col mb-0 pointer'>{description}:</small>
                                         </div>
                                         {index !== questionSection?.length - 1 && <Divider space={'3'} />}
                                     </div>
@@ -158,24 +202,24 @@ function QuestionSections() {
                         </Card>
                     </Card>}
                 </div>
-                {
+                {questionSection && selectedSectionsDetails && questionSection?.length > 0 && selectedSectionsDetails?.length > 0 &&
                     <div className="col-8">
                         <Card className={'overflow-auto overflow-hide ml--1'} style={{ height: height - 74 }}>
                             <h4 className='mb-0 pointer'>{'Questions'}</h4>
                             <div className={'mx--4'}><Divider space={'3'} /></div>
                             <Card className={'overflow-auto overflow-hide shadow-none mx--4'} style={{ height: height - 153 }}>
-                                {formSectionQuestions && formSectionQuestions?.length > 0 ? formSectionQuestions?.map((sectionQuestions: any, index: number) => {
-                                    const { question, expected_answer } = sectionQuestions;
+                                {selectedSectionsDetails && selectedSectionsDetails?.length > 0 ? selectedSectionsDetails?.map((sectionQuestions: any, index: number) => {
+                                    const { id, question, expected_answer } = sectionQuestions;
                                     return (
-                                        <div key={index}>
+                                        <div key={index} >
                                             <div className={'row'}>
                                                 <h4 className='col mb-0 pointer'>{question}:</h4>
-                                                <i className="fas fa-pen col-auto" onClick={() => { }} ></i>
+                                                <i className="fas fa-pen col-auto pointer   " onClick={() => { SelectedQuestionsEditHandler(sectionQuestions) }} ></i>
                                             </div>
                                             <div className='mx-3 my-2'>
                                                 <span>{expected_answer}</span>
                                             </div>
-                                            {index !== formSectionQuestions?.length - 1 && <Divider space={'3'} />}
+                                            {index !== selectedSectionsDetails?.length - 1 && <Divider space={'3'} />}
                                         </div>
                                     )
                                 }) : <div className='d-flex align-items-center justify-content-center'>
@@ -250,6 +294,29 @@ function QuestionSections() {
                         loading={generateQuestionsLoader.loader}
                         text={"Submit"}
                         onClick={() => generateSectionQuestionsHandler()}
+                    />
+                </div>
+            </Modal >
+            < Modal size={'lg'} title={"Generate"} isOpen={editQuestionsModel.visible} onClose={editQuestionsModel.hide} >
+                <TextArea
+                    className={'col-8'}
+                    heading={"Question"}
+                    value={question.value}
+                    onChange={question.onChange}
+                />
+
+                <TextArea
+                    heading='Expected Answer'
+                    className={'col-8'}
+                    value={expectedAnswer.value}
+                    onChange={expectedAnswer.onChange}
+                />
+
+                <div className="col text-right">
+                    <Button size={'md'}
+                        loading={editQuestionsLoader.loader}
+                        text={"Submit"}
+                        onClick={() => editQuestionsApiHandler()}
                     />
                 </div>
             </Modal >

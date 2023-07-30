@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { SearchInput, Button, Modal, Divider, NoDataFound, ButtonGroup, Input, TextArea, DesignationItem } from '@Components'
-import { useDropDown, useInput, useModal, useNavigation } from '@Hooks'
+import { SearchInput, Button, Modal, Divider, NoDataFound, ButtonGroup, Input, TextArea, DesignationItem, showToast } from '@Components'
+import { useDropDown, useInput, useLoader, useModal, useNavigation } from '@Hooks'
 import { useSelector, useDispatch } from 'react-redux'
-import { Schedules, Sectors } from '@Modules'
-import { getKnowledgeGroups, getMyPastInterviews, getSectors } from '@Redux'
+import { Profile, Schedules, Sectors } from '@Modules'
+import { createSchedule, getKnowledgeGroups, getMyPastInterviews, getSectors } from '@Redux'
 import { capitalizeFirstLetter } from '@Utils'
 import { Card, CardBody, FormGroup, InputGroup, InputGroupAddon, InputGroupText, Nav, NavItem, NavLink } from 'reactstrap'
 import classnames from 'classnames'
@@ -39,8 +39,8 @@ function Clients() {
     }, [])
 
 
-    console.log('--------->myPastInterviews.....>', myPastInterviews)
     function submitJdApiHandler() {
+
     }
 
 
@@ -50,7 +50,7 @@ function Clients() {
         dispatch(getMyPastInterviews({
             params,
             onSuccess: (response: any) => () => {
-                goTo(ROUTES['auth-module'].otp)
+                // goTo(ROUTES['auth-module'].otp)
             },
             onError: (error) => () => {
 
@@ -119,6 +119,21 @@ function Clients() {
         filter.onChange(selectedOption);
     };
 
+    const scheduleApiHandler = (id) => {
+        const params = {
+            knowledge_group_variant_id: id
+        }
+        dispatch(createSchedule({
+            params,
+            onSuccess: (response: any) => () => {
+                showToast('Scheduled Successfully')
+            },
+            onError: (error) => () => {
+
+            },
+        }))
+    }
+
     return (
         <>
             <div className={`container-fluid ${loginUser?.details?.is_admin? ' ' : 'pt-4'}`}>
@@ -129,6 +144,9 @@ function Clients() {
                     <div className='col text-lg-right'>
                         <ButtonGroup size={'btn-md'} sortData={FILTER} selected={filter.value} onClick={handleButtonClick} />
                         {/* {filter.value?.title === 'Past' && <Schedules />} */}
+                    </div>
+                    <div className='mt--2 '>
+                        <Profile />
                     </div>
                 </div>
                 <div className='row pb-3 pt-1'>
@@ -207,8 +225,16 @@ function Clients() {
                                                 {el.knowledge_group_variant && el.knowledge_group_variant.map((item) => {
                                                     return (
                                                         <>
-                                                            <div className='pt-1 '>
-                                                                <div className=' hoverColor h5'>{item.name}</div>
+                                                            <div className='pt-1 row justify-content-between'>
+                                                                <div className='col hoverColor h5'>{item.name}</div>
+                                                                <div className='col text-right'>
+                                                                    <Button
+                                                                        className={'text-white shadow-none'}
+                                                                        size={'sm'}
+                                                                        text={"Schedule"}
+                                                                        onClick={() => { scheduleApiHandler(item?.id) }}
+                                                                    />
+                                                                </div>
                                                             </div>
                                                         </>
                                                     )
