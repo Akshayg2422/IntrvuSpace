@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { HOME_ROUTES, ROUTES } from '@Routes'
 import { Sidebar } from '@Components'
 import { icons } from '@Assets'
-import { FCM_TOKEN, USER_TOKEN, getDeviceInfo } from '@Utils'
+import { FCM_TOKEN, getDeviceInfo } from '@Utils'
 import { PushNotification } from "@Modules";
 
 type RequireAuthProps = {
@@ -30,8 +30,8 @@ export const RequireAuth = ({ children }: RequireAuthProps) => {
     }, [location]);
 
 
-    const login = localStorage.getItem(USER_TOKEN)
-    if (!login) {
+    const login = false
+    if (login) {
         return <Navigate to={ROUTES['auth-module'].login} state={{ path: location.pathname }} />
     }
 
