@@ -5,12 +5,12 @@ export const BUILD_TYPE_LIVE_DEMO = 2;
 export const BUILD_TYPE_STAGING = 3;
 export const BUILD_TYPE_LOCAL = 4;
 
-export const BUILD_TYPE = BUILD_TYPE_LOCAL;
+export const BUILD_TYPE = BUILD_TYPE_LIVE;
 export const SERVER =
   BUILD_TYPE === BUILD_TYPE_LIVE
-    ? 'https://tmsprimary.quantaedat.com'
+    ? 'https://mockinprimary.quantaedat.com'
     : BUILD_TYPE === BUILD_TYPE_LIVE_DEMO
-      ? 'live_local'  
+      ? 'live_local'
       : BUILD_TYPE === BUILD_TYPE_LOCAL
         ? 'http://192.168.172.204:8003'
         : BUILD_TYPE === BUILD_TYPE_STAGING
@@ -32,8 +32,8 @@ const getHeaders = async () => {
 
     const value = await localStorage.getItem(USER_TOKEN);
     // const value  = '31e514b7d36ecf2ca216a20c74e717ff7c4223ae'
-    
-    
+
+
 
     if (value) {
       return { Authorization: 'Token ' + value };
