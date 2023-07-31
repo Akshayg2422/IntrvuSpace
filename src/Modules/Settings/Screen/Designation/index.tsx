@@ -48,7 +48,8 @@ function Designation() {
             getSectors({
                 params,
                 onSuccess: (response: any) => () => {
-                    setNavList(response.details.knowledege_groups)
+                    setNavList(response?.details?.knowledege_groups)
+                    fetchKnowledgeData(response?.details?.knowledege_groups[0]?.id)
                 },
                 onError: () => () => {
                 },
@@ -152,7 +153,7 @@ function Designation() {
                 </div>
                 <div className='mx-3'>
                     <div className='overflow-auto overflow-hide'>
-                        <div className='d-flex py-2' >
+                        <div className='d-flex pt-2 pb-4 mb-1 ' >
                             {navList && navList.map((el, index) => {
                                 return (
                                     <div className='col  col-sm-3 '>
@@ -185,7 +186,7 @@ function Designation() {
                             }
                         </div>
                     </div>
-                    <div className='mx--3'>
+                    <div className=''>
                         {cardData && cardData.length > 0 ?
                             cardData.map((el: any, index: number) => {
                                 return (
