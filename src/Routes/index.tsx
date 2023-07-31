@@ -1,5 +1,5 @@
 import { icons } from '@Assets'
-import { Designation, WeightageCountForm, CreateQuestionForm, Clients, Sector, Questions, Call, Report, QuestionSections, AnalyzingAnimation, Schedules, Login, Otp, Splash, Register, LoginWithOtp, AdminLogin } from "@Modules";
+import { Designation, WeightageCountForm, CreateQuestionForm, Clients, Sector, Questions, Call, Report, QuestionSections, AnalyzingAnimation, Schedules, Login, Otp, Splash, Register, LoginWithOtp, AdminLogin } from '@Modules';
 
 
 
@@ -118,7 +118,7 @@ export const HOME_ROUTES = [
   },
   {
     path: ROUTES['designation-module'].client,
-    name: "Clients",
+    name: "View as Member",
     icon: icons.company,
     layout: "",
     component: <Clients />
@@ -138,6 +138,7 @@ export const HOME_ROUTES = [
   //   component: <Dashboard />
   // },
 ];
+
 
 
 

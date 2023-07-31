@@ -22,7 +22,8 @@ const initialState: DashboardProp = {
   generateQuestionSections: undefined,
   generateSectionsAndQuestions: undefined,
   questionDetails: undefined,
-  registerData: undefined
+  registerData: undefined,
+  removeSideNav:false
 };
 
 const DashboardReducer = (state = initialState, action: any) => {
@@ -248,13 +249,18 @@ const DashboardReducer = (state = initialState, action: any) => {
     // CREATE_SCHEDULE
 
     case ActionTypes.CREATE_SCHEDULE:
-      state = { ...state};
+      state = { ...state };
       break;
     case ActionTypes.CREATE_SCHEDULE_SUCCESS:
-      state = { ...state};
+      state = { ...state };
       break;
     case ActionTypes.CREATE_SCHEDULE_FAILURE:
       state = { ...state };
+      break;
+
+
+    case ActionTypes.REMOVE_SIDE_NAV:
+      state = { ...state, removeSideNav: action.payload };
       break;
 
     default:
