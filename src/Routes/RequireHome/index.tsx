@@ -20,7 +20,7 @@ export const RequireHome = ({ children }: RequireHomeProps) => {
     const login = true
 
     if (login) {
-        // return <Navigate to={ROUTES['designation-module'].group} state={{ path: location.pathname }} />
+        // return <Navigate to={ROUTES['designation-module'].} state={{ path: location.pathname }} />
     }
 
     return (

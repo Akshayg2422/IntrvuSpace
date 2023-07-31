@@ -49,7 +49,7 @@ function App() {
                   <div className="col">
                     <div className="row">
                       <Back />
-                      <h5 className="ml-2 mt-1 text-muted"><Breadcrumbs /></h5>
+                      <h3 className="ml-2 text-muted"><Breadcrumbs /></h3>
                     </div>
                   </div>
                 </div>
@@ -58,7 +58,7 @@ function App() {
                   <div className="col">
                     <div className="row">
                       <Back />
-                      <h5 className="ml-2 mt-1 text-muted"><Breadcrumbs /></h5>
+                      <h3 className="ml-2 text-muted"><Breadcrumbs /></h3>
                     </div>
                   </div>
                 </div>

@@ -1,5 +1,5 @@
 import { icons } from '@Assets'
-import { Designation, WeightageCountForm, CreateQuestionForm, Clients, Sector, Questions, Call, Report, QuestionSections, AnalyzingAnimation, Schedules, Login, Otp, Splash, Register, LoginWithOtp, AdminLogin } from '@Modules';
+import { Designation, WeightageCountForm, CreateQuestionForm, Clients, Sector, Questions, Call, Report, QuestionSections, AnalyzingAnimation, Schedules, Login, Otp, Splash, Register, LoginWithOtp, AdminLogin } from "@Modules";
 
 
 
@@ -7,10 +7,9 @@ export const ROUTES = {
   'auth-module': {
     login: '/login',
     otp: '/otp',
-    splash: '/splash',
+    splash: '/',
     loginWithOtp: '/login-with-otp',
     register: '/register',
-    landing: '/',
     admin_login: '/login-admin'
   },
   'designation-module': {

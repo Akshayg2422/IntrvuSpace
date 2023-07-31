@@ -14,9 +14,9 @@ import { registerAsMember, memberLoginUsingPassword, fetchOTP, settingRegisterDa
 function Login() {
     const { goTo } = useNavigation()
     const dispatch = useDispatch()
-    const password = useInput('')
+    const password = useInput('280121')
     const mobileNumber = useInput('');
-    const email = useInput('')
+    const email = useInput('tamilselvan.intern@leorainfotech.in')
     const loginLoader = useLoader(false);
     const [showPassword, setShowPassword] = useState(false)
     const [toggleInput, setToggleInput] = useState(false)
@@ -28,10 +28,10 @@ function Login() {
         }
     };
 
-    useEffect(() => {
-        reset()
+    // useEffect(() => {
+    //     // reset()
 
-    }, [loginWithOtp])
+    // }, [loginWithOtp])
 
 
 
@@ -66,6 +66,7 @@ function Login() {
     }
 
     const memberLoginHandler = () => {
+<<<<<<< HEAD
         console.log("==========>clicked");
 
         const params = {
@@ -91,6 +92,30 @@ function Login() {
                 showToast(error.error_message, 'error')
             },
         }))
+=======
+       
+            const params = {
+                ...(email.value && { email: email.value }),
+                password: password.value
+            }
+            dispatch(memberLoginUsingPassword({
+                params,
+                onSuccess: (response: any) => () => {
+                    loginLoader.hide()
+                    if (response.success) {
+                        localStorage.setItem(USER_TOKEN, response.details.token);
+                        goTo(ROUTES['auth-module'].splash, true);
+                    }
+                    else {
+                        showToast(response.error_message, 'error')
+                    }
+                },
+                onError: (error) => () => {
+                    loginLoader.hide()
+                    showToast(error.error_message, 'error')
+                },
+            }))
+>>>>>>> 7838478ff0a133d29439cd19d7957c0dab7a6d01
 
 
     }
