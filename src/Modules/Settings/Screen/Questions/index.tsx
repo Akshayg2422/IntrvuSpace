@@ -1,11 +1,12 @@
 
-import { Button, Divider, Modal, Input, Card } from '@Components';
+import { Button, Divider, Modal, Input, Card, showToast } from '@Components';
 import { useModal, useNavigation, useInput, useLoader } from '@Hooks';
 import { generateForm, getQuestionForm, setSelectedQuestionForm } from '@Redux';
 import { ROUTES } from '@Routes';
 import { capitalizeFirstLetter } from '@Utils';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { AnalyzingAnimation } from '../../Container';
 
 
 
@@ -18,7 +19,8 @@ function Questions() {
 
     const { selectedRole, questions } = useSelector((state: any) => state.DashboardReducer)
     const name = useInput('');
-    const  description = useInput('');
+    const description = useInput('');
+    const [dataGenerated, setDataGenerated] = useState(false);
 
 
     useEffect(() => {
@@ -53,17 +55,30 @@ function Questions() {
             description: description.value,
             knowledge_group_variant_id: selectedRole?.id
         }
+        setDataGenerated(true)
 
         dispatch(
             generateForm({
                 params,
-                onSuccess: () => () => {
+                onSuccess: () => (response) => {
+                    goTo(ROUTES['designation-module']['questions'])
+                    resetValues()
+                    showToast(response.message, 'success')
+                    setDataGenerated(false)
+
                 },
-                onError: () => () => {
+                onError: () => (error) => {
+                    showToast(error.error_message)
+                    setDataGenerated(false)
                 },
             })
         );
 
+    }
+
+    function resetValues() {
+        name.set('')
+        description.set('')
     }
 
     return (
@@ -108,11 +123,14 @@ function Questions() {
                 </div>
 
             </div >
-            <Modal title={'Generate Form'} isOpen={addGenerateFormModal.visible} onClose={addGenerateFormModal.hide}>
-                <Input className={'col-6'} heading={'Name'} value={name.value} onChange={name.onChange} />
-                <Input className={'col-6'} heading={'Description'} value={description.value} onChange={description.onChange} />
-                <Button text={'Submit'} onClick={proceedGenerateFormApiHandler} />
-            </Modal>
+
+            {dataGenerated ? <AnalyzingAnimation /> :
+                <Modal title={'Generate Form'} isOpen={addGenerateFormModal.visible} onClose={addGenerateFormModal.hide}>
+                    <Input className={'col-6'} heading={'Name'} value={name.value} onChange={name.onChange} />
+                    <Input className={'col-6'} heading={'Description'} value={description.value} onChange={description.onChange} />
+                    <Button text={'Submit'} onClick={proceedGenerateFormApiHandler} />
+                </Modal>
+            }
         </>
     )
 }
