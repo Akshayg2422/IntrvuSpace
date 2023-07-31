@@ -48,7 +48,8 @@ function Designation() {
             getSectors({
                 params,
                 onSuccess: (response: any) => () => {
-                    setNavList(response.details.knowledege_groups)
+                    setNavList(response?.details?.knowledege_groups)
+                    fetchKnowledgeData(response?.details?.knowledege_groups[0]?.id)
                 },
                 onError: () => () => {
                 },

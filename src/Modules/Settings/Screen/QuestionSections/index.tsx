@@ -147,6 +147,7 @@ function QuestionSections() {
                     editQuestionsLoader.hide()
                     editQuestionsModel.hide()
                     getQuestionSectionsApi()
+                    getFormSectionQuestionsApi(selectedSectionId)
                 },
                 onError: () => () => {
                     editQuestionsLoader.hide()
