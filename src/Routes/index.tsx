@@ -7,10 +7,9 @@ export const ROUTES = {
   'auth-module': {
     login: '/login',
     otp: '/otp',
-    splash: '/splash',
+    splash: '/',
     loginWithOtp: '/login-with-otp',
     register: '/register',
-    landing: '/',
     admin_login: '/login-admin'
   },
   'designation-module': {
