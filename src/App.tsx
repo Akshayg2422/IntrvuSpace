@@ -36,13 +36,11 @@ function App() {
 
       const path = prop.layout ? prop.layout + prop.path : prop.path;
 
-      console.log("prop.component", prop.path)
       return (
 
         <Route
           path={path}
           element={type === AUTH ?
-
             <RequireHome>{prop.component}</RequireHome>
             :
             <RequireAuth>

@@ -18,6 +18,7 @@ function Questions() {
 
     const { selectedRole, questions } = useSelector((state: any) => state.DashboardReducer)
     const name = useInput('');
+    const  description = useInput('');
 
 
     useEffect(() => {
@@ -48,10 +49,10 @@ function Questions() {
     function proceedGenerateFormApiHandler() {
 
         const params = {
-            form_name: name.value,
-            group_variant_id: selectedRole?.id
+            name: name.value,
+            description: description.value,
+            knowledge_group_variant_id: selectedRole?.id
         }
-
 
         dispatch(
             generateForm({
@@ -85,8 +86,6 @@ function Questions() {
                     />
                 </div>
 
-
-
                 <div className='row mt-3'>
                     {
                         questions && questions.length > 0 && questions?.map((item: any) => {
@@ -111,6 +110,7 @@ function Questions() {
             </div >
             <Modal title={'Generate Form'} isOpen={addGenerateFormModal.visible} onClose={addGenerateFormModal.hide}>
                 <Input className={'col-6'} heading={'Name'} value={name.value} onChange={name.onChange} />
+                <Input className={'col-6'} heading={'Description'} value={description.value} onChange={description.onChange} />
                 <Button text={'Submit'} onClick={proceedGenerateFormApiHandler} />
             </Modal>
         </>

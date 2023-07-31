@@ -46,7 +46,7 @@ function Schedules() {
             return (
                 <>
                     <Button text={'Resume'} size='sm' onClick={() => {
-                        dispatch(selectedScheduleId(item))
+                        dispatch(selectedScheduleId(id))
                         goTo(ROUTES['designation-module'].call)
                     }} />
                 </>
@@ -56,7 +56,7 @@ function Schedules() {
             return (
                 <>
                     <Button text={'Start'} size='sm' onClick={() => {
-                        dispatch(selectedScheduleId(item))
+                        dispatch(selectedScheduleId(id))
                         goTo(ROUTES['designation-module'].call)
                     }} />
                 </>
