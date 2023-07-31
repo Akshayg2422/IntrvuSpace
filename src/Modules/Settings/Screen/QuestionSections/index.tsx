@@ -31,6 +31,7 @@ function QuestionSections() {
     const generateFormSectionsAndQuestionsLoader = useLoader(false);
     const generateQuestionsLoader = useLoader(false);
     const editQuestionsLoader = useLoader(false);
+    
 
 
 
@@ -147,6 +148,7 @@ function QuestionSections() {
                     editQuestionsLoader.hide()
                     editQuestionsModel.hide()
                     getQuestionSectionsApi()
+                    getFormSectionQuestionsApi(selectedSectionId)
                 },
                 onError: () => () => {
                     editQuestionsLoader.hide()

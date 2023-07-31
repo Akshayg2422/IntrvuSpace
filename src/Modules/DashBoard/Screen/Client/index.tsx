@@ -27,10 +27,6 @@ function Clients() {
     const [navIndex, setNavIndex] = useState<any>(0)
 
     console.log("screen.width", window.innerWidth)
-
-
-
-
     const sector = useInput('');
     const designation = useInput('');
     const role = useInput('');
