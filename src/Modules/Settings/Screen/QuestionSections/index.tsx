@@ -4,6 +4,7 @@ import { ROUTES } from '@Routes';
 import { useInput, useLoader, useModal, useNavigation, useWindowDimensions } from '@Hooks'
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchGenerateFormSectionsAndQuestions, fetchGenerateSectionQuestions, fetchUpdateQuestionDetails, getFormSectionQuestions, getQuestionSection } from '@Redux';
+import { CardFooter } from 'reactstrap';
 
 function QuestionSections() {
 
@@ -175,39 +176,49 @@ function QuestionSections() {
             <div className="row mt-2">
 
                 <div className="col-4">
-                    {questionSection && questionSection?.length > 0 && <Card className={'mr--2'} style={{ height: height - 74 }}>
-                        <h4 className='mb-0 pointer'>{'Sections'}</h4>
-                        <div className={'mx--4'}><Divider space={'3'} /></div>
-                        <Card className={'overflow-auto overflow-hide shadow-none mx--4'} style={{ height: height - 153 }}>
-                            {questionSection && questionSection?.length > 0 && questionSection?.map((section: any, index: number) => {
-                                const { id, name, description } = section;
-                                return (
-                                    <div key={index}
-                                        onClick={() => {
-                                            getFormSectionQuestionsApi(id)
-                                            SetSelectedSectionId(id)
-                                        }}
-                                        style={{ backgroundColor: selectedSectionId === id ? '#f6f9fc' : '' }}
-                                    >
+                    {questionSection && questionSection?.length > 0 &&
+                        <Card className={'mr--2'} style={{ height: height - 74 }}>
+                            <div className={'row justify-content-between mt--1'}>
+                                <h4 className='mb-0 pointer'>{'Sections'}</h4>
+                                <span className={''}>
+                                    <Button text={'Regenerate'} className={'text-white'} size={'sm'} onClick={() => { }} />
+                                </span>
+                            </div>
+
+                            <div className={'mx--4'}><Divider space={'3'} /></div>
+                            <Card className={'overflow-auto overflow-hide shadow-none mx--4 mt--3'} style={{ height: height - 153 }}>
+                                {questionSection && questionSection?.length > 0 && questionSection?.map((section: any, index: number) => {
+                                    const { id, name, description } = section;
+                                    return (
+                                        <div className={'mt--2 p-0 m-0'} key={index}
+                                            onClick={() => {
+                                                getFormSectionQuestionsApi(id)
+                                                SetSelectedSectionId(id)
+                                            }}
+                                        >
                                             <div className={'row'}>
-                                                <small className='col mb-0 pointer'>{name}:</small>
+                                                <h4 className='col mb-0 pointer'
+                                                    style={{
+                                                        color: selectedSectionId === id ? '#68d75c' : ''
+                                                    }}
+                                                >{name}:</h4>
                                             </div>
                                             <div className={'row'}>
                                                 <small className='col mb-0 pointer'>{description}:</small>
+                                            </div>
+                                            {index !== questionSection?.length - 1 && <div className={'mx--4'}><Divider space={'3'} /></div>}
                                         </div>
-                                        {index !== questionSection?.length - 1 && <Divider space={'3'} />}
-                                    </div>
-                                )
-                            })}
-                        </Card>
-                    </Card>}
+                                    )
+                                })}
+                            </Card>
+                        </Card>}
                 </div>
                 {questionSection && selectedSectionsDetails && questionSection?.length > 0 && selectedSectionsDetails?.length > 0 &&
                     <div className="col-8">
                         <Card className={'overflow-auto overflow-hide ml--1'} style={{ height: height - 74 }}>
                             <h4 className='mb-0 pointer'>{'Questions'}</h4>
                             <div className={'mx--4'}><Divider space={'3'} /></div>
-                            <Card className={'overflow-auto overflow-hide shadow-none mx--4'} style={{ height: height - 153 }}>
+                            <Card className={'overflow-auto overflow-hide shadow-none mt--3 mx--4'} style={{ height: height - 153 }}>
                                 {selectedSectionsDetails && selectedSectionsDetails?.length > 0 ? selectedSectionsDetails?.map((sectionQuestions: any, index: number) => {
                                     const { id, question, expected_answer } = sectionQuestions;
                                     return (
@@ -219,7 +230,7 @@ function QuestionSections() {
                                             <div className='mx-3 my-2'>
                                                 <span>{expected_answer}</span>
                                             </div>
-                                            {index !== selectedSectionsDetails?.length - 1 && <Divider space={'3'} />}
+                                            {index !== selectedSectionsDetails?.length - 1 && <div className={'mx--4'}><Divider space={'3'} /></div>}
                                         </div>
                                     )
                                 }) : <div className='d-flex align-items-center justify-content-center'>
@@ -298,27 +309,29 @@ function QuestionSections() {
                 </div>
             </Modal >
             < Modal size={'lg'} title={"Generate"} isOpen={editQuestionsModel.visible} onClose={editQuestionsModel.hide} >
-                <TextArea
-                    className={'col-8'}
-                    heading={"Question"}
-                    value={question.value}
-                    onChange={question.onChange}
-                />
-
-                <TextArea
-                    heading='Expected Answer'
-                    className={'col-8'}
-                    value={expectedAnswer.value}
-                    onChange={expectedAnswer.onChange}
-                />
-
-                <div className="col text-right">
-                    <Button size={'md'}
-                        loading={editQuestionsLoader.loader}
-                        text={"Submit"}
-                        onClick={() => editQuestionsApiHandler()}
+                <CardFooter className={'mx--4 mt--4'}>
+                    <TextArea
+                        className={'col-8'}
+                        heading={"Question"}
+                        value={question.value}
+                        onChange={question.onChange}
                     />
-                </div>
+
+                    <TextArea
+                        heading='Expected Answer'
+                        className={'col-8'}
+                        value={expectedAnswer.value}
+                        onChange={expectedAnswer.onChange}
+                    />
+
+                    <div className="col text-right">
+                        <Button size={'md'}
+                            loading={editQuestionsLoader.loader}
+                            text={"Submit"}
+                            onClick={() => editQuestionsApiHandler()}
+                        />
+                    </div>
+                </CardFooter>
             </Modal >
         </div>
     )
