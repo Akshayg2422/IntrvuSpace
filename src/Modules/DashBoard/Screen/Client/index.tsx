@@ -216,7 +216,7 @@ function Clients() {
                     {cardData && cardData.map((el) => {
                         return (
                             <>
-                                <div className='col-sm-4'>
+                                <div className='col-5'>
                                     <Card className=''>
                                         <CardBody>
                                             <div className='row justify-content-between align-items-center px-3'>
@@ -233,15 +233,15 @@ function Clients() {
                                                         <>
                                                             <div className='pt-1 row justify-content-between'>
                                                                 <div className='col my-2 hoverColor h5'>{item.name}</div>
-                                                                <div className='col row  text-right'>
+                                                                <div className='text-right'>
                                                                     <Button
-                                                                        className={'text-white shadow-none col'}
+                                                                        className={'text-white shadow-none'}
                                                                         size={'sm'}
                                                                         text={"Schedule"}
                                                                         onClick={() => { scheduleApiHandler(item?.id, "Schedule") }}
                                                                     />
                                                                     <Button
-                                                                        className={'text-white shadow-none col'}
+                                                                        className={'text-white shadow-none'}
                                                                         size={'sm'}
                                                                         text={"Start Call"}
                                                                         onClick={() => { scheduleApiHandler(item?.id, "Call") }}
