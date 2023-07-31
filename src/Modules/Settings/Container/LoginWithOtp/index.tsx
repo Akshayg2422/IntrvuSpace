@@ -50,7 +50,7 @@ function LoginWithOtp() {
                 if (response.success) {
                     dispatch(settingRegisterData(params))
                     showToast(response.message, 'success')
-                    goTo(ROUTES['auth-module'].otp)
+                    goTo(ROUTES['auth-module'].otp, true)
                 }
                 else {
                     showToast(response.error_message, 'error')
@@ -76,8 +76,8 @@ function LoginWithOtp() {
                     >
                         <div className=' position-absolute pointer '
                             style={{
-                                top:0,
-                                left:5
+                                top: 0,
+                                left: 5
                             }}
                             onClick={() => {
                                 goBack()

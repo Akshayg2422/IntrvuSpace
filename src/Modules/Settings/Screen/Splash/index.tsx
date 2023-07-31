@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Logo, Image } from "@Components";
+import { Logo, Image, Button } from "@Components";
 import { ROUTES } from "@Routes";
 import { useNavigation } from "@Hooks";
 import { useSelector, useDispatch } from 'react-redux'
@@ -30,28 +30,36 @@ function Splash() {
 
 
             }
-            else {
-                goTo(ROUTES["auth-module"].login, true);
-            }
+            // else {
+            //     goTo(ROUTES["auth-module"].splash, true);
+            // }
         }, SPLASH_STAY_TIME_MILE_SECONDS);
     }, []);
 
     return (
-        <div className={"d-flex vh-100  justify-content-center align-items-center"}>
-            <div className="text-center">
-                <Image
-                    src={icons.logo}
-                    height={'17%'}
-                    width={'17%'}
-                />
-                <div className='pb-0 mb--1 font-weight-bolder  display-2 text-primary'
-                    style={{
-                        fontSize: '13vh'
-                    }}
-                >MOCK <b className='text-black'>EAZY</b>
+        <div>
+            {loginUser?.details?.token ? <div className={"d-flex vh-100  justify-content-center align-items-center"}>
+                <div className="text-center">
+                    <Image
+                        src={icons.logo}
+                        height={'17%'}
+                        width={'17%'}
+                    />
+                    <div className='pb-0 mb--1 font-weight-bolder  display-2 text-primary'
+                        style={{
+                            fontSize: '13vh'
+                        }}
+                    >MOCK <b className='text-black'>EAZY</b>
+                    </div>
                 </div>
-            </div>
 
+            </div> : <div>
+
+                <Button text={'Login'} onClick={() => {
+                    goTo(ROUTES["auth-module"].login, true);
+                }} />
+            </div>
+            }
         </div>
     );
 }
