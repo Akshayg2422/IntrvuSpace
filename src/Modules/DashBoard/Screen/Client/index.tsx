@@ -26,6 +26,9 @@ function Clients() {
     const [cardData, setCardData] = useState<any>([])
     const [navIndex, setNavIndex] = useState<any>(0)
 
+    console.log("screen.width", window.innerWidth)
+
+
 
 
     const sector = useInput('');
@@ -180,37 +183,41 @@ function Clients() {
                         </Nav>
                     </div>
                 </div>
-                <div className='row py-2' style={{ overflowX: 'auto' , whiteSpace:'nowrap' }}>
-                    {navList && navList.map((el, index) => {
-                        return (
-                            <div className='col-lg  col-sm-3 '>
-                                <Nav
-                                    className="nav-fill flex-column flex-sm-row pointer"
-                                    id="tabs-text"
-                                    pills
-                                    role="tablist"
-                                >
-                                    <NavItem>
-                                        <NavLink
-                                            aria-selected={index === navIndex}
-                                            className={classnames(`mb-sm-3 mb-md-0  ${index !== navIndex ? 'text-black font-weight-normal' : 'font-weight-bold'}`, {
-                                                active: index === navIndex
-                                            })}
-                                            onClick={() => {
-                                                setNavIndex(index)
-                                                fetchKnowledgeData(el.id)
-                                            }}
-                                            role="tab"
-                                        >
-                                            {el.name}
-                                        </NavLink>
-                                    </NavItem>
-                                </Nav>
-                            </div>
-                        )
-                    })
+                <div className=' overflow-auto overflow-hide px-2' >
+                    <div className='d-flex py-2 mx--3' >
+                        {navList && navList.map((el, index) => {
+                            return (
+                                <div className='col col-sm-3 '
 
-                    }
+                                >
+                                    <Nav
+                                        className="nav-fill flex-column flex-sm-row pointer"
+                                        id="tabs-text"
+                                        pills
+                                        role="tablist"
+                                    >
+                                        <NavItem>
+                                            <NavLink
+                                                aria-selected={index === navIndex}
+                                                className={classnames(`mb-sm-3 mb-md-0  ${index !== navIndex ? 'text-black font-weight-normal' : 'font-weight-bold'}`, {
+                                                    active: index === navIndex
+                                                })}
+                                                onClick={() => {
+                                                    setNavIndex(index)
+                                                    fetchKnowledgeData(el.id)
+                                                }}
+                                                role="tab"
+                                            >
+                                                {el.name}
+                                            </NavLink>
+                                        </NavItem>
+                                    </Nav>
+                                </div>
+                            )
+                        })
+
+                        }
+                    </div>
                 </div>
                 <div className='row pt-4 mt-2'>
                     {cardData && cardData.map((el) => {

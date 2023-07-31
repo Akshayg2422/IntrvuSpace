@@ -18,6 +18,7 @@ export const RequireAuth = ({ children }: RequireAuthProps) => {
     const mainContentRef = React.useRef<HTMLDivElement | null>(null);
     const location = useLocation();
     const { loginUser } = useSelector((state: any) => state.AuthReducer);
+    const { removeSideNav } = useSelector((state: any) => state.DashboardReducer)
 
 
 
@@ -49,7 +50,7 @@ export const RequireAuth = ({ children }: RequireAuthProps) => {
 
     return (
         <>
-           {loginUser?.details?.is_admin && <Sidebar
+           {loginUser?.details?.is_admin && !removeSideNav && <Sidebar
                 routes={HOME_ROUTES}
                 toggleSideNav={toggleSideNav}
                 sideNavOpen={sideNavOpen}

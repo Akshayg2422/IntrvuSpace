@@ -16,5 +16,6 @@ export interface DashboardProp {
   generateQuestionSections: any
   generateSectionsAndQuestions: any
   questionDetails: any
-  registerData:any
+  registerData: any
+  removeSideNav: boolean
 }
