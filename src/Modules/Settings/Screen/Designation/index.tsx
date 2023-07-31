@@ -6,6 +6,9 @@ import { ROUTES } from '@Routes';
 import { getDropDownCompanyDisplayData } from '@Utils';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Nav, NavItem, NavLink } from 'reactstrap';
+import classnames from 'classnames'
+
 
 
 function Designation() {
@@ -14,6 +17,9 @@ function Designation() {
 
     const { goTo } = useNavigation()
     const dispatch = useDispatch()
+    const [navIndex, setNavIndex] = useState<any>(0)
+    const [navList, setNavList] = useState<any>([])
+    const [cardData, setCardData] = useState<any>([])
 
     const [selectedDesignation, setSelectedDesignation] = useState<any>({})
     const [selectedVariant, setSelectedVariant] = useState<any>({})
@@ -32,35 +38,38 @@ function Designation() {
 
 
     useEffect(() => {
-        getKnowledgeGroupDetailsApiHandler();
         getSectorsApiHandler();
     }, [])
 
-    const getKnowledgeGroupDetailsApiHandler = () => {
-        const params = {}
-        dispatch(
-            getKnowledgeGroups({
-                params,
-                onSuccess: (success: any) => () => {
-                },
-                onError: (error: string) => () => {
-                },
-            })
-        );
-    };
-
+  
     const getSectorsApiHandler = () => {
         const params = {}
         dispatch(
             getSectors({
                 params,
-                onSuccess: () => () => {
+                onSuccess: (response:any) => () => {
+                    setNavList(response.details.knowledege_groups)
                 },
                 onError: () => () => {
                 },
             })
         );
     };
+
+    const fetchKnowledgeData = (id) => {
+        const params = {
+            sector_id: id
+        }
+        dispatch(getKnowledgeGroups({
+            params,
+            onSuccess: (response: any) => () => {
+                setCardData(response.details.knowledege_groups)
+            },
+            onError: (error) => () => {
+
+            },
+        }))
+    }
 
     const createKnowledgeGroupApiHandler = () => {
         loader.show()
@@ -77,7 +86,7 @@ function Designation() {
                 onSuccess: () => () => {
                     loader.hide()
                     addDesignationModal.hide()
-                    getKnowledgeGroupDetailsApiHandler();
+                    // getKnowledgeGroupDetailsApiHandler();
                     resetValue();
                 },
                 onError: () => () => {
@@ -95,14 +104,12 @@ function Designation() {
     }
 
     const createKnowledgeGroupVariantApiHandler = () => {
-
         if (selectedDesignation) {
             const params = {
                 name: title?.value,
                 description: description?.value,
                 knowledge_group_id: selectedDesignation?.id,
-                id: selectedRole?.id
-
+                // id: selectedRole?.id
             };
             loader.show()
 
@@ -113,7 +120,7 @@ function Designation() {
                         loader.hide();
                         addRoleModal.hide();
                         resetValue();
-                        getKnowledgeGroupDetailsApiHandler();
+                        // getKnowledgeGroupDetailsApiHandler();
                     },
                     onError: () => () => {
                         loader.hide()
@@ -144,9 +151,41 @@ function Designation() {
                     />
                 </div>
                 <div className='mx-3'>
-                    <div className='row'>
-                        {knowledgeGroups && knowledgeGroups.length > 0 ?
-                            knowledgeGroups.map((el: any, index: number) => {
+                    <div className='row py-2 my-4' style={{ overflowX: 'auto', whiteSpace: 'nowrap' }}>
+                        {navList && navList.map((el, index) => {
+                            return (
+                                <div className='col-lg  col-sm-3 '>
+                                    <Nav
+                                        className="nav-fill flex-column flex-sm-row pointer"
+                                        id="tabs-text"
+                                        pills
+                                        role="tablist"
+                                    >
+                                        <NavItem>
+                                            <NavLink
+                                                aria-selected={index === navIndex}
+                                                className={classnames(`mb-sm-3 mb-md-0  ${index !== navIndex ? 'text-black font-weight-normal' : 'font-weight-bold'}`, {
+                                                    active: index === navIndex
+                                                })}
+                                                onClick={() => {
+                                                    setNavIndex(index)
+                                                    fetchKnowledgeData(el.id)
+                                                }}
+                                                role="tab"
+                                            >
+                                                {el.name}
+                                            </NavLink>
+                                        </NavItem>
+                                    </Nav>
+                                </div>
+                            )
+                        })
+
+                        }
+                    </div>
+                    <div className='mx--3'>
+                        {cardData && cardData.length > 0 ?
+                            cardData.map((el: any, index: number) => {
                                 return (
                                     <div className='col-4'>
                                         <DesignationItem
@@ -176,7 +215,7 @@ function Designation() {
                                 )
                             })
                             :
-                            <div className={'d-flex justify-content-center align-items-center'} style={{ height: '90vh' }}>
+                            <div className={'mt-9 d-flex  justify-content-center align-items-center'}>
                                 <NoDataFound text={"No Data Found"} />
                             </div>
                         }

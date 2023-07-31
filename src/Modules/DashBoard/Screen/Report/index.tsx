@@ -2,7 +2,7 @@ import { Button, CommonTable, Divider, Spinner } from '@Components';
 import React, { useEffect, useRef, useState } from 'react'
 import { Card, CardBody, CardHeader, CardTitle, Progress } from 'reactstrap'
 import ReactToPrint from 'react-to-print';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { fetchBasicReport } from '@Redux';
 import { useLoader } from '@Hooks';
 import moment from 'moment';
@@ -12,16 +12,12 @@ function Report() {
 
 
     const dispatch = useDispatch()
-
+    const { scheduleId } = useSelector((state: any) => state.DashboardReducer)
     const [dataId, setDataId] = useState<any>(['trait', 'communication', 'skill_matrix'])
     const [basicReportData, setBasicReportData] = useState<any>({})
     const componentRef = useRef(null);
     let basicReportLoader = useLoader(false);
     const [check, setCheck] = useState<any>(0)
-
-
-
-
 
 
     useEffect(() => {
@@ -39,7 +35,7 @@ function Report() {
     const getBasicReportData = () => {
         basicReportLoader.show()
         const params = {
-            schedule_id: '60e15a22-fa2d-41b7-8fd3-9c2b3422d990'
+            schedule_id: scheduleId?.id
         }
 
         dispatch(
@@ -399,7 +395,7 @@ function Report() {
                                                                                     color: colorVariant(calculateRating(basicReportData[heading]))
                                                                                 }}
                                                                             >
-                                                                                {calculateRating(basicReportData[heading])}
+                                                                                {Math.round(calculateRating(basicReportData[heading]))}
                                                                             </div>
                                                                         </div>
                                                                         {basicReportData && basicReportData[heading].length > 0 && basicReportData[heading].map((el) => {

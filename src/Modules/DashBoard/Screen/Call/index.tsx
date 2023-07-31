@@ -13,7 +13,6 @@ function Call() {
 
     // let isTriggeredRef = false
     const [isTriggeredApi, setIsTriggeredApi] = useState(false)
-    const proceedModal = useModal(false);
 
     const [isMicRecording, setIsMicRecording] = useState(false)
     const [isHear, setIsHear] = useState(true)
@@ -98,8 +97,9 @@ function Call() {
         const params = {
             ...(type === 'text' && { "message": file }),
             ...(type === 'Ai' && { "message": transcript.text }),
-            schedule_id: scheduleId?.id
+            schedule_id: scheduleId
         };
+        setShowLoader(true)
         dispatch(
             getStartChat({
                 params,
@@ -114,7 +114,7 @@ function Call() {
                     }
                     setShowLoader(false)
                 },
-                onError: (error: any) => () => {                    
+                onError: (error: any) => () => {
                     setShowLoader(false)
                     showToast(error?.error_message, 'error')
                 },

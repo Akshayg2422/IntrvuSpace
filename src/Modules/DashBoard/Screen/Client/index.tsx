@@ -3,7 +3,7 @@ import { SearchInput, Button, Modal, Divider, NoDataFound, ButtonGroup, Input, T
 import { useDropDown, useInput, useLoader, useModal, useNavigation } from '@Hooks'
 import { useSelector, useDispatch } from 'react-redux'
 import { Profile, Schedules, Sectors } from '@Modules'
-import { createSchedule, getKnowledgeGroups, getMyPastInterviews, getSectors } from '@Redux'
+import { createSchedule, getKnowledgeGroups, getMyPastInterviews, getSectors, selectedScheduleId } from '@Redux'
 import { capitalizeFirstLetter } from '@Utils'
 import { Card, CardBody, FormGroup, InputGroup, InputGroupAddon, InputGroupText, Nav, NavItem, NavLink } from 'reactstrap'
 import classnames from 'classnames'
@@ -119,24 +119,30 @@ function Clients() {
         filter.onChange(selectedOption);
     };
 
-    const scheduleApiHandler = (id) => {
+    const scheduleApiHandler = (id: any, type: 'Call' | "Schedule") => {
         const params = {
             knowledge_group_variant_id: id
         }
         dispatch(createSchedule({
             params,
             onSuccess: (response: any) => () => {
-                showToast('Scheduled Successfully')
+                if (type === 'Call') {
+                    dispatch(selectedScheduleId(response.details.schedule_id))
+                    goTo(ROUTES['designation-module'].call)
+                } else {
+                    showToast('Scheduled Successfully')
+                }
             },
             onError: (error) => () => {
-
+                showToast(error.error_message, 'error')
             },
         }))
     }
 
+
     return (
         <>
-            <div className={`container-fluid ${loginUser?.details?.is_admin? ' ' : 'pt-4'}`}>
+            <div className={`container-fluid ${loginUser?.details?.is_admin ? ' ' : 'pt-4'}`}>
                 <div className='row justify-content-lg-between justify-content-sm-center  '>
                     <div className='col'>
                         <h1 className='display-3 font-weight-bolder text-primary'>MOCK <b className='text-black'>EAZY</b></h1>
@@ -174,7 +180,7 @@ function Clients() {
                         </Nav>
                     </div>
                 </div>
-                <div className='row pt-2 '>
+                <div className='row py-2' style={{ overflowX: 'auto' , whiteSpace:'nowrap' }}>
                     {navList && navList.map((el, index) => {
                         return (
                             <div className='col-lg  col-sm-3 '>
@@ -226,13 +232,19 @@ function Clients() {
                                                     return (
                                                         <>
                                                             <div className='pt-1 row justify-content-between'>
-                                                                <div className='col hoverColor h5'>{item.name}</div>
-                                                                <div className='col text-right'>
+                                                                <div className='col my-2 hoverColor h5'>{item.name}</div>
+                                                                <div className='col row  text-right'>
                                                                     <Button
-                                                                        className={'text-white shadow-none'}
+                                                                        className={'text-white shadow-none col'}
                                                                         size={'sm'}
                                                                         text={"Schedule"}
-                                                                        onClick={() => { scheduleApiHandler(item?.id) }}
+                                                                        onClick={() => { scheduleApiHandler(item?.id, "Schedule") }}
+                                                                    />
+                                                                    <Button
+                                                                        className={'text-white shadow-none col'}
+                                                                        size={'sm'}
+                                                                        text={"Start Call"}
+                                                                        onClick={() => { scheduleApiHandler(item?.id, "Call") }}
                                                                     />
                                                                 </div>
                                                             </div>
