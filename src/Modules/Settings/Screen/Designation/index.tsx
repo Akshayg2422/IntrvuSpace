@@ -41,13 +41,13 @@ function Designation() {
         getSectorsApiHandler();
     }, [])
 
-  
+
     const getSectorsApiHandler = () => {
         const params = {}
         dispatch(
             getSectors({
                 params,
-                onSuccess: (response:any) => () => {
+                onSuccess: (response: any) => () => {
                     setNavList(response.details.knowledege_groups)
                 },
                 onError: () => () => {
@@ -133,7 +133,7 @@ function Designation() {
     return (
         <>
             <div>
-                <div className="row justify-content-end m-3">
+                <div className="row justify-content-end m-3 mr-4 pr-2">
                     <Button
                         className={'text-white shadow-none'}
                         size={'sm'}
@@ -151,37 +151,39 @@ function Designation() {
                     />
                 </div>
                 <div className='mx-3'>
-                    <div className='row py-2 my-4' style={{ overflowX: 'auto', whiteSpace: 'nowrap' }}>
-                        {navList && navList.map((el, index) => {
-                            return (
-                                <div className='col-lg  col-sm-3 '>
-                                    <Nav
-                                        className="nav-fill flex-column flex-sm-row pointer"
-                                        id="tabs-text"
-                                        pills
-                                        role="tablist"
-                                    >
-                                        <NavItem>
-                                            <NavLink
-                                                aria-selected={index === navIndex}
-                                                className={classnames(`mb-sm-3 mb-md-0  ${index !== navIndex ? 'text-black font-weight-normal' : 'font-weight-bold'}`, {
-                                                    active: index === navIndex
-                                                })}
-                                                onClick={() => {
-                                                    setNavIndex(index)
-                                                    fetchKnowledgeData(el.id)
-                                                }}
-                                                role="tab"
-                                            >
-                                                {el.name}
-                                            </NavLink>
-                                        </NavItem>
-                                    </Nav>
-                                </div>
-                            )
-                        })
+                    <div className='overflow-auto overflow-hide'>
+                        <div className='d-flex py-2' >
+                            {navList && navList.map((el, index) => {
+                                return (
+                                    <div className='col  col-sm-3 '>
+                                        <Nav
+                                            className="nav-fill flex-column flex-sm-row pointer"
+                                            id="tabs-text"
+                                            pills
+                                            role="tablist"
+                                        >
+                                            <NavItem>
+                                                <NavLink
+                                                    aria-selected={index === navIndex}
+                                                    className={classnames(`mb-sm-3 mb-md-0  ${index !== navIndex ? 'text-black font-weight-normal' : 'font-weight-bold'}`, {
+                                                        active: index === navIndex
+                                                    })}
+                                                    onClick={() => {
+                                                        setNavIndex(index)
+                                                        fetchKnowledgeData(el.id)
+                                                    }}
+                                                    role="tab"
+                                                >
+                                                    {el.name}
+                                                </NavLink>
+                                            </NavItem>
+                                        </Nav>
+                                    </div>
+                                )
+                            })
 
-                        }
+                            }
+                        </div>
                     </div>
                     <div className='mx--3'>
                         {cardData && cardData.length > 0 ?

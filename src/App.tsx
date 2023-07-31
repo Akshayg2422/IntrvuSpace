@@ -13,8 +13,9 @@ import "@fullcalendar/daygrid/main.min.css";
 import "sweetalert2/dist/sweetalert2.min.css";
 import "quill/dist/quill.core.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
+import { settingSideNavRemove } from "./Redux";
 
 
 
@@ -23,9 +24,15 @@ function App() {
 
   const AUTH = 1
   const { loginUser } = useSelector((state: any) => state.AuthReducer);
+  const { removeSideNav } = useSelector((state: any) => state.DashboardReducer)
   const [pathName, setPathName] = useState<any>('/client')
+  const dispatch = useDispatch()
 
-
+  useEffect(() => {
+    if (window.location.pathname !== pathName && window.location.pathname !== '/schedules' && window.location.pathname !== '/call' ) {
+      dispatch(settingSideNavRemove(false))
+    }
+  }, [window.location.pathname])
 
 
   const getRoutes = (routes, type?: any) => {

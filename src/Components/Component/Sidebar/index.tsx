@@ -16,14 +16,18 @@ import {
 import { SidebarProps } from './interfaces'
 import { Image } from '@Components'
 import { url } from "inspector";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getPhoto } from "@Utils";
 import { icons } from "@Assets";
+import { settingSideNavRemove } from "@Redux";
 function Sidebar({ toggleSideNav, sideNavOpen, routes, logo, rtlActive }: SidebarProps) {
   // const { dashboardDetails } = useSelector((state: any) => state.UserCompanyReducer);
   // const { user_details, } = dashboardDetails || ''
   const [state, setState] = React.useState({});
+  const dispatch = useDispatch()
   const location = useLocation();
+  const { removeSideNav } = useSelector((state: any) => state.DashboardReducer)
+  console.log("removeSideNav", removeSideNav)
   React.useEffect(() => {
     setState(getCollapseStates(routes));
     // eslint-disable-next-line
@@ -129,7 +133,12 @@ function Sidebar({ toggleSideNav, sideNavOpen, routes, logo, rtlActive }: Sideba
           <NavLink
             to={prop.layout + prop.path}
             activeClassName=""
-            onClick={closeSidenav}
+            onClick={() => {
+              closeSidenav()
+              if (prop.name === 'View as Member') {
+                dispatch(settingSideNavRemove(true))
+              }
+            }}
             tag={NavLinkRRD}
           >
             {prop.icon !== undefined ? (

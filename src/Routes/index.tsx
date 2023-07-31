@@ -118,7 +118,7 @@ export const HOME_ROUTES = [
   },
   {
     path: ROUTES['designation-module'].client,
-    name: "Clients",
+    name: "View as Member",
     icon: icons.company,
     layout: "",
     component: <Clients />
@@ -138,6 +138,7 @@ export const HOME_ROUTES = [
   //   component: <Dashboard />
   // },
 ];
+
 
 
 
