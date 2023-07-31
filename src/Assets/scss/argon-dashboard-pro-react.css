@@ -1508,6 +1508,10 @@ html.rtl {
   display: none;
 }
 
+myTextarea {
+  resize: none;
+}
+
 @media screen and (max-width: 600px) {
   .hvh {
     height: 100vh;

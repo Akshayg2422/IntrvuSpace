@@ -472,6 +472,13 @@ $hr-margin-y: $spacer * 2 !default;
   display: none;
 }
 
+// control textArea height
+$textarea-id: myTextarea;
+
+#{$textarea-id} {
+  resize: none;
+}
+
 // landing page media Queries
 
 @media screen and (max-width: 600px) {
