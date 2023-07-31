@@ -66,33 +66,6 @@ function Login() {
     }
 
     const memberLoginHandler = () => {
-<<<<<<< HEAD
-        console.log("==========>clicked");
-
-        const params = {
-            ...(email.value && { email: email.value }),
-            password: password.value
-        }
-        loginLoader.show()
-
-        dispatch(memberLoginUsingPassword({
-            params,
-            onSuccess: (response: any) => () => {
-                loginLoader.hide()
-                if (response.success) {
-                    localStorage.setItem(USER_TOKEN, response.details.token);
-                    goTo(ROUTES['auth-module'].splash)
-                }
-                else {
-                    showToast(response.error_message, 'error')
-                }
-            },
-            onError: (error) => () => {
-                loginLoader.hide()
-                showToast(error.error_message, 'error')
-            },
-        }))
-=======
        
             const params = {
                 ...(email.value && { email: email.value }),
@@ -115,7 +88,6 @@ function Login() {
                     showToast(error.error_message, 'error')
                 },
             }))
->>>>>>> 7838478ff0a133d29439cd19d7957c0dab7a6d01
 
 
     }
