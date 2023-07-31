@@ -32,6 +32,9 @@ function App() {
     if (window.location.pathname !== pathName && window.location.pathname !== '/schedules' && window.location.pathname !== '/call' ) {
       dispatch(settingSideNavRemove(false))
     }
+    else if(window.location.pathname === pathName || window.location.pathname === '/schedules' || window.location.pathname === '/call') {
+      dispatch(settingSideNavRemove(true))
+    }
   }, [window.location.pathname])
 
 

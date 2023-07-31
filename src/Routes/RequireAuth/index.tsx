@@ -31,8 +31,8 @@ export const RequireAuth = ({ children }: RequireAuthProps) => {
     }, [location]);
 
 
-    const login = false
-    if (login) {
+    const login = loginUser?.details?.token
+    if (!loginUser?.details?.token) {
         return <Navigate to={ROUTES['auth-module'].login} state={{ path: location.pathname }} />
     }
 
