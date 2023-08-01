@@ -32,7 +32,6 @@ const getHeaders = async () => {
 
     const value = await localStorage.getItem(USER_TOKEN);
     // const value  = '31e514b7d36ecf2ca216a20c74e717ff7c4223ae'
-  
     if (value) {
       return { Authorization: 'Token ' + value };
     } else {
