@@ -1,4 +1,4 @@
-import { Button, CommonTable, Divider, Spinner } from '@Components';
+import { Button, CommonTable, Divider, NoRecordsFound, Spinner } from '@Components';
 import React, { useEffect, useRef, useState } from 'react'
 import { Card, CardBody, CardHeader, CardTitle, Progress } from 'reactstrap'
 import ReactToPrint from 'react-to-print';
@@ -72,27 +72,27 @@ function Report() {
     // const formatDateAndTime = (text) => {
     //     // Define the regex pattern to match multi numbers in date and time format
     //     const dateRegex = /(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})/g;
-      
+
     //     // Function to replace matched date and time with formatted date and time
     //     const replaceDateAndTime = (match, year, month, day, hour, minute, second) => {
     //       const months = [
     //         'January', 'February', 'March', 'April', 'May', 'June', 'July',
     //         'August', 'September', 'October', 'November', 'December'
     //       ];
-      
+
     //       // Format the date and time as desired
     //       const formattedDate = `${months[parseInt(month, 10) - 1]} ${parseInt(day, 10)}, ${year}`;
     //       const formattedTime = `${parseInt(hour, 10) > 12 ? parseInt(hour, 10) - 12 : hour}:${minute} ${parseInt(hour, 10) >= 12 ? 'pm' : 'am'}`;
-      
+
     //       // Return the formatted date and time
     //       return `${formattedDate} ${formattedTime}`;
     //     };
-      
+
     //     // Replace occurrences of multi numbers in date and time format with formatted date and time
     //     return text?.replace(dateRegex, replaceDateAndTime);
     //   };
 
-  
+
 
 
 
@@ -487,7 +487,6 @@ function Report() {
                 </div >
 
             </div>
-
 
             }
         </>

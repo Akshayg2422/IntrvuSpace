@@ -55,7 +55,7 @@ function App() {
             :
             <RequireAuth>
               {!loginUser?.details?.is_admin ? prop.path !== pathName &&
-                <div className={'ml-3'}>
+                <div className={'ml-3 mt-2'}>
                   <div className="col">
                     <div className="row">
                       <Back />
@@ -64,7 +64,7 @@ function App() {
                   </div>
                 </div>
                 :
-                <div className={'ml-3'}>
+                <div className={'ml-3 mt-2'}>
                   <div className="col">
                     <div className="row">
                       <Back />

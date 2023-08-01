@@ -219,7 +219,7 @@ function Clients() {
                     {cardData && cardData.map((el) => {
                         return (
                             <>
-                                <div className='col-5'>
+                                <div className='col-4'>
                                     <Card className=''>
                                         <CardBody>
                                             <div className='row justify-content-between align-items-center px-3'>
@@ -230,7 +230,7 @@ function Clients() {
                                                     <h5 className='text-black font-weight-bolder'>Can't Find?</h5>
                                                 </div>
                                             </div>
-                                            <div className=' pt-2'>
+                                            <div className=' pt-2 mr-3'>
                                                 {el.knowledge_group_variant && el.knowledge_group_variant.map((item) => {
                                                     return (
                                                         <>
