@@ -95,6 +95,7 @@ function QuestionSections() {
                     sectionCount.set('')
                     noOfQuestions.set('')
                     generateFormSectionsAndQuestionsLoader.hide()
+                    getQuestionSectionsApi()
                 },
                 onError: () => () => {
                     generateFormSectionsAndQuestionsLoader.hide()

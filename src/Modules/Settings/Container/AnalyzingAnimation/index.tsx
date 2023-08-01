@@ -65,7 +65,7 @@ function AnalyzingAnimation() {
                             <h4 className={'d-flex justify-content-center align-items-center text-white mt-8 h1'} style={{ backgroundColor: "#fabe2c" }}>
                                 {contentStep === 1 ? 'Analyzing' : contentStep}
                                 {contentStep === 1 && (
-                                    <span className={' ml-5 loader'}></span>
+                                    <span className={' ml-5 loaders '}></span>
                                 )}
                             </h4>
                         </div>
@@ -86,7 +86,7 @@ function AnalyzingAnimation() {
                             </div>
                             <h4 className={'d-flex justify-content-center align-items-center text-white h1 mt-3'} style={{ backgroundColor: "#fabe2c" }} >
                                 {contentStep === 1 ? 'Generating' : contentStep}
-                                <span className={'loader6 ml-4 mt--2'}></span>
+                                <span className={'loader6 ml-5 mb-4'}></span>
                             </h4>
 
                             <h4 className={'d-flex justify-content-center align-items-center'} >
