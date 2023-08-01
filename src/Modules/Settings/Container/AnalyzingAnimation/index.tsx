@@ -185,13 +185,13 @@ function AnalyzingAnimation() {
                                 </h4>
                             </>
                         )}
-                        {/* {generating && contentStep === 6 && (
+                        {generating && contentStep === 6 && (
                             <>
                                 {contentStep === 6 && (
                                     <span className={'loader7 mt-3'}></span>
                                 )}
                             </>
-                        )} */}
+                        )}
                     </div>
 
                 </Card>
