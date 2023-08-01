@@ -78,7 +78,7 @@ function Designation() {
         const params = {
             name: title?.value,
             description: description?.value,
-            // sector_id: sector.value?.id
+            sector_id: sector.value?.id
         };
 
         dispatch(
