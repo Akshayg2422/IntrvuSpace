@@ -87,7 +87,7 @@ function Designation() {
                 onSuccess: () => () => {
                     loader.hide()
                     addDesignationModal.hide()
-                    // getKnowledgeGroupDetailsApiHandler();
+                    fetchKnowledgeData(navList[navIndex]?.id)
                     resetValue();
                 },
                 onError: () => () => {
@@ -121,7 +121,7 @@ function Designation() {
                         loader.hide();
                         addRoleModal.hide();
                         resetValue();
-                        // getKnowledgeGroupDetailsApiHandler();
+                        fetchKnowledgeData(navList[navIndex]?.id)
                     },
                     onError: () => () => {
                         loader.hide()
@@ -186,7 +186,7 @@ function Designation() {
                             }
                         </div>
                     </div>
-                    <div className=''>
+                    <div className='row'>
                         {cardData && cardData.length > 0 ?
                             cardData.map((el: any, index: number) => {
                                 return (
