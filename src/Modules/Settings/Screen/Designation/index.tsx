@@ -15,7 +15,8 @@ function Designation() {
 
     const { knowledgeGroups, sectors, selectedRole } = useSelector((state: any) => state.DashboardReducer)
 
-    const { goTo } = useNavigation()
+    const { goTo, goBack } = useNavigation()
+
     const dispatch = useDispatch()
     const [navIndex, setNavIndex] = useState<any>(0)
     const [navList, setNavList] = useState<any>([])
@@ -135,6 +136,7 @@ function Designation() {
         <>
             <div>
                 <div className="row justify-content-end m-3 mr-4 pr-2">
+                   
                     <Button
                         className={'text-white shadow-none'}
                         size={'sm'}
@@ -151,12 +153,12 @@ function Designation() {
                         }}
                     />
                 </div>
-                <div className='mx-3'>
-                    <div className='overflow-auto overflow-hide'>
+                <div className='mx-2'>
+                    <div className='overflow-auto overflow-hide mx-2 px-2'>
                         <div className='d-flex pt-2 pb-4 mb-1 ' >
                             {navList && navList.map((el, index) => {
                                 return (
-                                    <div className='col  col-sm-3 '>
+                                    <div className='col-sm-3 px-2'>
                                         <Nav
                                             className="nav-fill flex-column flex-sm-row pointer"
                                             id="tabs-text"
@@ -166,7 +168,7 @@ function Designation() {
                                             <NavItem>
                                                 <NavLink
                                                     aria-selected={index === navIndex}
-                                                    className={classnames(`mb-sm-3 mb-md-0  ${index !== navIndex ? 'text-black font-weight-normal' : 'font-weight-bold'}`, {
+                                                    className={classnames(`mb-sm-3 mb-md-0 shadow-none ${index !== navIndex ? 'text-black font-weight-normal' : 'font-weight-bold'}`, {
                                                         active: index === navIndex
                                                     })}
                                                     onClick={() => {
@@ -186,11 +188,11 @@ function Designation() {
                             }
                         </div>
                     </div>
-                    <div className='row'>
+                    <div className='row px-3 my--2'>
                         {cardData && cardData.length > 0 ?
                             cardData.map((el: any, index: number) => {
                                 return (
-                                    <div className='col-4'>
+                                    <div className='col-sm-4 pl-4'>
                                         <DesignationItem
                                             item={el}
                                             onAdd={(selected) => {
@@ -219,11 +221,11 @@ function Designation() {
                             })
                             :
                             <div className={'d-flex  justify-content-center align-items-center mx-auto my-auto '}
-                            style={{
-                                height:'60vh'
-                            }}
+                                style={{
+                                    height: '60vh'
+                                }}
                             >
-                                <NoDataFound  />
+                                <NoDataFound />
                             </div>
                         }
                     </div>

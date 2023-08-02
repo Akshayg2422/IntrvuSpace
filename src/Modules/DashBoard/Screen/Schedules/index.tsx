@@ -65,7 +65,12 @@ function Schedules() {
     }
 
     return (
-        <div>
+        <div className='pt-2'>
+            <span className='pointer   ml-4 pl-2 text-black h3 '
+                onClick={() => { goBack() }}
+            >
+                <i className="bi bi-arrow-left text-black fa-lg font-weight-bolder pr-1"></i>  Past
+            </span>
             <div className='row m-3 mt-3'>
                 {
                     myPastInterviews && myPastInterviews.length > 0 && myPastInterviews?.map((item: any) => {

@@ -1,7 +1,7 @@
 import React from 'react'
 import { capitalizeFirstLetter } from '@Utils'
 import { DesignationItemProps } from './interfaces'
-import { Divider, NoDataFound, Button, MenuBar } from '@Components'
+import { Divider, NoDataFound, Button, MenuBar, Card } from '@Components'
 import { icons } from '@Assets'
 
 function DesignationItem({ item, onAdd, onEdit, onView }: DesignationItemProps) {
@@ -11,7 +11,7 @@ function DesignationItem({ item, onAdd, onEdit, onView }: DesignationItemProps) 
 
 
     return (
-        <div className='card justify-content-center p-3'>
+        <Card className='justify-content-center shadow-none'>
             <div className='col'>
                 <div className='row justify-content-between'>
                     <h3 className='mb-0'>{capitalizeFirstLetter(name)}</h3>
@@ -27,9 +27,9 @@ function DesignationItem({ item, onAdd, onEdit, onView }: DesignationItemProps) 
                     }
                 </div>
             </div>
-            <Divider className={'px-0'} space={'3'} />
-            <div className='overflow-auto  overflow-hide' style={{
-                height: 150
+            <Divider className={'px-0 mx--4'} space={'3'} />
+            <div className='overflow-auto overflow-hide mt--3 mx--3 px-3' style={{
+                height: 150,
             }}>
                 {
                     knowledge_group_variant &&
@@ -76,7 +76,7 @@ function DesignationItem({ item, onAdd, onEdit, onView }: DesignationItemProps) 
                 }
             </div>
 
-        </div >
+        </Card >
     )
 }
 
