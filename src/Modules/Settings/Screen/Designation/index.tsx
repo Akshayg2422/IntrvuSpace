@@ -218,8 +218,12 @@ function Designation() {
                                 )
                             })
                             :
-                            <div className={'mt-9 d-flex  justify-content-center align-items-center'}>
-                                <NoDataFound text={"No Data Found"} />
+                            <div className={'d-flex  justify-content-center align-items-center mx-auto my-auto '}
+                            style={{
+                                height:'60vh'
+                            }}
+                            >
+                                <NoDataFound  />
                             </div>
                         }
                     </div>
