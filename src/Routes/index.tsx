@@ -1,5 +1,5 @@
 import { icons } from '@Assets'
-import { Designation, WeightageCountForm, CreateQuestionForm, Clients, Sector, Questions, Call, Report, QuestionSections, AnalyzingAnimation, Schedules, Login, Otp, Splash, Register, LoginWithOtp, AdminLogin } from '@Modules';
+import { Designation, WeightageCountForm, CreateQuestionForm, Clients, Sector, Questions, Call, Report, QuestionSections, AnalyzingAnimation, Schedules, Login, Otp, Splash, Register, LoginWithOtp, AdminLogin } from "@Modules";
 
 
 
