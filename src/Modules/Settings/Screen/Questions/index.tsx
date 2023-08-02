@@ -64,12 +64,11 @@ function Questions() {
                     setDateGenerated(false)
                     resetValues()
                     showToast(response.message, 'success')
-                    goTo(ROUTES['designation-module']['questions'])
-
+                    // goTo(ROUTES['designation-module']['questions'])
                 },
                 onError: () => (error) => {
                     setDateGenerated(false)
-                    showToast(error.error_message)
+                    showToast(error.error_message,'error')
                 },
             })
         );
