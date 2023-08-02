@@ -5,6 +5,8 @@ import { useWhisper } from '@chengsokdara/use-whisper';
 import { log } from 'console';
 import { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import type { Harker } from 'hark'
+
 
 function Call() {
     const { goBack } = useNavigation();
@@ -28,6 +30,8 @@ function Call() {
 
     const [callState, setCallState] = useState(CALL_STATE_INACTIVE)
     const lastCallState = useRef(CALL_STATE_INACTIVE)
+    const [IsVoiceDetected, setVoiceDetected] = useState<boolean>(false)
+
 
 
 
@@ -35,6 +39,7 @@ function Call() {
     const { isSpeaking, speak } = useTextToSpeech();
 
     const intervalRef = useRef<any>(null);
+    const listener = useRef<Harker>()
 
     /**
      * transcription - openai whisper api starts ===============================
@@ -63,7 +68,27 @@ function Call() {
      * transcription - openai whisper api ends ===============================
      */
 
+    const onStartSpeaking = () => {
+        console.log('start speaking')
+        setVoiceDetected(true)
+    }
 
+    const onStopSpeaking = () => {
+        console.log('stop speaking')
+        setVoiceDetected(false)
+    }
+
+
+    useEffect(() => {
+        return () => {
+            if (listener.current) {
+                // @ts-ignore
+                listener.current.off('speaking', onStartSpeaking)
+                // @ts-ignore
+                listener.current.off('stopped_speaking', onStopSpeaking)
+            }
+        }
+    }, []);
 
     const validateNotSpeaking = () => {
 
@@ -141,15 +166,25 @@ function Call() {
         lastCallState.current = CALL_STATE_TRANSCRIBING
     }
 
-    const validateProceedStartListening = () => {
+    const validateProceedStartListening = async () => {
         if (transcribing || callState === CALL_STATE_API_LOADING) {
             // Toast Please wait
             console.log("Please wait...")
         }
         else {
             if (!isRecording) {
+                const stream: any = await navigator.mediaDevices.getUserMedia({ audio: true });
                 startRecording()
                 setIsRecording(true)
+                if (!listener.current) {
+                    const { default: hark } = await import('hark')
+                    listener.current = hark(stream.current, {
+                        interval: 100,
+                        play: false,
+                    })
+                    listener.current.on('speaking', onStartSpeaking)
+                    listener.current.on('stopped_speaking', onStopSpeaking)
+                }
             }
         }
     }
