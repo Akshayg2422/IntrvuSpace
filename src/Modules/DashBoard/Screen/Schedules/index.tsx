@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { getMyPastInterviews, selectedScheduleId } from '@Redux';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Card, Divider, Modal } from '@Components';
-import { useModal, useNavigation } from '@Hooks';
+import { useModal, useNavigation, useWindowDimensions } from '@Hooks';
 import { ROUTES } from '@Routes';
 
 
@@ -13,7 +13,7 @@ function Schedules() {
     const proceedModal = useModal(false);
     const { goBack } = useNavigation();
     const { goTo } = useNavigation();
-
+    const { height } = useWindowDimensions()
     useEffect(() => {
         getMypastInterviewApi()
     }, [])
@@ -76,8 +76,9 @@ function Schedules() {
                     myPastInterviews && myPastInterviews.length > 0 && myPastInterviews?.map((item: any) => {
                         const { id, interviewee_expected_sector, interviewee_expected_designation, interviewee_expected_role, is_complete, is_started } = item;
                         return (
-                            <div className='col-4' key={id}>
+                            <div className='col-4 px-2 my--2' key={id}>
                                 <Card className='justify-content-center'
+                                style={{height:height - 590}}
                                 >
                                     <h4 className='mb-0 pointer mt--2'>{interviewee_expected_sector}</h4>
                                     <div className={'mx--4 mt--2'}><Divider space={'3'} /></div>

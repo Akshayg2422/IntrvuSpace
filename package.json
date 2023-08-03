@@ -23,6 +23,7 @@
     "annyang": "^2.6.1",
     "axios": "^1.4.0",
     "bootstrap": "4.6.0",
+    "browserify-fs": "^1.0.0",
     "chart.js": "^3.9.1",
     "classnames": "^2.3.1",
     "compressorjs": "^1.2.1",

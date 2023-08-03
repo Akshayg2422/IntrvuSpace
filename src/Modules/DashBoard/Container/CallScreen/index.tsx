@@ -1,5 +1,6 @@
 import { AnimatedImage, Card, WebCamRecorder, Image } from '@Components';
 import { Button } from 'reactstrap';
+import '../../../../Components/Component/AnimatedImage/AnimatedImageFrame.scss'
 
 
 type CallScreenProps = {
@@ -59,13 +60,13 @@ const CallScreen = ({ onMicControl, startTimer = false, loading = false, userNam
                     </div>
                 </Button>
                 <Button
-                    className='border-0 shadow-none'
+                    className='border-0 shadow-none animated-button'
                     style={{ borderRadius: 7, backgroundColor: '#f5f5f5', padding: 15 }}
                     disabled={micDisable}
                     onClick={onMicControl}
                 >
                     <div className=''>
-                        <span className="btn-inner--icon">
+                        <span className="btn-inner--icon  ">
                             {isMute ? <i className="fas fa-microphone text-lg " style={{ color: '#c4c4c4' }}></i> : <i className="fas fa-microphone-slash text-lg " style={{ color: '#c4c4c4' }}></i>}
                         </span>
                     </div>

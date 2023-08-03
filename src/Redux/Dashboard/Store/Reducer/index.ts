@@ -23,7 +23,8 @@ const initialState: DashboardProp = {
   generateSectionsAndQuestions: undefined,
   questionDetails: undefined,
   registerData: undefined,
-  removeSideNav:false
+  removeSideNav: false,
+  recordingPermission: false
 };
 
 const DashboardReducer = (state = initialState, action: any) => {
@@ -261,6 +262,10 @@ const DashboardReducer = (state = initialState, action: any) => {
 
     case ActionTypes.REMOVE_SIDE_NAV:
       state = { ...state, removeSideNav: action.payload };
+      break;
+
+    case ActionTypes.SCREEN_RECORDING_PERMISSION:
+      state = { ...state, recordingPermission: action.payload };
       break;
 
     default:

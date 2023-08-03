@@ -156,3 +156,8 @@ export const CREATE_SCHEDULE_FAILURE = 'CREATE_SCHEDULE_FAILURE'
 // full screen view client screen
 
 export const REMOVE_SIDE_NAV = 'REMOVE_SIDE_NAV'
+
+
+// screenRecording Permission
+
+export const SCREEN_RECORDING_PERMISSION = 'SCREEN_RECORDING_PERMISSION'
