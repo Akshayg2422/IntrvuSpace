@@ -156,3 +156,13 @@ export const CREATE_SCHEDULE_FAILURE = 'CREATE_SCHEDULE_FAILURE'
 // full screen view client screen
 
 export const REMOVE_SIDE_NAV = 'REMOVE_SIDE_NAV'
+
+// state to store the previous value
+
+export const BREADCRUMBS = 'BREADCRUMBS'
+
+// clear breadCrumbs
+
+export const CLEAR_BREADCRUMBS = 'CLEAR_BREADCRUMBS'
+
+

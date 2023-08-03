@@ -498,9 +498,26 @@ export const createScheduleFailure = (error: any) => {
 // setting remove side nav
 
 export const settingSideNavRemove = (params: any) => {
-  console.log("params====>",params)
+  console.log("params====>", params)
   return {
     type: ActionTypes.REMOVE_SIDE_NAV,
+    payload: params
+  }
+}
+
+// BreadCrumbs
+
+export const breadCrumbs = (params: any) => {
+  return {
+    type: ActionTypes.BREADCRUMBS,
+    payload: params
+  }
+}
+
+
+export const clearBreadCrumbs = (params: any) => {
+  return {
+    type: ActionTypes.CLEAR_BREADCRUMBS,
     payload: params
   }
 }

@@ -23,7 +23,8 @@ const initialState: DashboardProp = {
   generateSectionsAndQuestions: undefined,
   questionDetails: undefined,
   registerData: undefined,
-  removeSideNav:false
+  removeSideNav: false,
+  breadCrumb: []
 };
 
 const DashboardReducer = (state = initialState, action: any) => {
@@ -262,6 +263,17 @@ const DashboardReducer = (state = initialState, action: any) => {
     case ActionTypes.REMOVE_SIDE_NAV:
       state = { ...state, removeSideNav: action.payload };
       break;
+
+    case ActionTypes.BREADCRUMBS:
+      state = { ...state, breadCrumb: [...state.breadCrumb, action.payload] };
+      break;
+
+    case ActionTypes.CLEAR_BREADCRUMBS:
+      console.log('Removing most recent breadcrumb entry');
+      state = { ...state, breadCrumb: state.breadCrumb.slice(0, -1) };
+      break;
+
+
 
     default:
       state = state;

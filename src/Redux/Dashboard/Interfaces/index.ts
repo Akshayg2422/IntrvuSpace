@@ -18,4 +18,5 @@ export interface DashboardProp {
   questionDetails: any
   registerData: any
   removeSideNav: boolean
+  breadCrumb: any
 }
