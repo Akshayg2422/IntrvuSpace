@@ -231,9 +231,10 @@ function Sidebar({ toggleSideNav, sideNavOpen, routes, logo, rtlActive }: Sideba
   return (
     <Navbar
       className={
-        "sidenav navbar-vertical navbar-expand-xs navbar-light bg-white " +
+        "sidenav navbar-vertical navbar-expand-xs navbar-light " +
         (rtlActive ? "" : "fixed-left")
       }
+      style={{backgroundColor:'#f5f5f5'}}
       onMouseEnter={onMouseEnterSidenav}
       onMouseLeave={onMouseLeaveSidenav}
     >

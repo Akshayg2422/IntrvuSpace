@@ -40,6 +40,46 @@
   }
 }
 
+
+.animated-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0.7;
+  margin: auto;
+  // background-color: #42f542;
+}
+
+
+.animated-image::after,
+.animated-image:before {
+  content: '';
+  position: absolute;
+  z-index: 9;
+  background-color: #42f542;
+  height: 140px;
+  width: 140px;
+  border-radius: 50%;
+  opacity: 0.7;
+}
+
+.animated-image.blink:before {
+  animation: blinkAnimation 2s ease-out infinite;
+}
+
+.animated-image.blink:after {
+  animation: blinkAnimation 2s ease-out infinite;
+}
+
+
+
+@keyframes blinkAnimation {
+  100% {
+    transform: scale(2.5);
+    opacity: 0;
+  }
+}
+
 .name-overlay {
   font-weight: 600;
   font-size: 50px;

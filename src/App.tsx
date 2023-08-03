@@ -29,10 +29,10 @@ function App() {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    if (window.location.pathname !== pathName && window.location.pathname !== '/schedules' && window.location.pathname !== '/call' ) {
+    if (window.location.pathname !== pathName && window.location.pathname !== '/schedules' && window.location.pathname !== '/call') {
       dispatch(settingSideNavRemove(false))
     }
-    else if(window.location.pathname === pathName || window.location.pathname === '/schedules' || window.location.pathname === '/call') {
+    else if (window.location.pathname === pathName || window.location.pathname === '/schedules' || window.location.pathname === '/call') {
       dispatch(settingSideNavRemove(true))
     }
   }, [window.location.pathname])
@@ -54,25 +54,6 @@ function App() {
             <RequireHome>{prop.component}</RequireHome>
             :
             <RequireAuth>
-              {!loginUser?.details?.is_admin ? prop.path !== pathName &&
-                <div className={'ml-3'}>
-                  <div className="col">
-                    <div className="row">
-                      <Back />
-                      <h3 className="ml-2 text-muted"><Breadcrumbs /></h3>
-                    </div>
-                  </div>
-                </div>
-                :
-                <div className={'ml-3'}>
-                  <div className="col">
-                    <div className="row">
-                      <Back />
-                      <h3 className="ml-2 text-muted"><Breadcrumbs /></h3>
-                    </div>
-                  </div>
-                </div>
-              }
               {prop.component}
             </RequireAuth>
           }

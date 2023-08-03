@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { SearchInput, Button, Modal, Divider, NoDataFound, ButtonGroup, Input, TextArea, DesignationItem, showToast } from '@Components'
-import { useDropDown, useInput, useLoader, useModal, useNavigation } from '@Hooks'
+import { useDropDown, useInput, useLoader, useModal, useNavigation, useWindowDimensions } from '@Hooks'
 import { useSelector, useDispatch } from 'react-redux'
 import { Profile, Schedules, Sectors } from '@Modules'
 import { createSchedule, getKnowledgeGroups, getMyPastInterviews, getSectors, selectedScheduleId } from '@Redux'
@@ -25,6 +25,7 @@ function Clients() {
     const [navList, setNavList] = useState<any>([])
     const [cardData, setCardData] = useState<any>([])
     const [navIndex, setNavIndex] = useState<any>(0)
+    const {height} = useWindowDimensions()
 
     console.log("screen.width", window.innerWidth)
     const sector = useInput('');
@@ -141,7 +142,7 @@ function Clients() {
 
     return (
         <>
-            <div className={`container-fluid ${loginUser?.details?.is_admin ? ' ' : 'pt-4'}`}>
+            <div className={`container-fluid pt-4`}>
                 <div className='row justify-content-lg-between justify-content-sm-center  '>
                     <div className='col'>
                         <h1 className='display-3 font-weight-bolder text-primary'>MOCK <b className='text-black'>EAZY</b></h1>
@@ -150,15 +151,15 @@ function Clients() {
                         <ButtonGroup size={'btn-md'} sortData={FILTER} selected={filter.value} onClick={handleButtonClick} />
                         {/* {filter.value?.title === 'Past' && <Schedules />} */}
                     </div>
-                    <div className='mt--2 mr-3 pr-1 '>
+                    <div className='mt--2 mr-3'>
                         <Profile />
                     </div>
                 </div>
-                <div className='row pb-3 pt-1'>
-                    <div className='col-sm-9 py-lg py-sm-0 py-3'>
+                <div className='row pb-3 pt-1 mt--2'>
+                    <div className='col-sm-9 py-lg py-sm-0 py-3 pr-0'>
                         <SearchInput defaultValue={search.value} onSearch={search.set} />
                     </div>
-                    <div className='col '>
+                    <div className='col'>
                         <Nav
                             className="nav-fill flex-column flex-sm-row"
                             id="tabs-text"
@@ -167,7 +168,7 @@ function Clients() {
                         >
                             <NavItem>
                                 <NavLink
-                                    className={"mb-sm-3 mb-md-0 bg-primary text-white font-weight-bold"}
+                                    className={"mb-sm-3 mb-md-0 bg-primary shadow-none text-white font-weight-bold"}
                                     role="tab"
                                     onClick={
                                         addJd.show
@@ -179,11 +180,11 @@ function Clients() {
                         </Nav>
                     </div>
                 </div>
-                <div className=' overflow-auto overflow-hide px-2' >
+                <div className=' overflow-auto overflow-hide mt--2' >
                     <div className='d-flex py-2 mx--3' >
                         {navList && navList.map((el, index) => {
                             return (
-                                <div className='col col-sm-3 '
+                                <div className='col col-sm-3 mr--3 '
 
                                 >
                                     <Nav
@@ -195,7 +196,7 @@ function Clients() {
                                         <NavItem>
                                             <NavLink
                                                 aria-selected={index === navIndex}
-                                                className={classnames(`mb-sm-3 mb-md-0  ${index !== navIndex ? 'text-black font-weight-normal' : 'font-weight-bold'}`, {
+                                                className={classnames(`mb-sm-3 mb-md-0 shadow-none  ${index !== navIndex ? 'text-black font-weight-normal' : 'font-weight-bold'}`, {
                                                     active: index === navIndex
                                                 })}
                                                 onClick={() => {
@@ -215,12 +216,13 @@ function Clients() {
                         }
                     </div>
                 </div>
-                <div className='row pt-4 mt-2'>
+                <div className='row mt-2'>
                     {cardData && cardData.map((el) => {
                         return (
                             <>
-                                <div className='col-5'>
-                                    <Card className=''>
+                                <div className='col-4'>
+                                    <Card className='overflow-auto overflow-hide shadow-none'
+                                    style={{height: height - 230}}>
                                         <CardBody>
                                             <div className='row justify-content-between align-items-center px-3'>
                                                 <div>
@@ -230,7 +232,7 @@ function Clients() {
                                                     <h5 className='text-black font-weight-bolder'>Can't Find?</h5>
                                                 </div>
                                             </div>
-                                            <div className=' pt-2'>
+                                            <div className=' pt-2 mr-3'>
                                                 {el.knowledge_group_variant && el.knowledge_group_variant.map((item) => {
                                                     return (
                                                         <>

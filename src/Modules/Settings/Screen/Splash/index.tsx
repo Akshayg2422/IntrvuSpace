@@ -42,10 +42,10 @@ function Splash() {
                 <div className="text-center">
                     <Image
                         src={icons.logo}
-                        height={'17%'}
-                        width={'17%'}
+                        height={'13%'}
+                        width={'13%'}
                     />
-                    <div className='pb-0 mb--1 font-weight-bolder  display-2 text-primary'
+                    <div className='pb-0 mb--1 font-weight-bolder  display-3 text-primary'
                         style={{
                             fontSize: '13vh'
                         }}
@@ -53,12 +53,13 @@ function Splash() {
                     </div>
                 </div>
 
-            </div> : <div>
-
-                <Button text={'Login'} onClick={() => {
-                    goTo(ROUTES["auth-module"].login, true);
-                }} />
             </div>
+                : <div>
+
+                    <Button text={'Login'} onClick={() => {
+                        goTo(ROUTES["auth-module"].login, true);
+                    }} />
+                </div>
             }
         </div>
     );

@@ -498,9 +498,19 @@ export const createScheduleFailure = (error: any) => {
 // setting remove side nav
 
 export const settingSideNavRemove = (params: any) => {
-  console.log("params====>",params)
   return {
     type: ActionTypes.REMOVE_SIDE_NAV,
+    payload: params
+  }
+}
+
+// SCREEN_RECORDING_PERMISSION
+
+export const screenRecordingPermission = (params: any) => {
+  console.log("=============screenRecordingPermission", params);
+
+  return {
+    type: ActionTypes.SCREEN_RECORDING_PERMISSION,
     payload: params
   }
 }

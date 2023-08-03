@@ -31,7 +31,7 @@ function QuestionSections() {
     const generateFormSectionsAndQuestionsLoader = useLoader(false);
     const generateQuestionsLoader = useLoader(false);
     const editQuestionsLoader = useLoader(false);
-    
+
 
 
 
@@ -41,6 +41,7 @@ function QuestionSections() {
         getQuestionSectionsApi()
     }, [])
 
+
     const getQuestionSectionsApi = () => {
         const params = {
             question_form_id: selectedQuestionForm?.id
@@ -49,7 +50,10 @@ function QuestionSections() {
         dispatch(
             getQuestionSection({
                 params,
-                onSuccess: () => () => {
+                onSuccess: (response: any) => () => {
+                    const { sections } = response.details
+                    sections && sections.length > 0 && getFormSectionQuestionsApi(sections[0]?.id)
+                    sections && sections.length > 0 && SetSelectedSectionId(sections[0]?.id)
                 },
                 onError: () => () => {
                 },
@@ -60,6 +64,7 @@ function QuestionSections() {
 
 
     const getFormSectionQuestionsApi = (id: string) => {
+        setSelectedSectionDetails([])
         const params = {
             section_id: id
         };
@@ -78,10 +83,10 @@ function QuestionSections() {
 
 
 
-    const generateFormSectionsAndQuestionsApiHandler = (add: boolean) => {
+    const generateFormSectionsAndQuestionsApiHandler = () => {
         const params = {
             id: selectedQuestionForm?.id,
-            ...(add ? { regenerate: false } : { regenerate: true }),
+            regenerate: true,
             sections_count: sectionCount.value,
             ... (includeQuestions && { questions_count: noOfQuestions.value }),
             generate_questions: includeQuestions
@@ -95,6 +100,7 @@ function QuestionSections() {
                     sectionCount.set('')
                     noOfQuestions.set('')
                     generateFormSectionsAndQuestionsLoader.hide()
+                    getQuestionSectionsApi()
                 },
                 onError: () => () => {
                     generateFormSectionsAndQuestionsLoader.hide()
@@ -117,9 +123,12 @@ function QuestionSections() {
                 onSuccess: () => () => {
                     questionCount.set('')
                     generateQuestionsLoader.hide()
+                    generateQuestionsModel.hide()
+                    getFormSectionQuestionsApi(selectedSectionId)
                 },
                 onError: () => () => {
                     generateQuestionsLoader.hide()
+                    generateQuestionsModel.hide()
                 },
             })
         );
@@ -183,7 +192,7 @@ function QuestionSections() {
                             <div className={'row justify-content-between mt--1'}>
                                 <h4 className='mb-0 pointer'>{'Sections'}</h4>
                                 <span className={''}>
-                                    <Button text={'Regenerate'} className={'text-white'} size={'sm'} onClick={() => { }} />
+                                    <Button text={'Regenerate'} className={'text-white'} size={'sm'} onClick={() => { generateFormSectionsAndQuestionsModel.show() }} />
                                 </span>
                             </div>
 
@@ -215,10 +224,15 @@ function QuestionSections() {
                             </Card>
                         </Card>}
                 </div>
-                {questionSection && selectedSectionsDetails && questionSection?.length > 0 && selectedSectionsDetails?.length > 0 &&
+                {questionSection && questionSection?.length > 0 &&
                     <div className="col-8">
                         <Card className={'overflow-auto overflow-hide ml--1'} style={{ height: height - 74 }}>
-                            <h4 className='mb-0 pointer'>{'Questions'}</h4>
+                            <div className='row justify-content-between mt--1'>
+                                <h4 className='mb-0 pointer'>{'Questions'}</h4>
+                                <span className={''}>
+                                    {selectedSectionsDetails && selectedSectionsDetails?.length > 0 && <Button text={'Regenerate'} className={'text-white'} size={'sm'} onClick={() => { generateQuestionsModel.show() }} />}
+                                </span>
+                            </div>
                             <div className={'mx--4'}><Divider space={'3'} /></div>
                             <Card className={'overflow-auto overflow-hide shadow-none mt--3 mx--4'} style={{ height: height - 153 }}>
                                 {selectedSectionsDetails && selectedSectionsDetails?.length > 0 ? selectedSectionsDetails?.map((sectionQuestions: any, index: number) => {
@@ -290,7 +304,7 @@ function QuestionSections() {
                     <Button size={'md'}
                         loading={generateFormSectionsAndQuestionsLoader.loader}
                         text={"Submit"}
-                        onClick={() => generateFormSectionsAndQuestionsApiHandler(true)}
+                        onClick={() => generateFormSectionsAndQuestionsApiHandler()}
                     />
                 </div>
             </Modal >
@@ -301,7 +315,6 @@ function QuestionSections() {
                     value={questionCount.value}
                     onChange={questionCount.onChange}
                 />
-
                 <div className="col text-right">
                     <Button size={'md'}
                         loading={generateQuestionsLoader.loader}
