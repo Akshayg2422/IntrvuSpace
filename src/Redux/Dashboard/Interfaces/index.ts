@@ -19,4 +19,5 @@ export interface DashboardProp {
   registerData: any
   removeSideNav: boolean
   breadCrumb: any
+  recordingPermission: boolean
 }

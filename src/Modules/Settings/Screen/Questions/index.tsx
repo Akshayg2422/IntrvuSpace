@@ -1,12 +1,13 @@
 
 import { Button, Divider, Modal, Input, Card, showToast, Breadcrumbs } from '@Components';
 import { useModal, useNavigation, useInput, useLoader, useWindowDimensions } from '@Hooks';
-import { breadCrumbs, clearBreadCrumbs, generateForm, getQuestionForm, setSelectedQuestionForm } from '@Redux';
+import { breadCrumbs, generateForm, getQuestionForm, setSelectedQuestionForm } from '@Redux';
 import { ROUTES } from '@Routes';
 import { capitalizeFirstLetter } from '@Utils';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AnalyzingAnimation } from '../../Container';
+
 
 
 function Questions() {
@@ -20,12 +21,13 @@ function Questions() {
     const [dataGenerated, setDateGenerated] = useState(false)
     const { height } = useWindowDimensions()
 
-
     console.log('breadCrumb------>', breadCrumb)
 
     useEffect(() => {
         getQuestionsFormApi()
     }, [])
+
+
 
     const getQuestionsFormApi = () => {
         const params = {
@@ -77,12 +79,14 @@ function Questions() {
         description.set('')
     }
 
+    const breadcrumbString = breadCrumb.length > 0 && breadCrumb;
+
     return (
         <>
             <span className='pointer ml-3 text-black h3 '
                 onClick={() => { goBack() }}
             >
-                <i className="bi bi-arrow-left text-black fa-lg font-weight-bolder pr-1"></i>  {<Breadcrumbs/>}
+                <i className="bi bi-arrow-left text-black fa-lg font-weight-bolder pr-1"></i>  {breadcrumbString}
             </span>
             {
                 dataGenerated ? null :

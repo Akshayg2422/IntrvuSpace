@@ -24,7 +24,8 @@ const initialState: DashboardProp = {
   questionDetails: undefined,
   registerData: undefined,
   removeSideNav: false,
-  breadCrumb: []
+  breadCrumb: [],
+  recordingPermission: false
 };
 
 const DashboardReducer = (state = initialState, action: any) => {
@@ -269,11 +270,14 @@ const DashboardReducer = (state = initialState, action: any) => {
       break;
 
     case ActionTypes.CLEAR_BREADCRUMBS:
-      console.log('Removing most recent breadcrumb entry');
-      state = { ...state, breadCrumb: state.breadCrumb.slice(0, -1) };
+      state = { ...state, breadCrumb:[] };
       break;
 
 
+
+    case ActionTypes.SCREEN_RECORDING_PERMISSION:
+      state = { ...state, recordingPermission: action.payload };
+      break;
 
     default:
       state = state;

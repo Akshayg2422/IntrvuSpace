@@ -8,7 +8,7 @@ import { CardFooter } from 'reactstrap';
 
 function QuestionSections() {
 
-    const { goTo,goBack } = useNavigation();
+    const { goTo, goBack } = useNavigation();
     const { height } = useWindowDimensions()
     const dispatch = useDispatch()
     const { selectedRole, selectedQuestionForm, questionSection, breadCrumb } = useSelector((state: any) => state.DashboardReducer)
@@ -167,13 +167,14 @@ function QuestionSections() {
         );
     }
 
+    const breadcrumbString = breadCrumb.length > 0 && breadCrumb;
 
     return (
         <>
             <span className='pointer ml-3 text-black h3 '
                 onClick={() => { goBack() }}
             >
-                <i className="bi bi-arrow-left text-black fa-lg font-weight-bolder pr-1"></i>  {<Breadcrumbs/>}
+                <i className="bi bi-arrow-left text-black fa-lg font-weight-bolder pr-1"></i>  {breadcrumbString}
             </span>
             <div className="m-3">
                 {/* <div className="row">

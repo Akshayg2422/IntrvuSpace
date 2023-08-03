@@ -165,4 +165,7 @@ export const BREADCRUMBS = 'BREADCRUMBS'
 
 export const CLEAR_BREADCRUMBS = 'CLEAR_BREADCRUMBS'
 
+// screenRecording Permission
+
+export const SCREEN_RECORDING_PERMISSION = 'SCREEN_RECORDING_PERMISSION'
 

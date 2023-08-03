@@ -521,3 +521,14 @@ export const clearBreadCrumbs = (params: any) => {
     payload: params
   }
 }
+// SCREEN_RECORDING_PERMISSION
+
+export const screenRecordingPermission = (params: any) => {
+  console.log("=============screenRecordingPermission", params);
+
+  return {
+    type: ActionTypes.SCREEN_RECORDING_PERMISSION,
+    payload: params
+  }
+}
+
