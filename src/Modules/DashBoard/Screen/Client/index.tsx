@@ -150,7 +150,7 @@ function Clients() {
                         <ButtonGroup size={'btn-md'} sortData={FILTER} selected={filter.value} onClick={handleButtonClick} />
                         {/* {filter.value?.title === 'Past' && <Schedules />} */}
                     </div>
-                    <div className='mt--2 '>
+                    <div className='mt--2 mr-3 pr-1 '>
                         <Profile />
                     </div>
                 </div>
