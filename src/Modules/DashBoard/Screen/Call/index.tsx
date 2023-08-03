@@ -1,52 +1,43 @@
 import { Modal, showToast } from '@Components';
 import { useModal, useNavigation, useScreenRecorder, useTextToSpeech } from '@Hooks';
 import { CallScreen } from '@Modules';
-import { getStartChat, screenRecordingPermission } from '@Redux';
 import { useWhisper } from '@chengsokdara/use-whisper';
 import { log } from 'console';
 import { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
+import hark from 'hark'
+import { getStartChat, screenRecordingPermission } from '@Redux';
 
 function Call() {
     const { goBack } = useNavigation();
     const dispatch = useDispatch()
 
     const { scheduleId, recordingPermission } = useSelector((state: any) => state.DashboardReducer)
+
     const [isHear, setIsHear] = useState(true)
     const [showVideo, setShowVideo] = useState(false)
     const [isRecording, setIsRecording] = useState(false)
-
     const [notEvenSpeck, setNotEvenSpeck] = useState(false)
-
 
     const CALL_STATE_INACTIVE = -1
     const CALL_STATE_LISTENING = 1
     const CALL_STATE_TRANSCRIBING = 2
     const CALL_STATE_API_LOADING = 3
 
-
-
     const [callState, setCallState] = useState(CALL_STATE_INACTIVE)
     const lastCallState = useRef(CALL_STATE_INACTIVE)
-
-
+    const [IsVoiceDetected, setVoiceDetected] = useState<boolean>(false)
+    const [lastApiText, setLastApiText] = useState('')
 
     const { startScreenRecording, stopScreenRecording, isScreenRecording } = useScreenRecorder();
     const { isSpeaking, speak } = useTextToSpeech();
 
     const intervalRef = useRef<any>(null);
 
-    /**
-     * transcription - openai whisper api starts ===============================
-     */
     const OPENAI_API_TOKEN = "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"
     const {
-        // recording,
         transcribing,
         transcript,
-        speaking,
-        pauseRecording,
         startRecording,
         stopRecording,
 
@@ -58,12 +49,9 @@ function Call() {
         },
         apiKey: OPENAI_API_TOKEN,
         removeSilence: true,
-        streaming: true,
     })
-    /**
-     * transcription - openai whisper api ends ===============================
-     */
-    // screenRecordingPermission
+
+    const [speaking, setSpeaking] = useState(false);
 
     useEffect(() => {
         if (isScreenRecording && recordingPermission) {
@@ -73,6 +61,25 @@ function Call() {
             dispatch(screenRecordingPermission(true))
         }
     }, [isScreenRecording])
+
+    useEffect(() => {
+        async function fetchData() {
+            let option = {}
+            let stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            var speech = hark(stream, option);
+            speech.on('volume_change', function (value) {
+                if (-value < 50) {
+                    setSpeaking(true);
+                } else {
+                    setSpeaking(false);
+                }
+            });
+
+        }
+        if (isRecording) {
+            fetchData();
+        }
+    }, [isRecording])
 
     const validateNotSpeaking = () => {
 
@@ -106,10 +113,11 @@ function Call() {
         };
     }, [callState, isRecording]);
 
-
     useEffect(() => {
+
         if (speaking) {
             setCallState(CALL_STATE_LISTENING)
+            console.log('setNotEvenSpeck');
             setNotEvenSpeck(true);
         } else {
             setCallState(CALL_STATE_INACTIVE)
@@ -119,14 +127,11 @@ function Call() {
 
     useEffect(() => {
         if (transcript.text) {
-            setCallState(CALL_STATE_API_LOADING)
-            getChatDetails('', 'Ai');
-            // call me api
-            // while calling
-            // isApiLoading set as true
-            // on success failure 
-            // set isApiLoading false
-            // setCallState(CALL_STATE_INACTIVE)
+            setLastApiText(transcript.text)
+            if (lastApiText !== transcript.text) {
+                setCallState(CALL_STATE_API_LOADING)
+                getChatDetails('', 'Ai');
+            }
         }
         else if (!transcribing && callState !== CALL_STATE_API_LOADING) {
             setCallState(CALL_STATE_INACTIVE)
@@ -143,7 +148,6 @@ function Call() {
 
     const validateProceedStartListening = async () => {
         if (transcribing || callState === CALL_STATE_API_LOADING) {
-            // Toast Please wait
             console.log("Please wait...")
         }
         else {
@@ -169,33 +173,27 @@ function Call() {
             ...(type === 'Ai' && { "message": transcript.text }),
             schedule_id: scheduleId
         };
-        console.log("===========>", params);
-        setCallState(CALL_STATE_INACTIVE)
-        // dispatch(
-        //     getStartChat({
-        //         params,
-        //         onSuccess: (success: any) => async () => {
-        //             setCallState(CALL_STATE_INACTIVE)
-
-        //             if (success?.next_step[0].message_type === "SPEAK" && success?.next_step[0].response_type !== 'INTERVIEWER_END_CALL') {
-        //                 await speak(success?.next_step[0]?.response_text);
-        // setCallState(CALL_STATE_INACTIVE)
-        //             } else if (success?.next_step[0].response_type === 'COMMAND') {
-        //                 commandVariant(success?.next_step[0]?.response_text)
-        //             } else if (success?.next_step[0].message_type === "SPEAK" && success?.next_step[0].response_type == 'INTERVIEWER_END_CALL') {
-        //                 await speak(success?.next_step[0]?.response_text);
-        //                 if (!isSpeaking) {
-        //                     isScreenRecording && stopScreenRecording()
-        //                     goBack()
-        //                 }
-        //             }
-
-        //         },
-        //         onError: (error: any) => () => {
-        //             showToast(error?.error_message, 'error')
-        //         },
-        //     })
-        // );
+        dispatch(
+            getStartChat({
+                params,
+                onSuccess: (success: any) => async () => {
+                    if (success?.next_step[0].message_type === "SPEAK" && success?.next_step[0].response_type !== 'INTERVIEWER_END_CALL') {
+                        await speak(success?.next_step[0]?.response_text);
+                        setCallState(CALL_STATE_INACTIVE)
+                    } else if (success?.next_step[0].response_type === 'COMMAND') {
+                        // commandVariant(success?.next_step[0]?.response_text)
+                    } else if (success?.next_step[0].message_type === "SPEAK" && success?.next_step[0].response_type == 'INTERVIEWER_END_CALL') {
+                        await speak(success?.next_step[0]?.response_text);
+                        if (!isSpeaking)
+                            isScreenRecording && stopScreenRecording()
+                        goBack()
+                    }
+                },
+                onError: (error: any) => () => {
+                    showToast(error?.error_message, 'error')
+                },
+            })
+        );
     };
 
     const handleVideo = () => {
@@ -211,7 +209,7 @@ function Call() {
         }
     }
 
-    const showLoader = callState === CALL_STATE_TRANSCRIBING || isSpeaking
+    const showLoader = callState === CALL_STATE_TRANSCRIBING || isSpeaking || callState === CALL_STATE_API_LOADING
 
     return (
         <Modal isOpen={true} size='xl' onClose={() => goBack()} >
