@@ -1,7 +1,7 @@
 
 import { Button, DropDown, DesignationItem, Input, Modal, NoDataFound, Breadcrumbs } from '@Components';
 import { useDropDown, useInput, useLoader, useModal, useNavigation } from '@Hooks';
-import { createKnowledgeGroup, createKnowledgeGroupVariant, getKnowledgeGroups, getSectors, setSelectedRole } from '@Redux';
+import { breadCrumbs, clearBreadCrumbs, createKnowledgeGroup, createKnowledgeGroupVariant, getKnowledgeGroups, getSectors, setSelectedRole } from '@Redux';
 import { ROUTES } from '@Routes';
 import { getDropDownCompanyDisplayData } from '@Utils';
 import { useEffect, useState } from 'react';
@@ -39,6 +39,7 @@ function Designation() {
 
 
     useEffect(() => {
+        dispatch(clearBreadCrumbs([]))
         getSectorsApiHandler();
     }, [])
 
@@ -131,12 +132,12 @@ function Designation() {
             );
         }
     };
-
+   
     return (
         <>
             <div>
                 <div className="row justify-content-end m-3 mr-4 pr-2">
-                   
+
                     <Button
                         className={'text-white shadow-none'}
                         size={'sm'}
@@ -213,6 +214,7 @@ function Designation() {
                                             onView={(designation, role) => {
                                                 dispatch(setSelectedRole(role))
                                                 goTo(ROUTES['designation-module']['questions'])
+                                                dispatch(breadCrumbs(role?.name))
                                             }
                                             }
                                         />

@@ -24,6 +24,7 @@ const initialState: DashboardProp = {
   questionDetails: undefined,
   registerData: undefined,
   removeSideNav: false,
+  breadCrumb: [],
   recordingPermission: false
 };
 
@@ -263,6 +264,16 @@ const DashboardReducer = (state = initialState, action: any) => {
     case ActionTypes.REMOVE_SIDE_NAV:
       state = { ...state, removeSideNav: action.payload };
       break;
+
+    case ActionTypes.BREADCRUMBS:
+      state = { ...state, breadCrumb: [...state.breadCrumb, action.payload] };
+      break;
+
+    case ActionTypes.CLEAR_BREADCRUMBS:
+      state = { ...state, breadCrumb:[] };
+      break;
+
+
 
     case ActionTypes.SCREEN_RECORDING_PERMISSION:
       state = { ...state, recordingPermission: action.payload };

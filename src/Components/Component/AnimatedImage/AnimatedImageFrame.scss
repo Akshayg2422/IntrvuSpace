@@ -71,9 +71,7 @@
   animation: blinkAnimation 2s ease-out infinite;
 }
 
-
-
-@keyframes blinkAnimation {
+ @keyframes blinkAnimation {
   100% {
     transform: scale(2.5);
     opacity: 0;
