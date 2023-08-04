@@ -20,4 +20,5 @@ export interface DashboardProp {
   removeSideNav: boolean
   breadCrumb: any
   recordingPermission: boolean
+  jdVariantData: any
 }

@@ -345,6 +345,25 @@ function* createScheduleSaga(action) {
   }
 }
 
+
+// create jd variant
+
+function* postJdVariantSaga(action) {
+  try {
+    const response = yield call(Api.postJdVariantApi, action.payload.params);
+    if (response.success) {
+      yield put(Action.postJdVariantSuccess(response));
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield put(Action.postJdVariantFailure(response.error_message));
+      yield call(action.payload.onError(response));
+    }
+  } catch (error) {
+    yield put(Action.postJdVariantFailure(error));
+    yield call(action.payload.onError(error));
+  }
+}
+
 function* DashboardSaga() {
   yield takeLatest(Action.GET_START_CHAT, getChatSaga);
   yield takeLatest(Action.CREATE_KNOWLEDGE_GROUP_VARIANT, createKnowledgeGroupVariantSaga);
@@ -365,6 +384,7 @@ function* DashboardSaga() {
   yield takeLatest(Action.FETCH_GENERATE_FORM_SECTIONS_AND_QUESTIONS, generateFormSectionsAndQuestionsSaga);
   yield takeLatest(Action.FETCH_UPDATE_QUESTION_DETAILS, updateQuestionDetailsApiSaga);
   yield takeLatest(Action.CREATE_SCHEDULE, createScheduleSaga);
+  yield takeLatest(Action.POST_JD_VARIANT, postJdVariantSaga);
 }
 
 export default DashboardSaga;
