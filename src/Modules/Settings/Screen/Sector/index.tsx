@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { createSector, getSectors, getStartChat } from '@Redux';
 import { useInput, useLoader, useModal } from '@Hooks';
 import { translate } from "@I18n";
-import { Button, Card, CommonTable, Image, ImagePicker, Input, Modal } from '@Components';
-import { filteredName, getPhoto } from '@Utils';
+import { Button, Card, CommonTable, Image, ImagePicker, Input, Modal, showToast } from '@Components';
+import { ADD_SECTOR_RULES, getPhoto, getValidateError, ifObjectExist, validate,filteredName } from '@Utils';
 
 
 function Sector() {
@@ -31,24 +31,32 @@ function Sector() {
       description: description.value,
       photo: photo
     }
-    addSectorLoader.show()
 
-    dispatch(
-      createSector({
-        params,
-        onSuccess: (success: any) => () => {
-          addSector.hide()
-          description.set('')
-          name.set('')
-          setPhoto('')
-          addSectorLoader.hide()
-          getSectorDetailsApiHandler()
-        },
-        onError: (error: string) => () => {
-          addSectorLoader.hide()
-        },
-      })
-    );
+    const validation = validate(ADD_SECTOR_RULES, params)
+
+    if (ifObjectExist(validation)) {
+      addSectorLoader.show()
+      dispatch(
+        createSector({
+          params,
+          onSuccess: (success: any) => () => {
+            addSector.hide()
+            description.set('')
+            name.set('')
+            setPhoto('')
+            addSectorLoader.hide()
+            getSectorDetailsApiHandler()
+            showToast(success.message, 'success')
+          },
+          onError: (error: any) => () => {
+            addSectorLoader.hide()
+            showToast(error.error_message, 'error')
+          },
+        })
+      )
+    } else {
+      showToast(getValidateError(validation))
+    }
   };
 
   const getSectorDetailsApiHandler = () => {

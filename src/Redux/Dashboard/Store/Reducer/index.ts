@@ -297,7 +297,7 @@ const DashboardReducer = (state = initialState, action: any) => {
     case ActionTypes.RECORDING_VIDEO_SESSION_DETAILS:
       state = { ...state, VideoSessionDetails: action.payload };
       break;
-      
+
     case ActionTypes.POST_JD_VARIANT:
       state = { ...state, jdVariantData: undefined };
       break;
@@ -308,6 +308,13 @@ const DashboardReducer = (state = initialState, action: any) => {
 
     case ActionTypes.POST_JD_VARIANT_FAILURE:
       state = { ...state, jdVariantData: undefined };
+      break;
+
+    // Create a new array without the last element
+
+    case ActionTypes.CLEAR_LAST_BREADCRUMB:
+      const updatedBreadCrumb = state.breadCrumb.pop()
+      return { ...state, breadCrumb: updatedBreadCrumb };
       break;
 
     default:
