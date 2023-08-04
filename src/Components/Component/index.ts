@@ -25,6 +25,7 @@ export * from './VoiceRecognition'
 export * from './AnimatedImage'
 export * from './WebCamRecorder'
 export * from './AnimatedLoader'
+export * from './AnimatedBook'
 
 
 

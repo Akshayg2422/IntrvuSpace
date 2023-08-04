@@ -20,8 +20,8 @@ function CreateQuestionForm() {
     const isEnterPressed = useKeyPress("Enter");
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(false)
-    const loginLoader = useLoader(false);
-    const { goBack } = useNavigation();
+    const addManualLoader = useLoader(false);
+    const generateLoader = useLoader(false)
     const { selectedRole, questions } = useSelector((state: any) => state.DashboardReducer)
     const { goTo } = useNavigation()
     const [dataGenerated, setDataGenerated] = useState(false);
@@ -44,7 +44,7 @@ function CreateQuestionForm() {
         console.log(JSON.stringify(validation));
 
         if (ifObjectExist(validation)) {
-            loginLoader.show()
+            addManualLoader.show()
             setLoading(true)
             dispatch(
                 createQuestionForm({
@@ -52,7 +52,7 @@ function CreateQuestionForm() {
                     onSuccess: (response: any) => () => {
                         if (response.success) {
                             resetValues()
-                            loginLoader.hide()
+                            addManualLoader.hide()
                             goTo(ROUTES['designation-module']['questions'])
                             showToast(response.message, "success");
                         }
@@ -60,10 +60,10 @@ function CreateQuestionForm() {
 
                     },
                     onError: (error) => () => {
-                        showToast(error.error_message);
+                        showToast(error.error_message, 'error');
                         setLoading(false)
 
-                        loginLoader.hide()
+                        addManualLoader.hide()
                     },
                 })
             );
@@ -79,29 +79,34 @@ function CreateQuestionForm() {
             description: descriptionInput?.value,
             knowledge_group_variant_id: selectedRole?.id
         }
-        loginLoader.show()
-        setDataGenerated(true)
-        setLoading(true)
-        dispatch(
-            generateForm({
-                params,
-                onSuccess: (response) => () => {
-                    if (response.success) {
-                        resetValues()
-                        loginLoader.hide()
-                        showToast(response.message, "success");
+        const validation = validate(CREATE_QUESTION_FORM_RULES, params)
+        if (ifObjectExist(validation)) {
+            generateLoader.show()
+            setDataGenerated(true)
+            setLoading(true)
+            dispatch(
+                generateForm({
+                    params,
+                    onSuccess: (response) => () => {
+                        if (response.success) {
+                            resetValues()
+                            generateLoader.hide()
+                            showToast(response.message, "success");
+                            setDataGenerated(false)
+                            goTo(ROUTES['designation-module']['questions'])
+                        }
+                    },
+                    onError: (error) => () => {
+                        showToast(error.error_message, 'error');
+                        setLoading(false)
+                        generateLoader.hide()
                         setDataGenerated(false)
-                        goTo(ROUTES['designation-module']['questions'])
-                    }
-                },
-                onError: (error) => () => {
-                    showToast(error.error_message);
-                    setLoading(false)
-                    loginLoader.hide()
-                    setDataGenerated(false)
-                },
-            })
-        );
+                    },
+                })
+            )
+        } else {
+            showToast(getValidateError(validation))
+        }
 
     }
 
@@ -127,11 +132,11 @@ function CreateQuestionForm() {
 
                     <div className={'row '}>
                         <div className={'col'}>
-                            <Button className={'text-white'} size={'md'} text={'Add Manually'} onClick={submitQuestionFormHandler} />
+                            <Button className={'text-white'} loading={addManualLoader.loader} size={'md'} text={'Add Manually'} onClick={submitQuestionFormHandler} />
                         </div>
 
                         <div className={'col'}>
-                            <Button className={'text-white'} size={'md'} text={'Generate'} onClick={proceedGenerateFormApiHandler} />
+                            <Button className={'text-white'} loading={generateLoader.loader} size={'md'} text={'Generate'} onClick={proceedGenerateFormApiHandler} />
                         </div>
                     </div>
 

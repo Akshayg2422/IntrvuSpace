@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { Back, Breadcrumbs, Button, Card, Checkbox, Divider, Input, Modal, TextArea } from '@Components'
+import { Back, Breadcrumbs, Button, Card, Checkbox, Divider, Input, Modal, TextArea, showToast } from '@Components'
 import { ROUTES } from '@Routes';
 import { useInput, useLoader, useModal, useNavigation, useWindowDimensions } from '@Hooks'
 import { useSelector, useDispatch } from 'react-redux';
 import { clearBreadCrumbs, fetchGenerateFormSectionsAndQuestions, fetchGenerateSectionQuestions, fetchUpdateQuestionDetails, getFormSectionQuestions, getQuestionSection } from '@Redux';
 import { CardFooter } from 'reactstrap';
+import { validate, REGENERATE_SECTION_RULES, ifObjectExist, getValidateError, GENERATE_QUESTION_COUNT_RULES } from '@Utils';
 
 function QuestionSections() {
 
@@ -91,22 +92,28 @@ function QuestionSections() {
             ... (includeQuestions && { questions_count: noOfQuestions.value }),
             generate_questions: includeQuestions
         };
-        generateFormSectionsAndQuestionsLoader.show()
-        dispatch(
-            fetchGenerateFormSectionsAndQuestions({
-                params,
-                onSuccess: () => () => {
-                    generateFormSectionsAndQuestionsModel.hide()
-                    sectionCount.set('')
-                    noOfQuestions.set('')
-                    generateFormSectionsAndQuestionsLoader.hide()
-                    getQuestionSectionsApi()
-                },
-                onError: () => () => {
-                    generateFormSectionsAndQuestionsLoader.hide()
-                },
-            })
-        );
+        console.log('params----------->',params)
+        const validation = validate(REGENERATE_SECTION_RULES, params)
+        if (ifObjectExist(validation)) {
+            generateFormSectionsAndQuestionsLoader.show()
+            dispatch(
+                fetchGenerateFormSectionsAndQuestions({
+                    params,
+                    onSuccess: () => () => {
+                        generateFormSectionsAndQuestionsModel.hide()
+                        sectionCount.set('')
+                        noOfQuestions.set('')
+                        generateFormSectionsAndQuestionsLoader.hide()
+                        getQuestionSectionsApi()
+                    },
+                    onError: () => () => {
+                        generateFormSectionsAndQuestionsLoader.hide()
+                    },
+                })
+            )
+        } else {
+            showToast(getValidateError(validation))
+        }
     }
 
 
@@ -116,22 +123,29 @@ function QuestionSections() {
             questions_count: questionCount.value,
             id: selectedSectionId
         };
-        generateQuestionsLoader.show()
-        dispatch(
-            fetchGenerateSectionQuestions({
-                params,
-                onSuccess: () => () => {
-                    questionCount.set('')
-                    generateQuestionsLoader.hide()
-                    generateQuestionsModel.hide()
-                    getFormSectionQuestionsApi(selectedSectionId)
-                },
-                onError: () => () => {
-                    generateQuestionsLoader.hide()
-                    generateQuestionsModel.hide()
-                },
-            })
-        );
+        const validation = validate(GENERATE_QUESTION_COUNT_RULES, params)
+        if (ifObjectExist(validation)) {
+            generateQuestionsLoader.show()
+            dispatch(
+                fetchGenerateSectionQuestions({
+                    params,
+                    onSuccess: (response: any) => () => {
+                        questionCount.set('')
+                        generateQuestionsLoader.hide()
+                        generateQuestionsModel.hide()
+                        getFormSectionQuestionsApi(selectedSectionId)
+                        showToast(response.message, 'success')
+                    },
+                    onError: (error: any) => () => {
+                        generateQuestionsLoader.hide()
+                        generateQuestionsModel.hide()
+                        showToast(error.errors, 'error')
+                    },
+                })
+            )
+        } else {
+            showToast(getValidateError(validation))
+        }
     }
 
     const SelectedQuestionsEditHandler = (items: any) => {
@@ -235,7 +249,7 @@ function QuestionSections() {
                                 <div className='row justify-content-between mt--1'>
                                     <h4 className='mb-0 pointer'>{'Questions'}</h4>
                                     <span className={''}>
-                                        {selectedSectionsDetails && selectedSectionsDetails?.length > 0 && <Button text={'Regenerate'} className={'text-white'} size={'sm'} onClick={() => { generateQuestionsModel.show() }} />}
+                                        {selectedSectionsDetails && selectedSectionsDetails?.length > 0 && <Button text={'Regenerate'} loading={editQuestionsLoader.loader} className={'text-white'} size={'sm'} onClick={() => { generateQuestionsModel.show() }} />}
                                     </span>
                                 </div>
                                 <div className={'mx--4'}><Divider space={'3'} /></div>
@@ -286,6 +300,7 @@ function QuestionSections() {
                 < Modal size={'lg'} title={"Generate"} isOpen={generateFormSectionsAndQuestionsModel.visible} onClose={generateFormSectionsAndQuestionsModel.hide} >
                     <Input
                         className={'col-6'}
+                        type='number'
                         heading={"Section Count"}
                         value={sectionCount.value}
                         onChange={sectionCount.onChange}
@@ -300,6 +315,7 @@ function QuestionSections() {
                     />
                     {includeQuestions && <Input
                         className={'col-6'}
+                        type='number'
                         heading={"No Of Question"}
                         value={noOfQuestions.value}
                         onChange={noOfQuestions.onChange}
@@ -316,6 +332,7 @@ function QuestionSections() {
                 < Modal size={'md'} title={"Generate"} isOpen={generateQuestionsModel.visible} onClose={generateQuestionsModel.hide} >
                     <Input
                         className={'col-8'}
+                        type='number'
                         heading={"Question Count"}
                         value={questionCount.value}
                         onChange={questionCount.onChange}

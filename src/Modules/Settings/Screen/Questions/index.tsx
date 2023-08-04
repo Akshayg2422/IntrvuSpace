@@ -3,11 +3,11 @@ import { Button, Divider, Modal, Input, Card, showToast, Breadcrumbs } from '@Co
 import { useModal, useNavigation, useInput, useLoader, useWindowDimensions } from '@Hooks';
 import { breadCrumbs, generateForm, getQuestionForm, setSelectedQuestionForm } from '@Redux';
 import { ROUTES } from '@Routes';
-import { capitalizeFirstLetter } from '@Utils';
+import { GENERATE_USING_AI_RULES, capitalizeFirstLetter, getValidateError, ifObjectExist, validate } from '@Utils';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AnalyzingAnimation } from '../../Container';
-
+import { AnimationBook } from '@Components';
 
 
 function Questions() {
@@ -20,6 +20,7 @@ function Questions() {
     const description = useInput('');
     const [dataGenerated, setDateGenerated] = useState(false)
     const { height } = useWindowDimensions()
+    const loader = useLoader(false)
 
     console.log('breadCrumb------>', breadCrumb)
 
@@ -56,22 +57,30 @@ function Questions() {
             knowledge_group_variant_id: selectedRole?.id
         }
 
-        dispatch(
-            generateForm({
-                params,
-                onSuccess: () => (response) => {
-                    setDateGenerated(false)
-                    resetValues()
-                    showToast(response.message, 'success')
-                    // goTo(ROUTES['designation-module']['questions'])
-                },
-                onError: () => (error) => {
-                    setDateGenerated(false)
-                    showToast(error.error_message, 'error')
-                },
-            })
-        );
+        const validation = validate(GENERATE_USING_AI_RULES, params)
 
+        if (ifObjectExist(validation)) {
+            loader.show()
+            dispatch(
+                generateForm({
+                    params,
+                    onSuccess: () => (response) => {
+                        setDateGenerated(false)
+                        resetValues()
+                        showToast(response.message, 'success')
+                        loader.hide()
+                        // goTo(ROUTES['designation-module']['questions'])
+                    },
+                    onError: () => (error) => {
+                        setDateGenerated(false)
+                        showToast(error.error_message, 'error')
+                        loader.hide()
+                    },
+                })
+            )
+        } else {
+            showToast(getValidateError(validation))
+        }
     }
 
     function resetValues() {
@@ -138,9 +147,13 @@ function Questions() {
             <Modal title={'Generate Form'} isOpen={addGenerateFormModal.visible} onClose={addGenerateFormModal.hide}>
                 <Input className={'col-6'} heading={'Name'} value={name.value} onChange={name.onChange} />
                 <Input className={'col-6'} heading={'Description'} value={description.value} onChange={description.onChange} />
-                <Button text={'Submit'} onClick={proceedGenerateFormApiHandler} />
+                <Button text={'Submit'} loading={loader.loader} onClick={proceedGenerateFormApiHandler} />
             </Modal>
-            {dataGenerated && <AnalyzingAnimation />}
+            {dataGenerated && 
+            
+            <div className={'pt-3'}>
+                <AnimationBook/>
+                </div>}
         </>
     )
 }
