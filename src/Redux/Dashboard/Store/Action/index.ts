@@ -532,3 +532,27 @@ export const screenRecordingPermission = (params: any) => {
   }
 }
 
+
+
+// create jd variant
+
+
+export const postJdVariant = (params: any) => {
+  return {
+    type: ActionTypes.POST_JD_VARIANT,
+    payload: params,
+  }
+}
+export const postJdVariantSuccess = (response: any) => {
+  return {
+    type: ActionTypes.POST_JD_VARIANT_SUCCESS,
+    payload: response
+  }
+}
+
+export const postJdVariantFailure = (error: any) => {
+  return {
+    type: ActionTypes.POST_JD_VARIANT_FAILURE,
+    payload: error
+  }
+}

@@ -91,3 +91,7 @@ export const URL_GET_OTP = EMPLOYEE + 'getOtp'
 // create Schedule
 
 export const URL_CREATE_SCHEDULE = ASSISTANT + 'createSchedule'
+
+// create jd varient
+
+export const URL_CREATE_JD_VARIANT = ASSISTANT + 'createJDVariant'

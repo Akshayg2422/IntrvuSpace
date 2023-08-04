@@ -25,7 +25,8 @@ const initialState: DashboardProp = {
   registerData: undefined,
   removeSideNav: false,
   breadCrumb: [],
-  recordingPermission: false
+  recordingPermission: false,
+  jdVariantData: undefined
 };
 
 const DashboardReducer = (state = initialState, action: any) => {
@@ -270,13 +271,26 @@ const DashboardReducer = (state = initialState, action: any) => {
       break;
 
     case ActionTypes.CLEAR_BREADCRUMBS:
-      state = { ...state, breadCrumb:[] };
+      state = { ...state, breadCrumb: [] };
       break;
 
 
 
     case ActionTypes.SCREEN_RECORDING_PERMISSION:
       state = { ...state, recordingPermission: action.payload };
+      break;
+
+
+    case ActionTypes.POST_JD_VARIANT:
+      state = { ...state, jdVariantData: undefined };
+      break;
+
+    case ActionTypes.POST_JD_VARIANT_SUCCESS:
+      state = { ...state, jdVariantData: action.payload };
+      break;
+
+    case ActionTypes.POST_JD_VARIANT_FAILURE:
+      state = { ...state, jdVariantData: undefined };
       break;
 
     default:
