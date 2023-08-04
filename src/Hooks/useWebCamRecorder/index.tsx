@@ -26,8 +26,7 @@ const useWebCamRecorder = () => {
         }
     }, []);
 
-    const handleStop = useCallback(
-        (onStartRecording) => {
+    const handleStop = useCallback((onStartRecording) => {
             const videoBlob = new Blob(chunksRef.current, { type: 'video/webm' });
             const reader = new FileReader();
             reader.onload = () => {

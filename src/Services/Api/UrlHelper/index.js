@@ -92,6 +92,9 @@ export const URL_GET_OTP = EMPLOYEE + 'getOtp'
 
 export const URL_CREATE_SCHEDULE = ASSISTANT + 'createSchedule'
 
+// recordInterviewSession 
+
+export const URL_RECORDER_INTERVIEW_SESSION = ASSISTANT + 'recordInterviewSession'
 // create jd varient
 
 export const URL_CREATE_JD_VARIANT = ASSISTANT + 'createJDVariant'

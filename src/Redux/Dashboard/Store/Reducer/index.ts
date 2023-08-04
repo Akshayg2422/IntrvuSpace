@@ -24,6 +24,7 @@ const initialState: DashboardProp = {
   questionDetails: undefined,
   registerData: undefined,
   removeSideNav: false,
+  VideoSessionDetails: undefined,
   breadCrumb: [],
   recordingPermission: false,
   jdVariantData: undefined
@@ -280,7 +281,23 @@ const DashboardReducer = (state = initialState, action: any) => {
       state = { ...state, recordingPermission: action.payload };
       break;
 
+    // INTERVIEW_RECORDER_SESSION
 
+    case ActionTypes.INTERVIEW_RECORDER_SESSION:
+      state = { ...state };
+      break;
+    case ActionTypes.INTERVIEW_RECORDER_SESSION_SUCCESS:
+      state = { ...state };
+      break;
+    case ActionTypes.INTERVIEW_RECORDER_SESSION_FAILURE:
+      state = { ...state };
+      break;
+
+    // getRecordedVideoSessionDetails
+    case ActionTypes.RECORDING_VIDEO_SESSION_DETAILS:
+      state = { ...state, VideoSessionDetails: action.payload };
+      break;
+      
     case ActionTypes.POST_JD_VARIANT:
       state = { ...state, jdVariantData: undefined };
       break;

@@ -261,7 +261,8 @@ function QuestionSections() {
                                             onClick={() => {
                                                 generateQuestionsModel.show()
                                             }}
-                                        /></div>}
+                                        />
+                                    </div>}
                                 </Card>
                             </Card>
                         </div>}

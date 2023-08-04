@@ -1,68 +1,97 @@
-import { useState, useRef } from 'react';
-import RecordRTC from 'recordrtc';
+import { getRecordedVideoSessionDetails, recordInterviewSession, screenRecordingPermission } from '@Redux';
+import { useEffect, useState, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 const useScreenRecorder = () => {
-  const [recordRTC, setRecordRTC] = useState<any>(null);
-  const [isScreenRecording, setScreenRecording] = useState(false);
-  const [permission, setPermission] = useState(false);
-  const videoRef = useRef<any>(null);
-  const [output, setOutput] = useState<any>('');
+  const [mediaStream, setMediaStream] = useState<any>(null);
+  const [recorder, setRecorder] = useState<any>(null);
+  const [isScreenRecording, setIsScreenRecording] = useState(false);
+  const [recordedVideoData, setRecordedVideoData] = useState([]);
+  const intervalIdRef = useRef<any>(null);
+  const { scheduleId, VideoSessionDetails } = useSelector((state: any) => state.DashboardReducer)
+
+  const dispatch = useDispatch()
+
 
   const startScreenRecording = async () => {
     try {
-      const constraints: any = {
-        video: {
-          chromeMediaSource: 'desktop', // or 'screen'
-        },
-        audio: false, // Screen recording without audio
+      const audioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const videoStream = await navigator.mediaDevices.getDisplayMedia({ video: true });
+      const stream = new MediaStream([...audioStream.getTracks(), ...videoStream.getTracks()]);
+      setMediaStream(stream);
+      dispatch(screenRecordingPermission(true))
+      const mediaRecorder = new MediaRecorder(stream);
+      setRecorder(mediaRecorder);
+      setIsScreenRecording(true);
+      const recordedChunks: any = [];
+      mediaRecorder.ondataavailable = (event) => {
+        if (event.data.size > 0) {
+          recordedChunks.push(event.data);
+        }
       };
-      const stream = await navigator.mediaDevices.getDisplayMedia(constraints);
-
-      const recorder = RecordRTC(stream, {
-        type: 'video',
-        mimeType: 'video/webm',
-        // disableLogs: true,
-      });
-      recorder.startRecording();
-      setRecordRTC(recorder);
-      setScreenRecording(true);
-      setPermission(true);
-    } catch (error: any) {
-      if (error.name === 'NotAllowedError') {
-        // Handle permission denied
-        console.log('Permission denied for screen recording');
-      } else {
-        // Handle other errors
-        console.error('Error starting screen recording:', error);
-      }
+      // Start recording every 5 seconds.
+      mediaRecorder.start(5000);
+      setRecordedVideoData(recordedChunks);
+    } catch (error) {
+      console.error('Error starting recording!', error);
     }
   };
 
-  const stopScreenRecording = () => {
-    return new Promise((
-      resolve, reject) => {
-      if (recordRTC) {
-        recordRTC.stopRecording(() => {
-          const videoBlob = recordRTC.getBlob();
-          const reader:any = new FileReader();
-          reader.onload = () => {
-            const base64Video = reader.result.split(',')[1];
-            setScreenRecording(false);
-            resolve(base64Video);
-            setOutput(base64Video);
-            console.log("==========base64Video=======>", base64Video);
-          };
-          reader.onerror = reject;
-          reader.readAsDataURL(videoBlob);
-          setRecordRTC(null);
-        });
-      } else {
-        reject(new Error('No recording to stop'));
+  useEffect(() => {
+    intervalIdRef.current = setInterval(() => {
+      if (recordedVideoData && recordedVideoData.length > 0) {
+        const videoBlob = new Blob(recordedVideoData, { type: 'video/webm' });
+        sendBlobToServer(videoBlob, false);
       }
-    });
+    }, 5000);
+    return () => clearInterval(intervalIdRef.current);
+  }, [recordedVideoData, VideoSessionDetails]);
+
+  const stopScreenRecording = async () => {
+    if (recorder) {
+      recorder.stop();
+      mediaStream.getTracks().forEach((track) => track.stop());
+    }
+    setIsScreenRecording(false);
+    const videoBlob = await new Blob(recordedVideoData, { type: 'video/webm' });
+    await sendBlobToServer(videoBlob, true);
+    setRecordedVideoData([]);
+    dispatch(screenRecordingPermission(false))
+    dispatch(getRecordedVideoSessionDetails(undefined))
+
+  };
+  
+  const sendBlobToServer = (videoBlob, isRecordingDone) => {
+    const formData = new FormData();
+    formData.append('video_data', videoBlob);
+    formData.append('schedule_id', scheduleId)
+
+    if (VideoSessionDetails) {
+      formData.append('video_id', VideoSessionDetails?.id);
+    }
+    if (isRecordingDone) {
+      formData.append('stop_recording', isRecordingDone);
+    }
+
+    const params = formData
+    dispatch(recordInterviewSession({
+      params,
+      onSuccess: (res: any) => () => {
+        if (!VideoSessionDetails?.id) {
+          dispatch(getRecordedVideoSessionDetails(res?.details))
+        }
+      },
+      onError: (error: any) => () => {
+
+      }
+    }))
   };
 
-  return { startScreenRecording, stopScreenRecording, videoRef, output, isScreenRecording };
+  return {
+    isScreenRecording,
+    startScreenRecording,
+    stopScreenRecording,
+  };
 };
 
 export { useScreenRecorder };
