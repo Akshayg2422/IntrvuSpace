@@ -24,8 +24,10 @@ const initialState: DashboardProp = {
   questionDetails: undefined,
   registerData: undefined,
   removeSideNav: false,
+  VideoSessionDetails: undefined,
   breadCrumb: [],
-  recordingPermission: false
+  recordingPermission: false,
+  jdVariantData: undefined
 };
 
 const DashboardReducer = (state = initialState, action: any) => {
@@ -270,13 +272,49 @@ const DashboardReducer = (state = initialState, action: any) => {
       break;
 
     case ActionTypes.CLEAR_BREADCRUMBS:
-      state = { ...state, breadCrumb:[] };
+      state = { ...state, breadCrumb: [] };
       break;
 
 
 
     case ActionTypes.SCREEN_RECORDING_PERMISSION:
       state = { ...state, recordingPermission: action.payload };
+      break;
+
+    // INTERVIEW_RECORDER_SESSION
+
+    case ActionTypes.INTERVIEW_RECORDER_SESSION:
+      state = { ...state };
+      break;
+    case ActionTypes.INTERVIEW_RECORDER_SESSION_SUCCESS:
+      state = { ...state };
+      break;
+    case ActionTypes.INTERVIEW_RECORDER_SESSION_FAILURE:
+      state = { ...state };
+      break;
+
+    // getRecordedVideoSessionDetails
+    case ActionTypes.RECORDING_VIDEO_SESSION_DETAILS:
+      state = { ...state, VideoSessionDetails: action.payload };
+      break;
+
+    case ActionTypes.POST_JD_VARIANT:
+      state = { ...state, jdVariantData: undefined };
+      break;
+
+    case ActionTypes.POST_JD_VARIANT_SUCCESS:
+      state = { ...state, jdVariantData: action.payload };
+      break;
+
+    case ActionTypes.POST_JD_VARIANT_FAILURE:
+      state = { ...state, jdVariantData: undefined };
+      break;
+
+    // Create a new array without the last element
+
+    case ActionTypes.CLEAR_LAST_BREADCRUMB:
+      const updatedBreadCrumb = state.breadCrumb.pop()
+      return { ...state, breadCrumb: updatedBreadCrumb };
       break;
 
     default:

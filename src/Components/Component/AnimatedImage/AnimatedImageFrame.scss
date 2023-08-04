@@ -28,7 +28,7 @@
 }
 
 .animated-image.blink:after {
-  animation: blinkAnimation 2s ease-out infinite;
+  animation: blinkAnimation 2s 1s ease-out infinite;
 }
 
 
@@ -42,36 +42,43 @@
 
 
 .animated-button {
+  border-radius: 7;
+  background-color: #e29090;
+  padding: 15 ;
+  z-index: 9;
+}
+
+
+.animated-button::after,
+.animated-button:before {
+  content: '';
   display: flex;
   justify-content: center;
   align-items: center;
-  opacity: 0.7;
-  margin: auto;
-  // background-color: #42f542;
-}
-
-
-.animated-image::after,
-.animated-image:before {
-  content: '';
   position: absolute;
-  z-index: 9;
-  background-color: #42f542;
-  height: 140px;
-  width: 140px;
-  border-radius: 50%;
+  background-color: #e29090;
+  height: 30px;
+  width: 30px;
+  border-radius: 10%;
   opacity: 0.7;
+  z-index: -1;
 }
 
-.animated-image.blink:before {
+.animated-button:before {
   animation: blinkAnimation 2s ease-out infinite;
+  margin-left: -2.5px;
+  margin-top: -4px;
 }
 
-.animated-image.blink:after {
-  animation: blinkAnimation 2s ease-out infinite;
+.animated-button:after {
+  animation: blinkAnimationButton 2s 0.5s ease-out infinite;
+  margin-left: -2.5px;
+  margin-top: -28px;
 }
 
- @keyframes blinkAnimation {
+
+
+@keyframes blinkAnimationButton {
   100% {
     transform: scale(2.5);
     opacity: 0;

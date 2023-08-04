@@ -23,7 +23,7 @@ function CreateQuestionForm() {
     const addManualLoader = useLoader(false);
     const generateLoader = useLoader(false)
     const { selectedRole, questions } = useSelector((state: any) => state.DashboardReducer)
-    const { goTo } = useNavigation()
+    const { goTo, } = useNavigation()
     const [dataGenerated, setDataGenerated] = useState(false);
 
     useEffect(() => {
@@ -118,7 +118,10 @@ function CreateQuestionForm() {
         <>
 
             {!dataGenerated && <Card className="m-3" style={{ height: height - 30 }}>
-                <h3>CREATE FORM</h3>
+
+                <div className={'row pl-1'}>
+                    <Back /><span className={'h3 pl-1'}> CREATE FORM</span>
+                </div>
                 <hr className="mt-2"></hr>
 
                 <div className="col-md-9 col-lg-5">

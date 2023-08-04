@@ -123,13 +123,13 @@ export const HOME_ROUTES = [
     layout: "",
     component: <Clients />
   },
-  {
-    path: ROUTES['designation-module'].report,
-    name: "Report",
-    icon: icons.company,
-    layout: "",
-    component: <Report />
-  },
+  // {
+  //   path: ROUTES['designation-module'].report,
+  //   name: "Report",
+  //   icon: icons.company,
+  //   layout: "",
+  //   component: <Report />
+  // },
   // {
   //   path: ROUTES['designation-module'].Dashboard,
   //   name: "Dashboard",

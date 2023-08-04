@@ -4,7 +4,7 @@ import { createSector, getSectors, getStartChat } from '@Redux';
 import { useInput, useLoader, useModal } from '@Hooks';
 import { translate } from "@I18n";
 import { Button, Card, CommonTable, Image, ImagePicker, Input, Modal, showToast } from '@Components';
-import { ADD_SECTOR_RULES, getPhoto, getValidateError, ifObjectExist, validate } from '@Utils';
+import { ADD_SECTOR_RULES, getPhoto, getValidateError, ifObjectExist, validate,filteredName } from '@Utils';
 
 
 function Sector() {
@@ -75,35 +75,37 @@ function Sector() {
   const normalizedTableData = (data: any) => {
     return data?.map((el: any) => {
       return {
-        Name:
-          <div className="row"> <div>
-            <Image variant={'rounded'} src={getPhoto(el?.photo)} />
-          </div>
-            <div className="text-center pt-3 pl-1"> {el.name}<div></div></div>
-          </div>,
-        description: el?.description,
+        '': <Image variant={'rounded'} src={getPhoto(el?.photo)} />,
+        Name: el.name,
+        description: filteredName(el?.description, 90),
       };
     });
   };
 
   return (
     <>
-      <div className="row justify-content-end m-2 mb-3">
-        <Button
-          className={'text-white shadow-none'}
-          size={'sm'}
-          text={"Add Sector"}
-          onClick={() => {
-            addSector.show()
-          }}
-        />
+      <div className='container-fluid'>
+        <div className="row justify-content-end m-2 mr--2 mb-3">
+          <Button
+            className={'text-white shadow-none'}
+            size={'sm'}
+            text={"Add Sector"}
+            onClick={() => {
+              addSector.show()
+            }}
+          />
+        </div>
+        <div className='row px-0  mx--4'> 
+          <div className='col-sm-12 px-0'>
+            <CommonTable
+              card
+              isPagination
+              title={'Sectors'}
+              displayDataSet={normalizedTableData(sectors)}
+            />
+          </div>
+        </div>
       </div>
-      <CommonTable
-        card
-        isPagination
-        title={'Sectors'}
-        displayDataSet={normalizedTableData(sectors)}
-      />
       < Modal size={'lg'} title={"Add Sector"} isOpen={addSector.visible} onClose={addSector.hide} >
         <div className="col-md-9">
           <div className="mt--2">

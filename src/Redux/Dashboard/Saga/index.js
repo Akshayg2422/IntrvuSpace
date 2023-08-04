@@ -239,7 +239,6 @@ function* getQuestionSectionSaga(action) {
 function* getFormSectionsQuestionsSaga(action) {
   try {
     const response = yield call(Api.getFormSectionsQuestionsApi, action.payload.params);
-    console.log(JSON.stringify(response) + '========getQuestionSectionSaga');
     if (response.success) {
       yield put(Action.getFormSectionQuestionsSuccess(response));
       yield call(action.payload.onSuccess(response));
@@ -345,6 +344,40 @@ function* createScheduleSaga(action) {
   }
 }
 
+// INTERVIEW_RECORDER_SESSION
+
+function* recordInterviewSessionSaga(action) {
+  try {
+    const response = yield call(Api.PostRecorderInterviewSessionApi, action.payload.params);
+    if (response.success) {
+      yield put(Action.recordInterviewSessionSuccess(response));
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield put(Action.recordInterviewSessionFailure(response.error_message));
+      yield call(action.payload.onError(response));
+    }
+  } catch (error) {
+    yield put(Action.recordInterviewSessionFailure(error));
+  }
+}
+// create jd variant
+
+function* postJdVariantSaga(action) {
+  try {
+    const response = yield call(Api.postJdVariantApi, action.payload.params);
+    if (response.success) {
+      yield put(Action.postJdVariantSuccess(response));
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield put(Action.postJdVariantFailure(response.error_message));
+      yield call(action.payload.onError(response));
+    }
+  } catch (error) {
+    yield put(Action.postJdVariantFailure(error));
+    yield call(action.payload.onError(error));
+  }
+}
+
 function* DashboardSaga() {
   yield takeLatest(Action.GET_START_CHAT, getChatSaga);
   yield takeLatest(Action.CREATE_KNOWLEDGE_GROUP_VARIANT, createKnowledgeGroupVariantSaga);
@@ -365,6 +398,8 @@ function* DashboardSaga() {
   yield takeLatest(Action.FETCH_GENERATE_FORM_SECTIONS_AND_QUESTIONS, generateFormSectionsAndQuestionsSaga);
   yield takeLatest(Action.FETCH_UPDATE_QUESTION_DETAILS, updateQuestionDetailsApiSaga);
   yield takeLatest(Action.CREATE_SCHEDULE, createScheduleSaga);
+  yield takeLatest(Action.INTERVIEW_RECORDER_SESSION, recordInterviewSessionSaga);
+  yield takeLatest(Action.POST_JD_VARIANT, postJdVariantSaga);
 }
 
 export default DashboardSaga;

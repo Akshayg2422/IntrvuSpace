@@ -6,7 +6,6 @@ import { ROUTES } from '@Routes';
 import { GENERATE_USING_AI_RULES, capitalizeFirstLetter, getValidateError, ifObjectExist, validate } from '@Utils';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AnalyzingAnimation } from '../../Container';
 import { AnimationBook } from '@Components';
 
 
@@ -22,7 +21,7 @@ function Questions() {
     const { height } = useWindowDimensions()
     const loader = useLoader(false)
 
-    console.log('breadCrumb------>', breadCrumb)
+    console.log('breadCrumbQuestionsssssssssssss------>', breadCrumb)
 
     useEffect(() => {
         getQuestionsFormApi()
@@ -88,15 +87,17 @@ function Questions() {
         description.set('')
     }
 
-    const breadcrumbString = breadCrumb.length > 0 && breadCrumb;
+    const breadcrumbString = breadCrumb.length > 0 && breadCrumb
+    // console.log('aaaaaaaaaaaaaaa', breadcrumbString)
 
     return (
         <>
-            <span className='pointer ml-3 text-black h3 '
+            {/* <span className='pointer ml-3 text-black h3 '
                 onClick={() => { goBack() }}
             >
                 <i className="bi bi-arrow-left text-black fa-lg font-weight-bolder pr-1"></i>  {breadcrumbString}
-            </span>
+            </span> */}
+            <Breadcrumbs />
             {
                 dataGenerated ? null :
                     <div className='m-3'>
@@ -128,7 +129,7 @@ function Questions() {
                                                 onClick={() => {
                                                     goTo(ROUTES['designation-module']['question-sections'])
                                                     dispatch(setSelectedQuestionForm(item))
-                                                    dispatch(breadCrumbs(name))
+                                                    dispatch(breadCrumbs({name:name,path:window.location.pathname}))
                                                 }} >
                                                 <h4 className='mb-0 pointer mt--2'>{name}</h4>
                                                 <div className={'mx--4'}><Divider space={'3'} /></div>
@@ -149,10 +150,10 @@ function Questions() {
                 <Input className={'col-6'} heading={'Description'} value={description.value} onChange={description.onChange} />
                 <Button text={'Submit'} loading={loader.loader} onClick={proceedGenerateFormApiHandler} />
             </Modal>
-            {dataGenerated && 
-            
-            <div className={'pt-3'}>
-                <AnimationBook/>
+            {dataGenerated &&
+
+                <div className={'pt-3'}>
+                    <AnimationBook />
                 </div>}
         </>
     )

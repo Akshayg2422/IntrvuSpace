@@ -26,7 +26,7 @@ function Call() {
 
     const [callState, setCallState] = useState(CALL_STATE_INACTIVE)
     const lastCallState = useRef(CALL_STATE_INACTIVE)
-    const [IsVoiceDetected, setVoiceDetected] = useState<boolean>(false)
+    const [promptText, setPromptText] = useState<any>()
     const [lastApiText, setLastApiText] = useState('')
 
     const { startScreenRecording, stopScreenRecording, isScreenRecording } = useScreenRecorder();
@@ -40,10 +40,9 @@ function Call() {
         transcript,
         startRecording,
         stopRecording,
-
     } = useWhisper({
         whisperConfig: {
-            prompt: '',
+            prompt: promptText && promptText.length > 0 ? `${[...promptText]}` : '',
             temperature: 0,
             language: 'en',
         },
@@ -54,13 +53,17 @@ function Call() {
     const [speaking, setSpeaking] = useState(false);
 
     useEffect(() => {
-        if (isScreenRecording && recordingPermission) {
-            getChatDetails('start', 'text')
-        } else {
-            startScreenRecording()
-            dispatch(screenRecordingPermission(true))
+        startScreenRecording()
+        return () => {
+            dispatch(screenRecordingPermission(false))
         }
-    }, [isScreenRecording])
+    }, [])
+
+    useEffect(() => {
+        if (recordingPermission) {
+            getChatDetails('start', 'text')
+        }
+    }, [recordingPermission])
 
     useEffect(() => {
         async function fetchData() {
@@ -114,7 +117,6 @@ function Call() {
     }, [callState, isRecording]);
 
     useEffect(() => {
-
         if (speaking) {
             setCallState(CALL_STATE_LISTENING)
             console.log('setNotEvenSpeck');
@@ -178,15 +180,19 @@ function Call() {
                 params,
                 onSuccess: (success: any) => async () => {
                     if (success?.next_step[0].message_type === "SPEAK" && success?.next_step[0].response_type !== 'INTERVIEWER_END_CALL') {
-                        await speak(success?.next_step[0]?.response_text);
+                        window.location.pathname === '/call' && speak(success?.next_step[0]?.response_text);
+                        if (success?.keywords.length > 0) {
+                            setPromptText(success?.keywords)
+                        }
                         setCallState(CALL_STATE_INACTIVE)
                     } else if (success?.next_step[0].response_type === 'COMMAND') {
-                        // commandVariant(success?.next_step[0]?.response_text)
+                        commandVariant(success?.next_step[0]?.response_text)
                     } else if (success?.next_step[0].message_type === "SPEAK" && success?.next_step[0].response_type == 'INTERVIEWER_END_CALL') {
-                        await speak(success?.next_step[0]?.response_text);
-                        if (!isSpeaking)
+                        // await speak(success?.next_step[0]?.response_text);
+                        if (!isSpeaking) {
                             isScreenRecording && stopScreenRecording()
-                        goBack()
+                            goBack()
+                        }
                     }
                 },
                 onError: (error: any) => () => {

@@ -3,7 +3,7 @@ import { Back, Breadcrumbs, Button, Card, Checkbox, Divider, Input, Modal, TextA
 import { ROUTES } from '@Routes';
 import { useInput, useLoader, useModal, useNavigation, useWindowDimensions } from '@Hooks'
 import { useSelector, useDispatch } from 'react-redux';
-import { clearBreadCrumbs, fetchGenerateFormSectionsAndQuestions, fetchGenerateSectionQuestions, fetchUpdateQuestionDetails, getFormSectionQuestions, getQuestionSection } from '@Redux';
+import { clearBreadCrumbs, clearLastBreadcrumb, fetchGenerateFormSectionsAndQuestions, fetchGenerateSectionQuestions, fetchUpdateQuestionDetails, getFormSectionQuestions, getQuestionSection } from '@Redux';
 import { CardFooter } from 'reactstrap';
 import { validate, REGENERATE_SECTION_RULES, ifObjectExist, getValidateError, GENERATE_QUESTION_COUNT_RULES } from '@Utils';
 
@@ -92,22 +92,24 @@ function QuestionSections() {
             ... (includeQuestions && { questions_count: noOfQuestions.value }),
             generate_questions: includeQuestions
         };
-        console.log('params----------->',params)
+        console.log('params----------->', params)
         const validation = validate(REGENERATE_SECTION_RULES, params)
         if (ifObjectExist(validation)) {
             generateFormSectionsAndQuestionsLoader.show()
             dispatch(
                 fetchGenerateFormSectionsAndQuestions({
                     params,
-                    onSuccess: () => () => {
+                    onSuccess: (response) => () => {
                         generateFormSectionsAndQuestionsModel.hide()
                         sectionCount.set('')
                         noOfQuestions.set('')
                         generateFormSectionsAndQuestionsLoader.hide()
                         getQuestionSectionsApi()
+                        showToast(response.message, 'success')
                     },
-                    onError: () => () => {
+                    onError: (error) => () => {
                         generateFormSectionsAndQuestionsLoader.hide()
+                        showToast(error.error_message, 'error')
                     },
                 })
             )
@@ -181,15 +183,18 @@ function QuestionSections() {
         );
     }
 
-    const breadcrumbString = breadCrumb.length > 0 && breadCrumb;
+    const separator = " / ";
+    const breadcrumbString = breadCrumb.length > 0 ? breadCrumb.map((item: any, index: number) => index === 0 ? item : separator + item).join("") : "";
+    console.log('breadcrumbString', JSON.stringify(breadcrumbString))
 
     return (
         <>
-            <span className='pointer ml-3 text-black h3 '
+            {/* <span className='pointer ml-3 text-black h3 '
                 onClick={() => { goBack() }}
             >
-                <i className="bi bi-arrow-left text-black fa-lg font-weight-bolder pr-1"></i>  {breadcrumbString}
-            </span>
+                <i className="bi bi-arrow-left text-black fa-lg font-weight-bolder pr-1"></i> {breadcrumbString}
+            </span> */}
+            <Breadcrumbs />
             <div className="m-3">
                 {/* <div className="row">
                 <div className="col text-right">
@@ -275,7 +280,8 @@ function QuestionSections() {
                                             onClick={() => {
                                                 generateQuestionsModel.show()
                                             }}
-                                        /></div>}
+                                        />
+                                    </div>}
                                 </Card>
                             </Card>
                         </div>}
