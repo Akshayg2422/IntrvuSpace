@@ -11,6 +11,15 @@ export function ifObjectExist(value: object) {
   return is_valid;
 }
 
+export const filteredName = (value: any, length) => {
+  if (value?.length > length) {
+    return value.substring(0, length).trim() + '...';
+  }
+  else {
+    return value
+  }
+}
+
 
 export function changeDropDownDataKey(arr: any) {
   if (arr && arr.length > 0) {

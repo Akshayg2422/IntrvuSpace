@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { getMyPastInterviews, selectedScheduleId } from '@Redux';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, Card, Divider, Modal } from '@Components';
+import { Button, Divider, Modal } from '@Components';
 import { useModal, useNavigation, useWindowDimensions } from '@Hooks';
 import { ROUTES } from '@Routes';
+import { Card, CardBody, CardHeader } from 'reactstrap';
 
 
 function Schedules() {
@@ -77,16 +78,21 @@ function Schedules() {
                         const { id, interviewee_expected_sector, interviewee_expected_designation, interviewee_expected_role, is_complete, is_started } = item;
                         return (
                             <div className='col-4 px-2 my--2' key={id}>
-                                <Card className='justify-content-center'
-                                style={{height:height - 590}}
+                                <Card className=''
+                                    style={{ height: height - 400 }}
                                 >
-                                    <h4 className='mb-0 pointer mt--2'>{interviewee_expected_sector}</h4>
-                                    <div className={'mx--4 mt--2'}><Divider space={'3'} /></div>
-                                    <h5>{interviewee_expected_designation}</h5>
-                                    <small className='mb-0 pointer'>{interviewee_expected_role}</small>
-                                    <div className='text-right'>
-                                        {handleNextStep(item)}
-                                    </div>
+                                    <CardHeader className='pb-1 pt-2'>
+                                        <h4 className=' pointer'>{interviewee_expected_sector}</h4>
+                                    </CardHeader>
+                                    <CardBody>
+                                        <h5>{interviewee_expected_designation}</h5>
+                                        <div className='row justify-content-between align-items-center mx-0'>
+                                            <small className='mb-0 pointer'>{interviewee_expected_role}</small>
+                                            <div className='text-right'>
+                                                {handleNextStep(item)}
+                                            </div>
+                                        </div>
+                                    </CardBody>
                                 </Card>
                             </div>
                         )
