@@ -1,7 +1,7 @@
 
-import { Button, Divider, Modal, Input, Card, showToast } from '@Components';
+import { Button, Divider, Modal, Input, Card, showToast, Breadcrumbs } from '@Components';
 import { useModal, useNavigation, useInput, useLoader, useWindowDimensions } from '@Hooks';
-import { generateForm, getQuestionForm, setSelectedQuestionForm } from '@Redux';
+import { breadCrumbs, generateForm, getQuestionForm, setSelectedQuestionForm } from '@Redux';
 import { ROUTES } from '@Routes';
 import { capitalizeFirstLetter } from '@Utils';
 import { useEffect, useState } from 'react';
@@ -15,13 +15,13 @@ function Questions() {
     const { goTo, goBack } = useNavigation();
     const dispatch = useDispatch()
     const addGenerateFormModal = useModal(false);
-    const { selectedRole, questions } = useSelector((state: any) => state.DashboardReducer)
+    const { selectedRole, questions, breadCrumb } = useSelector((state: any) => state.DashboardReducer)
     const name = useInput('');
     const description = useInput('');
     const [dataGenerated, setDateGenerated] = useState(false)
     const { height } = useWindowDimensions()
-    console.log('dataGenerated-------->', dataGenerated)
 
+    console.log('breadCrumb------>', breadCrumb)
 
     useEffect(() => {
         getQuestionsFormApi()
@@ -79,12 +79,14 @@ function Questions() {
         description.set('')
     }
 
+    const breadcrumbString = breadCrumb.length > 0 && breadCrumb;
+
     return (
         <>
             <span className='pointer ml-3 text-black h3 '
                 onClick={() => { goBack() }}
             >
-                <i className="bi bi-arrow-left text-black fa-lg font-weight-bolder pr-1"></i>  Past
+                <i className="bi bi-arrow-left text-black fa-lg font-weight-bolder pr-1"></i>  {breadcrumbString}
             </span>
             {
                 dataGenerated ? null :
@@ -117,6 +119,7 @@ function Questions() {
                                                 onClick={() => {
                                                     goTo(ROUTES['designation-module']['question-sections'])
                                                     dispatch(setSelectedQuestionForm(item))
+                                                    dispatch(breadCrumbs(name))
                                                 }} >
                                                 <h4 className='mb-0 pointer mt--2'>{name}</h4>
                                                 <div className={'mx--4'}><Divider space={'3'} /></div>

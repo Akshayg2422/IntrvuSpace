@@ -157,7 +157,15 @@ export const CREATE_SCHEDULE_FAILURE = 'CREATE_SCHEDULE_FAILURE'
 
 export const REMOVE_SIDE_NAV = 'REMOVE_SIDE_NAV'
 
+// state to store the previous value
+
+export const BREADCRUMBS = 'BREADCRUMBS'
+
+// clear breadCrumbs
+
+export const CLEAR_BREADCRUMBS = 'CLEAR_BREADCRUMBS'
 
 // screenRecording Permission
 
 export const SCREEN_RECORDING_PERMISSION = 'SCREEN_RECORDING_PERMISSION'
+

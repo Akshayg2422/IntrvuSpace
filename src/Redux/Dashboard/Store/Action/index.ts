@@ -498,12 +498,29 @@ export const createScheduleFailure = (error: any) => {
 // setting remove side nav
 
 export const settingSideNavRemove = (params: any) => {
+  console.log("params====>", params)
   return {
     type: ActionTypes.REMOVE_SIDE_NAV,
     payload: params
   }
 }
 
+// BreadCrumbs
+
+export const breadCrumbs = (params: any) => {
+  return {
+    type: ActionTypes.BREADCRUMBS,
+    payload: params
+  }
+}
+
+
+export const clearBreadCrumbs = (params: any) => {
+  return {
+    type: ActionTypes.CLEAR_BREADCRUMBS,
+    payload: params
+  }
+}
 // SCREEN_RECORDING_PERMISSION
 
 export const screenRecordingPermission = (params: any) => {
@@ -514,3 +531,4 @@ export const screenRecordingPermission = (params: any) => {
     payload: params
   }
 }
+

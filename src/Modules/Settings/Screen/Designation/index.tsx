@@ -1,7 +1,7 @@
 
 import { Button, DropDown, DesignationItem, Input, Modal, NoDataFound, Breadcrumbs } from '@Components';
 import { useDropDown, useInput, useLoader, useModal, useNavigation } from '@Hooks';
-import { createKnowledgeGroup, createKnowledgeGroupVariant, getKnowledgeGroups, getSectors, setSelectedRole } from '@Redux';
+import { breadCrumbs, clearBreadCrumbs, createKnowledgeGroup, createKnowledgeGroupVariant, getKnowledgeGroups, getSectors, setSelectedRole } from '@Redux';
 import { ROUTES } from '@Routes';
 import { getDropDownCompanyDisplayData } from '@Utils';
 import { useEffect, useState } from 'react';
@@ -39,6 +39,7 @@ function Designation() {
 
 
     useEffect(() => {
+        dispatch(clearBreadCrumbs([]))
         getSectorsApiHandler();
     }, [])
 
@@ -131,7 +132,7 @@ function Designation() {
             );
         }
     };
-
+   
     return (
         <>
             <div className='container-fluid pt-4'>
