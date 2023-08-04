@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { SearchInput, Button, Modal, Divider, NoDataFound, ButtonGroup, Input, TextArea, DesignationItem, showToast } from '@Components'
+import { SearchInput, Button, Modal, Divider, NoDataFound, ButtonGroup, Input, TextArea, DesignationItem, showToast, DropDown } from '@Components'
 import { useDropDown, useInput, useLoader, useModal, useNavigation, useWindowDimensions } from '@Hooks'
 import { useSelector, useDispatch } from 'react-redux'
 import { Profile, Schedules, Sectors } from '@Modules'
 import { createSchedule, getKnowledgeGroups, getMyPastInterviews, getSectors, selectedScheduleId } from '@Redux'
-import { capitalizeFirstLetter } from '@Utils'
+import { capitalizeFirstLetter, getDropDownCompanyDisplayData } from '@Utils'
 import { Card, CardBody, FormGroup, InputGroup, InputGroupAddon, InputGroupText, Nav, NavItem, NavLink } from 'reactstrap'
 import classnames from 'classnames'
 import { ROUTES } from '@Routes'
@@ -18,21 +18,22 @@ function Clients() {
     const { goTo } = useNavigation()
     const { loginUser } = useSelector((state: any) => state.AuthReducer);
 
-    const { knowledgeGroups, selectedClientSector, myPastInterviews } = useSelector((state: any) => state.DashboardReducer)
+    const { knowledgeGroups, selectedClientSector, sectors, myPastInterviews } = useSelector((state: any) => state.DashboardReducer)
     const addJd = useModal(false);
     const filter = useDropDown(FILTER[0]);
     const search = useInput('');
     const [navList, setNavList] = useState<any>([])
     const [cardData, setCardData] = useState<any>([])
     const [navIndex, setNavIndex] = useState<any>(0)
-    const {height} = useWindowDimensions()
+    const { height } = useWindowDimensions()
 
     console.log("screen.width", window.innerWidth)
-    const sector = useInput('');
-    const designation = useInput('');
-    const role = useInput('');
+    // const sector = useInput('');
+    const position = useInput('');
+    const experience = useInput('');
     const jd = useInput('');
-
+    const portalUrl = useInput('')
+    const sector = useDropDown({});
 
     useEffect(() => {
         fetchSectorData()
@@ -222,7 +223,7 @@ function Clients() {
                             <>
                                 <div className='col-4'>
                                     <Card className='overflow-auto overflow-hide shadow-none'
-                                    style={{height: height - 230}}>
+                                        style={{ height: height - 230 }}>
                                         <CardBody>
                                             <div className='row justify-content-between align-items-center px-3'>
                                                 <div>
@@ -270,32 +271,45 @@ function Clients() {
 
 
             <Modal title={'Create JD'} isOpen={addJd.visible} onClose={addJd.hide}>
-                <Input
+                {/* <Input
                     className={'col-7'}
                     placeHolder={"Sector"}
                     value={sector.value}
                     onChange={sector.onChange}
-                />
-                <Input
-                    className={'col-7'}
-                    placeHolder={"Designation"}
-                    value={designation.value}
-                    onChange={designation.onChange}
-                />
-                <Input
-                    className={'col-7'}
-                    placeHolder={"Role"}
-                    value={role.value}
-                    onChange={role.onChange}
-                />
-                <TextArea
-                    className={'col-7'}
-                    value={jd.value}
-                    onChange={jd.onChange}
-                />
-
-                <Button text={'Submit'} onClick={submitJdApiHandler} />
-
+                /> */}
+                <div className='col-7 '>
+                    {sectors && sectors.length > 0 &&
+                        <DropDown
+                            heading={'Sectors'}
+                            placeHolder='Select Sector'
+                            data={getDropDownCompanyDisplayData(sectors)}
+                            selected={sector.value}
+                            onChange={sector.onChange} />
+                    }
+                    <Input
+                        placeHolder={"Position"}
+                        value={position.value}
+                        onChange={position.onChange}
+                    />
+                    <Input
+                        placeHolder={"Experience"}
+                        value={experience.value}
+                        onChange={experience.onChange}
+                    />
+                    <TextArea
+                        heading='Portal JD URL'
+                        value={portalUrl.value}
+                        onChange={portalUrl.onChange}
+                    />
+                    <TextArea
+                        heading='Job Description'
+                        value={jd.value}
+                        onChange={jd.onChange}
+                    />
+                </div>
+                <div className='text-right'>
+                    <Button size='md' text={'Submit'} onClick={submitJdApiHandler} />
+                </div>
             </Modal>
         </>
     )

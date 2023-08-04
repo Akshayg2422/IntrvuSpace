@@ -215,7 +215,7 @@ function QuestionSections() {
                                                 >{name}:</h4>
                                             </div>
                                             <div className={'row'}>
-                                                <small className='col mb-0 pointer'>{description}:</small>
+                                                <small className='col mb-0 pointer'>{description}</small>
                                             </div>
                                             {index !== questionSection?.length - 1 && <div className={'mx--4'}><Divider space={'3'} /></div>}
                                         </div>

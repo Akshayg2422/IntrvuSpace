@@ -19,4 +19,5 @@ export interface DashboardProp {
   registerData: any
   removeSideNav: boolean
   recordingPermission:boolean
+  VideoSessionDetails:any
 }

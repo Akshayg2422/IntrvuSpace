@@ -24,7 +24,8 @@ const initialState: DashboardProp = {
   questionDetails: undefined,
   registerData: undefined,
   removeSideNav: false,
-  recordingPermission: false
+  recordingPermission: false,
+  VideoSessionDetails: undefined
 };
 
 const DashboardReducer = (state = initialState, action: any) => {
@@ -266,6 +267,23 @@ const DashboardReducer = (state = initialState, action: any) => {
 
     case ActionTypes.SCREEN_RECORDING_PERMISSION:
       state = { ...state, recordingPermission: action.payload };
+      break;
+
+    // INTERVIEW_RECORDER_SESSION
+
+    case ActionTypes.INTERVIEW_RECORDER_SESSION:
+      state = { ...state };
+      break;
+    case ActionTypes.INTERVIEW_RECORDER_SESSION_SUCCESS:
+      state = { ...state };
+      break;
+    case ActionTypes.INTERVIEW_RECORDER_SESSION_FAILURE:
+      state = { ...state };
+      break;
+
+    // getRecordedVideoSessionDetails
+    case ActionTypes.RECORDING_VIDEO_SESSION_DETAILS:
+      state = { ...state, VideoSessionDetails: action.payload };
       break;
 
     default:

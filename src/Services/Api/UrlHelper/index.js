@@ -91,3 +91,8 @@ export const URL_GET_OTP = EMPLOYEE + 'getOtp'
 // create Schedule
 
 export const URL_CREATE_SCHEDULE = ASSISTANT + 'createSchedule'
+
+
+// recordInterviewSession 
+
+export const URL_RECORDER_INTERVIEW_SESSION = ASSISTANT + 'recordInterviewSession'

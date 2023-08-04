@@ -78,3 +78,7 @@ export const fetchMemberLoginUsingOtpApi = payload => post(URL.URL_MEMBER_LOGIN_
 // createSchedule
 
 export const PostCreateScheduleApi = payload => post(URL.URL_CREATE_SCHEDULE, payload, {});
+
+// recordInterviewSession 
+
+export const PostRecorderInterviewSessionApi = payload => post(URL.URL_RECORDER_INTERVIEW_SESSION, payload, {});
