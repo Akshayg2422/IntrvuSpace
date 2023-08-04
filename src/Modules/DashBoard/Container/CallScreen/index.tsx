@@ -60,8 +60,11 @@ const CallScreen = ({ onMicControl, startTimer = false, loading = false, userNam
                     </div>
                 </Button>
                 <Button
+                style={{
+                    backgroundColor:'#f5f5f5',
+                    padding:15
+                }}
                     className='border-0 shadow-none animated-button'
-                    style={{ borderRadius: 7, backgroundColor: '#f5f5f5', padding: 15 }}
                     disabled={micDisable}
                     onClick={onMicControl}
                 >
