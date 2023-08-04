@@ -24,8 +24,10 @@ const initialState: DashboardProp = {
   questionDetails: undefined,
   registerData: undefined,
   removeSideNav: false,
+  VideoSessionDetails: undefined,
+  breadCrumb: [],
   recordingPermission: false,
-  VideoSessionDetails: undefined
+  jdVariantData: undefined
 };
 
 const DashboardReducer = (state = initialState, action: any) => {
@@ -265,6 +267,16 @@ const DashboardReducer = (state = initialState, action: any) => {
       state = { ...state, removeSideNav: action.payload };
       break;
 
+    case ActionTypes.BREADCRUMBS:
+      state = { ...state, breadCrumb: [...state.breadCrumb, action.payload] };
+      break;
+
+    case ActionTypes.CLEAR_BREADCRUMBS:
+      state = { ...state, breadCrumb: [] };
+      break;
+
+
+
     case ActionTypes.SCREEN_RECORDING_PERMISSION:
       state = { ...state, recordingPermission: action.payload };
       break;
@@ -284,6 +296,18 @@ const DashboardReducer = (state = initialState, action: any) => {
     // getRecordedVideoSessionDetails
     case ActionTypes.RECORDING_VIDEO_SESSION_DETAILS:
       state = { ...state, VideoSessionDetails: action.payload };
+      break;
+      
+    case ActionTypes.POST_JD_VARIANT:
+      state = { ...state, jdVariantData: undefined };
+      break;
+
+    case ActionTypes.POST_JD_VARIANT_SUCCESS:
+      state = { ...state, jdVariantData: action.payload };
+      break;
+
+    case ActionTypes.POST_JD_VARIANT_FAILURE:
+      state = { ...state, jdVariantData: undefined };
       break;
 
     default:

@@ -1,13 +1,15 @@
+import { useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
 
 const Breadcrumbs = () => {
   const location = useLocation();
   const pathnames = location.pathname.split('/').filter((x) => x);
+  const { breadCrumb } = useSelector((state: any) => state.DashboardReducer)
 
   return (
     <div>
-      {pathnames.map((path, index) => {
-        const routeTo = `/${pathnames.slice(0, index + 1).join('/')}`;
+      {breadCrumb.map((path, index) => {
+        const routeTo = `/${breadCrumb.slice(0, index + 1).join('/')}`;
         const isLast = index === pathnames.length - 1;
         const capitalizedPath = path.charAt(0).toUpperCase() + path.slice(1);
         return isLast ? (

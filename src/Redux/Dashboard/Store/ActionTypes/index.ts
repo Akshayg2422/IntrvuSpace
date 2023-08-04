@@ -157,6 +157,13 @@ export const CREATE_SCHEDULE_FAILURE = 'CREATE_SCHEDULE_FAILURE'
 
 export const REMOVE_SIDE_NAV = 'REMOVE_SIDE_NAV'
 
+// state to store the previous value
+
+export const BREADCRUMBS = 'BREADCRUMBS'
+
+// clear breadCrumbs
+
+export const CLEAR_BREADCRUMBS = 'CLEAR_BREADCRUMBS'
 
 // screenRecording Permission
 
@@ -172,3 +179,10 @@ export const INTERVIEW_RECORDER_SESSION_FAILURE = 'INTERVIEW_RECORDER_SESSION_FA
 // recordedVideoSessionDetails
 
 export const RECORDING_VIDEO_SESSION_DETAILS = 'RECORDING_VIDEO_SESSION_DETAILS'
+// create jd variant 
+
+export const POST_JD_VARIANT = 'POST_JD_VARIANT'
+export const POST_JD_VARIANT_SUCCESS = 'POST_JD_VARIANT_SUCCESS'
+export const POST_JD_VARIANT_FAILURE = 'POST_JD_VARIANT_FAILURE'
+
+

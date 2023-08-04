@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { getMyPastInterviews, selectedScheduleId } from '@Redux';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, Card, Divider, Modal, NoRecordsFound } from '@Components';
+import { Button, Divider, Modal,NoRecordsFound } from '@Components';
 import { useModal, useNavigation, useWindowDimensions } from '@Hooks';
 import { ROUTES } from '@Routes';
+import { Card, CardBody, CardHeader } from 'reactstrap';
 import { SERVER } from '@Services';
 
 
@@ -81,17 +82,17 @@ function Schedules() {
             >
                 <i className="bi bi-arrow-left text-black fa-lg font-weight-bolder pr-1"></i>  Past
             </span>
-            <div className='row m-3 mt-3'>
+            <div className='row m-3 mt-3 '>
                 {
                     myPastInterviews && myPastInterviews.length > 0 ? myPastInterviews?.map((item: any) => {
                         const { id, interviewee_expected_sector, interviewee_expected_designation, interviewee_expected_role, is_complete, is_started } = item;
                         return (
                             <div className='col-4 px-2 my--2' key={id}>
-                                <Card className='justify-content-center'
+                                <Card className='justify-content-center p-4'
                                     style={{ height: height - 590 }}
                                 >
                                     <h4 className='mb-0 pointer mt--2'>{interviewee_expected_sector}</h4>
-                                    <div className={'mx--4 mt--2'}><Divider space={'3'} /></div>
+                                    <div className={'mt--2'}><Divider space={'3'} /></div>
                                     <h5>{interviewee_expected_designation}</h5>
                                     <small className='mb-0 pointer'>{interviewee_expected_role}</small>
                                     <div className='text-right'>
