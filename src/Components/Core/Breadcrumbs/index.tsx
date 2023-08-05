@@ -45,8 +45,12 @@ const Breadcrumbs = () => {
               //   </div>
               // </div>
               <>
-                <BreadcrumbItem>
-                  <a href="#pablo" onClick={e => e.preventDefault()}>
+                <BreadcrumbItem
+                  style={{
+                    pointerEvents: 'none'
+                  }}
+                >
+                  <a href="" onClick={e => e.preventDefault()}>
                     {item?.name}
                   </a>
                 </BreadcrumbItem>

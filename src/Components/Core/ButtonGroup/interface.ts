@@ -3,4 +3,5 @@ export interface ButtonGroupProps {
     onClick?: (selected: any) => void;
     selected?: any;
     size?: 'btn-sm' | 'btn-md' | 'btn-lg'
+    customWidth?: string
 }
