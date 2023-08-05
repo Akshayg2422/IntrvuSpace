@@ -109,7 +109,7 @@ function QuestionSections() {
                     },
                     onError: (error) => () => {
                         generateFormSectionsAndQuestionsLoader.hide()
-                        showToast(error.error_message, 'error')
+                        showToast(error.errors, 'error')
                     },
                 })
             )

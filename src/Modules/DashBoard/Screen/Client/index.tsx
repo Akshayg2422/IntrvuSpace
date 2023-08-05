@@ -92,7 +92,6 @@ function Clients() {
             },
         }))
     }
-
     const fetchSectorData = () => {
         const params = {}
 
