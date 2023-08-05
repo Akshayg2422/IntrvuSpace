@@ -197,11 +197,13 @@ function Report() {
                             (el?.suggestions?.covered?.length > 0 || el?.suggestions?.covered?.length > 0 || el?.suggestions?.covered?.length > 0) &&
                             <Card className=''
                                 style={{
-                                    zoom: '90%'
+                                   zoom:'70%'
                                 }}
                             >
-                                <div className='table-responsive overflow-auto overflow-hide'>
-                                    <Table className="align-items-center table-flush" >
+                                <div className=''
+                                
+                                >
+                                    <Table className=" align-items-center table-flush" >
                                         <thead className="thead-light">
                                             <tr>
                                                 <th className="sort" scope="col">
@@ -216,12 +218,12 @@ function Report() {
                                             </tr>
                                         </thead>
                                         <tbody className="list overflow-auto overflow-hide">
-                                            <tr className='overflow-auto overflow-hide'>
-                                                <td className="budget">
+                                            <tr className=''>
+                                                <td className="">
                                                     {el?.suggestions?.covered?.length > 0 && el?.suggestions?.covered?.map((items) => {
                                                         return (
                                                             <>
-                                                                <li >
+                                                                <li>
                                                                     {items}
                                                                 </li>
                                                             </>
