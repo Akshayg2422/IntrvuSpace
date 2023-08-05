@@ -17,6 +17,7 @@ export const SERVER =
           ? 'http://103.118.188.135:8003'
           : 'http://localhost:8000'
 
+
 const axiosApi = axios.create({
   baseURL: SERVER,
 });
