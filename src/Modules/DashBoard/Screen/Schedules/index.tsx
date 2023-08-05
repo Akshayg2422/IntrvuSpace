@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { getMyPastInterviews, selectedScheduleId } from '@Redux';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, Divider, Modal,NoRecordsFound } from '@Components';
+import { Button, Divider, Modal, NoRecordsFound } from '@Components';
 import { useModal, useNavigation, useWindowDimensions } from '@Hooks';
 import { ROUTES } from '@Routes';
 import { Card, CardBody, CardHeader } from 'reactstrap';
 import { SERVER } from '@Services';
+import ReactPlayer from 'react-player'
 
 
 function Schedules() {
@@ -111,9 +112,12 @@ function Schedules() {
                     showVideoModal.hide()
                 }}
                 title={videoDetails?.interviewee_expected_role}>
-                <video controls className='d-flex col' >
+                <video controls className='d-flex col' loop={false} >
                     <source src={SERVER + videoDetails?.recording_url} type="video/mp4" />
                 </video>
+                {/* <div  className='d-flex'>
+                    <ReactPlayer  loop={true} controls url={SERVER + videoDetails?.recording_url} />
+                </div> */}
             </Modal >
         </div>
     )
