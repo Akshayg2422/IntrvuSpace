@@ -1058,7 +1058,9 @@ function Report() {
                                             <hr className='py-0' style={{
                                                 border: ' 1px solid gray',
                                                 height: 'auto'
-                                            }}></hr>
+                                            }}
+                                            >
+                                            </hr>
                                             <div className='col-sm-3 px-0'>
                                                 <h4 className='text-black'>Answered Partial</h4>
                                                 {el?.suggestions?.covered_partial?.length > 0 && el?.suggestions?.covered_partial.map((item) => {
