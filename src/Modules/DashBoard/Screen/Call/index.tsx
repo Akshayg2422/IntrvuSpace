@@ -18,6 +18,7 @@ function Call() {
     const [showVideo, setShowVideo] = useState(false)
     const [isRecording, setIsRecording] = useState(false)
     const [notEvenSpeck, setNotEvenSpeck] = useState(false)
+    const [micState, setMicState] = useState(false)
 
     const CALL_STATE_INACTIVE = -1
     const CALL_STATE_LISTENING = 1
@@ -52,18 +53,18 @@ function Call() {
 
     const [speaking, setSpeaking] = useState(false);
 
-    useEffect(() => {
-        startScreenRecording()
-        return () => {
-            dispatch(screenRecordingPermission(false))
-        }
-    }, [])
+    // useEffect(() => {
+    //     startScreenRecording()
+    //     return () => {
+    //         dispatch(screenRecordingPermission(false))
+    //     }
+    // }, [])
 
     useEffect(() => {
-        if (recordingPermission) {
+        // if (recordingPermission) {
             getChatDetails('start', 'text')
-        }
-    }, [recordingPermission])
+        // }
+    }, [])
 
     useEffect(() => {
         async function fetchData() {
@@ -101,6 +102,7 @@ function Call() {
                 }
             } else {
                 console.log('mic on');
+                setMicState(true)
             }
         }
 
@@ -156,6 +158,7 @@ function Call() {
             if (!isRecording) {
                 startRecording()
                 setIsRecording(true)
+                setMicState(false)
             }
         }
     }
@@ -215,7 +218,7 @@ function Call() {
         }
     }
 
-    const showLoader = callState === CALL_STATE_TRANSCRIBING || isSpeaking || callState === CALL_STATE_API_LOADING
+    const showLoader = callState === CALL_STATE_TRANSCRIBING || callState === CALL_STATE_API_LOADING
 
     return (
         <Modal isOpen={true} size='xl' onClose={() => goBack()} >
@@ -223,7 +226,8 @@ function Call() {
                 userName='Tamil Selvan'
                 status='Connected'
                 loading={showLoader}
-                startTimer={isScreenRecording}
+                onMic={micState}
+                startTimer={true}
                 micDisable={showLoader}
                 isMute={isRecording}
                 video={showVideo}

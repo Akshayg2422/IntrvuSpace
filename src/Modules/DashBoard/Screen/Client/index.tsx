@@ -3,7 +3,7 @@ import { SearchInput, Button, Modal, Divider, NoDataFound, ButtonGroup, Input, T
 import { useDropDown, useInput, useLoader, useModal, useNavigation, useWindowDimensions } from '@Hooks'
 import { useSelector, useDispatch } from 'react-redux'
 import { Profile, Schedules, Sectors } from '@Modules'
-import { createSchedule, getKnowledgeGroups, getMyPastInterviews, getSectors, selectedScheduleId } from '@Redux'
+import { createSchedule, getKnowledgeGroups, getMyPastInterviews, getSectors, postJdVariant, selectedScheduleId } from '@Redux'
 import { capitalizeFirstLetter, getDropDownCompanyDisplayData, filteredName } from '@Utils'
 import { Card, CardBody, FormGroup, InputGroup, InputGroupAddon, InputGroupText, Nav, NavItem, NavLink, UncontrolledTooltip } from 'reactstrap'
 import classnames from 'classnames'
@@ -35,13 +35,39 @@ function Clients() {
     const portalUrl = useInput('')
     const sector = useDropDown({});
 
+
+    const JDSubmitLoader = useLoader(false);
+
+
     useEffect(() => {
         fetchSectorData()
     }, [])
 
 
     function submitJdApiHandler() {
-
+        const params = {
+            sector_id: sector.value?.id,
+            sector_name: sector.value?.name,
+            position: position.value,
+            experience: experience.value,
+            reference_link: portalUrl.value,
+            jd: jd.value
+        }
+        JDSubmitLoader.show()
+        dispatch(postJdVariant({
+            params,
+            onSuccess: (response: any) => () => {
+              position.set('')
+              experience.set('')
+              jd.set('')
+              portalUrl.set('')
+              sector.set('')
+              JDSubmitLoader.hide()
+            },
+            onError: (error) => () => {
+                JDSubmitLoader.hide()
+            },
+        }))
     }
 
 
@@ -324,7 +350,7 @@ function Clients() {
                     />
                 </div>
                 <div className='text-right'>
-                    <Button size='md' text={'Submit'} onClick={submitJdApiHandler} />
+                    <Button size='md' text={'Submit'} loading={JDSubmitLoader.loader} onClick={submitJdApiHandler} />
                 </div>
             </Modal>
         </>
