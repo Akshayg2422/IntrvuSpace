@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { CREATE_QUESTION_FORM_RULES, getValidateError, ifObjectExist, validate } from '@Utils';
 import { createQuestionForm, generateForm } from '@Redux';
 import { ROUTES } from '@Routes';
-import { AnalyzingAnimation } from '../../Container';
+import { AnalyzingAnimation } from '@Modules'
 
 
 type Task = {
