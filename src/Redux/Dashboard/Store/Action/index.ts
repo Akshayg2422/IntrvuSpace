@@ -584,3 +584,10 @@ export const postJdVariantFailure = (error: any) => {
     payload: error
   }
 }
+
+// CLEAR_LAST_BREADCRUMB
+
+export const clearLastBreadcrumb = () => ({
+  type: ActionTypes.CLEAR_LAST_BREADCRUMB,
+});
+

@@ -1,9 +1,9 @@
 
-import { Button, DropDown, DesignationItem, Input, Modal, NoDataFound, Breadcrumbs } from '@Components';
+import { Button, DropDown, DesignationItem, Input, Modal, NoDataFound, Breadcrumbs, showToast } from '@Components';
 import { useDropDown, useInput, useLoader, useModal, useNavigation } from '@Hooks';
 import { breadCrumbs, clearBreadCrumbs, createKnowledgeGroup, createKnowledgeGroupVariant, getKnowledgeGroups, getSectors, setSelectedRole } from '@Redux';
 import { ROUTES } from '@Routes';
-import { getDropDownCompanyDisplayData } from '@Utils';
+import { ADD_DESIGNATION_RULES, getDropDownCompanyDisplayData, getValidateError, ifObjectExist, validate } from '@Utils';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Nav, NavItem, NavLink } from 'reactstrap';
@@ -13,7 +13,7 @@ import classnames from 'classnames'
 
 function Designation() {
 
-    const { knowledgeGroups, sectors, selectedRole } = useSelector((state: any) => state.DashboardReducer)
+    const { sectors } = useSelector((state: any) => state.DashboardReducer)
 
     const { goTo, goBack } = useNavigation()
 
@@ -75,7 +75,6 @@ function Designation() {
     }
 
     const createKnowledgeGroupApiHandler = () => {
-        loader.show()
 
         const params = {
             name: title?.value,
@@ -83,20 +82,29 @@ function Designation() {
             sector_id: sector.value?.id
         };
 
-        dispatch(
-            createKnowledgeGroup({
-                params,
-                onSuccess: () => () => {
-                    loader.hide()
-                    addDesignationModal.hide()
-                    fetchKnowledgeData(navList[navIndex]?.id)
-                    resetValue();
-                },
-                onError: () => () => {
-                    loader.hide()
-                },
-            })
-        );
+        const validation = validate(ADD_DESIGNATION_RULES, params)
+
+        if (ifObjectExist(validation)) {
+            loader.show()
+            dispatch(
+                createKnowledgeGroup({
+                    params,
+                    onSuccess: (response) => () => {
+                        loader.hide()
+                        addDesignationModal.hide()
+                        fetchKnowledgeData(navList[navIndex]?.id)
+                        resetValue();
+                        showToast(response.message, 'success');
+                    },
+                    onError: (error) => () => {
+                        showToast(error.error_message, 'error');
+                        loader.hide()
+                    },
+                })
+            )
+        } else {
+            showToast(getValidateError(validation))
+        }
     };
 
     function resetValue() {
@@ -132,7 +140,7 @@ function Designation() {
             );
         }
     };
-   
+
     return (
         <>
             <div className='container-fluid pt-4'>
@@ -188,6 +196,7 @@ function Designation() {
                 <div className='row  pt-3 px-0'>
                     {cardData && cardData.length > 0 ?
                         cardData.map((el: any, index: number) => {
+                            console.log('ellllllllllll------>', el)
                             return (
                                 <div className='col-sm-4 px-0'>
                                     <DesignationItem
@@ -209,6 +218,7 @@ function Designation() {
                                         }}
                                         onView={(designation, role) => {
                                             dispatch(setSelectedRole(role))
+                                            dispatch(breadCrumbs({name:role?.name,path:window.location.pathname}))
                                             goTo(ROUTES['designation-module']['questions'])
                                         }
                                         }
@@ -247,7 +257,7 @@ function Designation() {
                         }
                     </div>
 
-                    <div className="col text-right ">
+                    <div className="col text-right">
                         <Button size={'md'}
                             loading={loader.loader}
                             text={"Submit"}

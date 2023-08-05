@@ -58,8 +58,67 @@ export const LOGIN_WITH_MOBILE_NO_RULES = {
   password: {
     presence: { message: "password cannot be empty" }
   },
-
-
 }
 
+export const ADD_DESIGNATION_RULES = {
+  name: {
+    length: { minimum: 3, message: "Name minimum 3 chars" },
+  },
+  description: {
+    presence: { allowEmpty: false, message: "Description cannot be empty" }
+  },
+  sector_id: {
+    presence: { allowEmpty: false, message: 'Please make sure to choose a sector' }
+  }
+}
 
+export const ADD_SECTOR_RULES = {
+  name: {
+    length: { minimum: 3, message: 'Name minimum 3 chars' },
+  },
+  description: {
+    presence: { allowEmpty: false, message: 'Description cannot be empty' },
+  },
+  photo: {
+    presence: { allowEmpty: false, message: 'Please upload an image for your sector' }
+  }
+}
+
+export const GENERATE_USING_AI_RULES = {
+  name: {
+    length: { minimum: 3, message: 'Name minimum 3 chars' },
+  },
+  description: {
+    presence: { allowEmpty: false, message: 'Description cannot be empty' },
+  },
+}
+
+export const REGENERATE_SECTION_RULES = {
+  sections_count: {
+    numericality: {
+      greaterThanOrEqualTo: 3,
+      lessThanOrEqualTo: 10,
+      onlyInteger: true,
+      message: 'The number of counts must be between 3 and 10 (inclusive)',
+    },
+  },
+  questions_count: {
+    numericality: {
+      greaterThanOrEqualTo: 3,
+      lessThanOrEqualTo: 5,
+      onlyInteger: true,
+      message: 'The number of counts must be between 3 and 5 (inclusive)',
+    },
+  },
+}
+
+export const GENERATE_QUESTION_COUNT_RULES = {
+  questions_count: {
+    numericality: {
+      greaterThanOrEqualTo: 3,
+      lessThanOrEqualTo: 5,
+      onlyInteger: true,
+      message: 'The number of counts must be between 3 and 5 (inclusive)',
+    },
+  },
+}
