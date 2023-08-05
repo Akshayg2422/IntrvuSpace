@@ -32,11 +32,13 @@ function Report() {
         }
     }, [basicReportData])
 
+    console.log("===============>0",scheduleId);
+    
 
     const getBasicReportData = () => {
         basicReportLoader.show()
         const params = {
-            schedule_id: scheduleId?.id
+            schedule_id: scheduleId
         }
 
         dispatch(
