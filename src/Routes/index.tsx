@@ -106,6 +106,12 @@ export const DASHBOARD_ROUTES = [
     path: ROUTES['designation-module']['schedules'],
     component: <Schedules />
   },
+  {
+    id: 9,
+    path: ROUTES['designation-module'].report,
+    component: <Report />
+  },
+
 ]
 
 export const HOME_ROUTES = [
