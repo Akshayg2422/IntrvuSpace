@@ -37,6 +37,8 @@ function Report() {
         }
     }, [basicReportData])
 
+    console.log("===============>0",scheduleId);
+    
 
     const getBasicReportData = (details) => {
         basicReportLoader.show()
@@ -67,8 +69,6 @@ function Report() {
         let overallPercent = 0
         if (Array.isArray(data)) {
             data.length > 0 && data.filter((el) => {
-                console.log("909090909090909090", +el?.rating)
-
                 overallPercent = el?.percent ? +overallPercent + +el?.percent : +overallPercent + +el?.rating
             })
         }
@@ -110,7 +110,6 @@ function Report() {
     function removeDuplicates() {
         let count = 0
         Object.keys(basicReportData).map((el) => {
-            console.log('opopopopo', el)
             if (el === 'skill_matrix') {
                 basicReportData[el].sections.length > 0 && basicReportData[el].sections.map((item) => {
                     count = count + +basicReportData[el].overal_percent / basicReportData[el].sections.length
@@ -122,7 +121,6 @@ function Report() {
                 })
             }
         })
-        console.log("09090======================>", count)
         setCheck(count)
     }
 
@@ -170,10 +168,6 @@ function Report() {
     //     return array
 
     // }
-
-
-
-
 
 
     const normalizedTableData = (data: any, heading: any) => {

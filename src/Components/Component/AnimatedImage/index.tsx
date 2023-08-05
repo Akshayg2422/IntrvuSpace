@@ -3,7 +3,7 @@ import "./AnimatedImageFrame.scss";
 import { Col, Row } from "reactstrap";
 import { AnimatedLoader } from "@Components";
 
-const AnimatedImage = ({ name, shouldBlink, show }) => {
+const AnimatedImage = ({ name, shouldBlink, show, variant = 'name' }) => {
   const imageClasses = classNames("animated-image", { blink: shouldBlink });
 
   return (
@@ -20,6 +20,9 @@ const AnimatedImage = ({ name, shouldBlink, show }) => {
           }}
         >
           {!show ? name : <div style={{ marginLeft: 35 }}> <AnimatedLoader /></div>}
+          {/* {variant === "name" && name}
+          {variant === 'Loader' && <div style={{ marginLeft: 35 }}> <AnimatedLoader /></div>}
+          {variant === 'Icon' && <div></div>} */}
         </div>
       </a>
     </div>
