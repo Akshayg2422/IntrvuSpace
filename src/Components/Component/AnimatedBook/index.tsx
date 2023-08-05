@@ -21,6 +21,7 @@ function AnimationBook() {
                     </ul>
                     <div className="shelf"></div>
                 </div>
+                <h3 className='text-white'>Generating Questions...</h3>
             </Card>
         </div>
     )
