@@ -1,20 +1,24 @@
 import React, { useState, useEffect } from 'react'
 import { getMyPastInterviews, selectedScheduleId } from '@Redux';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, Divider, Modal } from '@Components';
+import { Button, Divider, Modal,NoRecordsFound } from '@Components';
 import { useModal, useNavigation, useWindowDimensions } from '@Hooks';
 import { ROUTES } from '@Routes';
 import { Card, CardBody, CardHeader } from 'reactstrap';
+import { SERVER } from '@Services';
 
 
 function Schedules() {
 
     const dispatch = useDispatch()
     const { myPastInterviews } = useSelector((state: any) => state.DashboardReducer)
-    const proceedModal = useModal(false);
+    const showVideoModal = useModal(false);
     const { goBack } = useNavigation();
     const { goTo } = useNavigation();
     const { height } = useWindowDimensions()
+    const [videoDetails, setVideoDetails] = useState<any>()
+
+
     useEffect(() => {
         getMypastInterviewApi()
     }, [])
@@ -65,6 +69,12 @@ function Schedules() {
         }
     }
 
+
+    const videoPlayerHandler = (item: any) => {
+        showVideoModal.show()
+        setVideoDetails(item)
+    }
+
     return (
         <div className='pt-2'>
             <span className='pointer   ml-4 pl-2 text-black h3 '
@@ -72,49 +82,38 @@ function Schedules() {
             >
                 <i className="bi bi-arrow-left text-black fa-lg font-weight-bolder pr-1"></i>  Past
             </span>
-            <div className='row m-3 mt-3'>
+            <div className='row m-3 mt-3 '>
                 {
-                    myPastInterviews && myPastInterviews.length > 0 && myPastInterviews?.map((item: any) => {
+                    myPastInterviews && myPastInterviews.length > 0 ? myPastInterviews?.map((item: any) => {
                         const { id, interviewee_expected_sector, interviewee_expected_designation, interviewee_expected_role, is_complete, is_started } = item;
                         return (
                             <div className='col-4 px-2 my--2' key={id}>
-                                <Card className=''
-                                    style={{ height: height - 400 }}
+                                <Card className='justify-content-center p-4'
+                                    style={{ height: height - 590 }}
                                 >
-                                    <CardHeader className='pb-1 pt-2'>
-                                        <h4 className=' pointer'>{interviewee_expected_sector}</h4>
-                                    </CardHeader>
-                                    <CardBody>
-                                        <h5>{interviewee_expected_designation}</h5>
-                                        <div className='row justify-content-between align-items-center mx-0'>
-                                            <small className='mb-0 pointer'>{interviewee_expected_role}</small>
-                                            <div className='text-right'>
-                                                {handleNextStep(item)}
-                                            </div>
-                                        </div>
-                                    </CardBody>
+                                    <h4 className='mb-0 pointer mt--2'>{interviewee_expected_sector}</h4>
+                                    <div className={'mt--2'}><Divider space={'3'} /></div>
+                                    <h5>{interviewee_expected_designation}</h5>
+                                    <small className='mb-0 pointer'>{interviewee_expected_role}</small>
+                                    <div className='text-right'>
+                                        {is_complete && <span className='col text-primary pointer text-sm' onClick={() => videoPlayerHandler(item)}>{'Show Interview'}</span>}
+                                        {handleNextStep(item)}
+                                    </div>
                                 </Card>
                             </div>
                         )
                     })
-                }
+                        : <div className={'d-flex  justify-content-center align-items-center mx-auto my-9 '}
+                        > <NoRecordsFound /></div>}
             </div>
-            < Modal size={'sm'} isOpen={proceedModal.visible}
+            < Modal size={'xl'} isOpen={showVideoModal.visible}
                 onClose={() => {
-                    proceedModal.hide()
-                    goBack()
-                }} >
-                <div className="text-center ">
-
-                    <Button color='secondary' size={'md'}
-                        text={"RESUME"}
-                    // onClick={() => handleResume()}
-                    />
-                    <Button size={'md'}
-                        text={"START"}
-                    // onClick={() => handleStart()}
-                    />
-                </div>
+                    showVideoModal.hide()
+                }}
+                title={videoDetails?.interviewee_expected_role}>
+                <video controls className='d-flex col' >
+                    <source src={SERVER + videoDetails?.recording_url} type="video/mp4" />
+                </video>
             </Modal >
         </div>
     )

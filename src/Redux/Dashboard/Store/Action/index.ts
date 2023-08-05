@@ -524,14 +524,42 @@ export const clearBreadCrumbs = (params: any) => {
 // SCREEN_RECORDING_PERMISSION
 
 export const screenRecordingPermission = (params: any) => {
-  console.log("=============screenRecordingPermission", params);
-
   return {
     type: ActionTypes.SCREEN_RECORDING_PERMISSION,
     payload: params
   }
 }
 
+// recordInterviewSession 
+
+
+export const recordInterviewSession = (params: any) => {
+  return {
+    type: ActionTypes.INTERVIEW_RECORDER_SESSION,
+    payload: params,
+  };
+};
+export const recordInterviewSessionSuccess = (response: any) => {
+  return {
+    type: ActionTypes.INTERVIEW_RECORDER_SESSION_SUCCESS,
+    payload: response
+  }
+}
+export const recordInterviewSessionFailure = (error: any) => {
+  return {
+    type: ActionTypes.INTERVIEW_RECORDER_SESSION_FAILURE,
+    payload: error
+  }
+}
+
+// RECORDING_VIDEO_SESSION_DETAILS
+
+export const getRecordedVideoSessionDetails = (params: any) => {
+  return {
+    type: ActionTypes.RECORDING_VIDEO_SESSION_DETAILS,
+    payload: params
+  }
+}
 
 
 // create jd variant
@@ -556,3 +584,10 @@ export const postJdVariantFailure = (error: any) => {
     payload: error
   }
 }
+
+// CLEAR_LAST_BREADCRUMB
+
+export const clearLastBreadcrumb = () => ({
+  type: ActionTypes.CLEAR_LAST_BREADCRUMB,
+});
+
