@@ -226,9 +226,10 @@ function Call() {
                 userName='Tamil Selvan'
                 status='Connected'
                 loading={showLoader}
+                variant={''}
                 onMic={micState}
                 startTimer={true}
-                micDisable={showLoader}
+                micDisable={isSpeaking}
                 isMute={isRecording}
                 video={showVideo}
                 onVideoControl={() => handleVideo()}

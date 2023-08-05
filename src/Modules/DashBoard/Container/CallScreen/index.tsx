@@ -18,9 +18,10 @@ type CallScreenProps = {
     userName?: string
     loading?: boolean
     onMic: boolean
+    variant: string
 }
 
-const CallScreen = ({ onMicControl, startTimer = false, onMic = false, loading = false, userName = '', micDisable = false, onVolumeControl, onCallEnd, isMute = false, speaker, status, video = false, onVideoControl }: CallScreenProps) => {
+const CallScreen = ({ onMicControl, startTimer = false, onMic = false, loading = false, userName = '', micDisable = false, onVolumeControl, onCallEnd, isMute = false, speaker, status, video = false, onVideoControl, variant }: CallScreenProps) => {
 
     const [time, setTime] = useState({ hours: 0, minutes: 0, seconds: 0 });
 
@@ -49,11 +50,11 @@ const CallScreen = ({ onMicControl, startTimer = false, onMic = false, loading =
 
     function formatTime(value) {
         return value < 10 ? `0${value}` : value;
-      }
+    }
 
     const formattedTime = time.hours > 0
-    ? `${formatTime(time.hours)}:${formatTime(time.minutes)}:${formatTime(time.seconds)}`
-    : `${formatTime(time.minutes)}:${formatTime(time.seconds)}`;
+        ? `${formatTime(time.hours)}:${formatTime(time.minutes)}:${formatTime(time.seconds)}`
+        : `${formatTime(time.minutes)}:${formatTime(time.seconds)}`;
 
     function getShortName(fullName: string) {
         const names = fullName.split(' ');
@@ -72,7 +73,7 @@ const CallScreen = ({ onMicControl, startTimer = false, onMic = false, loading =
         <div className='text-center'>
             <h1 className='display-2 mb-4'>{userName}</h1>
             <div>
-                <AnimatedImage show={loading} name={getShortName(userName)} shouldBlink={isMute} />
+                <AnimatedImage show={loading} name={getShortName(userName)} variant={variant} shouldBlink={isMute} />
             </div>
             <div className='text-center my-3'>
                 <small className="h4 text-center text-black font-weight-bold">
