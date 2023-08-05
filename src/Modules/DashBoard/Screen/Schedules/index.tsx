@@ -90,7 +90,6 @@ function Schedules() {
                         return (
                             <div className='col-4 px-2 my--2' key={id}>
                                 <Card className='justify-content-center p-4'
-                                    style={{ height: height - 590 }}
                                 >
                                     <h4 className='mb-0 pointer mt--2'>{interviewee_expected_sector}</h4>
                                     <div className={'mt--2'}><Divider space={'3'} /></div>

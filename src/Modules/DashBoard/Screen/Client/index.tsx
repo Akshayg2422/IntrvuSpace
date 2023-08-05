@@ -57,15 +57,14 @@ function Clients() {
         dispatch(postJdVariant({
             params,
             onSuccess: (response: any) => () => {
-              position.set('')
-              experience.set('')
-              jd.set('')
-              portalUrl.set('')
-              sector.set('')
-              JDSubmitLoader.hide()
+                resetValues()
+                JDSubmitLoader.hide()
+                addJd.hide()
+                fetchSectorData()
             },
             onError: (error) => () => {
                 JDSubmitLoader.hide()
+                addJd.hide()
             },
         }))
     }
@@ -84,7 +83,13 @@ function Clients() {
             },
         }))
     }
-
+    function resetValues() {
+        position.set('')
+        experience.set('')
+        jd.set('')
+        portalUrl.set('')
+        sector.set('')
+    }
     const fetchSectorData = () => {
         const params = {}
 

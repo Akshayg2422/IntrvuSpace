@@ -198,7 +198,7 @@ function Designation() {
                         cardData.map((el: any, index: number) => {
                             console.log('ellllllllllll------>', el)
                             return (
-                                <div className='col-sm-4 px-0'>
+                                <div className='col-sm-4 col-lg-4 px-2'>
                                     <DesignationItem
                                         item={el}
                                         onAdd={(selected) => {
@@ -218,7 +218,7 @@ function Designation() {
                                         }}
                                         onView={(designation, role) => {
                                             dispatch(setSelectedRole(role))
-                                            dispatch(breadCrumbs({name:role?.name,path:window.location.pathname}))
+                                            dispatch(breadCrumbs({ name: role?.name, title: el?.name, path: window.location.pathname }))
                                             goTo(ROUTES['designation-module']['questions'])
                                         }
                                         }
