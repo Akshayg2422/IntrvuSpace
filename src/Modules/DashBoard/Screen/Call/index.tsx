@@ -54,7 +54,6 @@ function Call() {
 
     const [speaking, setSpeaking] = useState(false);
 
-    // getScheduleBasicInfo
     useEffect(() => {
         getBasicInfo()
     }, [])
@@ -197,7 +196,7 @@ function Call() {
                 params,
                 onSuccess: (success: any) => async () => {
                     if (success?.next_step[0].message_type === "SPEAK" && success?.next_step[0].response_type !== 'INTERVIEWER_END_CALL') {
-                        window.location.pathname === '/interview' && speak(success?.next_step[0]?.response_text);
+                        window.location.pathname === `/interview/${scheduleId}` && speak(success?.next_step[0]?.response_text);
                         if (success?.keywords.length > 0) {
                             setPromptText(success?.keywords)
                         }
@@ -249,7 +248,6 @@ function Call() {
             }} >
                 <CallScreen
                     basicInfo={scheduleInfo}
-                    userName='Tamil Selvan'
                     status='Connected'
                     loading={showLoader}
                     variant={''}
