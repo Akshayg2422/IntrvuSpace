@@ -6,13 +6,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchBasicReport } from '@Redux';
 import { useDropDown, useLoader } from '@Hooks';
 import moment from 'moment';
-import { useLinkClickHandler } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+
 
 function Report() {
     const FILTER = [{ id: 1, title: 'Basic Report' }, { id: 2, title: 'Detailed Report' }]
 
+    const { schedule_id } = useParams();
+
     const dispatch = useDispatch()
-    const { scheduleId } = useSelector((state: any) => state.DashboardReducer)
+
     const [dataId, setDataId] = useState<any>(['trait', 'communication', 'skill_matrix'])
     const [basicReportData, setBasicReportData] = useState<any>([])
     const filter = useDropDown(FILTER[0]);
@@ -23,7 +26,6 @@ function Report() {
     const heightRef = useRef<any>()
     const [cardHeight, setCardHeight] = useState<any>(null)
 
-    console.log("heightRef", heightRef)
 
 
     useEffect(() => {
@@ -37,13 +39,12 @@ function Report() {
         }
     }, [basicReportData])
 
-    console.log("===============>0",scheduleId);
-    
+
 
     const getBasicReportData = (details) => {
         basicReportLoader.show()
         const params = {
-            schedule_id: scheduleId?.id,
+            schedule_id: schedule_id,
             ...(details === 'Detailed Report' && { is_detailed: true }),
         }
 
@@ -185,6 +186,27 @@ function Report() {
                     length = el?.suggestions?.covered_not_valid?.length
                 }
 
+                const { covered, covered_partial, covered_not_valid } = el?.suggestions
+
+                let coveredHeight;
+                let coveredPartialHeight;
+                let coveredNotValidHeight;
+
+
+
+                if (covered && covered.length > 0)
+                    coveredHeight = covered.map((card: any) => card.length).reduce((a, b) => a + b);
+
+
+                if (covered_partial && covered_partial.length > 0)
+                    coveredPartialHeight = covered_partial.map((card: any) => card.length).reduce((a, b) => a + b);
+
+                if (covered_not_valid && covered_not_valid.length > 0)
+                    coveredNotValidHeight = covered_not_valid.map((card: any) => card.length).reduce((a, b) => a + b);
+
+                const maxNumber = Math.max(coveredHeight ? coveredHeight : 0, coveredPartialHeight ? coveredPartialHeight : 0, coveredNotValidHeight ? coveredNotValidHeight : 0) + 100;
+
+
                 return (
                     <div className=' py-2'>
                         <div className=''>
@@ -217,20 +239,22 @@ function Report() {
                             <div className='row p-0 ml--6 mr--7'
                                 style={{
                                     zoom: '80%'
-                                }}
-                            >
+                                }}>
                                 {
                                     (el?.suggestions?.covered?.length > 0 || el?.suggestions?.covered_partial?.length > 0 || el?.suggestions?.covered_not_valid?.length > 0) &&
                                     <>
 
+
                                         {el?.suggestions?.covered?.length > 0 &&
-                                            <div className='col-sm-4' >
-                                                <Card className='check'>
+                                            <div className='col-sm-4'>
+                                                <Card className='check' style={{
+                                                    height: maxNumber + "px"
+                                                }} >
                                                     <CardHeader className='h3'>
                                                         Valid
                                                     </CardHeader>
                                                     <CardBody >
-                                                        <div ref={heightRef}>
+                                                        <div>
                                                             {el?.suggestions?.covered?.length > 0 && el?.suggestions?.covered?.map((items) => {
                                                                 return (
                                                                     <>
@@ -244,11 +268,14 @@ function Report() {
                                                         </div>
                                                     </CardBody>
                                                 </Card>
-                                            </div>}
+                                            </div>
+                                        }
                                         {el?.suggestions?.covered_partial?.length > 0 &&
                                             <div className='col-sm-4'>
                                                 <Card
-
+                                                    style={{
+                                                        height: maxNumber + "px"
+                                                    }}
                                                 >
                                                     <CardHeader className='h3'>
                                                         Partial
@@ -266,12 +293,13 @@ function Report() {
                                                         }
                                                     </CardBody>
                                                 </Card>
-                                            </div>}
+                                            </div>
+                                        }
                                         {el?.suggestions?.covered_not_valid?.length > 0 &&
                                             <div className='col-sm-4'>
                                                 <Card
                                                     style={{
-                                                        height: cardHeight - 200
+                                                        height: maxNumber
                                                     }}
                                                 >
                                                     <CardHeader className='h3'>
@@ -292,7 +320,6 @@ function Report() {
                                                     </CardBody>
                                                 </Card>
                                             </div>
-
                                         }
                                     </>
 
@@ -476,7 +503,7 @@ function Report() {
                                 <CardBody className='ml-1 pb-5'>
                                     {Object.keys(basicReportData).reverse()?.map((heading, index) => {
 
-                                        console.log("array", array)
+
 
                                         if (heading === "skill_matrix") {
                                             array = array + calculateRating(basicReportData[heading].sections)

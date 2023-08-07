@@ -2,8 +2,7 @@ import React from "react";
 import { ModalProps } from "./interfaces";
 import { Modal as RsModal } from "reactstrap";
 
-
-function Modal({ isOpen, children, title, size = "lg", style, onClose, variant = 'bg-white', ...rest }: ModalProps) {
+function Modal({ isOpen, children, title, size = "lg", style, onClose, ...rest }: ModalProps) {
 
   return (
     <RsModal
@@ -12,10 +11,9 @@ function Modal({ isOpen, children, title, size = "lg", style, onClose, variant =
       isOpen={isOpen}
       {...rest}
     >
-      <div className={`modal-header ${variant}`}>
+      <div className={"modal-header"}>
         {title && <h6 className={"modal-title"}>{title}</h6>}
         <button
-
           aria-label={"Close"}
           className={"close"}
           data-dismiss={"modal"}
@@ -29,7 +27,7 @@ function Modal({ isOpen, children, title, size = "lg", style, onClose, variant =
           <span aria-hidden={true}>×</span>
         </button>
       </div>
-      <div className={`modal-body scroll-hidden ${variant}`} style={style}>
+      <div className="modal-body scroll-hidden" style={style}>
         {children}
       </div>
     </RsModal>
