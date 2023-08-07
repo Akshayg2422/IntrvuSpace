@@ -14,9 +14,9 @@ import { registerAsMember, memberLoginUsingPassword, fetchOTP, settingRegisterDa
 function Login() {
     const { goTo } = useNavigation()
     const dispatch = useDispatch()
-    const password = useInput('280121')
+    const password = useInput('')
     const mobileNumber = useInput('');
-    const email = useInput('tamilselvan.intern@leorainfotech.in')
+    const email = useInput('')
     const loginLoader = useLoader(false);
     const [showPassword, setShowPassword] = useState(false)
     const [toggleInput, setToggleInput] = useState(false)

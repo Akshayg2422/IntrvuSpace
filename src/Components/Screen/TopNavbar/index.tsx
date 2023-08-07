@@ -24,7 +24,7 @@ import { useModal, useNavigation } from '@Hooks';
 import { ROUTES } from '@Routes';
 import { useLocation } from 'react-router-dom'
 import { userLogout } from "@Redux";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 function TopNavbar() {
 
@@ -35,6 +35,7 @@ function TopNavbar() {
 
     const logoutModal = useModal(false);
     const { goTo } = useNavigation()
+    const { loginUser } = useSelector((state: any) => state.AuthReducer);
 
     const location = useLocation()
     const dispatch = useDispatch();
@@ -140,7 +141,7 @@ function TopNavbar() {
                             <NavItem className="d-none d-lg-block ml-lg-4">
                                 <div className='row align-items-center m-auto'>
                                     <span className='mb-0 font-weight-bold text-black'>
-                                        {'Tamil Selvan'}
+                                        {loginUser?.details?.user}
                                     </span>
                                     <Nav navbar>
                                         <UncontrolledDropdown nav>

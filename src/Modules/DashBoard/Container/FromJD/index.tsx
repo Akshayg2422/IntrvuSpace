@@ -123,7 +123,7 @@ function FromJD() {
     function proceedInterview(id: string) {
         if (id) {
             dispatch(selectedScheduleId(id))
-            goTo(ROUTES['designation-module'].call)
+            goTo(ROUTES['designation-module'].interview + "/" + id)
         }
     }
 
