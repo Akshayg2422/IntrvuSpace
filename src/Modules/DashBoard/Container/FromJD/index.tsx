@@ -1,10 +1,11 @@
-import { Button, Card, Divider, Modal, TextArea, Input } from '@Components';
+import { Button, Card, Divider, Modal, TextArea, Input, showToast } from '@Components';
 import { getJdItemList, postJdVariant, selectedScheduleId } from '@Redux';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useInput, useNavigation, useModal } from '@Hooks';
 import { AnalyzingAnimation, GenerateModal } from '@Modules';
 import { ROUTES } from '@Routes';
+import { validate, FROM_JD_RULES, ifObjectExist, getValidateError } from '@Utils';
 
 
 function FromJD() {
@@ -57,27 +58,34 @@ function FromJD() {
             jd: jd.value
         }
 
-        addJdModal.hide();
-        generateJdModal.show();
+        const validation = validate(FROM_JD_RULES, params)
+        if (ifObjectExist(validation)) {
 
-        dispatch(postJdVariant({
-            params,
-            onSuccess: (res: any) => () => {
-                generateJdModal.hide();
-                const { details } = res;
-                if (details?.schedule_id) {
-                    setScheduleId(details?.schedule_id)
-                }
-                completedModal.show();
-                getKnowledgeGroupFromJdHandler();
-                resetValues();
+            addJdModal.hide();
+            generateJdModal.show();
 
-            },
-            onError: () => () => {
-                generateJdModal.hide();
-                addJdModal.show();
-            },
-        }))
+            dispatch(postJdVariant({
+                params,
+                onSuccess: (res: any) => () => {
+                    generateJdModal.hide();
+                    const { details } = res;
+                    if (details?.schedule_id) {
+                        setScheduleId(details?.schedule_id)
+                    }
+                    completedModal.show();
+                    getKnowledgeGroupFromJdHandler();
+                    resetValues();
+                    showToast(res.message, 'success')
+                },
+                onError: (error) => () => {
+                    generateJdModal.hide();
+                    addJdModal.show();
+                    showToast(error.error_message, 'error')
+                },
+            }))
+        } else {
+            showToast(getValidateError(validation))
+        }
     }
 
     function resetValues() {
