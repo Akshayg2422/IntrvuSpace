@@ -4,11 +4,10 @@ import { Card } from '@Components'
 import { useWindowDimensions } from '@Hooks'
 
 function AnimationBook() {
-    const { height } = useWindowDimensions()
     return (
         <div className={'vh-100 d-flex justify-content-center align-items-center'}>
             <Card className={'col-8'}
-                style={{ backgroundColor: '#68d75c', height: height - 130 }}
+                style={{ backgroundColor: '#68d75c' }}
             >
                 <div className="bookshelf_wrapper">
                     <ul className="books_list">
@@ -21,7 +20,6 @@ function AnimationBook() {
                     </ul>
                     <div className="shelf"></div>
                 </div>
-                <h3 className='text-white'>Generating Questions...</h3>
             </Card>
         </div>
     )

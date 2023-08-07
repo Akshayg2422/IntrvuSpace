@@ -89,12 +89,21 @@ function FromJD() {
     }
 
 
-    function proceedInterview() {
-        if (scheduleId) {
-            dispatch(selectedScheduleId(scheduleId))
-            goTo(ROUTES['designation-module'].call)
+    function proceedInterview(id: string) {
+        if (id) {
+            goTo(ROUTES['designation-module'].report + "/" + '03090d27-45ef-4ced-8f8b-f77d03c63d95')
+            // dispatch(selectedScheduleId(id))
+            // goTo(ROUTES['designation-module'].call)
         }
     }
+
+
+    function proceedReport(id: string) {
+        if (id) {
+            goTo(ROUTES['designation-module'].report + "/" + id)
+        }
+    }
+
 
 
     return (
@@ -113,6 +122,8 @@ function FromJD() {
                                 return each.is_complete
                             })
 
+
+
                             return (
                                 <div className='col-4 mt--3' >
                                     <Card className="overflow-auto overflow-hide scroll-y" style={{
@@ -130,14 +141,36 @@ function FromJD() {
                                                 schedules.length > 0 &&
                                                 schedules.map((each: any, index: number) => {
 
-                                                    const { is_complete, is_started, is_report_complete } = each;
+                                                    console.log(JSON.stringify(each));
+
+
+                                                    const { is_complete, is_started, is_report_complete, id } = each;
                                                     return (
                                                         <div className='mt-2'>
                                                             <h5 className="text-uppercase text-muted mb-0 card-title">{"Interview " + (index + 1)}</h5>
-                                                            {!is_started && <div className='mt-2'><Button block text={'Start Interview'} /></div>}
-                                                            {(is_started && !is_complete) && <div className='mt-2'><Button block text={'Resume Interview'} /></div>}
+                                                            {!is_started &&
+                                                                <div className='mt-2'>
+                                                                    <Button block text={'Start Interview'} onClick={() => {
+                                                                        proceedInterview(id);
+                                                                    }} />
+                                                                </div>}
+                                                            {(is_started && !is_complete) && <div className='mt-2'>
+                                                                <Button
+                                                                    block
+                                                                    text={'Resume Interview'}
+                                                                    onClick={() => {
+                                                                        proceedInterview(id);
+                                                                    }}
+                                                                />
+                                                            </div>}
                                                             {is_report_complete &&
-                                                                <div className='mt-2'><Button block text={'View Report'} />
+                                                                <div className='mt-2'>
+                                                                    <Button
+                                                                        block
+                                                                        text={'View Report'}
+                                                                        onClick={() => {
+                                                                            proceedReport(id);
+                                                                        }} />
                                                                 </div>
                                                             }
                                                             {is_complete && !is_report_complete && <div>
@@ -186,21 +219,41 @@ function FromJD() {
                         heading='Job Description'
                         value={jd.value}
                         onChange={jd.onChange} />
-                </div><div className='text-right'>
+                </div>
+                <div className='text-right'>
                     <Button size='md' text={'Submit'} onClick={submitJdApiHandler} />
                 </div>
             </Modal>
 
-            <GenerateModal isOpen={generateJdModal.visible} onClose={generateJdModal.hide}>
+            <GenerateModal title={'Create Interview Schedule From JD'} isOpen={generateJdModal.visible} onClose={generateJdModal.hide}>
                 <AnalyzingAnimation />
             </GenerateModal>
 
-            <Modal title={'Proceed InterView'} isOpen={completedModal.visible} onClose={completedModal.hide}>
-                <Button
-                    block
-                    text={'Start Interview'}
-                    onClick={proceedInterview}
-                />
+            <Modal isOpen={completedModal.visible} onClose={completedModal.hide}>
+                <div className='mt--5 pb-4'>
+                    <div className='text-center '>
+                        <div className='display-1 text-black'>
+                            Your Interview is Ready!
+                        </div>
+                    </div>
+                    <div className='text-center py-3'>
+                        <small className='text-black'>Click on Start Now to Start Interview</small>
+                        <div className='row justify-content-center pt-1'>
+                            <div className='col-4'>
+                                <Button
+                                    block
+                                    size='md'
+                                    text={'Start Now'}
+                                    onClick={() => {
+                                        if (scheduleId) {
+                                            proceedInterview(scheduleId)
+                                        }
+                                    }}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </Modal>
 
         </>
