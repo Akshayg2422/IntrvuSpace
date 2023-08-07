@@ -14,13 +14,13 @@ export const RequireHome = ({ children }: RequireHomeProps) => {
 
     const location = useLocation()
 
-    const { loginDetails } = useSelector(
-        (state: any) => state.AppReducer
+    const { loginUser } = useSelector(
+        (state: any) => state.AuthReducer
     );
-    const login = true
 
-    if (login) {
-        // return <Navigate to={ROUTES['designation-module'].} state={{ path: location.pathname }} />
+
+    if (loginUser) {
+        return <Navigate to={loginUser?.details?.is_admin ? ROUTES['designation-module'].designation : ROUTES['designation-module'].client} state={{ path: location.pathname }} />
     }
 
     return (
