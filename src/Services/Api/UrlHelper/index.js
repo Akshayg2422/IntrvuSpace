@@ -105,3 +105,7 @@ export const URL_GET_JD_ITEM_LIST = ASSISTANT + 'getJDItemList'
 // get basic Info
 
 export const URL_GET_SCHEDULE_BASIC_INFO = ASSISTANT + 'getScheduleBasicInfo'
+export const URL_CREATE_NEW_JD_SCHEDULE = ASSISTANT + 'createNewJdSchedule'
+
+
+

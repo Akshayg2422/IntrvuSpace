@@ -32,7 +32,7 @@ export const RequireAuth = ({ children }: RequireAuthProps) => {
     }, [location]);
 
 
-    console.log( "===========loginUser"+ loginUser);
+    console.log("===========loginUser" + loginUser);
 
 
     if (!loginUser) {

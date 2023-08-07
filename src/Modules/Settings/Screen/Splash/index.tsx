@@ -31,7 +31,13 @@ function Splash() {
                     }
                 }
                 else {
-                    goTo(ROUTES['designation-module'].client, true)
+                    const route = localStorage.getItem('route');
+                    if (route) {
+                        localStorage.removeItem('route');
+                        goTo(route, true);
+                    } else {
+                        goTo(ROUTES['designation-module'].client, true)
+                    }
                 }
 
 
