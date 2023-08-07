@@ -33,11 +33,11 @@ function Schedules() {
 
 
     useEffect(() => {
-        getMypastInterviewApi()
+        const params = { is_start: false }
+        getMypastInterviewApi(params)
     }, [])
 
-    const getMypastInterviewApi = () => {
-        const params = {}
+    const getMypastInterviewApi = (params: any) => {
 
         dispatch(getMyPastInterviews({
             params,
@@ -94,10 +94,27 @@ function Schedules() {
     return (
         <>
             <TopNavbar />
-            <div className='mt-8'>
+            <div className='mt-7'>
 
                 <div className='col text-right mx--3'>
-                    <ButtonGroup selected={selectedSort} sortData={FILTER} onClick={setSelectedSort} />
+                    <ButtonGroup
+                        selected={selectedSort}
+                        sortData={FILTER}
+                        onClick={(item) => {
+                            setSelectedSort(item)
+                            let params = {}
+                            if (item.id === FILTER[0].id) {
+                                params = { is_start: false }
+                            } else if (item.id === FILTER[1].id) {
+                                params = { is_complete: true }
+                            }
+                            else if (item.id === FILTER[2].id) {
+                                params = {
+                                    is_start: true, is_complete: false
+                                }
+                            }
+                            getMypastInterviewApi(params)
+                        }} />
                 </div>
 
                 <div className='row mx-3 mt-4'>

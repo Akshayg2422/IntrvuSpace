@@ -1,11 +1,14 @@
-import { Button, Card, NoDataFound, Divider, Spinner } from '@Components';
-import { getKnowledgeGroups, getSectors } from '@Redux';
+import { Button, Card, NoDataFound, Divider, Spinner, showToast } from '@Components';
+import { getKnowledgeGroups, getSectors, createSchedule, selectedScheduleId } from '@Redux';
 import { filteredName } from '@Utils';
 import classnames from 'classnames';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Nav, NavItem, NavLink, UncontrolledTooltip } from 'reactstrap';
-import { useLoader } from '@Hooks'
+import { useLoader, useNavigation } from '@Hooks'
+import { ROUTES } from '@Routes'
+
+
 function FromCollection() {
 
     const dispatch = useDispatch()
@@ -13,7 +16,7 @@ function FromCollection() {
     const [navIndex, setNavIndex] = useState<any>(0);
     const sectorLoader = useLoader(false);
     const roleLoader = useLoader(false);
-
+    const { goTo } = useNavigation()
 
     useEffect(() => {
         fetchSectorData();
@@ -52,6 +55,28 @@ function FromCollection() {
             },
         }))
     }
+
+
+    const scheduleApiHandler = (id: any, type: 'Call' | "Schedule") => {
+        const params = {
+            knowledge_group_variant_id: id
+        }
+        dispatch(createSchedule({
+            params,
+            onSuccess: (response: any) => () => {
+                if (type === 'Call') {
+                    dispatch(selectedScheduleId(response.details.schedule_id))
+                    goTo(ROUTES['designation-module'].call)
+                } else {
+                    showToast('Scheduled Successfully')
+                }
+            },
+            onError: (error) => () => {
+                showToast(error.error_message, 'error')
+            },
+        }))
+    }
+
 
     return (
         <div className='overflow-auto overflow-hide mt-2' >
@@ -103,6 +128,8 @@ function FromCollection() {
                                     <Divider space={'3'} />
                                     <div className=' pt-2 mr-4'>
                                         {el.knowledge_group_variant && el.knowledge_group_variant.map((item, index) => {
+
+                                            const { id } = item;
                                             return (
                                                 <div className='pt-1 row justify-content-between'>
                                                     <div className='col my-2 hoverColor h5'>{filteredName(item.name, 30)}</div>
@@ -113,7 +140,7 @@ function FromCollection() {
                                                                 icons={'bi bi-calendar'}
                                                                 variant={'icon-rounded'}
                                                                 onClick={() => {
-                                                                    // scheduleApiHandler(item?.id, "Schedule")
+                                                                    scheduleApiHandler(id, 'Schedule')
                                                                 }}
                                                             />
                                                             <UncontrolledTooltip
@@ -128,7 +155,7 @@ function FromCollection() {
                                                             variant={'icon-rounded'}
                                                             icons={'bi bi-telephone'}
                                                             onClick={() => {
-                                                                // scheduleApiHandler(item?.id, "Call")
+                                                                scheduleApiHandler(id, 'Call')
                                                             }}
                                                         />
                                                         <UncontrolledTooltip
