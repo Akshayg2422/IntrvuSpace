@@ -98,3 +98,7 @@ export const URL_RECORDER_INTERVIEW_SESSION = ASSISTANT + 'recordInterviewSessio
 // create jd varient
 
 export const URL_CREATE_JD_VARIANT = ASSISTANT + 'createJDVariant'
+
+export const URL_GET_JD_ITEM_LIST = ASSISTANT + 'getJDItemList'
+
+

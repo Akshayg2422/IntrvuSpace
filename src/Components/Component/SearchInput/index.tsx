@@ -22,7 +22,7 @@ function SearchInput({ defaultValue, heading, onSearch }: SearchInputProps) {
         <div>
             {heading && <InputHeading heading={heading} />}
             <div className="input-group bg-white border"
-           
+
             >
                 <input
                     type="text"

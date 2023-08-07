@@ -591,3 +591,31 @@ export const clearLastBreadcrumb = () => ({
   type: ActionTypes.CLEAR_LAST_BREADCRUMB,
 });
 
+
+
+
+// create jd item list
+
+
+export const getJdItemList = (params: any) => {
+  return {
+    type: ActionTypes.GET_JD_ITEM_LIST,
+    payload: params,
+  }
+}
+export const getJdItemListSuccess = (response: any) => {
+  return {
+    type: ActionTypes.GET_JD_ITEM_LIST_SUCCESS,
+    payload: response
+  }
+}
+
+export const getJdItemListFailure = (error: any) => {
+  return {
+    type: ActionTypes.GET_JD_ITEM_LIST_FAILURE,
+    payload: error
+  }
+}
+
+
+

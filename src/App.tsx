@@ -67,13 +67,16 @@ function App() {
 
   return (
     <ScreenWrapper>
+
       <Routes>
         {getRoutes(AUTH_ROUTES, AUTH)}
         {getRoutes(HOME_ROUTES)}
         {getRoutes(DASHBOARD_ROUTES)}
       </Routes>
+
+
       <ToastContainer />
-    </ScreenWrapper>
+    </ScreenWrapper >
 
   );
 }

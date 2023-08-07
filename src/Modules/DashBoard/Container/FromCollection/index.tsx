@@ -1,0 +1,165 @@
+import { Button, Card, NoDataFound, Divider, Spinner } from '@Components';
+import { getKnowledgeGroups, getSectors } from '@Redux';
+import { filteredName } from '@Utils';
+import classnames from 'classnames';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Nav, NavItem, NavLink, UncontrolledTooltip } from 'reactstrap';
+import { useLoader } from '@Hooks'
+function FromCollection() {
+
+    const dispatch = useDispatch()
+    const { sectors, knowledgeGroups } = useSelector((state: any) => state.DashboardReducer)
+    const [navIndex, setNavIndex] = useState<any>(0);
+    const sectorLoader = useLoader(false);
+    const roleLoader = useLoader(false);
+
+
+    useEffect(() => {
+        fetchSectorData();
+    }, [])
+
+    const fetchKnowledgeData = (id: string) => {
+        const params = {
+            sector_id: id
+        }
+        roleLoader.show()
+        dispatch(getKnowledgeGroups({
+            params,
+            onSuccess: () => () => {
+                roleLoader.hide();
+            },
+            onError: () => () => {
+                roleLoader.hide();
+            },
+        }))
+    }
+
+    const fetchSectorData = () => {
+        const params = {}
+        sectorLoader.show();
+        dispatch(getSectors({
+            params,
+            onSuccess: (response: any) => () => {
+                const { details } = response
+                if (details.knowledege_groups && details.knowledege_groups.length > 0) {
+                    fetchKnowledgeData(details.knowledege_groups[0].id)
+                }
+                sectorLoader.hide()
+            },
+            onError: () => () => {
+                sectorLoader.hide();
+            },
+        }))
+    }
+
+    return (
+        <div className='overflow-auto overflow-hide mt-2' >
+            <div className='d-flex align-items-center justify-content-center'>
+                {sectorLoader.loader && <Spinner />}
+            </div>
+
+            <div className='d-flex py-2 mx--3' >
+                {sectors && sectors.map((el, index) => {
+                    return (
+                        <div className='col col-sm-3 mr--3 '
+
+                        >
+                            <Nav
+                                className="nav-fill flex-column flex-sm-row pointer"
+                                id="tabs-text"
+                                pills
+                                role="tablist"
+                            >
+                                <NavItem>
+                                    <NavLink
+                                        aria-selected={index === navIndex}
+                                        className={classnames(`mb-sm-3 mb-md-0 shadow-none  ${index !== navIndex ? 'text-black font-weight-normal' : 'font-weight-bold'}`, {
+                                            active: index === navIndex
+                                        })}
+                                        onClick={() => {
+                                            setNavIndex(index)
+                                            fetchKnowledgeData(el.id)
+                                        }}
+                                        role="tab"
+                                    >
+                                        {el.name}
+                                    </NavLink>
+                                </NavItem>
+                            </Nav>
+                        </div>
+                    )
+                })}
+            </div>
+            <div className='row mt-2'>
+                {
+                    knowledgeGroups && knowledgeGroups.length > 0 && knowledgeGroups.map((el) => {
+                        const { name } = el
+                        return (
+
+                            <div className='col-4'>
+                                <Card>
+                                    <h4 className='mb-0 pointer'>{name}</h4>
+                                    <Divider space={'3'} />
+                                    <div className=' pt-2 mr-4'>
+                                        {el.knowledge_group_variant && el.knowledge_group_variant.map((item, index) => {
+                                            return (
+                                                <div className='pt-1 row justify-content-between'>
+                                                    <div className='col my-2 hoverColor h5'>{filteredName(item.name, 30)}</div>
+                                                    <div className='text-right row'>
+                                                        <div className='mr-3'>
+                                                            <Button
+                                                                id={`tooltip${index + 100 * 100}`}
+                                                                icons={'bi bi-calendar'}
+                                                                variant={'icon-rounded'}
+                                                                onClick={() => {
+                                                                    // scheduleApiHandler(item?.id, "Schedule")
+                                                                }}
+                                                            />
+                                                            <UncontrolledTooltip
+                                                                delay={0}
+                                                                placement="top"
+                                                                target={`tooltip${index + 100 * 100}`}>
+                                                                Schedule
+                                                            </UncontrolledTooltip>
+                                                        </div>
+                                                        <Button
+                                                            id={`tooltip${index + 200 * 100}`}
+                                                            variant={'icon-rounded'}
+                                                            icons={'bi bi-telephone'}
+                                                            onClick={() => {
+                                                                // scheduleApiHandler(item?.id, "Call")
+                                                            }}
+                                                        />
+                                                        <UncontrolledTooltip
+                                                            delay={0}
+                                                            placement="top"
+                                                            target={`tooltip${index + 200 * 100}`}
+                                                        >
+                                                            Start Call
+                                                        </UncontrolledTooltip>
+                                                    </div>
+                                                </div>
+                                            )
+                                        })}
+                                    </div>
+                                </Card>
+                            </div>
+                        )
+                    })
+                }
+            </div>
+            <div className='d-flex align-items-center justify-content-center'>
+                {roleLoader.loader && <Spinner />}
+            </div>
+            {
+                !roleLoader.loader && knowledgeGroups && knowledgeGroups.length <= 0 && <div className='col d-flex justify-content-center align-items-center  mt-3'>
+                    <NoDataFound />
+                </div>
+            }
+
+        </div >
+    )
+}
+
+export { FromCollection };

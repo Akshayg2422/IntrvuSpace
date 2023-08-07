@@ -66,28 +66,28 @@ function Login() {
     }
 
     const memberLoginHandler = () => {
-       
-            const params = {
-                ...(email.value && { email: email.value }),
-                password: password.value
-            }
-            dispatch(memberLoginUsingPassword({
-                params,
-                onSuccess: (response: any) => () => {
-                    loginLoader.hide()
-                    if (response.success) {
-                        localStorage.setItem(USER_TOKEN, response.details.token);
-                        goTo(ROUTES['auth-module'].splash, true);
-                    }
-                    else {
-                        showToast(response.error_message, 'error')
-                    }
-                },
-                onError: (error) => () => {
-                    loginLoader.hide()
-                    showToast(error.error_message, 'error')
-                },
-            }))
+
+        const params = {
+            ...(email.value && { email: email.value }),
+            password: password.value
+        }
+        dispatch(memberLoginUsingPassword({
+            params,
+            onSuccess: (response: any) => () => {
+                loginLoader.hide()
+                if (response.success) {
+                    localStorage.setItem(USER_TOKEN, response.details.token);
+                    goTo(ROUTES['auth-module'].splash, true);
+                }
+                else {
+                    showToast(response.error_message, 'error')
+                }
+            },
+            onError: (error) => () => {
+                loginLoader.hide()
+                showToast(error.error_message, 'error')
+            },
+        }))
 
 
     }

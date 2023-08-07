@@ -19,7 +19,8 @@ export interface DashboardProp {
   registerData: any
   removeSideNav: boolean
   breadCrumb: any
-  VideoSessionDetails:any
+  VideoSessionDetails: any
   recordingPermission: boolean
-  jdVariantData: any
+  jdVariantData: any,
+  jdItem: any
 }
