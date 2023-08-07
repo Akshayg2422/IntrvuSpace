@@ -36,45 +36,6 @@ function Clients() {
 
 
 
-    const scheduleApiHandler = (id: any, type: 'Call' | "Schedule") => {
-        const params = {
-            knowledge_group_variant_id: id
-        }
-        dispatch(createSchedule({
-            params,
-            onSuccess: (response: any) => () => {
-                if (type === 'Call') {
-                    dispatch(selectedScheduleId(response.details.schedule_id))
-                    goTo(ROUTES['designation-module'].call)
-                } else {
-                    showToast('Scheduled Successfully')
-                }
-            },
-            onError: (error) => () => {
-                showToast(error.error_message, 'error')
-            },
-        }))
-    }
-
-    const scheduleApiForJdHandler = (id: any, type: 'Call' | "Schedule") => {
-        const params = {
-            knowledge_group_variant_id: id
-        }
-        dispatch(createSchedule({
-            params,
-            onSuccess: (response: any) => () => {
-                if (type === 'Call') {
-                    dispatch(selectedScheduleId(response.details.schedule_id))
-                    goTo(ROUTES['designation-module'].call)
-                } else {
-                    showToast('Scheduled Successfully')
-                }
-            },
-            onError: (error) => () => {
-                showToast(error.error_message, 'error')
-            },
-        }))
-    }
 
 
     return (

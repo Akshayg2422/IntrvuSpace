@@ -257,7 +257,7 @@ function* getFormSectionsQuestionsSaga(action) {
 function* getMyPastInterviewsSaga(action) {
   try {
     const response = yield call(Api.getMyPastInterviewsApi, action.payload.params);
-    console.log(JSON.stringify(response) + '========getMyPastInterviewsSaga');
+
     if (response.success) {
       yield put(Action.getMyPastInterviewsSuccess(response));
       yield call(action.payload.onSuccess(response));

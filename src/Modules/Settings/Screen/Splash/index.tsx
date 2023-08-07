@@ -15,14 +15,20 @@ function Splash() {
 
     const { loginUser, } = useSelector((state: any) => state.AuthReducer);
 
-    console.log("909090e89e8r9e", loginUser)
-
 
     useEffect(() => {
         setTimeout(() => {
             if (loginUser?.details?.token) {
+
+
                 if (loginUser?.details?.is_admin) {
-                    goTo(ROUTES['designation-module'].designation, true)
+                    const route = localStorage.getItem('route');
+                    if (route) {
+                        localStorage.removeItem('route');
+                        goTo(route, true);
+                    } else {
+                        goTo(ROUTES['designation-module'].designation, true);
+                    }
                 }
                 else {
                     goTo(ROUTES['designation-module'].client, true)
