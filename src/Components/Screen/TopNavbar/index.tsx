@@ -23,6 +23,8 @@ import { getPhoto, } from '@Utils'
 import { useModal, useNavigation } from '@Hooks';
 import { ROUTES } from '@Routes';
 import { useLocation } from 'react-router-dom'
+import { userLogout } from "@Redux";
+import { useDispatch } from "react-redux";
 
 function TopNavbar() {
 
@@ -35,6 +37,7 @@ function TopNavbar() {
     const { goTo } = useNavigation()
 
     const location = useLocation()
+    const dispatch = useDispatch();
 
     const pathName = location.pathname
 
@@ -52,8 +55,17 @@ function TopNavbar() {
 
     function proceedLogout() {
         try {
-            localStorage.clear();
-            goTo(ROUTES['auth-module'].login)
+            
+            dispatch(
+            userLogout({
+              onSuccess: () => {
+                goTo(ROUTES["auth-module"].splash, true)
+              },
+              onError: () => {
+                console.log('error');
+              },
+            }),
+          );
         } catch (error) {
         }
     }

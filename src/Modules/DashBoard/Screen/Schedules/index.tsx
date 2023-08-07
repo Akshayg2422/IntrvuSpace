@@ -24,7 +24,7 @@ function Schedules() {
         {
             id: 2, title: "Completed"
         },
-        {
+        {   
             id: 3, title: "Inprogress"
         }]
 
