@@ -27,7 +27,8 @@ const initialState: DashboardProp = {
   VideoSessionDetails: undefined,
   breadCrumb: [],
   recordingPermission: false,
-  jdVariantData: undefined
+  jdVariantData: undefined,
+  jdItem: undefined
 };
 
 const DashboardReducer = (state = initialState, action: any) => {
@@ -316,6 +317,20 @@ const DashboardReducer = (state = initialState, action: any) => {
       const updatedBreadCrumb = state.breadCrumb.pop()
       return { ...state, breadCrumb: updatedBreadCrumb };
       break;
+
+    /**
+     * get jd item list
+     */
+    case ActionTypes.GET_JD_ITEM_LIST:
+      state = { ...state, jdItem: undefined };
+      break;
+    case ActionTypes.GET_JD_ITEM_LIST_SUCCESS:
+      state = { ...state, jdItem: action.payload.details.knowledege_groups };
+      break;
+    case ActionTypes.GET_JD_ITEM_LIST_FAILURE:
+      state = { ...state, jdItem: undefined };
+      break;
+
 
     default:
       state = state;

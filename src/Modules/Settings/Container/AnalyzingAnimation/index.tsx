@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Image } from '@Components';
+import { Image } from '@Components';
 import { icons } from '@Assets';
 import './index.css'
 
@@ -39,8 +39,8 @@ function AnalyzingAnimation() {
 
     return (
         <>
-            <div className={'vh-100 d-flex justify-content-center align-items-center'}>
-                <Card className={'text-white border border-white p-4'} style={{ height: '75vh', width: '50vw', backgroundColor: '#68d75c' }}>
+            <div className={'d-flex justify-content-center align-items-center'}>
+                <div className={'text-white p-4'} style={{ height: '75vh', width: '50vw', backgroundColor: '#68d75c' }}>
                     {/* For the first 3 seconds */}
                     {analyzing && (
                         <div className={''}>
@@ -194,7 +194,7 @@ function AnalyzingAnimation() {
                         )}
                     </div>
 
-                </Card>
+                </div>
             </div>
         </>
     );

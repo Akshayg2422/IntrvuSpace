@@ -8,7 +8,7 @@ function Spinner({ color = 'black', spinner = true }: SpinnerProps) {
         <>
             {spinner ?
 
-                <RsSpinner className='' color={color} size={'md'} >
+                <RsSpinner className='' color={color} size={'sm'} >
                     Loading...
                 </RsSpinner>
                 :

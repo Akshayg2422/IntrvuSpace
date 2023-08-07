@@ -87,3 +87,14 @@ export const PostRecorderInterviewSessionApi = payload => post(URL.URL_RECORDER_
 // create jd variant
 
 export const postJdVariantApi = payload => post(URL.URL_CREATE_JD_VARIANT, payload, {});
+
+/**
+ * get jd item list
+ * @param {*} payload 
+ * @returns 
+ */
+
+export const getJdItemList = payload => post(URL.URL_GET_JD_ITEM_LIST, payload, {});
+
+
+

@@ -234,7 +234,7 @@ function Sidebar({ toggleSideNav, sideNavOpen, routes, logo, rtlActive }: Sideba
         "sidenav navbar-vertical navbar-expand-xs navbar-light " +
         (rtlActive ? "" : "fixed-left")
       }
-      style={{backgroundColor:'#f5f5f5'}}
+      style={{ backgroundColor: '#f5f5f5' }}
       onMouseEnter={onMouseEnterSidenav}
       onMouseLeave={onMouseLeaveSidenav}
     >

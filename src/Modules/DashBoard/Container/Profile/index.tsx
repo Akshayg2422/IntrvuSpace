@@ -9,8 +9,8 @@ import { ROUTES } from '@Routes';
 
 function Profile() {
 
-    const logoutModal = useModal(false);
-    const { goTo } = useNavigation()
+    // const logoutModal = useModal(false);
+    // const { goTo } = useNavigation()
 
     const HEADER_MENU = [
         { id: '1', name: 'Setting', value: 'ST', icon: 'ni ni-badge' },
@@ -18,30 +18,25 @@ function Profile() {
     ]
 
 
-    const DropdownHandler = (item: any) => {
-        if (item.value === 'ST') {
-        }
-        else if (item.value === 'LG') {
-            logoutModal.show()
-        }
-    };
+    // const DropdownHandler = (item: any) => {
+    //     if (item.value === 'ST') {
+    //     }
+    //     else if (item.value === 'LG') {
+    //         logoutModal.show()
+    //     }
+    // };
 
-    function proceedLogout() {
-        try {
-            localStorage.clear();
-            goTo(ROUTES['auth-module'].login)
-        } catch (error) {
-        }
-    }
+    // function proceedLogout() {
+    //     try {
+    //         localStorage.clear();
+    //         goTo(ROUTES['auth-module'].login)
+    //     } catch (error) {
+    //     }
+    // }
 
     return (
         <div className='row align-items-center m-auto'>
             <div className='col'>
-                {/* {dashboardDetails && dashboardDetails.user_details && (
-                    <span className='mb-0 text-primary  font-weight-bold'>
-                        {dashboardDetails.user_details.name}
-                    </span>
-                )} */}
                 <span className='mb-0 text-primary  font-weight-bold'>
                     {'Tamil Selvan'}
                 </span>
@@ -65,7 +60,7 @@ function Profile() {
                                 <DropdownItem
                                     onClick={(e) => {
                                         e.preventDefault()
-                                        DropdownHandler(item)
+                                        // DropdownHandler(item)
                                     }}
                                 >
                                     <i className={item.icon}></i>
@@ -76,7 +71,7 @@ function Profile() {
                     </DropdownMenu>
                 </UncontrolledDropdown>
             </Nav>
-            <Modal title={'Logout User'} isOpen={logoutModal.visible} onClose={logoutModal.hide}>
+            {/* <Modal title={'Logout User'} isOpen={logoutModal.visible} onClose={logoutModal.hide}>
                 <div>
                     <span className='ml-3'>{"Please click on Proceed to Logout user"}</span>
                     <div
@@ -95,7 +90,7 @@ function Profile() {
                         />
                     </div>
                 </div>
-            </Modal>
+            </Modal> */}
         </div>
     )
 }

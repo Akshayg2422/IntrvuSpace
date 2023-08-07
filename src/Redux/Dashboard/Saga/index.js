@@ -378,6 +378,26 @@ function* postJdVariantSaga(action) {
   }
 }
 
+
+
+// get jd item list
+
+function* getJdItemListSaga(action) {
+  try {
+    const response = yield call(Api.getJdItemList, action.payload.params);
+    if (response.success) {
+      yield put(Action.getJdItemListSuccess(response));
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield put(Action.getJdItemListFailure(response.error_message));
+      yield call(action.payload.onError(response));
+    }
+  } catch (error) {
+    yield put(Action.getJdItemListFailure(error));
+    yield call(action.payload.onError(error));
+  }
+}
+
 function* DashboardSaga() {
   yield takeLatest(Action.GET_START_CHAT, getChatSaga);
   yield takeLatest(Action.CREATE_KNOWLEDGE_GROUP_VARIANT, createKnowledgeGroupVariantSaga);
@@ -400,6 +420,8 @@ function* DashboardSaga() {
   yield takeLatest(Action.CREATE_SCHEDULE, createScheduleSaga);
   yield takeLatest(Action.INTERVIEW_RECORDER_SESSION, recordInterviewSessionSaga);
   yield takeLatest(Action.POST_JD_VARIANT, postJdVariantSaga);
+  yield takeLatest(Action.GET_JD_ITEM_LIST, getJdItemListSaga);
+
 }
 
 export default DashboardSaga;
