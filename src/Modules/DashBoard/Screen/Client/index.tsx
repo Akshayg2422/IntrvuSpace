@@ -81,7 +81,7 @@ function Clients() {
         <>
             <TopNavbar />
 
-            <div className={`container-fluid mt-8`}>
+            <div className={`container-fluid mt-7`}>
                 <div className='row align-items-center'>
                     <div className='col-sm-5'>
                         <SearchInput defaultValue={search.value} onSearch={search.set} />

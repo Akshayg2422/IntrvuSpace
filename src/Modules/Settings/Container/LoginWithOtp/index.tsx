@@ -1,10 +1,10 @@
 import { ROUTES } from '@Routes'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Input, } from 'reactstrap'
 import { LoginSideContent } from '../LoginSideContent'
 import { useInput, useLoader, useNavigation } from '@Hooks'
 import { Button, showToast } from '@Components'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { fetchOTP, settingRegisterData } from '@Redux'
 
 function LoginWithOtp() {
@@ -15,6 +15,21 @@ function LoginWithOtp() {
     const loginLoader = useLoader(false);
     const [toggleInput, setToggleInput] = useState(false)
     const [loginWithOtp, setLoginWithOtp] = useState(false)
+    const { registerData } = useSelector((state: any) => state.DashboardReducer);
+
+
+    useEffect(() => {
+        if (registerData) {
+            if (registerData?.mobile_number){
+                setLoginWithOtp(false)
+                mobileNumber.set(registerData?.mobile_number)
+            }
+            else {
+                setLoginWithOtp(true)
+                email.set(registerData?.email)
+            }
+        }
+    }, [])
 
 
     const onSubmit = () => {
@@ -40,8 +55,7 @@ function LoginWithOtp() {
     const memberLoginHandler = () => {
         loginLoader.show()
         const params = {
-            ...(mobileNumber.value && { mobile_number: mobileNumber.value }),
-            ...(email.value && { email: email.value })
+            ...(!loginWithOtp ? { mobile_number: mobileNumber.value } : { email: email.value }),
         }
         dispatch(fetchOTP({
             params,

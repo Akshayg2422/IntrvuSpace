@@ -61,7 +61,7 @@ function TopNavbar() {
     return (
         <>
             <Navbar
-                className="navbar-horizontal navbar-main navbar-dark navbar-transparent bg-white position-fixed"
+                className="navbar-horizontal navbar-main navbar-dark navbar-transparent bg-white position-fixed py-0"
                 expand="lg"
                 id="navbar-main"
 
