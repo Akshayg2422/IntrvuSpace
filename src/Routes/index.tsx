@@ -17,7 +17,7 @@ export const ROUTES = {
     'weightage-count-form': "/weightage-count-form",
     'create-question-form': "/create-question-form",
     'sector': "/sector",
-    'call': '/call',
+    'interview': '/interview',
     dashboard: "/dashboard",
     designation: "/designation",
     client: "/client",
@@ -83,7 +83,7 @@ export const DASHBOARD_ROUTES = [
   },
   {
     id: 5,
-    path: ROUTES['designation-module']['call'],
+    path: ROUTES['designation-module'].interview + '/:schedule_id',
     component: <Call />
   },
   {
