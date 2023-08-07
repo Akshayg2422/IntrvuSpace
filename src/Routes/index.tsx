@@ -41,11 +41,11 @@ export const AUTH_ROUTES = [
     path: ROUTES['auth-module'].otp,
     component: <Otp />
   },
-  {
-    id: 3,
-    path: ROUTES['auth-module'].splash,
-    component: <Splash />
-  },
+  // {
+  //   id: 3,
+  //   path: ROUTES['auth-module'].splash,
+  //   component: <Splash />
+  // },
   {
     id: 4,
     path: ROUTES['auth-module'].register,

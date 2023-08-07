@@ -638,3 +638,15 @@ export const getScheduleBasicInfoFailure = (error: any) => {
     payload: error
   }
 }
+
+
+
+
+// create new jd schedule
+
+export const createNewJdSchedule = (params: any) => {
+  return {
+    type: ActionTypes.CREATE_NEW_JD_SCHEDULE,
+    payload: params,
+  }
+}

@@ -1,5 +1,5 @@
 import { Button, Card, Divider, Modal, TextArea, Input } from '@Components';
-import { getJdItemList, postJdVariant, selectedScheduleId } from '@Redux';
+import { createNewJdSchedule, getJdItemList, postJdVariant, selectedScheduleId } from '@Redux';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useInput, useNavigation, useModal } from '@Hooks';
@@ -89,11 +89,41 @@ function FromJD() {
     }
 
 
+
+    function createNewJdScheduleApiHandler(id: string) {
+        const params = {
+            "knowledge_group_variant_id": id
+        }
+
+
+        generateJdModal.show();
+
+        dispatch(createNewJdSchedule({
+            params,
+            onSuccess: (res: any) => () => {
+
+                console.log(JSON.stringify(res) + '======res');
+
+
+                generateJdModal.hide();
+                const { details } = res;
+                if (details?.schedule_id) {
+                    setScheduleId(details?.schedule_id)
+                }
+                completedModal.show();
+                getKnowledgeGroupFromJdHandler();
+            },
+            onError: () => () => {
+                generateJdModal.hide();
+            },
+        }))
+    }
+
+
     function proceedInterview(id: string) {
         if (id) {
-            goTo(ROUTES['designation-module'].report + "/" + '03090d27-45ef-4ced-8f8b-f77d03c63d95')
-            // dispatch(selectedScheduleId(id))
-            // goTo(ROUTES['designation-module'].call)
+            dispatch(selectedScheduleId(id))
+            goTo(ROUTES['designation-module'].call)
         }
     }
 
@@ -105,6 +135,8 @@ function FromJD() {
     }
 
 
+
+    console.log(JSON.stringify(jdItem) + '===jdItem');
 
     return (
         <>
@@ -123,6 +155,8 @@ function FromJD() {
                             })
 
 
+                            const knowledgeId = knowledge_group_variant[0].id;
+
 
                             return (
                                 <div className='col-4 mt--3' >
@@ -133,16 +167,20 @@ function FromJD() {
                                         <Divider space={'3'} />
                                         <small className='text-sm text-muted'>{description}</small>
 
-                                        {isTryAgain && <div className='mt-2'><Button block text={'Try Again'} /></div>}
+                                        {isTryAgain && <div className='mt-2'>
+                                            <Button
+                                                block
+                                                text={'Try Another Interview'}
+                                                onClick={() => {
+                                                    createNewJdScheduleApiHandler(knowledgeId);
+                                                }} />
+                                        </div>}
 
                                         <div className='py-3'>
                                             {
                                                 schedules &&
                                                 schedules.length > 0 &&
                                                 schedules.map((each: any, index: number) => {
-
-                                                    console.log(JSON.stringify(each));
-
 
                                                     const { is_complete, is_started, is_report_complete, id } = each;
                                                     return (

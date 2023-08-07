@@ -417,6 +417,23 @@ function* getScheduleBasicInfoSaga(action) {
 }
 
 
+
+// createNewJdSchedule
+function* createNewJdScheduleSaga(action) {
+  try {
+    const response = yield call(Api.createNewJdSchedule, action.payload.params);
+    if (response.success) {
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield call(action.payload.onError(response));
+    }
+  } catch (error) {
+    yield call(action.payload.onError(error));
+  }
+}
+
+
+
 function* DashboardSaga() {
   yield takeLatest(Action.GET_START_CHAT, getChatSaga);
   yield takeLatest(Action.CREATE_KNOWLEDGE_GROUP_VARIANT, createKnowledgeGroupVariantSaga);
@@ -441,5 +458,7 @@ function* DashboardSaga() {
   yield takeLatest(Action.POST_JD_VARIANT, postJdVariantSaga);
   yield takeLatest(Action.GET_JD_ITEM_LIST, getJdItemListSaga);
   yield takeLatest(Action.GET_SCHEDULE_BASIC_INFO, getScheduleBasicInfoSaga);
+  yield takeLatest(Action.CREATE_NEW_JD_SCHEDULE, createNewJdScheduleSaga);
+
 }
 export default DashboardSaga;
