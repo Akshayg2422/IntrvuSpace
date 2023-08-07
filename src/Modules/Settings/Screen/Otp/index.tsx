@@ -66,8 +66,8 @@ function Otp() {
                                     style={{
                                         fontSize: '3vh'
                                     }}
-                                >Mobile Number </h2>
-                                <h4 className='text-black font-weight-normal py-2'>{"+91 - " + registerData?.mobile_number || registerData?.email} <i className="bi bi-pencil text-primary ml-3 pointer" onClick={() => { goBack() }}></i></h4>
+                                >{registerData?.mobile_number ? 'Mobile Number' : 'Email ID'} </h2>
+                                <h4 className='text-black font-weight-normal py-2'>{registerData?.mobile_number ? "+91 - " + registerData?.mobile_number : registerData?.email} <i className="bi bi-pencil text-primary ml-3 pointer" onClick={() => {goTo(ROUTES['auth-module'].loginWithOtp) }}></i></h4>
                             </div>
                             <div className=" col-sm-9  pr-3 ml-lg--3 px-0 ml-sm-0 ml--2 pt-1"
                                 style={{
