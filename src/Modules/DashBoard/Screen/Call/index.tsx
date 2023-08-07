@@ -1,4 +1,4 @@
-import { Modal, showToast } from '@Components';
+import { Button, Modal, showToast } from '@Components';
 import { useModal, useNavigation, useScreenRecorder, useTextToSpeech } from '@Hooks';
 import { CallScreen } from '@Modules';
 import { useWhisper } from '@chengsokdara/use-whisper';
@@ -6,19 +6,20 @@ import { log } from 'console';
 import { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import hark from 'hark'
-import { getStartChat, screenRecordingPermission } from '@Redux';
+import { getScheduleBasicInfo, getStartChat, screenRecordingPermission } from '@Redux';
 
 function Call() {
     const { goBack } = useNavigation();
     const dispatch = useDispatch()
 
-    const { scheduleId, recordingPermission } = useSelector((state: any) => state.DashboardReducer)
+    const { scheduleInfo, scheduleId, recordingPermission } = useSelector((state: any) => state.DashboardReducer)
 
     const [isHear, setIsHear] = useState(true)
     const [showVideo, setShowVideo] = useState(false)
     const [isRecording, setIsRecording] = useState(false)
     const [notEvenSpeck, setNotEvenSpeck] = useState(false)
     const [micState, setMicState] = useState(false)
+    const [buttonConditional, setButtonConditional] = useState<any>('start')
 
     const CALL_STATE_INACTIVE = -1
     const CALL_STATE_LISTENING = 1
@@ -53,18 +54,33 @@ function Call() {
 
     const [speaking, setSpeaking] = useState(false);
 
-    // useEffect(() => {
-    //     startScreenRecording()
-    //     return () => {
-    //         dispatch(screenRecordingPermission(false))
-    //     }
-    // }, [])
+    // getScheduleBasicInfo
+    useEffect(() => {
+        getBasicInfo()
+    }, [])
+
 
     useEffect(() => {
-        // if (recordingPermission) {
+        if (recordingPermission) {
             getChatDetails('start', 'text')
-        // }
-    }, [])
+            setButtonConditional('processing')
+        }
+        return () => {
+            dispatch(screenRecordingPermission(false))
+        }
+    }, [recordingPermission])
+
+
+    const getBasicInfo = () => {
+        const params = { schedule_id: scheduleId }
+        dispatch(getScheduleBasicInfo({
+            params, onSuccess: () => () => {
+            },
+            onError: () => () => {
+            }
+        }))
+    }
+
 
     useEffect(() => {
         async function fetchData() {
@@ -102,7 +118,7 @@ function Call() {
                 }
             } else {
                 console.log('mic on');
-                setMicState(true)
+                buttonConditional === 'processing' && setMicState(true)
             }
         }
 
@@ -121,13 +137,11 @@ function Call() {
     useEffect(() => {
         if (speaking) {
             setCallState(CALL_STATE_LISTENING)
-            console.log('setNotEvenSpeck');
             setNotEvenSpeck(true);
         } else {
             setCallState(CALL_STATE_INACTIVE)
         }
     }, [speaking])
-
 
     useEffect(() => {
         if (transcript.text) {
@@ -191,11 +205,8 @@ function Call() {
                     } else if (success?.next_step[0].response_type === 'COMMAND') {
                         commandVariant(success?.next_step[0]?.response_text)
                     } else if (success?.next_step[0].message_type === "SPEAK" && success?.next_step[0].response_type == 'INTERVIEWER_END_CALL') {
-                        // await speak(success?.next_step[0]?.response_text);
-                        if (!isSpeaking) {
-                            isScreenRecording && stopScreenRecording()
-                            goBack()
-                        }
+                        buttonConditional('end')
+                        await speak(success?.next_step[0]?.response_text);
                     }
                 },
                 onError: (error: any) => () => {
@@ -218,31 +229,48 @@ function Call() {
         }
     }
 
+    useEffect(() => {
+        if (buttonConditional === 'end' && !isSpeaking) {
+            const timer = setTimeout(() => {
+                isScreenRecording && stopScreenRecording()
+                goBack()
+            }, 3000);
+            return () => clearTimeout(timer);
+        }
+    }, [buttonConditional, isSpeaking]);
+
     const showLoader = callState === CALL_STATE_TRANSCRIBING || callState === CALL_STATE_API_LOADING
 
     return (
-        <Modal isOpen={true} size='xl' onClose={() => goBack()} >
-            <CallScreen
-                userName='Tamil Selvan'
-                status='Connected'
-                loading={showLoader}
-                variant={''}
-                onMic={micState}
-                startTimer={true}
-                micDisable={isSpeaking}
-                isMute={isRecording}
-                video={showVideo}
-                onVideoControl={() => handleVideo()}
-                speaker={isHear}
-                onMicControl={() => handleMicControl()
-                }
-                onCallEnd={() => {
-                    isScreenRecording && stopScreenRecording()
-                    goBack();
-                }}
-                onVolumeControl={() => { }
-                } />
-        </Modal>
+        <>
+            <Modal isOpen={true} size='xl' onClose={() => goBack()} >
+                <CallScreen
+                    basicInfo={scheduleInfo}
+                    userName='Tamil Selvan'
+                    status='Connected'
+                    loading={showLoader}
+                    variant={''}
+                    onMic={micState}
+                    conditionalButton={buttonConditional}
+                    micDisable={isSpeaking}
+                    isMute={isRecording}
+                    startButtonOnclick={() => {
+                        startScreenRecording()
+                    }}
+                    video={showVideo}
+                    onVideoControl={() => handleVideo()}
+                    speaker={isHear}
+                    onMicControl={() => handleMicControl()
+                    }
+                    onCallEnd={() => {
+                        isScreenRecording && stopScreenRecording()
+                        // callModal.hide()
+                        goBack();
+                    }}
+                    onVolumeControl={() => { }
+                    } />
+            </Modal>
+        </>
     )
 }
 

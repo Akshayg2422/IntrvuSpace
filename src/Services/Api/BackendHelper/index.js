@@ -97,4 +97,8 @@ export const postJdVariantApi = payload => post(URL.URL_CREATE_JD_VARIANT, paylo
 export const getJdItemList = payload => post(URL.URL_GET_JD_ITEM_LIST, payload, {});
 
 
+// URL_GET_SCHEDULE_BASIC_INFO
+
+export const getScheduleBasicInfo = payload => post(URL.URL_GET_SCHEDULE_BASIC_INFO, payload, {});
+
 
