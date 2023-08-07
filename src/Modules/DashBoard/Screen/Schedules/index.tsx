@@ -53,12 +53,15 @@ function Schedules() {
         const { id, is_complete, is_started } = item;
         if (is_complete === true) {
             return (
-                <>
-                    <Button text={'Report'} size='sm' onClick={() => {
-                        dispatch(selectedScheduleId(item))
-                        goTo(ROUTES['designation-module'].report)
-                    }} />
-                </>
+
+                <Button
+                    text={'Report'}
+                    size='sm'
+                    onClick={() => {
+                        goTo(ROUTES['designation-module'].report + "/" + id)
+                    }}
+                />
+
             )
         } else if (is_complete === false && is_started === true) {
             return (
