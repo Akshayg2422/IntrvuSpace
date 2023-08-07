@@ -75,7 +75,7 @@ function AnalyzingAnimation() {
                     {/* For the next 20 seconds */}
                     {generating && contentStep === 1 && (
                         <div className={'mt--2'}>
-                            <div className={'d-flex justify-content-center align-items-center'}>
+                            {/* <div className={'d-flex justify-content-center align-items-center'}>
                                 <img
                                     height={'200px'}
                                     width={'200px'}
@@ -83,18 +83,19 @@ function AnalyzingAnimation() {
                                     className={'flip-image'}
                                     style={contentStep === 1 ? { animation: 'flipAnimation 1s infinite' } : {}}
                                 />
-                            </div>
-                            <h4 className={'d-flex justify-content-center align-items-center text-white h1 mt-3'} style={{ backgroundColor: "#fabe2c" }} >
-                                {contentStep === 1 ? 'Generating' : contentStep}
-                                <span className={'loader6 ml-5 mb-4'}></span>
-                            </h4>
-
-                            <h4 className={'d-flex justify-content-center align-items-center'} >
-                                {/* {contentStep === 1 ? 'Generating' : contentStep} */}
+                            </div> */}
+                            <h4 className={'d-flex justify-content-center align-items-center mt-3'} >
                                 {contentStep === 1 && (
                                     <span className={'loader3 mr-2 mt--7'}></span>
                                 )}
                             </h4>
+                            
+                            <h4 className={'d-flex justify-content-center align-items-center text-white h1 mt-6'} style={{ backgroundColor: "#fabe2c" }} >
+                                {contentStep === 1 ? 'Generating' : contentStep}
+                                <span className={'loader6 ml-5 mb-4'}></span>
+                            </h4>
+
+
                         </div>
                     )}
 
