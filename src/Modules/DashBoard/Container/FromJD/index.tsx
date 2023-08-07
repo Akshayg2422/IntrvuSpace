@@ -195,12 +195,27 @@ function FromJD() {
                 <AnalyzingAnimation />
             </GenerateModal>
 
-            <Modal title={'Proceed InterView'} isOpen={completedModal.visible} onClose={completedModal.hide}>
-                <Button
-                    block
-                    text={'Start Interview'}
-                    onClick={proceedInterview}
-                />
+            <Modal isOpen={completedModal.visible || true} onClose={completedModal.hide}>
+                <div className='mt--5 pb-4'>
+                    <div className='text-center '>
+                        <div className='display-1 text-black'>
+                            Your Interview is Ready!
+                        </div>
+                    </div>
+                    <div className='text-center py-3'>
+                        <small className='text-black'>Click on Start Now to Start Interview</small>
+                        <div className='row justify-content-center pt-1'>
+                            <div className='col-4'>
+                                <Button
+                                    block
+                                    size='md'
+                                    text={'Start Now'}
+                                    onClick={proceedInterview}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </Modal>
 
         </>

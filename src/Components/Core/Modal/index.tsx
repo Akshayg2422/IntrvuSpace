@@ -17,7 +17,7 @@ function Modal({ isOpen, children, title, size = "lg", style, onClose, variant =
         <button
 
           aria-label={"Close"}
-          className={"close bg-white"}
+          className={"close"}
           data-dismiss={"modal"}
           type={"button"}
           onClick={() => {
