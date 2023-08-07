@@ -63,7 +63,7 @@ function Call() {
     useEffect(() => {
         if (recordingPermission) {
             getChatDetails('start', 'text')
-            setButtonConditional('processing')
+            // setButtonConditional('processing')
         }
         return () => {
             dispatch(screenRecordingPermission(false))
@@ -255,7 +255,8 @@ function Call() {
                     micDisable={isSpeaking}
                     isMute={isRecording}
                     startButtonOnclick={() => {
-                        startScreenRecording()
+                        // startScreenRecording()
+                        setButtonConditional('processing')
                     }}
                     video={showVideo}
                     onVideoControl={() => handleVideo()}
