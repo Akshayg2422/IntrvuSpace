@@ -243,7 +243,10 @@ function Call() {
 
     return (
         <>
-            <Modal isOpen={true} size='xl' onClose={() => goBack()} >
+            <Modal isOpen={true} size='xl' onClose={() => {
+                isScreenRecording && stopScreenRecording()
+                goBack()
+            }} >
                 <CallScreen
                     basicInfo={scheduleInfo}
                     userName='Tamil Selvan'
@@ -257,6 +260,7 @@ function Call() {
                     startButtonOnclick={() => {
                         // startScreenRecording()
                         setButtonConditional('processing')
+                        getChatDetails('start', 'text')
                     }}
                     video={showVideo}
                     onVideoControl={() => handleVideo()}
