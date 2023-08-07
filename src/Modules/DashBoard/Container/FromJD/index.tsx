@@ -93,7 +93,7 @@ function FromJD() {
         if (id) {
             // goTo(ROUTES['designation-module'].report + "/" + '03090d27-45ef-4ced-8f8b-f77d03c63d95')
             dispatch(selectedScheduleId(id))
-            goTo(ROUTES['designation-module'].call)
+            goTo(ROUTES['designation-module'].interview + "/" + id)
         }
     }
 
