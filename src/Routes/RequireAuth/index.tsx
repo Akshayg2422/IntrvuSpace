@@ -7,6 +7,7 @@ import { icons } from '@Assets'
 import { FCM_TOKEN, getDeviceInfo } from '@Utils'
 import { PushNotification } from "@Modules";
 
+
 type RequireAuthProps = {
     children: React.ReactNode;
 }
@@ -31,8 +32,12 @@ export const RequireAuth = ({ children }: RequireAuthProps) => {
     }, [location]);
 
 
+    console.log(+ "===========");
+
+
     const login = loginUser?.details?.token
     if (!loginUser?.details?.token) {
+        localStorage.setItem('route', location.pathname);
         return <Navigate to={ROUTES['auth-module'].login} state={{ path: location.pathname }} />
     }
 
@@ -50,7 +55,7 @@ export const RequireAuth = ({ children }: RequireAuthProps) => {
 
     return (
         <>
-           {loginUser?.details?.is_admin && !removeSideNav && <Sidebar
+            {loginUser?.details?.is_admin && !removeSideNav && <Sidebar
                 routes={HOME_ROUTES}
                 toggleSideNav={toggleSideNav}
                 sideNavOpen={sideNavOpen}
