@@ -28,7 +28,8 @@ const initialState: DashboardProp = {
   breadCrumb: [],
   recordingPermission: false,
   jdVariantData: undefined,
-  jdItem: undefined
+  jdItem: undefined,
+  scheduleInfo: undefined
 };
 
 const DashboardReducer = (state = initialState, action: any) => {
@@ -331,6 +332,17 @@ const DashboardReducer = (state = initialState, action: any) => {
       state = { ...state, jdItem: undefined };
       break;
 
+    // GET_SCHEDULE_BASIC_INFO
+
+    case ActionTypes.GET_SCHEDULE_BASIC_INFO:
+      state = { ...state, scheduleInfo: undefined };
+      break;
+    case ActionTypes.GET_SCHEDULE_BASIC_INFO_SUCCESS:
+      state = { ...state, scheduleInfo: action.payload };
+      break;
+    case ActionTypes.GET_SCHEDULE_BASIC_INFO_FAILURE:
+      state = { ...state, scheduleInfo: undefined };
+      break;
 
     default:
       state = state;
