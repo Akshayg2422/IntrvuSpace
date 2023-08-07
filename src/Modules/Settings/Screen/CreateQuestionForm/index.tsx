@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Input, Card, Back, Button, CommonTable, showToast, Breadcrumbs, } from '@Components';
-import { useInput, useKeyPress, useLoader, useNavigation, useWindowDimensions } from '@Hooks';
+import { useInput, useKeyPress, useLoader, useModal, useNavigation, useWindowDimensions } from '@Hooks';
 import { useDispatch, useSelector } from 'react-redux';
 import { CREATE_QUESTION_FORM_RULES, getValidateError, ifObjectExist, validate } from '@Utils';
 import { createQuestionForm, generateForm } from '@Redux';
 import { ROUTES } from '@Routes';
-import { AnalyzingAnimation } from '@Modules'
+import { AnalyzingAnimation, GenerateModal } from '@Modules';
 
 
 type Task = {
@@ -25,6 +25,7 @@ function CreateQuestionForm() {
     const { selectedRole, questions } = useSelector((state: any) => state.DashboardReducer)
     const { goTo, } = useNavigation()
     const [dataGenerated, setDataGenerated] = useState(false);
+    const generateJdModal = useModal(false);
 
     useEffect(() => {
         if (isEnterPressed) {
@@ -81,8 +82,7 @@ function CreateQuestionForm() {
         }
         const validation = validate(CREATE_QUESTION_FORM_RULES, params)
         if (ifObjectExist(validation)) {
-            generateLoader.show()
-            setDataGenerated(true)
+            generateJdModal.show()
             setLoading(true)
             dispatch(
                 generateForm({
@@ -90,17 +90,15 @@ function CreateQuestionForm() {
                     onSuccess: (response) => () => {
                         if (response.success) {
                             resetValues()
-                            generateLoader.hide()
+                            generateJdModal.hide()
                             showToast(response.message, "success");
-                            setDataGenerated(false)
                             goTo(ROUTES['designation-module']['questions'])
                         }
                     },
                     onError: (error) => () => {
                         showToast(error.error_message, 'error');
                         setLoading(false)
-                        generateLoader.hide()
-                        setDataGenerated(false)
+                        generateJdModal.hide()
                     },
                 })
             )
@@ -117,7 +115,7 @@ function CreateQuestionForm() {
     return (
         <>
 
-            {!dataGenerated && <Card className="m-3" style={{ height: height - 30 }}>
+            <Card className="m-3" style={{ height: height - 30 }}>
 
                 <div className={'row pl-1'}>
                     <Back /><span className={'h3 pl-1'}> CREATE FORM</span>
@@ -145,8 +143,12 @@ function CreateQuestionForm() {
 
                 </div>
 
-            </Card>}
-            {dataGenerated && <AnalyzingAnimation />}
+            </Card>
+
+            <GenerateModal isOpen={generateJdModal.visible} onClose={generateJdModal.hide}>
+                <AnalyzingAnimation />
+            </GenerateModal>
+
         </>
     );
 }

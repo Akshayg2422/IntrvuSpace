@@ -191,7 +191,7 @@ function FromJD() {
                 </div>
             </Modal>
 
-            <GenerateModal isOpen={generateJdModal.visible} onClose={generateJdModal.hide}>
+            <GenerateModal title={'Create Interview Schedule From JD'} isOpen={generateJdModal.visible} onClose={generateJdModal.hide}>
                 <AnalyzingAnimation />
             </GenerateModal>
 
