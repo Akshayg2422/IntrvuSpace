@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { USER_TOKEN } from'@Utils'
+import { USER_TOKEN } from '@Utils'
 export const BUILD_TYPE_LIVE = 1;
 export const BUILD_TYPE_LIVE_DEMO = 2;
 export const BUILD_TYPE_STAGING = 3;

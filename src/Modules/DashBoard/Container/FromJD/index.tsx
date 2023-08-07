@@ -1,10 +1,11 @@
-import { Button, Card, Divider, Modal, TextArea, Input } from '@Components';
-import { getJdItemList, postJdVariant, selectedScheduleId } from '@Redux';
+import { Button, Card, Divider, Modal, TextArea, Input, showToast } from '@Components';
+import { createNewJdSchedule, getJdItemList, postJdVariant, selectedScheduleId } from '@Redux';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useInput, useNavigation, useModal } from '@Hooks';
 import { AnalyzingAnimation, GenerateModal } from '@Modules';
 import { ROUTES } from '@Routes';
+import { validate, FROM_JD_RULES, ifObjectExist, getValidateError } from '@Utils';
 
 
 function FromJD() {
@@ -23,6 +24,8 @@ function FromJD() {
     const generateJdModal = useModal(false);
     const completedModal = useModal(false);
     const [scheduleId, setScheduleId] = useState(undefined)
+    const jdScheduleModal = useModal(false);
+
 
 
 
@@ -57,27 +60,33 @@ function FromJD() {
             jd: jd.value
         }
 
-        addJdModal.hide();
-        generateJdModal.show();
+        const validation = validate(FROM_JD_RULES, params)
 
-        dispatch(postJdVariant({
-            params,
-            onSuccess: (res: any) => () => {
-                generateJdModal.hide();
-                const { details } = res;
-                if (details?.schedule_id) {
-                    setScheduleId(details?.schedule_id)
-                }
-                completedModal.show();
-                getKnowledgeGroupFromJdHandler();
-                resetValues();
-
-            },
-            onError: () => () => {
-                generateJdModal.hide();
-                addJdModal.show();
-            },
-        }))
+        if (ifObjectExist(validation)) {
+            addJdModal.hide();
+            generateJdModal.show();
+            dispatch(postJdVariant({
+                params,
+                onSuccess: (res: any) => () => {
+                    generateJdModal.hide();
+                    const { details } = res;
+                    if (details?.schedule_id) {
+                        setScheduleId(details?.schedule_id)
+                    }
+                    completedModal.show();
+                    getKnowledgeGroupFromJdHandler();
+                    resetValues();
+                    showToast(res.message, 'success')
+                },
+                onError: (error) => () => {
+                    generateJdModal.hide();
+                    addJdModal.show();
+                    showToast(error.error_message, 'error')
+                },
+            }))
+        } else {
+            showToast(getValidateError(validation))
+        }
     }
 
     function resetValues() {
@@ -89,11 +98,45 @@ function FromJD() {
     }
 
 
+
+    function createNewJdScheduleApiHandler(id: string) {
+        const params = {
+            "knowledge_group_variant_id": id
+        }
+
+
+        generateJdModal.show();
+
+        dispatch(createNewJdSchedule({
+            params,
+            onSuccess: (res: any) => () => {
+
+                console.log(JSON.stringify(res) + '======res');
+
+
+                generateJdModal.hide();
+                const { details } = res;
+                if (details?.schedule_id) {
+                    setScheduleId(details?.schedule_id)
+                }
+                completedModal.show();
+                getKnowledgeGroupFromJdHandler();
+            },
+            onError: () => () => {
+                generateJdModal.hide();
+            },
+        }))
+    }
+
+
     function proceedInterview(id: string) {
         if (id) {
-            // goTo(ROUTES['designation-module'].report + "/" + '03090d27-45ef-4ced-8f8b-f77d03c63d95')
-            dispatch(selectedScheduleId(id))
-            goTo(ROUTES['designation-module'].interview + "/" + id)
+            if (id !== '-1') {
+                dispatch(selectedScheduleId(id))
+                goTo(ROUTES['designation-module'].interview + "/" + id)
+            } else {
+                jdScheduleModal.show();
+            }
         }
     }
 
@@ -105,6 +148,8 @@ function FromJD() {
     }
 
 
+
+    console.log(JSON.stringify(jdItem) + '===jdItem');
 
     return (
         <>
@@ -123,6 +168,8 @@ function FromJD() {
                             })
 
 
+                            const knowledgeId = knowledge_group_variant[0].id;
+
 
                             return (
                                 <div className='col-4 mt--3' >
@@ -133,16 +180,20 @@ function FromJD() {
                                         <Divider space={'3'} />
                                         <small className='text-sm text-muted'>{description}</small>
 
-                                        {isTryAgain && <div className='mt-2'><Button block text={'Try Again'} /></div>}
+                                        {isTryAgain && <div className='mt-2'>
+                                            <Button
+                                                block
+                                                text={'Try Another Interview'}
+                                                onClick={() => {
+                                                    createNewJdScheduleApiHandler(knowledgeId);
+                                                }} />
+                                        </div>}
 
                                         <div className='py-3'>
                                             {
                                                 schedules &&
                                                 schedules.length > 0 &&
                                                 schedules.map((each: any, index: number) => {
-
-                                                    console.log(JSON.stringify(each));
-
 
                                                     const { is_complete, is_started, is_report_complete, id } = each;
                                                     return (
@@ -256,6 +307,36 @@ function FromJD() {
                 </div>
             </Modal>
 
+
+            <Modal isOpen={jdScheduleModal.visible} onClose={jdScheduleModal.hide}>
+                <div className='mt--5 pb-4'>
+                    <div className='text-center '>
+                        <div className='display-4 text-black'>
+                            {'Interview Preparation is in progress,'}
+                        </div>
+                        <div className='display-4 text-black'>
+                            {'it will take couple of minutes,'}
+                        </div>
+                        <div className='display-4 text-black'>
+                            {'you will receive schedule confirmation over mail.'}
+                        </div>
+                    </div>
+                    <div className='text-center py-3'>
+                        <div className='row justify-content-center pt-1'>
+                            <div className='col-4'>
+                                <Button
+                                    block
+                                    size='md'
+                                    text={'Close'}
+                                    onClick={() => {
+                                        jdScheduleModal.hide();
+                                    }}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </Modal>
         </>
     )
 }
