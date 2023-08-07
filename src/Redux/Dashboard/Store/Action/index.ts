@@ -617,5 +617,24 @@ export const getJdItemListFailure = (error: any) => {
   }
 }
 
+// GET_SCHEDULE_BASIC_INFO
 
+export const getScheduleBasicInfo = (params: any) => {
+  return {
+    type: ActionTypes.GET_SCHEDULE_BASIC_INFO,
+    payload: params,
+  }
+}
+export const getScheduleBasicInfoSuccess = (response: any) => {
+  return {
+    type: ActionTypes.GET_SCHEDULE_BASIC_INFO_SUCCESS,
+    payload: response
+  }
+}
 
+export const getScheduleBasicInfoFailure = (error: any) => {
+  return {
+    type: ActionTypes.GET_SCHEDULE_BASIC_INFO_SUCCESS,
+    payload: error
+  }
+}
