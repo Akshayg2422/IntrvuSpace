@@ -43,7 +43,6 @@ function Login() {
     }
 
     const onSubmit = () => {
-
         if (loginWithOtp === false) {
             if (email.value.length === 0) {
                 showToast('Email ID  Cannot be empty', 'error')
@@ -66,7 +65,7 @@ function Login() {
     }
 
     const memberLoginHandler = () => {
-
+        loginLoader.show()
         const params = {
             ...(email.value && { email: email.value }),
             password: password.value
