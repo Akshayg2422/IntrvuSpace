@@ -70,12 +70,6 @@ const CallScreen = ({ basicInfo, onMicControl, onMic = false, loading = false, c
         return `${firstNameInitial}${lastNameInitial}`;
     }
 
-    // const containerClassName = classNames('container', {
-    //     'bottom-5': !isSmallScreen,
-    //     'right-6': !isSmallScreen,
-
-    //   });
-
     return (
         <div className='text-center'>
 
