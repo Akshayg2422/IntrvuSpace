@@ -16,7 +16,6 @@ type CallScreenProps = {
     video?: boolean
     onVideoControl?: any
     micDisable?: boolean
-    userName?: string
     loading?: boolean
     onMic: boolean
     variant: string
@@ -24,7 +23,7 @@ type CallScreenProps = {
     startButtonOnclick?: any
 }
 
-const CallScreen = ({ basicInfo, onMicControl, onMic = false, loading = false, conditionalButton, userName = '', micDisable = false, onVolumeControl, onCallEnd, isMute = false, speaker, status, video = false, onVideoControl, variant, startButtonOnclick }: CallScreenProps) => {
+const CallScreen = ({ basicInfo, onMicControl, onMic = false, loading = false, conditionalButton, micDisable = false, onVolumeControl, onCallEnd, isMute = false, speaker, status, video = false, onVideoControl, variant, startButtonOnclick }: CallScreenProps) => {
 
     const [time, setTime] = useState({ hours: 0, minutes: 0, seconds: 0 });
     const isSmallScreen = window.innerWidth <= 768;
@@ -81,12 +80,13 @@ const CallScreen = ({ basicInfo, onMicControl, onMic = false, loading = false, c
         <div className='text-center'>
 
             <div className=''>
-                <AnimatedImage show={loading} name={getShortName(userName)} variant={variant} shouldBlink={isMute} />
+                <AnimatedImage show={loading} name={basicInfo && basicInfo?.interviewer_name && getShortName(basicInfo?.interviewer_name)} variant={variant} shouldBlink={isMute} />
             </div>
-            <h1 className='display-2 mb-4'>{userName}</h1>
+            <h2 className='display-2 mb-4'>{basicInfo?.interviewer_name}</h2>
             {
                 isSmallScreen && video && <div>
                     <WebCamRecorder />
+                    <h3 className='display-2 mb-4'>{basicInfo?.interviewee_name}</h3>
                 </div>
             }
             <div className='text-center my-3'>
@@ -175,7 +175,7 @@ const CallScreen = ({ basicInfo, onMicControl, onMic = false, loading = false, c
                         onClick={startButtonOnclick}
                     >
                         <div className=''>
-                            <span className="nav-link-inner--text mx-6 text-lg text-white " style={{ color: '#f5f5f5' }}>{basicInfo?.is_started ? 'Resume' : 'Start'}</span>
+                            <span className="nav-link-inner--text mx-6 text-lg text-white " style={{ color: '#f5f5f5' }}>{basicInfo?.is_started ? 'Resume' : 'Start Now'}</span>
                         </div>
                     </Button>
                 </div>

@@ -54,7 +54,6 @@ function Call() {
 
     const [speaking, setSpeaking] = useState(false);
 
-    // getScheduleBasicInfo
     useEffect(() => {
         getBasicInfo()
     }, [])
@@ -249,7 +248,6 @@ function Call() {
             }} >
                 <CallScreen
                     basicInfo={scheduleInfo}
-                    userName='Tamil Selvan'
                     status='Connected'
                     loading={showLoader}
                     variant={''}
