@@ -430,7 +430,8 @@ function Clients() {
                     onChange={sector.onChange}
                 /> */}
                 {!dataGenerated ?
-                    <><div className='col-7 '>
+                    <>
+                    <div className='col-7 '>
                         {sectors && sectors.length > 0 &&
                             <DropDown
                                 heading={'Sectors'}
