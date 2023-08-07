@@ -24,7 +24,7 @@ function Schedules() {
         {
             id: 2, title: "Completed"
         },
-        {   
+        {
             id: 3, title: "Inprogress"
         }]
 
@@ -68,7 +68,7 @@ function Schedules() {
                 <>
                     <Button text={'Resume'} size='sm' onClick={() => {
                         dispatch(selectedScheduleId(id))
-                        goTo(ROUTES['designation-module'].call)
+                        goTo(ROUTES['designation-module'].interview + '/' + id)
                     }} />
                 </>
             )
@@ -78,7 +78,7 @@ function Schedules() {
                 <>
                     <Button text={'Start'} size='sm' onClick={() => {
                         dispatch(selectedScheduleId(id))
-                        goTo(ROUTES['designation-module'].call)
+                        goTo(ROUTES['designation-module'].interview + '/' + id)
                     }} />
                 </>
             )

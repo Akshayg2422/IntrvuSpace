@@ -66,7 +66,7 @@ function FromCollection() {
             onSuccess: (response: any) => () => {
                 if (type === 'Call') {
                     dispatch(selectedScheduleId(response.details.schedule_id))
-                    goTo(ROUTES['designation-module'].call)
+                    goTo(ROUTES['designation-module'].interview)
                 } else {
                     showToast('Scheduled Successfully')
                 }
