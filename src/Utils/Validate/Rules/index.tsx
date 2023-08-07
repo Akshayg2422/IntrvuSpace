@@ -133,12 +133,12 @@ export const FROM_JD_RULES = {
     length: { minimum: 3, message: "Role minimum 3 chars" },
   },
   experience: {
-    presence: { message: "Experience cannot be empty" },
+    presence: { allowEmpty: false, message: "Experience cannot be empty" },
   },
   reference_link: {
-    presence: { message: "Reference Link cannot be empty" },
+    presence: { allowEmpty: false, message: "Reference Link cannot be empty" },
   },
   jd: {
-    presence: { message: "Job Description cannot be empty" },
+    presence: { allowEmpty: false, message: "Job Description cannot be empty" },
   },
 }
