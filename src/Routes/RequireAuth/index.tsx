@@ -32,11 +32,10 @@ export const RequireAuth = ({ children }: RequireAuthProps) => {
     }, [location]);
 
 
-    console.log(+ "===========");
+    console.log( "===========loginUser"+ loginUser);
 
 
-    const login = loginUser?.details?.token
-    if (!loginUser?.details?.token) {
+    if (!loginUser) {
         localStorage.setItem('route', location.pathname);
         return <Navigate to={ROUTES['auth-module'].login} state={{ path: location.pathname }} />
     }

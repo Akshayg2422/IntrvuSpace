@@ -7,20 +7,22 @@ import { useDispatch, useSelector } from "react-redux";
 import { ROUTES } from '@Routes'
 import { Card } from "reactstrap";
 import { LoginSideContent } from "../../Container";
-import { registerAsMember, memberLoginUsingPassword, fetchOTP, settingRegisterData } from '@Redux'
+import { registerAsMember, memberLoginUsingPassword, fetchOTP, settingRegisterData, userLoginDetails } from '@Redux'
 
 
 
 function Login() {
     const { goTo } = useNavigation()
     const dispatch = useDispatch()
-    const password = useInput('280121')
+    const password = useInput('')
     const mobileNumber = useInput('');
-    const email = useInput('tamilselvan.intern@leorainfotech.in')
+    const email = useInput('')
     const loginLoader = useLoader(false);
     const [showPassword, setShowPassword] = useState(false)
     const [toggleInput, setToggleInput] = useState(false)
+    
     const [loginWithOtp, setLoginWithOtp] = useState(false)
+    const { loginDetails } = useSelector((state: any) => state.AppReducer);
 
     const handleKeyDown = (e: React.KeyboardEvent) => {
         if (e.key === 'Enter') {
@@ -73,8 +75,10 @@ function Login() {
         dispatch(memberLoginUsingPassword({
             params,
             onSuccess: (response: any) => () => {
+
+            
                 loginLoader.hide()
-                if (response.success) {
+                if (response.success) {                    
                     localStorage.setItem(USER_TOKEN, response.details.token);
                     goTo(ROUTES['auth-module'].splash, true);
                 }
