@@ -1,5 +1,5 @@
 import React from 'react'
-import { capitalizeFirstLetter } from '@Utils'
+import { capitalizeFirstLetter, filteredName } from '@Utils'
 import { DesignationItemProps } from './interfaces'
 import { Divider, NoDataFound, Button, MenuBar } from '@Components'
 import { icons } from '@Assets'
@@ -14,18 +14,22 @@ function DesignationItem({ item, onAdd, onEdit, onView }: DesignationItemProps) 
     return (
         <Card className=''>
             <CardHeader className='py-3'>
-                <div className='row justify-content-between mx-0'>
-                    <h3 className='mb-0'>{capitalizeFirstLetter(name)}</h3>
-                    {onAdd &&
-                        <Button
-                            text={'Add'}
-                            onClick={() => {
-                                if (onAdd) {
-                                    onAdd(item)
-                                }
-                            }}
-                        />
-                    }
+                <div className='row justify-content-between  mx-0'>
+                    <div className='col pl-0'>
+                        <h3 className='mb-0'>{filteredName(capitalizeFirstLetter(name), 20)}</h3>
+                    </div>
+                    <div className='text-right'>
+                        {onAdd &&
+                            <Button
+                                text={'Add'}
+                                onClick={() => {
+                                    if (onAdd) {
+                                        onAdd(item)
+                                    }
+                                }}
+                            />
+                        }
+                    </div>
                 </div>
             </CardHeader>
             <CardBody className='pt-1 pb-1 px-0'>

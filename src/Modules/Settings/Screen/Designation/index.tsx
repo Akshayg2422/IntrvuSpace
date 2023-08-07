@@ -8,6 +8,8 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Nav, NavItem, NavLink } from 'reactstrap';
 import classnames from 'classnames'
+import { Header } from '@Modules'
+
 
 
 
@@ -16,6 +18,7 @@ function Designation() {
     const { sectors } = useSelector((state: any) => state.DashboardReducer)
 
     const { goTo, goBack } = useNavigation()
+
 
     const dispatch = useDispatch()
     const [navIndex, setNavIndex] = useState<any>(0)
@@ -144,6 +147,7 @@ function Designation() {
     return (
         <>
             <div className='container-fluid pt-4'>
+
                 <div className='row justify-content-end'>
                     <Button
                         className={'text-white shadow-none'}
@@ -198,7 +202,7 @@ function Designation() {
                         cardData.map((el: any, index: number) => {
                             console.log('ellllllllllll------>', el)
                             return (
-                                <div className='col-sm-4 px-0'>
+                                <div className='col-sm-4 col-lg-4 px-2'>
                                     <DesignationItem
                                         item={el}
                                         onAdd={(selected) => {
@@ -218,7 +222,7 @@ function Designation() {
                                         }}
                                         onView={(designation, role) => {
                                             dispatch(setSelectedRole(role))
-                                            dispatch(breadCrumbs({name:role?.name,path:window.location.pathname}))
+                                            dispatch(breadCrumbs({ name: role?.name, title: el?.name, path: window.location.pathname }))
                                             goTo(ROUTES['designation-module']['questions'])
                                         }
                                         }

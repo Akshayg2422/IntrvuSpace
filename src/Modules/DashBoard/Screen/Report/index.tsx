@@ -1,28 +1,33 @@
-import { Button, CommonTable, Divider, NoRecordsFound, Spinner } from '@Components';
+import { Button, ButtonGroup, CommonTable, Divider, NoRecordsFound, Spinner, } from '@Components';
 import React, { useEffect, useRef, useState } from 'react'
 import { Badge, Card, CardBody, CardHeader, CardTitle, DropdownItem, DropdownMenu, DropdownToggle, Media, Progress, Table, UncontrolledDropdown, UncontrolledTooltip } from 'reactstrap'
 import ReactToPrint from 'react-to-print';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchBasicReport } from '@Redux';
-import { useLoader } from '@Hooks';
+import { useDropDown, useLoader } from '@Hooks';
 import moment from 'moment';
 import { useLinkClickHandler } from 'react-router-dom';
 
 function Report() {
-
+    const FILTER = [{ id: 1, title: 'Basic Report' }, { id: 2, title: 'Detailed Report' }]
 
     const dispatch = useDispatch()
     const { scheduleId } = useSelector((state: any) => state.DashboardReducer)
     const [dataId, setDataId] = useState<any>(['trait', 'communication', 'skill_matrix'])
     const [basicReportData, setBasicReportData] = useState<any>([])
+    const filter = useDropDown(FILTER[0]);
 
     const componentRef = useRef(null);
     let basicReportLoader = useLoader(false);
     const [check, setCheck] = useState<any>(0)
+    const heightRef = useRef<any>()
+    const [cardHeight, setCardHeight] = useState<any>(null)
+
+    console.log("heightRef", heightRef)
 
 
     useEffect(() => {
-        getBasicReportData()
+        getBasicReportData('')
     }, [])
 
     useEffect(() => {
@@ -35,10 +40,11 @@ function Report() {
     console.log("===============>0",scheduleId);
     
 
-    const getBasicReportData = () => {
+    const getBasicReportData = (details) => {
         basicReportLoader.show()
         const params = {
-            schedule_id: scheduleId?.id
+            schedule_id: scheduleId?.id,
+            ...(details === 'Detailed Report' && { is_detailed: true }),
         }
 
         dispatch(
@@ -94,7 +100,11 @@ function Report() {
     //   };
 
 
+    useEffect(() => {
+        setCardHeight(heightRef?.current?.offsetHeight);
+    }, [])
 
+    console.log("cardheight", cardHeight)
 
 
     function removeDuplicates() {
@@ -116,62 +126,72 @@ function Report() {
 
 
 
-    const commonTableHandler = (data) => {
-        return data?.map((el: any) => {
-            return {
-                expected: el?.expected ? el?.expected : <div className='text-center'>-</div>,
-                answered: el?.answered ? el?.answered : <div className='text-center'>-</div>,
-                answered_partial: el?.answered_partial ? el?.answered_partial : <div className='text-center'>-</div>,
-                invalid_partial: el?.invalid_partial ? el?.invalid_partial : <div className='text-center'>-</div>,
-            };
-        });
-    }
+    // const commonTableHandler = (data) => {
+    //     return data?.map((el: any) => {
+    //         return {
+    //             expected: el?.expected ? el?.expected : <div className='text-center'>-</div>,
+    //             answered: el?.answered ? el?.answered : <div className='text-center'>-</div>,
+    //             answered_partial: el?.answered_partial ? el?.answered_partial : <div className='text-center'>-</div>,
+    //             invalid_partial: el?.invalid_partial ? el?.invalid_partial : <div className='text-center'>-</div>,
+    //         };
+    //     });
+    // }
 
 
-    const loopFunction = (data: any) => {
-        let array: any = []
-        let length = 0
+    // const loopFunction = (data: any) => {
+    //     let array: any = []
+    //     let length = 0
 
-        Object.keys(data).forEach((items) => {
-            if (items === 'expected_answer_key_points') {
-                if (data[items]?.points?.length > length) {
-                    length = data[items]?.points?.length
-                }
-            }
-            else {
-                if (Array.isArray(data?.suggestions[items])) {
-                    if (data?.suggestions[items].length > length) {
-                        length = data?.suggestions[items].length
-                    }
-                }
-            }
-        });
+    //     Object.keys(data).forEach((items) => {
+    //         if (items === 'expected_answer_key_points') {
+    //             if (data[items]?.points?.length > length) {
+    //                 length = data[items]?.points?.length
+    //             }
+    //         }
+    //         else {
+    //             if (Array.isArray(data?.suggestions[items])) {
+    //                 if (data?.suggestions[items].length > length) {
+    //                     length = data?.suggestions[items].length
+    //                 }
+    //             }
+    //         }
+    //     });
 
-        for (let i = 0; i < length; i++) {
-            array.push({
-                answered: data?.suggestions['covered']?.length > 0 ? data?.suggestions?.covered[i] : '',
-                answered_partial: data?.suggestions['covered_partial']?.length > 0 ? data?.suggestions?.covered_partial[i] : '',
-                invalid_partial: data?.suggestions['covered_not_valid']?.length > 0 ? data?.suggestions?.covered_not_valid[i] : '',
-            })
-        }
+    //     for (let i = 0; i < length; i++) {
+    //         array.push({
+    //             answered: data?.suggestions['covered']?.length > 0 ? data?.suggestions?.covered[i] : '',
+    //             answered_partial: data?.suggestions['covered_partial']?.length > 0 ? data?.suggestions?.covered_partial[i] : '',
+    //             invalid_partial: data?.suggestions['covered_not_valid']?.length > 0 ? data?.suggestions?.covered_not_valid[i] : '',
+    //         })
+    //     }
 
-        return array
+    //     return array
 
-    }
+    // }
 
 
     const normalizedTableData = (data: any, heading: any) => {
+        let length = 0
         return (
             data.length > 0 && data.map((el, index) => {
-                let array: any = loopFunction(el)
+                // let array: any = loopFunction(el)
+                if (el?.suggestions?.covered?.length > length) {
+                    length = el?.suggestions?.covered?.length
+                }
+                else if (el?.suggestions?.covered_partial?.length > length) {
+                    length = el?.suggestions?.covered_partial?.length
+                }
+                else if (el?.suggestions?.covered_not_valid?.length > length) {
+                    length = el?.suggestions?.covered_not_valid?.length
+                }
 
                 return (
-                    <div className='py-2'>
+                    <div className=' py-2'>
                         <div className=''>
                             <h5 className='text-black'>{`${index + 1}.${el.question}`}</h5>
                         </div>
                         <div className='ml-2 pl-1 pb-3 text-black'>
-                            <h5 className='text-black'>Expected Key Points</h5>
+                            <h5 className='text-black text-uppercase'>Expected Key Points</h5>
                             {el?.expected_answer_key_points?.points?.map((it) => {
                                 return (
                                     <>
@@ -187,74 +207,99 @@ function Report() {
                             })
                             }
                         </div>
-                        {
-                            (el?.suggestions?.covered?.length > 0 || el?.suggestions?.covered?.length > 0 || el?.suggestions?.covered?.length > 0) &&
-                            <Card className=''
+                        {(el?.suggestions?.covered?.length > 0 || el?.suggestions?.covered_partial?.length > 0 || el?.suggestions?.covered_not_valid?.length > 0) &&
+                            <div className='ml-1 pb-2'>
+                                <h5 className='text-black text-uppercase '>Answer breakdown</h5>
+                            </div>
+                        }
+                        <div className='mx-5'>
+
+                            <div className='row p-0 ml--6 mr--7'
                                 style={{
-                                //    zoom:'70%'
+                                    zoom: '80%'
                                 }}
                             >
-                                <div className='table-responsive' style={{}}>
-                                    <Table className=" align-items-center table-flush" >
-                                        <thead className="thead-light">
-                                            <tr>
-                                                <th className="sort" scope="col">
-                                                    Answered
-                                                </th>
-                                                <th className="sort" scope="col">
-                                                    Answered Partial
-                                                </th>
-                                                <th className="sort" scope="col">
-                                                    Invalid Answer
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody className="list overflow-auto overflow-hide">
-                                            <tr className=''>
-                                                <td className="">
-                                                    {el?.suggestions?.covered?.length > 0 && el?.suggestions?.covered?.map((items) => {
-                                                        return (
-                                                            <>
-                                                                <li>
-                                                                    {items}
-                                                                </li>
-                                                            </>
-                                                        )
-                                                    })
-                                                    }
-                                                </td>
-                                                <td className="budget">
-                                                    {el?.suggestions?.covered?.length > 0 && el?.suggestions?.covered?.map((items) => {
-                                                        console.log('9090909e333333333333', items)
-                                                        return (
-                                                            <>
-                                                                <li>
-                                                                    {items}
-                                                                </li>
-                                                            </>
-                                                        )
-                                                    })
-                                                    }
-                                                </td>
-                                                <td className="budget">
-                                                    {el?.suggestions?.covered?.length > 0 && el?.suggestions?.covered?.map((items) => {
-                                                        return (
-                                                            <>
-                                                                <li>
-                                                                    {items}
-                                                                </li>
-                                                            </>
-                                                        )
-                                                    })
-                                                    }
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </Table>
-                                </div>
-                            </Card>
-                        }
-                    </div >
+                                {
+                                    (el?.suggestions?.covered?.length > 0 || el?.suggestions?.covered_partial?.length > 0 || el?.suggestions?.covered_not_valid?.length > 0) &&
+                                    <>
+
+                                        {el?.suggestions?.covered?.length > 0 &&
+                                            <div className='col-sm-4' >
+                                                <Card className='check'>
+                                                    <CardHeader className='h3'>
+                                                        Valid
+                                                    </CardHeader>
+                                                    <CardBody >
+                                                        <div ref={heightRef}>
+                                                            {el?.suggestions?.covered?.length > 0 && el?.suggestions?.covered?.map((items) => {
+                                                                return (
+                                                                    <>
+                                                                        <li>
+                                                                            <span >{items}</span>
+                                                                        </li>
+                                                                    </>
+                                                                )
+                                                            })
+                                                            }
+                                                        </div>
+                                                    </CardBody>
+                                                </Card>
+                                            </div>}
+                                        {el?.suggestions?.covered_partial?.length > 0 &&
+                                            <div className='col-sm-4'>
+                                                <Card
+
+                                                >
+                                                    <CardHeader className='h3'>
+                                                        Partial
+                                                    </CardHeader>
+                                                    <CardBody>
+                                                        {el?.suggestions?.covered_partial?.length > 0 && el?.suggestions?.covered_partial?.map((items) => {
+                                                            return (
+                                                                <>
+                                                                    <li>
+                                                                        {items}
+                                                                    </li>
+                                                                </>
+                                                            )
+                                                        })
+                                                        }
+                                                    </CardBody>
+                                                </Card>
+                                            </div>}
+                                        {el?.suggestions?.covered_not_valid?.length > 0 &&
+                                            <div className='col-sm-4'>
+                                                <Card
+                                                    style={{
+                                                        height: cardHeight - 200
+                                                    }}
+                                                >
+                                                    <CardHeader className='h3'>
+                                                        Invalid
+                                                    </CardHeader>
+                                                    <CardBody>
+                                                        {el?.suggestions?.covered_not_valid?.length > 0 && el?.suggestions?.covered_not_valid?.map((items) => {
+                                                            console.log('9090909e333333333333', items)
+                                                            return (
+                                                                <>
+                                                                    <li>
+                                                                        {items}
+                                                                    </li>
+                                                                </>
+                                                            )
+                                                        })
+                                                        }
+                                                    </CardBody>
+                                                </Card>
+                                            </div>
+
+                                        }
+                                    </>
+
+                                }
+                            </div>
+                        </div >
+                    </div>
                 )
             })
         )
@@ -281,6 +326,19 @@ function Report() {
     }
 
 
+    const handleButtonClick = (selectedOption) => {
+        if (selectedOption.title === 'Detailed Report') {
+            getBasicReportData('Detailed Report')
+
+        }
+        else {
+            getBasicReportData('')
+        }
+
+        filter.onChange(selectedOption);
+    };
+
+
     let array = 0
 
 
@@ -298,7 +356,14 @@ function Report() {
                 </div>
             }
 
-            {<div>
+            {<div className='pt-3'>
+                <div className=' position-absolute'
+                    style={{
+                        right: '80px',
+                    }}
+                >
+                    <ButtonGroup customWidth='120px' size={'btn-sm'} sortData={FILTER} selected={filter.value} onClick={handleButtonClick} />
+                </div>
 
                 <ReactToPrint
                     trigger={() =>
@@ -319,14 +384,14 @@ function Report() {
                 />
 
                 <div ref={componentRef} className='container-fluid contact'>
-                    <div className='row justify-content-end mr-4 pr-3 mt-3'>
+                    {/* <div className='row justify-content-end mr-4 pr-3 mt-3'>
                         <Button
                             variant={'icon-rounded'}
                             color='info'
                             icons={'bi bi-envelope-fill text-white fa-lg'}
                         />
-                    </div>
-                    <div className='row py-4'>
+                    </div> */}
+                    <div className='row py-5'>
                         <div className='col-sm-12'>
                             <Card>
                                 <CardHeader>
@@ -352,7 +417,7 @@ function Report() {
                                     </div>
                                     <div className='row   mx-lg-4 pb-0 mb--2'>
 
-                                        {basicReportData && Object.keys(basicReportData)?.map((heading) => {
+                                        {basicReportData && Object.keys(basicReportData).reverse()?.map((heading) => {
 
                                             return (
                                                 dataId.map((el) => {
@@ -409,7 +474,7 @@ function Report() {
                                     </div>
                                 </CardHeader>
                                 <CardBody className='ml-1 pb-5'>
-                                    {Object.keys(basicReportData)?.map((heading, index) => {
+                                    {Object.keys(basicReportData).reverse()?.map((heading, index) => {
 
                                         console.log("array", array)
 
@@ -489,14 +554,15 @@ function Report() {
 
 
 
-                                                                            {Object.keys(basicReportData).length - 1 !== index && <div className='mb--3 mx--4'>
-                                                                                <Divider />
-                                                                            </div>}
+
                                                                         </>
                                                                     )
                                                                 })}
                                                             </>
                                                         </div>}
+                                                    {Object.keys(basicReportData).length - 1 !== index && <div className='mb--3 mx--4'>
+                                                        <Divider />
+                                                    </div>}
                                                 </>
                                             )
                                         }
@@ -599,7 +665,7 @@ function Report() {
                                                                         })
                                                                         }
                                                                     </div>
-                                                                    {Object.keys(basicReportData).length - 1 !== index && <div className='mb--3 mx--4'>
+                                                                    {1 === index && <div className='mb--3 mx--4'>
                                                                         <Divider />
                                                                     </div>}
                                                                 </>}
