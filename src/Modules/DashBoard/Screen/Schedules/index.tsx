@@ -39,14 +39,15 @@ function Schedules() {
 
     const getMypastInterviewApi = (params: any) => {
 
-        dispatch(getMyPastInterviews({
-            params,
-            onSuccess: (response: any) => () => {
-            },
-            onError: (error) => () => {
+        dispatch(
+            getMyPastInterviews({
+                params,
+                onSuccess: () => () => {
+                },
+                onError: () => () => {
 
-            },
-        }))
+                },
+            }))
     }
 
     const handleNextStep = (item: any) => {
@@ -101,6 +102,7 @@ function Schedules() {
                         selected={selectedSort}
                         sortData={FILTER}
                         onClick={(item) => {
+
                             setSelectedSort(item)
                             let params = {}
                             if (item.id === FILTER[0].id) {
