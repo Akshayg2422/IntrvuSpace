@@ -1,6 +1,3 @@
-
-
-
 import React from 'react';
 import { Button as RSButton } from 'reactstrap';
 import { ButtonProps } from './interfaces';
@@ -32,7 +29,7 @@ function Button({
           {...rest}
           onClick={loading ? undefined : onClick}
         >
-          {loading && <Spinner />}
+          {loading && <Spinner color='white' />}
           {!loading && text}
         </RSButton>
       )}

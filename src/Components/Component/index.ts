@@ -20,10 +20,13 @@ export * from './Alert'
 export * from './Collapse'
 export * from './GroupChat'
 export * from './VoiceRecorder'
-export * from './TextToSpeech' 
+export * from './TextToSpeech'
 export * from './VoiceRecognition'
 export * from './AnimatedImage'
 export * from './WebCamRecorder'
+export * from './AnimatedLoader'
+export * from './AnimatedBook'
+export * from './ReportLoader'
 
 
 

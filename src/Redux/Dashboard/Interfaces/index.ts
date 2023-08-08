@@ -10,5 +10,18 @@ export interface DashboardProp {
   questionSection: any
   selectedQuestionForm: any
   formSectionQuestions: any
-  basicReport:any
+  basicReport: any
+  myPastInterviews: any
+  scheduleId: any
+  generateQuestionSections: any
+  generateSectionsAndQuestions: any
+  questionDetails: any
+  registerData: any
+  removeSideNav: boolean
+  breadCrumb: any
+  VideoSessionDetails: any
+  recordingPermission: boolean
+  jdVariantData: any,
+  jdItem: any
+  scheduleInfo: any
 }

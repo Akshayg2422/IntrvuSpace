@@ -1,31 +1,34 @@
 
-import { Button, Divider, Modal, Input } from '@Components';
-import { useModal, useNavigation, useInput, useLoader } from '@Hooks';
-import { generateForm, getQuestionForm, setSelectedQuestionForm } from '@Redux';
+import { Button, Divider, Modal, Input, Card, showToast, Breadcrumbs } from '@Components';
+import { useModal, useNavigation, useInput, useLoader, useWindowDimensions } from '@Hooks';
+import { breadCrumbs, generateForm, getQuestionForm, setSelectedQuestionForm } from '@Redux';
 import { ROUTES } from '@Routes';
-import { capitalizeFirstLetter } from '@Utils';
-import { useEffect } from 'react';
+import { GENERATE_USING_AI_RULES, capitalizeFirstLetter, getValidateError, ifObjectExist, validate } from '@Utils';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
+import { AnimationBook } from '@Components';
+import { GenerateModal } from '@Modules';
 
 
 function Questions() {
 
-    const { goTo } = useNavigation();
+    const { goTo, goBack } = useNavigation();
     const dispatch = useDispatch()
-
     const addGenerateFormModal = useModal(false);
-
-    const { selectedRole, questions } = useSelector((state: any) => state.DashboardReducer)
+    const { selectedRole, questions, breadCrumb } = useSelector((state: any) => state.DashboardReducer)
     const name = useInput('');
+    const description = useInput('');
+    const [dataGenerated, setDateGenerated] = useState(false)
+    const { height } = useWindowDimensions()
+    const loader = useLoader(false)
+    const generateJdModal = useModal(false);
 
+    console.log('breadCrumbQuestionsssssssssssss------>', breadCrumb)
 
     useEffect(() => {
         getQuestionsFormApi()
     }, [])
 
-
-    const loader = useLoader(false);
 
 
     const getQuestionsFormApi = () => {
@@ -46,28 +49,60 @@ function Questions() {
 
 
     function proceedGenerateFormApiHandler() {
+        setDateGenerated(true)
+        addGenerateFormModal.hide()
+        generateJdModal.show()
 
         const params = {
-            form_name: name.value,
-            group_variant_id: selectedRole?.id
+            name: name.value,
+            description: description.value,
+            knowledge_group_variant_id: selectedRole?.id
         }
 
+        const validation = validate(GENERATE_USING_AI_RULES, params)
 
-        dispatch(
-            generateForm({
-                params,
-                onSuccess: () => () => {
-                },
-                onError: () => () => {
-                },
-            })
-        );
-
+        if (ifObjectExist(validation)) {
+            loader.show()
+            dispatch(
+                generateForm({
+                    params,
+                    onSuccess: () => (response) => {
+                        setDateGenerated(false)
+                        resetValues()
+                        showToast(response.message, 'success')
+                        loader.hide()
+                        generateJdModal.hide()
+                    },
+                    onError: () => (error) => {
+                        setDateGenerated(false)
+                        showToast(error.error_message, 'error')
+                        loader.hide()
+                        generateJdModal.hide()
+                    },
+                })
+            )
+        } else {
+            showToast(getValidateError(validation))
+        }
     }
-console.log('1111111111111111111111111111',JSON.stringify(questions))
+
+    function resetValues() {
+        name.set('')
+        description.set('')
+    }
+
+    const breadcrumbString = breadCrumb.length > 0 && breadCrumb
+    // console.log('aaaaaaaaaaaaaaa', breadcrumbString)
 
     return (
         <>
+            {/* <span className='pointer ml-3 text-black h3 '
+                onClick={() => { goBack() }}
+            >
+                <i className="bi bi-arrow-left text-black fa-lg font-weight-bolder pr-1"></i>  {breadcrumbString}
+            </span> */}
+            <Breadcrumbs />
+
             <div className='m-3'>
                 <div className='col text-right ml-3'>
 
@@ -81,28 +116,28 @@ console.log('1111111111111111111111111111',JSON.stringify(questions))
                         text={'Generate by User'}
                         className="text-white"
                         onClick={() => {
-                            goTo(ROUTES['group-module']['create-question-form'])
+                            goTo(ROUTES['designation-module']['create-question-form'])
                         }}
                     />
                 </div>
 
-
-
-                <div className='row mt-3'>
+                <div className='row mt-3 px-1'>
                     {
                         questions && questions.length > 0 && questions?.map((item: any) => {
                             const { id, name, description } = item;
                             return (
-                                <div className='col-4' key={id}>
-                                    <div className='card justify-content-center p-3'
+                                <div className='col-4 px-2 mb--3 pb-1' key={id}>
+                                    <Card className='shadow-none justify-content-center overflow-auto overflow-hide '
+                                        style={{ height: height - 280 }}
                                         onClick={() => {
-                                            goTo(ROUTES['group-module']['question-sections'])
+                                            goTo(ROUTES['designation-module']['question-sections'])
                                             dispatch(setSelectedQuestionForm(item))
+                                            dispatch(breadCrumbs({ name: name, path: window.location.pathname }))
                                         }} >
-                                        <h4 className='mb-0 pointer'>{name}</h4>
-                                        <div className={'mx--3'}><Divider space={'3'} /></div>
+                                        <h4 className='mb-0 pointer mt--2'>{name}</h4>
+                                        <div className={'mx--4'}><Divider space={'3'} /></div>
                                         <small className='mb-0 pointer'>{description}</small>
-                                    </div>
+                                    </Card>
                                 </div>
                             )
                         })
@@ -110,10 +145,22 @@ console.log('1111111111111111111111111111',JSON.stringify(questions))
                 </div>
 
             </div >
+
+
+
             <Modal title={'Generate Form'} isOpen={addGenerateFormModal.visible} onClose={addGenerateFormModal.hide}>
                 <Input className={'col-6'} heading={'Name'} value={name.value} onChange={name.onChange} />
+                <Input className={'col-6'} heading={'Description'} value={description.value} onChange={description.onChange} />
                 <Button text={'Submit'} onClick={proceedGenerateFormApiHandler} />
             </Modal>
+
+
+            <div className={'pt-3'}>
+                <GenerateModal title={'Generating Questions'} isOpen={generateJdModal.visible} onClose={generateJdModal.hide}>
+                    <AnimationBook />
+                </GenerateModal>
+
+            </div>
         </>
     )
 }

@@ -1,127 +1,82 @@
-import React, { useEffect } from 'react'
-import { SearchInput, Button, Modal, Divider, NoDataFound, ButtonGroup, Input, TextArea, DesignationItem } from '@Components'
-import { useDropDown, useInput, useModal } from '@Hooks'
-import { useSelector, useDispatch } from 'react-redux'
-import { Sectors } from '@Modules'
-import { getKnowledgeGroups } from '@Redux'
-import { capitalizeFirstLetter } from '@Utils'
+import { Button, SearchInput, TopNavbar } from '@Components'
+import { useInput, useNavigation } from '@Hooks'
+import { FromCollection, FromJD, FromSkills } from '@Modules'
+import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+
 
 function Clients() {
 
-    const FILTER = [{ id: 1, title: 'All' }, { id: 2, title: 'Past' }]
-
-    const dispatch = useDispatch()
-
-    const { knowledgeGroups, selectedClientSector } = useSelector((state: any) => state.DashboardReducer)
-    const addJd = useModal(false);
-    const filter = useDropDown(FILTER[0]);
     const search = useInput('');
+    const INTERVIEW_TYPE = [
+        {
+            id: 1, title: 'From Collection'
+        },
+        {
+            id: 2, title: 'From JD'
+        },
+        {
+            id: 3, title: 'From Skills'
+        }
+    ]
+    const [selectedInterview, setSelectedInterview] = useState<any>(0);
 
 
+    function renderComponent() {
 
-    const sector = useInput('');
-    const designation = useInput('');
-    const role = useInput('');
-    const jd = useInput('');
+        let component = <FromCollection />
 
+        switch (selectedInterview) {
+            case 0:
+                component = <FromCollection />
+                break;
+            case 1:
+                component = <FromJD />
+                break;
+            case 2:
+                component = <FromSkills />
+                break;
 
-
-    function submitJdApiHandler() {
-
-
+        }
+        return component;
     }
-
-
-
-
-    useEffect(() => {
-        getKnowledgeGroupDetailsApiHandler();
-    }, [search.value, selectedClientSector])
-
-    const getKnowledgeGroupDetailsApiHandler = () => {
-        const params = { sector_id: selectedClientSector?.id, q: search.value }
-
-        console.log(JSON.stringify(params));
-
-        dispatch(
-            getKnowledgeGroups({
-                params,
-                onSuccess: () => () => {
-                },
-                onError: () => () => {
-                },
-            })
-        );
-    };
-
 
 
     return (
         <>
-            <div className='m-3'>
-                <div className='row'>
-                    <div className='col-7'>
+            <TopNavbar />
+
+            <div className={`container-fluid mt-7`}>
+                <div className='row align-items-center'>
+                    <div className='col-sm-5'>
                         <SearchInput defaultValue={search.value} onSearch={search.set} />
                     </div>
-                    <div className='col text-right'>
-                        <Button className={'text-white'} text={'From JD'} onClick={addJd.show} />
-                    </div>
-                </div>
-                <div className='col text-right mt-3'>
-                    <ButtonGroup size={'btn-sm'} sortData={FILTER} selected={filter.value} onClick={filter.onChange} />
-                </div>
 
-                <div className='mx-3'>
-                    <Sectors />
-                    <div className='row'>
-                        {
-                            knowledgeGroups && knowledgeGroups.length > 0 && knowledgeGroups.map(item => {
-                                const { id, } = item;
-                                return (
-                                    <div className='col-4' key={id}>
-                                        <DesignationItem item={item} />
-                                    </div>
-
-                                )
-                            })
-
-                        }
-
-                    </div>
-
-                </div>
-
+                    {
+                        INTERVIEW_TYPE.map((interview: any, index: number) => {
+                            const { title } = interview;
+                            const selected = index === selectedInterview
+                            return (
+                                <div className='ml-3'>
+                                    <Button
+                                        block
+                                        size={'md'}
+                                        color={!selected ? 'neutral' : 'primary'}
+                                        text={title}
+                                        onClick={() => {
+                                            setSelectedInterview(index);
+                                        }}
+                                    />
+                                </div>
+                            )
+                        })
+                    }
+                </div >
+                {
+                    renderComponent()
+                }
 
             </div >
-
-            <Modal title={'Create JD'} isOpen={addJd.visible} onClose={addJd.hide}>
-                <Input
-                    className={'col-7'}
-                    placeHolder={"Sector"}
-                    value={sector.value}
-                    onChange={sector.onChange}
-                />
-                <Input
-                    className={'col-7'}
-                    placeHolder={"Designation"}
-                    value={designation.value}
-                    onChange={designation.onChange}
-                />
-                <Input
-                    className={'col-7'}
-                    placeHolder={"Role"}
-                    value={role.value}
-                    onChange={role.onChange}
-                />
-                <TextArea
-                    className={'col-7'}
-                    value={jd.value}
-                    onChange={jd.onChange}
-                />
-
-                <Button text={'Submit'} onClick={submitJdApiHandler} />
-
-            </Modal>
         </>
     )
 }

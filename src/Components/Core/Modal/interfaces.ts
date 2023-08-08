@@ -5,6 +5,7 @@ export interface ModalProps extends RsModalProps {
     children?: React.ReactNode;
     title?: string;
     size?: 'lg' | 'sm' | 'xl' | 'md';
-    onClose ?: () => void
-    style?:any;
+    onClose?: () => void
+    style?: any;
+    variant?: 'bg-white' | 'bg-primary'
 } 

@@ -11,6 +11,8 @@ export * from './useScreenRecorder'
 export * from './useTextToSpeech'
 export * from  './useVoiceRecorder'
 export * from './UseKeyPress'
+export * from './useWebCamRecorder'
+export * from './useWhisperTranscription'
 
 
 

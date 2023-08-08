@@ -1,21 +1,33 @@
 
-import { Button, DropDown, DesignationItem, Input, Modal, NoDataFound,Breadcrumbs } from '@Components';
+import { Button, DropDown, DesignationItem, Input, Modal, NoDataFound, Breadcrumbs, showToast } from '@Components';
 import { useDropDown, useInput, useLoader, useModal, useNavigation } from '@Hooks';
-import { createKnowledgeGroup, createKnowledgeGroupVariant, getKnowledgeGroups, getSectors, setSelectedRole } from '@Redux';
+import { breadCrumbs, clearBreadCrumbs, createKnowledgeGroup, createKnowledgeGroupVariant, getKnowledgeGroups, getSectors, setSelectedRole } from '@Redux';
 import { ROUTES } from '@Routes';
-import { getDropDownCompanyDisplayData } from '@Utils';
+import { ADD_DESIGNATION_RULES, getDropDownCompanyDisplayData, getValidateError, ifObjectExist, validate } from '@Utils';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Nav, NavItem, NavLink } from 'reactstrap';
+import classnames from 'classnames'
+import { Header } from '@Modules'
+
+
 
 
 function Designation() {
 
-    const { knowledgeGroups, sectors, selectedRole } = useSelector((state: any) => state.DashboardReducer)
+    const { sectors } = useSelector((state: any) => state.DashboardReducer)
 
-    const { goTo } = useNavigation()
+    const { goTo, goBack } = useNavigation()
+
+
     const dispatch = useDispatch()
+    const [navIndex, setNavIndex] = useState<any>(0)
+    const [navList, setNavList] = useState<any>([])
+    const [cardData, setCardData] = useState<any>([])
 
     const [selectedDesignation, setSelectedDesignation] = useState<any>({})
+    const [selectedVariant, setSelectedVariant] = useState<any>({})
+
 
 
 
@@ -30,29 +42,19 @@ function Designation() {
 
 
     useEffect(() => {
-        getKnowledgeGroupDetailsApiHandler();
+        dispatch(clearBreadCrumbs([]))
         getSectorsApiHandler();
     }, [])
 
-    const getKnowledgeGroupDetailsApiHandler = () => {
-        const params = {}
-        dispatch(
-            getKnowledgeGroups({
-                params,
-                onSuccess: (success: any) => () => {
-                },
-                onError: (error: string) => () => {
-                },
-            })
-        );
-    };
 
     const getSectorsApiHandler = () => {
         const params = {}
         dispatch(
             getSectors({
                 params,
-                onSuccess: () => () => {
+                onSuccess: (response: any) => () => {
+                    setNavList(response?.details?.knowledege_groups)
+                    fetchKnowledgeData(response?.details?.knowledege_groups[0]?.id)
                 },
                 onError: () => () => {
                 },
@@ -60,8 +62,22 @@ function Designation() {
         );
     };
 
+    const fetchKnowledgeData = (id) => {
+        const params = {
+            sector_id: id
+        }
+        dispatch(getKnowledgeGroups({
+            params,
+            onSuccess: (response: any) => () => {
+                setCardData(response.details.knowledege_groups)
+            },
+            onError: (error) => () => {
+
+            },
+        }))
+    }
+
     const createKnowledgeGroupApiHandler = () => {
-        loader.show()
 
         const params = {
             name: title?.value,
@@ -69,20 +85,29 @@ function Designation() {
             sector_id: sector.value?.id
         };
 
-        dispatch(
-            createKnowledgeGroup({
-                params,
-                onSuccess: () => () => {
-                    loader.hide()
-                    addDesignationModal.hide()
-                    getKnowledgeGroupDetailsApiHandler();
-                    resetValue();
-                },
-                onError: () => () => {
-                    loader.hide()
-                },
-            })
-        );
+        const validation = validate(ADD_DESIGNATION_RULES, params)
+
+        if (ifObjectExist(validation)) {
+            loader.show()
+            dispatch(
+                createKnowledgeGroup({
+                    params,
+                    onSuccess: (response) => () => {
+                        loader.hide()
+                        addDesignationModal.hide()
+                        fetchKnowledgeData(navList[navIndex]?.id)
+                        resetValue();
+                        showToast(response.message, 'success');
+                    },
+                    onError: (error) => () => {
+                        showToast(error.error_message, 'error');
+                        loader.hide()
+                    },
+                })
+            )
+        } else {
+            showToast(getValidateError(validation))
+        }
     };
 
     function resetValue() {
@@ -93,14 +118,12 @@ function Designation() {
     }
 
     const createKnowledgeGroupVariantApiHandler = () => {
-
         if (selectedDesignation) {
             const params = {
                 name: title?.value,
                 description: description?.value,
                 knowledge_group_id: selectedDesignation?.id,
-                id: selectedRole?.id
-
+                // id: selectedRole?.id
             };
             loader.show()
 
@@ -111,7 +134,7 @@ function Designation() {
                         loader.hide();
                         addRoleModal.hide();
                         resetValue();
-                        getKnowledgeGroupDetailsApiHandler();
+                        fetchKnowledgeData(navList[navIndex]?.id)
                     },
                     onError: () => () => {
                         loader.hide()
@@ -122,9 +145,10 @@ function Designation() {
     };
 
     return (
-        <> <Breadcrumbs/>
-            <div>
-                <div className="row justify-content-end m-3">
+        <>
+            <div className='container-fluid pt-4'>
+
+                <div className='row justify-content-end'>
                     <Button
                         className={'text-white shadow-none'}
                         size={'sm'}
@@ -140,54 +164,81 @@ function Designation() {
                             goTo(ROUTES['designation-module']['sector']);
                         }}
                     />
-
-                    <Button
-                        className={'text-white shadow-none'}
-                        size={'sm'}
-                        text={"Call"}
-                        onClick={() => {
-                            goTo(ROUTES['designation-module']['call']);
-                        }}
-                    />
                 </div>
-                <div className='mx-3'>
-                    <div className='row'>
-                        {knowledgeGroups && knowledgeGroups.length > 0 ?
-                            knowledgeGroups.map((el: any, index: number) => {
-                                return (
-                                    <div className='col-4'>
-                                        <DesignationItem
-                                            item={el}
-                                            onAdd={(selected) => {
-                                                addRoleModal.show();
-                                                setSelectedDesignation(selected);
+                <div className='d-flex pt-3 overflow-auto overflow-hide mx--4'>
+                    {navList && navList.map((el, index) => {
+                        return (
+                            <div className='col-sm-3 px-2'>
+                                <Nav
+                                    className="nav-fill flex-column flex-sm-row pointer"
+                                    id="tabs-text"
+                                    pills
+                                    role="tablist"
+                                >
+                                    <NavItem>
+                                        <NavLink
+                                            aria-selected={index === navIndex}
+                                            className={classnames(`mb-sm-3 mb-md-0 shadow-none ${index !== navIndex ? 'text-black font-weight-normal' : 'font-weight-bold'}`, {
+                                                active: index === navIndex
+                                            })}
+                                            onClick={() => {
+                                                setNavIndex(index)
+                                                fetchKnowledgeData(el.id)
                                             }}
-
-                                            onEdit={(designation, role) => {
-                                                setSelectedDesignation(designation)
-                                                dispatch(setSelectedRole(role))
-                                                const { name, description } = role
-                                                title.set(name)
-                                                if (description) {
-                                                    description.set(description)
-                                                }
-                                                addRoleModal.show();
-                                            }}
-                                            onView={(designation, role) => {
-                                                dispatch(setSelectedRole(role))
-                                                goTo(ROUTES['group-module']['questions'])
-                                            }
-                                            }
-                                        />
-                                    </div>
-                                )
-                            })
-                            :
-                            <div className={'d-flex justify-content-center align-items-center'} style={{ height: '90vh' }}>
-                                <NoDataFound text={"No Data Found"} />
+                                            role="tab"
+                                        >
+                                            {el.name}
+                                        </NavLink>
+                                    </NavItem>
+                                </Nav>
                             </div>
-                        }
-                    </div>
+                        )
+                    })
+
+                    }
+                </div>
+                <div className='row  pt-3 px-0'>
+                    {cardData && cardData.length > 0 ?
+                        cardData.map((el: any, index: number) => {
+                            console.log('ellllllllllll------>', el)
+                            return (
+                                <div className='col-sm-4 col-lg-4 px-2'>
+                                    <DesignationItem
+                                        item={el}
+                                        onAdd={(selected) => {
+                                            addRoleModal.show();
+                                            setSelectedDesignation(selected);
+                                        }}
+
+                                        onEdit={(designation, role) => {
+                                            setSelectedDesignation(designation)
+                                            dispatch(setSelectedRole(role))
+                                            const { name, description } = role
+                                            title.set(name)
+                                            if (description) {
+                                                description.set(description)
+                                            }
+                                            addRoleModal.show();
+                                        }}
+                                        onView={(designation, role) => {
+                                            dispatch(setSelectedRole(role))
+                                            dispatch(breadCrumbs({ name: role?.name, title: el?.name, path: window.location.pathname }))
+                                            goTo(ROUTES['designation-module']['questions'])
+                                        }
+                                        }
+                                    />
+                                </div>
+                            )
+                        })
+                        :
+                        <div className={'d-flex  justify-content-center align-items-center mx-auto my-auto '}
+                            style={{
+                                height: '60vh'
+                            }}
+                        >
+                            <NoDataFound />
+                        </div>
+                    }
                 </div>
                 < Modal size={'lg'} title={"Add Designation"} isOpen={addDesignationModal.visible} onClose={addDesignationModal.hide} >
                     <div className='col-7'>
@@ -210,7 +261,7 @@ function Designation() {
                         }
                     </div>
 
-                    <div className="col text-right ">
+                    <div className="col text-right">
                         <Button size={'md'}
                             loading={loader.loader}
                             text={"Submit"}
@@ -239,7 +290,8 @@ function Designation() {
                         />
                     </div>
                 </Modal >
-            </div >
+            </div>
+
         </>
     )
 }

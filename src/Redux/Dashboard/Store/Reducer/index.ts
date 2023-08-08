@@ -16,7 +16,20 @@ const initialState: DashboardProp = {
   questionSection: undefined,
   selectedQuestionForm: undefined,
   formSectionQuestions: undefined,
-  basicReport: undefined
+  basicReport: undefined,
+  myPastInterviews: undefined,
+  scheduleId: undefined,
+  generateQuestionSections: undefined,
+  generateSectionsAndQuestions: undefined,
+  questionDetails: undefined,
+  registerData: undefined,
+  removeSideNav: false,
+  VideoSessionDetails: undefined,
+  breadCrumb: [],
+  recordingPermission: false,
+  jdVariantData: undefined,
+  jdItem: undefined,
+  scheduleInfo: undefined
 };
 
 const DashboardReducer = (state = initialState, action: any) => {
@@ -169,7 +182,7 @@ const DashboardReducer = (state = initialState, action: any) => {
 
 
 
-    //GET_FORM_SECTION_QUESTIONS
+    //FETCH_BASIC_REPORT
 
     case ActionTypes.FETCH_BASIC_REPORT:
       state = { ...state, basicReport: undefined };
@@ -181,10 +194,155 @@ const DashboardReducer = (state = initialState, action: any) => {
       state = { ...state, basicReport: undefined };
       break;
 
+    // MyPastInterviews
+    case ActionTypes.GET_MY_PAST_INTERVIEWS:
+      state = { ...state, myPastInterviews: undefined };
+      break;
+    case ActionTypes.GET_MY_PAST_INTERVIEWS_SUCCESS:
+      state = { ...state, myPastInterviews: action.payload.details?.schedules };
+      break;
+    case ActionTypes.GET_MY_PAST_INTERVIEWS_FAILURE:
+      state = { ...state, myPastInterviews: undefined };
+      break;
+
+    // Selected Schedule Id
+
+    case ActionTypes.SELECTED_SCHEDULE_ID:
+      state = { ...state, scheduleId: action.payload };
+      break;
+
+    // GENERATE_SECTION_QUESTIONS
+
+    case ActionTypes.FETCH_GENERATE_SECTION_QUESTIONS:
+      state = { ...state, generateQuestionSections: undefined };
+      break;
+    case ActionTypes.FETCH_GENERATE_SECTION_QUESTIONS_SUCCESS:
+      state = { ...state, generateQuestionSections: action.payload.details };
+      break;
+    case ActionTypes.FETCH_GENERATE_SECTION_QUESTIONS_FAILURE:
+      state = { ...state, generateQuestionSections: undefined };
+      break;
+
+    // GENERATE_FORM_SECTIONS_AND_QUESTIONS 
+
+    case ActionTypes.FETCH_GENERATE_FORM_SECTIONS_AND_QUESTIONS:
+      state = { ...state, generateSectionsAndQuestions: undefined };
+      break;
+    case ActionTypes.FETCH_GENERATE_FORM_SECTIONS_AND_QUESTIONS_SUCCESS:
+      state = { ...state, generateSectionsAndQuestions: action.payload.details };
+      break;
+    case ActionTypes.FETCH_GENERATE_FORM_SECTIONS_AND_QUESTIONS_FAILURE:
+      state = { ...state, generateSectionsAndQuestions: undefined };
+      break;
+
+    // FETCH_UPDATE_QUESTION_DETAILS
+
+    case ActionTypes.FETCH_UPDATE_QUESTION_DETAILS:
+      state = { ...state, questionDetails: undefined };
+      break;
+    case ActionTypes.FETCH_UPDATE_QUESTION_DETAILS_SUCCESS:
+      state = { ...state, questionDetails: action.payload.details };
+      break;
+    case ActionTypes.FETCH_UPDATE_QUESTION_DETAILS_FAILURE:
+      state = { ...state, questionDetails: undefined };
+      break;
+
+    // GET REGISTER DATA
+    case ActionTypes.GET_REGISTER_DATA:
+      state = { ...state, registerData: action.payload };
+      break;
+
+    // CREATE_SCHEDULE
+
+    case ActionTypes.CREATE_SCHEDULE:
+      state = { ...state };
+      break;
+    case ActionTypes.CREATE_SCHEDULE_SUCCESS:
+      state = { ...state };
+      break;
+    case ActionTypes.CREATE_SCHEDULE_FAILURE:
+      state = { ...state };
+      break;
+
+
+    case ActionTypes.REMOVE_SIDE_NAV:
+      state = { ...state, removeSideNav: action.payload };
+      break;
+
+    case ActionTypes.BREADCRUMBS:
+      state = { ...state, breadCrumb: [...state.breadCrumb, action.payload] };
+      break;
+
+    case ActionTypes.CLEAR_BREADCRUMBS:
+      state = { ...state, breadCrumb: [] };
+      break;
 
 
 
+    case ActionTypes.SCREEN_RECORDING_PERMISSION:
+      state = { ...state, recordingPermission: action.payload };
+      break;
 
+    // INTERVIEW_RECORDER_SESSION
+
+    case ActionTypes.INTERVIEW_RECORDER_SESSION:
+      state = { ...state };
+      break;
+    case ActionTypes.INTERVIEW_RECORDER_SESSION_SUCCESS:
+      state = { ...state };
+      break;
+    case ActionTypes.INTERVIEW_RECORDER_SESSION_FAILURE:
+      state = { ...state };
+      break;
+
+    // getRecordedVideoSessionDetails
+    case ActionTypes.RECORDING_VIDEO_SESSION_DETAILS:
+      state = { ...state, VideoSessionDetails: action.payload };
+      break;
+
+    case ActionTypes.POST_JD_VARIANT:
+      state = { ...state, jdVariantData: undefined };
+      break;
+
+    case ActionTypes.POST_JD_VARIANT_SUCCESS:
+      state = { ...state, jdVariantData: action.payload };
+      break;
+
+    case ActionTypes.POST_JD_VARIANT_FAILURE:
+      state = { ...state, jdVariantData: undefined };
+      break;
+
+    // Create a new array without the last element
+
+    case ActionTypes.CLEAR_LAST_BREADCRUMB:
+      const updatedBreadCrumb = state.breadCrumb.pop()
+      return { ...state, breadCrumb: updatedBreadCrumb };
+      break;
+
+    /**
+     * get jd item list
+     */
+    case ActionTypes.GET_JD_ITEM_LIST:
+      state = { ...state, jdItem: undefined };
+      break;
+    case ActionTypes.GET_JD_ITEM_LIST_SUCCESS:
+      state = { ...state, jdItem: action.payload.details.knowledege_groups };
+      break;
+    case ActionTypes.GET_JD_ITEM_LIST_FAILURE:
+      state = { ...state, jdItem: undefined };
+      break;
+
+    // GET_SCHEDULE_BASIC_INFO
+
+    case ActionTypes.GET_SCHEDULE_BASIC_INFO:
+      state = { ...state, scheduleInfo: undefined };
+      break;
+    case ActionTypes.GET_SCHEDULE_BASIC_INFO_SUCCESS:
+      state = { ...state, scheduleInfo: action.payload };
+      break;
+    case ActionTypes.GET_SCHEDULE_BASIC_INFO_FAILURE:
+      state = { ...state, scheduleInfo: undefined };
+      break;
 
     default:
       state = state;

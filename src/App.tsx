@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-redeclare */
 import { ScreenWrapper, Breadcrumbs, Back } from "@Components";
 import { Route, Routes } from "react-router-dom";
-import { HOME_ROUTES, RequireAuth, DASHBOARD_ROUTES } from "@Routes";
+import { HOME_ROUTES, RequireAuth, DASHBOARD_ROUTES, AUTH_ROUTES, RequireHome } from "@Routes";
 import { ToastContainer } from "react-toastify";
+import { Splash } from '@Modules'
 /**
  *  select-react  - important need to add this app.js
  */
@@ -13,6 +15,10 @@ import "@fullcalendar/daygrid/main.min.css";
 import "sweetalert2/dist/sweetalert2.min.css";
 import "quill/dist/quill.core.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { settingSideNavRemove } from "./Redux";
+
 
 
 
@@ -20,6 +26,19 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 function App() {
 
   const AUTH = 1
+
+  const { removeSideNav } = useSelector((state: any) => state.DashboardReducer)
+  const [pathName, setPathName] = useState<any>('/client')
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    if (window.location.pathname !== pathName && window.location.pathname !== '/schedules' && window.location.pathname !== '/call') {
+      dispatch(settingSideNavRemove(false))
+    }
+    else if (window.location.pathname === pathName || window.location.pathname === '/schedules' || window.location.pathname === '/call') {
+      dispatch(settingSideNavRemove(true))
+    }
+  }, [window.location.pathname])
 
 
   const getRoutes = (routes, type?: any) => {
@@ -31,35 +50,37 @@ function App() {
       const path = prop.layout ? prop.layout + prop.path : prop.path;
 
       return (
+
         <Route
           path={path}
-          element={
+          element={type === AUTH ?
+            <RequireHome>{prop.component}</RequireHome>
+            :
             <RequireAuth>
-             <div className={'ml-3'}>
-             <div className="col">
-                    <div className="row">
-                        <Back />
-                        <h5 className="ml-2 mt-1 text-muted"><Breadcrumbs/></h5>
-                    </div>
-                </div>
-             </div>
               {prop.component}
-            </RequireAuth>}
+            </RequireAuth>
+          }
           key={key}
         />
-      );
+
+      )
 
     });
   };
 
   return (
     <ScreenWrapper>
+
       <Routes>
+        <Route path="/" element={<Splash />} />
+        {getRoutes(AUTH_ROUTES, AUTH)}
         {getRoutes(HOME_ROUTES)}
         {getRoutes(DASHBOARD_ROUTES)}
       </Routes>
+
+
       <ToastContainer />
-    </ScreenWrapper>
+    </ScreenWrapper >
 
   );
 }

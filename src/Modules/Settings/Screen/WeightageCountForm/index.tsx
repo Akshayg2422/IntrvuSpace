@@ -23,9 +23,9 @@ function WeightageCountForm() {
   console.log('questions----------->',selectedQuestionForm)
 
 
-  // useEffect(() => {
-  //   getQuestionSectionApi()
-  // }, [])
+  useEffect(() => {
+    getQuestionSectionApi()
+  }, [])
 
   const submitQuestionSectionHandler = () => {
 

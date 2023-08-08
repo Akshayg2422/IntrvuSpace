@@ -1,7 +1,6 @@
 import React from "react";
 import { ModalProps } from "./interfaces";
 import { Modal as RsModal } from "reactstrap";
-import { useDynamicHeight } from "@Hooks";
 
 function Modal({ isOpen, children, title, size = "lg", style, onClose, ...rest }: ModalProps) {
 
