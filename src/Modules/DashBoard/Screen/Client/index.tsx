@@ -1,41 +1,45 @@
-import { Button, SearchInput, TopNavbar, showToast } from '@Components'
-import { useDropDown, useInput, useLoader, useModal, useNavigation, useWindowDimensions } from '@Hooks'
-import { FromCollection, FromJD } from '@Modules'
-import { createSchedule, getKnowledgeGroups, getMyPastInterviews, getSectors, postJdVariant, selectedScheduleId } from '@Redux'
-import { ROUTES } from '@Routes'
-import { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { Button, SearchInput, TopNavbar } from '@Components'
+import { useInput, useNavigation } from '@Hooks'
+import { FromCollection, FromJD, FromSkills } from '@Modules'
+import { useState } from 'react'
+import { useDispatch } from 'react-redux'
 
 
 function Clients() {
-    const dispatch = useDispatch()
-    const { goTo } = useNavigation()
 
-
-    const [isFromJD, setIsFromJD] = useState(true);
     const search = useInput('');
+    const INTERVIEW_TYPE = [
+        {
+            id: 1, title: 'From Collection'
+        },
+        {
+            id: 2, title: 'From JD'
+        },
+        {
+            id: 3, title: 'From Skills'
+        }
+    ]
+    const [selectedInterview, setSelectedInterview] = useState<any>(0);
 
 
-    // useEffect(() => {
-    //     getKnowledgeGroupDetailsApiHandler();
-    // }, [search.value, selectedClientSector])
+    function renderComponent() {
 
-    // const getKnowledgeGroupDetailsApiHandler = () => {
-    //     const params = { sector_id: selectedClientSector?.id, q: search.value }
+        let component = <FromCollection />
 
-    //     dispatch(
-    //         getKnowledgeGroups({
-    //             params,
-    //             onSuccess: () => () => {
-    //             },
-    //             onError: () => () => {
-    //             },
-    //         })
-    //     );
-    // };
+        switch (selectedInterview) {
+            case 0:
+                component = <FromCollection />
+                break;
+            case 1:
+                component = <FromJD />
+                break;
+            case 2:
+                component = <FromSkills />
+                break;
 
-
-
+        }
+        return component;
+    }
 
 
     return (
@@ -47,19 +51,31 @@ function Clients() {
                     <div className='col-sm-5'>
                         <SearchInput defaultValue={search.value} onSearch={search.set} />
                     </div>
-                    <Button color={isFromJD ? 'neutral' : 'primary'} className='col-sm-2' size={'md'} text={'From Collection'}
-                        onClick={() => {
-                            setIsFromJD(false);
-                        }} />
-                    <Button
-                        color={isFromJD ? 'primary' : 'neutral'}
-                        className='col-sm-2' size={'md'}
-                        text={'From JD'}
-                        onClick={() => {
-                            setIsFromJD(true);
-                        }} />
+
+                    {
+                        INTERVIEW_TYPE.map((interview: any, index: number) => {
+                            const { title } = interview;
+                            const selected = index === selectedInterview
+                            return (
+                                <div className='ml-3'>
+                                    <Button
+                                        block
+                                        size={'md'}
+                                        color={!selected ? 'neutral' : 'primary'}
+                                        text={title}
+                                        onClick={() => {
+                                            setSelectedInterview(index);
+                                        }}
+                                    />
+                                </div>
+                            )
+                        })
+                    }
                 </div >
-                {isFromJD ? <FromJD /> : <FromCollection />}
+                {
+                    renderComponent()
+                }
+
             </div >
         </>
     )

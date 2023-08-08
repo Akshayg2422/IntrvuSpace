@@ -12,7 +12,11 @@ export const SERVER =
     : BUILD_TYPE === BUILD_TYPE_LIVE_DEMO
       ? 'https://452b-103-118-190-4.ngrok-free.app'
       : BUILD_TYPE === BUILD_TYPE_LOCAL
+<<<<<<< HEAD
         ? 'http://192.168.157.204:8002'
+=======
+        ? 'http://192.168.255.204:8001'
+>>>>>>> 0f600a37d01d68906515aa80452fc479c2baec3d
         : BUILD_TYPE === BUILD_TYPE_STAGING
           ? 'http://103.118.188.135:8003'
           : 'http://localhost:8000'
@@ -69,6 +73,7 @@ export async function post(url, data, config) {
     })
     .catch(error => {
       console.log(error);
+
     });
 }
 

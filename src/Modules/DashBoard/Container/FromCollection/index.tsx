@@ -41,19 +41,21 @@ function FromCollection() {
     const fetchSectorData = () => {
         const params = {}
         sectorLoader.show();
-        dispatch(getSectors({
-            params,
-            onSuccess: (response: any) => () => {
-                const { details } = response
-                if (details.knowledege_groups && details.knowledege_groups.length > 0) {
-                    fetchKnowledgeData(details.knowledege_groups[0].id)
-                }
-                sectorLoader.hide()
-            },
-            onError: () => () => {
-                sectorLoader.hide();
-            },
-        }))
+
+        dispatch(
+            getSectors({
+                params,
+                onSuccess: (response: any) => () => {
+                    sectorLoader.hide()
+                    const { details } = response
+                    if (details.knowledege_groups && details.knowledege_groups.length > 0) {
+                        fetchKnowledgeData(details.knowledege_groups[0].id)
+                    }
+                },
+                onError: () => () => {
+                    sectorLoader.hide();
+                },
+            }))
     }
 
 
@@ -76,6 +78,9 @@ function FromCollection() {
             },
         }))
     }
+
+
+    console.log(sectorLoader.loader + "====sectorLoader");
 
 
     return (

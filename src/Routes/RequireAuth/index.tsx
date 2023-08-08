@@ -18,7 +18,7 @@ export const RequireAuth = ({ children }: RequireAuthProps) => {
     const [sideNavOpen, setSideNavOpen] = useState(true);
     const mainContentRef = React.useRef<HTMLDivElement | null>(null);
     const location = useLocation();
-    const { loginUser } = useSelector((state: any) => state.AuthReducer);
+    const { loginDetails } = useSelector((state: any) => state.AppReducer);
     const { removeSideNav } = useSelector((state: any) => state.DashboardReducer)
 
 
@@ -32,10 +32,8 @@ export const RequireAuth = ({ children }: RequireAuthProps) => {
     }, [location]);
 
 
-    console.log("===========loginUser" + loginUser);
 
-
-    if (!loginUser) {
+    if (!loginDetails?.isLoggedIn) {
         localStorage.setItem('route', location.pathname);
         return <Navigate to={ROUTES['auth-module'].login} state={{ path: location.pathname }} />
     }
@@ -54,7 +52,7 @@ export const RequireAuth = ({ children }: RequireAuthProps) => {
 
     return (
         <>
-            {loginUser?.details?.is_admin && !removeSideNav && <Sidebar
+            {loginDetails?.is_admin && !removeSideNav && <Sidebar
                 routes={HOME_ROUTES}
                 toggleSideNav={toggleSideNav}
                 sideNavOpen={sideNavOpen}
