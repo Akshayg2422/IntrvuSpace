@@ -225,10 +225,10 @@ function Call() {
             const timer = setTimeout(() => {
                 isScreenRecording && stopScreenRecording()
                 goBack()
-            }, 3000);
+            }, 5000);
             return () => clearTimeout(timer);
         }
-    }, [isSpeaking]);
+    }, [buttonConditional, isSpeaking]);
 
     const showLoader = callState === CALL_STATE_TRANSCRIBING || callState === CALL_STATE_API_LOADING
 
