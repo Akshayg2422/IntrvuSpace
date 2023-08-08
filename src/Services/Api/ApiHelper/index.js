@@ -69,6 +69,7 @@ export async function post(url, data, config) {
     })
     .catch(error => {
       console.log(error);
+
     });
 }
 

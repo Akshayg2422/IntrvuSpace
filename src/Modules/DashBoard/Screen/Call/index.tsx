@@ -1,12 +1,11 @@
-import { Button, Modal, showToast } from '@Components';
-import { useModal, useNavigation, useScreenRecorder, useTextToSpeech } from '@Hooks';
+import { Modal, showToast } from '@Components';
+import { useNavigation, useScreenRecorder, useTextToSpeech } from '@Hooks';
 import { CallScreen } from '@Modules';
-import { useWhisper } from '@chengsokdara/use-whisper';
-import { log } from 'console';
-import { useEffect, useState, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import hark from 'hark'
 import { getScheduleBasicInfo, getStartChat, screenRecordingPermission } from '@Redux';
+import { useWhisper } from '@chengsokdara/use-whisper';
+import hark from 'hark';
+import { useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 function Call() {
     const { goBack } = useNavigation();
@@ -204,8 +203,8 @@ function Call() {
                     } else if (success?.next_step[0].response_type === 'COMMAND') {
                         commandVariant(success?.next_step[0]?.response_text)
                     } else if (success?.next_step[0].message_type === "SPEAK" && success?.next_step[0].response_type == 'INTERVIEWER_END_CALL') {
-                        buttonConditional('end')
                         await speak(success?.next_step[0]?.response_text);
+                        setButtonConditional('end')
                     }
                 },
                 onError: (error: any) => () => {

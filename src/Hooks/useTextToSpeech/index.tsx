@@ -1,34 +1,69 @@
 import { useState, useEffect, useRef } from 'react';
 
 const useTextToSpeech = () => {
-  const [voices, setVoices] = useState<any>([]);
+
   const [isSpeaking, setIsSpeaking] = useState(false);
-  const selectedVoiceIndex = 2
-  const utteranceRef = useRef<any>(null);
+  const userAgent = navigator.userAgent;
 
-  const speak = (text) => {
-    const synth = window.speechSynthesis;
+  let browserName = 'Unknown';
 
-    const utterance = new SpeechSynthesisUtterance(text);
+  if (userAgent.includes('Safari') && !userAgent.includes('Chrome')) {
+    browserName = 'Safari';
+  }
+  else if (userAgent.includes('Chrome')) {
+    browserName = 'Chrome';
+  } else if (userAgent.includes('Firefox')) {
+    browserName = 'Firefox';
+  } else if (userAgent.includes('Edge')) {
+    browserName = 'Edge';
+  } else {
 
-    if (voices.length > 0 && selectedVoiceIndex >= 0 && selectedVoiceIndex < voices.length) {
-      utterance.voice = voices[selectedVoiceIndex];
+  }
+
+  const [voices, setVoices] = useState<any>([]);
+  const synth = window.speechSynthesis;
+  const safari_female = ['Samantha', 'Victoria', 'Karen', 'Moira']
+  const safari_male = ['Fiona', 'Microsoft David Desktop', 'Google US English', 'Eddy (English (US))', 'Reed (English (US))']
+  const chrome_female = ['Google US English']
+  const is_male = false
+
+  const safari_voice_source = is_male ? safari_male : safari_female
+  const getVoiceByBrowser = () => {
+    const userAgent = window.navigator.userAgent;
+    if (browserName === 'Safari') {
+      return safari_voice_source[2];
+    } else if (userAgent.includes('Chrome') || userAgent.includes('Edge') || userAgent.includes('Firefox')) {
+      return chrome_female[0];
+    } else {
+      return 'Anna';
+    }
+  };
+
+  const selectedVoiceName = getVoiceByBrowser();
+
+  useEffect(() => {
+    const voicesList = synth.getVoices();
+    const filteredVoices = voicesList.filter(voice => voice.lang.includes('en'));
+    setVoices(filteredVoices);
+  }, [synth]);
+
+
+
+
+  const speak = (text: string) => {
+    if (synth.speaking) {
+      synth.cancel();
     }
 
-    utteranceRef.current = utterance;
-
-    utterance.onstart = handleSpeechStart;
-    utterance.onend = handleSpeechEnd;
-    utterance.rate = 0.8
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.voice = voices.find((voice: any) => voice.name === selectedVoiceName);
+    if (browserName === 'Safari')
+      utterance.rate = 1.1;
+    else
+      utterance.rate = 1;
+    utterance.pitch = 1;
+    utterance.volume = 1;
     synth.speak(utterance);
-  };
-
-  const handleSpeechStart = () => {
-    setIsSpeaking(true);
-  };
-
-  const handleSpeechEnd = () => {
-    setIsSpeaking(false);
   };
 
   useEffect(() => {
@@ -48,6 +83,7 @@ const useTextToSpeech = () => {
   }, []);
 
   return { isSpeaking, speak };
+
 };
 
 export { useTextToSpeech };
