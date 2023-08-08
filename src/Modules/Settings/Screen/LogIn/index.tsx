@@ -20,8 +20,8 @@ function Login() {
     const loginLoader = useLoader(false);
     const [showPassword, setShowPassword] = useState(false)
     const [toggleInput, setToggleInput] = useState(false)
-    
     const [loginWithOtp, setLoginWithOtp] = useState(false)
+
     const { loginDetails } = useSelector((state: any) => state.AppReducer);
 
     const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -72,25 +72,39 @@ function Login() {
             ...(email.value && { email: email.value }),
             password: password.value
         }
-        dispatch(memberLoginUsingPassword({
-            params,
-            onSuccess: (response: any) => () => {
 
-            
-                loginLoader.hide()
-                if (response.success) {                    
-                    localStorage.setItem(USER_TOKEN, response.details.token);
-                    goTo(ROUTES['auth-module'].splash, true);
-                }
-                else {
-                    showToast(response.error_message, 'error')
-                }
-            },
-            onError: (error) => () => {
-                loginLoader.hide()
-                showToast(error.error_message, 'error')
-            },
-        }))
+
+
+        dispatch(
+            memberLoginUsingPassword({
+                params,
+                onSuccess: (response: any) => () => {
+
+
+                    const { details } = response;
+
+                    loginLoader.hide()
+                    if (response.success) {
+                        localStorage.setItem(USER_TOKEN, response.details.token);
+                        dispatch(
+                            userLoginDetails({
+                                ...loginDetails,
+                                isLoggedIn: true,
+                                ...details
+                            }),
+                        );
+
+                        goTo(ROUTES['auth-module'].splash, true);
+                    }
+                    else {
+                        showToast(response.error_message, 'error')
+                    }
+                },
+                onError: (error) => () => {
+                    loginLoader.hide()
+                    showToast(error.error_message, 'error')
+                },
+            }))
 
 
     }
