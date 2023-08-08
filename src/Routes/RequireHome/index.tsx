@@ -20,7 +20,7 @@ export const RequireHome = ({ children }: RequireHomeProps) => {
 
 
     if (loginDetails?.isLoggedIn) {
-        return <Navigate to={loginDetails?.is_admin ? ROUTES['designation-module'].designation : ROUTES['designation-module'].client} state={{ path: location.pathname }} />
+        return <Navigate to={ROUTES['auth-module'].splash} state={{ path: location.pathname }} />
     }
 
     return (

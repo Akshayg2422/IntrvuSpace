@@ -6,7 +6,7 @@ import { OTP_RESEND_DEFAULT_TIME, USER_TOKEN } from '@Utils';
 import { useInput, useLoader, useNavigation, useTimer } from '@Hooks';
 import { ROUTES } from '@Routes';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchMemberUsingLoginOtp, memberLoginUsingPasswordSuccess, settingRegisterData } from '@Redux';
+import { fetchMemberUsingLoginOtp, memberLoginUsingPasswordSuccess, settingRegisterData, userLoginDetails } from '@Redux';
 
 function Otp() {
     const { seconds, setSeconds } = useTimer(OTP_RESEND_DEFAULT_TIME);
@@ -15,6 +15,7 @@ function Otp() {
     const { registerData } = useSelector((state: any) => state.DashboardReducer);
     const dispatch = useDispatch()
     const loginLoader = useLoader(false);
+    const { loginDetails } = useSelector((state: any) => state.AppReducer);
 
     console.log("registerData", registerData)
     useEffect(() => {
@@ -34,8 +35,18 @@ function Otp() {
             params,
             onSuccess: (response: any) => () => {
                 loginLoader.hide()
+
+                const { details } = response;
+
                 if (response?.success) {
-                    dispatch(memberLoginUsingPasswordSuccess(response))
+                    dispatch(
+                        userLoginDetails({
+                            ...loginDetails,
+                            isLoggedIn: true,
+                            ...details
+                        }),
+                    );
+
                     localStorage.setItem(USER_TOKEN, response.details.token);
                     goTo(ROUTES['auth-module'].splash)
                     dispatch(settingRegisterData(undefined))
@@ -67,7 +78,7 @@ function Otp() {
                                         fontSize: '3vh'
                                     }}
                                 >{registerData?.mobile_number ? 'Mobile Number' : 'Email ID'} </h2>
-                                <h4 className='text-black font-weight-normal py-2'>{registerData?.mobile_number ? "+91 - " + registerData?.mobile_number : registerData?.email} <i className="bi bi-pencil text-primary ml-3 pointer" onClick={() => {goTo(ROUTES['auth-module'].loginWithOtp) }}></i></h4>
+                                <h4 className='text-black font-weight-normal py-2'>{registerData?.mobile_number ? "+91 - " + registerData?.mobile_number : registerData?.email} <i className="bi bi-pencil text-primary ml-3 pointer" onClick={() => { goTo(ROUTES['auth-module'].loginWithOtp) }}></i></h4>
                             </div>
                             <div className=" col-sm-9  pr-3 ml-lg--3 px-0 ml-sm-0 ml--2 pt-1"
                                 style={{
