@@ -1,12 +1,11 @@
 import { Button, ButtonGroup, CommonTable, Divider, NoRecordsFound, Spinner, } from '@Components';
-import React, { useEffect, useRef, useState } from 'react'
-import { Badge, Card, CardBody, CardHeader, CardTitle, DropdownItem, DropdownMenu, DropdownToggle, Media, Progress, Table, UncontrolledDropdown, UncontrolledTooltip } from 'reactstrap'
-import ReactToPrint from 'react-to-print';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchBasicReport } from '@Redux';
 import { useDropDown, useLoader } from '@Hooks';
-import moment from 'moment';
+import { fetchBasicReport } from '@Redux';
+import { useEffect, useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import ReactToPrint from 'react-to-print';
+import { Card, CardBody, CardHeader, Progress } from 'reactstrap';
 
 
 function Report() {
@@ -26,6 +25,8 @@ function Report() {
     const heightRef = useRef<any>()
     const [cardHeight, setCardHeight] = useState<any>(null)
 
+    const [percentage, setPercentage] = useState<any>({})
+
 
 
     useEffect(() => {
@@ -41,6 +42,12 @@ function Report() {
 
 
 
+    function getPercentage(array: any, key: string) {
+        return array.reduce(function (acc, obj) { return acc + parseFloat(obj[key]); }, 0) / array.length
+    }
+
+
+
     const getBasicReportData = (details) => {
         basicReportLoader.show()
         const params = {
@@ -51,10 +58,30 @@ function Report() {
         dispatch(
             fetchBasicReport({
                 params,
-                onSuccess: (success) => () => {
+                onSuccess: (res: any) => () => {
                     basicReportLoader.hide()
-                    console.log("success===>", success.details)
-                    setBasicReportData(success.details)
+                    setBasicReportData(res.details);
+                    const { communication, skill_matrix, trait, overall_weightage } = res.details
+
+                    const communicationPercentage = parseFloat((getPercentage(communication, 'rating') / 100 * overall_weightage.communication).toFixed(1));
+                    const skillMatrixPercentage = parseFloat((getPercentage(skill_matrix?.sections, 'rating') / 100 * overall_weightage.skill_matrix).toFixed(1));
+                    const traitPercentage = parseFloat((getPercentage(trait, 'percent') / 100 * overall_weightage.trait).toFixed(1));
+
+
+                    // const communicationPercentage = parseFloat((communication.reduce(function (acc, { rating }) { return acc + parseFloat(rating); }, 0) / communication.length / 100 * overall_weightage.communication).toFixed(1));
+                    // const skillMatrixPercentage = parseFloat((skill_matrix?.sections.reduce(function (acc, { rating }) { return acc + parseFloat(rating); }, 0) / skill_matrix?.sections?.length / 100 * overall_weightage.skill_matrix).toFixed(1));
+                    // const traitPercentage = parseFloat((trait.reduce(function (acc, { percent }) { return acc + parseFloat(percent); }, 0) / trait.length / 100 * overall_weightage.trait).toFixed(1));
+
+                    const total = communicationPercentage + skillMatrixPercentage + traitPercentage
+
+                    setPercentage({
+                        communication: communicationPercentage,
+                        skillMatrix: skillMatrixPercentage,
+                        trait: traitPercentage,
+                        overAll: total
+                    })
+
+
                 },
                 onError: (error) => () => {
                     basicReportLoader.hide()
@@ -65,16 +92,7 @@ function Report() {
 
 
 
-    const calculateRating = (data: any) => {
 
-        let overallPercent = 0
-        if (Array.isArray(data)) {
-            data.length > 0 && data.filter((el) => {
-                overallPercent = el?.percent ? +overallPercent + +el?.percent : +overallPercent + +el?.rating
-            })
-        }
-        return overallPercent ? +overallPercent / data.length : 0
-    }
 
 
     // const formatDateAndTime = (text) => {
@@ -436,10 +454,10 @@ function Report() {
                                             <div>
                                                 <h1 className='font-weight-bolder display-3'
                                                     style={{
-                                                        color: colorVariant(+check * 10)
+                                                        color: colorVariant(+percentage?.overAll)
                                                     }}
                                                 >
-                                                    {(check / 3).toFixed(1)}
+                                                    {percentage?.overAll}
                                                 </h1>
                                             </div>
                                         </div>
@@ -470,19 +488,19 @@ function Report() {
                                                                                                 style={{
                                                                                                     fontSize: '12px'
                                                                                                 }}
-                                                                                            >{heading === 'skill_matrix' ? +basicReportData[heading].overal_percent.toFixed(1) : +calculateRating(basicReportData[heading]).toFixed(1)}%</span>
+                                                                                            >{heading === 'skill_matrix' ? +percentage?.skillMatrix : heading === 'communication' ? +percentage?.communication : percentage?.trait}%</span>
                                                                                         </div>
                                                                                     </div>
                                                                                     <Progress
                                                                                         className='mt--2'
                                                                                         max="100"
-                                                                                        value={heading === 'skill_matrix' ? +basicReportData[heading].overal_percent : +calculateRating(basicReportData[heading])}
+                                                                                        value={heading === 'skill_matrix' ? +percentage?.skillMatrix : heading === 'communication' ? percentage?.communication : percentage?.trait}
                                                                                         style={{
                                                                                             height: '6px',
                                                                                         }}
                                                                                         barStyle={
                                                                                             {
-                                                                                                backgroundColor: colorVariant(heading === 'skill_matrix' ? +basicReportData[heading].overal_percent : +calculateRating(basicReportData[heading]))
+                                                                                                backgroundColor: colorVariant(heading === 'skill_matrix' ? +percentage?.skillMatrix : heading === 'communication' ? percentage?.communication : percentage?.trait)
                                                                                             }
                                                                                         }
                                                                                     />
@@ -507,7 +525,6 @@ function Report() {
 
 
                                             if (heading === "skill_matrix") {
-                                                array = array + calculateRating(basicReportData[heading].sections)
                                                 return (
                                                     <>
                                                         {basicReportData["skill_matrix"]?.sections.length > 0 &&
@@ -516,10 +533,10 @@ function Report() {
                                                                     <h4 className='font-weight-bolder text-black mb-4 text-uppercase'>{'SKILL MATRIX'}</h4>
                                                                     <div className='font-weight-bolder display-4'
                                                                         style={{
-                                                                            color: colorVariant(+basicReportData[heading].overal_percent)
+                                                                            color: colorVariant(percentage?.skillMatrix)
                                                                         }}
                                                                     >
-                                                                        {+basicReportData[heading].overal_percent}
+                                                                        {+percentage?.skillMatrix}
                                                                     </div>
                                                                 </div>
 
@@ -559,7 +576,7 @@ function Report() {
                                                                                                             backgroundColor: colorVariant(+el?.rating || +el?.percent)
                                                                                                         }
                                                                                                     }
-                                                                                                    max="100" value={el?.rating ? el?.rating : 0} />
+                                                                                                    max="100" value={+el?.rating || +el?.percent} />
 
                                                                                             </div>
                                                                                             <div className="">
@@ -598,7 +615,6 @@ function Report() {
                                                 return (
                                                     dataId.map((el) => {
                                                         if (el === heading && heading !== "skill_matrix") {
-                                                            array = array + calculateRating(basicReportData[heading])
                                                             return (
                                                                 <>
                                                                     {basicReportData[heading].length > 0 && <>
@@ -608,10 +624,10 @@ function Report() {
                                                                                 <h4 className='font-weight-bolder text-black mb-4 text-uppercase'>{heading}</h4>
                                                                                 <div className='font-weight-bolder display-4'
                                                                                     style={{
-                                                                                        color: colorVariant(calculateRating(basicReportData[heading]))
+                                                                                        color: colorVariant(heading === 'communication' ? +percentage?.communication : percentage?.trait)
                                                                                     }}
                                                                                 >
-                                                                                    {calculateRating(basicReportData[heading]).toFixed(1)}
+                                                                                    {heading === 'communication' ? +percentage?.communication : percentage?.trait}
                                                                                 </div>
                                                                             </div>
                                                                             {basicReportData && basicReportData[heading].length > 0 && basicReportData[heading].map((el) => {
@@ -719,4 +735,4 @@ function Report() {
     )
 }
 
-export { Report }
+export { Report };
