@@ -70,6 +70,8 @@ const CallScreen = ({ basicInfo, onMicControl, onMic = false, loading = false, c
         return `${firstNameInitial}${lastNameInitial}`;
     }
 
+    console.log("==================>",conditionalButton);
+    
     return (
         <div className='text-center'>
 
