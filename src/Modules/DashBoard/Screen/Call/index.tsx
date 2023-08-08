@@ -200,10 +200,8 @@ function Call() {
                             setPromptText(success?.keywords)
                         }
                         setCallState(CALL_STATE_INACTIVE)
-                    } else if (success?.next_step[0].response_type === 'COMMAND') {
-                        commandVariant(success?.next_step[0]?.response_text)
-                    } else if (success?.next_step[0].message_type === "SPEAK" && success?.next_step[0].response_type == 'INTERVIEWER_END_CALL') {
-                        await speak(success?.next_step[0]?.response_text);
+                    } else if (success?.next_step[0].message_type === "SPEAK" && success?.next_step[0].response_type === 'INTERVIEWER_END_CALL') {
+                        await window.location.pathname === `/interview/${scheduleId}` && speak(success?.next_step[0]?.response_text);
                         setButtonConditional('end')
                     }
                 },
@@ -216,15 +214,6 @@ function Call() {
 
     const handleVideo = () => {
         setShowVideo(!showVideo)
-    }
-
-    const commandVariant = (type: any) => {
-        if (type === 'WAIT_1') {
-            // setType('wait_1')
-        } else if (type === 'END_CAll') {
-            isScreenRecording && stopScreenRecording()
-            goBack()
-        }
     }
 
     useEffect(() => {
