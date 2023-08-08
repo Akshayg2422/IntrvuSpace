@@ -35,7 +35,7 @@ function TopNavbar() {
 
     const logoutModal = useModal(false);
     const { goTo } = useNavigation()
-    const { loginUser } = useSelector((state: any) => state.AuthReducer);
+    const { loginDetails } = useSelector((state: any) => state.AppReducer);
 
     const location = useLocation()
     const dispatch = useDispatch();
@@ -56,17 +56,17 @@ function TopNavbar() {
 
     function proceedLogout() {
         try {
-            
+
             dispatch(
-            userLogout({
-              onSuccess: () => {
-                goTo(ROUTES["auth-module"].splash, true)
-              },
-              onError: () => {
-                console.log('error');
-              },
-            }),
-          );
+                userLogout({
+                    onSuccess: () => {
+                        goTo(ROUTES["auth-module"].splash, true)
+                    },
+                    onError: () => {
+                        console.log('error');
+                    },
+                }),
+            );
         } catch (error) {
         }
     }
@@ -141,7 +141,7 @@ function TopNavbar() {
                             <NavItem className="d-none d-lg-block ml-lg-4">
                                 <div className='row align-items-center m-auto'>
                                     <span className='mb-0 font-weight-bold text-black'>
-                                        {loginUser?.details?.user}
+                                        {loginDetails?.user}
                                     </span>
                                     <Nav navbar>
                                         <UncontrolledDropdown nav>

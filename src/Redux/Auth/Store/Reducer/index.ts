@@ -29,13 +29,13 @@ const AuthReducer = (state = initialState, action: any) => {
         //memberLoginUsingPassword
 
         case ActionTypes.MEMBER_LOGIN_USING_PASSWORD:
-            state = { ...state, loginUser: undefined };
+            state = { ...state, };
             break;
         case ActionTypes.MEMBER_LOGIN_USING_PASSWORD_SUCCESS:
-            state = { ...state, loginUser: action.payload };
+            state = { ...state };
             break;
         case ActionTypes.MEMBER_LOGIN_USING_PASSWORD_FAILURE:
-            state = { ...state, loginUser: undefined };
+            state = { ...state, };
             break;
 
 

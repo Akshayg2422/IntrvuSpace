@@ -26,7 +26,7 @@ import { settingSideNavRemove } from "./Redux";
 function App() {
 
   const AUTH = 1
-  const { loginUser } = useSelector((state: any) => state.AuthReducer);
+
   const { removeSideNav } = useSelector((state: any) => state.DashboardReducer)
   const [pathName, setPathName] = useState<any>('/client')
   const dispatch = useDispatch()
