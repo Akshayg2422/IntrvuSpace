@@ -33,7 +33,7 @@ function Schedules() {
 
 
     useEffect(() => {
-        const params = { is_start: false }
+        const params = { is_started: false }
         getMypastInterviewApi(params)
     }, [])
 
@@ -106,13 +106,13 @@ function Schedules() {
                             setSelectedSort(item)
                             let params = {}
                             if (item.id === FILTER[0].id) {
-                                params = { is_start: false }
+                                params = { is_started: false }
                             } else if (item.id === FILTER[1].id) {
-                                params = { is_complete: true }
+                                params = { is_completed: true }
                             }
                             else if (item.id === FILTER[2].id) {
                                 params = {
-                                    is_start: true, is_complete: false
+                                    is_started: true, is_completed: false
                                 }
                             }
                             getMypastInterviewApi(params)
