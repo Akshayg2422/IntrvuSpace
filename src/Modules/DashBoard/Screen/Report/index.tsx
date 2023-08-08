@@ -1,11 +1,12 @@
 import { Button, ButtonGroup, CommonTable, Divider, NoRecordsFound, Spinner, } from '@Components';
-import { useDropDown, useLoader } from '@Hooks';
-import { fetchBasicReport } from '@Redux';
-import { useEffect, useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import React, { useEffect, useRef, useState } from 'react'
+import { Badge, Card, CardBody, CardHeader, CardTitle, DropdownItem, DropdownMenu, DropdownToggle, Media, Progress, Table, UncontrolledDropdown, UncontrolledTooltip } from 'reactstrap'
 import ReactToPrint from 'react-to-print';
-import { Card, CardBody, CardHeader, Progress } from 'reactstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchBasicReport } from '@Redux';
+import { useDropDown, useLoader } from '@Hooks';
+import moment from 'moment';
+import { useParams } from 'react-router-dom';
 
 
 function Report() {
@@ -24,8 +25,8 @@ function Report() {
     const [check, setCheck] = useState<any>(0)
     const heightRef = useRef<any>()
     const [cardHeight, setCardHeight] = useState<any>(null)
-
     const [percentage, setPercentage] = useState<any>({})
+
 
 
 
@@ -40,13 +41,9 @@ function Report() {
         }
     }, [basicReportData])
 
-
-
     function getPercentage(array: any, key: string) {
         return array.reduce(function (acc, obj) { return acc + parseFloat(obj[key]); }, 0) / array.length
     }
-
-
 
     const getBasicReportData = (details) => {
         basicReportLoader.show()
@@ -58,19 +55,16 @@ function Report() {
         dispatch(
             fetchBasicReport({
                 params,
-                onSuccess: (res: any) => () => {
+                onSuccess: (success) => () => {
                     basicReportLoader.hide()
-                    setBasicReportData(res.details);
-                    const { communication, skill_matrix, trait, overall_weightage } = res.details
+                    console.log("success===>", success.details)
+                    setBasicReportData(success.details)
+
+                    const { communication, skill_matrix, trait, overall_weightage } = success.details
 
                     const communicationPercentage = parseFloat((getPercentage(communication, 'rating') / 100 * overall_weightage.communication).toFixed(1));
                     const skillMatrixPercentage = parseFloat((getPercentage(skill_matrix?.sections, 'rating') / 100 * overall_weightage.skill_matrix).toFixed(1));
                     const traitPercentage = parseFloat((getPercentage(trait, 'percent') / 100 * overall_weightage.trait).toFixed(1));
-
-
-                    // const communicationPercentage = parseFloat((communication.reduce(function (acc, { rating }) { return acc + parseFloat(rating); }, 0) / communication.length / 100 * overall_weightage.communication).toFixed(1));
-                    // const skillMatrixPercentage = parseFloat((skill_matrix?.sections.reduce(function (acc, { rating }) { return acc + parseFloat(rating); }, 0) / skill_matrix?.sections?.length / 100 * overall_weightage.skill_matrix).toFixed(1));
-                    // const traitPercentage = parseFloat((trait.reduce(function (acc, { percent }) { return acc + parseFloat(percent); }, 0) / trait.length / 100 * overall_weightage.trait).toFixed(1));
 
                     const total = communicationPercentage + skillMatrixPercentage + traitPercentage
 
@@ -80,8 +74,6 @@ function Report() {
                         trait: traitPercentage,
                         overAll: total
                     })
-
-
                 },
                 onError: (error) => () => {
                     basicReportLoader.hide()
@@ -92,7 +84,16 @@ function Report() {
 
 
 
+    const calculateRating = (data: any) => {
 
+        let overallPercent = 0
+        if (Array.isArray(data)) {
+            data.length > 0 && data.filter((el) => {
+                overallPercent = el?.percent ? +overallPercent + +el?.percent : +overallPercent + +el?.rating
+            })
+        }
+        return overallPercent ? +overallPercent / data.length : 0
+    }
 
 
     // const formatDateAndTime = (text) => {
@@ -401,338 +402,339 @@ function Report() {
                 </div>
             }
 
-            {basicReportData && Object.keys(basicReportData).length > 0 ?
-                <div className='pt-3'>
-                    <div className=' position-absolute'
-                        style={{
-                            right: '80px',
-                        }}
-                    >
-                        <ButtonGroup customWidth='120px' size={'btn-sm'} sortData={FILTER} selected={filter.value} onClick={handleButtonClick} />
-                    </div>
+            {<div className='pt-3'>
+                <div className=' position-absolute'
+                    style={{
+                        right: '80px',
+                    }}
+                >
+                    <ButtonGroup customWidth='120px' size={'btn-sm'} sortData={FILTER} selected={filter.value} onClick={handleButtonClick} />
+                </div>
 
-                    <ReactToPrint
-                        trigger={() =>
-                            <div className='d-flex position-absolute mr-4 pr-2 '
-                                style={{
-                                    right: '0px',
-                                }}
-                            >
-                                <Button
-                                    variant={'icon-rounded'}
-                                    color='info'
-                                    icons={'bi bi-printer-fill text-white fa-lg'}
-                                />
+                <ReactToPrint
+                    trigger={() =>
+                        <div className='d-flex position-absolute mr-4 pr-2 '
+                            style={{
+                                right: '0px',
+                            }}
+                        >
+                            <Button
+                                variant={'icon-rounded'}
+                                color='info'
+                                icons={'bi bi-printer-fill text-white fa-lg'}
+                            />
 
-                            </div>
-                        }
-                        content={() => componentRef.current}
-                    />
+                        </div>
+                    }
+                    content={() => componentRef.current}
+                />
 
-                    <div ref={componentRef} className='container-fluid contact'>
-                        {/* <div className='row justify-content-end mr-4 pr-3 mt-3'>
+                <div ref={componentRef} className='container-fluid contact'>
+                    {/* <div className='row justify-content-end mr-4 pr-3 mt-3'>
                         <Button
                             variant={'icon-rounded'}
                             color='info'
                             icons={'bi bi-envelope-fill text-white fa-lg'}
                         />
                     </div> */}
-                        <div className='row py-5'>
-                            <div className='col-sm-12'>
-                                <Card>
-                                    <CardHeader>
-                                        <div className='row pl-lg-5 pr-lg-5 pl-sm-0 pl-3 pb-0 pr-sm-0 pr-3 justify-content-between'>
-                                            <div className='h1 pt-1 font-weight-bolder text-black'>
-                                                {basicReportData.name}
-                                                <h5 className='text-black font-weight-bolder'>
-                                                    {basicReportData.sub_text}
-                                                </h5>
-                                                <p className='description'>
-                                                    {basicReportData.sub_text2}
-                                                </p>
-                                            </div>
-                                            <div>
-                                                <h1 className='font-weight-bolder display-3'
-                                                    style={{
-                                                        color: colorVariant(+percentage?.overAll)
-                                                    }}
-                                                >
-                                                    {percentage?.overAll}
-                                                </h1>
-                                            </div>
+                    <div className='row py-5'>
+                        <div className='col-sm-12'>
+                            <Card>
+                                <CardHeader>
+                                    <div className='row pl-lg-5 pr-lg-5 pl-sm-0 pl-3 pb-0 pr-sm-0 pr-3 justify-content-between'>
+                                        <div className='h1 pt-1 font-weight-bolder text-black'>
+                                            {basicReportData.name}
+                                            <h5 className='text-black font-weight-bolder'>
+                                                {basicReportData.sub_text}
+                                            </h5>
+                                            <p className='description'>
+                                                {basicReportData.sub_text2}
+                                            </p>
                                         </div>
-                                        <div className='row   mx-lg-4 pb-0 mb--2'>
-
-                                            {basicReportData && Object.keys(basicReportData).reverse()?.map((heading) => {
-
-                                                return (
-                                                    dataId.map((el) => {
-
-                                                        if (heading === el) {
-                                                            return (
-                                                                <>
-                                                                    <div className='col-sm-4 px-1'>
-                                                                        <Card className=' '
-                                                                            style={{
-                                                                                boxShadow: "rgb(22 21 21 / 8%) 0px 0px 12px 3px"
-                                                                            }}
-                                                                        >
-                                                                            <CardBody className='px-1 pt-2 pb-1'>
-                                                                                <div className="progress-wrapper col py-0 m-0 ">
-                                                                                    <div className="progress-info">
-                                                                                        <div className="h4 mb-0 pb-0">
-                                                                                            <h4 className='font-weight-bolder text-black text-uppercase'>{heading === 'skill_matrix' ? 'SKILL MATRIX' : heading}</h4>
-                                                                                        </div>
-                                                                                        <div className="progress-percentage mt--3">
-                                                                                            <span
-                                                                                                style={{
-                                                                                                    fontSize: '12px'
-                                                                                                }}
-                                                                                            >{heading === 'skill_matrix' ? +percentage?.skillMatrix : heading === 'communication' ? +percentage?.communication : percentage?.trait}%</span>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <Progress
-                                                                                        className='mt--2'
-                                                                                        max="100"
-                                                                                        value={heading === 'skill_matrix' ? +percentage?.skillMatrix : heading === 'communication' ? percentage?.communication : percentage?.trait}
-                                                                                        style={{
-                                                                                            height: '6px',
-                                                                                        }}
-                                                                                        barStyle={
-                                                                                            {
-                                                                                                backgroundColor: colorVariant(heading === 'skill_matrix' ? +percentage?.skillMatrix : heading === 'communication' ? percentage?.communication : percentage?.trait)
-                                                                                            }
-                                                                                        }
-                                                                                    />
-                                                                                </div>
-                                                                            </CardBody>
-                                                                        </Card>
-                                                                    </div>
-                                                                </>
-                                                            )
-                                                        }
-                                                        console.log('879868768768')
-                                                    })
-                                                )
-                                            })
-
-                                            }
+                                        <div>
+                                            <h1 className='font-weight-bolder display-3'
+                                                style={{
+                                                    color: colorVariant(+percentage?.overAll)
+                                                }}
+                                            >
+                                                {percentage?.overAll}
+                                            </h1>
                                         </div>
-                                    </CardHeader>
-                                    <CardBody className='ml-1 pb-5'>
-                                        {Object.keys(basicReportData).reverse()?.map((heading, index) => {
+                                    </div>
+                                    <div className='row   mx-lg-4 pb-0 mb--2'>
 
+                                        {basicReportData && Object.keys(basicReportData).reverse()?.map((heading) => {
 
+                                            return (
+                                                dataId.map((el) => {
 
-                                            if (heading === "skill_matrix") {
-                                                return (
-                                                    <>
-                                                        {basicReportData["skill_matrix"]?.sections.length > 0 &&
-                                                            <div className='pl-lg-4 pr-lg-5 mr- pt-3 pb-2'>
-                                                                <div className='row justify-content-between pr-2 pl-3 pb-3'>
-                                                                    <h4 className='font-weight-bolder text-black mb-4 text-uppercase'>{'SKILL MATRIX'}</h4>
-                                                                    <div className='font-weight-bolder display-4'
+                                                    if (heading === el) {
+                                                        return (
+                                                            <>
+                                                                <div className='col-sm-4 px-1'>
+                                                                    <Card className=' '
                                                                         style={{
-                                                                            color: colorVariant(percentage?.skillMatrix)
+                                                                            boxShadow: "rgb(22 21 21 / 8%) 0px 0px 12px 3px"
                                                                         }}
                                                                     >
-                                                                        {+percentage?.skillMatrix}
-                                                                    </div>
-                                                                </div>
-
-                                                                <>
-                                                                    {basicReportData && basicReportData["skill_matrix"]?.sections.length > 0 && basicReportData["skill_matrix"]?.sections.map((el) => {
-
-                                                                        return (
-                                                                            <>
-                                                                                <div className=' px-3 mt--4 mb--2'>
-
-                                                                                    <div className='row justify-content-between  align-items-center'
-                                                                                    >
-                                                                                        <div className='pt-4 '>
-                                                                                            <h4 className='text-black'>
-                                                                                                {el?.name}
-                                                                                            </h4>
-                                                                                        </div>
-                                                                                        <div className='row align-items-center'>
-                                                                                            <div className="progress-wrapper pb-0 ml-0  pl-0 mr-2"
-                                                                                                style={{
-                                                                                                    width: '30vh'
-                                                                                                }}
-                                                                                            >
-                                                                                                <div className="progress-info">
-                                                                                                    <div className="progress-label ">
-                                                                                                        {/* <span className='ml--3 text-black'>Task completed</span> */}
-                                                                                                    </div>
-
-                                                                                                </div>
-                                                                                                <Progress
-                                                                                                    className='mr-2'
-                                                                                                    style={{
-                                                                                                        height: '6px',
-                                                                                                    }}
-                                                                                                    barStyle={
-                                                                                                        {
-                                                                                                            backgroundColor: colorVariant(+el?.rating || +el?.percent)
-                                                                                                        }
-                                                                                                    }
-                                                                                                    max="100" value={+el?.rating || +el?.percent} />
-
-                                                                                            </div>
-                                                                                            <div className="">
-                                                                                                <span className='h6'
-                                                                                                    style={{
-                                                                                                        fontSize: '12px'
-                                                                                                    }}
-                                                                                                >{el?.rating ? el?.rating : 0}%</span>
-                                                                                            </div>
-                                                                                        </div>
-
-
+                                                                        <CardBody className='px-1 pt-2 pb-1'>
+                                                                            <div className="progress-wrapper col py-0 m-0 ">
+                                                                                <div className="progress-info">
+                                                                                    <div className="h4 mb-0 pb-0">
+                                                                                        <h4 className='font-weight-bolder text-black text-uppercase'>{heading === 'skill_matrix' ? 'SKILL MATRIX' : heading}</h4>
                                                                                     </div>
-                                                                                    <p className='description ml--3'>
-                                                                                        {el?.note}
-                                                                                    </p>
-                                                                                </div >
-                                                                                {el?.questions?.length > 0 && normalizedTableData(el?.questions, '')}
-
-
-
-
-
-                                                                            </>
-                                                                        )
-                                                                    })}
-                                                                </>
-                                                            </div>}
-                                                        {Object.keys(basicReportData).length - 1 !== index && <div className='mb--3 mx--4'>
-                                                            <Divider />
-                                                        </div>}
-                                                    </>
-                                                )
-                                            }
-                                            else {
-                                                return (
-                                                    dataId.map((el) => {
-                                                        if (el === heading && heading !== "skill_matrix") {
-                                                            return (
-                                                                <>
-                                                                    {basicReportData[heading].length > 0 && <>
-                                                                        <div className='pl-lg-4 pr-lg-5 mr- pt-3 pb-2'>
-
-                                                                            <div className='row justify-content-between pr-2 pl-3 pb-3'>
-                                                                                <h4 className='font-weight-bolder text-black mb-4 text-uppercase'>{heading}</h4>
-                                                                                <div className='font-weight-bolder display-4'
-                                                                                    style={{
-                                                                                        color: colorVariant(heading === 'communication' ? +percentage?.communication : percentage?.trait)
-                                                                                    }}
-                                                                                >
-                                                                                    {heading === 'communication' ? +percentage?.communication : percentage?.trait}
+                                                                                    <div className="progress-percentage mt--3">
+                                                                                        <span
+                                                                                            style={{
+                                                                                                fontSize: '12px'
+                                                                                            }}
+                                                                                        >{heading === 'skill_matrix' ? +basicReportData[heading].overal_percent.toFixed(1) : +calculateRating(basicReportData[heading]).toFixed(1)}%</span>
+                                                                                    </div>
                                                                                 </div>
-                                                                            </div>
-                                                                            {basicReportData && basicReportData[heading].length > 0 && basicReportData[heading].map((el) => {
-                                                                                return (
-                                                                                    <>
-                                                                                        <div className=' px-3 my--4'>
-
-                                                                                            <div className='row justify-content-between  align-items-center'
-                                                                                            >
-                                                                                                <div className='pt-4 '>
-                                                                                                    <h4 className='text-black'>
-                                                                                                        {el?.metrics_name || el?.trait || el?.name}
-                                                                                                    </h4>
-                                                                                                </div>
-                                                                                                <div className='row align-items-center'>
-                                                                                                    <div className="progress-wrapper pb-0 ml-0  pl-0 mr-2"
-                                                                                                        style={{
-                                                                                                            width: '30vh'
-                                                                                                        }}
-                                                                                                    >
-                                                                                                        <div className="progress-info">
-                                                                                                            <div className="progress-label ">
-                                                                                                                {/* <span className='ml--3 text-black'>Task completed</span> */}
-                                                                                                            </div>
-
-                                                                                                        </div>
-                                                                                                        <Progress
-                                                                                                            className='mr-2'
-                                                                                                            style={{
-                                                                                                                height: '6px',
-                                                                                                            }}
-                                                                                                            barStyle={
-                                                                                                                {
-                                                                                                                    backgroundColor: colorVariant(+el?.rating || +el?.percent)
-                                                                                                                }
-                                                                                                            }
-                                                                                                            max="100" value={el?.rating || +el?.percent} />
-
-                                                                                                    </div>
-                                                                                                    <div className="">
-                                                                                                        <span className='h6'
-                                                                                                            style={{
-                                                                                                                fontSize: '12px'
-                                                                                                            }}
-                                                                                                        >{el?.rating || +el?.percent || 0}%</span>
-                                                                                                    </div>
-                                                                                                </div>
-
-
-                                                                                            </div>
-                                                                                            <p className='description ml--3'>
-                                                                                                {el?.description || el?.reason || el?.note}
-                                                                                            </p>
-                                                                                        </div>
-                                                                                        {el?.questions?.length > 0 && el?.questions.map((item) => {
-                                                                                            console.log("item===>", item.question)
-                                                                                            return (
-                                                                                                <>
-                                                                                                    <div>
-                                                                                                        {el?.sub && <div className='my-5 mx--2'
-                                                                                                            style={{
-                                                                                                                border: '0.5px solid #e9ecef ',
-                                                                                                                borderTop: '0px'
-                                                                                                            }}
-                                                                                                        >
-                                                                                                            <CommonTable
-                                                                                                                tableDataSet={el?.sub}
-                                                                                                                displayDataSet={normalizedTableData(el?.sub, '')}
-
-                                                                                                            />
-                                                                                                        </div>}
-                                                                                                    </div>
-                                                                                                </>
-                                                                                            )
-                                                                                        })
+                                                                                <Progress
+                                                                                    className='mt--2'
+                                                                                    max="100"
+                                                                                    value={heading === 'skill_matrix' ? +basicReportData[heading].overal_percent : +calculateRating(basicReportData[heading])}
+                                                                                    style={{
+                                                                                        height: '6px',
+                                                                                    }}
+                                                                                    barStyle={
+                                                                                        {
+                                                                                            backgroundColor: colorVariant(heading === 'skill_matrix' ? +basicReportData[heading].overal_percent : +calculateRating(basicReportData[heading]))
                                                                                         }
-                                                                                    </>
-                                                                                )
-                                                                            })
-                                                                            }
-                                                                        </div>
-                                                                        {1 === index && <div className='mb--3 mx--4'>
-                                                                            <Divider />
-                                                                        </div>}
-                                                                    </>}
-                                                                </>
-                                                            )
-                                                        }
-                                                    })
-                                                )
-                                            }
+                                                                                    }
+                                                                                />
+                                                                            </div>
+                                                                        </CardBody>
+                                                                    </Card>
+                                                                </div>
+                                                            </>
+                                                        )
+                                                    }
+                                                    console.log('879868768768')
+                                                })
+                                            )
                                         })
 
                                         }
-                                    </CardBody>
-                                </Card>
-                            </div >
+                                    </div>
+                                </CardHeader>
+                                <CardBody className='ml-1 pb-5'>
+                                    {Object.keys(basicReportData).reverse()?.map((heading, index) => {
+
+
+
+                                        if (heading === "skill_matrix") {
+                                            array = array + calculateRating(basicReportData[heading].sections)
+                                            return (
+                                                <>
+                                                    {basicReportData["skill_matrix"]?.sections.length > 0 &&
+                                                        <div className='pl-lg-4 pr-lg-5 mr- pt-3 pb-2'>
+                                                            <div className='row justify-content-between pr-2 pl-3 pb-3'>
+                                                                <h4 className='font-weight-bolder text-black mb-4 text-uppercase'>{'SKILL MATRIX'}</h4>
+                                                                <div className='font-weight-bolder display-4'
+                                                                    style={{
+                                                                        color: colorVariant(+basicReportData[heading].overal_percent)
+                                                                    }}
+                                                                >
+                                                                    {+basicReportData[heading].overal_percent}
+                                                                </div>
+                                                            </div>
+
+                                                            <>
+                                                                {basicReportData && basicReportData["skill_matrix"]?.sections.length > 0 && basicReportData["skill_matrix"]?.sections.map((el) => {
+
+                                                                    return (
+                                                                        <>
+                                                                            <div className=' px-3 mt--4 mb--2'>
+
+                                                                                <div className='row justify-content-between  align-items-center'
+                                                                                >
+                                                                                    <div className='pt-4 '>
+                                                                                        <h4 className='text-black'>
+                                                                                            {el?.name}
+                                                                                        </h4>
+                                                                                    </div>
+                                                                                    <div className='row align-items-center'>
+                                                                                        <div className="progress-wrapper pb-0 ml-0  pl-0 mr-2"
+                                                                                            style={{
+                                                                                                width: '30vh'
+                                                                                            }}
+                                                                                        >
+                                                                                            <div className="progress-info">
+                                                                                                <div className="progress-label ">
+                                                                                                    {/* <span className='ml--3 text-black'>Task completed</span> */}
+                                                                                                </div>
+
+                                                                                            </div>
+                                                                                            <Progress
+                                                                                                className='mr-2'
+                                                                                                style={{
+                                                                                                    height: '6px',
+                                                                                                }}
+                                                                                                barStyle={
+                                                                                                    {
+                                                                                                        backgroundColor: colorVariant(+el?.rating || +el?.percent)
+                                                                                                    }
+                                                                                                }
+                                                                                                max="100" value={el?.rating ? el?.rating : 0} />
+
+                                                                                        </div>
+                                                                                        <div className="">
+                                                                                            <span className='h6'
+                                                                                                style={{
+                                                                                                    fontSize: '12px'
+                                                                                                }}
+                                                                                            >{el?.rating ? el?.rating : 0}%</span>
+                                                                                        </div>
+                                                                                    </div>
+
+
+                                                                                </div>
+                                                                                <p className='description ml--3'>
+                                                                                    {el?.note}
+                                                                                </p>
+                                                                            </div >
+                                                                            {el?.questions?.length > 0 && normalizedTableData(el?.questions, '')}
+
+
+
+
+
+                                                                        </>
+                                                                    )
+                                                                })}
+                                                            </>
+                                                        </div>}
+                                                    {Object.keys(basicReportData).length - 1 !== index && <div className='mb--3 mx--4'>
+                                                        <Divider />
+                                                    </div>}
+                                                </>
+                                            )
+                                        }
+                                        else {
+                                            return (
+                                                dataId.map((el) => {
+                                                    if (el === heading && heading !== "skill_matrix") {
+                                                        array = array + calculateRating(basicReportData[heading])
+                                                        return (
+                                                            <>
+                                                                {basicReportData[heading].length > 0 && <>
+                                                                    <div className='pl-lg-4 pr-lg-5 mr- pt-3 pb-2'>
+
+                                                                        <div className='row justify-content-between pr-2 pl-3 pb-3'>
+                                                                            <h4 className='font-weight-bolder text-black mb-4 text-uppercase'>{heading}</h4>
+                                                                            <div className='font-weight-bolder display-4'
+                                                                                style={{
+                                                                                    color: colorVariant(calculateRating(basicReportData[heading]))
+                                                                                }}
+                                                                            >
+                                                                                {calculateRating(basicReportData[heading]).toFixed(1)}
+                                                                            </div>
+                                                                        </div>
+                                                                        {basicReportData && basicReportData[heading].length > 0 && basicReportData[heading].map((el) => {
+                                                                            return (
+                                                                                <>
+                                                                                    <div className=' px-3 my--4'>
+
+                                                                                        <div className='row justify-content-between  align-items-center'
+                                                                                        >
+                                                                                            <div className='pt-4 '>
+                                                                                                <h4 className='text-black'>
+                                                                                                    {el?.metrics_name || el?.trait || el?.name}
+                                                                                                </h4>
+                                                                                            </div>
+                                                                                            <div className='row align-items-center'>
+                                                                                                <div className="progress-wrapper pb-0 ml-0  pl-0 mr-2"
+                                                                                                    style={{
+                                                                                                        width: '30vh'
+                                                                                                    }}
+                                                                                                >
+                                                                                                    <div className="progress-info">
+                                                                                                        <div className="progress-label ">
+                                                                                                            {/* <span className='ml--3 text-black'>Task completed</span> */}
+                                                                                                        </div>
+
+                                                                                                    </div>
+                                                                                                    <Progress
+                                                                                                        className='mr-2'
+                                                                                                        style={{
+                                                                                                            height: '6px',
+                                                                                                        }}
+                                                                                                        barStyle={
+                                                                                                            {
+                                                                                                                backgroundColor: colorVariant(+el?.rating || +el?.percent)
+                                                                                                            }
+                                                                                                        }
+                                                                                                        max="100" value={el?.rating || +el?.percent} />
+
+                                                                                                </div>
+                                                                                                <div className="">
+                                                                                                    <span className='h6'
+                                                                                                        style={{
+                                                                                                            fontSize: '12px'
+                                                                                                        }}
+                                                                                                    >{el?.rating || +el?.percent || 0}%</span>
+                                                                                                </div>
+                                                                                            </div>
+
+
+                                                                                        </div>
+                                                                                        <p className='description ml--3'>
+                                                                                            {el?.description || el?.reason || el?.note}
+                                                                                        </p>
+                                                                                    </div>
+                                                                                    {el?.questions?.length > 0 && el?.questions.map((item) => {
+                                                                                        console.log("item===>", item.question)
+                                                                                        return (
+                                                                                            <>
+                                                                                                <div>
+                                                                                                    {el?.sub && <div className='my-5 mx--2'
+                                                                                                        style={{
+                                                                                                            border: '0.5px solid #e9ecef ',
+                                                                                                            borderTop: '0px'
+                                                                                                        }}
+                                                                                                    >
+                                                                                                        <CommonTable
+                                                                                                            tableDataSet={el?.sub}
+                                                                                                            displayDataSet={normalizedTableData(el?.sub, '')}
+
+                                                                                                        />
+                                                                                                    </div>}
+                                                                                                </div>
+                                                                                            </>
+                                                                                        )
+                                                                                    })
+                                                                                    }
+                                                                                </>
+                                                                            )
+                                                                        })
+                                                                        }
+                                                                    </div>
+                                                                    {index !== 3 && <div className='mb--3 mx--4'>
+                                                                            <Divider />
+                                                                        </div>}
+                                                                </>}
+                                                            </>
+                                                        )
+                                                    }
+                                                })
+                                            )
+                                        }
+                                    })
+
+                                    }
+                                </CardBody>
+                            </Card>
                         </div >
                     </div >
+                </div >
 
-                </div>
-                : <NoRecordsFound />
+            </div>
+
             }
         </>
     )
 }
 
-export { Report };
+export { Report }
