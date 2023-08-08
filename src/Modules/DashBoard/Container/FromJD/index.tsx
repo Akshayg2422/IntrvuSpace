@@ -24,6 +24,8 @@ function FromJD() {
     const generateJdModal = useModal(false);
     const completedModal = useModal(false);
     const [scheduleId, setScheduleId] = useState(undefined)
+    const jdScheduleModal = useModal(false);
+
 
 
 
@@ -59,11 +61,10 @@ function FromJD() {
         }
 
         const validation = validate(FROM_JD_RULES, params)
-        if (ifObjectExist(validation)) {
 
+        if (ifObjectExist(validation)) {
             addJdModal.hide();
             generateJdModal.show();
-
             dispatch(postJdVariant({
                 params,
                 onSuccess: (res: any) => () => {
@@ -75,7 +76,7 @@ function FromJD() {
                     completedModal.show();
                     getKnowledgeGroupFromJdHandler();
                     resetValues();
-                    showToast(res.message, 'success')
+                    showToast(res.status, 'success')
                 },
                 onError: (error) => () => {
                     generateJdModal.hide();
@@ -130,8 +131,12 @@ function FromJD() {
 
     function proceedInterview(id: string) {
         if (id) {
-            dispatch(selectedScheduleId(id))
-            goTo(ROUTES['designation-module'].interview + "/" + id)
+            if (id !== '-1') {
+                dispatch(selectedScheduleId(id))
+                goTo(ROUTES['designation-module'].interview + "/" + id)
+            } else {
+                jdScheduleModal.show();
+            }
         }
     }
 
@@ -302,6 +307,36 @@ function FromJD() {
                 </div>
             </Modal>
 
+
+            <Modal isOpen={jdScheduleModal.visible} onClose={jdScheduleModal.hide}>
+                <div className='mt--5 pb-4'>
+                    <div className='text-center '>
+                        <div className='display-4 text-black'>
+                            {'Interview Preparation is in progress,'}
+                        </div>
+                        <div className='display-4 text-black'>
+                            {'it will take couple of minutes,'}
+                        </div>
+                        <div className='display-4 text-black'>
+                            {'you will receive schedule confirmation over mail.'}
+                        </div>
+                    </div>
+                    <div className='text-center py-3'>
+                        <div className='row justify-content-center pt-1'>
+                            <div className='col-4'>
+                                <Button
+                                    block
+                                    size='md'
+                                    text={'Close'}
+                                    onClick={() => {
+                                        jdScheduleModal.hide();
+                                    }}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </Modal>
         </>
     )
 }
