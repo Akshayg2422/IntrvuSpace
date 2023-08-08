@@ -254,7 +254,7 @@ function Call() {
                         getChatDetails('start', 'text')
                     }}
                     ReportButtonOnclick={() => {
-                        goTo(ROUTES['designation-module'].report + "/" + schedule_id)
+                        goTo(ROUTES['designation-module'].report + "/" + schedule_id, true)
                     }}
                     video={showVideo}
                     onVideoControl={() => handleVideo()}
