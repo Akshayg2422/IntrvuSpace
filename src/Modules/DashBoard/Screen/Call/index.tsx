@@ -2,17 +2,17 @@ import { Modal, showToast } from '@Components';
 import { useModal, useNavigation, useScreenRecorder, useTextToSpeech } from '@Hooks';
 import { CallScreen } from '@Modules';
 import { getScheduleBasicInfo, getStartChat, screenRecordingPermission } from '@Redux';
+import { ROUTES } from '@Routes';
 import { useWhisper } from '@chengsokdara/use-whisper';
 import hark from 'hark';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 
 function Call() {
-    const { goBack } = useNavigation();
+    const { goBack, goTo } = useNavigation();
     const dispatch = useDispatch()
     let { schedule_id } = useParams()
-    
     let callModel = useModal(true)
     const { scheduleInfo, recordingPermission } = useSelector((state: any) => state.DashboardReducer)
 
@@ -39,6 +39,7 @@ function Call() {
     const intervalRef = useRef<any>(null);
 
     const OPENAI_API_TOKEN = "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"
+
     const {
         transcribing,
         transcript,
@@ -227,7 +228,7 @@ function Call() {
             }, 3000);
             return () => clearTimeout(timer);
         }
-    }, [buttonConditional, isSpeaking]);
+    }, [isSpeaking]);
 
     const showLoader = callState === CALL_STATE_TRANSCRIBING || callState === CALL_STATE_API_LOADING
 
@@ -251,6 +252,9 @@ function Call() {
                         // startScreenRecording()
                         setButtonConditional('processing')
                         getChatDetails('start', 'text')
+                    }}
+                    ReportButtonOnclick={() => {
+                        goTo(ROUTES['designation-module'].report + "/" + schedule_id)
                     }}
                     video={showVideo}
                     onVideoControl={() => handleVideo()}
