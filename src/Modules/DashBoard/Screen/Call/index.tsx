@@ -1,16 +1,18 @@
 import { Modal, showToast } from '@Components';
-import { useNavigation, useScreenRecorder, useTextToSpeech } from '@Hooks';
+import { useModal, useNavigation, useScreenRecorder, useTextToSpeech } from '@Hooks';
 import { CallScreen } from '@Modules';
 import { getScheduleBasicInfo, getStartChat, screenRecordingPermission } from '@Redux';
 import { useWhisper } from '@chengsokdara/use-whisper';
 import hark from 'hark';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router';
 
 function Call() {
     const { goBack } = useNavigation();
     const dispatch = useDispatch()
-
+    let { schedule_id } = useParams()
+    let callModel = useModal(true)
     const { scheduleInfo, scheduleId, recordingPermission } = useSelector((state: any) => state.DashboardReducer)
 
     const [isHear, setIsHear] = useState(true)
@@ -200,15 +202,8 @@ function Call() {
                             setPromptText(success?.keywords)
                         }
                         setCallState(CALL_STATE_INACTIVE)
-<<<<<<< HEAD
                     } else if (success?.next_step[0].message_type === "SPEAK" && success?.next_step[0].response_type === 'INTERVIEWER_END_CALL') {
                         await window.location.pathname === `/interview/${scheduleId}` && speak(success?.next_step[0]?.response_text);
-=======
-                    } else if (success?.next_step[0].response_type === 'COMMAND') {
-                        commandVariant(success?.next_step[0]?.response_text)
-                    } else if (success?.next_step[0].message_type === "SPEAK" && success?.next_step[0].response_type == 'INTERVIEWER_END_CALL') {
-                        await speak(success?.next_step[0]?.response_text);
->>>>>>> 0f600a37d01d68906515aa80452fc479c2baec3d
                         setButtonConditional('end')
                     }
                 },
@@ -237,7 +232,8 @@ function Call() {
 
     return (
         <>
-            <Modal isOpen={true} size='xl' onClose={() => {
+            <Modal isOpen={callModel.visible} size='xl' onClose={() => {
+                callModel.hide()
                 isScreenRecording && stopScreenRecording()
                 goBack()
             }} >
@@ -262,7 +258,7 @@ function Call() {
                     }
                     onCallEnd={() => {
                         isScreenRecording && stopScreenRecording()
-                        // callModal.hide()
+                        callModel.hide()
                         goBack();
                     }}
                     onVolumeControl={() => { }
