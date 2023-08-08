@@ -6,7 +6,7 @@ import { OTP_RESEND_DEFAULT_TIME, USER_TOKEN } from '@Utils';
 import { useInput, useLoader, useNavigation, useTimer } from '@Hooks';
 import { ROUTES } from '@Routes';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchMemberUsingLoginOtp, memberLoginUsingPasswordSuccess, settingRegisterData } from '@Redux';
+import { fetchMemberUsingLoginOtp, memberLoginUsingPasswordSuccess, settingRegisterData, userLoginDetails } from '@Redux';
 
 function Otp() {
     const { seconds, setSeconds } = useTimer(OTP_RESEND_DEFAULT_TIME);
@@ -15,6 +15,7 @@ function Otp() {
     const { registerData } = useSelector((state: any) => state.DashboardReducer);
     const dispatch = useDispatch()
     const loginLoader = useLoader(false);
+    const { loginDetails } = useSelector((state: any) => state.AppReducer);
 
     console.log("registerData", registerData)
     useEffect(() => {
@@ -37,8 +38,18 @@ function Otp() {
                 params,
                 onSuccess: (response: any) => () => {
                     loginLoader.hide()
+
+                    const { details } = response;
+
                     if (response?.success) {
-                        dispatch(memberLoginUsingPasswordSuccess(response))
+                        dispatch(
+                            userLoginDetails({
+                                ...loginDetails,
+                                isLoggedIn: true,
+                                ...details
+                            }),
+                        );
+
                         localStorage.setItem(USER_TOKEN, response.details.token);
                         goTo(ROUTES['auth-module'].splash)
                         dispatch(settingRegisterData(undefined))
@@ -58,6 +69,8 @@ function Otp() {
             showToast('Otp Number Cannot be empty', 'error')
             loginLoader.hide()
         }
+
+
 
     }
 
