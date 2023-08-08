@@ -110,15 +110,24 @@ function* createSectorSaga(action) {
 
 function* getSectorsSaga(action) {
   try {
+    console.log('sasasasassasasasasa');
+
     const response = yield call(Api.getSectorsApi, action.payload.params);
+    console.log('sasasasas');
+
     if (response.success) {
+      console.log('success');
       yield put(Action.getSectorsSuccess(response));
       yield call(action.payload.onSuccess(response));
     } else {
+      console.log('erroe');
+
       yield put(Action.getSectorsFailure(response.error_message));
       yield call(action.payload.onError(response));
     }
   } catch (error) {
+    console.log('erroe00000');
+
     yield put(Action.getSectorsFailure(error));
     yield call(action.payload.onError(error));
   }
