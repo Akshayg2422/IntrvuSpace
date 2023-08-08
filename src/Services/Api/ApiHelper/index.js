@@ -5,12 +5,12 @@ export const BUILD_TYPE_LIVE_DEMO = 2;
 export const BUILD_TYPE_STAGING = 3;
 export const BUILD_TYPE_LOCAL = 4;
 
-export const BUILD_TYPE = BUILD_TYPE_LOCAL;
+export const BUILD_TYPE = BUILD_TYPE_LIVE_DEMO;
 export const SERVER =
   BUILD_TYPE === BUILD_TYPE_LIVE
     ? 'https://mockinprimary.quantaedat.com'
     : BUILD_TYPE === BUILD_TYPE_LIVE_DEMO
-      ? 'live_local'
+      ? 'https://452b-103-118-190-4.ngrok-free.app'
       : BUILD_TYPE === BUILD_TYPE_LOCAL
         ? 'http://192.168.157.204:8002'
         : BUILD_TYPE === BUILD_TYPE_STAGING
