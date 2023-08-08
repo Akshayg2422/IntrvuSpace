@@ -14,7 +14,7 @@ function Call() {
     let { schedule_id } = useParams()
     
     let callModel = useModal(true)
-    const { scheduleInfo, scheduleId, recordingPermission } = useSelector((state: any) => state.DashboardReducer)
+    const { scheduleInfo, recordingPermission } = useSelector((state: any) => state.DashboardReducer)
 
     const [isHear, setIsHear] = useState(true)
     const [showVideo, setShowVideo] = useState(false)
@@ -73,7 +73,7 @@ function Call() {
 
 
     const getBasicInfo = () => {
-        const params = { schedule_id: scheduleId }
+        const params = { schedule_id: schedule_id }
         dispatch(getScheduleBasicInfo({
             params, onSuccess: () => () => {
             },
@@ -191,20 +191,20 @@ function Call() {
         const params = {
             ...(type === 'text' && { "message": file }),
             ...(type === 'Ai' && { "message": transcript.text }),
-            schedule_id: scheduleId
+            schedule_id: schedule_id
         };
         dispatch(
             getStartChat({
                 params,
                 onSuccess: (success: any) => async () => {
                     if (success?.next_step[0].message_type === "SPEAK" && success?.next_step[0].response_type !== 'INTERVIEWER_END_CALL') {
-                        window.location.pathname === `/interview/${scheduleId}` && speak(success?.next_step[0]?.response_text);
+                        window.location.pathname === `/interview/${schedule_id}` && speak(success?.next_step[0]?.response_text);
                         if (success?.keywords.length > 0) {
                             setPromptText(success?.keywords)
                         }
                         setCallState(CALL_STATE_INACTIVE)
                     } else if (success?.next_step[0].message_type === "SPEAK" && success?.next_step[0].response_type === 'INTERVIEWER_END_CALL') {
-                        await window.location.pathname === `/interview/${scheduleId}` && speak(success?.next_step[0]?.response_text);
+                        await window.location.pathname === `/interview/${schedule_id}` && speak(success?.next_step[0]?.response_text);
                         setButtonConditional('end')
                     }
                 },
