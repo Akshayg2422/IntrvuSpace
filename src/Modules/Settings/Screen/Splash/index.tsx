@@ -4,6 +4,7 @@ import { ROUTES } from "@Routes";
 import { useNavigation } from "@Hooks";
 import { useSelector, useDispatch } from 'react-redux'
 import { icons } from "@Assets";
+import { Landing } from '@Modules'
 
 
 function Splash() {
@@ -64,12 +65,7 @@ function Splash() {
                 </div>
 
             </div>
-                : <div>
-
-                    <Button text={'Login'} onClick={() => {
-                        goTo(ROUTES["auth-module"].login, true);
-                    }} />
-                </div>
+                : <Landing />
             }
         </div>
     );
