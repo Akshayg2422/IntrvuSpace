@@ -1,4 +1,4 @@
-import { Button, Card, Divider, Modal, TextArea, Input, showToast } from '@Components';
+import { Button, Card, Divider, Modal, TextArea, Input, showToast, MultiSelectDropDown } from '@Components';
 import { createNewJdSchedule, getJdItemList, postJdVariant, selectedScheduleId } from '@Redux';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -25,6 +25,8 @@ function FromSkills() {
     const completedModal = useModal(false);
     const [scheduleId, setScheduleId] = useState(undefined)
     const jdScheduleModal = useModal(false);
+
+    const skills = [{ id: "1", text: 'Javascript' }, { id: "2", text: 'Core' }, { id: "3", text: 'Hooks' }]
 
 
 
@@ -259,6 +261,18 @@ function FromSkills() {
                         placeHolder={"Experience"}
                         value={experience.value}
                         onChange={experience.onChange} />
+
+                    {/* <MultiSelectDropDown
+                        heading={'Skills'}
+                        options={skills}
+                        displayValue={"value"}
+                        onSelect={(item) => {
+                            setSelectedCompanies(item);
+                        }}
+                        onRemove={(item) => {
+                            setSelectedCompanies(item);
+                        }}
+                    /> */}
 
                     <TextArea
                         heading='Job Description'

@@ -13,15 +13,13 @@ function Splash() {
     const dispatch = useDispatch()
 
 
-    const { loginUser, } = useSelector((state: any) => state.AuthReducer);
+    const { loginDetails } = useSelector((state: any) => state.AppReducer);
 
 
     useEffect(() => {
         setTimeout(() => {
-            if (loginUser?.details?.token) {
-
-
-                if (loginUser?.details?.is_admin) {
+            if (loginDetails?.isLoggedIn) {
+                if (loginDetails.is_admin) {
                     const route = localStorage.getItem('route');
                     if (route) {
                         localStorage.removeItem('route');
@@ -50,7 +48,7 @@ function Splash() {
 
     return (
         <div>
-            {loginUser?.details?.token ? <div className={"d-flex vh-100  justify-content-center align-items-center"}>
+            {loginDetails?.isLoggedIn ? <div className={"d-flex vh-100  justify-content-center align-items-center"}>
                 <div className="text-center">
                     <Image
                         src={icons.logo}

@@ -1,6 +1,6 @@
 import { Button, SearchInput, TopNavbar } from '@Components'
 import { useInput, useNavigation } from '@Hooks'
-import { FromCollection, FromJD } from '@Modules'
+import { FromCollection, FromJD, FromSkills } from '@Modules'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 
@@ -34,7 +34,7 @@ function Clients() {
                 component = <FromJD />
                 break;
             case 2:
-                component = <></>
+                component = <FromSkills />
                 break;
 
         }
