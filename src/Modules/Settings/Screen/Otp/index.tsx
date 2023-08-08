@@ -22,34 +22,42 @@ function Otp() {
     }, [])
 
 
+
     const loginOtp = () => {
         loginLoader.show()
-        const params = {
-            ...(registerData?.mobile_number && { mobile_number: registerData?.mobile_number }),
-            ...(registerData?.email && { email: registerData?.email }),
-            otp: Otp.value
+
+        if (Otp.value.length > 0) {
+            const params = {
+                ...(registerData?.mobile_number && { mobile_number: registerData?.mobile_number }),
+                ...(registerData?.email && { email: registerData?.email }),
+                otp: Otp.value
+            }
+
+            dispatch(fetchMemberUsingLoginOtp({
+                params,
+                onSuccess: (response: any) => () => {
+                    loginLoader.hide()
+                    if (response?.success) {
+                        dispatch(memberLoginUsingPasswordSuccess(response))
+                        localStorage.setItem(USER_TOKEN, response.details.token);
+                        goTo(ROUTES['auth-module'].splash)
+                        dispatch(settingRegisterData(undefined))
+                    }
+                    else {
+                        showToast(response.error_message, 'error')
+                    }
+
+                },
+                onError: (error) => () => {
+                    loginLoader.hide()
+                    showToast(error.error_message, 'error')
+                },
+            }))
         }
-
-        dispatch(fetchMemberUsingLoginOtp({
-            params,
-            onSuccess: (response: any) => () => {
-                loginLoader.hide()
-                if (response?.success) {
-                    dispatch(memberLoginUsingPasswordSuccess(response))
-                    localStorage.setItem(USER_TOKEN, response.details.token);
-                    goTo(ROUTES['auth-module'].splash)
-                    dispatch(settingRegisterData(undefined))
-                }
-                else {
-                    showToast(response.error_message, 'error')
-                }
-
-            },
-            onError: (error) => () => {
-                loginLoader.hide()
-                showToast(error.error_message, 'error')
-            },
-        }))
+        else {
+            showToast('Otp Number Cannot be empty', 'error')
+            loginLoader.hide()
+        }
 
     }
 
@@ -67,7 +75,7 @@ function Otp() {
                                         fontSize: '3vh'
                                     }}
                                 >{registerData?.mobile_number ? 'Mobile Number' : 'Email ID'} </h2>
-                                <h4 className='text-black font-weight-normal py-2'>{registerData?.mobile_number ? "+91 - " + registerData?.mobile_number : registerData?.email} <i className="bi bi-pencil text-primary ml-3 pointer" onClick={() => {goTo(ROUTES['auth-module'].loginWithOtp) }}></i></h4>
+                                <h4 className='text-black font-weight-normal py-2'>{registerData?.mobile_number ? "+91 - " + registerData?.mobile_number : registerData?.email} <i className="bi bi-pencil text-primary ml-3 pointer" onClick={() => { goTo(ROUTES['auth-module'].loginWithOtp) }}></i></h4>
                             </div>
                             <div className=" col-sm-9  pr-3 ml-lg--3 px-0 ml-sm-0 ml--2 pt-1"
                                 style={{

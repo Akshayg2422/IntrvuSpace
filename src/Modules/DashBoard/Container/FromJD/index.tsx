@@ -76,7 +76,7 @@ function FromJD() {
                     completedModal.show();
                     getKnowledgeGroupFromJdHandler();
                     resetValues();
-                    showToast(res.message, 'success')
+                    showToast(res.status, 'success')
                 },
                 onError: (error) => () => {
                     generateJdModal.hide();
