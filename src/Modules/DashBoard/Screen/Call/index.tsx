@@ -12,6 +12,7 @@ function Call() {
     const { goBack } = useNavigation();
     const dispatch = useDispatch()
     let { schedule_id } = useParams()
+    
     let callModel = useModal(true)
     const { scheduleInfo, scheduleId, recordingPermission } = useSelector((state: any) => state.DashboardReducer)
 
