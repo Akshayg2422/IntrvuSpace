@@ -23,44 +23,54 @@ function Otp() {
     }, [])
 
 
+
     const loginOtp = () => {
         loginLoader.show()
-        const params = {
-            ...(registerData?.mobile_number && { mobile_number: registerData?.mobile_number }),
-            ...(registerData?.email && { email: registerData?.email }),
-            otp: Otp.value
+
+        if (Otp.value.length > 0) {
+            const params = {
+                ...(registerData?.mobile_number && { mobile_number: registerData?.mobile_number }),
+                ...(registerData?.email && { email: registerData?.email }),
+                otp: Otp.value
+            }
+
+            dispatch(fetchMemberUsingLoginOtp({
+                params,
+                onSuccess: (response: any) => () => {
+                    loginLoader.hide()
+
+                    const { details } = response;
+
+                    if (response?.success) {
+                        dispatch(
+                            userLoginDetails({
+                                ...loginDetails,
+                                isLoggedIn: true,
+                                ...details
+                            }),
+                        );
+
+                        localStorage.setItem(USER_TOKEN, response.details.token);
+                        goTo(ROUTES['auth-module'].splash)
+                        dispatch(settingRegisterData(undefined))
+                    }
+                    else {
+                        showToast(response.error_message, 'error')
+                    }
+
+                },
+                onError: (error) => () => {
+                    loginLoader.hide()
+                    showToast(error.error_message, 'error')
+                },
+            }))
+        }
+        else {
+            showToast('Otp Number Cannot be empty', 'error')
+            loginLoader.hide()
         }
 
-        dispatch(fetchMemberUsingLoginOtp({
-            params,
-            onSuccess: (response: any) => () => {
-                loginLoader.hide()
 
-                const { details } = response;
-
-                if (response?.success) {
-                    dispatch(
-                        userLoginDetails({
-                            ...loginDetails,
-                            isLoggedIn: true,
-                            ...details
-                        }),
-                    );
-
-                    localStorage.setItem(USER_TOKEN, response.details.token);
-                    goTo(ROUTES['auth-module'].splash)
-                    dispatch(settingRegisterData(undefined))
-                }
-                else {
-                    showToast(response.error_message, 'error')
-                }
-
-            },
-            onError: (error) => () => {
-                loginLoader.hide()
-                showToast(error.error_message, 'error')
-            },
-        }))
 
     }
 

@@ -86,8 +86,6 @@ function Login() {
                     loginLoader.hide()
                     if (response.success) {
                         localStorage.setItem(USER_TOKEN, response.details.token);
-
-
                         dispatch(
                             userLoginDetails({
                                 ...loginDetails,
@@ -102,8 +100,9 @@ function Login() {
                         showToast(response.error_message, 'error')
                     }
                 },
-                onError: () => () => {
+                onError: (error) => () => {
                     loginLoader.hide()
+                    showToast(error.error_message, 'error')
                 },
             }))
 
