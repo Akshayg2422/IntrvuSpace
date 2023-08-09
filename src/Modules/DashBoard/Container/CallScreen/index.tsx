@@ -2,7 +2,7 @@ import { AnimatedImage, Card, WebCamRecorder, Image } from '@Components';
 import { Button } from 'reactstrap';
 import '../../../../Components/Component/AnimatedImage/AnimatedImageFrame.scss'
 import { useEffect, useState } from 'react';
-import classNames from 'classnames';
+
 
 
 type CallScreenProps = {
@@ -70,8 +70,8 @@ const CallScreen = ({ basicInfo, onMicControl, onMic = false, loading = false, c
         return `${firstNameInitial}${lastNameInitial}`;
     }
 
-    console.log("==================>",conditionalButton);
-    
+
+
     return (
         <div className='text-center'>
 

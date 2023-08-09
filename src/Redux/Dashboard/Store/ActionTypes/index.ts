@@ -210,3 +210,8 @@ export const GET_SCHEDULE_BASIC_INFO_FAILURE = 'GET_SCHEDULE_BASIC_INFO_FAILURE'
 // create new jd schedule
 export const CREATE_NEW_JD_SCHEDULE = 'CREATE_NEW_JD_SCHEDULE'
 
+
+
+
+// create new jd schedule
+export const SET_SELECTED_SECTION = 'SET_SELECTED_SECTION'

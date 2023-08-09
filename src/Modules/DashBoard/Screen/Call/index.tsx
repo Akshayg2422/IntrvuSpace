@@ -11,7 +11,6 @@ import { useParams } from 'react-router-dom';
 function Call() {
     const { goBack } = useNavigation();
     const dispatch = useDispatch()
-    const { } = useParams();
 
     const { scheduleInfo, recordingPermission } = useSelector((state: any) => state.DashboardReducer)
 
@@ -236,6 +235,8 @@ function Call() {
     return (
         <>
             <Modal isOpen={true} size='xl' onClose={() => {
+                console.log('camex');
+
                 isScreenRecording && stopScreenRecording()
                 goBack()
             }} >
