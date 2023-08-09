@@ -23,5 +23,6 @@ export interface DashboardProp {
   recordingPermission: boolean
   jdVariantData: any,
   jdItem: any
-  scheduleInfo: any
+  scheduleInfo: any,
+  selectedSection: number
 }

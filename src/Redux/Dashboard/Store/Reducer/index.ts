@@ -29,7 +29,8 @@ const initialState: DashboardProp = {
   recordingPermission: false,
   jdVariantData: undefined,
   jdItem: undefined,
-  scheduleInfo: undefined
+  scheduleInfo: undefined,
+  selectedSection: 0
 };
 
 const DashboardReducer = (state = initialState, action: any) => {
@@ -342,6 +343,15 @@ const DashboardReducer = (state = initialState, action: any) => {
       break;
     case ActionTypes.GET_SCHEDULE_BASIC_INFO_FAILURE:
       state = { ...state, scheduleInfo: undefined };
+      break;
+
+
+    /**
+     * set selected section
+     */
+
+    case ActionTypes.SET_SELECTED_SECTION:
+      state = { ...state, selectedSection: action.payload };
       break;
 
     default:

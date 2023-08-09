@@ -66,7 +66,19 @@ function Report() {
                     const skillMatrixPercentage = parseFloat((getPercentage(skill_matrix?.sections, 'rating') / 100 * overall_weightage.skill_matrix).toFixed(1));
                     const traitPercentage = parseFloat((getPercentage(trait, 'percent') / 100 * overall_weightage.trait).toFixed(1));
 
-                    const total = communicationPercentage + skillMatrixPercentage + traitPercentage
+
+                    // const communicationPercentage = parseFloat((communication.reduce(function (acc, { rating }) { return acc + parseFloat(rating); }, 0) / communication.length / 100 * overall_weightage.communication).toFixed(1));
+                    // const skillMatrixPercentage = parseFloat((skill_matrix?.sections.reduce(function (acc, { rating }) { return acc + parseFloat(rating); }, 0) / skill_matrix?.sections?.length / 100 * overall_weightage.skill_matrix).toFixed(1));
+                    // const traitPercentage = parseFloat((trait.reduce(function (acc, { percent }) { return acc + parseFloat(percent); }, 0) / trait.length / 100 * overall_weightage.trait).toFixed(1));
+
+                    console.log(communicationPercentage);
+                    console.log(skillMatrixPercentage);
+                    console.log(traitPercentage);
+
+
+
+
+                    const total = (communicationPercentage + skillMatrixPercentage + traitPercentage).toFixed(1);
 
                     setPercentage({
                         communication: communicationPercentage,
@@ -712,8 +724,8 @@ function Report() {
                                                                         }
                                                                     </div>
                                                                     {index !== 3 && <div className='mb--3 mx--4'>
-                                                                            <Divider />
-                                                                        </div>}
+                                                                        <Divider />
+                                                                    </div>}
                                                                 </>}
                                                             </>
                                                         )

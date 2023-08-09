@@ -1,9 +1,9 @@
 import { Button, SearchInput, TopNavbar } from '@Components'
-import { useInput, useNavigation } from '@Hooks'
+import { useInput } from '@Hooks'
 import { FromCollection, FromJD, FromSkills } from '@Modules'
+import { setSelectedSection } from '@Redux'
 import { useState } from 'react'
-import { useDispatch } from 'react-redux'
-
+import { useSelector, useDispatch } from 'react-redux'
 
 function Clients() {
 
@@ -19,14 +19,17 @@ function Clients() {
             id: 3, title: 'From Skills'
         }
     ]
-    const [selectedInterview, setSelectedInterview] = useState<any>(0);
+
+    const dispatch = useDispatch()
+    const { selectedSection } = useSelector((state: any) => state.DashboardReducer)
+
 
 
     function renderComponent() {
 
         let component = <FromCollection />
 
-        switch (selectedInterview) {
+        switch (selectedSection) {
             case 0:
                 component = <FromCollection />
                 break;
@@ -54,7 +57,7 @@ function Clients() {
                     {
                         INTERVIEW_TYPE.map((interview: any, index: number) => {
                             const { title } = interview;
-                            const selected = index === selectedInterview
+                            const selected = index === selectedSection
                             return (
                                 <div className='m-1 row col-xl  col-sm-3'>
                                     <Button
@@ -64,7 +67,7 @@ function Clients() {
                                         color={!selected ? 'neutral' : 'primary'}
                                         text={title}
                                         onClick={() => {
-                                            setSelectedInterview(index);
+                                            dispatch(setSelectedSection(index));
                                         }}
                                     />
                                 </div>
