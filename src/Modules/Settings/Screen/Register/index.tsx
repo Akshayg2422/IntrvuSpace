@@ -30,7 +30,7 @@ function Register() {
         }
     }, [enterPress])
 
-    
+
 
     const onSubmit = () => {
 
@@ -86,18 +86,15 @@ function Register() {
     return (
         <>
             <div className='container-fluid'>
-
                 <div className='row'>
-
-                    <LoginSideContent />
-                    <div className="col d-flex justify-content-center align-items-center"
-                        style={{
-                            scale: '0.9'
-                        }}>
-                        <div className='position-absolute pointer '
+                    <div className='col'>
+                        <LoginSideContent />
+                    </div>
+                    <div className="col d-flex justify-content-center align-items-center">
+                        <div className='position-absolute pointer m-3'
                             style={{
-                                top: -15,
-                                left: -15
+                                top: 0,
+                                left: 8
                             }}
                             onClick={() => {
                                 goBack()
@@ -123,7 +120,7 @@ function Register() {
                             </div>
                             <div
                                 style={{
-                                    zoom: '90%'
+                                    zoom: '80%'
                                 }}
                             >
                                 <div className='overflow-auto overflow-hide'
@@ -380,10 +377,9 @@ function Register() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="pt-xl-4">
+                                <div className="pt-xl-4 mb-sm-0 mb-4">
                                     <Button
                                         className={'text-white bg-primary font-weight-normal py-2 border-0 text-lg shadow-none'}
-                                        // loading={loginLoader.loader}
                                         block
                                         size="lg"
                                         text={'Register Now'}
