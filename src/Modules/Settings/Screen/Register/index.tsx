@@ -86,7 +86,6 @@ function Register() {
     return (
         <>
             <div className='container-fluid'>
-
                 <div className='row'>
                     <div className='col'>
                         <LoginSideContent />
