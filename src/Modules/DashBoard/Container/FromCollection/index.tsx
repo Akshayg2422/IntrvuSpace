@@ -80,20 +80,18 @@ function FromCollection() {
     }
 
 
-    console.log(sectorLoader.loader + "====sectorLoader");
 
 
     return (
-        <div className='overflow-auto overflow-hide mt-2' >
+        <div className='mt-2'>
             <div className='d-flex align-items-center justify-content-center'>
                 {sectorLoader.loader && <Spinner />}
             </div>
 
-            <div className='d-flex py-2 mx--3' >
+            <div className='d-flex overflow-auto overflow-hide py-2 mx--3' >
                 {sectors && sectors.map((el, index) => {
                     return (
-                        <div className='col col-sm-3 mr--3 '
-
+                        <div className='col-xl-3 col-sm-0 col-6'
                         >
                             <Nav
                                 className="nav-fill flex-column flex-sm-row pointer"
@@ -104,7 +102,7 @@ function FromCollection() {
                                 <NavItem>
                                     <NavLink
                                         aria-selected={index === navIndex}
-                                        className={classnames(`mb-sm-3 mb-md-0 shadow-none  ${index !== navIndex ? 'text-black font-weight-normal' : 'font-weight-bold'}`, {
+                                        className={classnames(`mb-sm-3 mb-md-0 col-auto  shadow-none  ${index !== navIndex ? 'text-black font-weight-normal' : 'font-weight-bold'}`, {
                                             active: index === navIndex
                                         })}
                                         onClick={() => {
@@ -123,7 +121,7 @@ function FromCollection() {
             </div>
             <div className='row mt-2'>
                 {
-                    knowledgeGroups && knowledgeGroups.length > 0 && knowledgeGroups.map((el) => {
+                    knowledgeGroups && knowledgeGroups.length > 0 ? knowledgeGroups.map((el) => {
                         const { name } = el
                         return (
 
@@ -179,16 +177,16 @@ function FromCollection() {
                             </div>
                         )
                     })
+                        :
+                        !roleLoader.loader && knowledgeGroups && knowledgeGroups.length <= 0 && <div className='col d-flex justify-content-center align-items-center  mt-3'>
+                            <NoDataFound />
+                        </div>
+
                 }
             </div>
-            <div className='d-flex align-items-center justify-content-center'>
+            {/* <div className='d-flex align-items-center justify-content-center'>
                 {roleLoader.loader && <Spinner />}
-            </div>
-            {
-                !roleLoader.loader && knowledgeGroups && knowledgeGroups.length <= 0 && <div className='col d-flex justify-content-center align-items-center  mt-3'>
-                    <NoDataFound />
-                </div>
-            }
+            </div> */}
 
         </div >
     )

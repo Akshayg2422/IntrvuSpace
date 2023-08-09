@@ -3,7 +3,7 @@ import React, { useEffect } from 'react'
 import { Input } from 'reactstrap'
 import { LoginSideContent } from '../../Container'
 import { OTP_RESEND_DEFAULT_TIME, USER_TOKEN } from '@Utils';
-import { useInput, useLoader, useNavigation, useTimer } from '@Hooks';
+import { useInput, useKeyPress, useLoader, useNavigation, useTimer } from '@Hooks';
 import { ROUTES } from '@Routes';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchMemberUsingLoginOtp, memberLoginUsingPasswordSuccess, settingRegisterData, userLoginDetails } from '@Redux';
@@ -12,17 +12,21 @@ function Otp() {
     const { seconds, setSeconds } = useTimer(OTP_RESEND_DEFAULT_TIME);
     const Otp = useInput('')
     const { goTo, goBack } = useNavigation()
+    const enterPress = useKeyPress('Enter')
     const { registerData } = useSelector((state: any) => state.DashboardReducer);
     const dispatch = useDispatch()
     const loginLoader = useLoader(false);
     const { loginDetails } = useSelector((state: any) => state.AppReducer);
 
-    console.log("registerData", registerData)
     useEffect(() => {
         setSeconds(OTP_RESEND_DEFAULT_TIME);
     }, [])
 
-
+    useEffect(() => {
+        if (enterPress) {
+            loginOtp()
+        }
+    }, [enterPress])
 
     const loginOtp = () => {
         loginLoader.show()

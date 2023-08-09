@@ -1,22 +1,20 @@
 import { Modal, showToast } from '@Components';
-import { useNavigation, useScreenRecorder, useTextToSpeech } from '@Hooks';
+import { useModal, useNavigation, useScreenRecorder, useTextToSpeech } from '@Hooks';
 import { CallScreen } from '@Modules';
 import { getScheduleBasicInfo, getStartChat, screenRecordingPermission } from '@Redux';
+import { ROUTES } from '@Routes';
 import { useWhisper } from '@chengsokdara/use-whisper';
 import hark from 'hark';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 
 function Call() {
-    const { goBack } = useNavigation();
+    const { goBack, goTo } = useNavigation();
     const dispatch = useDispatch()
-    const { } = useParams();
-
+    let { schedule_id } = useParams()
+    let callModel = useModal(true)
     const { scheduleInfo, recordingPermission } = useSelector((state: any) => state.DashboardReducer)
-
-
-    const { schedule_id } = useParams();
 
     const [isHear, setIsHear] = useState(true)
     const [showVideo, setShowVideo] = useState(false)
@@ -41,6 +39,7 @@ function Call() {
     const intervalRef = useRef<any>(null);
 
     const OPENAI_API_TOKEN = "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"
+
     const {
         transcribing,
         transcript,
@@ -226,7 +225,7 @@ function Call() {
             const timer = setTimeout(() => {
                 isScreenRecording && stopScreenRecording()
                 goBack()
-            }, 3000);
+            }, 5000);
             return () => clearTimeout(timer);
         }
     }, [buttonConditional, isSpeaking]);
@@ -235,7 +234,8 @@ function Call() {
 
     return (
         <>
-            <Modal isOpen={true} size='xl' onClose={() => {
+            <Modal isOpen={callModel.visible} size='xl' onClose={() => {
+                callModel.hide()
                 isScreenRecording && stopScreenRecording()
                 goBack()
             }} >
@@ -253,6 +253,9 @@ function Call() {
                         setButtonConditional('processing')
                         getChatDetails('start', 'text')
                     }}
+                    ReportButtonOnclick={() => {
+                        goTo(ROUTES['designation-module'].report + "/" + schedule_id, true)
+                    }}
                     video={showVideo}
                     onVideoControl={() => handleVideo()}
                     speaker={isHear}
@@ -260,7 +263,7 @@ function Call() {
                     }
                     onCallEnd={() => {
                         isScreenRecording && stopScreenRecording()
-                        // callModal.hide()
+                        callModel.hide()
                         goBack();
                     }}
                     onVolumeControl={() => { }

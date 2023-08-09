@@ -1,9 +1,9 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { Divider, Button, showToast } from '@Components'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Input } from 'reactstrap'
 import { LoginSideContent } from '../../Container'
-import { useInput, useLoader, useNavigation } from '@Hooks'
+import { useInput, useKeyPress, useLoader, useNavigation } from '@Hooks'
 import { ROUTES } from '@Routes'
 import { useDispatch } from 'react-redux'
 import { registerAsMember, settingRegisterData } from '@Redux'
@@ -21,11 +21,15 @@ function Register() {
     const loginLoader = useLoader(false);
     const [showPassword, setShowPassword] = useState(false)
     const [toggleInput, setToggleInput] = useState(0)
+    const enterPress = useKeyPress('Enter')
 
-    console.log("mobileNumber", mobileNumber.value, lastName.value, firstName.value, password.value, confirmPassword.value)
+    useEffect(() => {
+        if (enterPress) {
+            onSubmit()
+        }
+    }, [enterPress])
 
-
-
+    
 
     const onSubmit = () => {
 
@@ -89,10 +93,10 @@ function Register() {
                         style={{
                             scale: '0.9'
                         }}>
-                            <div className='position-absolute pointer '
+                        <div className='position-absolute pointer '
                             style={{
-                                top:-15,
-                                left:-15
+                                top: -15,
+                                left: -15
                             }}
                             onClick={() => {
                                 goBack()
