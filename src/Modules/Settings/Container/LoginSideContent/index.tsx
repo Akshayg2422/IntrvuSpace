@@ -7,7 +7,7 @@ function LoginSideContent() {
 
     return (
         <div className="bg-primary col h-100vh">
-            <div className='d-flex  justify-content-center align-items-center  mt-7'>
+            <div className='d-flex  justify-content-center align-items-center  mt-4'>
                 <h1 className='font-weight-bolder text-white'
                     style={{
                         fontSize: isSmallScreen ? '58px' : '100px'
