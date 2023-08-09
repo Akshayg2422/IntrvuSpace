@@ -105,14 +105,11 @@ function LoginWithOtp() {
                         >
                             <i className="bi bi-arrow-left text-black fa-lg font-weight-bolder"></i>
                         </div>
-                        <div className="col-8">
+                        <div className="col-xl-8 my-sm-0 my-6">
 
-                            <div className="mb--2 ml-4">
-                                <h2 className="text-black mb--3">Login in to your Account</h2><br></br>
-                                <h2 className="font-weight-normal display-4 text-black mt-0"
-                                    style={{
-                                        fontSize: '3vh'
-                                    }}
+                            <div className="mb--2 ml-xl-4 ml-sm-0 ml-3">
+                                <h1 className="text-black mb--3">Login in to your Account</h1><br></br>
+                                <h2 className="font-weight-normal display-5 text-black mt-0"
                                 >Don't have an account ? <a className="text-primary pointer"
                                     onClick={() => {
                                         goTo(ROUTES['auth-module'].register)
@@ -163,24 +160,24 @@ function LoginWithOtp() {
                                         text={'Get OTP'}
                                         onClick={() => { onSubmit() }}
                                     />
-                                    <div className='row justify-content-center align-items-center'>
+                                    <div className='row justify-content-center align-items-center mx-auto'>
                                         <hr
+                                            className='col'
                                             style={{
                                                 border: '0.1px solid #dadada',
-                                                width: '28vh',
                                                 opacity: '0.4'
                                             }}
                                         ></hr>
-                                        <h4 className='  font-weight-normal'
+                                        <h4 className='mx-2 font-weight-normal'
                                             style={{
                                                 fontSize: '25px',
                                                 color: '#dadada'
                                             }}
                                         >Or</h4>
                                         <hr
+                                            className='col'
                                             style={{
                                                 border: '0.1px solid #dadada',
-                                                width: '28vh',
                                                 opacity: '0.4'
                                             }}
                                         ></hr>

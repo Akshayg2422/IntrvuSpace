@@ -91,7 +91,7 @@ function FromCollection() {
             <div className='d-flex overflow-auto overflow-hide py-2 mx--3' >
                 {sectors && sectors.map((el, index) => {
                     return (
-                        <div className='col-xl-3 col-sm-0 col-6'
+                        <div className='col-xl-3 col-sm-0 col-auto col-md-3'
                         >
                             <Nav
                                 className="nav-fill flex-column flex-sm-row pointer"
