@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 
 const useTextToSpeech = () => {
 
-  const [isSpeaking, setIsSpeaking] = useState(false);
+  const [isTtfSpeaking, setIsSpeaking] = useState(false);
   const userAgent = navigator.userAgent;
 
   let browserName = 'Unknown';
@@ -92,7 +92,7 @@ const useTextToSpeech = () => {
     };
   }, []);
 
-  return { isSpeaking, speak };
+  return { isTtfSpeaking, speak };
 
 };
 

@@ -40,7 +40,7 @@ function Call() {
     const [lastApiText, setLastApiText] = useState('')
 
     const { startScreenRecording, stopScreenRecording, isScreenRecording } = useScreenRecorder();
-    const { isSpeaking, speak } = useTextToSpeech();
+    const { isTtfSpeaking, speak } = useTextToSpeech();
 
     const intervalRef = useRef<any>(null);
     const isAnsweringRef = useRef<any>(false);
@@ -53,6 +53,7 @@ function Call() {
     const SPEAK_TYPE_API = 1
     const SPEAK_TYPE_WARNING1 = 2
     const SPEAK_TYPE_WARNING2 = 3
+    const SPEAK_TYPE_USER = 4
     const speaking_type = useRef<any>(SPEAK_TYPE_NOT_INITIATED);
 
     const {
@@ -70,7 +71,7 @@ function Call() {
         removeSilence: true,
     })
 
-    const [speaking, setSpeaking] = useState(false);
+    const [userSpeaking, setSpeaking] = useState(false);
 
     useEffect(() => {
         getBasicInfo()
@@ -111,7 +112,7 @@ function Call() {
             speech.on('volume_change', function (value) {
 
                 if (-value < 30) {
-                    console.log("ddddvvvv====", value)
+                    //// console.log("ddddvvvv====", value)
                     isAnsweringRef.current = true
                     setSpeaking(true);
                 } else {
@@ -126,10 +127,9 @@ function Call() {
     }, [isRecording])
 
     const validateNotSpeaking = () => {
-        console.log("notEvenSpecknotEvenSpeck", notEvenSpeck)
+        // console.log("notEvenSpecknotEvenSpeck1", notEvenSpeck, isAnsweringRef.current, callState)
 
-        if (!notEvenSpeck) {
-
+        if (isAnsweringRef.current === true) {
 
             if (callState === CALL_STATE_TRANSCRIBING && !transcribing) {
                 setCallState(CALL_STATE_INACTIVE)
@@ -145,7 +145,7 @@ function Call() {
                         setIsRecording(false)
                     }
                 } else {
-                    console.log('mic on');
+                    //// console.log('mic on');
                     buttonConditional === 'processing' && setMicState(true)
                 }
             }
@@ -156,28 +156,10 @@ function Call() {
 
     useEffect(() => {
 
-        console.log("aaaaaaaaa", notEvenSpeck, callState, intervalRef.current)
-
         if (intervalRef.current) {
             clearInterval(intervalRef.current);
         }
-        // if (!isWaiting) {
-        //     console.log('came');
-
-        if (notEvenSpeck) {
-
-        }
-        else {
-
-        }
-        // intervalRef.current = setInterval(validateNotSpeaking, 5000);
-        // } else {
-        //     intervalRef.current = setInterval(() => {
-        //         speak(SPEAK_PROCEED_LIST[0])
-        //         console.log('came other');
-
-        //     }, 5000);
-        // }
+        intervalRef.current = setInterval(validateNotSpeaking, 3000);
         return () => {
             clearInterval(intervalRef.current);
         };
@@ -185,13 +167,14 @@ function Call() {
 
 
     useEffect(() => {
-        if (speaking) {
+        if (userSpeaking) {
             setCallState(CALL_STATE_LISTENING)
-            // setNotEvenSpeck(true);
+            setNotEvenSpeck(true);
+            speaking_type.current = SPEAK_TYPE_USER
         } else {
             setCallState(CALL_STATE_INACTIVE)
         }
-    }, [speaking])
+    }, [userSpeaking])
 
 
 
@@ -202,31 +185,41 @@ function Call() {
 
     useEffect(() => {
 
-        console.log(speaking_type.current);
+        console.log('isTtfSpeakingisTtfSpeaking', isTtfSpeaking);
 
 
-        if (!isSpeaking && buttonConditional === 'processing') {
+        if (isTtfSpeaking) {
+            isAnsweringRef.current = false
+        }
+        // speaking_type.current = SPEAK_TYPE_API
+        if (!isTtfSpeaking && buttonConditional === 'processing') {
 
-            if (speaking_type.current !== SPEAK_TYPE_NOT_INITIATED) {
-                speaking_type.current = SPEAK_TYPE_API
+            console.log('isTtfSpeakingisTtfSpeaking12')
+
+            if (speaking_type.current === SPEAK_TYPE_USER) {
+                console.log('isTtfSpeakingisTtfSpeaking123')
+                setTimeout(() => {
+                    validateProceedStartListening();
+                }, 5000)
             }
-            else {
-
-                console.log('11111111');
-
+            else if (speaking_type.current === SPEAK_TYPE_API) {
                 isAnsweringRef.current = false
                 setTimeout(() => {
+                    // //// console.log('111111111', isAnsweringRef.current, speaking_type.current);
                     turnOnMicAndAudioRecording();
                     setTimeout(() => {
+                        // //// console.log('1111111112', isAnsweringRef.current, speaking_type.current);
                         if (isAnsweringRef.current === false) {
                             speak(SPEAK_PROCEED_LIST[0])
                             speaking_type.current = SPEAK_TYPE_WARNING1
+                            // //// console.log('1111111113', isAnsweringRef.current, speaking_type.current);
                             setTimeout(() => {
                                 if (isAnsweringRef.current === false) {
                                     // speak(SPEAK_PROCEED_LIST[0])
                                     // callAPIwith commend
-                                    console.log('callAPIwith commend');
-                                    nextQuestionApiCallHandler();
+                                    // //// console.log('callAPIwith commend');
+                                    // //// console.log('1111111114', speaking_type.current);
+                                    // nextQuestionApiCallHandler();
                                     speaking_type.current = SPEAK_TYPE_API
                                 }
                             }, 5000)
@@ -243,7 +236,7 @@ function Call() {
 
         }
 
-    }, [isSpeaking])
+    }, [isTtfSpeaking])
 
 
     function nextQuestionApiCallHandler() {
@@ -252,6 +245,7 @@ function Call() {
 
 
 
+    // console.log('refresh');
 
     useEffect(() => {
         if (transcript.text) {
@@ -285,7 +279,7 @@ function Call() {
     }
     const validateProceedStartListening = async () => {
         if (transcribing || callState === CALL_STATE_API_LOADING) {
-            console.log("Please wait...")
+            //// console.log("Please wait...")
         }
         else {
             if (!isRecording) {
@@ -300,9 +294,9 @@ function Call() {
         if (isRecording) {
             proceedStopListening()
         }
-        else {
-            validateProceedStartListening()
-        }
+        // else {
+        //     validateProceedStartListening()
+        // }
     }
 
     const proceedgetChatDetailsApiHandler = (file: any, type: 'text' | 'Ai' | 'command') => {
@@ -320,18 +314,24 @@ function Call() {
                     const { response_text, message_type, response_type } = response?.details?.next_step[0]
                     const { keywords } = response?.details
 
-                    console.log(JSON.stringify(response) + '=======response');
+                    //// console.log(JSON.stringify(response) + '=======response');
 
                     if (message_type === "SPEAK" && response_type !== 'INTERVIEWER_END_CALL') {
-                        console.log(response_text + '====response_text');
+                        //// console.log(response_text + '====response_text');
 
-                        window.location.pathname === `/interview/${schedule_id}` && speak(response_text);
+                        if (window.location.pathname === `/interview/${schedule_id}`) {
+                            speak(response_text);
+                            speaking_type.current = SPEAK_TYPE_API
+                        }
                         if (keywords.length > 0) {
                             setPromptText(keywords)
                         }
                         setCallState(CALL_STATE_INACTIVE)
                     } else if (message_type === "SPEAK" && response_type === 'INTERVIEWER_END_CALL') {
-                        window.location.pathname === `/interview/${schedule_id}` && speak(response_text);
+                        if (window.location.pathname === `/interview/${schedule_id}`) {
+                            speak(response_text);
+                            speaking_type.current = SPEAK_TYPE_API
+                        }
                         setButtonConditional('end')
                     }
                 },
@@ -346,15 +346,15 @@ function Call() {
         setShowVideo(!showVideo)
     }
 
-    useEffect(() => {
-        if (buttonConditional === 'end' && !isSpeaking) {
-            const timer = setTimeout(() => {
-                isScreenRecording && stopScreenRecording()
-                goBack()
-            }, 5000);
-            return () => clearTimeout(timer);
-        }
-    }, [buttonConditional, isSpeaking]);
+    // useEffect(() => {
+    //     if (buttonConditional === 'end' && !isTtfSpeaking) {
+    //         const timer = setTimeout(() => {
+    //             isScreenRecording && stopScreenRecording()
+    //             goBack()
+    //         }, 5000);
+    //         return () => clearTimeout(timer);
+    //     }
+    // }, [buttonConditional, isTtfSpeaking]);
 
 
 
@@ -377,7 +377,7 @@ function Call() {
                     variant={''}
                     onMic={micState}
                     conditionalButton={buttonConditional}
-                    micDisable={isSpeaking}
+                    micDisable={isTtfSpeaking}
                     isMute={isRecording}
                     startButtonOnclick={() => {
                         setButtonConditional('processing')
