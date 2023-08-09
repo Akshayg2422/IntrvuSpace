@@ -1,15 +1,31 @@
-import { useNavigate as useNav, useParams } from "react-router-dom";
+import { ROUTES } from "@Routes";
+import { useLocation, useNavigate as useNav, useParams } from "react-router-dom";
 
 const useNavigation = () => {
   const navigation = useNav();
   const params = useParams();
+  const location = useLocation();
 
   const goTo = (to: string, replace: boolean = false) =>
     navigation(to, { replace: replace });
 
 
-  const goBack= (action:number= -1) => navigation(action)
-  return { goTo , goBack, params};
+
+  const goBack = (action: number = -1) => {
+    const doesAnyHistoryEntryExist = location.key !== "default";
+
+    console.log(doesAnyHistoryEntryExist + '========doesAnyHistoryEntryExist');
+
+
+    if (doesAnyHistoryEntryExist) {
+      navigation(action)
+    } else {
+      navigation(ROUTES["auth-module"].splash)
+    }
+
+  }
+
+  return { goTo, goBack, params };
 
 };
 
