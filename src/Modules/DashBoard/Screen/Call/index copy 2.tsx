@@ -18,6 +18,7 @@ function Call() {
     let callModel = useModal(true)
     const { scheduleInfo, recordingPermission } = useSelector((state: any) => state.DashboardReducer)
 
+    const [isHear, setIsHear] = useState(true)
     const [showVideo, setShowVideo] = useState(false)
     const [isRecording, setIsRecording] = useState(false)
     const [notEvenSpeck, setNotEvenSpeck] = useState(false)
@@ -30,9 +31,6 @@ function Call() {
     const CALL_STATE_API_LOADING = 3
     const CALL_STATE_SILENT = 4
 
-    const PROCEED_NEXT_QUESTION = 'PROCEED_NEXT_QUESTION'
-
-
 
     const [callState, setCallState] = useState(CALL_STATE_INACTIVE)
     const lastCallState = useRef(CALL_STATE_INACTIVE)
@@ -43,17 +41,11 @@ function Call() {
     const { isSpeaking, speak } = useTextToSpeech();
 
     const intervalRef = useRef<any>(null);
-    const isAnsweringRef = useRef<any>(false);
 
     const OPENAI_API_TOKEN = "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"
 
     const [isWaiting, setIsWaiting] = useState(false)
 
-    const SPEAK_TYPE_NOT_INITIATED = -1
-    const SPEAK_TYPE_API = 1
-    const SPEAK_TYPE_WARNING1 = 2
-    const SPEAK_TYPE_WARNING2 = 3
-    const speaking_type = useRef<any>(SPEAK_TYPE_NOT_INITIATED);
 
     const {
         transcribing,
@@ -77,14 +69,14 @@ function Call() {
     }, [])
 
 
-    // useEffect(() => {
-    //     if (recordingPermission) {
-    //         proceedgetChatDetailsApiHandler('start', 'text')
-    //     }
-    //     return () => {
-    //         dispatch(screenRecordingPermission(false))
-    //     }
-    // }, [recordingPermission])
+    useEffect(() => {
+        if (recordingPermission) {
+            getChatDetails('start', 'text')
+        }
+        return () => {
+            dispatch(screenRecordingPermission(false))
+        }
+    }, [recordingPermission])
 
 
     const getBasicInfo = () => {
@@ -109,10 +101,7 @@ function Call() {
             let stream = await navigator.mediaDevices.getUserMedia({ audio: true });
             var speech = hark(stream, option);
             speech.on('volume_change', function (value) {
-
-                if (-value < 30) {
-                    console.log("ddddvvvv====", value)
-                    isAnsweringRef.current = true
+                if (-value < 50) {
                     setSpeaking(true);
                 } else {
                     setSpeaking(false);
@@ -152,11 +141,12 @@ function Call() {
         }
     }
 
-
+    function nextQuestionApiCallHandler() {
+        console.log("nextQuestionApiCallHandler");
+    }
 
     useEffect(() => {
 
-        console.log("aaaaaaaaa", notEvenSpeck, callState, intervalRef.current)
 
         if (intervalRef.current) {
             clearInterval(intervalRef.current);
@@ -170,7 +160,8 @@ function Call() {
         else {
 
         }
-        // intervalRef.current = setInterval(validateNotSpeaking, 5000);
+
+        intervalRef.current = setInterval(validateNotSpeaking, 5000);
         // } else {
         //     intervalRef.current = setInterval(() => {
         //         speak(SPEAK_PROCEED_LIST[0])
@@ -183,11 +174,10 @@ function Call() {
         };
     }, [callState, isRecording]);
 
-
     useEffect(() => {
         if (speaking) {
             setCallState(CALL_STATE_LISTENING)
-            // setNotEvenSpeck(true);
+            setNotEvenSpeck(true);
         } else {
             setCallState(CALL_STATE_INACTIVE)
         }
@@ -195,60 +185,18 @@ function Call() {
 
 
 
-    /**
-     * to turn on mic when ttf completes
-     */
-
-
     useEffect(() => {
 
-        console.log(speaking_type.current);
-
-
         if (!isSpeaking && buttonConditional === 'processing') {
-
-            if (speaking_type.current !== SPEAK_TYPE_NOT_INITIATED) {
-                speaking_type.current = SPEAK_TYPE_API
-            }
-            else {
-
-                console.log('11111111');
-
-                isAnsweringRef.current = false
-                setTimeout(() => {
-                    turnOnMicAndAudioRecording();
-                    setTimeout(() => {
-                        if (isAnsweringRef.current === false) {
-                            speak(SPEAK_PROCEED_LIST[0])
-                            speaking_type.current = SPEAK_TYPE_WARNING1
-                            setTimeout(() => {
-                                if (isAnsweringRef.current === false) {
-                                    // speak(SPEAK_PROCEED_LIST[0])
-                                    // callAPIwith commend
-                                    console.log('callAPIwith commend');
-                                    nextQuestionApiCallHandler();
-                                    speaking_type.current = SPEAK_TYPE_API
-                                }
-                            }, 5000)
-                        }
-                    }, 5000)
-                }, 300)
-
-            }
-
-            // setTimeout(() => {
-            //     validateProceedStartListening();
-            //     setIsWaiting(true);
-            // }, 1000)
-
+            setTimeout(() => {
+                validateProceedStartListening();
+                setIsWaiting(true);
+            }, 1000)
         }
 
     }, [isSpeaking])
 
 
-    function nextQuestionApiCallHandler() {
-        proceedgetChatDetailsApiHandler('', 'command')
-    }
 
 
 
@@ -258,7 +206,7 @@ function Call() {
             setLastApiText(transcript.text)
             if (lastApiText !== transcript.text) {
                 setCallState(CALL_STATE_API_LOADING)
-                proceedgetChatDetailsApiHandler('', 'Ai');
+                getChatDetails('', 'Ai');
             }
         }
         else if (!transcribing && callState !== CALL_STATE_API_LOADING) {
@@ -274,15 +222,6 @@ function Call() {
         lastCallState.current = CALL_STATE_TRANSCRIBING
     }
 
-
-    const turnOnMicAndAudioRecording = () => {
-        if (!isRecording) {
-            startRecording()
-            setIsRecording(true)
-            setMicState(false)
-        }
-
-    }
     const validateProceedStartListening = async () => {
         if (transcribing || callState === CALL_STATE_API_LOADING) {
             console.log("Please wait...")
@@ -305,11 +244,10 @@ function Call() {
         }
     }
 
-    const proceedgetChatDetailsApiHandler = (file: any, type: 'text' | 'Ai' | 'command') => {
+    const getChatDetails = (file: any, type: 'text' | 'Ai') => {
         const params = {
             ...(type === 'text' && { "message": file }),
             ...(type === 'Ai' && { "message": transcript.text }),
-            ...(type === 'command' && { "command": PROCEED_NEXT_QUESTION }),
             schedule_id: schedule_id
         };
         dispatch(
@@ -317,8 +255,11 @@ function Call() {
                 params,
                 onSuccess: (response: any) => () => {
 
+
                     const { response_text, message_type, response_type } = response?.details?.next_step[0]
                     const { keywords } = response?.details
+
+
 
                     console.log(JSON.stringify(response) + '=======response');
 
@@ -347,6 +288,7 @@ function Call() {
     }
 
     useEffect(() => {
+
         if (buttonConditional === 'end' && !isSpeaking) {
             const timer = setTimeout(() => {
                 isScreenRecording && stopScreenRecording()
@@ -381,14 +323,14 @@ function Call() {
                     isMute={isRecording}
                     startButtonOnclick={() => {
                         setButtonConditional('processing')
-                        proceedgetChatDetailsApiHandler('start', 'text')
+                        getChatDetails('start', 'text')
                     }}
                     ReportButtonOnclick={() => {
                         goTo(ROUTES['designation-module'].report + "/" + schedule_id, true)
                     }}
                     video={showVideo}
                     onVideoControl={() => handleVideo()}
-
+                    speaker={isHear}
                     onMicControl={() => handleMicControl()
                     }
                     onCallEnd={() => {

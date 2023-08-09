@@ -8,7 +8,7 @@ function* getChatSaga(action) {
     const response = yield call(Api.getStartChatApi, action.payload.params);
     if (response.success) {
       yield put(Action.getStartChatSuccess(response));
-      yield call(action.payload.onSuccess(response.details));
+      yield call(action.payload.onSuccess(response));
     } else {
       yield put(Action.getStartChatFailure(response.error_message));
       yield call(action.payload.onError(response));
