@@ -11,7 +11,7 @@ export const SERVER =
     ? 'https://mockinprimary.quantaedat.com'
     : BUILD_TYPE === BUILD_TYPE_LIVE_DEMO
       ? 'https://5356-103-118-190-6.ngrok-free.app/'
-      : BUILD_TYPE === BUILD_TYPE_LOCAL
+      : BUILD_TYPE === BUILD_TYPE_LOCAL 
         ? 'http://192.168.157.204:8002'
         : BUILD_TYPE === BUILD_TYPE_STAGING
           ? 'http://103.118.188.135:8003'
