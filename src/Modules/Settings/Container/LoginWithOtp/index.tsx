@@ -2,7 +2,7 @@ import { ROUTES } from '@Routes'
 import React, { useEffect, useState } from 'react'
 import { Input, } from 'reactstrap'
 import { LoginSideContent } from '../LoginSideContent'
-import { useInput, useLoader, useNavigation } from '@Hooks'
+import { useInput, useKeyPress, useLoader, useNavigation } from '@Hooks'
 import { Button, showToast } from '@Components'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchOTP, settingRegisterData } from '@Redux'
@@ -12,15 +12,21 @@ function LoginWithOtp() {
     const dispatch = useDispatch()
     const mobileNumber = useInput('');
     const email = useInput('')
+    const enterPress = useKeyPress('Enter')
     const loginLoader = useLoader(false);
     const [toggleInput, setToggleInput] = useState(false)
     const [loginWithOtp, setLoginWithOtp] = useState(false)
     const { registerData } = useSelector((state: any) => state.DashboardReducer);
 
+    useEffect(() => {
+        if (enterPress) {
+            onSubmit()
+        }
+    }, [enterPress])
 
     useEffect(() => {
         if (registerData) {
-            if (registerData?.mobile_number){
+            if (registerData?.mobile_number) {
                 setLoginWithOtp(false)
                 mobileNumber.set(registerData?.mobile_number)
             }

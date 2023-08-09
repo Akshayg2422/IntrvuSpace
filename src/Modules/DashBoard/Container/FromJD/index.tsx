@@ -111,9 +111,6 @@ function FromJD() {
             params,
             onSuccess: (res: any) => () => {
 
-                console.log(JSON.stringify(res) + '======res');
-
-
                 generateJdModal.hide();
                 const { details } = res;
                 if (details?.schedule_id) {
@@ -148,13 +145,10 @@ function FromJD() {
     }
 
 
-
-    console.log(JSON.stringify(jdItem) + '===jdItem');
-
     return (
         <>
             <div>
-                <Button size={'md'} className='mt-3' block text={'Upload job description details and start interview'} onClick={addJdModal.show} />
+                <Button size={'md'} className='mt-3 mx-1' block text={'Upload job description details and start interview'} onClick={addJdModal.show} />
                 <div style={{
                     paddingTop: '20px'
                 }}></div>
@@ -167,13 +161,10 @@ function FromJD() {
                                 return each.is_complete
                             })
 
-
                             const knowledgeId = knowledge_group_variant[0].id;
-
-
                             return (
-                                <div className='col-4 mt--3' >
-                                    <Card style={{
+                                <div className='col-xl-4 mt--3' >
+                                    <Card className="overflow-auto overflow-hide scroll-y" style={{
                                         height: '350px',
                                     }}>
                                         <h4 className='mb-0 pointer'>{name}</h4>
