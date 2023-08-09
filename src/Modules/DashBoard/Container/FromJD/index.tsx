@@ -240,7 +240,7 @@ function FromJD() {
             </div>
 
             <Modal title={'Create Interview Schedule From JD'} isOpen={addJdModal.visible} onClose={addJdModal.hide}>
-                <div className='col-7 '>
+                <div className='col-xl-7 '>
                     <Input
                         heading={'Sector'}
                         placeHolder={"Sector"}
