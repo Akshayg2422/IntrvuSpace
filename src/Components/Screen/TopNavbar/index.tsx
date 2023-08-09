@@ -163,7 +163,7 @@ function TopNavbar() {
                                                     </Media>
                                                 </Media>
                                             </DropdownToggle>
-                                            <DropdownMenu right>
+                                            <DropdownMenu right >
                                                 {HEADER_MENU.map((item) => {
                                                     return (
                                                         <DropdownItem
@@ -180,9 +180,25 @@ function TopNavbar() {
                                             </DropdownMenu>
                                         </UncontrolledDropdown>
                                     </Nav>
-
                                 </div>
                             </NavItem>
+                            <div className="d-xl-none d-lg-none">
+                                {HEADER_MENU.map((item) => {
+                                    return (
+                                        <NavItem>
+                                            <NavLink
+                                                onClick={(e) => {
+                                                    e.preventDefault()
+                                                    dropdownHandler(item);
+                                                }}
+                                            >
+                                                {/* <i className={item.icon}></i> */}
+                                                <span className={`nav-link-inner--text text-black`}>{item.name}</span>
+                                            </NavLink>
+                                        </NavItem>
+                                    );
+                                })}
+                            </div>
                         </Nav>
                     </UncontrolledCollapse>
                 </div>

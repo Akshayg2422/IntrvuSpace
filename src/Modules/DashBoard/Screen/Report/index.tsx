@@ -27,7 +27,7 @@ function Report() {
     const [cardHeight, setCardHeight] = useState<any>(null)
     const [percentage, setPercentage] = useState<any>({})
 
-
+    console.log("percentage", JSON.stringify(percentage))
 
 
     useEffect(() => {
@@ -62,23 +62,19 @@ function Report() {
 
                     const { communication, skill_matrix, trait, overall_weightage } = success.details
 
-                    const communicationPercentage = parseFloat((getPercentage(communication, 'rating') / 100 * overall_weightage.communication).toFixed(1));
-                    const skillMatrixPercentage = parseFloat((getPercentage(skill_matrix?.sections, 'rating') / 100 * overall_weightage.skill_matrix).toFixed(1));
-                    const traitPercentage = parseFloat((getPercentage(trait, 'percent') / 100 * overall_weightage.trait).toFixed(1));
+                    const communicationPercentage = communication?.length > 0 ? parseFloat((getPercentage(communication, 'rating') / 100 * overall_weightage.communication).toFixed(1)) : 0;
+                    const skillMatrixPercentage = skill_matrix?.sections?.length > 0 ? parseFloat((getPercentage(skill_matrix?.sections, 'rating') / 100 * overall_weightage.skill_matrix).toFixed(1)) : 0;
+                    const traitPercentage = trait.length > 0 ? parseFloat((getPercentage(trait, 'percent') / 100 * overall_weightage.trait).toFixed(1)) : 0;
 
-
-                    // const communicationPercentage = parseFloat((communication.reduce(function (acc, { rating }) { return acc + parseFloat(rating); }, 0) / communication.length / 100 * overall_weightage.communication).toFixed(1));
-                    // const skillMatrixPercentage = parseFloat((skill_matrix?.sections.reduce(function (acc, { rating }) { return acc + parseFloat(rating); }, 0) / skill_matrix?.sections?.length / 100 * overall_weightage.skill_matrix).toFixed(1));
-                    // const traitPercentage = parseFloat((trait.reduce(function (acc, { percent }) { return acc + parseFloat(percent); }, 0) / trait.length / 100 * overall_weightage.trait).toFixed(1));
-
-                    console.log(communicationPercentage);
-                    console.log(skillMatrixPercentage);
-                    console.log(traitPercentage);
+                    console.log(communicationPercentage, "communicationPercentage==========");
+                    console.log(skillMatrixPercentage, 'communicationPercentage======');
+                    console.log(traitPercentage, "communicationPercentage===");
 
 
 
 
                     const total = (communicationPercentage + skillMatrixPercentage + traitPercentage).toFixed(1);
+                    console.log("total0===================>", total)
 
                     setPercentage({
                         communication: communicationPercentage,
@@ -86,6 +82,7 @@ function Report() {
                         trait: traitPercentage,
                         overAll: total
                     })
+
                 },
                 onError: (error) => () => {
                     basicReportLoader.hide()
@@ -535,7 +532,6 @@ function Report() {
                                     {Object.keys(basicReportData).reverse()?.map((heading, index) => {
 
 
-
                                         if (heading === "skill_matrix") {
                                             array = array + calculateRating(basicReportData[heading].sections)
                                             return (
@@ -617,10 +613,14 @@ function Report() {
                                                                     )
                                                                 })}
                                                             </>
+
                                                         </div>}
-                                                    {Object.keys(basicReportData).length - 1 !== index && <div className='mb--3 mx--4'>
+                                                    {(percentage?.communication !== 0) ? <div className='mb--3 mx--4'>
                                                         <Divider />
-                                                    </div>}
+                                                    </div>
+
+                                                        :
+                                                        <></>}
                                                 </>
                                             )
                                         }
@@ -723,9 +723,10 @@ function Report() {
                                                                         })
                                                                         }
                                                                     </div>
-                                                                    {index !== 3 && <div className='mb--3 mx--4'>
+                                                                    {(heading !== 'trait' && percentage?.trait !== 0) && <div className='mb--3 mx--4'>
                                                                         <Divider />
-                                                                    </div>}
+                                                                    </div>
+                                                                    }
                                                                 </>}
                                                             </>
                                                         )
