@@ -102,15 +102,15 @@ function Login() {
                 <div className="row">
                     <LoginSideContent />
 
-                    <div className="col d-flex justify-content-center align-items-center ">
-                        <div className="col-8">
-                            <div className="mb--2 ml-4">
-                                <h2 className="text-black mb--3">Login in to your Account</h2><br></br>
-                                <h2 className="font-weight-normal display-4 text-black mt-0"
-                                    style={{
-                                        fontSize: '3vh'
+                    <div className="col d-flex justify-content-center align-items-center my-sm-0 my-4 ">
+                        <div className="col-xl-8">
+                            <div className="mb--2 ml-xl-4 ml-sm-0 ml-3">
+                                <h1 className="text-black mb--3">Login in to your Account</h1><br></br>
+                                <h2 className="font-weight-normal display-5 text-black mt-0"
+                                >Don't have an account ? <a className="text-primary pointer"
+                                    onClick={() => {
+                                        goTo(ROUTES['auth-module'].register)
                                     }}
-                                >Don't have an account ? <a href="/register" className="text-primary pointer"
                                     style={{
                                         fontSize: '20px'
                                     }}
