@@ -7,7 +7,7 @@ import { useWhisper } from '@chengsokdara/use-whisper';
 import hark from 'hark';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 function Call() {
     const { goBack, goTo } = useNavigation();
