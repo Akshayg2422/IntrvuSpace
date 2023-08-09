@@ -1,9 +1,9 @@
 import { Button, Input, showToast } from "@Components";
-import { useInput, useLoader, useNavigation } from "@Hooks";
+import { useInput, useKeyPress, useLoader, useNavigation } from "@Hooks";
 import { memberLoginUsingPassword, userLoginDetails } from '@Redux';
 import { ROUTES } from '@Routes';
 import { USER_TOKEN } from "@Utils";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { LoginSideContent } from "../../Container";
 
@@ -20,20 +20,14 @@ function Login() {
     const [toggleInput, setToggleInput] = useState(false)
     const [loginWithOtp, setLoginWithOtp] = useState(false)
 
+    const enterPress = useKeyPress('Enter')
     const { loginDetails } = useSelector((state: any) => state.AppReducer);
 
-    const handleKeyDown = (e: React.KeyboardEvent) => {
-        if (e.key === 'Enter') {
-            e.preventDefault();
+    useEffect(() => {
+        if (enterPress) {
+            onSubmit()
         }
-    };
-
-    // useEffect(() => {
-    //     // reset()
-
-    // }, [loginWithOtp])
-
-
+    }, [enterPress])
 
 
     const reset = () => {
@@ -75,10 +69,7 @@ function Login() {
             memberLoginUsingPassword({
                 params,
                 onSuccess: (response: any) => () => {
-
-
                     const { details } = response;
-
                     loginLoader.hide()
                     if (response.success) {
                         localStorage.setItem(USER_TOKEN, response.details.token);

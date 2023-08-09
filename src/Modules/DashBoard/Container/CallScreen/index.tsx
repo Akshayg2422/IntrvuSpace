@@ -21,9 +21,10 @@ type CallScreenProps = {
     variant: string
     conditionalButton: 'start' | 'processing' | 'end'
     startButtonOnclick?: any
+    ReportButtonOnclick?: any
 }
 
-const CallScreen = ({ basicInfo, onMicControl, onMic = false, loading = false, conditionalButton, micDisable = false, onVolumeControl, onCallEnd, isMute = false, speaker, status, video = false, onVideoControl, variant, startButtonOnclick }: CallScreenProps) => {
+const CallScreen = ({ basicInfo, onMicControl, onMic = false, loading = false, conditionalButton, ReportButtonOnclick, micDisable = false, onVolumeControl, onCallEnd, isMute = false, speaker, status, video = false, onVideoControl, variant, startButtonOnclick }: CallScreenProps) => {
 
     const [time, setTime] = useState({ hours: 0, minutes: 0, seconds: 0 });
     const isSmallScreen = window.innerWidth <= 768;
@@ -70,8 +71,7 @@ const CallScreen = ({ basicInfo, onMicControl, onMic = false, loading = false, c
         return `${firstNameInitial}${lastNameInitial}`;
     }
 
-    console.log("==================>",conditionalButton);
-    
+
     return (
         <div className='text-center'>
 
@@ -164,17 +164,27 @@ const CallScreen = ({ basicInfo, onMicControl, onMic = false, loading = false, c
                 </Button> */}
             </div>}
             {conditionalButton === 'start' &&
-                <div className="my-4">
-                    <Button
+                <>
+                    {!basicInfo?.is_complete ? <div className="my-4">
+                        <Button
+                            className='border-0 shadow-none bg-primary my-sm-0 my-4'
+                            style={{ borderRadius: 7 }}
+                            onClick={startButtonOnclick}
+                        >
+                            <div className=''>
+                                <span className="nav-link-inner--text mx-6 text-lg text-white " style={{ color: '#f5f5f5' }}>{basicInfo?.is_started ? 'Resume' : 'Start Now'}</span>
+                            </div>
+                        </Button>
+                    </div> : <Button
                         className='border-0 shadow-none bg-primary my-sm-0 my-4'
                         style={{ borderRadius: 7 }}
-                        onClick={startButtonOnclick}
+                        onClick={ReportButtonOnclick}
                     >
                         <div className=''>
-                            <span className="nav-link-inner--text mx-6 text-lg text-white " style={{ color: '#f5f5f5' }}>{basicInfo?.is_started ? 'Resume' : 'Start Now'}</span>
+                            <span className="nav-link-inner--text mx-6 text-lg text-white " style={{ color: '#f5f5f5' }}>{"Report"}</span>
                         </div>
-                    </Button>
-                </div>
+                    </Button>}
+                </>
 
             }
             {conditionalButton === 'end' &&

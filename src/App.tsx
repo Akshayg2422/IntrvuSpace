@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-redeclare */
-import { ScreenWrapper, Breadcrumbs, Back } from "@Components";
+import { ScreenWrapper, Breadcrumbs, Back, PageNotFound } from "@Components";
 import { Route, Routes } from "react-router-dom";
 import { HOME_ROUTES, RequireAuth, DASHBOARD_ROUTES, AUTH_ROUTES, RequireHome } from "@Routes";
 import { ToastContainer } from "react-toastify";
@@ -76,6 +76,7 @@ function App() {
         {getRoutes(AUTH_ROUTES, AUTH)}
         {getRoutes(HOME_ROUTES)}
         {getRoutes(DASHBOARD_ROUTES)}
+        <Route path={"*"} element={<PageNotFound />} />
       </Routes>
 
 

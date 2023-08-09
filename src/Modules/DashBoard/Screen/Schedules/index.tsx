@@ -96,7 +96,6 @@ function Schedules() {
         <>
             <TopNavbar />
             <div className='mt-7'>
-
                 <div className='col text-right mx--3'>
                     <ButtonGroup
                         selected={selectedSort}
@@ -124,7 +123,7 @@ function Schedules() {
                         myPastInterviews && myPastInterviews.length > 0 ? myPastInterviews?.map((item: any) => {
                             const { id, interviewee_expected_sector, interviewee_expected_designation, interviewee_expected_role, is_complete, is_started } = item;
                             return (
-                                <div className='col-4 px-2 my--2' key={id}>
+                                <div className='col-xl-4 px-2 my--2' key={id}>
                                     <Card className='justify-content-center p-4'
                                     >
                                         <h4 className='mb-0 pointer mt--2'>{interviewee_expected_sector}</h4>
