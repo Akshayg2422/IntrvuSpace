@@ -1,9 +1,9 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { Divider, Button, showToast } from '@Components'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Input } from 'reactstrap'
 import { LoginSideContent } from '../../Container'
-import { useInput, useLoader, useNavigation } from '@Hooks'
+import { useInput, useKeyPress, useLoader, useNavigation } from '@Hooks'
 import { ROUTES } from '@Routes'
 import { useDispatch } from 'react-redux'
 import { registerAsMember, settingRegisterData } from '@Redux'
@@ -21,9 +21,14 @@ function Register() {
     const loginLoader = useLoader(false);
     const [showPassword, setShowPassword] = useState(false)
     const [toggleInput, setToggleInput] = useState(0)
+    const enterPress = useKeyPress('Enter')
 
-    console.log("mobileNumber", mobileNumber.value, lastName.value, firstName.value, password.value, confirmPassword.value)
 
+    useEffect(() => {
+        if (enterPress) {
+            onSubmit()
+        }
+    }, [enterPress])
 
 
 
@@ -81,18 +86,15 @@ function Register() {
     return (
         <>
             <div className='container-fluid'>
-
                 <div className='row'>
-
-                    <LoginSideContent />
-                    <div className="col d-flex justify-content-center align-items-center"
-                        style={{
-                            scale: '0.9'
-                        }}>
-                            <div className='position-absolute pointer '
+                    <div className='col'>
+                        <LoginSideContent />
+                    </div>
+                    <div className="col d-flex justify-content-center align-items-center">
+                        <div className='position-absolute pointer m-3'
                             style={{
-                                top:-15,
-                                left:-15
+                                top: 0,
+                                left: 8
                             }}
                             onClick={() => {
                                 goBack()
@@ -100,7 +102,7 @@ function Register() {
                         >
                             <i className="bi bi-arrow-left text-black fa-lg font-weight-bolder"></i>
                         </div>
-                        <div className="col-8">
+                        <div className="col-xl-8 mt-sm-0 mt-6">
                             <div className="mb-2">
                                 <h1 className="text-black mb--3"> Find a job & grow your career</h1><br></br>
                                 {/* <h2 className="font-weight-normal display-4 text-black mt-0"
@@ -118,7 +120,7 @@ function Register() {
                             </div>
                             <div
                                 style={{
-                                    zoom: '90%'
+                                    zoom: '80%'
                                 }}
                             >
                                 <div className='overflow-auto overflow-hide'
@@ -126,7 +128,7 @@ function Register() {
                                         height: '80vh',
                                     }}
                                 >
-                                    <div className=''>
+                                    <div className='my-4'>
                                         <label className="h3 text-black">First Name</label>
                                         <div className="input-group mb-3">
                                             <input
@@ -375,10 +377,9 @@ function Register() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="pt-4 ">
+                                <div className="pt-xl-4 mb-sm-0 mb-4">
                                     <Button
                                         className={'text-white bg-primary font-weight-normal py-2 border-0 text-lg shadow-none'}
-                                        // loading={loginLoader.loader}
                                         block
                                         size="lg"
                                         text={'Register Now'}

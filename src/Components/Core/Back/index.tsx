@@ -4,6 +4,10 @@ import { icons } from '@Assets'
 import { BackProps } from './interfaces'
 import { useNavigation } from '@Hooks'
 function Back({ icon = icons.backArrow }: BackProps) {
+
+
+
+    
     const { goBack } = useNavigation()
     return (
         <div onClick={() => { goBack() }} className='pointer'>

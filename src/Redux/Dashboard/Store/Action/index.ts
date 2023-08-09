@@ -650,3 +650,15 @@ export const createNewJdSchedule = (params: any) => {
     payload: params,
   }
 }
+
+
+
+
+// selected
+
+export const setSelectedSection = (params: any) => {
+  return {
+    type: ActionTypes.SET_SELECTED_SECTION,
+    payload: params,
+  }
+}

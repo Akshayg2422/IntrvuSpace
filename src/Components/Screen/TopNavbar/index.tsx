@@ -74,12 +74,11 @@ function TopNavbar() {
     return (
         <>
             <Navbar
-                className="navbar-horizontal navbar-main navbar-dark navbar-transparent bg-white position-fixed py-0"
+                className="navbar-horizontal navbar-main navbar-dark navbar-transparent bg-white position-fixed py-xl-0 py-sm-0 py-2"
                 expand="lg"
                 id="navbar-main"
-
             >
-                <div className="container-fluid">
+                <div className="container-fluid mx-sm-0 mx-2">
                     <NavbarBrand to="/" tag={Link}>
                         <div className="row align-items-center">
                             <Image src={icons.logo} height={30} width={30} />
@@ -93,21 +92,26 @@ function TopNavbar() {
                         aria-controls="navbar-collapse"
                         aria-expanded={false}
                         aria-label="Toggle navigation"
-                        className="navbar-toggler"
+                        className="navbar-toggler bg-primary"
                         data-target="#navbar-collapse"
                         data-toggle="collapse"
                         id="navbar-collapse"
                         type="button"
                     >
-                        <span className="navbar-toggler-icon" />
+                        <span className="navbar-toggler-icon navbar-dark" />
                     </button>
                     <UncontrolledCollapse
                         className="navbar-custom-collapse"
                         navbar
                         toggler="#navbar-collapse"
                     >
-                        <div className="navbar-collapse-header bg-yellow">
-                            <Row>
+                        <div className="navbar-collapse-header">
+                            <Row className="d-flex justify-content-between">
+                                <Col>
+                                    <div className='font-weight-bold text-black'>
+                                        {loginDetails?.user}
+                                    </div>
+                                </Col>
                                 <Col className="collapse-close" xs="6">
                                     <button
                                         aria-controls="navbar-collapse"
@@ -123,10 +127,12 @@ function TopNavbar() {
                                         <span />
                                     </button>
                                 </Col>
+
                             </Row>
                         </div>
 
-                        <hr className="d-lg-none" />
+                        {/* <hr className="d-lg-none" /> */}
+
                         <Nav className="align-items-lg-center ml-lg-auto col justify-content-end" navbar>
                             <NavItem>
                                 <NavLink to="/client" tag={Link}>
@@ -157,7 +163,7 @@ function TopNavbar() {
                                                     </Media>
                                                 </Media>
                                             </DropdownToggle>
-                                            <DropdownMenu right>
+                                            <DropdownMenu right >
                                                 {HEADER_MENU.map((item) => {
                                                     return (
                                                         <DropdownItem
@@ -174,9 +180,25 @@ function TopNavbar() {
                                             </DropdownMenu>
                                         </UncontrolledDropdown>
                                     </Nav>
-
                                 </div>
                             </NavItem>
+                            <div className="d-xl-none d-lg-none">
+                                {HEADER_MENU.map((item) => {
+                                    return (
+                                        <NavItem>
+                                            <NavLink
+                                                onClick={(e) => {
+                                                    e.preventDefault()
+                                                    dropdownHandler(item);
+                                                }}
+                                            >
+                                                {/* <i className={item.icon}></i> */}
+                                                <span className={`nav-link-inner--text text-black`}>{item.name}</span>
+                                            </NavLink>
+                                        </NavItem>
+                                    );
+                                })}
+                            </div>
                         </Nav>
                     </UncontrolledCollapse>
                 </div>
