@@ -81,10 +81,10 @@ function Otp() {
     return (
         <>
             <div className='row m-0 p-0'>
-                <div className='col'>
+                <div className='col-xl-6 col-md-6'>
                     <LoginSideContent />
                 </div>
-                <div className="col  my-sm-0 my-5 d-flex justify-content-center align-items-center">
+                <div className="col-xl-6 col-md-6  my-sm-0 my-5 d-flex justify-content-center align-items-center">
                     <div className="col-xl-8 ">
                         <div className="mb--2">
                             <h1 className="text-black mb--1">Login in to your Account</h1><br></br>
