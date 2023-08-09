@@ -39,13 +39,13 @@ function AnalyzingAnimation() {
 
     return (
         <>
-            <div className={'d-flex justify-content-center align-items-center'}>
+            <div className={'vh-100 d-flex justify-content-center align-items-center'}>
                 <div className={'text-white p-4'} style={{ height: '75vh', width: '50vw', backgroundColor: '#68d75c' }}>
                     {/* For the first 3 seconds */}
                     {analyzing && (
                         <div className={''}>
                             {contentStep <= 3 && (
-                                <div className={'d-flex justify-content-center align-items-center'}>
+                                <div className={'d-flex justify-content-center mr-7 align-items-center'}>
                                     <img
                                         height={'30%'}
                                         width={'30%'}
@@ -65,7 +65,7 @@ function AnalyzingAnimation() {
                             <h4 className={'d-flex justify-content-center align-items-center text-white mt-8 h1'} style={{ backgroundColor: "#fabe2c" }}>
                                 {contentStep === 1 ? 'Analyzing' : contentStep}
                                 {contentStep === 1 && (
-                                    <span className={' ml-5 loaders '}></span>
+                                    <span className={'ml-md-5 ml-lg-5 ml-sm-3 loaders'}></span>
                                 )}
                             </h4>
                         </div>
@@ -75,24 +75,15 @@ function AnalyzingAnimation() {
                     {/* For the next 20 seconds */}
                     {generating && contentStep === 1 && (
                         <div className={'mt--2'}>
-                            {/* <div className={'d-flex justify-content-center align-items-center'}>
-                                <img
-                                    height={'200px'}
-                                    width={'200px'}
-                                    src={icons.Comments}
-                                    className={'flip-image'}
-                                    style={contentStep === 1 ? { animation: 'flipAnimation 1s infinite' } : {}}
-                                />
-                            </div> */}
                             <h4 className={'d-flex justify-content-center align-items-center mt-3'} >
                                 {contentStep === 1 && (
-                                    <span className={'loader3 mr-2 mt--7'}></span>
+                                    <span className={'loader3 mr-2 mt-md--7 mt-lg-md--7 mt-sm--5'}></span>
                                 )}
                             </h4>
-                            
-                            <h4 className={'d-flex justify-content-center align-items-center text-white h1 mt-6'} style={{ backgroundColor: "#fabe2c" }} >
+
+                            <h4 className={'d-flex justify-content-center align-items-center text-white h1 mt-md-6 mt-lg-6 mt-sm-8'} style={{ backgroundColor: "#fabe2c" }} >
                                 {contentStep === 1 ? 'Generating' : contentStep}
-                                <span className={'loader6 ml-5 mb-4'}></span>
+                                <span className={'loader6 ml-md-5 ml-lg-5 ml-sm-3 mb-4'}></span>
                             </h4>
 
 
@@ -189,7 +180,7 @@ function AnalyzingAnimation() {
                         {generating && contentStep === 6 && (
                             <>
                                 {contentStep === 6 && (
-                                    <span className={'loader7 mt-3'}></span>
+                                    <span className={'loader7 mt-md-6 mt-sm-5 mt-lg-6'}></span>
                                 )}
                             </>
                         )}
