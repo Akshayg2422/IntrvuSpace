@@ -90,9 +90,14 @@ function Call() {
             let stream = await navigator.mediaDevices.getUserMedia({ audio: true });
             var speech = hark(stream, option);
             speech.on('volume_change', function (value) {
-                if (-value < 50) {
+                if (-value < 42) {
+
+                    console.log('speaking=========    ' + value);
+
                     setSpeaking(true);
                 } else {
+                    console.log('not speaking');
+
                     setSpeaking(false);
                 }
             });
@@ -119,7 +124,6 @@ function Call() {
                     setIsRecording(false)
                 }
             } else {
-                console.log('mic on');
                 buttonConditional === 'processing' && setMicState(true)
             }
         }
@@ -168,7 +172,6 @@ function Call() {
 
     const validateProceedStartListening = async () => {
         if (transcribing || callState === CALL_STATE_API_LOADING) {
-            console.log("Please wait...")
         }
         else {
             if (!isRecording) {
