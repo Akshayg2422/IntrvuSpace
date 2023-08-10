@@ -161,3 +161,14 @@ export const combineBase64Strings = (stringsArray) => {
 
   return combinedBase64;
 };
+
+export async function checkMicrophoneState() {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    const audioTrack = stream.getAudioTracks()[0];
+    return audioTrack.enabled;
+  } catch (error) {
+    console.error('Error accessing microphone:', error);
+    return false; // Microphone is not accessible
+  }
+}

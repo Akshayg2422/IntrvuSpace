@@ -142,3 +142,17 @@ export const FROM_JD_RULES = {
     presence: { allowEmpty: false, message: "Job Description cannot be empty" },
   },
 }
+
+export const CREATE_CORPORATE_RULES = {
+  position: {
+    presence: { message: "Role name cannot be empty" },
+    length: { minimum: 3, message: "Role minimum 3 chars" },
+  },
+  experience: {
+    presence: { allowEmpty: false, message: "Experience cannot be empty" },
+  },
+  jd: {
+    presence: { allowEmpty: false, message: "Job Description cannot be empty" },
+  },
+}
+

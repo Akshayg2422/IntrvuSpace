@@ -441,6 +441,24 @@ function* createNewJdScheduleSaga(action) {
   }
 }
 
+//
+
+function* createCorporateFormSaga(action) {
+  try {
+    const response = yield call(Api.createCorporateVariantForm, action.payload.params);
+    if (response.success) {
+      yield put(Action.createCorporateVariantSuccess(response));
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield put(Action.createCorporateVariantFailure(response.error_message));
+      yield call(action.payload.onError(response));
+    }
+  } catch (error) {
+    yield put(Action.createCorporateVariantFailure(error));
+    yield call(action.payload.onError(error));
+  }
+}
+
 
 
 function* DashboardSaga() {
@@ -468,6 +486,7 @@ function* DashboardSaga() {
   yield takeLatest(Action.GET_JD_ITEM_LIST, getJdItemListSaga);
   yield takeLatest(Action.GET_SCHEDULE_BASIC_INFO, getScheduleBasicInfoSaga);
   yield takeLatest(Action.CREATE_NEW_JD_SCHEDULE, createNewJdScheduleSaga);
+  yield takeLatest(Action.CREATE_CORPORATE_VARIANT, createCorporateFormSaga);
 
 }
 export default DashboardSaga;
