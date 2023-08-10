@@ -7,7 +7,7 @@ import { useWhisper } from '@chengsokdara/use-whisper';
 import hark from 'hark';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 function Call() {
     const { goBack, goTo } = useNavigation();
@@ -90,9 +90,14 @@ function Call() {
             let stream = await navigator.mediaDevices.getUserMedia({ audio: true });
             var speech = hark(stream, option);
             speech.on('volume_change', function (value) {
-                if (-value < 50) {
+                if (-value < 43) {
+
+                    console.log('speaking=========    ' + value);
+
                     setSpeaking(true);
                 } else {
+                    console.log('not speaking');
+
                     setSpeaking(false);
                 }
             });
@@ -119,7 +124,6 @@ function Call() {
                     setIsRecording(false)
                 }
             } else {
-                console.log('mic on');
                 buttonConditional === 'processing' && setMicState(true)
             }
         }
@@ -130,7 +134,7 @@ function Call() {
         if (intervalRef.current) {
             clearInterval(intervalRef.current);
         }
-        intervalRef.current = setInterval(validateNotSpeaking, 3000);
+        intervalRef.current = setInterval(validateNotSpeaking, 8000);
         return () => {
             clearInterval(intervalRef.current);
         };
@@ -168,7 +172,6 @@ function Call() {
 
     const validateProceedStartListening = async () => {
         if (transcribing || callState === CALL_STATE_API_LOADING) {
-            console.log("Please wait...")
         }
         else {
             if (!isRecording) {
