@@ -1,5 +1,5 @@
 import { icons } from '@Assets'
-import { Designation, WeightageCountForm, CreateQuestionForm, Clients, Sector, Questions, Call, Report, QuestionSections, AnalyzingAnimation, Schedules, Login, Otp, Splash, Register, LoginWithOtp, AdminLogin } from '@Modules';
+import { Designation, WeightageCountForm, CreateQuestionForm, Clients, Sector, Questions, Call, Report, QuestionSections, AnalyzingAnimation, Schedules, Login, Otp, Splash, Register, LoginWithOtp, AdminLogin, CreateCorporateForm } from '@Modules';
 
 
 
@@ -25,7 +25,8 @@ export const ROUTES = {
     report: '/report',
     'question-sections': '/question-sections',
     'analyzing-animation': '/analyzing-animation',
-    schedules: '/schedules'
+    schedules: '/schedules',
+    'create-corporate-form': '/create-corporate-form'
   }
 }
 
@@ -110,6 +111,11 @@ export const DASHBOARD_ROUTES = [
     id: 9,
     path: ROUTES['designation-module'].report + '/:schedule_id',
     component: <Report />
+  },
+  {
+    id: 10,
+    path: ROUTES['designation-module']['create-corporate-form'],
+    component: <CreateCorporateForm />
   },
 
 ]

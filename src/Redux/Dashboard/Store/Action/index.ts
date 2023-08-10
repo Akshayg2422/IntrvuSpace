@@ -662,3 +662,26 @@ export const setSelectedSection = (params: any) => {
     payload: params,
   }
 }
+
+// create corporate variant
+
+
+export const createCorporateVariant = (params: any) => {
+  return {
+    type: ActionTypes.CREATE_CORPORATE_VARIANT,
+    payload: params,
+  }
+}
+export const createCorporateVariantSuccess = (response: any) => {
+  return {
+    type: ActionTypes.CREATE_CORPORATE_VARIANT_SUCCESS,
+    payload: response
+  }
+}
+
+export const createCorporateVariantFailure = (error: any) => {
+  return {
+    type: ActionTypes.CREATE_CORPORATE_VARIANT_FAILURE,
+    payload: error
+  }
+}

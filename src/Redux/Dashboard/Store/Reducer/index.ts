@@ -345,6 +345,18 @@ const DashboardReducer = (state = initialState, action: any) => {
       state = { ...state, scheduleInfo: undefined };
       break;
 
+    // create corporate variant
+
+    case ActionTypes.CREATE_CORPORATE_VARIANT:
+      state = { ...state };
+      break;
+    case ActionTypes.CREATE_CORPORATE_VARIANT_SUCCESS:
+      state = { ...state, };
+      break;
+    case ActionTypes.CREATE_CORPORATE_VARIANT_FAILURE:
+      state = { ...state };
+      break;
+
 
     /**
      * set selected section
