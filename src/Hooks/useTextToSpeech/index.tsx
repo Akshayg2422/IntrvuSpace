@@ -63,7 +63,19 @@ const useTextToSpeech = () => {
       utterance.rate = 1;
     utterance.pitch = 1;
     utterance.volume = 1;
+    utterance.onstart = handleSpeechStart;
+    utterance.onend = handleSpeechEnd;
+
     synth.speak(utterance);
+  };
+
+
+  const handleSpeechStart = () => {
+    setIsSpeaking(true);
+  };
+
+  const handleSpeechEnd = () => {
+    setIsSpeaking(false);
   };
 
   useEffect(() => {
