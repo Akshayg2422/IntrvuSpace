@@ -90,7 +90,7 @@ function Call() {
             let stream = await navigator.mediaDevices.getUserMedia({ audio: true });
             var speech = hark(stream, option);
             speech.on('volume_change', function (value) {
-                if (-value < 42) {
+                if (-value < 43) {
 
                     console.log('speaking=========    ' + value);
 
@@ -134,7 +134,7 @@ function Call() {
         if (intervalRef.current) {
             clearInterval(intervalRef.current);
         }
-        intervalRef.current = setInterval(validateNotSpeaking, 3000);
+        intervalRef.current = setInterval(validateNotSpeaking, 8000);
         return () => {
             clearInterval(intervalRef.current);
         };

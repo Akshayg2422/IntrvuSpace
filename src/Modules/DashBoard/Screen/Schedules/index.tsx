@@ -51,8 +51,8 @@ function Schedules() {
     }
 
     const handleNextStep = (item: any) => {
-        const { id, is_complete, is_started } = item;
-        if (is_complete === true) {
+        const { id, is_complete, is_started, is_report_complete } = item;
+        if (is_complete === true && is_report_complete) {
             return (
 
                 <Button
