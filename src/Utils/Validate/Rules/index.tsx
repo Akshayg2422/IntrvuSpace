@@ -156,3 +156,36 @@ export const CREATE_CORPORATE_RULES = {
   },
 }
 
+export const CREATE_KNOWLEDGE_GROUP_VARIANT_RULES = {
+  name: {
+    presence: { message: "Role name cannot be empty" },
+    length: { minimum: 3, message: "Role minimum 3 chars" },
+  },
+  description: {
+    presence: { allowEmpty: false, message: "Job Description cannot be empty" },
+  },
+  experience: {
+    presence: { allowEmpty: false, message: "Experience cannot be empty" },
+  },
+}
+
+export const VALIDATE_ADD_NEW_CANDIDATES_RULES = {
+  firstName: {
+    presence: { message: "First name cannot be empty" },
+    length: { minimum: 3, message: "First name minimum 3 chars" },
+  },
+  lastName: {
+    presence: { message: "Last name cannot be empty" },
+    length: { minimum: 3, message: "First name minimum 3 chars" },
+  },
+  email: {
+    email: { message: "Doesn't look like a valid email" },
+  },
+  mobile_number: {
+    presence: { message: "Mobile number cannot be empty" },
+    length: { is: 10, message: "Mobile number should be 10 number" },
+  },
+
+}
+
+

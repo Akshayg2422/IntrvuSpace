@@ -1,14 +1,13 @@
 
 import { Button, DropDown, DesignationItem, Input, Modal, NoDataFound, Breadcrumbs, showToast } from '@Components';
 import { useDropDown, useInput, useLoader, useModal, useNavigation } from '@Hooks';
-import { breadCrumbs, clearBreadCrumbs, createKnowledgeGroup, createKnowledgeGroupVariant, getKnowledgeGroups, getSectors, setSelectedRole } from '@Redux';
+import { CREATE_KNOWLEDGE_GROUP_VARIANT_FAILURE, breadCrumbs, clearBreadCrumbs, createKnowledgeGroup, createKnowledgeGroupVariant, getKnowledgeGroups, getSectors, setSelectedRole } from '@Redux';
 import { ROUTES } from '@Routes';
-import { ADD_DESIGNATION_RULES, getDropDownCompanyDisplayData, getValidateError, ifObjectExist, validate } from '@Utils';
+import { ADD_DESIGNATION_RULES, CREATE_KNOWLEDGE_GROUP_VARIANT_RULES, getDropDownCompanyDisplayData, getValidateError, ifObjectExist, validate } from '@Utils';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Nav, NavItem, NavLink } from 'reactstrap';
 import classnames from 'classnames'
-import { Header } from '@Modules'
 
 
 
@@ -37,6 +36,7 @@ function Designation() {
     const title = useInput("");
     const description = useInput("");
     const sector = useDropDown({});
+    const experience = useInput('')
 
     const loader = useLoader(false);
 
@@ -118,29 +118,38 @@ function Designation() {
     }
 
     const createKnowledgeGroupVariantApiHandler = () => {
+
         if (selectedDesignation) {
             const params = {
                 name: title?.value,
                 description: description?.value,
+                experience: experience.value,
                 knowledge_group_id: selectedDesignation?.id,
                 // id: selectedRole?.id
             };
-            loader.show()
+            const validation = validate(CREATE_KNOWLEDGE_GROUP_VARIANT_RULES, params)
 
-            dispatch(
-                createKnowledgeGroupVariant({
-                    params,
-                    onSuccess: () => () => {
-                        loader.hide();
-                        addRoleModal.hide();
-                        resetValue();
-                        fetchKnowledgeData(navList[navIndex]?.id)
-                    },
-                    onError: () => () => {
-                        loader.hide()
-                    },
-                })
-            );
+            if (ifObjectExist(validation)) {
+                loader.show()
+                dispatch(
+                    createKnowledgeGroupVariant({
+                        params,
+                        onSuccess: (response: any) => () => {
+                            loader.hide();
+                            addRoleModal.hide();
+                            resetValue();
+                            fetchKnowledgeData(navList[navIndex]?.id)
+                            showToast(response.message, 'success')
+                        },
+                        onError: (error: any) => () => {
+                            showToast(error.error_message, 'error')
+                            loader.hide()
+                        },
+                    })
+                )
+            } else {
+                showToast(getValidateError(validation))
+            }
         }
     };
 
@@ -221,9 +230,10 @@ function Designation() {
                                             addRoleModal.show();
                                         }}
                                         onView={(designation, role) => {
+                                            console.log('role-------------->',role)
                                             dispatch(setSelectedRole(role))
                                             dispatch(breadCrumbs({ name: role?.name, title: el?.name, path: window.location.pathname }))
-                                            goTo(ROUTES['designation-module']['questions'])
+                                            goTo(ROUTES['designation-module']['variant-info'])
                                         }
                                         }
                                     />
@@ -278,10 +288,18 @@ function Designation() {
                     />
                     <Input
                         className={'col-6'}
-                        heading={"Description"}
+                        heading={"Job Description"}
                         value={description.value}
                         onChange={description.onChange}
                     />
+                    <Input
+                        className={'col-6'}
+                        heading={'Years of experience'}
+                        type={'number'}
+                        placeHolder={"Experience"}
+                        value={experience.value}
+                        onChange={experience.onChange} />
+
                     <div className="col text-right">
                         <Button size={'md'}
                             loading={loader.loader}
