@@ -101,7 +101,7 @@ function Questions() {
             >
                 <i className="bi bi-arrow-left text-black fa-lg font-weight-bolder pr-1"></i>  {breadcrumbString}
             </span> */}
-            <Breadcrumbs />
+            {/* <Breadcrumbs /> */}
 
             <div className='m-3'>
                 <div className='col text-right ml-3'>

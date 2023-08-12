@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Input, Card, Back, Button, CommonTable, showToast, Breadcrumbs, } from '@Components';
+import { Input, Card, Back, Button, CommonTable, showToast, Breadcrumbs, Divider, } from '@Components';
 import { useInput, useKeyPress, useLoader, useModal, useNavigation, useWindowDimensions } from '@Hooks';
 import { useDispatch, useSelector } from 'react-redux';
 import { CREATE_QUESTION_FORM_RULES, getValidateError, ifObjectExist, validate } from '@Utils';
@@ -120,7 +120,9 @@ function CreateQuestionForm() {
                 <div className={'row pl-1'}>
                     <Back /><span className={'h3 pl-1'}> CREATE FORM</span>
                 </div>
-                <hr className="mt-2"></hr>
+                <div className={'mx--4 '}>
+                    <Divider space={'2'} />
+                </div>
 
                 <div className="col-md-9 col-lg-5">
                     <Input heading={'Name'} value={nameInput.value} onChange={nameInput.onChange} />
