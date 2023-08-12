@@ -11,6 +11,7 @@ import { validate, FROM_JD_RULES, ifObjectExist, getValidateError } from '@Utils
 function FromJD() {
 
     const { jdItem } = useSelector((state: any) => state.DashboardReducer)
+    console.log('jdItem---------->',JSON.stringify(jdItem))
     const { goTo } = useNavigation();
 
     const position = useInput('');
