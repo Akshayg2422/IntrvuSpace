@@ -1,65 +1,85 @@
-import React, { useEffect } from 'react'
-import { SearchInput, Button, Modal } from '@Components'
-import { useModal } from '@Hooks'
+import { Button, SearchInput, TopNavbar } from '@Components'
+import { useInput } from '@Hooks'
+import { FromCollection, FromJD, FromSkills } from '@Modules'
+import { setSelectedSection } from '@Redux'
+import { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Sectors } from '@Modules'
-import { getKnowledgeGroups } from '@Redux'
-
-
-
 
 function Clients() {
 
+    const search = useInput('');
+    const INTERVIEW_TYPE = [
+        {
+            id: 1, title: 'From Collection'
+        },
+        {
+            id: 2, title: 'From JD'
+        },
+        {
+            id: 3, title: 'From Skills'
+        }
+    ]
+
     const dispatch = useDispatch()
-
-    const { sectors, knowledgeGroups } = useSelector((state: any) => state.DashboardReducer)
-    const addJd = useModal(false);
-
-    useEffect(() => {
-        getKnowledgeGroupDetailsApiHandler();
-    }, [])
-
-    const getKnowledgeGroupDetailsApiHandler = () => {
-        const params = {}
-        dispatch(
-            getKnowledgeGroups({
-                params,
-                onSuccess: () => () => {
-                },
-                onError: () => () => {
-                },
-            })
-        );
-    };
+    const { selectedSection } = useSelector((state: any) => state.DashboardReducer)
 
 
-    console.log(JSON.stringify(knowledgeGroups));
+
+    function renderComponent() {
+
+        let component = <FromCollection />
+
+        switch (selectedSection) {
+            case 0:
+                component = <FromCollection />
+                break;
+            case 1:
+                component = <FromJD />
+                break;
+            case 2:
+                component = <FromSkills />
+                break;
+
+        }
+        return component;
+    }
+
 
     return (
         <>
-            <div className='m-3'>
-                <div className='row'>
-                    <div className='col-6'>
-                        <SearchInput onSearch={() => { }} />
+            <TopNavbar />
+            <div className={`container-fluid mt-7`}>
+                <div className='row align-items-center'>
+                    <div className='col-sm-5 mb-sm-0 mb-2'>
+                        <SearchInput defaultValue={search.value} onSearch={search.set} />
                     </div>
-                    <div className='col text-right'>
-                        <Button className={'text-white'} text={'From JD'} onClick={addJd.show} />
-                    </div>
-                </div>
 
-                <div className='m-3'>
-                    <Sectors />
-                </div>
+                    {
+                        INTERVIEW_TYPE.map((interview: any, index: number) => {
+                            const { title } = interview;
+                            const selected = index === selectedSection
+                            return (
+                                <div className='m-1 row col-xl  col-sm-3'>
+                                    <Button
+                                        block
+                                        size={'md'}
+                                        className=''
+                                        color={!selected ? 'neutral' : 'primary'}
+                                        text={title}
+                                        onClick={() => {
+                                            dispatch(setSelectedSection(index));
+                                        }}
+                                    />
+                                </div>
+                            )
+                        })
+                    }
+                </div >
+                {
+                    renderComponent()
+                }
 
-                <div>
-
-                </div>
-
-            </div>
-
-            <Modal title={'Create JD'} isOpen={addJd.visible} onClose={addJd.hide} >
-
-            </Modal>
+            </div >
         </>
     )
 }

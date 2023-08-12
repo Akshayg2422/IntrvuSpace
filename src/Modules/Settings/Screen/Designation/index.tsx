@@ -1,76 +1,50 @@
-import { icons } from '@Assets';
-import { Button, CommonTable, DropDown, Input, MenuBar, Modal, NoDataFound } from '@Components';
-import { useDropDown, useDynamicHeight, useInput, useLoader, useModal, useNavigation } from '@Hooks';
-import { translate } from "@I18n";
-import { createKnowledgeGroup, createKnowledgeGroupVariant, getKnowledgeGroups, getKnowledgeGroupVariant, getSectors, selectedGroupIds } from '@Redux';
+
+import { Button, DropDown, DesignationItem, Input, Modal, NoDataFound, Breadcrumbs, showToast } from '@Components';
+import { useDropDown, useInput, useLoader, useModal, useNavigation } from '@Hooks';
+import { breadCrumbs, clearBreadCrumbs, createKnowledgeGroup, createKnowledgeGroupVariant, getKnowledgeGroups, getSectors, setSelectedRole } from '@Redux';
+import { ROUTES } from '@Routes';
+import { ADD_DESIGNATION_RULES, getDropDownCompanyDisplayData, getValidateError, ifObjectExist, validate } from '@Utils';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getDropDownCompanyDisplayData } from '@Utils';
-import { ROUTES } from '@Routes';
+import { Nav, NavItem, NavLink } from 'reactstrap';
+import classnames from 'classnames'
+import { Header } from '@Modules'
+
+
 
 
 function Designation() {
 
+    const { sectors } = useSelector((state: any) => state.DashboardReducer)
 
-    const { knowledgeGroups, sectors } = useSelector((state: any) => state.DashboardReducer)
-    const { goTo } = useNavigation()
+    const { goTo, goBack } = useNavigation()
+
+
+    const dispatch = useDispatch()
+    const [navIndex, setNavIndex] = useState<any>(0)
+    const [navList, setNavList] = useState<any>([])
+    const [cardData, setCardData] = useState<any>([])
+
+    const [selectedDesignation, setSelectedDesignation] = useState<any>({})
+    const [selectedVariant, setSelectedVariant] = useState<any>({})
+
+
+
+
+    const addDesignationModal = useModal(false);
+    const addRoleModal = useModal(false);
+
     const title = useInput("");
     const description = useInput("");
-    const editModal = useModal(false);
-    const variantModal = useModal(false);
-    const dispatch = useDispatch()
-    const dynamicHeight: any = useDynamicHeight()
-    const GroupSubmitLoader = useLoader(false);
-    const [variant, setVariant] = useState<any>();
-    const VariantSubmitLoader = useLoader(false);
-    const [selectedGroupDetails, setSelectedGroupDetails] = useState<any>({})
-    const [convertedGroupDetails, setConvertedGroupDetails] = useState<any>([])
-    const [selectedGroup, setSelectedGroup] = useState<any>(undefined);
-    const [selectedGroupVariant, setSelectedGroupVariant] = useState<any>();
-    const MENU = [{ id: '0', name: "Edit", icon: icons.edit }]
-
-
     const sector = useDropDown({});
 
+    const loader = useLoader(false);
+
+
     useEffect(() => {
-        getKnowledgeGroupDetailsApiHandler();
-        getKnowledgeGroupVariantDetails();
+        dispatch(clearBreadCrumbs([]))
         getSectorsApiHandler();
     }, [])
-
-    const getKnowledgeGroupDetailsApiHandler = () => {
-        const params = {}
-        dispatch(
-            getKnowledgeGroups({
-                params,
-                onSuccess: (success: any) => () => {
-                    const normalizedArray = success?.details?.knowledege_groups && success?.details?.knowledege_groups.length > 0
-                        && success.details.knowledege_groups.map((el: any) => {
-                            let requiredObject = { show: false }
-                            return { ...el, ...requiredObject }
-                        })
-
-                    setConvertedGroupDetails(normalizedArray)
-                },
-                onError: (error: string) => () => {
-                },
-            })
-        );
-    };
-
-    const getKnowledgeGroupVariantDetails = () => {
-        const params = {}
-        dispatch(
-            getKnowledgeGroupVariant({
-                params,
-                onSuccess: (success: any) => () => {
-                    setVariant(success.details)
-                },
-                onError: (error: string) => () => {
-                },
-            })
-        );
-    };
 
 
     const getSectorsApiHandler = () => {
@@ -78,7 +52,9 @@ function Designation() {
         dispatch(
             getSectors({
                 params,
-                onSuccess: () => () => {
+                onSuccess: (response: any) => () => {
+                    setNavList(response?.details?.knowledege_groups)
+                    fetchKnowledgeData(response?.details?.knowledege_groups[0]?.id)
                 },
                 onError: () => () => {
                 },
@@ -86,8 +62,22 @@ function Designation() {
         );
     };
 
-    const createKnowledgeGroupDetails = () => {
-        GroupSubmitLoader.show()
+    const fetchKnowledgeData = (id) => {
+        const params = {
+            sector_id: id
+        }
+        dispatch(getKnowledgeGroups({
+            params,
+            onSuccess: (response: any) => () => {
+                setCardData(response.details.knowledege_groups)
+            },
+            onError: (error) => () => {
+
+            },
+        }))
+    }
+
+    const createKnowledgeGroupApiHandler = () => {
 
         const params = {
             name: title?.value,
@@ -95,231 +85,213 @@ function Designation() {
             sector_id: sector.value?.id
         };
 
-        dispatch(
-            createKnowledgeGroup({
-                params,
-                onSuccess: (success: any) => () => {
-                    GroupSubmitLoader.hide()
-                    editModal.hide()
-                },
-                onError: (error: string) => () => {
-                    GroupSubmitLoader.hide()
-                },
-            })
-        );
+        const validation = validate(ADD_DESIGNATION_RULES, params)
+
+        if (ifObjectExist(validation)) {
+            loader.show()
+            dispatch(
+                createKnowledgeGroup({
+                    params,
+                    onSuccess: (response) => () => {
+                        loader.hide()
+                        addDesignationModal.hide()
+                        fetchKnowledgeData(navList[navIndex]?.id)
+                        resetValue();
+                        showToast(response.message, 'success');
+                    },
+                    onError: (error) => () => {
+                        showToast(error.error_message, 'error');
+                        loader.hide()
+                    },
+                })
+            )
+        } else {
+            showToast(getValidateError(validation))
+        }
     };
 
-    const createKnowledgeGroupVariantDetails = () => {
-        VariantSubmitLoader.show()
+    function resetValue() {
+        title.set('')
+        description.set('')
+        sector.set({})
 
-        const params = {
-            name: title?.value,
-            description: description?.value,
-            knowledge_group_id: selectedGroupDetails?.id
-        };
-        dispatch(
-            createKnowledgeGroupVariant({
-                params,
-                onSuccess: (success: any) => () => {
-                    VariantSubmitLoader.hide()
-                    variantModal.hide()
-                    getKnowledgeGroupDetailsApiHandler()
-                    getKnowledgeGroupVariantDetails()
-                },
-                onError: (error: string) => () => {
-                    VariantSubmitLoader.hide()
-                },
-            })
-        );
-    };
-
-    const onClickAddVariant = (group: any) => {
-        setSelectedGroupDetails(group)
-        variantModal.show()
     }
 
-    const onClickShow = (item: any, index: number) => {
-        let showVariant = convertedGroupDetails.map((el: any, i: number) => {
-            return {
-                ...el,
-                show: i === index ? !el.show : false
+    const createKnowledgeGroupVariantApiHandler = () => {
+        if (selectedDesignation) {
+            const params = {
+                name: title?.value,
+                description: description?.value,
+                knowledge_group_id: selectedDesignation?.id,
+                // id: selectedRole?.id
             };
-        });
-        setConvertedGroupDetails(showVariant);
+            loader.show()
+
+            dispatch(
+                createKnowledgeGroupVariant({
+                    params,
+                    onSuccess: () => () => {
+                        loader.hide();
+                        addRoleModal.hide();
+                        resetValue();
+                        fetchKnowledgeData(navList[navIndex]?.id)
+                    },
+                    onError: () => () => {
+                        loader.hide()
+                    },
+                })
+            );
+        }
     };
-
-
-    const selectedVariant = (el: any) => {
-        let filteredVariant: any = []
-        variant && variant?.knowledge_group_varaiant.length > 0 && variant.knowledge_group_varaiant.map((element: any) => {
-            if (element?.knowledge_group?.id === el.id) {
-                filteredVariant = [...filteredVariant, element]
-            }
-        })
-        setSelectedGroupVariant(filteredVariant)
-    }
-
-
-    const normalizedTaskGroupData = (data: any) => {
-        return data && data.length > 0 && data.map((variant: any) => {
-            return {
-                name: <div className="row  align-items-center">
-                    <div className="pl-3">
-                        <span className={`'text-primary'}`}>{variant?.name}</span>
-                    </div>
-                </div >,
-                "": <MenuBar menuData={MENU} onClick={(el) => {
-                    if (el.id === 0) {
-                        // editVariant(variant)
-                    }
-                }}
-                />
-            }
-        })
-    };
-
 
     return (
         <>
-        <div>
-            <div className="row justify-content-end m-2 mb-3">
-                <Button
-                    className={'text-white shadow-none'}
-                    size={'sm'}
-                    text={"Add Group"}
-                    onClick={() => {
-                        editModal.show()
-                    }}
-                />
-                <Button
-                    className={'text-white shadow-none'}
-                    size={'sm'}
-                    text={"Sector"}
-                    onClick={() => {
-                        goTo(ROUTES['group-module']['sector'])
-                    }}
-                />
-            </div>
-            <div className='mx-3'>
-                <div className='row'>
-                    {convertedGroupDetails && convertedGroupDetails.length > 0 ?
-                        convertedGroupDetails.map((el: any, index: number) => {
-                            return (
-                                <div className='col-6'>
-                                    <div className={'card  py-3'}
-                                        style={{ height: el.show ? dynamicHeight.dynamicHeight : '5em' }}>
-                                        <div className="row justify-content-center  m-2" >
-                                            <div className="col">
-                                                <h3>{el.name}</h3>
-                                            </div>
-                                            <div className="text-right mr-3">
-                                                <Button
-                                                    className={'text-white'}
-                                                    text={
-                                                        el?.show
-                                                            ? translate("course.hide")
-                                                            : translate("course.view")
-                                                    }
-                                                    size={"sm"}
-                                                    onClick={() => {
-                                                        onClickShow(el, index)
-                                                        selectedVariant(el)
-                                                    }}
-                                                />
-                                                <Button
-                                                    className={'text-white'}
-                                                    text={translate("product.addItem")}
-                                                    size={"sm"}
-                                                    onClick={() => {
-                                                        onClickAddVariant(el)
-                                                        // addTaskGroupModal.show()
-                                                    }}
-                                                />
-                                            </div>
-                                        </div>
-                                        {el.show && selectedGroupVariant && selectedGroupVariant.length > 0 && (
-                                            <CommonTable
-                                                isPagination
-                                                displayDataSet={normalizedTaskGroupData(selectedGroupVariant)}
-                                                tableDataSet={selectedGroupVariant}
-                                                tableOnClick={(index, id, item) => {
-                                                    console.log(item)
-                                                    dispatch(selectedGroupIds(item))
-                                                    goTo(ROUTES['group-module']['create-question-form'])
-                                                }}
+            <div className='container-fluid pt-4'>
 
-                                            />
-                                        )
+                <div className='row justify-content-end'>
+                    <Button
+                        className={'text-white shadow-none'}
+                        size={'sm'}
+                        text={"Add Designation"}
+                        onClick={addDesignationModal.show}
+                    />
+
+                    <Button
+                        className={'text-white shadow-none'}
+                        size={'sm'}
+                        text={"Sector"}
+                        onClick={() => {
+                            goTo(ROUTES['designation-module']['sector']);
+                        }}
+                    />
+                </div>
+                <div className='d-flex pt-3 overflow-auto overflow-hide mx--4'>
+                    {navList && navList.map((el, index) => {
+                        return (
+                            <div className='col-sm-3 px-2'>
+                                <Nav
+                                    className="nav-fill flex-column flex-sm-row pointer"
+                                    id="tabs-text"
+                                    pills
+                                    role="tablist"
+                                >
+                                    <NavItem>
+                                        <NavLink
+                                            aria-selected={index === navIndex}
+                                            className={classnames(`mb-sm-3 mb-md-0 shadow-none ${index !== navIndex ? 'text-black font-weight-normal' : 'font-weight-bold'}`, {
+                                                active: index === navIndex
+                                            })}
+                                            onClick={() => {
+                                                setNavIndex(index)
+                                                fetchKnowledgeData(el.id)
+                                            }}
+                                            role="tab"
+                                        >
+                                            {el.name}
+                                        </NavLink>
+                                    </NavItem>
+                                </Nav>
+                            </div>
+                        )
+                    })
+
+                    }
+                </div>
+                <div className='row  pt-3 px-0'>
+                    {cardData && cardData.length > 0 ?
+                        cardData.map((el: any, index: number) => {
+                            console.log('ellllllllllll------>', el)
+                            return (
+                                <div className='col-sm-4 col-lg-4 px-2'>
+                                    <DesignationItem
+                                        item={el}
+                                        onAdd={(selected) => {
+                                            addRoleModal.show();
+                                            setSelectedDesignation(selected);
+                                        }}
+
+                                        onEdit={(designation, role) => {
+                                            setSelectedDesignation(designation)
+                                            dispatch(setSelectedRole(role))
+                                            const { name, description } = role
+                                            title.set(name)
+                                            if (description) {
+                                                description.set(description)
+                                            }
+                                            addRoleModal.show();
+                                        }}
+                                        onView={(designation, role) => {
+                                            dispatch(setSelectedRole(role))
+                                            dispatch(breadCrumbs({ name: role?.name, title: el?.name, path: window.location.pathname }))
+                                            goTo(ROUTES['designation-module']['questions'])
                                         }
-                                    </div>
+                                        }
+                                    />
                                 </div>
                             )
                         })
-                        : <div className={'d-flex justify-content-center align-items-center'} style={{ height: '90vh' }}><NoDataFound text={"No Data Found"} /></div>
+                        :
+                        <div className={'d-flex  justify-content-center align-items-center mx-auto my-auto '}
+                            style={{
+                                height: '60vh'
+                            }}
+                        >
+                            <NoDataFound />
+                        </div>
                     }
                 </div>
-            </div>
-            < Modal size={'lg'} title={"Add Group"} isOpen={editModal.visible} onClose={editModal.hide} >
+                < Modal size={'lg'} title={"Add Designation"} isOpen={addDesignationModal.visible} onClose={addDesignationModal.hide} >
+                    <div className='col-7'>
+                        <Input
+                            heading={"Name"}
+                            value={title.value}
+                            onChange={title.onChange}
+                        />
+                        <Input
+                            heading={"Description"}
+                            value={description.value}
+                            onChange={description.onChange}
+                        />
+                        {sectors && sectors.length > 0 &&
+                            <DropDown
+                                heading={'Sectors'}
+                                data={getDropDownCompanyDisplayData(sectors)}
+                                selected={sector.value}
+                                onChange={sector.onChange} />
+                        }
+                    </div>
 
+                    <div className="col text-right">
+                        <Button size={'md'}
+                            loading={loader.loader}
+                            text={"Submit"}
+                            onClick={createKnowledgeGroupApiHandler} />
+                    </div>
+                </Modal >
 
-
-                <Input
-
-                    heading={"Name"}
-                    value={title.value}
-                    onChange={title.onChange}
-                />
-
-                <Input
-
-                    heading={"Description"}
-                    value={description.value}
-                    onChange={description.onChange}
-                />
-
-
-                {sectors && sectors.length > 0 &&
-                    <DropDown
-                        heading={'Sectors'}
-                        data={getDropDownCompanyDisplayData(sectors)}
-                        selected={sector.value}
-                        onChange={sector.onChange} />
-                }
-
-                <div className="col text-right ">
-                    <Button size={'md'}
-                        loading={GroupSubmitLoader.loader}
-                        text={"Submit"}
-                        onClick={() => createKnowledgeGroupDetails()} />
-                </div>
-            </Modal >
-
-            < Modal size={'lg'} title={"Add Variant"} isOpen={variantModal.visible} onClose={variantModal.hide} >
-
-
-                <Input
-                    className={'col-6'}
-                    heading={"Name"}
-                    value={title.value}
-                    onChange={title.onChange}
-                />
-                <Input
-                    className={'col-6'}
-                    heading={"Description"}
-                    value={description.value}
-                    onChange={description.onChange}
-                />
-
-
-                <div className="col text-right">
-                    <Button size={'md'}
-                        loading={VariantSubmitLoader.loader}
-                        text={"Submit"}
-                        onClick={() => createKnowledgeGroupVariantDetails()}
+                < Modal size={'lg'} title={"Add Role"} isOpen={addRoleModal.visible} onClose={addRoleModal.hide} >
+                    <Input
+                        className={'col-6'}
+                        heading={"Name"}
+                        value={title.value}
+                        onChange={title.onChange}
                     />
-                </div>
-            </Modal >
-        </div >
+                    <Input
+                        className={'col-6'}
+                        heading={"Description"}
+                        value={description.value}
+                        onChange={description.onChange}
+                    />
+                    <div className="col text-right">
+                        <Button size={'md'}
+                            loading={loader.loader}
+                            text={"Submit"}
+                            onClick={createKnowledgeGroupVariantApiHandler}
+                        />
+                    </div>
+                </Modal >
+            </div>
+
         </>
     )
 }

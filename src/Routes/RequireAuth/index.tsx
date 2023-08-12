@@ -7,6 +7,7 @@ import { icons } from '@Assets'
 import { FCM_TOKEN, getDeviceInfo } from '@Utils'
 import { PushNotification } from "@Modules";
 
+
 type RequireAuthProps = {
     children: React.ReactNode;
 }
@@ -17,6 +18,8 @@ export const RequireAuth = ({ children }: RequireAuthProps) => {
     const [sideNavOpen, setSideNavOpen] = useState(true);
     const mainContentRef = React.useRef<HTMLDivElement | null>(null);
     const location = useLocation();
+    const { loginDetails } = useSelector((state: any) => state.AppReducer);
+    const { removeSideNav } = useSelector((state: any) => state.DashboardReducer)
 
 
 
@@ -29,8 +32,9 @@ export const RequireAuth = ({ children }: RequireAuthProps) => {
     }, [location]);
 
 
-    const login = false
-    if (login) {
+
+    if (!loginDetails?.isLoggedIn) {
+        localStorage.setItem('route', location.pathname);
         return <Navigate to={ROUTES['auth-module'].login} state={{ path: location.pathname }} />
     }
 
@@ -48,7 +52,7 @@ export const RequireAuth = ({ children }: RequireAuthProps) => {
 
     return (
         <>
-            <Sidebar
+            {loginDetails?.is_admin && !removeSideNav && <Sidebar
                 routes={HOME_ROUTES}
                 toggleSideNav={toggleSideNav}
                 sideNavOpen={sideNavOpen}
@@ -57,7 +61,7 @@ export const RequireAuth = ({ children }: RequireAuthProps) => {
                     imgSrc: icons.logo,
                     imgAlt: "...",
                 }}
-            />
+            />}
             <div className='main-content' ref={mainContentRef}>
                 <PushNotification />
                 {children}

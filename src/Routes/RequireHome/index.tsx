@@ -17,10 +17,10 @@ export const RequireHome = ({ children }: RequireHomeProps) => {
     const { loginDetails } = useSelector(
         (state: any) => state.AppReducer
     );
-    const login = true
 
-    if (login) {
-        return <Navigate to={ROUTES['group-module'].group} state={{ path: location.pathname }} />
+
+    if (loginDetails?.isLoggedIn) {
+        return <Navigate to={ROUTES['auth-module'].splash} state={{ path: location.pathname }} />
     }
 
     return (

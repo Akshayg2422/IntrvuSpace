@@ -187,3 +187,30 @@ export const INITIAL_PAGE = 1
 
 export const TASK_EVENT_ETA = 'ETA'
 
+
+
+
+
+export const SPEAK_PROCEED_LIST = [
+  "Are you still with us?",
+  "Could I get your input on this?",
+  "Are you available to share your thoughts?",
+  "Is everything okay on your end?",
+  "Can you give us your perspective?",
+  "Are you able to provide a response?",
+  "We're eager to hear your insights, are you there?",
+  "Feel free to chime in whenever you're ready.",
+  "Would you like to share your viewpoint?",
+  "Let us know if you're able to contribute to the discussion.",
+  "Is this a good time for you to answer?",
+  "Can we hear from you on this matter?",
+  "Would you mind sharing your thoughts?",
+  "Feel free to join the conversation whenever you're ready.",
+  "Are you present and prepared to respond?",
+  "Could you give us your viewpoint on this topic?",
+  "Ready when you are – please give us your response.",
+  "Is there a response you'd like to share with us?",
+  "Can you let us know your stance on this?",
+  "Could we have your thoughts on this matter?",
+  "Would you like to offer your viewpoint?"
+]

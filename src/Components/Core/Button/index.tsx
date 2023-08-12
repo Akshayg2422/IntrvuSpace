@@ -1,6 +1,3 @@
-
-
-
 import React from 'react';
 import { Button as RSButton } from 'reactstrap';
 import { ButtonProps } from './interfaces';
@@ -17,6 +14,7 @@ function Button({
   height = 15,
   width = 15,
   icon,
+  icons,
   onEnter,
   onClick,
   ...rest
@@ -31,7 +29,7 @@ function Button({
           {...rest}
           onClick={loading ? undefined : onClick}
         >
-          {loading && <Spinner />}
+          {loading && <Spinner color='white' />}
           {!loading && text}
         </RSButton>
       )}
@@ -68,7 +66,7 @@ function Button({
           onClick={onClick}
           {...rest}
         >
-          <img src={icon} alt="" height={height} width={width} />
+          {icons ? <i className={icons} /> : <img src={icon} alt="" height={height} width={width} />}
         </RSButton>
       )}
 

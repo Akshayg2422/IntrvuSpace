@@ -1,42 +1,114 @@
-import React, { useState } from 'react';
-import { Input, Card, Back, Button, CommonTable } from '@Components';
-import { useInput, useWindowDimensions } from '@Hooks';
+import React, { useEffect, useState } from 'react';
+import { Input, Card, Back, Button, CommonTable, showToast, NoDataFound } from '@Components';
+import { useInput, useLoader, useWindowDimensions, useNavigation } from '@Hooks';
+import { createQuestionSection, getQuestionSection } from '@Redux'
+import { CREATE_QUESTION_SECTION_RULES, getValidateError, ifObjectExist, validate } from '@Utils';
+import { useDispatch, useSelector } from 'react-redux';
+import { ROUTES } from '@Routes';
 
-type Task = {
-  name: string;
-  description: string;
-  weightage: string;
-};
 
 function WeightageCountForm() {
+
+  const { goTo } = useNavigation()
+  const dispatch = useDispatch()
   const { height } = useWindowDimensions()
-  const [tasks, setTasks] = useState<Task[]>([]);
   const nameInput = useInput('');
   const descriptionInput = useInput('');
   const weightageInput = useInput('');
+  const [sections, setSections] = useState<any>([]);
+  const [displayOrderCount, setDisplayOrderCount] = useState(1);
+  const loginLoader = useLoader(false);
+  const [loading, setLoading] = useState(false)
+  const { selectedRole, selectedQuestionForm,questionSection } = useSelector((state: any) => state.DashboardReducer)
+  console.log('questions----------->',selectedQuestionForm)
 
-  const handleSubmit = () => {
-    const newWeightage = parseInt(weightageInput.value, 10);
-    if (newWeightage <= 100 && newWeightage > 0) {
-      const newTask: Task = {
-        name: nameInput.value,
-        description: descriptionInput.value,
-        weightage: weightageInput.value,
-      };
 
-      setTasks([...tasks, newTask]);
+  useEffect(() => {
+    getQuestionSectionApi()
+  }, [])
 
-      nameInput.set('');
-      descriptionInput.set('');
-      weightageInput.set('');
-    } else {
-      alert('Weightage should be between 1 and 100');
+  const submitQuestionSectionHandler = () => {
+
+    setDisplayOrderCount((prevCount) => prevCount + 1);
+    const inputValues = {
+      name: nameInput?.value,
+      description: descriptionInput?.value,
+      weightage: parseInt(weightageInput?.value),
+      question_form_id: selectedRole?.id,
+      display_order: displayOrderCount
     }
-  };
+
+    let updatedParams: any = [...sections]
+    updatedParams = [...updatedParams, inputValues]
+    setSections(updatedParams);
+
+    const sum = updatedParams.reduce((n, { weightage }) => n + weightage, 0)
+
+    if (sum < 100 && sum > 0) {
+      const params = {
+        'sections': updatedParams
+      }
+
+      const validation = validate(CREATE_QUESTION_SECTION_RULES, {
+        name: nameInput?.value,
+        description: descriptionInput?.value,
+      })
+
+      if (ifObjectExist(validation)) {
+        loginLoader.show()
+        setLoading(true)
+        dispatch(
+          createQuestionSection({
+            params,
+            onSuccess: (response: any) => () => {
+              if (response.success) {
+                resetValues()
+                loginLoader.hide()
+                showToast(response.message, "success");
+                goTo(ROUTES['group-module']['question-sections'])
+              }
+              setLoading(false)
+            },
+            onError: (error) => () => {
+              showToast(error.error_message);
+              setLoading(false)
+              loginLoader.hide()
+            },
+          })
+        );
+      } else {
+        showToast(getValidateError(validation));
+      }
+    }
+
+  }
+
+
+  const getQuestionSectionApi = () => {
+    const params = {
+      question_form_id: selectedQuestionForm?.id
+    };
+
+    dispatch(
+      getQuestionSection({
+        params,
+        onSuccess: () => () => {
+        },
+        onError: () => () => {
+        },
+      })
+    );
+  }
+  function resetValues() {
+    nameInput.set('');
+    descriptionInput.set('');
+    weightageInput.set('');
+  }
 
   const getTotalWeightage = () => {
-    return tasks.reduce((total, task) => total + parseInt(task.weightage, 10), 0);
+    return questionSection.reduce((total, task) => total + parseInt(task.weightage, 10), 0);
   };
+  console.log('questionSection=--------->', JSON.stringify(questionSection))
 
   const normalizedTableData = (data: any) => {
     if (data && data?.length > 0)
@@ -74,7 +146,6 @@ function WeightageCountForm() {
       <Card className="m-3 overflow-auto overflow-hide" style={{ height: height - 30 }}>
         <div className="col">
           <div className="row mt--2">
-            <Back />
             <h3 className="ml-3">Create Sections</h3>
           </div>
         </div>
@@ -91,29 +162,33 @@ function WeightageCountForm() {
 
           <Input
             heading={'Weightage'}
+            type={"number"}
             value={weightageInput.value}
             onChange={weightageInput.onChange}
+            maxLength={2}
           />
         </div>
 
         <div className="col mt-4">
-          <Button size={'md'} text={'Submit'} onClick={handleSubmit} />
+          <Button size={'md'} text={'Submit'} onClick={submitQuestionSectionHandler} />
         </div>
 
         {
-          tasks.length > 0 && (
+          questionSection?.length > 0 ? (
             <div className={'mt-4 mx-3'} >
               <CommonTable
-                tableDataSet={tasks}
-                displayDataSet={normalizedTableData(tasks)}
+                tableDataSet={questionSection}
+                displayDataSet={normalizedTableData(questionSection)}
               />
 
             </div>
-          )
+          ) :
+            <div className={'d-flex justify-content-center align-items-center'} style={{ height: '90vh' }}>
+              <NoDataFound text={"No Data Found"} />
+            </div>
         }
-
-
-      </Card></>
+      </Card>
+    </>
   );
 }
 

@@ -16,13 +16,18 @@ import {
 import { SidebarProps } from './interfaces'
 import { Image } from '@Components'
 import { url } from "inspector";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getPhoto } from "@Utils";
+import { icons } from "@Assets";
+import { settingSideNavRemove } from "@Redux";
 function Sidebar({ toggleSideNav, sideNavOpen, routes, logo, rtlActive }: SidebarProps) {
   // const { dashboardDetails } = useSelector((state: any) => state.UserCompanyReducer);
   // const { user_details, } = dashboardDetails || ''
   const [state, setState] = React.useState({});
+  const dispatch = useDispatch()
   const location = useLocation();
+  const { removeSideNav } = useSelector((state: any) => state.DashboardReducer)
+  console.log("removeSideNav", removeSideNav)
   React.useEffect(() => {
     setState(getCollapseStates(routes));
     // eslint-disable-next-line
@@ -105,7 +110,7 @@ function Sidebar({ toggleSideNav, sideNavOpen, routes, logo, rtlActive }: Sideba
             >
               {prop.icon ? (
                 <>
-                  <Image src={prop?.icon} width={18} height={18} />
+                  <Image className="image-Color" src={prop?.icon} width={18} height={18} />
                   <span className="nav-link-text ml-3">{prop.name}</span>
                 </>
               ) : prop.miniName ? (
@@ -128,12 +133,17 @@ function Sidebar({ toggleSideNav, sideNavOpen, routes, logo, rtlActive }: Sideba
           <NavLink
             to={prop.layout + prop.path}
             activeClassName=""
-            onClick={closeSidenav}
+            onClick={() => {
+              closeSidenav()
+              if (prop.name === 'View as Member') {
+                dispatch(settingSideNavRemove(true))
+              }
+            }}
             tag={NavLinkRRD}
           >
             {prop.icon !== undefined ? (
               <>
-                <Image src={prop?.icon} width={18} height={18} />
+                <Image className="image-Color" src={prop?.icon} width={18} height={18} />
                 <span className="nav-link-text ml-3">{prop.name}</span>
               </>
             ) : prop.miniName !== undefined ? (
@@ -171,7 +181,7 @@ function Sidebar({ toggleSideNav, sideNavOpen, routes, logo, rtlActive }: Sideba
               <Image
                 alt={logo.imgAlt}
                 className="navbar-brand-img rounded-circle "
-                // src={getPhoto(user_details?.profile_photo)}
+                src={icons.logo}
                 height={33}
                 width={33}
 
@@ -203,7 +213,7 @@ function Sidebar({ toggleSideNav, sideNavOpen, routes, logo, rtlActive }: Sideba
         </Collapse>
       </div>
 
-      <div className="sidenav-header d-flex align-items-center ">
+      {/* <div className="sidenav-header d-flex align-items-center ">
         {logo && (
           <NavbarBrand {...navbarBrandProps}>
             <img
@@ -213,7 +223,7 @@ function Sidebar({ toggleSideNav, sideNavOpen, routes, logo, rtlActive }: Sideba
             />
           </NavbarBrand>
         )}
-      </div>
+      </div> */}
 
 
     </div>
@@ -221,9 +231,10 @@ function Sidebar({ toggleSideNav, sideNavOpen, routes, logo, rtlActive }: Sideba
   return (
     <Navbar
       className={
-        "sidenav navbar-vertical navbar-expand-xs navbar-light bg-white " +
+        "sidenav navbar-vertical navbar-expand-xs navbar-light " +
         (rtlActive ? "" : "fixed-left")
       }
+      style={{ backgroundColor: '#f5f5f5' }}
       onMouseEnter={onMouseEnterSidenav}
       onMouseLeave={onMouseLeaveSidenav}
     >
