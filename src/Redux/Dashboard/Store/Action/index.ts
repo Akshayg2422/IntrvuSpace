@@ -634,7 +634,7 @@ export const getScheduleBasicInfoSuccess = (response: any) => {
 
 export const getScheduleBasicInfoFailure = (error: any) => {
   return {
-    type: ActionTypes.GET_SCHEDULE_BASIC_INFO_SUCCESS,
+    type: ActionTypes.GET_SCHEDULE_BASIC_INFO_FAILURE,
     payload: error
   }
 }
@@ -682,6 +682,28 @@ export const createCorporateVariantSuccess = (response: any) => {
 export const createCorporateVariantFailure = (error: any) => {
   return {
     type: ActionTypes.CREATE_CORPORATE_VARIANT_FAILURE,
+    payload: error
+  }
+}
+
+// GET_KNOWLEDGE_GROUP_VARIANT_DETAILS
+
+export const getKnowledgeGroupVariantDetails = (params: any) => {
+  return {
+    type: ActionTypes.GET_KNOWLEDGE_GROUP_VARIANT_DETAILS,
+    payload: params,
+  }
+}
+export const getKnowledgeGroupVariantDetailsSuccess = (response: any) => {
+  return {
+    type: ActionTypes.GET_KNOWLEDGE_GROUP_VARIANT_DETAILS_SUCCESS,
+    payload: response
+  }
+}
+
+export const getKnowledgeGroupVariantDetailsFailure = (error: any) => {
+  return {
+    type: ActionTypes.GET_KNOWLEDGE_GROUP_VARIANT_DETAILS_FAILURE,
     payload: error
   }
 }

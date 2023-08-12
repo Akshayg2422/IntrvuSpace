@@ -30,7 +30,8 @@ const initialState: DashboardProp = {
   jdVariantData: undefined,
   jdItem: undefined,
   scheduleInfo: undefined,
-  selectedSection: 0
+  selectedSection: 0,
+  variantDetails: undefined,
 };
 
 const DashboardReducer = (state = initialState, action: any) => {
@@ -365,6 +366,19 @@ const DashboardReducer = (state = initialState, action: any) => {
     case ActionTypes.SET_SELECTED_SECTION:
       state = { ...state, selectedSection: action.payload };
       break;
+
+    // GET_KNOWLEDGE_GROUP_VARIANT_DETAILS
+
+    case ActionTypes.GET_KNOWLEDGE_GROUP_VARIANT_DETAILS:
+      state = { ...state, variantDetails: undefined };
+      break;
+    case ActionTypes.GET_KNOWLEDGE_GROUP_VARIANT_DETAILS_SUCCESS:
+      state = { ...state, variantDetails: action.payload };
+      break;
+    case ActionTypes.GET_KNOWLEDGE_GROUP_VARIANT_DETAILS_FAILURE:
+      state = { ...state, variantDetails: undefined };
+      break;
+
 
     default:
       state = state;

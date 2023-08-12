@@ -1,5 +1,5 @@
 
-import { Button, DropDown, DesignationItem, Input, Modal, NoDataFound, Breadcrumbs, showToast } from '@Components';
+import { Button, DropDown, DesignationItem, Input, Modal, NoDataFound, Breadcrumbs, showToast, TextArea } from '@Components';
 import { useDropDown, useInput, useLoader, useModal, useNavigation } from '@Hooks';
 import { CREATE_KNOWLEDGE_GROUP_VARIANT_FAILURE, breadCrumbs, clearBreadCrumbs, createKnowledgeGroup, createKnowledgeGroupVariant, getKnowledgeGroups, getSectors, setSelectedRole } from '@Redux';
 import { ROUTES } from '@Routes';
@@ -34,9 +34,12 @@ function Designation() {
     const addRoleModal = useModal(false);
 
     const title = useInput("");
+    const position = useInput('')
     const description = useInput("");
     const sector = useDropDown({});
     const experience = useInput('')
+    const jd = useInput('');
+    const portalUrl = useInput('')
 
     const loader = useLoader(false);
 
@@ -121,10 +124,11 @@ function Designation() {
 
         if (selectedDesignation) {
             const params = {
-                name: title?.value,
-                description: description?.value,
-                experience: experience.value,
                 knowledge_group_id: selectedDesignation?.id,
+                position: position?.value,
+                experience: experience.value,
+                reference_link: portalUrl.value,
+                jd: jd.value,
                 // id: selectedRole?.id
             };
             const validation = validate(CREATE_KNOWLEDGE_GROUP_VARIANT_RULES, params)
@@ -209,7 +213,7 @@ function Designation() {
                 <div className='row  pt-3 px-0'>
                     {cardData && cardData.length > 0 ?
                         cardData.map((el: any, index: number) => {
-                            console.log('ellllllllllll------>', el)
+                            console.log('ellllllllllll------>', JSON.stringify(el))
                             return (
                                 <div className='col-sm-4 col-lg-4 px-2'>
                                     <DesignationItem
@@ -230,7 +234,7 @@ function Designation() {
                                             addRoleModal.show();
                                         }}
                                         onView={(designation, role) => {
-                                            console.log('role-------------->',role)
+                                            console.log('role-------------->', role)
                                             dispatch(setSelectedRole(role))
                                             dispatch(breadCrumbs({ name: role?.name, title: el?.name, path: window.location.pathname }))
                                             goTo(ROUTES['designation-module']['variant-info'])
@@ -280,25 +284,25 @@ function Designation() {
                 </Modal >
 
                 < Modal size={'lg'} title={"Add Role"} isOpen={addRoleModal.visible} onClose={addRoleModal.hide} >
-                    <Input
-                        className={'col-6'}
-                        heading={"Name"}
-                        value={title.value}
-                        onChange={title.onChange}
-                    />
-                    <Input
-                        className={'col-6'}
-                        heading={"Job Description"}
-                        value={description.value}
-                        onChange={description.onChange}
-                    />
-                    <Input
-                        className={'col-6'}
-                        heading={'Years of experience'}
-                        type={'number'}
-                        placeHolder={"Experience"}
-                        value={experience.value}
-                        onChange={experience.onChange} />
+                    <div className={'col-6'}>
+                        <Input
+                            heading={"Position"}
+                            placeHolder={'Position'}
+                            value={position.value}
+                            onChange={position.onChange}
+                        />
+                        <Input
+                            heading={'Years of experience'}
+                            type={'number'}
+                            placeHolder={"Experience"}
+                            value={experience.value}
+                            onChange={experience.onChange} />
+
+                        <TextArea
+                            heading='Job Description'
+                            value={jd.value}
+                            onChange={jd.onChange} />
+                    </div>
 
                     <div className="col text-right">
                         <Button size={'md'}
@@ -307,6 +311,7 @@ function Designation() {
                             onClick={createKnowledgeGroupVariantApiHandler}
                         />
                     </div>
+
                 </Modal >
             </div>
 

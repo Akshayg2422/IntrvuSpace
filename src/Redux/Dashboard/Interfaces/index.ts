@@ -24,5 +24,6 @@ export interface DashboardProp {
   jdVariantData: any,
   jdItem: any
   scheduleInfo: any,
-  selectedSection: number
+  selectedSection: number,
+  variantDetails: any,
 }
