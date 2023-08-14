@@ -498,7 +498,6 @@ export const createScheduleFailure = (error: any) => {
 // setting remove side nav
 
 export const settingSideNavRemove = (params: any) => {
-  console.log("params====>", params)
   return {
     type: ActionTypes.REMOVE_SIDE_NAV,
     payload: params
