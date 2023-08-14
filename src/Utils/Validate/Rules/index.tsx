@@ -170,18 +170,18 @@ export const CREATE_KNOWLEDGE_GROUP_VARIANT_RULES = {
 }
 
 export const VALIDATE_ADD_NEW_CANDIDATES_RULES = {
-  firstName: {
+  first_name: {
     presence: { message: "First name cannot be empty" },
     length: { minimum: 3, message: "First name minimum 3 chars" },
   },
-  lastName: {
+  last_name: {
     presence: { message: "Last name cannot be empty" },
     length: { minimum: 1, message: "First name minimum 3 chars" },
   },
   email: {
     email: { message: "Doesn't look like a valid email" },
   },
-  mobileNumber: {
+  mobile_number: {
     presence: { message: "Mobile number cannot be empty" },
     length: { is: 10, message: "Mobile number should be 10 number" },
   },

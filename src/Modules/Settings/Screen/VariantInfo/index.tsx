@@ -1,6 +1,7 @@
 import { Back, Button, Card, CommonTable, DateTimePicker, Divider, Input, Modal, NoDataFound, showToast } from '@Components'
 import { useInput, useLoader, useModal, useNavigation, useWindowDimensions } from '@Hooks'
-import { createSchedule, generateForm, getKnowledgeGroupVariantDetails } from '@Redux'
+import { AnalyzingAnimation, GenerateModal } from '@Modules'
+import { createSchedule, generateForm, getKnowledgeGroupVariantDetails, selectedScheduleId } from '@Redux'
 import { ROUTES } from '@Routes'
 import { VALIDATE_ADD_NEW_CANDIDATES_RULES, capitalizeFirstLetter, getDisplayTimeDateMonthYearTime, getMomentObjFromServer, getValidateError, ifObjectExist, validate } from '@Utils'
 import { useEffect, useState } from 'react'
@@ -17,7 +18,7 @@ function VariantInfo() {
     const loader = useLoader(false)
     const dispatch = useDispatch()
     const [status, setStatus] = useState('12-02-2021')
-    const { height } = useWindowDimensions()
+    const generateVariantModal = useModal(false);
 
 
     useEffect(() => {
@@ -49,29 +50,32 @@ function VariantInfo() {
 
         const params = {
             knowledge_group_variant_id: selectedRole?.id,
-            firstName: firstName.value,
-            lastName: lastName.value,
+            first_name: firstName.value,
+            last_name: lastName.value,
             email: email.value,
-            mobileNumber: mobileNumber.value,
+            mobile_number: mobileNumber.value,
         }
 
         const validation = validate(VALIDATE_ADD_NEW_CANDIDATES_RULES, params)
 
         if (ifObjectExist(validation)) {
-
+            addNewCandidateModal.hide()
+            generateVariantModal.show()
             loader.show()
             dispatch(
                 createSchedule({
                     params,
-                    onSuccess: () => (response: any) => {
+                    onSuccess: (response: any) => () => {
                         resetValues()
                         showToast(response.message, 'success')
                         loader.hide()
+                        generateVariantModal.hide()
                         getKnowledgeGroupVariantDetailsHandler()
-                        addNewCandidateModal.hide()
+
                     },
-                    onError: () => (error: any) => {
+                    onError: (error: any) => () => {
                         showToast(error.error_message, 'error')
+                        generateVariantModal.hide()
                         loader.hide()
                     },
                 })
@@ -102,10 +106,10 @@ function VariantInfo() {
                             </div>
                         </div>,
 
-                    // 'phone':
-                    //     <div className={'ml-5'}>
-                    //         {el?.mobile_number}
-                    //     </div>,
+                    'phone':
+                        <div className={''}>
+                            {el?.interviewee_mobile_number}
+                        </div>,
 
                     "Email":
                         <div className="m-0">
@@ -116,7 +120,7 @@ function VariantInfo() {
                         <div className="">
                             {el?.status}
                         </div>,
-                    "": <div className={'text-right'}>{handleNextStep(data)}</div>
+                    "": <div className={'text-right'}>{handleNextStep(el)}</div>
                 }
             })
 
@@ -125,7 +129,7 @@ function VariantInfo() {
 
     const handleNextStep = (item: any) => {
         const { id, is_complete, is_started } = item;
-        if (true === true) {
+        if (is_complete === true) {
             return (
 
                 <Button
@@ -138,27 +142,6 @@ function VariantInfo() {
 
             )
         }
-        // else if (is_complete === false && is_started === true) {
-        //     return (
-        //         <>
-        //             <Button text={'Resume'} size='sm' onClick={() => {
-        //                 dispatch(selectedScheduleId(id))
-        //                 goTo(ROUTES['designation-module'].interview + '/' + id)
-        //             }} />
-        //         </>
-        //     )
-
-        // } 
-        // else if (is_started === false) {
-        //     return (
-        //         <>
-        //             <Button text={'Start'} size='sm' onClick={() => {
-        //                 dispatch(selectedScheduleId(id))
-        //                 goTo(ROUTES['designation-module'].interview + '/' + id)
-        //             }} />
-        //         </>
-        //     )
-        // }
     }
 
 
@@ -232,6 +215,9 @@ function VariantInfo() {
                 <div className={'text-right'}><Button size={'md'} text={'Submit'} onClick={generateNewCandidateHandler} /></div>
 
             </Modal>
+            <GenerateModal title={'Create Interview Schedule'} isOpen={generateVariantModal.visible} onClose={generateVariantModal.hide}>
+                <AnalyzingAnimation />
+            </GenerateModal>
         </>
     )
 }

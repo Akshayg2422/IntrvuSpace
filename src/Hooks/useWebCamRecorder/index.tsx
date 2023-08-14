@@ -27,14 +27,14 @@ const useWebCamRecorder = () => {
     }, []);
 
     const handleStop = useCallback((onStartRecording) => {
-            const videoBlob = new Blob(chunksRef.current, { type: 'video/webm' });
-            const reader = new FileReader();
-            reader.onload = () => {
-                const base64Video = reader.result;
-                onStartRecording(base64Video);
-            };
-            reader.readAsDataURL(videoBlob);
-        },
+        const videoBlob = new Blob(chunksRef.current, { type: 'video/webm' });
+        const reader = new FileReader();
+        reader.onload = () => {
+            const base64Video = reader.result;
+            onStartRecording(base64Video);
+        };
+        reader.readAsDataURL(videoBlob);
+    },
         [chunksRef]
     );
 
