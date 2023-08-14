@@ -154,13 +154,12 @@ function FromJD() {
                 {
                     <div className={'row mt-3'}>
                         {jdItem && jdItem.length > 0 && jdItem.map(item => {
-                            const { name, description, knowledge_group_variant } = item
-                            const schedules = knowledge_group_variant[0].schedules;
+                            const { name, description, schedules } = item
                             const isTryAgain = schedules && schedules.length > 0 && schedules.every((each: any) => {
                                 return each.is_complete
                             })
 
-                            const knowledgeId = knowledge_group_variant[0].id;
+                            const knowledgeId = jdItem[0].id;
                             return (
                                 <div className='col-xl-4 mt--3' >
                                     <Card className="overflow-auto overflow-hide scroll-y" style={{
@@ -188,40 +187,43 @@ function FromJD() {
                                                     schedules &&
                                                     schedules.length > 0 &&
                                                     schedules.map((each: any, index: number) => {
+                                                        console.log("909090909090", each)
 
                                                         const { is_complete, is_started, is_report_complete, id } = each;
                                                         return (
-                                                            <div className='mt-2'>
-                                                                <h5 className="text-uppercase text-muted mb-0 card-title">{"Interview " + (index + 1)}</h5>
-                                                                {!is_started &&
-                                                                    <div className='mt-2'>
-                                                                        <Button block text={'Start Interview'} onClick={() => {
-                                                                            proceedInterview(id);
-                                                                        }} />
-                                                                    </div>}
-                                                                {(is_started && !is_complete) && <div className='mt-2'>
-                                                                    <Button
-                                                                        block
-                                                                        text={'Resume Interview'}
-                                                                        onClick={() => {
-                                                                            proceedInterview(id);
-                                                                        }}
-                                                                    />
-                                                                </div>}
-                                                                {is_report_complete &&
-                                                                    <div className='mt-2'>
+                                                            <>
+                                                                <div className='mt-2'>
+                                                                    <h5 className="text-uppercase text-muted mb-0 card-title">{"Interview " + (index + 1)}</h5>
+                                                                    {!is_started &&
+                                                                        <div className='mt-2'>
+                                                                            <Button block text={'Start Interview'} onClick={() => {
+                                                                                proceedInterview(id);
+                                                                            }} />
+                                                                        </div>}
+                                                                    {(is_started && !is_complete) && <div className='mt-2'>
                                                                         <Button
                                                                             block
-                                                                            text={'View Report'}
+                                                                            text={'Resume Interview'}
                                                                             onClick={() => {
-                                                                                proceedReport(id);
-                                                                            }} />
-                                                                    </div>
-                                                                }
-                                                                {is_complete && !is_report_complete && <div>
-                                                                    <span className="name mb-0 text-sm">Generating Report ...</span>
-                                                                </div>}
-                                                            </div>
+                                                                                proceedInterview(id);
+                                                                            }}
+                                                                        />
+                                                                    </div>}
+                                                                    {is_report_complete &&
+                                                                        <div className='mt-2'>
+                                                                            <Button
+                                                                                block
+                                                                                text={'View Report'}
+                                                                                onClick={() => {
+                                                                                    proceedReport(id);
+                                                                                }} />
+                                                                        </div>
+                                                                    }
+                                                                    {is_complete && !is_report_complete && <div>
+                                                                        <span className="name mb-0 text-sm">Generating Report ...</span>
+                                                                    </div>}
+                                                                </div>
+                                                            </>
                                                         )
                                                     })
                                                 }
