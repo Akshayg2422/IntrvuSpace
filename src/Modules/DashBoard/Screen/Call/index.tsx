@@ -553,8 +553,16 @@ function Call() {
                 speak(response_text);
                 speaking_type.current = SPEAK_TYPE_API
 
-                if (keywords.length > 0) {
-                    setPromptText(keywords)
+                try
+                {
+                    if (keywords.length > 0) {
+                        setPromptText(keywords)
+                    }
+    
+                }
+                catch(e)
+                {
+
                 }
             }
             if (response_type === 'INTERVIEWER_END_CALL') {
@@ -589,7 +597,7 @@ function Call() {
         if (activeResponseText.current !== 'start') {
             responseDelayTimeOutRef.current = setTimeout(() => {
                 setProceedResponse(true)
-            }, 8000)
+            }, 500)
 
         }
 
