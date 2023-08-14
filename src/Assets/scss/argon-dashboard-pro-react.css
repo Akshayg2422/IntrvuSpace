@@ -1743,6 +1743,18 @@ myTextarea {
   color: #68d75c;
 }
 
+.landing {
+  color: #67f60e;
+}
+
+.landing-primary-color {
+  background-color: #67f60e;
+}
+
+.bg-customGradient {
+  background: linear-gradient(112.2deg, rgb(0, 204, 255) -1.1%, rgb(0, 221, 61) 100.7%);
+}
+
 :root {
   --blue: #5e72e4;
   --indigo: #5603ad;
@@ -20249,6 +20261,7 @@ input[type=number] {
 .separator-bottom {
   top: auto;
   bottom: 0;
+  background: linear-gradient(269deg, #67f60e, #191924 90%) !important;
 }
 .separator-bottom svg {
   bottom: 0;

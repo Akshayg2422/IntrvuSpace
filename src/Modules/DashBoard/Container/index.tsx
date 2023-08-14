@@ -6,6 +6,14 @@ export * from './GenerateModal'
 export * from './FromJD'
 export * from './FromCollection'
 export * from './FromSkills'
+export * from './LandingNavBar'
+export * from './LandingHeader'
+export * from './From'
+export * from './Data'
+export * from './Features'
+export * from './Pricing'
+export * from './ContactUs'
+export * from './Footer'
 
 
 

@@ -328,7 +328,8 @@ const DashboardReducer = (state = initialState, action: any) => {
       state = { ...state, jdItem: undefined };
       break;
     case ActionTypes.GET_JD_ITEM_LIST_SUCCESS:
-      state = { ...state, jdItem: action.payload.details.knowledege_groups };
+      console.log('==========>',action.payload.details);
+      state = { ...state, jdItem: action.payload.details?.jd_items };
       break;
     case ActionTypes.GET_JD_ITEM_LIST_FAILURE:
       state = { ...state, jdItem: undefined };
