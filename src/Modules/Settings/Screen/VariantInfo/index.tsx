@@ -17,19 +17,28 @@ function VariantInfo() {
     const loader = useLoader(false)
     const dispatch = useDispatch()
     const [status, setStatus] = useState('12-02-2021')
+    const { height } = useWindowDimensions()
 
 
     useEffect(() => {
         getKnowledgeGroupVariantDetailsHandler();
     }, [])
 
+    const Refresh = () => {
+        const refresh = () => window.location.reload()
+
+        return (
+            <button onClick={refresh}>Refresh</button>
+        )
+    }
 
     const getKnowledgeGroupVariantDetailsHandler = () => {
         const params = { knowledge_group_variant_id: selectedRole?.id }
         dispatch(
             getKnowledgeGroupVariantDetails({
                 params,
-                onSuccess: (response: any) => () => { },
+                onSuccess: (response: any) => (response: any) => {
+                },
                 onError: (error: any) => () => { },
             })
         );
@@ -49,7 +58,7 @@ function VariantInfo() {
         const validation = validate(VALIDATE_ADD_NEW_CANDIDATES_RULES, params)
 
         if (ifObjectExist(validation)) {
-            addNewCandidateModal.hide()
+
             loader.show()
             dispatch(
                 createSchedule({
@@ -59,6 +68,7 @@ function VariantInfo() {
                         showToast(response.message, 'success')
                         loader.hide()
                         getKnowledgeGroupVariantDetailsHandler()
+                        addNewCandidateModal.hide()
                     },
                     onError: () => (error: any) => {
                         showToast(error.error_message, 'error')
@@ -80,40 +90,38 @@ function VariantInfo() {
 
     const { position, experience, details } = variantDetails?.job_description || {}
 
-    console.log(variantDetails?.job_description)
-
     const normalizedTableData = (data: any) => {
-        console.log('data', data)
+        if (data && data?.schedules?.length > 0)
+            return data?.schedules?.map((el: any) => {
+                return {
 
-        return {
+                    "name":
+                        <div className="row">
+                            <div className="col-auto ">
+                                <div className="mr--3">{el?.interviewee_name}</div>
+                            </div>
+                        </div>,
 
-            "name":
-                <div className="row">
-                    <div className="col-auto ">
-                        <div className="mr--3">{data?.name}</div>
-                    </div>
-                </div>,
+                    // 'phone':
+                    //     <div className={'ml-5'}>
+                    //         {el?.mobile_number}
+                    //     </div>,
 
-            'phone':
-                <div className={'ml-5'}>
-                    {data?.mobile_number}
-                </div>,
+                    "Email":
+                        <div className="m-0">
+                            {el?.interviewee_email}
+                        </div>,
 
-            "Email":
-                <div className="ml-5 m-0">
-                    {data?.email}
-                </div>,
-
-            "status":
-                <div className="">
-                    {data?.status}
-                </div>,
-            "": handleNextStep(data)
-        };
+                    "status":
+                        <div className="">
+                            {el?.status}
+                        </div>,
+                    "": <div className={'text-right'}>{handleNextStep(data)}</div>
+                }
+            })
 
     };
 
-    console.log('variantDetails?.interviewee_details-------->', variantDetails?.interviewee_details)
 
     const handleNextStep = (item: any) => {
         const { id, is_complete, is_started } = item;
@@ -159,26 +167,26 @@ function VariantInfo() {
     return (
 
         <>
-            <div className={'vh-100'}>
+            <div>
                 <div className={'m-3'}>
                     <Card className={'col-sm-12 col-lg-12 col-md-12'} >
                         <div className={'row justify-content-between mb-3 mx--4'}>
-                            <div className={'h3 row mb-2'}><Back /><span className={'ml-1'}>INFO</span></div>
-                            <div className={'mb-2'}><Button text={'Testing'} onClick={() => { goTo(ROUTES['designation-module']['questions']) }} /></div>
+                            <div className={'h2 row mb-2 ml-1'}><Back /><span className={'ml-1'}>INFO</span></div>
+                            <div className={'mb-2 mr-2'}><Button text={'View Questions'} onClick={() => { goTo(ROUTES['designation-module']['questions']) }} /></div>
                         </div>
                         <div className={'d-flex flex-column mt--3'}>
                             <div className={'row'}>
-                                <h4>Position:</h4> {position}
+                                <h3>Position:</h3> <span className={'ml-2'}>{position}</span>
                             </div>
                             <div className={'row'}>
-                                <h4>Experience:</h4> {experience}
+                                <h3>Experience:</h3><span className={'ml-2'}>{experience}</span>
                             </div>
                             <div className={'row'}>
-                                <h4>Job Description:</h4> {details}
+                                <h3>Job Description:</h3><span className={'ml-2'}>{details}</span>
                             </div>
                         </div>
                     </Card>
-                    <Card className={'mt--3'} >
+                    <Card className={'mt--3 vh-100 mb-3'} >
                         <>
                             <div className="d-flex justify-content-between ">
                                 <div className={'h3'}>
@@ -187,13 +195,13 @@ function VariantInfo() {
                                 <div><Button text={'Add New'} onClick={addNewCandidateModal.show} /></div>
                             </div>
 
-                            {variantDetails && Object.keys(variantDetails?.interviewee_details).length > 0
+                            {variantDetails && variantDetails?.schedules.length > 0
                                 ? (
                                     <div className={'row px-0 mx--4'} style={{ overflowY: 'auto' }}>
                                         <div className={'col-sm-12 px-0'} >
                                             <CommonTable
-                                                tableDataSet={variantDetails?.interviewee_details}
-                                                displayDataSet={normalizedTableData(variantDetails?.interviewee_details)}
+                                                tableDataSet={variantDetails}
+                                                displayDataSet={normalizedTableData(variantDetails)}
                                             />
 
                                         </div>
