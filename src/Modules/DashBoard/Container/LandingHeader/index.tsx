@@ -49,12 +49,12 @@ function LandingHeader() {
                                 </div>
                             </Col>
                             <Col lg="6" className='pl-5' >
-                                <Image
+                                {/* <Image
                                     // src={'https://img.freepik.com/premium-vector/flat-isometric-concept-ai-future-robot-human-cooperation_109064-842.jpg?w=900'}
                                     src={require('file:///C:/Users/tamil_hfh9g6g/Downloads/Chat%20bot-amico.png')}
                                     width={"80%"}
                                     height={"70%"}
-                                />
+                                /> */}
                                 {/* <div className='blend-img'>
 
                                     </div> */}
