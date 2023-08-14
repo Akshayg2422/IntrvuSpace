@@ -87,10 +87,10 @@ function Register() {
         <>
             <div className='container-fluid'>
                 <div className='row'>
-                    <div className='col'>
+                    <div className='col-xl-6 col-md-6'>
                         <LoginSideContent />
                     </div>
-                    <div className="col d-flex justify-content-center align-items-center">
+                    <div className="col-xl-6 col-md-6 d-flex justify-content-center align-items-center">
                         <div className='position-absolute pointer m-3'
                             style={{
                                 top: 0,
