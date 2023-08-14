@@ -133,7 +133,7 @@ function TopNavbar() {
 
                         {/* <hr className="d-lg-none" /> */}
 
-                        <Nav className="align-items-lg-center ml-lg-auto col justify-content-end" navbar>
+                        <Nav className="align-items-lg-center ml-lg-auto mr--4  justify-content-end" navbar>
                             <NavItem>
                                 <NavLink to="/client" tag={Link}>
                                     <span className={`nav-link-inner--text  ${'/client' !== pathName ? "text-black" : 'text-primary'}`}>Home</span>
