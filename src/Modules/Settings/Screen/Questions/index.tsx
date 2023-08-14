@@ -96,11 +96,11 @@ function Questions() {
 
     return (
         <>
-            {/* <span className='pointer ml-3 text-black h3 '
+            <span className='pointer ml-3 text-black h3 '
                 onClick={() => { goBack() }}
             >
                 <i className="bi bi-arrow-left text-black fa-lg font-weight-bolder pr-1"></i>  {breadcrumbString}
-            </span> */}
+            </span>
             <Breadcrumbs />
 
             <div className='m-3'>

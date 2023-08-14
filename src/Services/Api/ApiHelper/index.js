@@ -14,7 +14,7 @@ export const SERVER =
       : BUILD_TYPE === BUILD_TYPE_LOCAL
         ? 'http://localhost:8001'
         : BUILD_TYPE === BUILD_TYPE_STAGING
-          ? 'http://192.168.43.126:8003'
+          ? 'http://192.168.227.126:8003'
           : 'http://localhost:8000'
           // http://192.168.255.204
 

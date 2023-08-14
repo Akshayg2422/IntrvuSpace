@@ -110,4 +110,8 @@ export const URL_CREATE_NEW_JD_SCHEDULE = ASSISTANT + 'createNewJdSchedule'
 // 
 export const URL_CREATE_CORPORATE_VARIANT = ASSISTANT + 'createNewCorporateSchedule'
 
+// getKnowledgeGroupVariantDetails
+
+export const URL_GET_KNOWLEDGE_GROUP_VARIANT_DETAILS = ASSISTANT + 'getKnowledgeGroupVariantDetails'
+
 
