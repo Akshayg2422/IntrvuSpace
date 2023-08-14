@@ -1,3 +1,5 @@
+import moment from "moment"
+
 export type UseWhisperConfig = {
   apiKey?: string
   autoStart?: boolean
@@ -29,6 +31,9 @@ export type UseWhisperReturn = {
   transcribing: boolean
   transcript: UseWhisperTranscript
   voiceUp: boolean
+  lastSpokeActiveTime:moment.Moment
+  lastTranscriptionStartTime:moment.Moment
+  lastTranscriptionEndTime:moment.Moment
   pauseRecording: () => Promise<void>
   startRecording: () => Promise<void>
   stopRecording: () => Promise<void>
