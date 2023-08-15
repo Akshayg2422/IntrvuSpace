@@ -158,4 +158,8 @@ export const icons = {
   myTimeSheet: require('./MyTimeSheet/icons.png'),
   previousBackArrow: require('./PreviousBackArrow/icons.png'),
   nextArrow: require('./NextArrow/icons.png'),
+  microPhone: require('./MicroPhone/icon.png'),
+  microPhoneMute: require('./MicPhoneMute/icon.png'),
+  videoCam: require('./VideoCam/icon.png'),
+  videoCamMute: require('./VideoCamMute/icon.png'),
 };

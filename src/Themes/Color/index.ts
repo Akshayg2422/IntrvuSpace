@@ -1,4 +1,4 @@
-import {palette} from '../Palette';
+import { palette } from '../Palette';
 
 /**
  * Roles for colors.  Prefer using these over the palette.  It makes it easier
@@ -27,7 +27,7 @@ export const color = {
   /**
    * The main tinting color.
    */
-  primary: palette.orange,
+  primary: '#68d75c',
   /**
    * The main tinting color, but darker.
    */

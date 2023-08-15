@@ -1,17 +1,15 @@
-import { Modal, showToast } from '@Components';
+import { Modal, showToast, Button, Image, AnimatedImage, Spinner } from '@Components';
 import { useModal, useNavigation, useScreenRecorder, useTextToSpeech } from '@Hooks';
-import { CallScreen } from '@Modules';
+import { Guidelines, CallHeader } from '@Modules';
 import { getScheduleBasicInfo, getStartChat, screenRecordingPermission } from '@Redux';
 import { ROUTES } from '@Routes';
 import hark from 'hark';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { SPEAK_PROCEED_LIST } from '@Utils'
-import { log } from 'console';
+import { getShortName, capitalizeFirstLetter } from '@Utils'
 import moment from 'moment';
-
-
+import { useLoader } from '@Hooks'
 import type { RawAxiosRequestHeaders } from 'axios'
 import type { Harker } from 'hark'
 import type { Encoder } from 'lamejs'
@@ -24,11 +22,15 @@ import {
     silenceRemoveCommand,
     whisperApiEndpoint,
 } from './configs'
+import { icons } from '@Assets'
+import { Icons } from 'react-toastify';
+
 
 
 function Call() {
 
-    const compare_moment_format = 'YYYY-MM-DDHH:mm:ss'
+    const compare_moment_format = 'YYYY-MM-DDHH:mm:ss';
+
     const { isTtfSpeaking, speak } = useTextToSpeech();
 
     function generateRandomID() {
@@ -39,7 +41,9 @@ function Call() {
     }
 
 
-    const activeResponseText = useRef<any>('start');
+    // const activeResponseText = useRef<any>('start');
+    const [activeResponseText, setActiveResponseText] = useState('start');
+
     // const [activeResponseTextId, setActiveResponseTextId] = useState<any>(generateRandomID());
     const lastTranscribedText = useRef<any>('');
 
@@ -56,7 +60,7 @@ function Call() {
     const [showVideo, setShowVideo] = useState(false)
     const [isRecording, setIsRecording] = useState(false)
     const [notEvenSpeck, setNotEvenSpeck] = useState(false)
-    const [micState, setMicState] = useState(false)
+
     const [buttonConditional, setButtonConditional] = useState<any>('start')
 
     const [promptText, setPromptText] = useState<any>()
@@ -107,6 +111,47 @@ function Call() {
     const transcriptionReferenceId = useRef<any>();
 
     const activeResponseTextId = useRef<any>(generateRandomID());
+
+
+
+    /**
+     * state jay
+     */
+
+    const loader = useLoader(false);
+    const proceedCallLoader = useLoader(false);
+    const [showCam, setShowCam] = useState(false);
+    const [mute, setMute] = useState(false);
+
+
+
+
+
+
+    useEffect(() => {
+        getBasicInfo()
+    }, [])
+
+
+    const getBasicInfo = () => {
+        const params = { schedule_id: schedule_id }
+
+        loader.show();
+        dispatch(
+            getScheduleBasicInfo(
+                {
+                    params,
+                    onSuccess: () => () => {
+                        loader.hide();
+                    },
+                    onError: () => () => {
+                        loader.hide();
+                    }
+                }
+            )
+        )
+    }
+
 
 
 
@@ -338,7 +383,7 @@ function Call() {
                 const rrr = await onWhispered(file, currentItemRefId)
                 if (rrr) {
                     const { text, referenceId } = rrr
-                    activeResponseText.current = text
+                    setActiveResponseText(text)
 
                     console.log(transcriptionReferenceId.current + '======' + referenceId);
 
@@ -456,28 +501,10 @@ function Call() {
      */
 
 
-    const getBasicInfo = () => {
-        const params = { schedule_id: schedule_id }
-        dispatch(
-            getScheduleBasicInfo(
-                {
-                    params,
-                    onSuccess: () => () => {
-                    },
-                    onError: () => () => {
-                    }
-                }
-            )
-        )
-    }
 
 
 
 
-    useEffect(() => {
-        getBasicInfo()
-        // validateProceedStartListening();
-    }, [])
 
 
 
@@ -508,36 +535,29 @@ function Call() {
         if (!isRecording) {
             startRecording()
             setIsRecording(true)
-            setMicState(false)
+            setMute(false)
         }
 
     }
     const validateProceedStartListening = async () => {
         if (!isRecording) {
             startRecording()
-            setIsRecording(true)
-            setMicState(false)
+            setIsRecording(true);
+            setMute(false);
         }
     }
 
-    const handleMicControl = () => { }
-
 
     const resetLastMessage = () => {
-        console.log("referenceTextId01a", activeResponseTextId)
-        activeResponseText.current = ''
+        setActiveResponseText('');
         accumulatedBlobs.current = []
         const newid = generateRandomID()
-        // setActiveResponseTextId(newid)
         activeResponseTextId.current = newid
-        console.log("referenceTextId01b")
-
     }
 
     const proceedHandleResponse = ({ params, response }) => {
-        console.log("ressssssssssss01", activeResponseText.current, params.message)
+
         const isUserDidntInterrupt = lastSpokeActiveTime.current === params.lastSpokeActiveTime
-        console.log("isUserDidntInterrupt", lastSpokeActiveTime.current, params.lastSpokeActiveTime, isUserDidntInterrupt)
 
 
         if (isUserDidntInterrupt || params.message === 'start') {
@@ -592,7 +612,7 @@ function Call() {
 
         }
 
-        if (activeResponseText.current !== 'start') {
+        if (activeResponseText === 'start') {
             responseDelayTimeOutRef.current = setTimeout(() => {
                 setProceedResponse(true)
             }, 500)
@@ -600,12 +620,14 @@ function Call() {
         }
 
         const params = {
-            message: activeResponseText.current,
+            message: activeResponseText,
             message_id: activeResponseTextId.current,
             schedule_id: schedule_id,
             ...customParams,
             ...userSpeakingDetails
         };
+
+        proceedCallLoader.show();
 
 
         if (params.message && params.message !== '') {
@@ -613,8 +635,9 @@ function Call() {
                 getStartChat({
                     params,
                     onSuccess: (response: any) => () => {
-                        // console.log("ressssssssssss012", activeResponseTextId.current, activeResponseText.current)
-                        if (activeResponseText.current == 'start') {
+                        proceedCallLoader.hide();
+
+                        if (activeResponseText === 'start') {
                             setProceedResponse(true)
                         }
                         if (transcriptionReferenceId.current === transcribedReferenceId) {
@@ -626,6 +649,7 @@ function Call() {
 
                     },
                     onError: (error: any) => () => {
+                        proceedCallLoader.hide();
                         showToast(error?.error_message, 'error')
                     },
                 })
@@ -648,56 +672,87 @@ function Call() {
     }, [voiceUp])
 
 
-    const handleVideo = () => {
-        setShowVideo(!showVideo)
+
+    function webCamHandler() {
+        setShowCam(!showCam)
     }
 
 
-    console.log(activeResponseTextId.current + '======activeResponseTextId');
+    function micMuteHandler() {
+        setMute(!mute)
+    }
+
+
+    function startInterviewHandler() {
+        transcriptionReferenceId.current = generateRandomID()
+        proceedgetChatDetailsApiHandler({ message: "start" }, transcriptionReferenceId.current)
+        validateProceedStartListening()
+    }
+
+    function endInterviewHandler() {
+        isScreenRecording && stopScreenRecording();
+        goBack();
+    }
+
 
 
     return (
+        <div className='h-100vh' style={{
+            backgroundColor: "#1B1B1B"
+        }}>
 
-        <Modal
-            isOpen={callModel.visible}
-            size={'xll'}
-            onClose={() => {
-                callModel.hide()
-                isScreenRecording && stopScreenRecording()
-                goBack()
-            }} >
-            <CallScreen
-                basicInfo={scheduleInfo}
-                status='Connected'
-                loading={isTtfSpeaking}
-                variant={''}
-                onMic={micState}
-                conditionalButton={buttonConditional}
-                micDisable={isTtfSpeaking}
-                isMute={isRecording}
-                startButtonOnclick={() => {
-                    setButtonConditional('processing')
-                    transcriptionReferenceId.current = generateRandomID()
-                    proceedgetChatDetailsApiHandler({ message: "start" }, transcriptionReferenceId.current)
-                    validateProceedStartListening()
-                }}
-                ReportButtonOnclick={() => {
-                    goTo(ROUTES['designation-module'].report + "/" + schedule_id, true)
-                }}
-                video={showVideo}
-                onVideoControl={() => handleVideo()}
+            {scheduleInfo &&
+                <>
+                    {activeResponseText !== 'start' &&
+                        <>
+                            <CallHeader webcam={showCam} mic={mute} onWebCamChange={webCamHandler} onMicChange={micMuteHandler} onEndClick={endInterviewHandler} />
+                            <div className='h-100 d-flex justify-content-center align-items-center'>
+                                <div>
+                                    <div className='row  justify-content-center align-items-center'>
+                                        <div className='text-center col-5'>
+                                            <AnimatedImage show={false} name={getShortName(scheduleInfo?.interviewer_name)} shouldBlink={false} />
+                                        </div>
+                                        <div className='mx-4'></div>
+                                        <div className='text-center col-5'>
+                                            <AnimatedImage show={false} name={getShortName(scheduleInfo?.interviewee_name)} shouldBlink={false} showWebCam={showCam} />
+                                        </div>
+                                        <div className='text-center col-5'>
+                                            <h3 className='display-3 mb-4 text-white'>{capitalizeFirstLetter(scheduleInfo?.interviewer_name)}</h3>
+                                        </div>
+                                        <div className='mx-4'></div>
+                                        <div className='text-center col-5'>
+                                            <h3 className='display-3 mb-4 text-white'>{capitalizeFirstLetter(scheduleInfo?.interviewee_name)}</h3>
+                                        </div>
+                                    </div>
+                                </div>
 
-                onMicControl={() => handleMicControl()
-                }
-                onCallEnd={() => {
-                    isScreenRecording && stopScreenRecording()
-                    callModel.hide()
-                    goBack();
-                }}
-                onVolumeControl={() => { }
-                } />
-        </Modal>
+                            </div>
+                        </>
+                    }
+                    {activeResponseText === 'start'
+                        &&
+                        <Guidelines
+                            loading={proceedCallLoader.loader}
+                            heading={scheduleInfo?.interviewee_expected_designation}
+                            onClick={startInterviewHandler}
+                        />
+                    }
 
+                </>
+            }
+
+            {loader.loader && <div className='d-flex align-items-center justify-content-center h-100'><Spinner color={'white'} /></div>}
+            {
+                !loader.loader && !scheduleInfo &&
+                <div className='d-flex align-items-center justify-content-center h-100'>
+                    <div className='text-center'>
+                        <h4 className="display-4 mb-0 text-white">Technical breakdown please try again</h4>
+                        <div className='my-3'></div>
+                        <Button text={'Try Again'} onClick={getBasicInfo} />
+                    </div>
+                </div>
+            }
+        </div >
     )
 }
 

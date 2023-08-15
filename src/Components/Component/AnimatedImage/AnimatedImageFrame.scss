@@ -1,6 +1,6 @@
 .animated-image {
   border-radius: 50%;
-  padding: 130px;
+  padding: 135px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -45,7 +45,7 @@
     margin: auto;
     background-color: #42f542;
   }
-  
+
   .animated-image::after,
   .animated-image:before {
     content: '';
@@ -78,7 +78,7 @@
 .animated-button {
   border-radius: 7;
   background-color: #e29090;
-  padding: 15 ;
+  padding: 15;
   z-index: 9;
 }
 

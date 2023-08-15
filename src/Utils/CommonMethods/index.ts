@@ -153,7 +153,7 @@ export const combineBase64Strings = (stringsArray) => {
 
   const validDecodedArray = decodedArray.filter((item) => item !== null);
 
-  const combinedArray:any = new Uint8Array(
+  const combinedArray: any = new Uint8Array(
     validDecodedArray.reduce((acc, curr) => acc.concat(Array.from(curr)), [])
   );
 
@@ -172,3 +172,17 @@ export async function checkMicrophoneState() {
     return false; // Microphone is not accessible
   }
 }
+
+
+export function getShortName(fullName: string) {
+  const names = fullName.split(' ');
+
+  if (names.length === 1) {
+    return names[0].substring(0, 2).toUpperCase();
+  }
+
+  const firstNameInitial = names[0][0].toUpperCase();
+  const lastNameInitial = names[names.length - 1][0].toUpperCase();
+  return `${firstNameInitial}${lastNameInitial}`;
+}
+
