@@ -19,13 +19,12 @@ type CallScreenProps = {
     loading?: boolean
     onMic: boolean
     variant: string
-    errorType1:string
     conditionalButton: 'start' | 'processing' | 'end'
     startButtonOnclick?: any
     ReportButtonOnclick?: any
 }
 
-const CallScreen = ({ basicInfo, onMicControl, onMic = false, loading = false, errorType1='', conditionalButton, ReportButtonOnclick, micDisable = false, onVolumeControl, onCallEnd, isMute = false, speaker, status, video = false, onVideoControl, variant, startButtonOnclick }: CallScreenProps) => {
+const CallScreen = ({ basicInfo, onMicControl, onMic = false, loading = false, conditionalButton, ReportButtonOnclick, micDisable = false, onVolumeControl, onCallEnd, isMute = false, speaker, status, video = false, onVideoControl, variant, startButtonOnclick }: CallScreenProps) => {
 
     const [time, setTime] = useState({ hours: 0, minutes: 0, seconds: 0 });
     const isSmallScreen = window.innerWidth <= 768;
@@ -91,9 +90,9 @@ const CallScreen = ({ basicInfo, onMicControl, onMic = false, loading = false, e
                     {status}
                 </small>}
             </div> */}
-            <small className="h4 text-red font-weight-bold">
-                {errorType1}
-            </small>
+            {conditionalButton === 'processing' && <small className="h4 text-red font-weight-bold">
+                {!isMute ? "On Mic To Speak" : "Finished Speaking Off The Mic"}
+            </small>}
             {conditionalButton === 'processing' && <div className="my-4">
                 <Button
                     className='border-0 shadow-none'
@@ -186,6 +185,7 @@ const CallScreen = ({ basicInfo, onMicControl, onMic = false, loading = false, e
                         </div>
                     </Button>}
                 </>
+
             }
             {conditionalButton === 'end' &&
                 <div className="my-4">

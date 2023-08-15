@@ -63,6 +63,7 @@ function Call() {
     const [lastApiText, setLastApiText] = useState('')
 
     const accumulatedBlobs = useRef<any>([]);
+    const [errorType1, setErrorType1] = useState('')
 
     const { startScreenRecording, stopScreenRecording, isScreenRecording } = useScreenRecorder();
 
@@ -108,7 +109,17 @@ function Call() {
 
     const activeResponseTextId = useRef<any>(generateRandomID());
 
+    const ttsRef = useRef<any>(false);
 
+
+    /**
+     * Handle Speech To text Starts
+     */
+
+
+    useEffect(()=>{
+        ttsRef.current = isTtfSpeaking
+    },[isTtfSpeaking])
 
     useEffect(() => {
         return () => {
@@ -161,7 +172,14 @@ function Call() {
                 listener.current.on('stopped_speaking', onStopSpeaking)
                 listener.current.on('volume_change', function (value) {
                     const currentDate = moment();
-                    if (-value < 43) {
+                    if(ttsRef.current)
+                    {
+                        voiceUpCount.current = 0
+                        speakingShouldProcess.current = false
+                        if(voiceUp === true)
+                        setVoiceUp(false)
+                    }
+                    else if (-value < 43) {
 
                         /**
                          * extend waiting time if decibile is of talking size
@@ -178,6 +196,8 @@ function Call() {
 
                         if (voiceUpCount.current > 2) {
                             setVoiceUp(true)
+                            setErrorType1("")
+
                             if (voiceUpCount.current == 3) {
                                 const lastSpokeActiveTimeTemp = moment().format(compare_moment_format)
                                 console.log("isUserDidntInterrupt last set value", lastSpokeActiveTimeTemp)
@@ -186,10 +206,24 @@ function Call() {
                             speakingShouldProcess.current = true
                         }
                     }
-                    else if (currentDate > voiceUpTime.current) {
+                    else{
+
+
+                    if (voiceUpCount.current == 2)
+                    {
+
+                        // const limitDateTime = currentDate.add(4, 'seconds');
+                        // voiceUpTime.current = limitDateTime
+                    }
+                    if (currentDate > voiceUpTime.current) {
+                        console.log("voiceUpCount.currentaaav", voiceUpCount.current)
+                        setErrorType1("Please speak little louder, Your voice is low!")
+
+                        voiceUpCount.current = 0
                         setVoiceUp(false)
                         speakingShouldProcess.current = false
                     }
+                }
 
                 });
             }
@@ -354,8 +388,8 @@ function Call() {
     }
 
     const onDataAvailable = async (blob: Blob) => {
-        console.log("receivedSpeakData", isTtfSpeaking, speakingShouldProcess.current)
-        if (!isTtfSpeaking && speakingShouldProcess.current === true) {
+        console.log("calledTTF Data Rec", ttsRef.current, speakingShouldProcess.current)
+        if (!ttsRef.current && speakingShouldProcess.current === true) {
             accumulatedBlobs.current.push(blob);
             processBlobAudio()
         }
@@ -524,7 +558,7 @@ function Call() {
 
 
     const resetLastMessage = () => {
-        console.log("referenceTextId01a", activeResponseTextId)
+        // console.log("referenceTextId01a", activeResponseTextId)
         activeResponseText.current = ''
         accumulatedBlobs.current = []
         const newid = generateRandomID()
@@ -535,7 +569,7 @@ function Call() {
     }
 
     const proceedHandleResponse = ({ params, response }) => {
-        console.log("ressssssssssss01", activeResponseText.current, params.message)
+        // console.log("ressssssssssss01", activeResponseText.current, params.message)
         const isUserDidntInterrupt = lastSpokeActiveTime.current === params.lastSpokeActiveTime
         console.log("isUserDidntInterrupt", lastSpokeActiveTime.current, params.lastSpokeActiveTime, isUserDidntInterrupt)
 
@@ -546,7 +580,7 @@ function Call() {
             const { response_text, message_type, response_type } = response?.details?.next_step[0]
             const { keywords } = response?.details
 
-            if (message_type === "SPEAK" && window.location.pathname === `/interview/${schedule_id}`) {
+            if (message_type === "SPEAK" && response_text && response_text !== '' && window.location.pathname === `/interview/${schedule_id}`) {
                 // proceedStopListening()
                 resetLastMessage()
 
@@ -574,7 +608,7 @@ function Call() {
     
 
     useEffect(() => {
-        console.log("procceddhandd")
+        // console.log("procceddhandd")
         if (responseDump && proceedResponse) {
             proceedHandleResponse(responseDump)
         }
@@ -657,7 +691,7 @@ function Call() {
     }
 
 
-    console.log(activeResponseTextId.current+'======activeResponseTextId');
+    // console.log(activeResponseTextId.current+'======activeResponseTextId');
     
 
     return (
@@ -674,6 +708,7 @@ function Call() {
                     loading={isTtfSpeaking}
                     variant={''}
                     onMic={micState}
+                    errorType1 = {errorType1}
                     conditionalButton={buttonConditional}
                     micDisable={isTtfSpeaking}
                     isMute={isRecording}
