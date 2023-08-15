@@ -5,7 +5,7 @@ export const BUILD_TYPE_LIVE_DEMO = 2;
 export const BUILD_TYPE_STAGING = 3;
 export const BUILD_TYPE_LOCAL = 4;
 
-export const BUILD_TYPE = BUILD_TYPE_STAGING;
+export const BUILD_TYPE = BUILD_TYPE_LIVE;
 export const SERVER =
   BUILD_TYPE === BUILD_TYPE_LIVE
     ? 'https://mockinprimary.quantaedat.com'
@@ -16,7 +16,7 @@ export const SERVER =
         : BUILD_TYPE === BUILD_TYPE_STAGING
           ? 'http://192.168.227.126:8003'
           : 'http://localhost:8000'
-          // http://192.168.255.204
+// http://192.168.255.204
 
 const axiosApi = axios.create({
   baseURL: SERVER,

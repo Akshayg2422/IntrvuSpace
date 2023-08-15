@@ -553,15 +553,13 @@ function Call() {
                 speak(response_text);
                 speaking_type.current = SPEAK_TYPE_API
 
-                try
-                {
+                try {
                     if (keywords.length > 0) {
                         setPromptText(keywords)
                     }
-    
+
                 }
-                catch(e)
-                {
+                catch (e) {
 
                 }
             }
@@ -571,7 +569,7 @@ function Call() {
             }
         }
     }
-    
+
 
     useEffect(() => {
         console.log("procceddhandd")
@@ -609,31 +607,29 @@ function Call() {
             ...userSpeakingDetails
         };
 
-        console.log("referenceTextId012",  JSON.stringify(params))
 
-        if(params.message && params.message !== '')
-        {
-        dispatch(
-            getStartChat({
-                params,
-                onSuccess: (response: any) => () => {
-                    // console.log("ressssssssssss012", activeResponseTextId.current, activeResponseText.current)
-                    if (activeResponseText.current == 'start') {
-                        setProceedResponse(true)
-                    }
-                    if (transcriptionReferenceId.current === transcribedReferenceId) {
-                        setResponseDump({ params: params, response: response })
-                    }
-                    else {
-                        setResponseDump(undefined)
-                    }
+        if (params.message && params.message !== '') {
+            dispatch(
+                getStartChat({
+                    params,
+                    onSuccess: (response: any) => () => {
+                        // console.log("ressssssssssss012", activeResponseTextId.current, activeResponseText.current)
+                        if (activeResponseText.current == 'start') {
+                            setProceedResponse(true)
+                        }
+                        if (transcriptionReferenceId.current === transcribedReferenceId) {
+                            setResponseDump({ params: params, response: response })
+                        }
+                        else {
+                            setResponseDump(undefined)
+                        }
 
-                },
-                onError: (error: any) => () => {
-                    showToast(error?.error_message, 'error')
-                },
-            })
-        );
+                    },
+                    onError: (error: any) => () => {
+                        showToast(error?.error_message, 'error')
+                    },
+                })
+            );
         }
 
     };
@@ -657,49 +653,51 @@ function Call() {
     }
 
 
-    console.log(activeResponseTextId.current+'======activeResponseTextId');
-    
+    console.log(activeResponseTextId.current + '======activeResponseTextId');
+
 
     return (
-        <>
-            <Modal
-                isOpen={callModel.visible} size='xl' onClose={() => {
-                    callModel.hide()
-                    isScreenRecording && stopScreenRecording()
-                    goBack()
-                }} >
-                <CallScreen
-                    basicInfo={scheduleInfo}
-                    status='Connected'
-                    loading={isTtfSpeaking}
-                    variant={''}
-                    onMic={micState}
-                    conditionalButton={buttonConditional}
-                    micDisable={isTtfSpeaking}
-                    isMute={isRecording}
-                    startButtonOnclick={() => {
-                        setButtonConditional('processing')
-                        transcriptionReferenceId.current = generateRandomID()
-                        proceedgetChatDetailsApiHandler({ message: "start" }, transcriptionReferenceId.current)
-                        validateProceedStartListening()
-                    }}
-                    ReportButtonOnclick={() => {
-                        goTo(ROUTES['designation-module'].report + "/" + schedule_id, true)
-                    }}
-                    video={showVideo}
-                    onVideoControl={() => handleVideo()}
 
-                    onMicControl={() => handleMicControl()
-                    }
-                    onCallEnd={() => {
-                        isScreenRecording && stopScreenRecording()
-                        callModel.hide()
-                        goBack();
-                    }}
-                    onVolumeControl={() => { }
-                    } />
-            </Modal>
-        </>
+        <Modal
+            isOpen={callModel.visible}
+            size={'xll'}
+            onClose={() => {
+                callModel.hide()
+                isScreenRecording && stopScreenRecording()
+                goBack()
+            }} >
+            <CallScreen
+                basicInfo={scheduleInfo}
+                status='Connected'
+                loading={isTtfSpeaking}
+                variant={''}
+                onMic={micState}
+                conditionalButton={buttonConditional}
+                micDisable={isTtfSpeaking}
+                isMute={isRecording}
+                startButtonOnclick={() => {
+                    setButtonConditional('processing')
+                    transcriptionReferenceId.current = generateRandomID()
+                    proceedgetChatDetailsApiHandler({ message: "start" }, transcriptionReferenceId.current)
+                    validateProceedStartListening()
+                }}
+                ReportButtonOnclick={() => {
+                    goTo(ROUTES['designation-module'].report + "/" + schedule_id, true)
+                }}
+                video={showVideo}
+                onVideoControl={() => handleVideo()}
+
+                onMicControl={() => handleMicControl()
+                }
+                onCallEnd={() => {
+                    isScreenRecording && stopScreenRecording()
+                    callModel.hide()
+                    goBack();
+                }}
+                onVolumeControl={() => { }
+                } />
+        </Modal>
+
     )
 }
 
