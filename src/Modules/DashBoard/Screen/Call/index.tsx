@@ -41,8 +41,8 @@ function Call() {
     }
 
 
-    // const activeResponseText = useRef<any>('start');
-    const [activeResponseText, setActiveResponseText] = useState('start');
+    const activeResponseText = useRef<any>('start');
+    // const [activeResponseText, setActiveResponseText] = useState('start');
 
     // const [activeResponseTextId, setActiveResponseTextId] = useState<any>(generateRandomID());
     const lastTranscribedText = useRef<any>('');
@@ -54,6 +54,7 @@ function Call() {
     const { scheduleInfo, recordingPermission } = useSelector((state: any) => state.DashboardReducer)
 
     const [proceedResponse, setProceedResponse] = useState(false)
+    const [processCallInprogress, setProcessCallInprogress] = useState(false)
     const [responseDump, setResponseDump] = useState<any>(undefined)
     const responseDelayTimeOutRef = useRef<any>(undefined)
 
@@ -65,6 +66,8 @@ function Call() {
 
     const [promptText, setPromptText] = useState<any>()
     const [lastApiText, setLastApiText] = useState('')
+
+    const [errorType1, setErrorType1] = useState('')
 
     const accumulatedBlobs = useRef<any>([]);
 
@@ -125,6 +128,19 @@ function Call() {
 
 
 
+    const ttsRef = useRef<any>(false);
+
+
+    /**
+     * Handle Speech To text Starts
+     */
+
+
+    useEffect(() => {
+        ttsRef.current = isTtfSpeaking
+
+        console.log("isTtfSpeakingisTtfSpeakingisTtfSpeaking", isTtfSpeaking)
+    }, [isTtfSpeaking])
 
 
 
@@ -206,7 +222,13 @@ function Call() {
                 listener.current.on('stopped_speaking', onStopSpeaking)
                 listener.current.on('volume_change', function (value) {
                     const currentDate = moment();
-                    if (-value < 43) {
+                    if (ttsRef.current) {
+                        voiceUpCount.current = 0
+                        speakingShouldProcess.current = false
+                        if (voiceUp === true)
+                            setVoiceUp(false)
+                    }
+                    else if (-value < 43) {
 
                         /**
                          * extend waiting time if decibile is of talking size
@@ -223,6 +245,8 @@ function Call() {
 
                         if (voiceUpCount.current > 2) {
                             setVoiceUp(true)
+                            setErrorType1("")
+
                             if (voiceUpCount.current == 3) {
                                 const lastSpokeActiveTimeTemp = moment().format(compare_moment_format)
                                 console.log("isUserDidntInterrupt last set value", lastSpokeActiveTimeTemp)
@@ -231,9 +255,22 @@ function Call() {
                             speakingShouldProcess.current = true
                         }
                     }
-                    else if (currentDate > voiceUpTime.current) {
-                        setVoiceUp(false)
-                        speakingShouldProcess.current = false
+                    else {
+
+
+                        if (voiceUpCount.current == 2) {
+
+                            // const limitDateTime = currentDate.add(4, 'seconds');
+                            // voiceUpTime.current = limitDateTime
+                        }
+                        if (currentDate > voiceUpTime.current) {
+                            // console.log("voiceUpCount.currentaaav", voiceUpCount.current)
+                            setErrorType1("Please speak little louder, Your voice is low!")
+
+                            voiceUpCount.current = 0
+                            setVoiceUp(false)
+                            speakingShouldProcess.current = false
+                        }
                     }
 
                 });
@@ -242,7 +279,6 @@ function Call() {
             console.error(err)
         }
     }
-
 
     /**
      * start speech recording and start listen for speaking event
@@ -365,8 +401,6 @@ function Call() {
         }
     }
 
-
-
     const processBlobAudio = async () => {
         const currentItemRefId = generateRandomID()
         transcriptionReferenceId.current = currentItemRefId
@@ -383,7 +417,7 @@ function Call() {
                 const rrr = await onWhispered(file, currentItemRefId)
                 if (rrr) {
                     const { text, referenceId } = rrr
-                    setActiveResponseText(text)
+                    activeResponseText.current = text
 
                     console.log(transcriptionReferenceId.current + '======' + referenceId);
 
@@ -399,8 +433,8 @@ function Call() {
     }
 
     const onDataAvailable = async (blob: Blob) => {
-        console.log("receivedSpeakData", isTtfSpeaking, speakingShouldProcess.current)
-        if (!isTtfSpeaking && speakingShouldProcess.current === true) {
+        // console.log("calledTTF Data Rec", ttsRef.current, speakingShouldProcess.current)
+        if (!ttsRef.current && speakingShouldProcess.current === true) {
             accumulatedBlobs.current.push(blob);
             processBlobAudio()
         }
@@ -466,47 +500,6 @@ function Call() {
 
 
 
-    // const onWhispered = async (file: File, referenceId) => {
-
-    //     const whisperConfig = {
-    //         apiKey: '',
-    //         autoStart: false,
-    //         mode: 'transcriptions',
-    //         response_format: 'json',
-    //         temperature: 0.2
-    //     }
-    //     // Whisper only accept multipart/form-data currently
-    //     const body = new FormData()
-    //     body.append('file', file)
-    //     body.append('model', 'whisper-1')
-    //     body.append('language', 'en')
-    //     body.append('prompt', "")
-    //     body.append('response_format', whisperConfig.response_format)
-    //     body.append('temperature', `${whisperConfig.temperature}`)
-    //     const headers: RawAxiosRequestHeaders = {}
-    //     headers['Content-Type'] = 'multipart/form-data'
-    //     headers['Authorization'] = `Bearer ${OPENAI_API_TOKEN}`
-    //     const { default: axios } = await import('axios')
-    //     const response = await axios.post(whisperApiEndpoint + whisperConfig.mode, body, {
-    //         headers,
-    //     })
-    //     return { text: response.data.text, referenceId }
-    // }
-
-
-
-
-    /**
-     * record config ends here ==================================
-     */
-
-
-
-
-
-
-
-
 
     /**
      * to turn on mic when tts completes
@@ -549,7 +542,7 @@ function Call() {
 
 
     const resetLastMessage = () => {
-        setActiveResponseText('');
+        activeResponseText.current = '';
         accumulatedBlobs.current = []
         const newid = generateRandomID()
         activeResponseTextId.current = newid
@@ -559,10 +552,10 @@ function Call() {
 
         const isUserDidntInterrupt = lastSpokeActiveTime.current === params.lastSpokeActiveTime
 
-
+        console.log("Handle Response 01", lastSpokeActiveTime.current === params.lastSpokeActiveTime, lastSpokeActiveTime.current, params.lastSpokeActiveTime)
         if (isUserDidntInterrupt || params.message === 'start') {
-
-            console.log("isUserDidntInterrupt started speaking")
+            setProcessCallInprogress(false)
+            console.log("Handle Response 012")
             const { response_text, message_type, response_type } = response?.details?.next_step[0]
             const { keywords } = response?.details
 
@@ -600,6 +593,7 @@ function Call() {
 
     const proceedgetChatDetailsApiHandler = (customParams = {}, transcribedReferenceId) => {
         setProceedResponse(false)
+        setProcessCallInprogress(true)
         const userSpeakingDetails = {
             lastSpokeActiveTime: lastSpokeActiveTime.current,
             lastTranscriptionStartTime: lastTranscriptionStartTime,
@@ -612,15 +606,15 @@ function Call() {
 
         }
 
-        if (activeResponseText === 'start') {
+        if (activeResponseText.current !== 'start') {
             responseDelayTimeOutRef.current = setTimeout(() => {
                 setProceedResponse(true)
-            }, 500)
+            }, 7500)
 
         }
 
         const params = {
-            message: activeResponseText,
+            message: activeResponseText.current,
             message_id: activeResponseTextId.current,
             schedule_id: schedule_id,
             ...customParams,
@@ -637,9 +631,10 @@ function Call() {
                     onSuccess: (response: any) => () => {
                         proceedCallLoader.hide();
 
-                        if (activeResponseText === 'start') {
+                        if (activeResponseText.current === 'start') {
                             setProceedResponse(true)
                         }
+                        console.log("Handle Response 0121", transcriptionReferenceId.current === transcribedReferenceId, transcriptionReferenceId.current, transcribedReferenceId)
                         if (transcriptionReferenceId.current === transcribedReferenceId) {
                             setResponseDump({ params: params, response: response })
                         }
@@ -695,6 +690,18 @@ function Call() {
     }
 
 
+    const IV_SPEAKING = 1
+    const IV_IDLE = 2
+    const IV_PROCESSION = 3
+
+
+    const IE_SPEAKING = 1
+    const IE_IDLE = 2
+
+
+    const interviewer_state = isTtfSpeaking ? IV_SPEAKING : processCallInprogress ? IV_PROCESSION : IV_IDLE
+    const interviewee_state = voiceUp ? IE_SPEAKING : IE_IDLE
+
 
     return (
         <div className='h-100vh' style={{
@@ -703,18 +710,18 @@ function Call() {
 
             {scheduleInfo &&
                 <>
-                    {activeResponseText !== 'start' &&
+                    {activeResponseText.current !== 'start' &&
                         <>
                             <CallHeader webcam={showCam} mic={mute} onWebCamChange={webCamHandler} onMicChange={micMuteHandler} onEndClick={endInterviewHandler} />
                             <div className='h-100 d-flex justify-content-center align-items-center'>
                                 <div>
                                     <div className='row  justify-content-center align-items-center'>
                                         <div className='text-center col-5'>
-                                            <AnimatedImage show={false} name={getShortName(scheduleInfo?.interviewer_name)} shouldBlink={false} />
+                                            <AnimatedImage show={interviewer_state === IV_PROCESSION} name={getShortName(scheduleInfo?.interviewer_name)} shouldBlink={interviewer_state === IV_SPEAKING} />
                                         </div>
                                         <div className='mx-4'></div>
                                         <div className='text-center col-5'>
-                                            <AnimatedImage show={false} name={getShortName(scheduleInfo?.interviewee_name)} shouldBlink={false} showWebCam={showCam} />
+                                            <AnimatedImage show={false} name={getShortName(scheduleInfo?.interviewee_name)} shouldBlink={interviewee_state === IE_SPEAKING} showWebCam={showCam} />
                                         </div>
                                         <div className='text-center col-5'>
                                             <h3 className='display-3 mb-4 text-white'>{capitalizeFirstLetter(scheduleInfo?.interviewer_name)}</h3>
@@ -729,7 +736,7 @@ function Call() {
                             </div>
                         </>
                     }
-                    {activeResponseText === 'start'
+                    {activeResponseText.current === 'start'
                         &&
                         <Guidelines
                             loading={proceedCallLoader.loader}
