@@ -1,9 +1,11 @@
-import { LandingNavBar, LandingHeader, From, Data, Features, Pricing, ContactUs, Footer } from '@Modules'
+import React from 'react';
+import { ContactUs, Data, Footer, From, LandingHeader, LandingNavBar } from '@Modules';
 
 function Landing() {
 
 
     return (
+
         // <div className="bg-primary h-100vh container-fluid" >
         //     <div className='d-flex justify-content-end p-3'>
         //         <Button color={'white'} text={'Login'} size={'md'} onClick={() => {
@@ -35,11 +37,8 @@ function Landing() {
         //         />
         //     </div>
         // </div>
-        <div
-            
-        >
+        <div>
             <div className="main-content">
-
                 <LandingNavBar />
                 <LandingHeader />
                 <From />

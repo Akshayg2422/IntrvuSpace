@@ -31,9 +31,9 @@ export type UseWhisperReturn = {
   transcribing: boolean
   transcript: UseWhisperTranscript
   voiceUp: boolean
-  lastSpokeActiveTime:moment.Moment
-  lastTranscriptionStartTime:moment.Moment
-  lastTranscriptionEndTime:moment.Moment
+  lastSpokeActiveTime: moment.Moment
+  lastTranscriptionStartTime: moment.Moment
+  lastTranscriptionEndTime: moment.Moment
   pauseRecording: () => Promise<void>
   startRecording: () => Promise<void>
   stopRecording: () => Promise<void>

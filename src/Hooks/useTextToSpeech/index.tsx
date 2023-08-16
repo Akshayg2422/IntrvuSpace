@@ -55,6 +55,7 @@ const useTextToSpeech = () => {
       synth.cancel();
     }
 
+    setIsSpeaking(true);
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.voice = voices.find((voice: any) => voice.name === selectedVoiceName);
     if (browserName === 'Safari')

@@ -328,7 +328,7 @@ const DashboardReducer = (state = initialState, action: any) => {
       state = { ...state, jdItem: undefined };
       break;
     case ActionTypes.GET_JD_ITEM_LIST_SUCCESS:
-      console.log('==========>',action.payload.details);
+      console.log('==========>', action.payload.details);
       state = { ...state, jdItem: action.payload.details?.jd_items };
       break;
     case ActionTypes.GET_JD_ITEM_LIST_FAILURE:
@@ -341,7 +341,7 @@ const DashboardReducer = (state = initialState, action: any) => {
       state = { ...state, scheduleInfo: undefined };
       break;
     case ActionTypes.GET_SCHEDULE_BASIC_INFO_SUCCESS:
-      state = { ...state, scheduleInfo: action.payload };
+      state = { ...state, scheduleInfo: action.payload?.details?.schedule_details };
       break;
     case ActionTypes.GET_SCHEDULE_BASIC_INFO_FAILURE:
       state = { ...state, scheduleInfo: undefined };

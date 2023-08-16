@@ -45,14 +45,12 @@ function Button({
         >
           {loading && <Spinner />}
           {!loading && (
-            <>
+            <div className='d-flex align-items-center'>
               {variant === 'icon-with-text' && (
-                <span className="btn-inner--icon mr-1">
-                  <i className="ni ni-atom" />
-                </span>
+                <img src={icon} alt="" height={height} width={width} />
               )}
               <span className="btn-inner--text">{text}</span>
-            </>
+            </div>
           )}
         </RSButton>
       )}

@@ -1,17 +1,15 @@
-import { Modal, showToast } from '@Components';
+import { Modal, showToast, Button, Image, AnimatedImage, Spinner } from '@Components';
 import { useModal, useNavigation, useScreenRecorder, useTextToSpeech } from '@Hooks';
-import { CallScreen } from '@Modules';
+import { Guidelines, CallHeader } from '@Modules';
 import { getScheduleBasicInfo, getStartChat, screenRecordingPermission } from '@Redux';
 import { ROUTES } from '@Routes';
 import hark from 'hark';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { SPEAK_PROCEED_LIST } from '@Utils'
-import { log } from 'console';
+import { getShortName, capitalizeFirstLetter } from '@Utils'
 import moment from 'moment';
-
-
+import { useLoader } from '@Hooks'
 import type { RawAxiosRequestHeaders } from 'axios'
 import type { Harker } from 'hark'
 import type { Encoder } from 'lamejs'
@@ -24,11 +22,15 @@ import {
     silenceRemoveCommand,
     whisperApiEndpoint,
 } from './configs'
+import { icons } from '@Assets'
+import { Icons } from 'react-toastify';
+
 
 
 function Call() {
 
-    const compare_moment_format = 'YYYY-MM-DDHH:mm:ss'
+    const compare_moment_format = 'YYYY-MM-DDHH:mm:ss';
+
     const { isTtfSpeaking, speak } = useTextToSpeech();
 
     function generateRandomID() {
@@ -40,6 +42,8 @@ function Call() {
 
 
     const activeResponseText = useRef<any>('start');
+    // const [activeResponseText, setActiveResponseText] = useState('start');
+
     // const [activeResponseTextId, setActiveResponseTextId] = useState<any>(generateRandomID());
     const lastTranscribedText = useRef<any>('');
 
@@ -50,17 +54,20 @@ function Call() {
     const { scheduleInfo, recordingPermission } = useSelector((state: any) => state.DashboardReducer)
 
     const [proceedResponse, setProceedResponse] = useState(false)
+    const [processCallInprogress, setProcessCallInprogress] = useState(false)
     const [responseDump, setResponseDump] = useState<any>(undefined)
     const responseDelayTimeOutRef = useRef<any>(undefined)
 
     const [showVideo, setShowVideo] = useState(false)
     const [isRecording, setIsRecording] = useState(false)
     const [notEvenSpeck, setNotEvenSpeck] = useState(false)
-    const [micState, setMicState] = useState(false)
+
     const [buttonConditional, setButtonConditional] = useState<any>('start')
 
     const [promptText, setPromptText] = useState<any>()
     const [lastApiText, setLastApiText] = useState('')
+
+    const [errorType1, setErrorType1] = useState('')
 
     const accumulatedBlobs = useRef<any>([]);
 
@@ -107,6 +114,60 @@ function Call() {
     const transcriptionReferenceId = useRef<any>();
 
     const activeResponseTextId = useRef<any>(generateRandomID());
+
+
+
+    /**
+     * state jay
+     */
+
+    const loader = useLoader(false);
+    const proceedCallLoader = useLoader(false);
+    const [showCam, setShowCam] = useState(false);
+    const [mute, setMute] = useState(false);
+
+
+
+    const ttsRef = useRef<any>(false);
+
+
+    /**
+     * Handle Speech To text Starts
+     */
+
+
+    useEffect(() => {
+        ttsRef.current = isTtfSpeaking
+
+        console.log("isTtfSpeakingisTtfSpeakingisTtfSpeaking", isTtfSpeaking)
+    }, [isTtfSpeaking])
+
+
+
+    useEffect(() => {
+        getBasicInfo()
+    }, [])
+
+
+    const getBasicInfo = () => {
+        const params = { schedule_id: schedule_id }
+
+        loader.show();
+        dispatch(
+            getScheduleBasicInfo(
+                {
+                    params,
+                    onSuccess: () => () => {
+                        loader.hide();
+                    },
+                    onError: () => () => {
+                        loader.hide();
+                    }
+                }
+            )
+        )
+    }
+
 
 
 
@@ -161,7 +222,13 @@ function Call() {
                 listener.current.on('stopped_speaking', onStopSpeaking)
                 listener.current.on('volume_change', function (value) {
                     const currentDate = moment();
-                    if (-value < 43) {
+                    if (ttsRef.current) {
+                        voiceUpCount.current = 0
+                        speakingShouldProcess.current = false
+                        if (voiceUp === true)
+                            setVoiceUp(false)
+                    }
+                    else if (-value < 43) {
 
                         /**
                          * extend waiting time if decibile is of talking size
@@ -178,6 +245,8 @@ function Call() {
 
                         if (voiceUpCount.current > 2) {
                             setVoiceUp(true)
+                            setErrorType1("")
+
                             if (voiceUpCount.current == 3) {
                                 const lastSpokeActiveTimeTemp = moment().format(compare_moment_format)
                                 console.log("isUserDidntInterrupt last set value", lastSpokeActiveTimeTemp)
@@ -186,9 +255,22 @@ function Call() {
                             speakingShouldProcess.current = true
                         }
                     }
-                    else if (currentDate > voiceUpTime.current) {
-                        setVoiceUp(false)
-                        speakingShouldProcess.current = false
+                    else {
+
+
+                        if (voiceUpCount.current == 2) {
+
+                            // const limitDateTime = currentDate.add(4, 'seconds');
+                            // voiceUpTime.current = limitDateTime
+                        }
+                        if (currentDate > voiceUpTime.current) {
+                            // console.log("voiceUpCount.currentaaav", voiceUpCount.current)
+                            setErrorType1("Please speak little louder, Your voice is low!")
+
+                            voiceUpCount.current = 0
+                            setVoiceUp(false)
+                            speakingShouldProcess.current = false
+                        }
                     }
 
                 });
@@ -197,7 +279,6 @@ function Call() {
             console.error(err)
         }
     }
-
 
     /**
      * start speech recording and start listen for speaking event
@@ -320,8 +401,6 @@ function Call() {
         }
     }
 
-
-
     const processBlobAudio = async () => {
         const currentItemRefId = generateRandomID()
         transcriptionReferenceId.current = currentItemRefId
@@ -354,8 +433,8 @@ function Call() {
     }
 
     const onDataAvailable = async (blob: Blob) => {
-        console.log("receivedSpeakData", isTtfSpeaking, speakingShouldProcess.current)
-        if (!isTtfSpeaking && speakingShouldProcess.current === true) {
+        // console.log("calledTTF Data Rec", ttsRef.current, speakingShouldProcess.current)
+        if (!ttsRef.current && speakingShouldProcess.current === true) {
             accumulatedBlobs.current.push(blob);
             processBlobAudio()
         }
@@ -421,65 +500,6 @@ function Call() {
 
 
 
-    // const onWhispered = async (file: File, referenceId) => {
-
-    //     const whisperConfig = {
-    //         apiKey: '',
-    //         autoStart: false,
-    //         mode: 'transcriptions',
-    //         response_format: 'json',
-    //         temperature: 0.2
-    //     }
-    //     // Whisper only accept multipart/form-data currently
-    //     const body = new FormData()
-    //     body.append('file', file)
-    //     body.append('model', 'whisper-1')
-    //     body.append('language', 'en')
-    //     body.append('prompt', "")
-    //     body.append('response_format', whisperConfig.response_format)
-    //     body.append('temperature', `${whisperConfig.temperature}`)
-    //     const headers: RawAxiosRequestHeaders = {}
-    //     headers['Content-Type'] = 'multipart/form-data'
-    //     headers['Authorization'] = `Bearer ${OPENAI_API_TOKEN}`
-    //     const { default: axios } = await import('axios')
-    //     const response = await axios.post(whisperApiEndpoint + whisperConfig.mode, body, {
-    //         headers,
-    //     })
-    //     return { text: response.data.text, referenceId }
-    // }
-
-
-
-
-    /**
-     * record config ends here ==================================
-     */
-
-
-    const getBasicInfo = () => {
-        const params = { schedule_id: schedule_id }
-        dispatch(
-            getScheduleBasicInfo(
-                {
-                    params,
-                    onSuccess: () => () => {
-                    },
-                    onError: () => () => {
-                    }
-                }
-            )
-        )
-    }
-
-
-
-
-    useEffect(() => {
-        getBasicInfo()
-        // validateProceedStartListening();
-    }, [])
-
-
 
     /**
      * to turn on mic when tts completes
@@ -508,41 +528,34 @@ function Call() {
         if (!isRecording) {
             startRecording()
             setIsRecording(true)
-            setMicState(false)
+            setMute(false)
         }
 
     }
     const validateProceedStartListening = async () => {
         if (!isRecording) {
             startRecording()
-            setIsRecording(true)
-            setMicState(false)
+            setIsRecording(true);
+            setMute(false);
         }
     }
 
-    const handleMicControl = () => { }
-
 
     const resetLastMessage = () => {
-        console.log("referenceTextId01a", activeResponseTextId)
-        activeResponseText.current = ''
+        activeResponseText.current = '';
         accumulatedBlobs.current = []
         const newid = generateRandomID()
-        // setActiveResponseTextId(newid)
         activeResponseTextId.current = newid
-        console.log("referenceTextId01b")
-
     }
 
     const proceedHandleResponse = ({ params, response }) => {
-        console.log("ressssssssssss01", activeResponseText.current, params.message)
+
         const isUserDidntInterrupt = lastSpokeActiveTime.current === params.lastSpokeActiveTime
-        console.log("isUserDidntInterrupt", lastSpokeActiveTime.current, params.lastSpokeActiveTime, isUserDidntInterrupt)
 
-
+        console.log("Handle Response 01", lastSpokeActiveTime.current === params.lastSpokeActiveTime, lastSpokeActiveTime.current, params.lastSpokeActiveTime)
         if (isUserDidntInterrupt || params.message === 'start') {
-
-            console.log("isUserDidntInterrupt started speaking")
+            setProcessCallInprogress(false)
+            console.log("Handle Response 012")
             const { response_text, message_type, response_type } = response?.details?.next_step[0]
             const { keywords } = response?.details
 
@@ -553,15 +566,13 @@ function Call() {
                 speak(response_text);
                 speaking_type.current = SPEAK_TYPE_API
 
-                try
-                {
+                try {
                     if (keywords.length > 0) {
                         setPromptText(keywords)
                     }
-    
+
                 }
-                catch(e)
-                {
+                catch (e) {
 
                 }
             }
@@ -571,7 +582,7 @@ function Call() {
             }
         }
     }
-    
+
 
     useEffect(() => {
         console.log("procceddhandd")
@@ -582,6 +593,7 @@ function Call() {
 
     const proceedgetChatDetailsApiHandler = (customParams = {}, transcribedReferenceId) => {
         setProceedResponse(false)
+        setProcessCallInprogress(true)
         const userSpeakingDetails = {
             lastSpokeActiveTime: lastSpokeActiveTime.current,
             lastTranscriptionStartTime: lastTranscriptionStartTime,
@@ -597,7 +609,7 @@ function Call() {
         if (activeResponseText.current !== 'start') {
             responseDelayTimeOutRef.current = setTimeout(() => {
                 setProceedResponse(true)
-            }, 500)
+            }, 7500)
 
         }
 
@@ -609,31 +621,34 @@ function Call() {
             ...userSpeakingDetails
         };
 
-        console.log("referenceTextId012",  JSON.stringify(params))
+        proceedCallLoader.show();
 
-        if(params.message && params.message !== '')
-        {
-        dispatch(
-            getStartChat({
-                params,
-                onSuccess: (response: any) => () => {
-                    // console.log("ressssssssssss012", activeResponseTextId.current, activeResponseText.current)
-                    if (activeResponseText.current == 'start') {
-                        setProceedResponse(true)
-                    }
-                    if (transcriptionReferenceId.current === transcribedReferenceId) {
-                        setResponseDump({ params: params, response: response })
-                    }
-                    else {
-                        setResponseDump(undefined)
-                    }
 
-                },
-                onError: (error: any) => () => {
-                    showToast(error?.error_message, 'error')
-                },
-            })
-        );
+        if (params.message && params.message !== '') {
+            dispatch(
+                getStartChat({
+                    params,
+                    onSuccess: (response: any) => () => {
+                        proceedCallLoader.hide();
+
+                        if (activeResponseText.current === 'start') {
+                            setProceedResponse(true)
+                        }
+                        console.log("Handle Response 0121", transcriptionReferenceId.current === transcribedReferenceId, transcriptionReferenceId.current, transcribedReferenceId)
+                        if (transcriptionReferenceId.current === transcribedReferenceId) {
+                            setResponseDump({ params: params, response: response })
+                        }
+                        else {
+                            setResponseDump(undefined)
+                        }
+
+                    },
+                    onError: (error: any) => () => {
+                        proceedCallLoader.hide();
+                        showToast(error?.error_message, 'error')
+                    },
+                })
+            );
         }
 
     };
@@ -652,54 +667,99 @@ function Call() {
     }, [voiceUp])
 
 
-    const handleVideo = () => {
-        setShowVideo(!showVideo)
+
+    function webCamHandler() {
+        setShowCam(!showCam)
     }
 
 
-    console.log(activeResponseTextId.current+'======activeResponseTextId');
-    
+    function micMuteHandler() {
+        setMute(!mute)
+    }
+
+
+    function startInterviewHandler() {
+        transcriptionReferenceId.current = generateRandomID()
+        proceedgetChatDetailsApiHandler({ message: "start" }, transcriptionReferenceId.current)
+        validateProceedStartListening()
+    }
+
+    function endInterviewHandler() {
+        isScreenRecording && stopScreenRecording();
+        goBack();
+    }
+
+
+    const IV_SPEAKING = 1
+    const IV_IDLE = 2
+    const IV_PROCESSION = 3
+
+
+    const IE_SPEAKING = 1
+    const IE_IDLE = 2
+
+
+    const interviewer_state = isTtfSpeaking ? IV_SPEAKING : processCallInprogress ? IV_PROCESSION : IV_IDLE
+    const interviewee_state = voiceUp ? IE_SPEAKING : IE_IDLE
+
 
     return (
-        <>
-            <Modal
-                isOpen={callModel.visible} size='xl' onClose={() => {
-                    callModel.hide()
-                    isScreenRecording && stopScreenRecording()
-                    goBack()
-                }} >
-                <CallScreen
-                    basicInfo={scheduleInfo}
-                    status='Connected'
-                    loading={isTtfSpeaking}
-                    variant={''}
-                    onMic={micState}
-                    conditionalButton={buttonConditional}
-                    micDisable={isTtfSpeaking}
-                    isMute={isRecording}
-                    startButtonOnclick={() => {
-                        setButtonConditional('processing')
-                        transcriptionReferenceId.current = generateRandomID()
-                        proceedgetChatDetailsApiHandler({ message: "start" }, transcriptionReferenceId.current)
-                        validateProceedStartListening()
-                    }}
-                    ReportButtonOnclick={() => {
-                        goTo(ROUTES['designation-module'].report + "/" + schedule_id, true)
-                    }}
-                    video={showVideo}
-                    onVideoControl={() => handleVideo()}
+        <div className='h-100vh' style={{
+            backgroundColor: "#1B1B1B"
+        }}>
 
-                    onMicControl={() => handleMicControl()
+            {scheduleInfo &&
+                <>
+                    {activeResponseText.current !== 'start' &&
+                        <>
+                            <CallHeader webcam={showCam} mic={mute} onWebCamChange={webCamHandler} onMicChange={micMuteHandler} onEndClick={endInterviewHandler} />
+                            <div className='h-100 d-flex justify-content-center align-items-center'>
+                                <div>
+                                    <div className='row  justify-content-center align-items-center'>
+                                        <div className='text-center col-5'>
+                                            <AnimatedImage show={interviewer_state === IV_PROCESSION} name={getShortName(scheduleInfo?.interviewer_name)} shouldBlink={interviewer_state === IV_SPEAKING} />
+                                        </div>
+                                        <div className='mx-4'></div>
+                                        <div className='text-center col-5'>
+                                            <AnimatedImage show={false} name={getShortName(scheduleInfo?.interviewee_name)} shouldBlink={interviewee_state === IE_SPEAKING} showWebCam={showCam} />
+                                        </div>
+                                        <div className='text-center col-5'>
+                                            <h3 className='display-3 mb-4 text-white'>{capitalizeFirstLetter(scheduleInfo?.interviewer_name)}</h3>
+                                        </div>
+                                        <div className='mx-4'></div>
+                                        <div className='text-center col-5'>
+                                            <h3 className='display-3 mb-4 text-white'>{capitalizeFirstLetter(scheduleInfo?.interviewee_name)}</h3>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </>
                     }
-                    onCallEnd={() => {
-                        isScreenRecording && stopScreenRecording()
-                        callModel.hide()
-                        goBack();
-                    }}
-                    onVolumeControl={() => { }
-                    } />
-            </Modal>
-        </>
+                    {activeResponseText.current === 'start'
+                        &&
+                        <Guidelines
+                            loading={proceedCallLoader.loader}
+                            heading={scheduleInfo?.interviewee_expected_designation}
+                            onClick={startInterviewHandler}
+                        />
+                    }
+
+                </>
+            }
+
+            {loader.loader && <div className='d-flex align-items-center justify-content-center h-100'><Spinner color={'white'} /></div>}
+            {
+                !loader.loader && !scheduleInfo &&
+                <div className='d-flex align-items-center justify-content-center h-100'>
+                    <div className='text-center'>
+                        <h4 className="display-4 mb-0 text-white">Technical breakdown please try again</h4>
+                        <div className='my-3'></div>
+                        <Button text={'Try Again'} onClick={getBasicInfo} />
+                    </div>
+                </div>
+            }
+        </div >
     )
 }
 

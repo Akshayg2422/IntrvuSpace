@@ -8,4 +8,6 @@ export interface ButtonProps extends RsButtonProps {
     icon?: any
     onEnter?: () => void
     icons?: any
+    height?: number;
+    width?: number
 }

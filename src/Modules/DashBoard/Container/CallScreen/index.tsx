@@ -93,65 +93,66 @@ const CallScreen = ({ basicInfo, onMicControl, onMic = false, loading = false, c
             {conditionalButton === 'processing' && <small className="h4 text-black font-weight-bold">
                 {!isMute ? "On Mic To Speak" : "Finished Speaking Off The Mic"}
             </small>}
-            {conditionalButton === 'processing' && <div className="my-4">
-                <Button
-                    className='border-0 shadow-none'
-                    style={{ borderRadius: 7, backgroundColor: '#f5f5f5' }}
-                >
-                    <div>
-                        <span className="btn-inner--icon">
-                            <i className="fas fa-circle mr-2 text-red" />
-                        </span>
-                        <span className="nav-link-inner--text ml-1 text-lg " style={{ color: '#c4c4c4' }}>{conditionalButton ? formattedTime : '00:00'}</span>
-                    </div>
-                </Button>
-                <Button
-                    style={{
-                        backgroundColor: '#f5f5f5',
-                        padding: 15
-                    }}
-                    className={`border-0 shadow-none ${onMic ? 'animated-button' : ''}`}
-                    disabled={micDisable}
-                    onClick={onMicControl}
-                >
-                    <div className=''>
-                        <span className="btn-inner--icon">
-                            {isMute ? <i className="fas fa-microphone text-lg px-2" style={{ color: '#c4c4c4' }}></i> : <i className="fas fa-microphone-slash text-lg " style={{ color: '#c4c4c4' }}></i>}
-                        </span>
-                    </div>
-                </Button>
-                {isSmallScreen && <Button
-                    className='border-0 shadow-none'
-                    style={{ borderRadius: 7, backgroundColor: '#f5f5f5', padding: 15 }}
-                    onClick={onVideoControl}
-                >
-                    <div className=''>
-                        <span className="btn-inner--icon">
-                            {video ? <i className="fas fa-video text-lg " style={{ color: '#c4c4c4' }}></i> : <i className="fas fa-video-slash text-lg " style={{ color: '#c4c4c4' }}></i>}
-                        </span>
-                    </div>
-                </Button>}
-                <Button
-                    className='border-0 shadow-none bg-red my-sm-0 my-4'
-                    style={{ borderRadius: 7 }}
-                    onClick={onCallEnd}
-                >
-                    <div className=''>
-                        <span className="nav-link-inner--text mx-6 text-lg text-white " style={{ color: '#f5f5f5' }}>{'End Call'}</span>
-                    </div>
-                </Button>
-                {!isSmallScreen && <Button
-                    className='border-0 shadow-none'
-                    style={{ borderRadius: 7, backgroundColor: '#f5f5f5', padding: 15 }}
-                    onClick={onVideoControl}
-                >
-                    <div className=''>
-                        <span className="btn-inner--icon">
-                            {video ? <i className="fas fa-video text-lg " style={{ color: '#c4c4c4' }}></i> : <i className="fas fa-video-slash text-lg " style={{ color: '#c4c4c4' }}></i>}
-                        </span>
-                    </div>
-                </Button>}
-                {/* <Button
+            {conditionalButton === 'processing' &&
+                <div className="my-4">
+                    <Button
+                        className='border-0 shadow-none'
+                        style={{ borderRadius: 7, backgroundColor: '#f5f5f5' }}
+                    >
+                        <div>
+                            <span className="btn-inner--icon">
+                                <i className="fas fa-circle mr-2 text-red" />
+                            </span>
+                            <span className="nav-link-inner--text ml-1 text-lg " style={{ color: '#c4c4c4' }}>{conditionalButton ? formattedTime : '00:00'}</span>
+                        </div>
+                    </Button>
+                    <Button
+                        style={{
+                            backgroundColor: '#f5f5f5',
+                            padding: 15
+                        }}
+                        className={`border-0 shadow-none ${onMic ? 'animated-button' : ''}`}
+                        disabled={micDisable}
+                        onClick={onMicControl}
+                    >
+                        <div className=''>
+                            <span className="btn-inner--icon">
+                                {isMute ? <i className="fas fa-microphone text-lg px-2" style={{ color: '#c4c4c4' }}></i> : <i className="fas fa-microphone-slash text-lg " style={{ color: '#c4c4c4' }}></i>}
+                            </span>
+                        </div>
+                    </Button>
+                    {isSmallScreen && <Button
+                        className='border-0 shadow-none'
+                        style={{ borderRadius: 7, backgroundColor: '#f5f5f5', padding: 15 }}
+                        onClick={onVideoControl}
+                    >
+                        <div className=''>
+                            <span className="btn-inner--icon">
+                                {video ? <i className="fas fa-video text-lg " style={{ color: '#c4c4c4' }}></i> : <i className="fas fa-video-slash text-lg " style={{ color: '#c4c4c4' }}></i>}
+                            </span>
+                        </div>
+                    </Button>}
+                    <Button
+                        className='border-0 shadow-none bg-red my-sm-0 my-4'
+                        style={{ borderRadius: 7 }}
+                        onClick={onCallEnd}
+                    >
+                        <div className=''>
+                            <span className="nav-link-inner--text mx-6 text-lg text-white " style={{ color: '#f5f5f5' }}>{'End Call'}</span>
+                        </div>
+                    </Button>
+                    {!isSmallScreen && <Button
+                        className='border-0 shadow-none'
+                        style={{ borderRadius: 7, backgroundColor: '#f5f5f5', padding: 15 }}
+                        onClick={onVideoControl}
+                    >
+                        <div className=''>
+                            <span className="btn-inner--icon">
+                                {video ? <i className="fas fa-video text-lg " style={{ color: '#c4c4c4' }}></i> : <i className="fas fa-video-slash text-lg " style={{ color: '#c4c4c4' }}></i>}
+                            </span>
+                        </div>
+                    </Button>}
+                    {/* <Button
                     className='border-0 shadow-none'
                     style={{ borderRadius: 7, backgroundColor: '#f5f5f5', padding: 15 }}
                     onClick={onVolumeControl}
@@ -162,7 +163,7 @@ const CallScreen = ({ basicInfo, onMicControl, onMic = false, loading = false, c
                         </span>
                     </div>
                 </Button> */}
-            </div>}
+                </div>}
             {conditionalButton === 'start' &&
                 <>
                     {!basicInfo?.is_complete ? <div className="my-4">

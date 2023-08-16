@@ -14,6 +14,10 @@ export * from './Features'
 export * from './Pricing'
 export * from './ContactUs'
 export * from './Footer'
+export * from './Guidelines'
+export * from './CallHeader'
+
+
 
 
 

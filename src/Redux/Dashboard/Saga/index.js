@@ -412,7 +412,7 @@ function* getScheduleBasicInfoSaga(action) {
   try {
     const response = yield call(Api.getScheduleBasicInfo, action.payload.params);
     if (response.success) {
-      yield put(Action.getScheduleBasicInfoSuccess(response?.details?.schedule_details));
+      yield put(Action.getScheduleBasicInfoSuccess(response));
       yield call(action.payload.onSuccess(response));
     } else {
       yield put(Action.getScheduleBasicInfoFailure(response.error_message));

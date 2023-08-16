@@ -1,19 +1,10 @@
-import classnames from 'classnames'
-import React, { useState } from 'react'
-import { Image } from "@Components";
-import { Container, Row, Col, Card, CardBody, Button, UncontrolledTooltip, Badge, Form, InputGroup, InputGroupAddon, InputGroupText, Input, FormGroup } from 'reactstrap'
-import './style.scss'
+import { Col, Container, Row } from 'reactstrap';
+import './style.scss';
 
 function LandingHeader() {
-
-
-
-
     return (
         <>
-            <div className="header pt-5 pb-5  bg-customGradient"
-
-            >
+            <div className="header pt-5 pb-5  bg-customGradient">
                 <Container>
                     <div className="header-body">
                         <Row className="align-items-center h-100vh">
@@ -51,7 +42,7 @@ function LandingHeader() {
                             <Col lg="6" className='pl-5' >
                                 {/* <Image
                                     // src={'https://img.freepik.com/premium-vector/flat-isometric-concept-ai-future-robot-human-cooperation_109064-842.jpg?w=900'}
-                                    src={require('file:///C:/Users/tamil_hfh9g6g/Downloads/Chat%20bot-amico.png')}
+                                    // src={require('file:///C:/Users/tamil_hfh9g6g/Downloads/Chat%20bot-amico.png')}
                                     width={"80%"}
                                     height={"70%"}
                                 /> */}
@@ -77,4 +68,4 @@ function LandingHeader() {
     )
 }
 
-export { LandingHeader }
+export { LandingHeader };
