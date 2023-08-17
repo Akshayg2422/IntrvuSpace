@@ -106,10 +106,10 @@ function VariantInfo() {
                             </div>
                         </div>,
 
-                    'phone':
-                        <div className={''}>
-                            {el?.interviewee_mobile_number}
-                        </div>,
+                    // 'phone':
+                    //     <div className={''}>
+                    //         {el?.interviewee_mobile_number}
+                    //     </div>,
 
                     "Email":
                         <div className="m-0">
@@ -165,7 +165,7 @@ function VariantInfo() {
                                 <h3>Experience:</h3><span className={'ml-2'}>{experience}</span>
                             </div>
                             <div className={'row'}>
-                                <h3>Job Description:</h3><span className={'ml-2'}>{details}</span>
+                                <h3>Job Description:</h3><span className={'ml-2'} style={{maxWidth:'74vw'}}>{details}</span>
                             </div>
                         </div>
                     </Card>

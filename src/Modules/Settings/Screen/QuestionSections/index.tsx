@@ -189,27 +189,9 @@ function QuestionSections() {
 
     return (
         <>
-            {/* <span className='pointer ml-3 text-black h3 '
-                onClick={() => { goBack() }}
-            >
-                <i className="bi bi-arrow-left text-black fa-lg font-weight-bolder pr-1"></i> {breadcrumbString}
-            </span> */}
             <Breadcrumbs />
             <div className="m-3">
-                {/* <div className="row">
-                <div className="col text-right">
-                    <Button
-                        text={'Create'}
-                        className="text-white"
-                        onClick={() => {
-                            goTo(ROUTES['designation-module']['weightage-count-form'])
-                        }}
-                    />
-                </div>
-            </div> */}
-
                 <div className="row mt-2">
-
                     <div className="col-4">
                         {questionSection && questionSection?.length > 0 &&
                             <Card className={'mr--2'} style={{ height: height - 74 }}>

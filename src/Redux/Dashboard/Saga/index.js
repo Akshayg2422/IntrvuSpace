@@ -110,7 +110,6 @@ function* createSectorSaga(action) {
 
 function* getSectorsSaga(action) {
   try {
-    console.log('sasasasassasasasasa');
 
     const response = yield call(Api.getSectorsApi, action.payload.params);
     console.log('sasasasas');

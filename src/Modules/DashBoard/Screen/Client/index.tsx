@@ -50,7 +50,7 @@ function Clients() {
             <TopNavbar />
             <div className={`container-fluid mt-7`}>
                 <div className='row align-items-center'>
-                    <div className='col-sm-5 mb-sm-0 mb-2'>
+                    <div className='col-sm-5 mb-sm-0 mb-2 px-2'>
                         <SearchInput defaultValue={search.value} onSearch={search.set} />
                     </div>
 
@@ -59,11 +59,11 @@ function Clients() {
                             const { title } = interview;
                             const selected = index === selectedSection
                             return (
-                                <div className='m-1 row col-xl  col-sm-3'>
+                                <div className='m-1 row col-xl  col-sm-3 px-1'>
                                     <Button
                                         block
                                         size={'md'}
-                                        className=''
+                                        className={'shadow-none'}
                                         color={!selected ? 'neutral' : 'primary'}
                                         text={title}
                                         onClick={() => {

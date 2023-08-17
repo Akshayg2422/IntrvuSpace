@@ -213,9 +213,8 @@ function Designation() {
                 <div className='row  pt-3 px-0'>
                     {cardData && cardData.length > 0 ?
                         cardData.map((el: any, index: number) => {
-                            console.log('ellllllllllll------>', JSON.stringify(el))
                             return (
-                                <div className='col-sm-4 col-lg-4 px-2'>
+                                <div className='col-sm-4 col-lg-4 px-2 mb-3'>
                                     <DesignationItem
                                         item={el}
                                         onAdd={(selected) => {
