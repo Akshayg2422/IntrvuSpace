@@ -147,9 +147,11 @@ function CreateQuestionForm() {
 
             </Card>
 
+            <div className={'my--9'}>
             <GenerateModal isOpen={generateJdModal.visible} onClose={generateJdModal.hide}>
                 <AnalyzingAnimation />
             </GenerateModal>
+            </div>
 
         </>
     );

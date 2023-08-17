@@ -11,7 +11,7 @@ import { validate, FROM_JD_RULES, ifObjectExist, getValidateError } from '@Utils
 function FromJD() {
 
     const { jdItem } = useSelector((state: any) => state.DashboardReducer)
-    console.log('jdItem---------->',JSON.stringify(jdItem))
+    console.log('jdItem---------->', JSON.stringify(jdItem))
     const { goTo } = useNavigation();
 
     const position = useInput('');
@@ -148,7 +148,9 @@ function FromJD() {
     return (
         <>
             <div>
-                <Button size={'md'} className='mt-3 mx-1' block text={'Upload job description details and start interview'} onClick={addJdModal.show} />
+                <div className={'mx--1'}>
+                    <Button size={'md'} className='mt-3' block text={'Upload job description details and start interview'} onClick={addJdModal.show} />
+                </div>
                 <div style={{
                     paddingTop: '20px'
                 }}></div>
@@ -162,7 +164,7 @@ function FromJD() {
 
                             const knowledgeId = jdItem[0].id;
                             return (
-                                <div className='col-xl-4 mt--3' >
+                                <div className='col-xl-4 mt--3 px-2' >
                                     <Card className="overflow-auto overflow-hide scroll-y" style={{
                                         height: '350px',
                                     }}>

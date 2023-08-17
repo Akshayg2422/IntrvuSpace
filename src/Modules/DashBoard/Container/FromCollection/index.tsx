@@ -91,7 +91,7 @@ function FromCollection() {
             <div className='d-flex overflow-auto overflow-hide py-2 mx--3' >
                 {sectors && sectors.map((el, index) => {
                     return (
-                        <div className='col-xl-3 col-sm-0 col-auto col-md-3'
+                        <div className='col-xl-3 col-sm-0 col-auto col-md-3 px-2'
                         >
                             <Nav
                                 className="nav-fill flex-column flex-sm-row pointer"
@@ -125,10 +125,10 @@ function FromCollection() {
                         const { name } = el
                         return (
 
-                            <div className='col-4'>
+                            <div className='col-4 mb-3 px-2'>
                                 <Card>
                                     <h4 className='mb-0 pointer'>{name}</h4>
-                                    <Divider space={'3'} />
+                                    <div className={'mx--4'}><Divider space={'3'} /></div>
                                     <div className=' pt-2 mr-4'>
                                         {el.knowledge_group_variant && el.knowledge_group_variant.map((item, index) => {
 

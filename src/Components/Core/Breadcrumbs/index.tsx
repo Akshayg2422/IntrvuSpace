@@ -7,13 +7,10 @@ import { Breadcrumb, BreadcrumbItem } from 'reactstrap';
 
 const Breadcrumbs = () => {
   const location = useLocation();
-  const { goTo, goBack } = useNavigation();
+  const { goBack } = useNavigation();
   const { breadCrumb } = useSelector((state: any) => state.DashboardReducer)
-  const [heading, setHeading] = useState('')
-  var check
+
   console.log('breadcrumbbbbbbbbbbbbbbbbbbbbbbbb------------------>', breadCrumb)
-  let heading2 = ''
-  const separator = " / ";
 
   return (
     <div className='row mx-1 my-2'>
@@ -28,7 +25,7 @@ const Breadcrumbs = () => {
           console.log("909090", item)
           return (
             <>
-              <h4>{item?.title}</h4>
+              <h4>{item && item?.title}</h4>
             </>
           )
         })}

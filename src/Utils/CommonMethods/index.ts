@@ -11,7 +11,7 @@ export function ifObjectExist(value: object) {
   return is_valid;
 }
 
-export const filteredName = (value: any, length) => {
+export const filteredName = (value: any, length: number) => {
   if (value?.length > length) {
     return value.substring(0, length).trim() + '...';
   }
