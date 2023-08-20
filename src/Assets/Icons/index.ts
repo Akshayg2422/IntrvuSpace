@@ -162,4 +162,6 @@ export const icons = {
   microPhoneMute: require('./MicPhoneMute/icon.png'),
   videoCam: require('./VideoCam/icon.png'),
   videoCamMute: require('./VideoCamMute/icon.png'),
+  briefCaseBlack: require('./BriefCaseBlack/icon.png'),
+  information: require('./Information/icon.png')
 };
