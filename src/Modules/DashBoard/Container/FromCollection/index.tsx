@@ -125,7 +125,7 @@ function FromCollection() {
                         const { name } = el
                         return (
 
-                            <div className='col-4 mb-3 px-2'>
+                            <div className='col-md-4 col-sm-4 col-lg-4 mb-3 px-2'>
                                 <Card>
                                     <h4 className='mb-0 pointer'>{name}</h4>
                                     <div className={'mx--4'}><Divider space={'3'} /></div>
