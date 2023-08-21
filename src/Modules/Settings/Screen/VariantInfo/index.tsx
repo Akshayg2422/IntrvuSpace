@@ -1,4 +1,5 @@
-import { Back, Button, Card, CommonTable, DateTimePicker, Divider, Input, Modal, NoDataFound, showToast } from '@Components'
+import { icons } from '@Assets'
+import { Back, Breadcrumbs, Button, Card, CommonTable, DateTimePicker, Divider, Input, Modal, NoDataFound, showToast } from '@Components'
 import { useInput, useLoader, useModal, useNavigation, useWindowDimensions } from '@Hooks'
 import { AnalyzingAnimation, GenerateModal } from '@Modules'
 import { createSchedule, generateForm, getKnowledgeGroupVariantDetails, selectedScheduleId } from '@Redux'
@@ -67,7 +68,7 @@ function VariantInfo() {
                     params,
                     onSuccess: (response: any) => () => {
                         resetValues()
-                        showToast(response.message, 'success')
+                        showToast('Candidate added successfully', 'success')
                         loader.hide()
                         generateVariantModal.hide()
                         getKnowledgeGroupVariantDetailsHandler()
@@ -144,35 +145,40 @@ function VariantInfo() {
         }
     }
 
-
-
-
     return (
 
         <>
+            <Breadcrumbs />
             <div>
                 <div className={'m-3'}>
                     <Card className={'col-sm-12 col-lg-12 col-md-12'} >
                         <div className={'row justify-content-between mb-3 mx--4'}>
-                            <div className={'h2 row mb-2 ml-1'}><Back /><span className={'ml-1'}>INFO</span></div>
-                            <div className={'mb-2 mr-2'}><Button text={'View Questions'} onClick={() => { goTo(ROUTES['designation-module']['questions']) }} /></div>
+                            <div className={'ml-2 h3 text-dark'}>{position}</div>
+                            <div className={'mb-2 mr-2'}><h3 className={'text-primary pointer'} onClick={() => { goTo(ROUTES['designation-module']['questions']) }} >{'View Questions'}</h3></div>
                         </div>
                         <div className={'d-flex flex-column mt--3'}>
-                            <div className={'row'}>
-                                <h3>Position:</h3> <span className={'ml-2'}>{position}</span>
+                            <div className={'row pb-2'}>
+                                <span className={"text-black"}>
+                                    <i className="pr-2">
+                                        <img src={icons.briefCaseBlack} alt="Comment Icon" height={'20'} width={'20'} />
+                                    </i>
+                                    Experience with {experience} years
+                                </span>
                             </div>
-                            <div className={'row'}>
-                                <h3>Experience:</h3><span className={'ml-2'}>{experience}</span>
-                            </div>
-                            <div className={'row'}>
-                                <h3>Job Description:</h3><span className={'ml-2'} style={{maxWidth:'74vw'}}>{details}</span>
+                            <div className={'row pb-1 text-black'}>
+                                <span style={{ maxWidth: '100vw' }}>
+                                    <i className="pr-2">
+                                        <img src={icons.information} alt="Comment Icon" height={'20'} width={'20'} />
+                                    </i>
+                                    {details}
+                                </span>
                             </div>
                         </div>
                     </Card>
                     <Card className={'mt--3 vh-100 mb-3'} >
                         <>
                             <div className="d-flex justify-content-between ">
-                                <div className={'h3'}>
+                                <div className={'h3 text-dark'}>
                                     {'Candidates'}
                                 </div>
                                 <div><Button text={'Add New'} onClick={addNewCandidateModal.show} /></div>
@@ -199,7 +205,7 @@ function VariantInfo() {
                     </Card>
                 </div>
             </div>
-            <Modal title={'Generate Form'} isOpen={addNewCandidateModal.visible} onClose={addNewCandidateModal.hide}>
+            <Modal title={'Add Candidate'} isOpen={addNewCandidateModal.visible} onClose={addNewCandidateModal.hide}>
                 <div className='col-xl-6'>
                     <Input heading={'First Name'} value={firstName.value} onChange={firstName.onChange} />
                     <Input heading={'Last Name '} value={lastName.value} onChange={lastName.onChange} />

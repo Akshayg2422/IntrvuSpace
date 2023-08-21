@@ -22,25 +22,20 @@ const Breadcrumbs = () => {
       </span>
       <div className='ml-2'>
         {breadCrumb && breadCrumb.length > 0 && breadCrumb.map((item: any, index: number) => {
-          console.log("909090", item)
+          const capitalizedTitle = item && item?.title ? item.title.charAt(0).toUpperCase() + item.title.slice(1) : '';
+
           return (
-            <>
-              <h4>{item && item?.title}</h4>
-            </>
-          )
+            <h4 key={index}>
+              {capitalizedTitle}
+            </h4>
+          );
         })}
+
         <Breadcrumb listClassName="breadcrumb-links" className='mt--1'>
 
           {breadCrumb && breadCrumb.length > 0 && breadCrumb.map((item: any, index: number) => {
+            const lowerCaseName = item && item?.name ? item.name.charAt(0).toLowerCase() + item.name.slice(1) : '';
             return (
-              // <div>
-              //   <div>
-              //     <h6 className='h2 mb-0'>{item?.title}</h6>
-              //     {index === 0
-              //       ? <span style={{ display: 'inline-block' }} className='mx-1'>{item.name}</span>
-              //       : <span style={{ display: 'inline-block' }} className='mx-1'>{separator + item.name}</span>}
-              //   </div>
-              // </div>
               <>
                 <BreadcrumbItem
                   style={{
@@ -48,7 +43,7 @@ const Breadcrumbs = () => {
                   }}
                 >
                   <a href="" onClick={e => e.preventDefault()}>
-                    {item?.name}
+                    {lowerCaseName}
                   </a>
                 </BreadcrumbItem>
               </>
