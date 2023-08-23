@@ -4,7 +4,7 @@ import { useInput, useLoader, useModal, useNavigation, useWindowDimensions } fro
 import { AnalyzingAnimation, GenerateModal } from '@Modules'
 import { createSchedule, generateForm, getKnowledgeGroupVariantDetails, selectedScheduleId } from '@Redux'
 import { ROUTES } from '@Routes'
-import { VALIDATE_ADD_NEW_CANDIDATES_RULES, capitalizeFirstLetter, getDisplayTimeDateMonthYearTime, getMomentObjFromServer, getValidateError, ifObjectExist, validate } from '@Utils'
+import { VALIDATE_ADD_NEW_CANDIDATES_RULES, capitalizeFirstLetter, filteredName, getDisplayTimeDateMonthYearTime, getMomentObjFromServer, getValidateError, ifObjectExist, showMore, validate } from '@Utils'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -20,6 +20,7 @@ function VariantInfo() {
     const dispatch = useDispatch()
     const [status, setStatus] = useState('12-02-2021')
     const generateVariantModal = useModal(false);
+    const [showFullContent, setShowFullContent] = useState(false);
 
 
     useEffect(() => {
@@ -153,7 +154,7 @@ function VariantInfo() {
                 <div className={'m-3'}>
                     <Card className={'col-sm-12 col-lg-12 col-md-12'} >
                         <div className={'row justify-content-between mb-3 mx--4'}>
-                            <div className={'ml-2 h3 text-dark'}>{position}</div>
+                            <div className={'ml-2 h3 text-dark'}>{capitalizeFirstLetter(position)}</div>
                             <div className={'mb-2 mr-2'}><h3 className={'text-primary pointer'} onClick={() => { goTo(ROUTES['designation-module']['questions']) }} >{'View Questions'}</h3></div>
                         </div>
                         <div className={'d-flex flex-column mt--3'}>
@@ -170,9 +171,27 @@ function VariantInfo() {
                                     <i className="pr-2">
                                         <img src={icons.information} alt="Comment Icon" height={'20'} width={'20'} />
                                     </i>
-                                    {details}
+                                    {showFullContent ? details : filteredName(details, 487)}
                                 </span>
+                                {/* Toggle button */}
+                                {details && details.length > 487 && (
+                                    <span
+                                        className="text-primary pointer"
+                                        onClick={() => setShowFullContent(!showFullContent)}
+                                    >
+                                        {showFullContent ? <span className={'h5 text-primary'}> View Less</span> : <span className={'h5 text-primary'}> View More</span>}
+                                    </span>
+                                )}
+
                             </div>
+                            {/* <div className={'row pb-1 text-black'}>
+                                <span style={{ maxWidth: '100vw' }}>
+                                    <i className="pr-2">
+                                        <img src={icons.information} alt="Comment Icon" height={'20'} width={'20'} />
+                                    </i>
+                                    {filteredName(details, 487)}
+                                </span>
+                            </div> */}
                         </div>
                     </Card>
                     <Card className={'mt--3 vh-100 mb-3'} >

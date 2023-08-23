@@ -5,16 +5,16 @@ export const BUILD_TYPE_LIVE_DEMO = 2;
 export const BUILD_TYPE_STAGING = 3;
 export const BUILD_TYPE_LOCAL = 4;
 
-export const BUILD_TYPE = BUILD_TYPE_LOCAL;
+export const BUILD_TYPE = BUILD_TYPE_LIVE_DEMO;
 export const SERVER =
   BUILD_TYPE === BUILD_TYPE_LIVE
     ? 'https://mockinprimary.quantaedat.com'
     : BUILD_TYPE === BUILD_TYPE_LIVE_DEMO
-      ? 'https://d62e-103-118-189-1.ngrok-free.app/'  
+      ? 'https://dc2c-103-118-189-10.ngrok-free.app/'
       : BUILD_TYPE === BUILD_TYPE_LOCAL
-        ? 'http://103.118.188.135:8005'
+        ? 'http://192.168.43.126:8002'
         : BUILD_TYPE === BUILD_TYPE_STAGING
-          ? 'http://192.168.171.204:8002'
+          ? 'http://103.118.188.135:8005'
           : 'http://localhost:8000'
 
 
