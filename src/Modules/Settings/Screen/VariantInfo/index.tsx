@@ -166,15 +166,15 @@ function VariantInfo() {
                                     Experience with {experience} years
                                 </span>
                             </div>
-                            <div className={'row pb-1 text-black'}>
+                            <div className={'row pb-1 text-black font-weight-500'}>
                                 <span style={{ maxWidth: '100vw' }}>
                                     <i className="pr-2">
                                         <img src={icons.information} alt="Comment Icon" height={'20'} width={'20'} />
                                     </i>
-                                    {showFullContent ? details : filteredName(details, 487)}
+                                    {showFullContent ? details : filteredName(details, 480)}
                                 </span>
                                 {/* Toggle button */}
-                                {details && details.length > 487 && (
+                                {details && details.length > 480 && (
                                     <span
                                         className="text-primary pointer"
                                         onClick={() => setShowFullContent(!showFullContent)}
