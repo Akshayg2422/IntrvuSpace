@@ -6,6 +6,7 @@ import { icons } from '@Assets'
 import { Card, CardBody, CardHeader } from 'reactstrap'
 
 function DesignationItem({ item, onAdd, onEdit, onView }: DesignationItemProps) {
+    console.log('DesignationItem---->',item)
 
     const { name, knowledge_group_variant } = item
     const MENU = [{ id: 0, name: "Edit", icon: icons.edit }]
@@ -46,7 +47,8 @@ function DesignationItem({ item, onAdd, onEdit, onView }: DesignationItemProps) 
                                 return (
                                     <div
                                         key={id}
-                                        className={`${isFirst ? '' : 'my-2'} row pointer mx-1`}>
+                                        className={`${isFirst ? '' : 'my-2'} row pointer mx-1`}
+                                        >
                                         <small className='text-sm col'
                                             onClick={onView ?
                                                 (e) => {

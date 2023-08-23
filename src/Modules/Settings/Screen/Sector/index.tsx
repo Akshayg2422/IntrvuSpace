@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { createSector, getSectors, getStartChat } from '@Redux';
 import { useInput, useLoader, useModal } from '@Hooks';
 import { translate } from "@I18n";
-import { Button, Card, CommonTable, Image, ImagePicker, Input, Modal, showToast } from '@Components';
-import { ADD_SECTOR_RULES, getPhoto, getValidateError, ifObjectExist, validate,filteredName } from '@Utils';
+import { Back, Button, Card, CommonTable, Image, ImagePicker, Input, Modal, showToast } from '@Components';
+import { ADD_SECTOR_RULES, getPhoto, getValidateError, ifObjectExist, validate, filteredName } from '@Utils';
 
 
 function Sector() {
@@ -85,7 +85,8 @@ function Sector() {
   return (
     <>
       <div className='container-fluid'>
-        <div className="row justify-content-end m-2 mr--2 mb-3">
+        <div className="row justify-content-between mt-2 pl-2 mr--2 mb-3">
+          <Back />
           <Button
             className={'text-white shadow-none'}
             size={'sm'}
@@ -95,7 +96,7 @@ function Sector() {
             }}
           />
         </div>
-        <div className='row px-0  mx--4'> 
+        <div className='row px-0  mx--4'>
           <div className='col-sm-12 px-0'>
             <CommonTable
               card
