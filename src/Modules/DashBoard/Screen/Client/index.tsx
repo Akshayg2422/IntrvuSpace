@@ -9,15 +9,15 @@ function Clients() {
 
     const search = useInput('');
     const INTERVIEW_TYPE = [
-        {
-            id: 1, title: 'From Collection'
-        },
+        // {
+        //     id: 1, title: 'From Collection'
+        // },
         {
             id: 2, title: 'From JD'
         },
-        {
-            id: 3, title: 'From Skills'
-        }
+        // {
+        //     id: 3, title: 'From Skills'
+        // }
     ]
 
     const dispatch = useDispatch()
@@ -27,20 +27,20 @@ function Clients() {
 
     function renderComponent() {
 
-        let component = <FromCollection />
+        let component = <FromJD />
 
-        switch (selectedSection) {
-            case 0:
-                component = <FromCollection />
-                break;
-            case 1:
-                component = <FromJD />
-                break;
-            case 2:
-                component = <FromSkills />
-                break;
+        // switch (selectedSection) {
+        //     case 0:
+        //         component = <FromCollection />
+        //         break;
+        //     case 1:
+        //         component = <FromJD />
+        //         break;
+        //     case 2:
+        //         component = <FromSkills />
+        //         break;
 
-        }
+        // }
         return component;
     }
 
@@ -50,7 +50,7 @@ function Clients() {
             <TopNavbar />
             <div className={`container-fluid mt-7`}>
                 <div className='row align-items-center'>
-                    <div className='col-sm-5 mb-sm-0 mb-2 px-2'>
+                    <div className='col-sm-9 mb-sm-0 mb-2 px-2'>
                         <SearchInput defaultValue={search.value} onSearch={search.set} />
                     </div>
 
