@@ -2,10 +2,11 @@ import { Button, Card, Divider, Modal, TextArea, Input, showToast } from '@Compo
 import { createNewJdSchedule, getJdItemList, postJdVariant, selectedScheduleId } from '@Redux';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useInput, useNavigation, useModal } from '@Hooks';
+import { useInput, useNavigation, useModal, useWindowDimensions } from '@Hooks';
 import { AnalyzingAnimation, GenerateModal } from '@Modules';
 import { ROUTES } from '@Routes';
-import { validate, FROM_JD_RULES, ifObjectExist, getValidateError } from '@Utils';
+import { validate, FROM_JD_RULES, ifObjectExist, getValidateError, filteredName } from '@Utils';
+import { icons } from '@Assets';
 
 
 function FromJD() {
@@ -26,6 +27,8 @@ function FromJD() {
     const completedModal = useModal(false);
     const [scheduleId, setScheduleId] = useState(undefined)
     const jdScheduleModal = useModal(false);
+    const [showFullContent, setShowFullContent] = useState(false);
+    const { height } = useWindowDimensions()
 
 
 
@@ -157,65 +160,121 @@ function FromJD() {
                 {
                     <div className={'row mt-3'}>
                         {jdItem && jdItem.length > 0 && jdItem.map(item => {
-                            const { name, description, schedules } = item
+                            const { job_description, schedules, sector } = item
+                            console.log(job_description?.details.length)
                             const isTryAgain = schedules && schedules.length > 0 && schedules.every((each: any) => {
                                 return each.is_complete
                             })
 
                             const knowledgeId = jdItem[0].id;
                             return (
-                                <div className='col-xl-4 mt--3 px-2' >
-                                    <Card className="overflow-auto overflow-hide scroll-y" style={{
-                                        height: '350px',
+                                <div className='col-sm-12 col-md-12 col-lg-12 mt--3 px-2' >
+                                    <Card className="" style={{
+                                        height: height - 233,
                                     }}>
-                                        <h4 className='mb-0 pointer'>{name}</h4>
-                                        <Divider className={'mx--4'} space={'3'} />
-                                        <div
-                                            className="overflow-auto overflow-hide scroll-y" style={{
-                                                height: '270px',
-                                            }}>
-                                            <small className='text-sm text-muted'>{description}</small>
-
-                                            {isTryAgain && <div className='mt-2'>
+                                        <div className={'d-flex justify-content-between'}>
+                                            <h3 className='mb-0 pointer text-black mb-1'>{job_description?.position}</h3>
+                                            {isTryAgain && <div className=''>
                                                 <Button
-                                                    block
-                                                    text={'Try Another Interview'}
+                                                    size={'sm'}
+                                                    text={'Try Another'}
                                                     onClick={() => {
                                                         createNewJdScheduleApiHandler(knowledgeId);
                                                     }} />
                                             </div>}
+                                        </div>
+                                        <h5 className='mb-0 pointer text-black mb-1'>{sector}</h5>
 
-                                            <div className='py-3'>
+                                        <div
+                                            className="col-sm-12 col-md-12 col-lg-12 m-0 p-0 overflow-auto overflow-hide scroll-y mt-2" style={{
+                                                height: '249px',
+                                            }}>
+                                            <span className={"text-black"}>
+                                                <i className="pr-2">
+                                                    <img src={icons.briefCaseBlack} alt="Comment Icon" height={'20'} width={'20'} />
+                                                </i>
+                                                <small className='text-sm text-black'>Experience with {job_description?.experience} years</small>
+                                            </span>
+
+                                            <div className={'pb-1 pt-1 text-black '}>
+
+                                                <div className={'m-0 p-0'}>
+                                                    <i className="pr-2">
+                                                        <img src={icons.information} alt="Comment Icon" height={'20'} width={'20'} />
+                                                    </i>
+                                                    {showFullContent ? job_description?.details : filteredName(job_description?.details, 280)}
+                                                    {job_description?.details && job_description?.details.length > 280 && (
+                                                        <span
+                                                            className="text-primary pointer"
+                                                            onClick={() => setShowFullContent(!showFullContent)}
+                                                        >
+                                                            {showFullContent ? <span className={'h5 text-primary'}> View Less</span> : <span className={'h5 text-primary'}> View More</span>}
+                                                        </span>
+                                                    )}
+                                                </div>
+                                            </div>
+
+                                            <Divider className={''} space={'2'} />
+                                            {/* {isTryAgain && <div className='mt-2'>
+                                                <Button
+                                                    color={'white'}
+                                                    size={'sm'}
+                                                    text={'Try Another'}
+                                                    onClick={() => {
+                                                        createNewJdScheduleApiHandler(knowledgeId);
+                                                    }} />
+                                            </div>} */}
+
+                                            <div className='py-3 col-sm-12 col-md-12 col-lg-12 mt--3'>
                                                 {
                                                     schedules &&
                                                     schedules.length > 0 &&
-                                                    schedules.map((each: any, index: number) => {
+                                                    schedules.slice().reverse().map((each: any, index: number) => {
                                                         console.log("909090909090", each)
+                                                        console.log('indexxxxxxxxxxxxxxxxx', index)
+                                                        console.log('schedule.lengthtttttttttttt,', schedules.length - 1)
 
-                                                        const { is_complete, is_started, is_report_complete, id } = each;
+                                                        const { is_complete, is_started, is_report_complete, id, created_at } = each;
+
+                                                        const getDisplayTimeFromMoment = (timestamp: any) => {
+                                                            const currentTime = new Date().getTime();
+                                                            const createdAt = new Date(timestamp).getTime();
+                                                            const timeDifference = Math.floor((currentTime - createdAt) / (1000 * 60));
+
+                                                            if (timeDifference < 60) {
+                                                                return `${timeDifference} mins ago`;
+                                                            } else if (timeDifference < 1440) {
+                                                                const hours = Math.floor(timeDifference / 60);
+                                                                return `${hours} ${hours === 1 ? 'hour' : 'hours'} ago`;
+                                                            } else {
+                                                                const days = Math.floor(timeDifference / 1440);
+                                                                return `${days} ${days === 1 ? 'day' : 'days'} ago`;
+                                                            }
+                                                        };
+
+
                                                         return (
                                                             <>
-                                                                <div className='mt-2'>
-                                                                    <h5 className="text-uppercase text-muted mb-0 card-title">{"Interview " + (index + 1)}</h5>
+                                                                <div className='row justify-content-between'>
+                                                                    <h5 className="text-black col m-0 p-0">{"Interview " + (index + 1)}</h5>
+                                                                    <h5 className="text-black col">{"Created at: " + (is_complete ? "Completed" : getDisplayTimeFromMoment(created_at))}</h5>
                                                                     {!is_started &&
-                                                                        <div className='mt-2'>
-                                                                            <Button block text={'Start Interview'} onClick={() => {
+                                                                        <div className=''>
+                                                                            <Button text={'Start Interview'} onClick={() => {
                                                                                 proceedInterview(id);
                                                                             }} />
                                                                         </div>}
-                                                                    {(is_started && !is_complete) && <div className='mt-2'>
+                                                                    {(is_started && !is_complete) && <div className=''>
                                                                         <Button
-                                                                            block
-                                                                            text={'Resume Interview'}
+                                                                            text={'Resume Intervi'}
                                                                             onClick={() => {
                                                                                 proceedInterview(id);
                                                                             }}
                                                                         />
                                                                     </div>}
                                                                     {is_report_complete &&
-                                                                        <div className='mt-2'>
+                                                                        <div className=''>
                                                                             <Button
-                                                                                block
                                                                                 text={'View Report'}
                                                                                 onClick={() => {
                                                                                     proceedReport(id);
@@ -225,8 +284,12 @@ function FromJD() {
                                                                     {is_complete && !is_report_complete && <div>
                                                                         <span className="name mb-0 text-sm">Generating Report ...</span>
                                                                     </div>}
+
+
                                                                 </div>
+                                                                {index !== schedules.length && <Divider className={'row'} space={"2"} />}
                                                             </>
+
                                                         )
                                                     })
                                                 }
