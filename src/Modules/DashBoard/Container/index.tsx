@@ -16,6 +16,7 @@ export * from './ContactUs'
 export * from './Footer'
 export * from './Guidelines'
 export * from './CallHeader'
+export * from './UploadJdCard'
 
 
 

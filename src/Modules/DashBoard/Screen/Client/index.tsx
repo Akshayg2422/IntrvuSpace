@@ -8,17 +8,17 @@ import { useSelector, useDispatch } from 'react-redux'
 function Clients() {
 
     const search = useInput('');
-    const INTERVIEW_TYPE = [
-        // {
-        //     id: 1, title: 'From Collection'
-        // },
-        {
-            id: 2, title: 'From JD'
-        },
-        // {
-        //     id: 3, title: 'From Skills'
-        // }
-    ]
+    // const INTERVIEW_TYPE = [
+    //     {
+    //         id: 1, title: 'From Collection'
+    //     },
+    //     {
+    //         id: 2, title: 'From JD'
+    //     },
+    //     {
+    //         id: 3, title: 'From Skills'
+    //     }
+    // ]
 
     const dispatch = useDispatch()
     const { selectedSection } = useSelector((state: any) => state.DashboardReducer)
@@ -50,11 +50,11 @@ function Clients() {
             <TopNavbar />
             <div className={`container-fluid mt-7`}>
                 <div className='row align-items-center'>
-                    <div className='col-sm-9 mb-sm-0 mb-2 px-2'>
+                    {/* <div className='col-sm-9 mb-sm-0 mb-2 px-2'>
                         <SearchInput defaultValue={search.value} onSearch={search.set} />
-                    </div>
+                    </div> */}
 
-                    {
+                    {/* {
                         INTERVIEW_TYPE.map((interview: any, index: number) => {
                             const { title } = interview;
                             const selected = index === selectedSection
@@ -73,7 +73,7 @@ function Clients() {
                                 </div>
                             )
                         })
-                    }
+                    } */}
                 </div >
                 {
                     renderComponent()
