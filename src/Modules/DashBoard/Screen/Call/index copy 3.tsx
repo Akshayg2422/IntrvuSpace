@@ -20,7 +20,6 @@ const compare_moment_format = 'YYYY-MM-DDHH:mm:ss';
 
 function Call() {
 
-
     const speakingShouldProcess = useRef<any>(false);
 
     const chunks = useRef<Blob[]>([])
@@ -38,17 +37,15 @@ function Call() {
     const lastSpokeActiveTime = useRef<any>(moment().format(compare_moment_format))
     const [lastTranscriptionStartTime, setLastTranscriptionStartTime] = useState<any>(moment().format(compare_moment_format))
     const [lastTranscriptionEndTime, setLastTranscriptionEndTime] = useState<any>(moment().format(compare_moment_format))
-
+    
     const [interviewStarted, setInterviewStarted] = useState<boolean>(false)
 
     const [voiceUp, setVoiceUp] = useState<boolean>(false)
     const voiceUpCount = useRef<any>(0);
     const voiceUpTime = useRef<any>(moment());
     const transcriptionReferenceId = useRef<any>();
-    const audioElementRef = useRef<any>();
     const activeResponseTextId = useRef<any>(generateRandomID());
-    // const { isTtfSpeaking, speak } = useTextToSpeech();
-    const [isTtfSpeaking, setIsTtfSpeaking] = useState<boolean>(false)
+    const { isTtfSpeaking, speak } = useTextToSpeech();
 
     function generateRandomID() {
         const min = 100000;
@@ -57,37 +54,6 @@ function Call() {
         return randomID;
     }
 
-
-
-    const speak = (ttsBase64) => {
-
-        setIsTtfSpeaking(true)
-
-        const ttsData = Array.from(atob(ttsBase64));
-        const audioBlob = new Blob([new Uint8Array(ttsData.map(char => char.charCodeAt(0)))], { type: 'audio/wav' });
-
-        if (audioElementRef.current && !audioElementRef.current.paused) {
-            audioElementRef.current.pause();
-            audioElementRef.current.currentTime = 0;
-          }
-
-        // Create an audio element and play the received TTS audio
-        audioElementRef.current = new Audio(URL.createObjectURL(audioBlob));
-        audioElementRef.current.onerror = function (event) {
-            console.error("Audio An error occurred:", event);
-            setIsTtfSpeaking(false)
-        };
-        
-        audioElementRef.current.onloadstart = function () {
-            console.log("Audio playback started.");
-        };
-        audioElementRef.current.onended = function () {
-            console.log("Audio playback ended.");
-            setIsTtfSpeaking(false)
-        };
-        audioElementRef.current.play();
-
-    }
 
     const activeResponseText = useRef<any>('start');
     // const [activeResponseText, setActiveResponseText] = useState('start');
@@ -117,12 +83,15 @@ function Call() {
         setProcessCallInprogress(false)
         console.log("SpeakText01", response)
         // {"next_step":[{"response_type":"ANSWER_IN_PROGRESS","reason":"No response from interviewee yet","question_id":"47912654-738b-4395-a8c4-3e1a001480d8","message_type":"SPEAK","response_text":"","message":""}]}
-        const { message_b64, message_type, response_type } = response.next_step[0]
+        const {response_text, message_type, response_type } = response.next_step[0]
 
-        if (message_type === "SPEAK" && message_b64 && message_b64 !== '' && window.location.pathname === `/interview/${schedule_id}`) {
+        if (message_type === "SPEAK" && response_text !== '' && window.location.pathname === `/interview/${schedule_id}`) {
             // proceedStopListening()
             resetLastMessage()
-            speak(message_b64);
+            console.log("SpeakText02",)
+            console.log("SpeakText",response_text)
+
+            speak(response_text);
         }
 
         if (response_type === 'INTERVIEWER_END_CALL') {
@@ -145,14 +114,14 @@ function Call() {
             socket.addEventListener('close', () => {
                 console.log('WebSocket connection closed');
             });
-
+    
             // Listen for messages
             socket.onmessage = event => {
-                console.log("Received001")
-                const response = JSON.parse(event.data);
-                proceedHandleResponseV1(response)
-                // Handle the response data here
-                console.log('Received002:', response);
+            console.log("Received001")
+            const response = JSON.parse(event.data);
+            proceedHandleResponseV1(response)
+            // Handle the response data here
+            console.log('Received002:', response);
             };
         }
 
@@ -187,17 +156,18 @@ function Call() {
                                 schedule_id: schedule_id,
                                 blob_data: base64String,
                                 is_speaking: speakingShouldProcess.current,
-                                is_tts_speaking: ttsRef.current
+                                is_tts_speaking:ttsRef.current
                             }
                             socketRef.current.send(JSON.stringify(syncD));
                         }
-                        else {
+                        else{
                             // console.log("t0000000000000000000015")
                         }
                     }
                     reader.readAsDataURL(file);
                 }
-                else {
+                else
+                {
                     // console.log("t0000000000000000000017")
 
                 }
@@ -257,6 +227,9 @@ function Call() {
             )
         )
     }
+
+
+
 
     useEffect(() => {
         return () => {
@@ -407,7 +380,7 @@ function Call() {
                         {
                             mimeType: 'audio/webm',
                             type: 'audio',
-                            timeSlice: 500,
+                            timeSlice:500,
                             recorderType: StereoAudioRecorder,
                             ondataavailable: onDataAvailable,
                             sampleRate: 44100,
@@ -578,9 +551,9 @@ function Call() {
         setProcessCallInprogress(false)
         resetLastMessage()
         setInterviewStarted(true)
-        setTimeout(() => {
-            validateProceedStartListening()
-        }, 5000)
+        setTimeout(()=>{
+        validateProceedStartListening()
+        },5000)
     }
 
     function endInterviewHandler() {
@@ -606,6 +579,7 @@ function Call() {
         <div className='h-100vh' style={{
             backgroundColor: "#1B1B1B"
         }}>
+
             {scheduleInfo &&
                 <>
                     {interviewStarted &&
@@ -639,7 +613,7 @@ function Call() {
                         </>
                     }
                     {
-                        !interviewStarted ?
+                        !interviewStarted  ?
 
                             <Guidelines
                                 scheduleInfo={scheduleInfo}
