@@ -132,7 +132,7 @@ function Call() {
     useEffect(() => {
         // Create the WebSocket connection only if it's not already established
         if (!socketRef.current) {
-            const socket = new WebSocket('ws://mockeazyprimary.leorainfotech.in/aaa');
+            const socket = new WebSocket('wss://mockeazyprimary.leorainfotech.in/aaa');
             socketRef.current = socket; // Store the WebSocket instance in the ref
 
             socket.addEventListener('open', () => {
