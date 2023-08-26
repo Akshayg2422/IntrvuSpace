@@ -1,29 +1,24 @@
-import { Modal, showToast, Button, Image, AnimatedImage, Spinner } from '@Components';
-import { useModal, useNavigation, useTextToSpeech } from '@Hooks';
-import { Guidelines, CallHeader } from '@Modules';
-import { getScheduleBasicInfo, getStartChat, screenRecordingPermission } from '@Redux';
-import { ROUTES } from '@Routes';
-import hark from 'hark';
+import { AnimatedImage, Button, Spinner } from '@Components';
+import { useLoader, useModal, useNavigation } from '@Hooks';
+import { CallHeader, Guidelines } from '@Modules';
+import { getScheduleBasicInfo } from '@Redux';
+import { capitalizeFirstLetter, getShortName } from '@Utils';
+import type { Harker } from 'hark';
+import type { Encoder } from 'lamejs';
+import moment from 'moment';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { getShortName, capitalizeFirstLetter } from '@Utils'
-import moment from 'moment';
-import { useLoader } from '@Hooks'
-import type { RawAxiosRequestHeaders } from 'axios'
-import type { Harker } from 'hark'
-import type { Encoder } from 'lamejs'
-import axios from 'axios';
-import { Options, RecordRTCPromisesHandler, MediaStreamRecorder, StereoAudioRecorder } from 'recordrtc'
-import {useScreenRecorder} from './useScreenRecorder'
+import { RecordRTCPromisesHandler, StereoAudioRecorder } from 'recordrtc';
+import { useScreenRecorder } from './useScreenRecorder';
 const compare_moment_format = 'YYYY-MM-DDHH:mm:ss';
 
 function Call() {
 
     const {
         startScreenRecording,
-        
-        } = useScreenRecorder();
+
+    } = useScreenRecorder();
 
 
     const speakingShouldProcess = useRef<any>(false);
@@ -62,10 +57,6 @@ function Call() {
         return randomID;
     }
 
-
-    // useEffect(()=>{
-    //     startScreenRecording()
-    // },[])
     const speak = (ttsBase64) => {
 
         setIsTtfSpeaking(true)
@@ -76,7 +67,7 @@ function Call() {
         if (audioElementRef.current && !audioElementRef.current.paused) {
             audioElementRef.current.pause();
             audioElementRef.current.currentTime = 0;
-          }
+        }
 
         // Create an audio element and play the received TTS audio
         audioElementRef.current = new Audio(URL.createObjectURL(audioBlob));
@@ -84,7 +75,7 @@ function Call() {
             console.error("Audio An error occurred:", event);
             setIsTtfSpeaking(false)
         };
-        
+
         audioElementRef.current.onloadstart = function () {
             console.log("Audio playback started.");
         };
@@ -124,11 +115,10 @@ function Call() {
         setProcessCallInprogress(false)
         // console.log("SpeakText01", response)
         const { data, rt } = response.next_step[0]
-        if ( data && data !== '' && window.location.pathname === `/interview/${schedule_id}`) {
+        if (data && data !== '' && window.location.pathname === `/interview/${schedule_id}`) {
             resetLastMessage()
             speak(data);
         }
-        console.log("close started1", rt, rt === "INTERVIEWER_END_CALL")
 
         if (rt === "INTERVIEWER_END_CALL") {
             console.log("close started2")
@@ -142,7 +132,7 @@ function Call() {
     useEffect(() => {
         // Create the WebSocket connection only if it's not already established
         if (!socketRef.current) {
-            const socket = new WebSocket('ws://localhost:8012/aaa');
+            const socket = new WebSocket('ws://mockeazyprimary.leorainfotech.in/aaa');
             socketRef.current = socket; // Store the WebSocket instance in the ref
 
             socket.addEventListener('open', () => {
@@ -185,7 +175,6 @@ function Call() {
 
                     const reader = new FileReader();
                     reader.onload = () => {
-                        // console.log("t0000000000000000000014")
 
                         if (typeof reader.result === 'string') {
                             const base64String = reader.result.split(',')[1]; // Extract the base64 part
@@ -224,7 +213,7 @@ function Call() {
 
     const loader = useLoader(false);
     const proceedCallLoader = useLoader(false);
-    const [showCam, setShowCam] = useState(false);
+    const [showCam, setShowCam] = useState(true);
     const [mute, setMute] = useState(false);
     const ttsRef = useRef<any>(false);
 
@@ -611,39 +600,34 @@ function Call() {
 
     return (
         <div className='h-100vh' style={{
-            backgroundColor: "#1B1B1B"
+            backgroundColor: !interviewStarted ? "#FFFFF" : "#1B1B1B"
         }}>
             {scheduleInfo &&
                 <>
                     {interviewStarted &&
-                        <>
-
-                            <CallHeader webcam={showCam} mic={mute} onWebCamChange={webCamHandler} onMicChange={micMuteHandler} onEndClick={endInterviewHandler} />
-                            <div style={{ backgroundColor: 'red' }} ref={videoRecorderRef}>
-                                <div className='h-100 d-flex justify-content-center align-items-center'>
-                                    <div>
-                                        <div className='row  justify-content-center align-items-center'>
-                                            <div className='text-center col-5'>
-                                                <AnimatedImage show={false} name={getShortName(scheduleInfo?.interviewer_name)} shouldBlink={interviewer_state === IV_SPEAKING} />
-                                            </div>
-                                            <div className='mx-4'></div>
-                                            <div className='text-center col-5'>
-                                                <AnimatedImage show={false} name={getShortName(scheduleInfo?.interviewee_name)} shouldBlink={interviewee_state === IE_SPEAKING} showWebCam={showCam} />
-                                            </div>
-                                            <div className='text-center col-5'>
-                                                <h3 className='display-3 mb-4 text-white'>{capitalizeFirstLetter(scheduleInfo?.interviewer_name)}</h3>
-                                            </div>
-                                            <div className='mx-4'></div>
-                                            <div className='text-center col-5'>
-                                                <h3 className='display-3 mb-4 text-white'>{capitalizeFirstLetter(scheduleInfo?.interviewee_name)}</h3>
-                                            </div>
+                        <div className='row justify-content-center align-items-center h-100'>
+                            <div ref={videoRecorderRef}>
+                                <div className='d-flex justify-content-center align-items-center'>
+                                    <div className='row  justify-content-center align-items-center'>
+                                        <div className='text-center col-5'>
+                                            <AnimatedImage show={false} name={getShortName(scheduleInfo?.interviewer_name)} shouldBlink={interviewer_state === IV_SPEAKING} />
+                                        </div>
+                                        <div className='mx-4'></div>
+                                        <div className='text-center col-5'>
+                                            <AnimatedImage show={false} name={getShortName(scheduleInfo?.interviewee_name)} shouldBlink={interviewee_state === IE_SPEAKING} showWebCam={showCam} />
+                                        </div>
+                                        <div className='text-center col-5'>
+                                            <h3 className='display-3 mb-4 text-white'>{capitalizeFirstLetter(scheduleInfo?.interviewer_name)}</h3>
+                                        </div>
+                                        <div className='mx-4'></div>
+                                        <div className='text-center col-5'>
+                                            <h3 className='display-3 mb-4 text-white'>{capitalizeFirstLetter(scheduleInfo?.interviewee_name)}</h3>
                                         </div>
                                     </div>
-
                                 </div>
+                                <CallHeader webcam={showCam} mic={mute} onWebCamChange={webCamHandler} onMicChange={micMuteHandler} onEndClick={endInterviewHandler} />
                             </div>
-
-                        </>
+                        </div>
                     }
                     {
                         !interviewStarted ?
