@@ -498,7 +498,6 @@ export const createScheduleFailure = (error: any) => {
 // setting remove side nav
 
 export const settingSideNavRemove = (params: any) => {
-  console.log("params====>", params)
   return {
     type: ActionTypes.REMOVE_SIDE_NAV,
     payload: params
@@ -604,6 +603,7 @@ export const getJdItemList = (params: any) => {
   }
 }
 export const getJdItemListSuccess = (response: any) => {
+  
   return {
     type: ActionTypes.GET_JD_ITEM_LIST_SUCCESS,
     payload: response
@@ -634,7 +634,7 @@ export const getScheduleBasicInfoSuccess = (response: any) => {
 
 export const getScheduleBasicInfoFailure = (error: any) => {
   return {
-    type: ActionTypes.GET_SCHEDULE_BASIC_INFO_SUCCESS,
+    type: ActionTypes.GET_SCHEDULE_BASIC_INFO_FAILURE,
     payload: error
   }
 }
@@ -660,5 +660,50 @@ export const setSelectedSection = (params: any) => {
   return {
     type: ActionTypes.SET_SELECTED_SECTION,
     payload: params,
+  }
+}
+
+// create corporate variant
+
+
+export const createCorporateVariant = (params: any) => {
+  return {
+    type: ActionTypes.CREATE_CORPORATE_VARIANT,
+    payload: params,
+  }
+}
+export const createCorporateVariantSuccess = (response: any) => {
+  return {
+    type: ActionTypes.CREATE_CORPORATE_VARIANT_SUCCESS,
+    payload: response
+  }
+}
+
+export const createCorporateVariantFailure = (error: any) => {
+  return {
+    type: ActionTypes.CREATE_CORPORATE_VARIANT_FAILURE,
+    payload: error
+  }
+}
+
+// GET_KNOWLEDGE_GROUP_VARIANT_DETAILS
+
+export const getKnowledgeGroupVariantDetails = (params: any) => {
+  return {
+    type: ActionTypes.GET_KNOWLEDGE_GROUP_VARIANT_DETAILS,
+    payload: params,
+  }
+}
+export const getKnowledgeGroupVariantDetailsSuccess = (response: any) => {
+  return {
+    type: ActionTypes.GET_KNOWLEDGE_GROUP_VARIANT_DETAILS_SUCCESS,
+    payload: response
+  }
+}
+
+export const getKnowledgeGroupVariantDetailsFailure = (error: any) => {
+  return {
+    type: ActionTypes.GET_KNOWLEDGE_GROUP_VARIANT_DETAILS_FAILURE,
+    payload: error
   }
 }

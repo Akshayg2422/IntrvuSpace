@@ -30,7 +30,8 @@ const initialState: DashboardProp = {
   jdVariantData: undefined,
   jdItem: undefined,
   scheduleInfo: undefined,
-  selectedSection: 0
+  selectedSection: 0,
+  variantDetails: undefined,
 };
 
 const DashboardReducer = (state = initialState, action: any) => {
@@ -327,7 +328,8 @@ const DashboardReducer = (state = initialState, action: any) => {
       state = { ...state, jdItem: undefined };
       break;
     case ActionTypes.GET_JD_ITEM_LIST_SUCCESS:
-      state = { ...state, jdItem: action.payload.details.knowledege_groups };
+      console.log('==========>', action.payload.details);
+      state = { ...state, jdItem: action.payload.details?.jd_items };
       break;
     case ActionTypes.GET_JD_ITEM_LIST_FAILURE:
       state = { ...state, jdItem: undefined };
@@ -339,10 +341,22 @@ const DashboardReducer = (state = initialState, action: any) => {
       state = { ...state, scheduleInfo: undefined };
       break;
     case ActionTypes.GET_SCHEDULE_BASIC_INFO_SUCCESS:
-      state = { ...state, scheduleInfo: action.payload };
+      state = { ...state, scheduleInfo: action.payload?.details?.schedule_details };
       break;
     case ActionTypes.GET_SCHEDULE_BASIC_INFO_FAILURE:
       state = { ...state, scheduleInfo: undefined };
+      break;
+
+    // create corporate variant
+
+    case ActionTypes.CREATE_CORPORATE_VARIANT:
+      state = { ...state };
+      break;
+    case ActionTypes.CREATE_CORPORATE_VARIANT_SUCCESS:
+      state = { ...state, };
+      break;
+    case ActionTypes.CREATE_CORPORATE_VARIANT_FAILURE:
+      state = { ...state };
       break;
 
 
@@ -353,6 +367,19 @@ const DashboardReducer = (state = initialState, action: any) => {
     case ActionTypes.SET_SELECTED_SECTION:
       state = { ...state, selectedSection: action.payload };
       break;
+
+    // GET_KNOWLEDGE_GROUP_VARIANT_DETAILS
+
+    case ActionTypes.GET_KNOWLEDGE_GROUP_VARIANT_DETAILS:
+      state = { ...state, variantDetails: undefined };
+      break;
+    case ActionTypes.GET_KNOWLEDGE_GROUP_VARIANT_DETAILS_SUCCESS:
+      state = { ...state, variantDetails: action.payload };
+      break;
+    case ActionTypes.GET_KNOWLEDGE_GROUP_VARIANT_DETAILS_FAILURE:
+      state = { ...state, variantDetails: undefined };
+      break;
+
 
     default:
       state = state;

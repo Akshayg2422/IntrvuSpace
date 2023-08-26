@@ -109,5 +109,12 @@ export const getScheduleBasicInfo = payload => post(URL.URL_GET_SCHEDULE_BASIC_I
  */
 export const createNewJdSchedule = payload => post(URL.URL_CREATE_NEW_JD_SCHEDULE, payload, {});
 
+//
 
+// createQuestionForm
+export const createCorporateVariantForm = payload => post(URL.URL_CREATE_CORPORATE_VARIANT, payload, {});
+
+// URL_GET_KNOWLEDGE_GROUP_VARIANT_DETAILS
+
+export const getKnowledgeGroupVariantDetails = payload => post(URL.URL_GET_KNOWLEDGE_GROUP_VARIANT_DETAILS, payload, {});
 

@@ -142,3 +142,50 @@ export const FROM_JD_RULES = {
     presence: { allowEmpty: false, message: "Job Description cannot be empty" },
   },
 }
+
+export const CREATE_CORPORATE_RULES = {
+  position: {
+    presence: { message: "Role name cannot be empty" },
+    length: { minimum: 3, message: "Role minimum 3 chars" },
+  },
+  experience: {
+    presence: { allowEmpty: false, message: "Experience cannot be empty" },
+  },
+  jd: {
+    presence: { allowEmpty: false, message: "Job Description cannot be empty" },
+  },
+}
+
+export const CREATE_KNOWLEDGE_GROUP_VARIANT_RULES = {
+  position: {
+    presence: { message: "Position name cannot be empty" },
+    length: { minimum: 3, message: "Position minimum 3 chars" },
+  },
+  experience: {
+    presence: { allowEmpty: false, message: "Experience cannot be empty" },
+  },
+  jd: {
+    presence: { allowEmpty: false, message: "Job Description cannot be empty" },
+  },
+}
+
+export const VALIDATE_ADD_NEW_CANDIDATES_RULES = {
+  first_name: {
+    presence: { message: "First name cannot be empty" },
+    length: { minimum: 3, message: "First name minimum 3 chars" },
+  },
+  last_name: {
+    presence: { message: "Last name cannot be empty" },
+    length: { minimum: 1, message: "First name minimum 3 chars" },
+  },
+  email: {
+    email: { message: "Doesn't look like a valid email" },
+  },
+  mobile_number: {
+    presence: { message: "Mobile number cannot be empty" },
+    length: { is: 10, message: "Mobile number should be 10 number" },
+  },
+
+}
+
+

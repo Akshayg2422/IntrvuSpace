@@ -27,7 +27,7 @@ function Sidebar({ toggleSideNav, sideNavOpen, routes, logo, rtlActive }: Sideba
   const dispatch = useDispatch()
   const location = useLocation();
   const { removeSideNav } = useSelector((state: any) => state.DashboardReducer)
-  console.log("removeSideNav", removeSideNav)
+
   React.useEffect(() => {
     setState(getCollapseStates(routes));
     // eslint-disable-next-line

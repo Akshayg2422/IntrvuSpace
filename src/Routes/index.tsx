@@ -1,5 +1,5 @@
 import { icons } from '@Assets'
-import { Designation, WeightageCountForm, CreateQuestionForm, Clients, Sector, Questions, Call, Report, QuestionSections, AnalyzingAnimation, Schedules, Login, Otp, Splash, Register, LoginWithOtp, AdminLogin } from '@Modules';
+import { Designation, WeightageCountForm, CreateQuestionForm, Clients, Sector, Questions, Call, Report, QuestionSections, AnalyzingAnimation, Schedules, Login, Otp, Splash, Register, LoginWithOtp, AdminLogin, VariantInfo, PrivacyPolicy, TermsAndConditions,ReturnAndRefund } from '@Modules';
 
 
 
@@ -10,7 +10,10 @@ export const ROUTES = {
     splash: '/',
     loginWithOtp: '/login-with-otp',
     register: '/register',
-    admin_login: '/login-admin'
+    admin_login: '/login-admin',
+    privacy: '/privacy-policy',
+    TermsAndConditions: '/terms-and-condition',
+    ReturnAndRefund: '/return-and-refund'
   },
   'designation-module': {
     Dashboard: "/dashboard",
@@ -25,7 +28,8 @@ export const ROUTES = {
     report: '/report',
     'question-sections': '/question-sections',
     'analyzing-animation': '/analyzing-animation',
-    schedules: '/schedules'
+    schedules: '/schedules',
+    'variant-info': '/variant-info'
   }
 }
 
@@ -60,6 +64,21 @@ export const AUTH_ROUTES = [
     id: 6,
     path: ROUTES['auth-module'].admin_login,
     component: <AdminLogin />
+  },
+  {
+    key: 7,
+    path: ROUTES['auth-module'].privacy,
+    component: <PrivacyPolicy />
+  },
+  {
+    key: 8,
+    path: ROUTES['auth-module'].TermsAndConditions,
+    component: <TermsAndConditions />
+  },
+  {
+    key: 9,
+    path: ROUTES['auth-module'].ReturnAndRefund,
+    component: <ReturnAndRefund/>
   },
 
 
@@ -110,6 +129,11 @@ export const DASHBOARD_ROUTES = [
     id: 9,
     path: ROUTES['designation-module'].report + '/:schedule_id',
     component: <Report />
+  },
+  {
+    id: 10,
+    path: ROUTES['designation-module']['variant-info'],
+    component: <VariantInfo />
   },
 
 ]

@@ -11,9 +11,17 @@ export function ifObjectExist(value: object) {
   return is_valid;
 }
 
-export const filteredName = (value: any, length) => {
+export const filteredName = (value: any, length: number) => {
   if (value?.length > length) {
     return value.substring(0, length).trim() + '...';
+  }
+  else {
+    return value
+  }
+}
+export const showMore = (value: any, length: number) => {
+  if (value?.length > length) {
+    return value.substring(0, length).trim() + '';
   }
   else {
     return value
@@ -65,8 +73,10 @@ export function getArrayFromArrayOfObject(data: Array<any>, key: string) {
   return modifiedArr;
 }
 
+
 export function capitalizeFirstLetter(string: any) {
-  return string.charAt(0).toUpperCase() + string.slice(1);
+  if (string !== undefined && string !== null && string.length > 0)
+    return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 export function stringSlice(string: any, slice: number = 3) {
@@ -153,7 +163,7 @@ export const combineBase64Strings = (stringsArray) => {
 
   const validDecodedArray = decodedArray.filter((item) => item !== null);
 
-  const combinedArray:any = new Uint8Array(
+  const combinedArray: any = new Uint8Array(
     validDecodedArray.reduce((acc, curr) => acc.concat(Array.from(curr)), [])
   );
 
@@ -161,3 +171,30 @@ export const combineBase64Strings = (stringsArray) => {
 
   return combinedBase64;
 };
+
+export async function checkMicrophoneState() {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    const audioTrack = stream.getAudioTracks()[0];
+    return audioTrack.enabled;
+  } catch (error) {
+    console.error('Error accessing microphone:', error);
+    return false; // Microphone is not accessible
+  }
+}
+
+
+export function getShortName(fullName: string) {
+  const names = fullName.split(' ');
+
+  if (names.length === 1) {
+    return names[0].substring(0, 2).toUpperCase();
+  }
+
+  const firstNameInitial = names[0][0].toUpperCase();
+  const lastNameInitial = names[names.length - 1][0].toUpperCase();
+  return `${firstNameInitial}${lastNameInitial}`;
+}
+
+
+

@@ -18,7 +18,7 @@ function LoginSideContent() {
                         maxWidth:  '600px'
                     }}
                 >
-                    Interview App is the easiest way to interview people automatically. Invite people to answer your question spontaneously with their webcam. Where
+                    Interview App is the easiest way to interview people automatically. Invite people to answer your question spontaneously with their webcam.
                 </p>
                 <div className='d-flex justify-content-center align-items-center '>
                     <Image

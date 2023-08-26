@@ -133,16 +133,16 @@ function TopNavbar() {
 
                         {/* <hr className="d-lg-none" /> */}
 
-                        <Nav className="align-items-lg-center ml-lg-auto col justify-content-end" navbar>
+                        <Nav className="align-items-lg-center ml-lg-auto mr--4  justify-content-end" navbar>
                             <NavItem>
                                 <NavLink to="/client" tag={Link}>
-                                    <span className={`nav-link-inner--text  ${'/client' !== pathName ? "text-black" : 'text-primary'}`}>Home</span>
+                                    <span className={`nav-link-inner--text  ${'/client' !== pathName ? "text-black h4" : 'text-primary h4'}`}>Home</span>
                                 </NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink to="/schedules" tag={Link}>
-                                    <span className={`nav-link-inner--text  ${'/schedules' !== pathName ? "text-black" : 'text-primary'}`}>My Schedule</span>
-                                </NavLink>
+                                {/* <NavLink to="/schedules" tag={Link}>
+                                    <span className={`nav-link-inner--text  ${'/schedules' !== pathName ? "text-black h4" : 'text-primary h4'}`}>My Schedule</span>
+                                </NavLink> */}
                             </NavItem>
                             <NavItem className="d-none d-lg-block ml-lg-4">
                                 <div className='row align-items-center m-auto'>

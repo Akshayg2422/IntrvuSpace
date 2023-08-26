@@ -152,7 +152,9 @@ function FromSkills() {
     return (
         <>
             <div>
+                <div className={'mx--1'}>
                 <Button size={'md'} className='mt-3' block text={'Upload key skills and start interview'} onClick={addJdModal.show} />
+                </div>
                 {/* <div
                     style={{
                         paddingTop: '20px'
