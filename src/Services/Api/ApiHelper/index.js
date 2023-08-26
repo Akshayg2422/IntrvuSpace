@@ -63,6 +63,7 @@ export async function post(url, data, config) {
     .post(url, data, {
       ...config,
       headers: headers,
+      withCredentials: true
     })
     .then(response => {
       return response.data;
