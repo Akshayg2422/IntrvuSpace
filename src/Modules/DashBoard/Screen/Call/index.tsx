@@ -132,7 +132,9 @@ function Call() {
     useEffect(() => {
         // Create the WebSocket connection only if it's not already established
         if (!socketRef.current) {
-            const socket = new WebSocket('wss://mockeazyprimary.leorainfotech.in/aaa');
+            // const socket = new WebSocket('ws://192.168.218.204:8012/aaa');
+            const socket = new WebSocket('ws://103.118.188.135:8005/aaa');
+
             socketRef.current = socket; // Store the WebSocket instance in the ref
 
             socket.addEventListener('open', () => {
@@ -625,6 +627,8 @@ function Call() {
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                            <div className='col-6'>
                                 <CallHeader webcam={showCam} mic={mute} onWebCamChange={webCamHandler} onMicChange={micMuteHandler} onEndClick={endInterviewHandler} />
                             </div>
                         </div>
