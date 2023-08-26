@@ -41,7 +41,7 @@ function PrivacyPolicy() {
                 <div className="col-lg-12 col-md-10 mx-auto pb-5">
                   <div className="card">
                     <div className="card-header bg-gradient-primary p-5 position-relative">
-                      <h1 className="text-white mb-0">Privacya & Policy</h1>
+                      <h1 className="text-white mb-0">Privacy & Policy</h1>
                       <p className="text-white opacity-8 mb-0">Last modified: Aug 26 2023</p>
                     </div>
                     <div className="card-body p-5 pt-0">

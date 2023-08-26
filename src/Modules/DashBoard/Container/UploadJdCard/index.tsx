@@ -6,23 +6,23 @@ import { color } from '@Themes'
 
 
 function UploadJdCard({ openAddJdModal }) {
-    
+
     const guidelines = ['Introduction (5 minutes)', 'Icebreaker/Small Talk (5 minutes)', 'Background and Experience (10 minutes)', 'Behavioral Questions (15 minutes)']
 
     return (
+        <div className='h-100 d-flex justify-content-center align-items-center'>
+            <div className={'col-md-8 col-lg-8 col-sm-8 card p-4'}>
 
-        <div className={'container mt--2'}>
-            <div className='h-100 p-5 d-flex bg-white justify-content-center align-items-center'>
                 <div className='d-flex justify-content-center align-items-center'>
                     <div>
-                        {/* <h4 className="display-3 mb-0 text-white">{`Interview for ${heading}`}</h4> */}
-                        <div className="text-black" style={{ fontSize: '50px' }}>
+                        <div className="text-black display-2" style={{ fontSize: '50px' }}>
                             <div className={'row justify-content-center'}>
                                 <div>Upload JD</div>
                                 <div className={'px-2'}>&</div>
                                 <div>Start Interview</div>
                             </div>
                         </div>
+                        <p className="text-muted mb-0 text-black text-center" style={{ maxWidth: '640px' }}>{'We are looking for a motivated and skilled candidate to join our team as a Software Engineer.The ideal candidate should have a strong background in computer science.'}</p>
 
                         <div className='mt-3'>
                             <h3 className="mb-0 text-black">Guidelines:</h3>
@@ -48,7 +48,7 @@ function UploadJdCard({ openAddJdModal }) {
                             }
                         </div>
 
-                        <div className='text-center py-2'>
+                        <div className='text-center pb-4'>
 
                             {openAddJdModal()}
 
