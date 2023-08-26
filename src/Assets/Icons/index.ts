@@ -163,5 +163,6 @@ export const icons = {
   videoCam: require('./VideoCam/icon.png'),
   videoCamMute: require('./VideoCamMute/icon.png'),
   briefCaseBlack: require('./BriefCaseBlack/icon.png'),
-  information: require('./Information/icon.png')
+  information: require('./Information/icon.png'),
+  documentJd: require('./DocumentJd/icon.png')
 };
