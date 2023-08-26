@@ -1,5 +1,5 @@
 import { Modal, showToast, Button, Image, AnimatedImage, Spinner } from '@Components';
-import { useModal, useNavigation, useScreenRecorder, useTextToSpeech } from '@Hooks';
+import { useModal, useNavigation, useTextToSpeech } from '@Hooks';
 import { Guidelines, CallHeader } from '@Modules';
 import { getScheduleBasicInfo, getStartChat, screenRecordingPermission } from '@Redux';
 import { ROUTES } from '@Routes';
@@ -15,10 +15,15 @@ import type { Harker } from 'hark'
 import type { Encoder } from 'lamejs'
 import axios from 'axios';
 import { Options, RecordRTCPromisesHandler, MediaStreamRecorder, StereoAudioRecorder } from 'recordrtc'
-
+import {useScreenRecorder} from './useScreenRecorder'
 const compare_moment_format = 'YYYY-MM-DDHH:mm:ss';
 
 function Call() {
+
+    const {
+        startScreenRecording,
+        
+        } = useScreenRecorder();
 
 
     const speakingShouldProcess = useRef<any>(false);
@@ -58,7 +63,9 @@ function Call() {
     }
 
 
-
+    // useEffect(()=>{
+    //     startScreenRecording()
+    // },[])
     const speak = (ttsBase64) => {
 
         setIsTtfSpeaking(true)
@@ -108,24 +115,24 @@ function Call() {
 
     const accumulatedBlobs = useRef<any>([]);
 
-    const { startScreenRecording, stopScreenRecording, isScreenRecording } = useScreenRecorder();
+    // const { startScreenRecording, stopScreenRecording, isScreenRecording } = useScreenRecorder();
 
     const socketRef = useRef<any>(null);
     const videoRecorderRef = useRef(null);
 
     const proceedHandleResponseV1 = (response) => {
         setProcessCallInprogress(false)
-        console.log("SpeakText01", response)
-        // {"next_step":[{"response_type":"ANSWER_IN_PROGRESS","reason":"No response from interviewee yet","question_id":"47912654-738b-4395-a8c4-3e1a001480d8","message_type":"SPEAK","response_text":"","message":""}]}
-        const { message_b64, message_type, response_type } = response.next_step[0]
-
-        if (message_type === "SPEAK" && message_b64 && message_b64 !== '' && window.location.pathname === `/interview/${schedule_id}`) {
-            // proceedStopListening()
+        // console.log("SpeakText01", response)
+        const { data, rt } = response.next_step[0]
+        if ( data && data !== '' && window.location.pathname === `/interview/${schedule_id}`) {
             resetLastMessage()
-            speak(message_b64);
+            speak(data);
         }
+        console.log("close started1", rt, rt === "INTERVIEWER_END_CALL")
 
-        if (response_type === 'INTERVIEWER_END_CALL') {
+        if (rt === "INTERVIEWER_END_CALL") {
+            console.log("close started2")
+            alert("about_to close")
             proceedStopListening()
             setButtonConditional('end')
         }
@@ -584,7 +591,7 @@ function Call() {
     }
 
     function endInterviewHandler() {
-        isScreenRecording && stopScreenRecording();
+        // isScreenRecording && stopScreenRecording();
         goBack();
     }
 
