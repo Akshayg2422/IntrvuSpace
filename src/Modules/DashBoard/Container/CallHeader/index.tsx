@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { CallHeaderProps } from './interfaces'
 import { Button, Image } from '@Components'
 import { icons } from '@Assets'
+import { color } from '@Themes';
 
 
 function CallHeader({ webcam, mic, onMicChange, onWebCamChange, onEndClick }: CallHeaderProps) {
@@ -39,10 +40,14 @@ function CallHeader({ webcam, mic, onMicChange, onWebCamChange, onEndClick }: Ca
         : `${formatTime(time.minutes)}:${formatTime(time.seconds)}`;
 
     return (
-        <div className='container-fluid align-items-center d-flex' style={{
-            height: "60px",
-            backgroundColor: "#1F1F1F"
-        }}>
+        <div
+            className='container-fluid align-items-center d-flex'
+            style={{
+                height: "70px",
+                backgroundColor: color.white,
+                borderRadius: 5
+
+            }}>
             <div className='col-auto'>
                 <span className="btn-inner--icon">
                     <i className="fas fa-circle text-red" />
@@ -59,14 +64,14 @@ function CallHeader({ webcam, mic, onMicChange, onWebCamChange, onEndClick }: Ca
                             }}>Mic</h6>
                     </div>
                     <div className="text-center mr-4 pointer" onClick={onWebCamChange}>
-                        <Image src={webcam ? icons.videoCam : icons.videoCamMute} height={webcam ? 20 : 17} width={webcam ? 20 : 17} />
+                        <Image src={webcam ? icons.videoCam : icons.videoCamMute} height={webcam ? 20 : 17} width={webcam ? 20 : 17} tintColor={color.black} />
                         <h6 className="text-muted ls-1 mb-1" style={{
                             fontSize: '8px'
                         }}>Camera</h6>
                     </div>
 
                     <div>
-                        <Button variant={'icon-with-text'} icon={icons.call} text={'End now'} height={12} width={12} onClick={onEndClick} />
+                        <Button variant={'icon-with-text'} icon={icons.phone} text={'End now'} height={16} width={16} onClick={onEndClick} />
                     </div>
                 </div>
             </div>

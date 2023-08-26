@@ -197,4 +197,30 @@ export function getShortName(fullName: string) {
 }
 
 
+export const hexToHue = (hexColor) => {
+  // Convert hex to RGB values
+  const r = parseInt(hexColor.slice(1, 3), 16);
+  const g = parseInt(hexColor.slice(3, 5), 16);
+  const b = parseInt(hexColor.slice(5, 7), 16);
+
+  // Calculate hue angle
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+
+  let hue;
+
+  if (max === r) {
+    hue = (g - b) / (max - min);
+  } else if (max === g) {
+    hue = 2 + (b - r) / (max - min);
+  } else {
+    hue = 4 + (r - g) / (max - min);
+  }
+
+  hue *= 60;
+  if (hue < 0) hue += 360;
+
+  return hue;
+};
+
 
