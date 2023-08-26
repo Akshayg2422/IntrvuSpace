@@ -64,7 +64,7 @@ function CallHeader({ webcam, mic, onMicChange, onWebCamChange, onEndClick }: Ca
                             }}>Mic</h6>
                     </div>
                     <div className="text-center mr-4 pointer" onClick={onWebCamChange}>
-                        <Image src={webcam ? icons.videoCam : icons.videoCamMute} height={webcam ? 20 : 17} width={webcam ? 20 : 17} tintColor={color.black} />
+                        <Image src={webcam ? icons.videoCam : icons.videoCamMute} height={webcam ? 20 : 17} width={webcam ? 20 : 17} />
                         <h6 className="text-muted ls-1 mb-1" style={{
                             fontSize: '8px'
                         }}>Camera</h6>

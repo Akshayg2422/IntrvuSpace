@@ -628,7 +628,7 @@ function Call() {
                                     </div>
                                 </div>
                             </div>
-                            <div className='col-6'>
+                            <div className='col-5'>
                                 <CallHeader webcam={showCam} mic={mute} onWebCamChange={webCamHandler} onMicChange={micMuteHandler} onEndClick={endInterviewHandler} />
                             </div>
                         </div>
