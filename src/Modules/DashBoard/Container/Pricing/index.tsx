@@ -1,6 +1,6 @@
 import { Button, Container, Row, Col, UncontrolledTooltip } from 'reactstrap'
 import { color } from '@Themes'
-import { icons } from '@Assets'
+import { icons, image } from '@Assets'
 
 function Pricing() {
     const reportsHeading = ['Basic Report', 'Skill Matrix Report', 'Communication Report', 'Trait Report']
@@ -31,12 +31,12 @@ function Pricing() {
                                     <div className="card-header text-sm-start text-center pt-4 pb-3 px-4">
                                         <div className=''>
                                             <img
-                                                // src={icons.python} 
+                                                src={icons.documentJd} 
                                                 alt='...'
                                                 height={60}
                                                 width={60}
                                             />
-                                            <h5 className="mb-1 h2 text-uppercase">Single JD</h5>
+                                            <h5 className="mb-1 h2 text-uppercase">1 JD</h5>
                                         </div>
 
 
@@ -123,7 +123,6 @@ function Pricing() {
                                                                 backgroundColor: '#42cd33',
                                                                 borderRadius: 5
                                                             }}>
-
                                                             </div>
                                                             <div className="d-flex">
                                                                 <div className="ps-3 ml-2">
@@ -144,12 +143,12 @@ function Pricing() {
                                     <div className="card-header text-sm-start text-center pt-4 pb-3 px-4">
                                         <div className=''>
                                             <img
-                                                // src={icons.python} 
+                                                src={icons.documentJd} 
                                                 alt='...'
                                                 height={60}
                                                 width={60}
                                             />
-                                            <h5 className="mb-1 h2 text-uppercase">Single JD</h5>
+                                            <h5 className="mb-1 h2 text-uppercase">1 JD</h5>
                                         </div>
 
                                         <p className="mb-3 text-sm">Multiple Interviews! </p>
@@ -251,12 +250,12 @@ function Pricing() {
                                     <div className="card-header text-sm-start text-center pt-4 pb-3 px-4">
                                         <div>
                                             <img
-                                                // src={icons.Html}
+                                                src={icons.documentJd}
                                                 alt='...'
                                                 height={60}
                                                 width={60}
                                             />
-                                            <h5 className="mb-1 h2 text-uppercase">10 JD</h5>
+                                            <h5 className="mb-1 h2 text-uppercase">Upto 10 JD</h5>
                                         </div>
                                         <p className="mb-3 text-sm ">Multiple Interviews!</p>
                                         <h3 className="font-weight-bold mt-3 ">
@@ -341,12 +340,12 @@ function Pricing() {
                                     <div className="card-header text-sm-start text-center pt-4 pb-3 px-4">
                                         <div>
                                             <img
-                                                // src={icons.Css} 
+                                                src={icons.documentJd} 
                                                 alt='...'
                                                 height={60}
                                                 width={60}
                                             />
-                                            <h5 className="mb-1 h2 text-uppercase">Unlimited JD</h5>
+                                            <h5 className="mb-1 h2 text-uppercase">Unlimited JD'S</h5>
                                         </div>
                                         <p className="mb-3 text-sm">Unlimited Interviews!</p>
                                         <h3 className="font-weight-bold mt-3">
@@ -446,7 +445,7 @@ function Pricing() {
                     </div>
                 </div>
             </section>
-            <section className="">
+            {/* <section className="">
                 <Container>
                     <Row className="row-grid justify-content-center">
                         <Col className="text-center" lg="8">
@@ -592,7 +591,7 @@ function Pricing() {
                         </Col>
                     </Row>
                 </Container>
-            </section>
+            </section> */}
         </>
     )
 }
