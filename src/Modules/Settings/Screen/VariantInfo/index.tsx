@@ -159,14 +159,14 @@ function VariantInfo() {
                         </div>
                         <div className={'d-flex flex-column mt--3'}>
                             <div className={'row pb-2'}>
-                                <span className={"text-black"}>
+                                <span className={"text-black text-sm"}>
                                     <i className="pr-2">
                                         <img src={icons.briefCaseBlack} alt="Comment Icon" height={'20'} width={'20'} />
                                     </i>
                                     Experience with {experience} years
                                 </span>
                             </div>
-                            <div className={'row pb-1 text-black font-weight-500'}>
+                            <div className={'row pb-1 text-sm text-black font-weight-500'}>
                                 <span style={{ maxWidth: '100vw' }}>
                                     <i className="pr-2">
                                         <img src={icons.information} alt="Comment Icon" height={'20'} width={'20'} />

@@ -1,21 +1,24 @@
-import React from 'react'
 import { Button, Container, Row, Col, UncontrolledTooltip } from 'reactstrap'
+import { color } from '@Themes'
+import { icons } from '@Assets'
 
 function Pricing() {
+    const reportsHeading = ['Basic Report', 'Skill Matrix Report', 'Communication Report', 'Trait Report']
+    const advanceReportsHeading = ['Basic Report', 'Skill Matrix Report', 'Communication Report', 'Trait Report', 'Skill Matrix Advanced', 'Communication Advanced']
     return (
         <>
             <section className="py-sm-7" id="pricing-now-ui">
                 <div className=" position-relative"
                     style={{
-                        backgroundColor: '#90caf9'
+                        backgroundColor: '#cbefdd'
                     }}
                 >
                     <div className="container pb-lg-8 pb-7 pt-5 postion-relative z-index-2 position-relative">
                         <div className="row">
                             <div className="col-md-7 mx-auto text-center">
-                                <span className="badge bg-gradient-info text-white mb-2 text-md">Pricing</span>
-                                <h3 className="text-white">Ready to get which course you want to learn?</h3>
-                                <p className="text-white">Based on the license you get, you will have direct access to our team <br /> to learn courses.</p>
+                                <span className="badge bg-gradient-green text-black mb-2 text-md">Pricing</span>
+                                <h3 className="text-black">Ready to get which course you want to learn?</h3>
+                                <p className="text-black">Based on the license you get, you will have direct access to our team <br /> to learn courses.</p>
                             </div>
                         </div>
                     </div>
@@ -26,26 +29,26 @@ function Pricing() {
                             <div className="col-lg-3 col-sm-6 mb-lg-0 mb-4">
                                 <div className="card h-100">
                                     <div className="card-header text-sm-start text-center pt-4 pb-3 px-4">
-                                        <div>
-                                            <i className='ni ni-atom mr-2 text-primary '
-                                                style={{
-                                                    fontSize: '9.5vh'
-                                                }}
-                                            ></i>
-                                            <h5 className="mb-1 mt--2">
-                                                React
-                                            </h5>
+                                        <div className=''>
+                                            <img
+                                                // src={icons.python} 
+                                                alt='...'
+                                                height={60}
+                                                width={60}
+                                            />
+                                            <h5 className="mb-1 h2 text-uppercase">Single JD</h5>
                                         </div>
 
-                                        <p className="mb-3 text-sm">Master modern React from beginner to advanced!</p>
+
+                                        <p className="mb-3 text-sm">Single Interview!</p>
                                         <h3 className="font-weight-bold mt-3 "
                                             style={{
                                                 fontStyle: "none"
                                             }}
                                         >
-                                            ₹700
+                                            FREE
                                         </h3>
-                                        <Button className='bg-info border-0 col  mt-3 '
+                                        <Button className='bg-customGradient border-0 col  mt-3 '
                                             style={
                                                 {
                                                     borderRadius: '20px'
@@ -57,10 +60,10 @@ function Pricing() {
                                         </Button>
                                     </div>
                                     <hr className="horizontal dark my-0" />
-                                    <div className="card-body text-center">
+                                    {/* <div className="card-body text-center">
                                         <div className="d-flex pb-3">
                                             <div>
-                                                <i className="fas fa-check text-primary text-sm "></i>
+                                                <i className="rounded-box text-primary text-sm "></i>
                                             </div>
                                             <div className="ps-3 ml-2">
                                                 <span className="text-sm">Components</span>
@@ -106,27 +109,54 @@ function Pricing() {
                                                 <span className="text-sm">Rest Api</span>
                                             </div>
                                         </div>
+                                    </div> */}
+                                    <div className={'col'}>
+
+                                        {
+                                            reportsHeading && reportsHeading.length > 0 && reportsHeading.map(each => {
+                                                return (
+                                                    <div className="card-body py-2">
+                                                        <div className="row align-items-center">
+                                                            <div style={{
+                                                                width: 10,
+                                                                height: 10,
+                                                                backgroundColor: '#42cd33',
+                                                                borderRadius: 5
+                                                            }}>
+
+                                                            </div>
+                                                            <div className="d-flex">
+                                                                <div className="ps-3 ml-2">
+                                                                    <span className="text-sm">{each}</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                )
+                                            })
+                                        }
                                     </div>
+                                    {/* <div className="mb-0 display-4 text-center text-black pb-3">FREE</div> */}
                                 </div>
                             </div>
                             <div className="col-lg-3 col-sm-6 mb-lg-0 mb-4">
                                 <div className="card h-100">
                                     <div className="card-header text-sm-start text-center pt-4 pb-3 px-4">
-                                        <div>
+                                        <div className=''>
                                             <img
                                                 // src={icons.python} 
                                                 alt='...'
                                                 height={60}
                                                 width={60}
                                             />
-                                            <h5 className="mb-1">Python</h5>
+                                            <h5 className="mb-1 h2 text-uppercase">Single JD</h5>
                                         </div>
 
-                                        <p className="mb-3 text-sm">Learn Python like a Professional Start from the basics </p>
+                                        <p className="mb-3 text-sm">Multiple Interviews! </p>
                                         <h3 className="font-weight-bold mt-3">
-                                            ₹500
+                                            ₹50
                                         </h3>
-                                        <Button className='bg-info border-0 col  mt-3 '
+                                        <Button className='bg-customGradient border-0 col  mt-3 '
                                             style={
                                                 {
                                                     borderRadius: '20px'
@@ -138,7 +168,7 @@ function Pricing() {
                                         </Button>
                                     </div>
                                     <hr className="horizontal dark my-0" />
-                                    <div className="card-body">
+                                    {/* <div className="card-body">
                                         <div className="d-flex pb-3">
                                             <div>
                                                 <i className="fas fa-check text-primary text-sm"></i>
@@ -187,6 +217,32 @@ function Pricing() {
                                                 <span className="text-sm">Function</span>
                                             </div>
                                         </div>
+                                    </div> */}
+                                    <div className={'col'}>
+
+                                        {
+                                            advanceReportsHeading && advanceReportsHeading.length > 0 && advanceReportsHeading.map(each => {
+                                                return (
+                                                    <div className="card-body py-2">
+                                                        <div className="row align-items-center">
+                                                            <div style={{
+                                                                width: 10,
+                                                                height: 10,
+                                                                backgroundColor: '#42cd33',
+                                                                borderRadius: 5
+                                                            }}>
+
+                                                            </div>
+                                                            <div className="d-flex">
+                                                                <div className="ps-3 ml-2">
+                                                                    <span className="text-sm">{each}</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                )
+                                            })
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -200,13 +256,13 @@ function Pricing() {
                                                 height={60}
                                                 width={60}
                                             />
-                                            <h5 className="mb-1">HTML</h5>
+                                            <h5 className="mb-1 h2 text-uppercase">10 JD</h5>
                                         </div>
-                                        <p className="mb-3 text-sm ">Go From Beginner To HTML Master In A Single Day!</p>
+                                        <p className="mb-3 text-sm ">Multiple Interviews!</p>
                                         <h3 className="font-weight-bold mt-3 ">
                                             ₹300
                                         </h3>
-                                        <Button className='bg-info border-0 col  mt-3 '
+                                        <Button className='bg-customGradient border-0 col  mt-3 '
                                             style={
                                                 {
                                                     borderRadius: '20px'
@@ -218,7 +274,7 @@ function Pricing() {
                                         </Button>
                                     </div>
                                     <hr className="horizontal light my-0" />
-                                    <div className="card-body">
+                                    {/* <div className="card-body">
                                         <div className="d-flex pb-3">
                                             <div>
                                                 <i className="fas fa-check text-primary  text-sm"></i>
@@ -251,6 +307,32 @@ function Pricing() {
                                                 <span className="text-sm ">Understand web accessibility and create accessible webpages</span>
                                             </div>
                                         </div>
+                                    </div> */}
+                                    <div className={'col'}>
+
+                                        {
+                                            advanceReportsHeading && advanceReportsHeading.length > 0 && advanceReportsHeading.map(each => {
+                                                return (
+                                                    <div className="card-body py-2">
+                                                        <div className="row align-items-center">
+                                                            <div style={{
+                                                                width: 10,
+                                                                height: 10,
+                                                                backgroundColor: '#42cd33',
+                                                                borderRadius: 5
+                                                            }}>
+
+                                                            </div>
+                                                            <div className="d-flex">
+                                                                <div className="ps-3 ml-2">
+                                                                    <span className="text-sm">{each}</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                )
+                                            })
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -264,13 +346,13 @@ function Pricing() {
                                                 height={60}
                                                 width={60}
                                             />
-                                            <h5 className="mb-1">CSS</h5>
+                                            <h5 className="mb-1 h2 text-uppercase">Unlimited JD</h5>
                                         </div>
-                                        <p className="mb-3 text-sm">Learn CSS for the first time or brush up your CSS skills and dive in even deeper.</p>
+                                        <p className="mb-3 text-sm">Unlimited Interviews!</p>
                                         <h3 className="font-weight-bold mt-3">
-                                            ₹300
+                                            ₹400
                                         </h3>
-                                        <Button className='bg-info border-0 col  mt-3 '
+                                        <Button className='bg-customGradient border-0 col  mt-3 '
                                             style={
                                                 {
                                                     borderRadius: '20px'
@@ -282,7 +364,7 @@ function Pricing() {
                                         </Button>
                                     </div>
                                     <hr className="horizontal dark my-0" />
-                                    <div className="card-body">
+                                    {/* <div className="card-body">
                                         <div className="d-flex pb-3">
                                             <div>
                                                 <i className="fas fa-check text-primary text-sm"></i>
@@ -331,6 +413,32 @@ function Pricing() {
                                                 <span className="text-sm">Responsive Design</span>
                                             </div>
                                         </div>
+                                    </div> */}
+                                    <div className={'col'}>
+
+                                        {
+                                            advanceReportsHeading && advanceReportsHeading.length > 0 && advanceReportsHeading.map(each => {
+                                                return (
+                                                    <div className="card-body py-2">
+                                                        <div className="row align-items-center">
+                                                            <div style={{
+                                                                width: 10,
+                                                                height: 10,
+                                                                backgroundColor: '#42cd33',
+                                                                borderRadius: 5
+                                                            }}>
+
+                                                            </div>
+                                                            <div className="d-flex">
+                                                                <div className="ps-3 ml-2">
+                                                                    <span className="text-sm">{each}</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                )
+                                            })
+                                        }
                                     </div>
                                 </div>
                             </div>
