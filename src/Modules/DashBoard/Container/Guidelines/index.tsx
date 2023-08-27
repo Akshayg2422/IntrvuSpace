@@ -2,9 +2,11 @@ import React from 'react'
 import { GuidelinesProps } from './interfaces'
 import { color } from '@Themes'
 import { Button } from '@Components'
-
+import { useNavigation } from '@Hooks'
 
 function Guidelines({ scheduleInfo = undefined, loading, heading, guidelines = ['Introduction (5 minutes)', 'Icebreaker/Small Talk (5 minutes)', 'Background and Experience (10 minutes)', 'Behavioral Questions (15 minutes)'], onClick }: GuidelinesProps) {
+    const { goBack } = useNavigation()
+
     return (
         <>
             {!scheduleInfo.is_complete &&
@@ -57,18 +59,17 @@ function Guidelines({ scheduleInfo = undefined, loading, heading, guidelines = [
             }
 
             {scheduleInfo.is_complete ?
-                <div className='h-100 container p-5 d-flex  justify-content-center align-items-center'>
+                <div className='h-100 container d-flex  justify-content-center align-items-center'>
                     <div className='d-flex justify-content-center align-items-center'>
-                        <div style={{ backgroundColor: '#555555', }} className='mb-0 overflow-auto overflow-hide scroll-y card'>
-                            {/* // d-flex justify-content-center align-items-center'> */}
-                            <div className='card-body mb-0 '>
-                                <h4 className="display-3 mb-0 text-white">{`Interview for ${heading}`}</h4>
-
-                                <div className='mb-0 mt-3'>
-                                    <h3 className="mb-0 text-white">{"Your interview is complete. Please check your registered mail address for further details."}</h3>
-
+                        <div className='card mb-0 overflow-auto overflow-hide scroll-y'>
+                            <div className='card-body mb-0'>
+                                <div className="col">
+                                    <h1 className="display-4">{`Interview for ${heading}`}</h1>
+                                    <p className="mt-0 mb-5">Your interview is complete. Please check your registered mail address for further details.</p>
+                                    <div>
+                                        <Button text={'Go to Dashboard'} onClick={() => { goBack() }} />
+                                    </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>

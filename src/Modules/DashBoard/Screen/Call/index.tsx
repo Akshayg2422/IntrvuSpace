@@ -13,6 +13,13 @@ import { RecordRTCPromisesHandler, StereoAudioRecorder } from 'recordrtc';
 import { useScreenRecorder } from './useScreenRecorder';
 const compare_moment_format = 'YYYY-MM-DDHH:mm:ss';
 
+
+const GUIDELINES = ["Kindly ensure the use of headphones to optimize audio quality.",
+    "Find a quiet and secluded space to minimize background noise and distractions.",
+    "Verify the stability of your internet connection to ensure uninterrupted communication.",
+    "Keep the video function enabled throughout the session for effective interaction.",
+    " We appreciate clear and succinct responses during the conversation."]
+
 function Call() {
 
     const {
@@ -607,36 +614,32 @@ function Call() {
             {scheduleInfo &&
                 <>
                     {interviewStarted &&
-                        <div className='row justify-content-center align-items-center h-100'>
-                            <div ref={videoRecorderRef}>
-                                <div className='d-flex justify-content-center align-items-center'>
-                                    <div className='row  justify-content-center align-items-center'>
-                                        <div className='text-center col-5'>
-                                            <AnimatedImage show={false} name={getShortName(scheduleInfo?.interviewer_name)} shouldBlink={interviewer_state === IV_SPEAKING} />
-                                        </div>
-                                        <div className='mx-4'></div>
-                                        <div className='text-center col-5'>
-                                            <AnimatedImage show={false} name={getShortName(scheduleInfo?.interviewee_name)} shouldBlink={interviewee_state === IE_SPEAKING} showWebCam={showCam} />
-                                        </div>
-                                        <div className='text-center col-5'>
-                                            <h3 className='display-3 mb-4 text-white'>{capitalizeFirstLetter(scheduleInfo?.interviewer_name)}</h3>
-                                        </div>
-                                        <div className='mx-4'></div>
-                                        <div className='text-center col-5'>
-                                            <h3 className='display-3 mb-4 text-white'>{capitalizeFirstLetter(scheduleInfo?.interviewee_name)}</h3>
-                                        </div>
+                        <div className='d-flex flex-column h-100'>
+                            <div className='col'>
+                                <div className='row h-100' ref={videoRecorderRef}>
+                                    <div className='col-sm-6 d-flex flex-column align-items-center justify-content-center'>
+                                        <AnimatedImage show={false} name={getShortName(scheduleInfo?.interviewer_name)} shouldBlink={interviewer_state === IV_SPEAKING} />
+                                        <h3 className='display-3 mb-4 text-white'>{capitalizeFirstLetter(scheduleInfo?.interviewer_name)}</h3>
                                     </div>
+                                    <div className='col-sm-6 d-flex flex-column align-items-center justify-content-center'>
+                                        <AnimatedImage show={false} showWebCam={showCam} name={getShortName(scheduleInfo?.interviewer_name)} shouldBlink={interviewer_state === IV_SPEAKING} />
+                                        <h3 className='display-3 mb-4 text-white'>{capitalizeFirstLetter(scheduleInfo?.interviewee_name)}</h3>
+                                    </div>
+
                                 </div>
                             </div>
-                            <div className='col-5'>
+                            <div className='position-absolute bottom-0 right-0 left-0' style={{
+                                marginBottom: 50
+                            }}>
                                 <CallHeader webcam={showCam} mic={mute} onWebCamChange={webCamHandler} onMicChange={micMuteHandler} onEndClick={endInterviewHandler} />
                             </div>
-                        </div>
+                        </div >
                     }
                     {
                         !interviewStarted ?
 
                             <Guidelines
+                                guidelines={GUIDELINES}
                                 scheduleInfo={scheduleInfo}
                                 loading={proceedCallLoader.loader}
                                 heading={scheduleInfo?.interviewee_expected_designation}
