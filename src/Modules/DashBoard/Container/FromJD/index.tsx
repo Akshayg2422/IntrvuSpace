@@ -12,6 +12,8 @@ import { icons } from '@Assets';
 
 function FromJD() {
 
+    const ERROR_MESSAGE = "Job description should be below 300 chars"
+
     const { jdItem } = useSelector((state: any) => state.DashboardReducer)
     const { goTo } = useNavigation();
 
@@ -28,6 +30,8 @@ function FromJD() {
     const [loading, setLoading] = useState(true);
     const [jdMore, setJdMore] = useState<any>([])
 
+
+    const [jdDescriptionError, setJdDescriptionError] = useState<any>(undefined)
 
     useEffect(() => {
         getKnowledgeGroupFromJdHandler();
@@ -125,7 +129,7 @@ function FromJD() {
     }
 
 
-    function proceedInterview(id: string) {
+    function proceedInterviewHandler(id: string) {
         if (id) {
             if (id !== '-1') {
                 dispatch(selectedScheduleId(id))
@@ -197,7 +201,7 @@ function FromJD() {
                                                         className={'px-4 border border-primary'}
                                                         text={proceedInterview.is_complete ? "Resume Interview" : "Start Interview"}
                                                         onClick={() => {
-                                                            createNewJdScheduleApiHandler(proceedInterview?.id);
+                                                            proceedInterviewHandler(proceedInterview?.id);
                                                         }}
                                                     />
                                                 </div> : <Button
@@ -331,9 +335,19 @@ function FromJD() {
                         value={portalUrl.value}
                         onChange={portalUrl.onChange} />
                     <TextArea
+                        error={jdDescriptionError}
                         heading='Job Description'
                         value={jd.value}
-                        onChange={jd.onChange} />
+                        onChange={(e) => {
+                            let value = e.target.value
+                            let finalValue = value
+
+                            if (value.length > 300) {
+                                setJdDescriptionError(ERROR_MESSAGE)
+                            }
+                            jd.set(value)
+
+                        }} />
                 </div>
                 <div className='text-right'>
                     <Button size='md' text={'Submit'} onClick={submitJdApiHandler} />
@@ -361,7 +375,7 @@ function FromJD() {
                                     text={'Start Now'}
                                     onClick={() => {
                                         if (scheduleId) {
-                                            proceedInterview(scheduleId)
+                                            proceedInterviewHandler(scheduleId)
                                         }
                                     }}
                                 />
