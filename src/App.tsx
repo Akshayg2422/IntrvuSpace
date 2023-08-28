@@ -46,11 +46,8 @@ function App() {
       if (prop.collapse) {
         return getRoutes(prop.views);
       }
-
       const path = prop.layout ? prop.layout + prop.path : prop.path;
-
       return (
-
         <Route
           path={path}
           element={type === AUTH ?
@@ -68,10 +65,15 @@ function App() {
     });
   };
 
+  function Dummy() {
+    return <h1>Dummy</h1>
+  }
+
   return (
     <ScreenWrapper>
       <Routes>
         <Route path="/" element={<Splash />} />
+        <Route path="/dummy" element={<Dummy />} />
         {getRoutes(AUTH_ROUTES, AUTH)}
         {getRoutes(HOME_ROUTES)}
         {getRoutes(DASHBOARD_ROUTES)}
