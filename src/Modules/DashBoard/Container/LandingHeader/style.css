@@ -23,7 +23,8 @@
 /* for the pen */
 /* waves */
 .ocean {
-  height: 30vh; /* change the height of the waves here */
+  height: 30vh;
+  /* change the height of the waves here */
   width: 100%;
   position: absolute;
   bottom: 0;
@@ -58,13 +59,16 @@
   0% {
     transform: translateX(0);
   }
+
   50% {
     transform: translateX(-25%);
   }
+
   100% {
     transform: translateX(-50%);
   }
 }
+
 .custom-white {
   color: #fafafa;
-}/*# sourceMappingURL=style.css.map */
+}
