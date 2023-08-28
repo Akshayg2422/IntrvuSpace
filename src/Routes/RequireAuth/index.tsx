@@ -38,6 +38,9 @@ export const RequireAuth = ({ children }: RequireAuthProps) => {
         return <Navigate to={ROUTES['auth-module'].login} state={{ path: location.pathname }} />
     }
 
+    console.log(location.pathname + '=====');
+
+
 
     const toggleSideNav = () => {
         if (document.body.classList.contains("g-sidenav-pinned")) {
