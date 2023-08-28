@@ -150,7 +150,7 @@ function Call() {
         // Create the WebSocket connection only if it's not already established
         if (!socketRef.current) {
             // const socket = new WebSocket('ws://192.168.218.204:8012/aaa');
-            const socket = new WebSocket('wss://mockeazyprimary.leorainfotech.in/aaa');
+            const socket = new WebSocket('ws://mockeazyprimary.leorainfotech.in/aaa');
 
             socketRef.current = socket; // Store the WebSocket instance in the ref
 
@@ -227,12 +227,12 @@ function Call() {
 
 
     /**
-     * state jay
+     * state jayFromJD
      */
 
     const loader = useLoader(false);
     const proceedCallLoader = useLoader(false);
-    const [showCam, setShowCam] = useState(true);
+    const [showCam, setShowCam] = useState(false);
     const [mute, setMute] = useState(false);
     const ttsRef = useRef<any>(false);
 

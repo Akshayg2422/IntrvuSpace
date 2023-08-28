@@ -57,15 +57,15 @@ function CallHeader({ webcam, mic, onMicChange, onWebCamChange, onEndClick }: Ca
             </div>
             <div className='col d-flex justify-content-end align-items-center'>
                 <div className='row align-items-center'>
-                    <div className='text-center mr-2 pointer' onClick={onMicChange}>
-                        <Image src={mic ? icons.microPhone : icons.microPhoneMute} height={23} width={23} />
+                    <div className='text-center mr-3 pointer' onClick={onMicChange}>
+                        <Image src={mic ? icons.microPhone : icons.microPhoneMute} height={mic ? 22 : 24} width={mic ? 22 : 24} />
                         {/* <h6 className="text-muted ls-1 mb-1"
                             style={{
                                 fontSize: '8px'
                             }}>Mic</h6> */}
                     </div>
                     <div className="text-center mr-4 pointer" onClick={onWebCamChange}>
-                        <Image src={webcam ? icons.videoCam : icons.videoCamMute} height={25} width={25} />
+                        <Image src={webcam ? icons.videoCam : icons.videoCamMute} height={webcam ? 24 : 25} width={webcam ? 24 : 25} />
                         {/* <h6 className="text-muted ls-1 mb-1" style={{
                             fontSize: '8px'
                         }}>Camera</h6> */}

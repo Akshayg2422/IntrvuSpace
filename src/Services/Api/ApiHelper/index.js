@@ -8,7 +8,7 @@ export const BUILD_TYPE_LOCAL = 4;
 export const BUILD_TYPE = BUILD_TYPE_LIVE;
 export const SERVER =
   BUILD_TYPE === BUILD_TYPE_LIVE
-    ? 'https://mockeazyprimary.leorainfotech.in/'
+    ? 'https://mockeazyprimary.leorainfotech.in'
     : BUILD_TYPE === BUILD_TYPE_LIVE_DEMO
       ? 'https://dc2c-103-118-189-10.ngrok-free.app/'
       : BUILD_TYPE === BUILD_TYPE_LOCAL
