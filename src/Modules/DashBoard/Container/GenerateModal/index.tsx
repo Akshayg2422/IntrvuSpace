@@ -15,7 +15,6 @@ function GenerateModal({ isOpen, onClose, children, title, ...rest }: GenerateMo
         >
             <div className="position-relative">
                 <video
-
                     autoPlay
                     loop
                     muted
@@ -25,10 +24,7 @@ function GenerateModal({ isOpen, onClose, children, title, ...rest }: GenerateMo
                         objectFit: 'cover',
                         zIndex: -1,
                         borderRadius: 6,
-
-
-                        // opacity: 0.3, // Set the desired opacity value
-                        // marginBottom: -10
+                        marginBottom: -10
                     }}
                 >
                     <source src={videos.background} type="video/mp4" />
