@@ -630,8 +630,15 @@ function Report() {
                                         else {
                                             return (
                                                 dataId.map((el) => {
+
+
+                                                    console.log(JSON.stringify(basicReportData[heading]));
+
                                                     if (el === heading && heading !== "skill_matrix") {
                                                         array = array + calculateRating(basicReportData[heading])
+
+
+
                                                         return (
                                                             <>
                                                                 {basicReportData[heading].length > 0 && <>

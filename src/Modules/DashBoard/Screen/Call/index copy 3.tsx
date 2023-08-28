@@ -37,7 +37,7 @@ function Call() {
     const lastSpokeActiveTime = useRef<any>(moment().format(compare_moment_format))
     const [lastTranscriptionStartTime, setLastTranscriptionStartTime] = useState<any>(moment().format(compare_moment_format))
     const [lastTranscriptionEndTime, setLastTranscriptionEndTime] = useState<any>(moment().format(compare_moment_format))
-    
+
     const [interviewStarted, setInterviewStarted] = useState<boolean>(false)
 
     const [voiceUp, setVoiceUp] = useState<boolean>(false)
@@ -83,13 +83,13 @@ function Call() {
         setProcessCallInprogress(false)
         console.log("SpeakText01", response)
         // {"next_step":[{"response_type":"ANSWER_IN_PROGRESS","reason":"No response from interviewee yet","question_id":"47912654-738b-4395-a8c4-3e1a001480d8","message_type":"SPEAK","response_text":"","message":""}]}
-        const {response_text, message_type, response_type } = response.next_step[0]
+        const { response_text, message_type, response_type } = response.next_step[0]
 
         if (message_type === "SPEAK" && response_text !== '' && window.location.pathname === `/interview/${schedule_id}`) {
             // proceedStopListening()
             resetLastMessage()
             console.log("SpeakText02",)
-            console.log("SpeakText",response_text)
+            console.log("SpeakText", response_text)
 
             speak(response_text);
         }
@@ -114,14 +114,14 @@ function Call() {
             socket.addEventListener('close', () => {
                 console.log('WebSocket connection closed');
             });
-    
+
             // Listen for messages
             socket.onmessage = event => {
-            console.log("Received001")
-            const response = JSON.parse(event.data);
-            proceedHandleResponseV1(response)
-            // Handle the response data here
-            console.log('Received002:', response);
+                console.log("Received001")
+                const response = JSON.parse(event.data);
+                proceedHandleResponseV1(response)
+                // Handle the response data here
+                console.log('Received002:', response);
             };
         }
 
@@ -156,18 +156,17 @@ function Call() {
                                 schedule_id: schedule_id,
                                 blob_data: base64String,
                                 is_speaking: speakingShouldProcess.current,
-                                is_tts_speaking:ttsRef.current
+                                is_tts_speaking: ttsRef.current
                             }
                             socketRef.current.send(JSON.stringify(syncD));
                         }
-                        else{
+                        else {
                             // console.log("t0000000000000000000015")
                         }
                     }
                     reader.readAsDataURL(file);
                 }
-                else
-                {
+                else {
                     // console.log("t0000000000000000000017")
 
                 }
@@ -380,7 +379,7 @@ function Call() {
                         {
                             mimeType: 'audio/webm',
                             type: 'audio',
-                            timeSlice:500,
+                            timeSlice: 500,
                             recorderType: StereoAudioRecorder,
                             ondataavailable: onDataAvailable,
                             sampleRate: 44100,
@@ -551,9 +550,9 @@ function Call() {
         setProcessCallInprogress(false)
         resetLastMessage()
         setInterviewStarted(true)
-        setTimeout(()=>{
-        validateProceedStartListening()
-        },5000)
+        setTimeout(() => {
+            validateProceedStartListening()
+        }, 5000)
     }
 
     function endInterviewHandler() {
@@ -564,7 +563,7 @@ function Call() {
 
     const IV_SPEAKING = 1
     const IV_IDLE = 2
-    const IV_PROCESSION = 3
+    const IV_PROCESSING = 3
 
 
     const IE_SPEAKING = 1
@@ -613,7 +612,7 @@ function Call() {
                         </>
                     }
                     {
-                        !interviewStarted  ?
+                        !interviewStarted ?
 
                             <Guidelines
                                 scheduleInfo={scheduleInfo}

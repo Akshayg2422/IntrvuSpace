@@ -13,6 +13,15 @@ import { RecordRTCPromisesHandler, StereoAudioRecorder } from 'recordrtc';
 import { useScreenRecorder } from './useScreenRecorder';
 const compare_moment_format = 'YYYY-MM-DDHH:mm:ss';
 
+
+
+
+const GUIDELINES = ["Kindly ensure the use of headphones to optimize audio quality.",
+    "Find a quiet and secluded space to minimize background noise and distractions.",
+    "Verify the stability of your internet connection to ensure uninterrupted communication.",
+    "Keep the video function enabled throughout the session for effective interaction.",
+    " We appreciate clear and succinct responses during the conversation."]
+
 function Call() {
 
     const {
@@ -48,7 +57,11 @@ function Call() {
     const audioElementRef = useRef<any>();
     const activeResponseTextId = useRef<any>(generateRandomID());
     // const { isTtfSpeaking, speak } = useTextToSpeech();
+    const ambianceVolume = useRef<any>(65);
+    const decibleCollection = useRef<any>([]);
+    const closeCall = useRef<any>(false);
     const [isTtfSpeaking, setIsTtfSpeaking] = useState<boolean>(false)
+
 
     function generateRandomID() {
         const min = 100000;
@@ -82,6 +95,10 @@ function Call() {
         audioElementRef.current.onended = function () {
             console.log("Audio playback ended.");
             setIsTtfSpeaking(false)
+            if (closeCall.current === true) {
+                proceedStopListening()
+                setButtonConditional('end')
+            }
         };
         audioElementRef.current.play();
 
@@ -121,10 +138,10 @@ function Call() {
         }
 
         if (rt === "INTERVIEWER_END_CALL") {
-            console.log("close started2")
+
+            closeCall.current = true
             alert("about_to close")
-            proceedStopListening()
-            setButtonConditional('end')
+
         }
     }
 
@@ -283,6 +300,21 @@ function Call() {
     }, [])
 
 
+    function addToDecibleCollection(receivedData) {
+        decibleCollection.current.push(receivedData);
+        // if (decibleCollection.current.length > 30) {
+        //     decibleCollection.current.shift();
+        // }
+        // if (decibleCollection.current.length >= 25 and is) {
+        //    const lastIt = decibleCollection.current[decibleCollection.current.length -1]
+        //     const decibleCollectionIngorIngnoice =  decibleCollection.current.map((it)=>{
+        //         lastIt
+        //         decibleCollectionIngorIngnoice
+
+        //     })
+        // }
+    }
+
     /**
      * get user media stream event
      * - try to stop all previous media streams
@@ -307,6 +339,9 @@ function Call() {
                 listener.current.on('speaking', onStartSpeaking)
                 listener.current.on('stopped_speaking', onStopSpeaking)
                 listener.current.on('volume_change', function (value) {
+                    const voiceDetectionSaturation = ambianceVolume.current - 18
+                    const valueP = Math.abs(value)
+                    addToDecibleCollection(valueP)
                     const currentDate = moment();
                     // console.log("value", value)
                     if (ttsRef.current) {
@@ -315,7 +350,7 @@ function Call() {
                         if (voiceUp === true)
                             setVoiceUp(false)
                     }
-                    else if (-value < 47) {
+                    else if (valueP < voiceDetectionSaturation) {
 
                         /**
                          * extend waiting time if decibile is of talking size
@@ -589,14 +624,14 @@ function Call() {
 
     const IV_SPEAKING = 1
     const IV_IDLE = 2
-    const IV_PROCESSION = 3
+    const IV_PROCESSING = 3
 
 
     const IE_SPEAKING = 1
     const IE_IDLE = 2
 
 
-    const interviewer_state = isTtfSpeaking ? IV_SPEAKING : IV_IDLE
+    const interviewer_state = isTtfSpeaking ? IV_SPEAKING : !isTtfSpeaking && !voiceUp ? IV_PROCESSING : IV_IDLE
     const interviewee_state = voiceUp ? IE_SPEAKING : IE_IDLE
 
 
@@ -607,36 +642,32 @@ function Call() {
             {scheduleInfo &&
                 <>
                     {interviewStarted &&
-                        <div className='row justify-content-center align-items-center h-100'>
-                            <div ref={videoRecorderRef}>
-                                <div className='d-flex justify-content-center align-items-center'>
-                                    <div className='row  justify-content-center align-items-center'>
-                                        <div className='text-center col-5'>
-                                            <AnimatedImage show={false} name={getShortName(scheduleInfo?.interviewer_name)} shouldBlink={interviewer_state === IV_SPEAKING} />
-                                        </div>
-                                        <div className='mx-4'></div>
-                                        <div className='text-center col-5'>
-                                            <AnimatedImage show={false} name={getShortName(scheduleInfo?.interviewee_name)} shouldBlink={interviewee_state === IE_SPEAKING} showWebCam={showCam} />
-                                        </div>
-                                        <div className='text-center col-5'>
-                                            <h3 className='display-3 mb-4 text-white'>{capitalizeFirstLetter(scheduleInfo?.interviewer_name)}</h3>
-                                        </div>
-                                        <div className='mx-4'></div>
-                                        <div className='text-center col-5'>
-                                            <h3 className='display-3 mb-4 text-white'>{capitalizeFirstLetter(scheduleInfo?.interviewee_name)}</h3>
-                                        </div>
+                        <div className='d-flex flex-column h-100'>
+                            <div className='col'>
+                                <div className='row h-100' ref={videoRecorderRef}>
+                                    <div className='col-sm-6 d-flex flex-column align-items-center justify-content-center'>
+                                        <AnimatedImage show={interviewer_state === IV_PROCESSING} name={getShortName(scheduleInfo?.interviewer_name)} shouldBlink={interviewer_state === IV_SPEAKING} />
+                                        <h3 className='display-3 mb-4 text-white'>{capitalizeFirstLetter(scheduleInfo?.interviewer_name)}</h3>
                                     </div>
+                                    <div className='col-sm-6 d-flex flex-column align-items-center justify-content-center'>
+                                        <AnimatedImage show={false} showWebCam={showCam} name={getShortName(scheduleInfo?.interviewer_name)} shouldBlink={interviewer_state === IV_SPEAKING} />
+                                        <h3 className='display-3 mb-4 text-white'>{capitalizeFirstLetter(scheduleInfo?.interviewee_name)}</h3>
+                                    </div>
+
                                 </div>
                             </div>
-                            <div className='col-5'>
+                            <div className='position-absolute bottom-0 right-0 left-0' style={{
+                                marginBottom: 50
+                            }}>
                                 <CallHeader webcam={showCam} mic={mute} onWebCamChange={webCamHandler} onMicChange={micMuteHandler} onEndClick={endInterviewHandler} />
                             </div>
-                        </div>
+                        </div >
                     }
                     {
                         !interviewStarted ?
 
                             <Guidelines
+                                guidelines={GUIDELINES}
                                 scheduleInfo={scheduleInfo}
                                 loading={proceedCallLoader.loader}
                                 heading={scheduleInfo?.interviewee_expected_designation}

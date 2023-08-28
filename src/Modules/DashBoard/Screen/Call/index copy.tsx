@@ -85,7 +85,7 @@ function Call() {
 
     const socketRef = useRef<any>(null);
     const videoRecorderRef = useRef(null);
-    
+
     useEffect(() => {
         // Create the WebSocket connection only if it's not already established
         if (!socketRef.current) {
@@ -127,14 +127,14 @@ function Call() {
     // const sendDataToSocket = async (blobStream) => {
     //     if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
     //         const reader = blobStream.getReader();
-    
+
     //         while (true) {
     //             const { done, value } = await reader.read();
-    
+
     //             if (done) {
     //                 break;
     //             }
-    
+
     //             if (value) {
     //                 socketRef.current.send(value);
     //             }
@@ -145,11 +145,11 @@ function Call() {
     // };
 
 
-    const sendDataToSocket = async (blob:Blob) => {
+    const sendDataToSocket = async (blob: Blob) => {
         if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
             const arrayBuffer = await blob.arrayBuffer();
             const byteArray = new Uint8Array(arrayBuffer);
-            
+
             // Convert the binary data to a hexadecimal string
             let hexString = "";
             for (let i = 0; i < byteArray.length; i++) {
@@ -159,7 +159,7 @@ function Call() {
             //     blob_data: hexString,
             //     timestamp: Date.now() // or whatever timestamp you need
             // };
-            
+
             // // arrayBuffer();
             // // const arrayBufferToString = new TextDecoder().decode(arrayBuffer);
             // const uint8Array = new Uint8Array(arrayBuffer);
@@ -167,9 +167,9 @@ function Call() {
             // // const base64String = btoa(String.fromCharCode(...uint8Array));
             const syncD = {
                 timestamp: moment(),
-                schedule_id:schedule_id,
+                schedule_id: schedule_id,
                 blob_data: hexString,
-                is_speaking:speakingShouldProcess.current,
+                is_speaking: speakingShouldProcess.current,
             }
             socketRef.current.send(JSON.stringify(syncD));
         } else {
@@ -300,7 +300,7 @@ function Call() {
             }
             stream.current = await navigator.mediaDevices.getUserMedia({
                 audio: true,
-                video:true,
+                video: true,
             })
             if (!listener.current) {
                 const { default: hark } = await import('hark')
@@ -414,7 +414,7 @@ function Call() {
                         // bufferSize: 16384,
                         // numberOfAudioChannels: 1,
                         ondataavailable: onDataAvailable,
-                    }                    
+                    }
                     recorderAudio.current = new RecordRTCPromisesHandler(
                         stream.current,
                         recorderConfigAudio
@@ -653,7 +653,7 @@ function Call() {
             if (message_type === "SPEAK" && window.location.pathname === `/interview/${schedule_id}`) {
                 // proceedStopListening()
                 resetLastMessage()
-                console.log("Handle Response 0123", )
+                console.log("Handle Response 0123",)
 
 
                 speak(response_text);
@@ -775,9 +775,9 @@ function Call() {
     function startInterviewHandler() {
         transcriptionReferenceId.current = generateRandomID()
         proceedgetChatDetailsApiHandler({ message: "start" }, transcriptionReferenceId.current)
-        setTimeout(()=>{
+        setTimeout(() => {
             validateProceedStartListening()
-        },3000)
+        }, 3000)
     }
 
     function endInterviewHandler() {
@@ -788,14 +788,14 @@ function Call() {
 
     const IV_SPEAKING = 1
     const IV_IDLE = 2
-    const IV_PROCESSION = 3
+    const IV_PROCESSING = 3
 
 
     const IE_SPEAKING = 1
     const IE_IDLE = 2
 
 
-    const interviewer_state = isTtfSpeaking ? IV_SPEAKING : processCallInprogress ? IV_PROCESSION : IV_IDLE
+    const interviewer_state = isTtfSpeaking ? IV_SPEAKING : processCallInprogress ? IV_PROCESSING : IV_IDLE
     const interviewee_state = voiceUp ? IE_SPEAKING : IE_IDLE
 
 
@@ -809,43 +809,43 @@ function Call() {
                     {activeResponseText.current !== 'start' &&
                         <>
                             <CallHeader webcam={showCam} mic={mute} onWebCamChange={webCamHandler} onMicChange={micMuteHandler} onEndClick={endInterviewHandler} />
-                            <div style={{backgroundColor:'red'}} ref={videoRecorderRef}>
-                            <div  className='h-100 d-flex justify-content-center align-items-center'>
-                                <div>
-                                    <div className='row  justify-content-center align-items-center'>
-                                        <div className='text-center col-5'>
-                                            <AnimatedImage show={interviewer_state === IV_PROCESSION} name={getShortName(scheduleInfo?.interviewer_name)} shouldBlink={interviewer_state === IV_SPEAKING} />
-                                        </div>
-                                        <div className='mx-4'></div>
-                                        <div className='text-center col-5'>
-                                            <AnimatedImage show={false} name={getShortName(scheduleInfo?.interviewee_name)} shouldBlink={interviewee_state === IE_SPEAKING} showWebCam={showCam} />
-                                        </div>
-                                        <div className='text-center col-5'>
-                                            <h3 className='display-3 mb-4 text-white'>{capitalizeFirstLetter(scheduleInfo?.interviewer_name)}</h3>
-                                        </div>
-                                        <div className='mx-4'></div>
-                                        <div className='text-center col-5'>
-                                            <h3 className='display-3 mb-4 text-white'>{capitalizeFirstLetter(scheduleInfo?.interviewee_name)}</h3>
+                            <div style={{ backgroundColor: 'red' }} ref={videoRecorderRef}>
+                                <div className='h-100 d-flex justify-content-center align-items-center'>
+                                    <div>
+                                        <div className='row  justify-content-center align-items-center'>
+                                            <div className='text-center col-5'>
+                                                <AnimatedImage show={interviewer_state === IV_PROCESSING} name={getShortName(scheduleInfo?.interviewer_name)} shouldBlink={interviewer_state === IV_SPEAKING} />
+                                            </div>
+                                            <div className='mx-4'></div>
+                                            <div className='text-center col-5'>
+                                                <AnimatedImage show={false} name={getShortName(scheduleInfo?.interviewee_name)} shouldBlink={interviewee_state === IE_SPEAKING} showWebCam={showCam} />
+                                            </div>
+                                            <div className='text-center col-5'>
+                                                <h3 className='display-3 mb-4 text-white'>{capitalizeFirstLetter(scheduleInfo?.interviewer_name)}</h3>
+                                            </div>
+                                            <div className='mx-4'></div>
+                                            <div className='text-center col-5'>
+                                                <h3 className='display-3 mb-4 text-white'>{capitalizeFirstLetter(scheduleInfo?.interviewee_name)}</h3>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
-                            </div>
+                                </div>
                             </div>
 
                         </>
                     }
                     {
-                    activeResponseText.current === 'start' ?
-                        
-                        <Guidelines
-                            scheduleInfo = {scheduleInfo}
-                            loading={proceedCallLoader.loader}
-                            heading={scheduleInfo?.interviewee_expected_designation}
-                            onClick={startInterviewHandler}
-                        />
-                        :
-                        <></>
+                        activeResponseText.current === 'start' ?
+
+                            <Guidelines
+                                scheduleInfo={scheduleInfo}
+                                loading={proceedCallLoader.loader}
+                                heading={scheduleInfo?.interviewee_expected_designation}
+                                onClick={startInterviewHandler}
+                            />
+                            :
+                            <></>
                     }
 
                 </>

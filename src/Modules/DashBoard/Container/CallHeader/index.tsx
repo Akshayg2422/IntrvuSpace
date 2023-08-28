@@ -41,14 +41,15 @@ function CallHeader({ webcam, mic, onMicChange, onWebCamChange, onEndClick }: Ca
 
     return (
         <div
-            className='container-fluid align-items-center d-flex'
+            className='container align-items-center d-flex'
             style={{
-                height: "70px",
-                backgroundColor: color.white,
-                borderRadius: 5
-
+                height: "60px",
+                backgroundColor: color.davyGrey,
+                borderRadius: 5,
+                width: '30%'
             }}>
-            <div className='col-auto'>
+
+            <div className='col-auto mb-0'>
                 <span className="btn-inner--icon">
                     <i className="fas fa-circle text-red" />
                 </span>
@@ -56,25 +57,26 @@ function CallHeader({ webcam, mic, onMicChange, onWebCamChange, onEndClick }: Ca
             </div>
             <div className='col d-flex justify-content-end align-items-center'>
                 <div className='row align-items-center'>
-                    <div className='text-center mr-4 pointer' onClick={onMicChange}>
-                        <Image src={mic ? icons.microPhone : icons.microPhoneMute} height={mic ? 16 : 19} width={mic ? 16 : 19} />
-                        <h6 className="text-muted ls-1 mb-1"
+                    <div className='text-center mr-2 pointer' onClick={onMicChange}>
+                        <Image src={mic ? icons.microPhone : icons.microPhoneMute} height={23} width={23} />
+                        {/* <h6 className="text-muted ls-1 mb-1"
                             style={{
                                 fontSize: '8px'
-                            }}>Mic</h6>
+                            }}>Mic</h6> */}
                     </div>
                     <div className="text-center mr-4 pointer" onClick={onWebCamChange}>
-                        <Image src={webcam ? icons.videoCam : icons.videoCamMute} height={webcam ? 20 : 17} width={webcam ? 20 : 17} />
-                        <h6 className="text-muted ls-1 mb-1" style={{
+                        <Image src={webcam ? icons.videoCam : icons.videoCamMute} height={25} width={25} />
+                        {/* <h6 className="text-muted ls-1 mb-1" style={{
                             fontSize: '8px'
-                        }}>Camera</h6>
+                        }}>Camera</h6> */}
                     </div>
 
                     <div>
-                        <Button variant={'icon-with-text'} icon={icons.phone} text={'End now'} height={16} width={16} onClick={onEndClick} />
+                        <Button color={'warning'} variant={'icon-with-text'} icon={icons.phone} text={'End now'} height={16} width={16} onClick={onEndClick} />
                     </div>
                 </div>
             </div>
+
         </div>
     )
 }
