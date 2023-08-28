@@ -140,8 +140,6 @@ function Call() {
         if (rt === "INTERVIEWER_END_CALL") {
 
             closeCall.current = true
-            alert("about_to close")
-
         }
     }
 
@@ -150,12 +148,12 @@ function Call() {
         // Create the WebSocket connection only if it's not already established
         if (!socketRef.current) {
             // const socket = new WebSocket('ws://192.168.218.204:8012/aaa');
-            const socket = new WebSocket('ws://mockeazyprimary.leorainfotech.in/aaa');
+            const socket = new WebSocket('wss://mockeazyprimary.leorainfotech.in/aaa');
 
             socketRef.current = socket; // Store the WebSocket instance in the ref
 
             socket.addEventListener('open', () => {
-                console.log('WebSocket connection established');
+                console.log('WebSocket connection established===========================');
             });
 
             socket.addEventListener('close', () => {
@@ -680,12 +678,12 @@ function Call() {
                 </>
             }
 
-            {loader.loader && <div className='d-flex align-items-center justify-content-center h-100'><Spinner color={'white'} /></div>}
+            {loader.loader && <div className='d-flex align-items-center justify-content-center h-100'><Spinner /></div>}
             {
                 !loader.loader && !scheduleInfo &&
-                <div className='d-flex align-items-center justify-content-center h-100'>
-                    <div className='text-center'>
-                        <h4 className="display-4 mb-0 text-white">Technical breakdown please try again</h4>
+                <div className='d-flex align-items-center justify-content-center h-100 '>
+                    <div className='text-center '>
+                        <h4 className="display-4 mb-0">Technical breakdown please try again</h4>
                         <div className='my-3'></div>
                         <Button text={'Try Again'} onClick={getBasicInfo} />
                     </div>

@@ -15,7 +15,6 @@ function GenerateModal({ isOpen, onClose, children, title, ...rest }: GenerateMo
         >
             <div className="position-relative">
                 <video
-
                     autoPlay
                     loop
                     muted

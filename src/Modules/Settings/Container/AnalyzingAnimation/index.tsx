@@ -132,11 +132,11 @@ function AnalyzingAnimation() {
                                     <span className={'loader2'}></span>
                                 )}
                                 <h4 className={'d-flex justify-content-center align-items-center topic-animation text-black h3'}
-                                style={{
-                                    position: 'absolute',
-                                    left: '38%',
-                                    top: '115%'
-                                }}
+                                    style={{
+                                        position: 'absolute',
+                                        left: '38%',
+                                        top: '115%'
+                                    }}
                                 >
                                     1. Topics Generated  <span className={'pb-1 ml-2'}><Image height={20} width={20} src={icons.tickGreen} /></span>
                                 </h4>
@@ -163,20 +163,20 @@ function AnalyzingAnimation() {
                                     <span className={'loader2'}></span>
                                 )}
                                 <h4 className={'d-flex justify-content-center align-items-center topic-animation text-black h3'}
-                                style={{
-                                    position: 'absolute',
-                                    left: '38%',
-                                    top: '100%'
-                                }}
+                                    style={{
+                                        position: 'absolute',
+                                        left: '38%',
+                                        top: '100%'
+                                    }}
                                 >
                                     1. Topics Generated <span className={'pb-1 ml-2'}><Image height={20} width={20} src={icons.tickGreen} /></span>
                                 </h4>
                                 <h4 className={'d-flex justify-content-center align-items-center topic-animation text-black h3'}
-                                style={{
-                                    position: 'absolute',
-                                    left: '38%',
-                                    top: '115%'
-                                }}
+                                    style={{
+                                        position: 'absolute',
+                                        left: '38%',
+                                        top: '115%'
+                                    }}
                                 >
                                     2. Questions Generated <span className={'pb-1 ml-2'}><Image height={20} width={20} src={icons.tickGreen} /></span>
                                 </h4>
@@ -196,29 +196,29 @@ function AnalyzingAnimation() {
                         {generating && contentStep === 6 && (
                             <>
                                 <h4 className={'d-flex justify-content-center align-items-center topic-animation text-black h3'}
-                                 style={{
-                                    position: 'absolute',
-                                    left: '38%',
-                                    top: '85%'
-                                }}
+                                    style={{
+                                        position: 'absolute',
+                                        left: '38%',
+                                        top: '85%'
+                                    }}
                                 >
                                     1. Topics Generated <span className={'pb-1 ml-2'}><Image height={20} width={20} src={icons.tickGreen} /></span>
                                 </h4>
                                 <h4 className={'d-flex justify-content-center align-items-center topic-animation text-black h3'}
-                                 style={{
-                                    position: 'absolute',
-                                    left: '38%',
-                                    top: '100%'
-                                }}
+                                    style={{
+                                        position: 'absolute',
+                                        left: '38%',
+                                        top: '100%'
+                                    }}
                                 >
                                     2. Questions Generated <span className={'pb-1 ml-2'}><Image height={20} width={20} src={icons.tickGreen} /></span>
                                 </h4>
                                 <h4 className={'d-flex justify-content-center align-items-center topic-animation text-black h3'}
-                                 style={{
-                                    position: 'absolute',
-                                    left: '38%',
-                                    top: '115%'
-                                }}
+                                    style={{
+                                        position: 'absolute',
+                                        left: '38%',
+                                        top: '115%'
+                                    }}
                                 >
                                     3. Rules Generated <span className={'pb-1 ml-2'}><Image height={20} width={20} src={icons.tickGreen} /></span>
                                 </h4>
