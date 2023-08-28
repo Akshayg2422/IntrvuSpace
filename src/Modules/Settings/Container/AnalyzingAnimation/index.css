@@ -99,7 +99,7 @@ h4.topic-animation {
 @keyframes flash {
   0% {
     background-color: #1e1c1c22;
-    box-shadow: 32px 0 #1e1c1c22, -32px 0 #FFF;
+    box-shadow: 32px 0 #1e1c1c22, -32px 0 #000000;
   }
   50% {
     background-color: #000000;

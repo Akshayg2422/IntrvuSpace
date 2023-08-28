@@ -153,7 +153,7 @@ function FromJD() {
             size="md"
             className="mt-3"
             block
-            text={'Upload job description details and start interview'}
+            text={'CREATE INTERVIEW'}
             onClick={addJdModal.show}
         />
     );
@@ -351,7 +351,7 @@ function FromJD() {
                 </div>
             </Modal>
 
-            <GenerateModal title={'Create Interview Schedule From JD'} isOpen={generateJdModal.visible || true} onClose={generateJdModal.hide}>
+            <GenerateModal title={'Create Interview Schedule From JD'} isOpen={generateJdModal.visible} onClose={generateJdModal.hide}>
                 <AnalyzingAnimation />
             </GenerateModal>
 
