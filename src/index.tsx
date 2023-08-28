@@ -6,7 +6,7 @@ import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 
 // plugins styles downloaded
-import "./Assets/vendor/nucleo/css/nucleo.css";
+// import "./Assets/vendor/nucleo/css/nucleo.css";
 
 // core styles
 import "./Assets/scss/argon-dashboard-pro-react.scss?v1.2.1";
