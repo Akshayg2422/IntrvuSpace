@@ -140,8 +140,6 @@ function Call() {
         if (rt === "INTERVIEWER_END_CALL") {
 
             closeCall.current = true
-            alert("about_to close")
-
         }
     }
 
@@ -155,7 +153,7 @@ function Call() {
             socketRef.current = socket; // Store the WebSocket instance in the ref
 
             socket.addEventListener('open', () => {
-                console.log('WebSocket connection established');
+                console.log('WebSocket connection established===========================');
             });
 
             socket.addEventListener('close', () => {
@@ -227,12 +225,12 @@ function Call() {
 
 
     /**
-     * state jay
+     * state jayFromJD
      */
 
     const loader = useLoader(false);
     const proceedCallLoader = useLoader(false);
-    const [showCam, setShowCam] = useState(true);
+    const [showCam, setShowCam] = useState(false);
     const [mute, setMute] = useState(false);
     const ttsRef = useRef<any>(false);
 
@@ -680,12 +678,12 @@ function Call() {
                 </>
             }
 
-            {loader.loader && <div className='d-flex align-items-center justify-content-center h-100'><Spinner color={'white'} /></div>}
+            {loader.loader && <div className='d-flex align-items-center justify-content-center h-100'><Spinner /></div>}
             {
                 !loader.loader && !scheduleInfo &&
-                <div className='d-flex align-items-center justify-content-center h-100'>
-                    <div className='text-center'>
-                        <h4 className="display-4 mb-0 text-white">Technical breakdown please try again</h4>
+                <div className='d-flex align-items-center justify-content-center h-100 '>
+                    <div className='text-center '>
+                        <h4 className="display-4 mb-0">Technical breakdown please try again</h4>
                         <div className='my-3'></div>
                         <Button text={'Try Again'} onClick={getBasicInfo} />
                     </div>
