@@ -153,7 +153,7 @@ function FromJD() {
             size="md"
             className="mt-3"
             block
-            text={'Upload job description details and start interview'}
+            text={'CREATE INTERVIEW'}
             onClick={addJdModal.show}
         />
     );

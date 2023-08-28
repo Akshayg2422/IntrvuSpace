@@ -9,7 +9,7 @@ function GenerateModal({ isOpen, onClose, children, title, ...rest }: GenerateMo
     return (
         <RsModal
             fade={false}
-            className={`modal-dialog-centered modal-xl rounded`}
+            className={`modal-dialog-centered modal-lg rounded`}
             isOpen={isOpen}
             {...rest}
         >
@@ -25,13 +25,17 @@ function GenerateModal({ isOpen, onClose, children, title, ...rest }: GenerateMo
                         zIndex: -1,
                         borderRadius: 6,
                         marginBottom: -10
+
+
+                        // opacity: 0.3, // Set the desired opacity value
+                        // marginBottom: -10
                     }}
                 >
                     <source src={videos.background} type="video/mp4" />
                 </video>
                 <div className="position-absolute" style={{ top: 0, left: 0, right: 0, bottom: 0, borderRadius: 7 }}>
                     <div className={`modal-header d-flex align-items-center justify-content-center`}>
-                        <h6 className={"modal-title text-white"}>{title}</h6>
+                        <h6 className={"modal-title text-black"}>{title}</h6>
                     </div>
                     <div className={`modal-body scroll-hidden text-center`} >
                         {children}
