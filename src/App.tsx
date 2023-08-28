@@ -1,22 +1,22 @@
 /* eslint-disable @typescript-eslint/no-redeclare */
-import { PageNotFound, ScreenWrapper } from "@Components";
-import { Splash } from '@Modules';
-import { AUTH_ROUTES, DASHBOARD_ROUTES, HOME_ROUTES, RequireAuth, RequireHome } from "@Routes";
+import { ScreenWrapper, Breadcrumbs, Back, PageNotFound } from "@Components";
 import { Route, Routes } from "react-router-dom";
+import { HOME_ROUTES, RequireAuth, DASHBOARD_ROUTES, AUTH_ROUTES, RequireHome } from "@Routes";
 import { ToastContainer } from "react-toastify";
+import { Splash } from '@Modules'
 /**
  *  select-react  - important need to add this app.js
  */
-import "@fortawesome/fontawesome-free/css/all.min.css";
-import "@fullcalendar/common/main.min.css";
-import "@fullcalendar/daygrid/main.min.css";
-import "quill/dist/quill.core.css";
-import { useEffect, useState } from "react";
+import "select2/dist/css/select2.min.css";
 import "react-notification-alert/dist/animate.css";
 import "react-perfect-scrollbar/dist/css/styles.css";
-import { useDispatch, useSelector } from "react-redux";
-import "select2/dist/css/select2.min.css";
+import "@fullcalendar/common/main.min.css";
+import "@fullcalendar/daygrid/main.min.css";
 import "sweetalert2/dist/sweetalert2.min.css";
+import "quill/dist/quill.core.css";
+import "@fortawesome/fontawesome-free/css/all.min.css";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
 import { settingSideNavRemove } from "./Redux";
 
 
@@ -46,12 +46,19 @@ function App() {
       if (prop.collapse) {
         return getRoutes(prop.views);
       }
+
       const path = prop.layout ? prop.layout + prop.path : prop.path;
+
       return (
+
         <Route
           path={path}
-          element={
-            prop.component
+          element={type === AUTH ?
+            <RequireHome>{prop.component}</RequireHome>
+            :
+            <RequireAuth>
+              {prop.component}
+            </RequireAuth>
           }
           key={key}
         />
@@ -61,10 +68,9 @@ function App() {
     });
   };
 
-
-
   return (
     <ScreenWrapper>
+
       <Routes>
         <Route path="/" element={<Splash />} />
         {getRoutes(AUTH_ROUTES, AUTH)}
@@ -72,6 +78,8 @@ function App() {
         {getRoutes(DASHBOARD_ROUTES)}
         <Route path={"*"} element={<PageNotFound />} />
       </Routes>
+
+
       <ToastContainer />
     </ScreenWrapper >
 
