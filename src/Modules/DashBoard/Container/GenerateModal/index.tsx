@@ -9,7 +9,7 @@ function GenerateModal({ isOpen, onClose, children, title, ...rest }: GenerateMo
     return (
         <RsModal
             fade={false}
-            className={`modal-dialog-centered modal-xl rounded`}
+            className={`modal-dialog-centered modal-lg rounded`}
             isOpen={isOpen}
             {...rest}
         >
@@ -25,6 +25,7 @@ function GenerateModal({ isOpen, onClose, children, title, ...rest }: GenerateMo
                         objectFit: 'cover',
                         zIndex: -1,
                         borderRadius: 6,
+                        marginBottom: -10
 
 
                         // opacity: 0.3, // Set the desired opacity value
