@@ -68,15 +68,20 @@ function App() {
   function Dummy() {
     return <h1>Dummy</h1>
   }
+  function Splash() {
+    return <h1>Splash</h1>
+  }
 
   return (
     <ScreenWrapper>
       <Routes>
-        <Route path="/" element={<Splash />} />
+        {/* <Route path="/" element={<Splash />} /> */}
         <Route path="/dummy" element={<Dummy />} />
-        {getRoutes(AUTH_ROUTES, AUTH)}
+        <Route path="/" element={<Splash />} />
+
+        {/* {getRoutes(AUTH_ROUTES, AUTH)}
         {getRoutes(HOME_ROUTES)}
-        {getRoutes(DASHBOARD_ROUTES)}
+        {getRoutes(DASHBOARD_ROUTES)} */}
         <Route path={"*"} element={<PageNotFound />} />
       </Routes>
       <ToastContainer />
