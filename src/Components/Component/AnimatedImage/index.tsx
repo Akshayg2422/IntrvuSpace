@@ -9,9 +9,10 @@ const AnimatedImage = ({ name, shouldBlink, show, variant = 'name', showWebCam =
   return (
 
     <div className="card-profile-image">
-      <a className={`avatar rounded-circle ${imageClasses}`}
+      <a className={`${imageClasses}`}
         style={{
-          backgroundColor: '#42f542'
+          backgroundColor: '#42f542',
+          borderRadius: 6
         }}
       >
         <div className="name-overlay text-white position-absolute "
@@ -29,7 +30,8 @@ const AnimatedImage = ({ name, shouldBlink, show, variant = 'name', showWebCam =
               }
             </div> :
             <div style={{ marginLeft: 35 }}>
-              <AnimatedLoader /></div>}
+              <AnimatedLoader /></div>
+          }
         </div>
       </a>
     </div>

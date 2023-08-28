@@ -98,6 +98,7 @@ function Call() {
             if (closeCall.current === true) {
                 proceedStopListening()
                 setButtonConditional('end')
+                getBasicInfo();
             }
         };
         audioElementRef.current.play();
@@ -645,11 +646,11 @@ function Call() {
                                 <div className='row h-100' ref={videoRecorderRef}>
                                     <div className='col-sm-6 d-flex flex-column align-items-center justify-content-center'>
                                         <AnimatedImage show={interviewer_state === IV_PROCESSING} name={getShortName(scheduleInfo?.interviewer_name)} shouldBlink={interviewer_state === IV_SPEAKING} />
-                                        <h3 className='display-3 mb-4 text-white'>{capitalizeFirstLetter(scheduleInfo?.interviewer_name)}</h3>
+                                        <h3 className='display-3 mb-4 text-white mt-3'>{capitalizeFirstLetter(scheduleInfo?.interviewer_name)}</h3>
                                     </div>
                                     <div className='col-sm-6 d-flex flex-column align-items-center justify-content-center'>
                                         <AnimatedImage show={false} showWebCam={showCam} name={getShortName(scheduleInfo?.interviewer_name)} shouldBlink={interviewer_state === IV_SPEAKING} />
-                                        <h3 className='display-3 mb-4 text-white'>{capitalizeFirstLetter(scheduleInfo?.interviewee_name)}</h3>
+                                        <h3 className='display-3 mb-4 text-white mt-3'>{capitalizeFirstLetter(scheduleInfo?.interviewee_name)}</h3>
                                     </div>
 
                                 </div>
@@ -663,7 +664,6 @@ function Call() {
                     }
                     {
                         !interviewStarted ?
-
                             <Guidelines
                                 guidelines={GUIDELINES}
                                 scheduleInfo={scheduleInfo}
