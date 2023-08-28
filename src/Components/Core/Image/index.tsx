@@ -1,6 +1,9 @@
 import React from 'react'
 import { ImageProps, ImageVariant } from './interfaces'
-function Image({ variant = 'default', className, alt, size, ...rest }: ImageProps) {
+import { color } from '@Themes';
+import { hexToHue } from '@Utils'
+
+function Image({ variant = 'default', className, alt, size, tintColor, ...rest }: ImageProps) {
 
     function getVariantStyle(variant: ImageVariant) {
         let styles = ''
@@ -18,8 +21,13 @@ function Image({ variant = 'default', className, alt, size, ...rest }: ImageProp
         return styles;
     }
 
+    console.log(tintColor + '====tintColor');
+
+
     return (
-        <img className={`${getVariantStyle(variant)} ${className}`} alt={alt} {...rest}></img>
+        <img className={`${getVariantStyle(variant)} ${className}`} alt={alt} {...rest} style={{
+            ...(tintColor && { filter: `sepia(100%) hue-rotate(${hexToHue(tintColor)}deg)` })
+        }}></img>
     )
 }
 
