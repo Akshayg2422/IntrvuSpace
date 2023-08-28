@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { Button, Card, Divider, Modal, TextArea, Input, showToast, Spinner } from '@Components';
-import { createNewJdSchedule, getJdItemList, postJdVariant, selectedScheduleId, getJdItemListSuccess } from '@Redux';
+import { createNewJdSchedule, getJdItemList, postJdVariant, selectedScheduleId } from '@Redux';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useInput, useNavigation, useModal } from '@Hooks';
@@ -11,8 +11,10 @@ import { icons } from '@Assets';
 
 
 function FromJD() {
+    const CHAR_LENGTH = 2000
 
-    const ERROR_MESSAGE = "Job description should be below 300 chars"
+    const ERROR_MESSAGE = "Please provide a job description within " + CHAR_LENGTH + " characters."
+
 
     const { jdItem } = useSelector((state: any) => state.DashboardReducer)
     const { goTo } = useNavigation();
@@ -167,13 +169,10 @@ function FromJD() {
                         paddingTop: '20px'
                     }}></div>
                     {
-                        <div className={'row mt-3'}>
+                        <div className={'mt-3'}>
                             {jdItem && jdItem.length > 0 && jdItem.map((item: any, index: any) => {
 
                                 const { job_description: { details, experience }, schedules, sector, name, id } = item
-                                const isTryAgain = schedules && schedules.length > 0 && schedules.every((each: any) => {
-                                    return each.is_complete
-                                })
 
                                 const more = jdMore[index]?.more
 
@@ -182,14 +181,10 @@ function FromJD() {
                                     return is_started && is_complete
                                 })
 
-
                                 const proceedInterview = schedules.find((each: any) => {
                                     const { is_started, is_complete } = each
                                     return !is_started
                                 })
-
-                                console.log(JSON.stringify(proceedInterview) + '====proceed');
-
 
                                 return (
                                     <Card className="mt--3">
@@ -204,12 +199,14 @@ function FromJD() {
                                                             proceedInterviewHandler(proceedInterview?.id);
                                                         }}
                                                     />
-                                                </div> : <Button
+                                                </div> :
+                                                <Button
                                                     size={'sm'}
                                                     text={'Try Another'}
                                                     onClick={() => {
                                                         createNewJdScheduleApiHandler(id);
-                                                    }} />
+                                                    }}
+                                                />
                                             }
                                         </div>
                                         <h5 className='mb-0 pointer text-muted'>{sector}</h5>
@@ -219,30 +216,31 @@ function FromJD() {
                                                 <small className='text-sm text-black col'>Experience with {experience} years</small>
                                             </div>
                                         </div>
-                                        <div className='col mt-3'>
+                                        <div className='col mt-2'>
                                             <div className='row'>
                                                 <img src={icons.information} alt="Comment Icon" height={16} width={16} style={{
                                                     marginTop: 2
                                                 }} />
                                                 <div className='col ml-3'>
                                                     {more ?
-                                                        <div>
-                                                            <small className='text-sm text-black'>{details}</small>
-                                                            {/* <small className='h5 text-primary ml-1 pointer' onClick={() => {
+                                                        <div className='row'>
+                                                            <small className='text-sm text-black'>{details}    <span className='h5 text-primary ml-1 pointer' onClick={() => {
                                                                 const updatedData: any = [...jdMore]
                                                                 updatedData[index] = { ...updatedData[index], more: false }
                                                                 setJdMore(updatedData)
-                                                            }}>View Less</small> */}
+                                                            }}>View Less</span></small>
+
                                                         </div>
                                                         :
                                                         <div className='row'>
-                                                            <small className='text-sm text-black'>{details.slice(0, 320) + "..."}
+                                                            <small className='text-sm text-black'>{details.slice(0, 350) + " ..."}
+                                                                <span className='h5 text-primary ml-1 pointer' onClick={() => {
+                                                                    const updatedData: any = [...jdMore]
+                                                                    updatedData[index] = { ...updatedData[index], more: true }
+                                                                    setJdMore(updatedData)
+                                                                }}>View More</span>
                                                             </small>
-                                                            {/* <small className='h5 text-primary ml-1 pointer' onClick={() => {
-                                                                const updatedData: any = [...jdMore]
-                                                                updatedData[index] = { ...updatedData[index], more: true }
-                                                                setJdMore(updatedData)
-                                                            }}>View More</small> */}
+
                                                         </div>
                                                     }
                                                 </div>
@@ -337,16 +335,15 @@ function FromJD() {
                     <TextArea
                         error={jdDescriptionError}
                         heading='Job Description'
-                        value={jd.value}
+                        value={jd.value.slice(0, CHAR_LENGTH)}
                         onChange={(e) => {
                             let value = e.target.value
-                            let finalValue = value
-
-                            if (value.length > 300) {
+                            if (value.length > CHAR_LENGTH) {
                                 setJdDescriptionError(ERROR_MESSAGE)
+                            } else {
+                                setJdDescriptionError(undefined)
                             }
                             jd.set(value)
-
                         }} />
                 </div>
                 <div className='text-right'>
@@ -354,7 +351,7 @@ function FromJD() {
                 </div>
             </Modal>
 
-            <GenerateModal title={'Create Interview Schedule From JD'} isOpen={generateJdModal.visible } onClose={generateJdModal.hide}>
+            <GenerateModal title={'Create Interview Schedule From JD'} isOpen={generateJdModal.visible} onClose={generateJdModal.hide}>
                 <AnalyzingAnimation />
             </GenerateModal>
 

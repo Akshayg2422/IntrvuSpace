@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Modal as RsModal } from "reactstrap";
 import { GenerateModalProps } from './interfaces'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
@@ -9,12 +9,13 @@ function GenerateModal({ isOpen, onClose, children, title, ...rest }: GenerateMo
     return (
         <RsModal
             fade={false}
-            className={`modal-dialog-centered modal-lg rounded`}
+            className={`modal-dialog-centered modal-xl rounded`}
             isOpen={isOpen}
             {...rest}
         >
             <div className="position-relative">
                 <video
+
                     autoPlay
                     loop
                     muted
@@ -23,14 +24,16 @@ function GenerateModal({ isOpen, onClose, children, title, ...rest }: GenerateMo
                         height: '100%',
                         objectFit: 'cover',
                         zIndex: -1,
-                        borderRadius: 5,
-                        marginBottom: -10,
-                        opacity: 0.5, // Set the desired opacity value
+                        borderRadius: 6,
+
+
+                        // opacity: 0.3, // Set the desired opacity value
+                        // marginBottom: -10
                     }}
                 >
                     <source src={videos.background} type="video/mp4" />
                 </video>
-                <div className="position-absolute" style={{ top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0, 0, 0, 0.5)', borderRadius: 5 }}>
+                <div className="position-absolute" style={{ top: 0, left: 0, right: 0, bottom: 0, borderRadius: 7 }}>
                     <div className={`modal-header d-flex align-items-center justify-content-center`}>
                         <h6 className={"modal-title text-white"}>{title}</h6>
                     </div>
