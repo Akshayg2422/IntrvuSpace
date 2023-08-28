@@ -7,53 +7,62 @@ import { color } from '@Themes'
 
 function UploadJdCard({ openAddJdModal }) {
 
-    const guidelines = ['Introduction (5 minutes)', 'Icebreaker/Small Talk (5 minutes)', 'Background and Experience (10 minutes)', 'Behavioral Questions (15 minutes)']
+    const headingAndSubtext = [
+        { 'Retrieve Job Description from the Job Portal:': 'Kindly extract the Job Description (JD) from the designated Job Portal source.' },
+        { 'Await Swift Interview Generation by Our System:': 'Once the JD is uploaded, our advanced system will promptly generate a tailored interview based on the provided Job Description. This process will be completed within a maximum of 30 seconds.' },
+        { 'Engage in the Interview Session:': 'Participate in the generated interview session, where you will encounter thought-provoking questions and scenarios pertinent to the role outlined in the Job Description.' },
+        { 'Access Your Interview Report:': 'Subsequent to the interview, you will receive an insightful report detailing your performance, strengths, and areas for potential growth. This report will aid you in gauging your alignment with the job requirements and expectations.' }
+    ]
 
     return (
         <div className='h-100 d-flex justify-content-center align-items-center'>
             <div className={'col-md-8 col-lg-8 col-sm-8 card p-4'}>
 
                 <div className='d-flex justify-content-center align-items-center'>
-                    <div>
-                        <div className="text-black display-2" style={{ fontSize: '50px' }}>
-                            <div className={'row justify-content-center'}>
+                    <div className={'row align-items-start pl-5'}>
+                        <div className="text-black display-2 pl-2" style={{ fontSize: '50px' }}>
+                            <div className={'row'}>
                                 <div>Upload JD</div>
                                 <div className={'px-2'}>&</div>
-                                <div>Start Interview</div>
+                                <div>Begin Interview</div>
                             </div>
                         </div>
-                        <p className="text-muted mb-0 text-black text-center" style={{ maxWidth: '640px' }}>{'We are looking for a motivated and skilled candidate to join our team as a Software Engineer.The ideal candidate should have a strong background in computer science.'}</p>
-
                         <div className='mt-3'>
-                            <h3 className="mb-0 text-black">Guidelines:</h3>
-
                             {
-                                guidelines && guidelines.length > 0 && guidelines.map(each => {
+                                headingAndSubtext && headingAndSubtext.length > 0 && headingAndSubtext.map((item, index) => {
+                                    const key = Object.keys(item)[0];
+                                    const value = item[key];
+
                                     return (
-                                        <div className='col mt-3'>
+                                        <div className='col mt-2' key={index}>
                                             <div className='row align-items-center'>
                                                 <div style={{
                                                     width: 10,
                                                     height: 10,
-                                                    backgroundColor: color.black,
+                                                    backgroundColor: color.primary,
                                                     borderRadius: 5
-                                                }}>
+                                                }}></div>
 
+                                                <div className="ml-3">
+                                                    <p className="h3 mb-0 text-black">{key}</p>
                                                 </div>
-                                                <p className="text-muted mb-0 ml-3 text-black">{each}</p>
                                             </div>
+                                            <p style={{ fontSize: '14px' }} className={'col'}>{value}</p>
                                         </div>
-                                    )
+                                    );
                                 })
                             }
                         </div>
 
-                        <div className='text-center pb-4'>
-
-                            {openAddJdModal()}
-
-                        </div>
                     </div>
+                </div>
+
+
+                <div className='pb-4'>
+
+                    <p className="mb-0 text-center h4 font-weight-500 pl-4 ml-2">{'We are committed to providing you with a streamlined and comprehensive virtual interview experience. Your active involvement will lead to valuable insights into your compatibility with the job role.'}</p>
+                    {openAddJdModal()}
+
                 </div>
             </div>
         </div>

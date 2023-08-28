@@ -12,6 +12,8 @@ import { icons } from '@Assets';
 
 function FromJD() {
     const CHAR_LENGTH = 2000
+    const VIEW_MORE_LENGTH = 350
+
 
     const ERROR_MESSAGE = "Please provide a job description within " + CHAR_LENGTH + " characters."
 
@@ -153,7 +155,7 @@ function FromJD() {
             size="md"
             className="mt-3"
             block
-            text={'Upload job description details and start interview'}
+            text={'CREATE INTERVIEW'}
             onClick={addJdModal.show}
         />
     );
@@ -182,8 +184,8 @@ function FromJD() {
                                 })
 
                                 const proceedInterview = schedules.find((each: any) => {
-                                    const { is_started, is_complete } = each
-                                    return !is_started
+                                    const { is_complete } = each
+                                    return !is_complete
                                 })
 
                                 return (
@@ -194,7 +196,7 @@ function FromJD() {
                                                 <div>
                                                     <Button
                                                         className={'px-4 border border-primary'}
-                                                        text={proceedInterview.is_complete ? "Resume Interview" : "Start Interview"}
+                                                        text={proceedInterview.is_started ? "Resume Interview" : "Start Interview"}
                                                         onClick={() => {
                                                             proceedInterviewHandler(proceedInterview?.id);
                                                         }}
@@ -222,26 +224,43 @@ function FromJD() {
                                                     marginTop: 2
                                                 }} />
                                                 <div className='col ml-3'>
-                                                    {more ?
-                                                        <div className='row'>
-                                                            <small className='text-sm text-black'>{details}    <span className='h5 text-primary ml-1 pointer' onClick={() => {
-                                                                const updatedData: any = [...jdMore]
-                                                                updatedData[index] = { ...updatedData[index], more: false }
-                                                                setJdMore(updatedData)
-                                                            }}>View Less</span></small>
-
-                                                        </div>
-                                                        :
-                                                        <div className='row'>
-                                                            <small className='text-sm text-black'>{details.slice(0, 350) + " ..."}
-                                                                <span className='h5 text-primary ml-1 pointer' onClick={() => {
-                                                                    const updatedData: any = [...jdMore]
-                                                                    updatedData[index] = { ...updatedData[index], more: true }
-                                                                    setJdMore(updatedData)
-                                                                }}>View More</span>
-                                                            </small>
-
-                                                        </div>
+                                                    {
+                                                        details.length < VIEW_MORE_LENGTH ?
+                                                            <div className='row'>
+                                                                <small className='text-sm text-black'>{details}</small>
+                                                            </div>
+                                                            :
+                                                            <>
+                                                                {more ?
+                                                                    <div className='row'>
+                                                                        <small className='text-sm text-black'>
+                                                                            {details}
+                                                                            <span className='h5 text-primary ml-1 pointer'
+                                                                                onClick={() => {
+                                                                                    const updatedData: any = [...jdMore]
+                                                                                    updatedData[index] = { ...updatedData[index], more: false }
+                                                                                    setJdMore(updatedData)
+                                                                                }}>
+                                                                                View Less
+                                                                            </span>
+                                                                        </small>
+                                                                    </div>
+                                                                    :
+                                                                    <div className='row'>
+                                                                        <small className='text-sm text-black'>{details.slice(0, VIEW_MORE_LENGTH) + " ..."}
+                                                                            <span className='h5 text-primary ml-1 pointer'
+                                                                                onClick={() => {
+                                                                                    const updatedData: any = [...jdMore]
+                                                                                    updatedData[index] = { ...updatedData[index], more: true }
+                                                                                    setJdMore(updatedData)
+                                                                                }}
+                                                                            >
+                                                                                View More
+                                                                            </span>
+                                                                        </small>
+                                                                    </div>
+                                                                }
+                                                            </>
                                                     }
                                                 </div>
                                             </div>
@@ -304,7 +323,7 @@ function FromJD() {
                             })
                             }
 
-                        </div>
+                        </div >
 
                     }
                 </div > : <UploadJdCard openAddJdModal={openAddJdModalButton} />
