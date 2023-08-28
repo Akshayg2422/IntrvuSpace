@@ -293,17 +293,14 @@ function FromJD() {
                                                         <>
                                                             <div className='row align-items-center'>
                                                                 <h5 className='col mb-0'>{"Interview " + (index + 1)}</h5>
-                                                                <h5 className='col mb-0'>{"Created at: " + (is_complete ? "Completed" : getDisplayTimeFromMoment(created_at))}</h5>
-                                                                <div className='col-auto'>
+                                                                <h5 className='col mb-0 text-center'>{(is_complete ? "Completed: " : "Created at: ") + getDisplayTimeFromMoment(created_at)}</h5>
+                                                                <div className='col text-right'>
                                                                     {is_report_complete &&
-                                                                        <div className='text-center'>
-                                                                            <Button
-                                                                                text={'View Report'}
-                                                                                onClick={() => {
-                                                                                    proceedReport(id);
-                                                                                }} />
-                                                                        </div>
-
+                                                                        <Button
+                                                                            text={'View Report'}
+                                                                            onClick={() => {
+                                                                                proceedReport(id);
+                                                                            }} />
                                                                     }
 
                                                                     {is_complete && !is_report_complete && <div>
@@ -330,7 +327,7 @@ function FromJD() {
             }
 
             <Modal title={'Create Interview Schedule From JD'} isOpen={addJdModal.visible} onClose={addJdModal.hide}>
-                <div className='col-xl-7 '>
+                <div>
                     <Input
                         heading={'Sector'}
                         placeHolder={"Sector"}
@@ -365,12 +362,12 @@ function FromJD() {
                             jd.set(value)
                         }} />
                 </div>
-                <div className='text-right'>
-                    <Button size='md' text={'Submit'} onClick={submitJdApiHandler} />
+                <div className='text-center'>
+                    <Button block size='md' text={'Submit'} onClick={submitJdApiHandler} />
                 </div>
             </Modal>
 
-            <GenerateModal title={'Create Interview Schedule From JD'} isOpen={generateJdModal.visible} onClose={generateJdModal.hide}>
+            <GenerateModal title={'Create Interview Schedule From JD'} isOpen={generateJdModal.visible || true} onClose={generateJdModal.hide}>
                 <AnalyzingAnimation />
             </GenerateModal>
 

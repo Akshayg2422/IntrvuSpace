@@ -50,12 +50,8 @@ function App() {
       return (
         <Route
           path={path}
-          element={type === AUTH ?
-            <RequireHome>{prop.component}</RequireHome>
-            :
-            <RequireAuth>
-              {prop.component}
-            </RequireAuth>
+          element={
+            prop.component
           }
           key={key}
         />
