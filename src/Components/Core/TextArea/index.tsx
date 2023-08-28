@@ -19,7 +19,7 @@ function TextArea({ id, heading, value, onChange, className, placeholder, error 
                 placeholder={placeholder}
 
             />
-            {error && <div className="invalid-feedback">{error + ""}</div>}
+            {error ? <small className='text-red'>{error}</small> : <></>}
         </FormGroup>
     )
 }

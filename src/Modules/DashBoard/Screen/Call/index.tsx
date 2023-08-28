@@ -150,7 +150,7 @@ function Call() {
         // Create the WebSocket connection only if it's not already established
         if (!socketRef.current) {
             // const socket = new WebSocket('ws://192.168.218.204:8012/aaa');
-            const socket = new WebSocket('ws://103.118.188.135:8005/aaa');
+            const socket = new WebSocket('wss://mockeazyprimary.leorainfotech.in/aaa');
 
             socketRef.current = socket; // Store the WebSocket instance in the ref
 

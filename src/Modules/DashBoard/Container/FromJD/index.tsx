@@ -12,7 +12,7 @@ import { icons } from '@Assets';
 
 function FromJD() {
 
-    const ERROR_MESSAGE = "Job description should be below 300 chars"
+    const ERROR_MESSAGE = "Please provide a job description within 300 characters."
 
     const { jdItem } = useSelector((state: any) => state.DashboardReducer)
     const { goTo } = useNavigation();
@@ -337,16 +337,15 @@ function FromJD() {
                     <TextArea
                         error={jdDescriptionError}
                         heading='Job Description'
-                        value={jd.value}
+                        value={jd.value.slice(0, 350)}
                         onChange={(e) => {
                             let value = e.target.value
-                            let finalValue = value
-
-                            if (value.length > 300) {
+                            if (value.length > 350) {
                                 setJdDescriptionError(ERROR_MESSAGE)
+                            } else {
+                                setJdDescriptionError(undefined)
                             }
                             jd.set(value)
-
                         }} />
                 </div>
                 <div className='text-right'>
