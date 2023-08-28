@@ -1,3 +1,4 @@
+import { image } from '@Assets'
 import React, { useState } from 'react'
 import { Container, Row, Col } from 'reactstrap'
 
@@ -29,7 +30,7 @@ function Data() {
                             <img
                                 alt="..."
                                 className="img-fluid"
-                            // src={icons.authenticationModule}
+                            src={image.AuthenticationImage}
                             />
                         </Col>
                         <Col className="order-md-1 " md="6">
