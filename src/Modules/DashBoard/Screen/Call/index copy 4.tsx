@@ -22,60 +22,60 @@ const compare_moment_format = 'YYYY-MM-DDHH:mm:ss';
 function Call() {
     const userAgent = navigator.userAgent;
 
-const getBrowserName = ()=>{
-  if (userAgent.includes('Safari') && !userAgent.includes('Chrome')) {
-    return 'Safari';
-  }
-  else if (userAgent.includes('Chrome')) {
-    return 'Chrome';
-  } else if (userAgent.includes('Firefox')) {
-    return 'Firefox';
-  } else if (userAgent.includes('Edge')) {
-    return 'Edge';
-  }
-  else{
-    return 'Unknown'
-  }
-}
-const BROWSER_NAME = getBrowserName()
-
-const getVoiceByBrowser = () => {
-  let browserName = BROWSER_NAME
-  
-  const safari_female = ['Samantha', 'Victoria', 'Karen', 'Moira']
-  const safari_male = ['Fiona', 'Microsoft David Desktop', 'Google US English', 'Eddy (English (US))', 'Reed (English (US))']
-  const chrome_female = ['Google US English']
-  const is_male = false
-  
-  const safari_voice_source = is_male ? safari_male : safari_female
-  
-  if (browserName === 'Safari1') {
-    return safari_voice_source[2];
-  } else if (userAgent.includes('Chrome') || userAgent.includes('Edge') || userAgent.includes('Firefox')) {
-    return chrome_female[0];
-  } else {
-    return 'Anna';
-  }
-};
-const synth = window.speechSynthesis;
-
-const selectedVoiceName = getVoiceByBrowser();
-
-
-if ('speechSynthesis' in window) {
-    // Attempt to start speech synthesis
-    try {
-      // Create an empty utterance to check for errors
-      const testUtterance = new SpeechSynthesisUtterance();
-      window.speechSynthesis.speak(testUtterance);
-      console.log("Speech synthesisa")
-    } catch (error) {
-      // Print the error message to the console
-      console.log("Speech synthesis error:", error);
+    const getBrowserName = () => {
+        if (userAgent.includes('Safari') && !userAgent.includes('Chrome')) {
+            return 'Safari';
+        }
+        else if (userAgent.includes('Chrome')) {
+            return 'Chrome';
+        } else if (userAgent.includes('Firefox')) {
+            return 'Firefox';
+        } else if (userAgent.includes('Edge')) {
+            return 'Edge';
+        }
+        else {
+            return 'Unknown'
+        }
     }
-  } else {
-    console.log("Speech synthesis is not supported in this browser.");
-  }
+    const BROWSER_NAME = getBrowserName()
+
+    const getVoiceByBrowser = () => {
+        let browserName = BROWSER_NAME
+
+        const safari_female = ['Samantha', 'Victoria', 'Karen', 'Moira']
+        const safari_male = ['Fiona', 'Microsoft David Desktop', 'Google US English', 'Eddy (English (US))', 'Reed (English (US))']
+        const chrome_female = ['Google US English']
+        const is_male = false
+
+        const safari_voice_source = is_male ? safari_male : safari_female
+
+        if (browserName === 'Safari1') {
+            return safari_voice_source[2];
+        } else if (userAgent.includes('Chrome') || userAgent.includes('Edge') || userAgent.includes('Firefox')) {
+            return chrome_female[0];
+        } else {
+            return 'Anna';
+        }
+    };
+    const synth = window.speechSynthesis;
+
+    const selectedVoiceName = getVoiceByBrowser();
+
+
+    if ('speechSynthesis' in window) {
+        // Attempt to start speech synthesis
+        try {
+            // Create an empty utterance to check for errors
+            const testUtterance = new SpeechSynthesisUtterance();
+            window.speechSynthesis.speak(testUtterance);
+            console.log("Speech synthesisa")
+        } catch (error) {
+            // Print the error message to the console
+            console.log("Speech synthesis error:", error);
+        }
+    } else {
+        console.log("Speech synthesis is not supported in this browser.");
+    }
 
     const speakingShouldProcess = useRef<any>(false);
 
@@ -94,7 +94,7 @@ if ('speechSynthesis' in window) {
     const lastSpokeActiveTime = useRef<any>(moment().format(compare_moment_format))
     const [lastTranscriptionStartTime, setLastTranscriptionStartTime] = useState<any>(moment().format(compare_moment_format))
     const [lastTranscriptionEndTime, setLastTranscriptionEndTime] = useState<any>(moment().format(compare_moment_format))
-    
+
     const [interviewStarted, setInterviewStarted] = useState<boolean>(false)
 
     const [voiceUp, setVoiceUp] = useState<boolean>(false)
@@ -102,7 +102,7 @@ if ('speechSynthesis' in window) {
     const voiceUpTime = useRef<any>(moment());
     const transcriptionReferenceId = useRef<any>();
     const activeResponseTextId = useRef<any>(generateRandomID());
-    const [isTtfSpeaking, setIsSpeaking] =  useState(false);
+    const [isTtfSpeaking, setIsSpeaking] = useState(false);
 
     function generateRandomID() {
         const min = 100000;
@@ -111,107 +111,106 @@ if ('speechSynthesis' in window) {
         return randomID;
     }
 
-    const setTTSS1 = () =>
-    {
+    const setTTSS1 = () => {
         const synth = window.speechSynthesis;
         const updateVoices = () => {
-          const availableVoices = synth.getVoices();
-          setVoices(availableVoices);
+            const availableVoices = synth.getVoices();
+            setVoices(availableVoices);
         };
-    
+
         synth.addEventListener("voiceschanged", updateVoices);
         updateVoices();
         return () => {
-          const synth = window.speechSynthesis;
-          synth.cancel();
-          synth.removeEventListener("voiceschanged", updateVoices);
+            const synth = window.speechSynthesis;
+            synth.cancel();
+            synth.removeEventListener("voiceschanged", updateVoices);
         };
-  
+
     }
 
     useEffect(() => {
         setTTSS1()
     }, []);
-  
-  
-  
-  
+
+
+
+
     const [voices, setVoices] = useState<any>([]);
-  
-  
+
+
     useEffect(() => {
-      const voicesList = synth.getVoices();
-      const filteredVoices = voicesList.filter(voice => voice.lang.includes('en'));
-      setVoices(filteredVoices);
+        const voicesList = synth.getVoices();
+        const filteredVoices = voicesList.filter(voice => voice.lang.includes('en'));
+        setVoices(filteredVoices);
     }, [synth]);
 
     const speak = (text: string) => {
         text = "small 1"
         if (synth.speaking) {
-        synth.cancel();
-      }
-  
-      setIsSpeaking(true);
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.voice = voices.find((voice: any) => voice.name === selectedVoiceName);
-      if (BROWSER_NAME === 'Safari')
-        utterance.rate = 1.1;
-      else
-        utterance.rate = 1;
-      utterance.pitch = 1;
-      utterance.volume = 1;
-      utterance.onstart = handleSpeechStart;
-      utterance.onend = handleSpeechEnd;
-      utterance.addEventListener("pause", (event) => {        
-        setTTSS1()
-        console.log(
-          `TTSError: Pause`, text,
-        );
-      });
-      utterance.addEventListener("boundary", (event) => {
-        console.log(
-          `${event.name} boundary reached after ${event.elapsedTime} seconds.`,
-        );
-      });
-      utterance.addEventListener("error", (event) => {        
-        setTTSS1()
-        console.log(
-          `TTSError: ${event.error}`, text,
-        );
-      });
-      utterance.addEventListener("end", (event) => {        
-        setTTSS1()
-        console.log(
-          `TTSError: end`, text,
-        );
-      });
-      synth.speak(utterance);
+            synth.cancel();
+        }
+
+        setIsSpeaking(true);
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.voice = voices.find((voice: any) => voice.name === selectedVoiceName);
+        if (BROWSER_NAME === 'Safari')
+            utterance.rate = 1.1;
+        else
+            utterance.rate = 1;
+        utterance.pitch = 1;
+        utterance.volume = 1;
+        utterance.onstart = handleSpeechStart;
+        utterance.onend = handleSpeechEnd;
+        utterance.addEventListener("pause", (event) => {
+            setTTSS1()
+            console.log(
+                `TTSError: Pause`, text,
+            );
+        });
+        utterance.addEventListener("boundary", (event) => {
+            console.log(
+                `${event.name} boundary reached after ${event.elapsedTime} seconds.`,
+            );
+        });
+        utterance.addEventListener("error", (event) => {
+            setTTSS1()
+            console.log(
+                `TTSError: ${event.error}`, text,
+            );
+        });
+        utterance.addEventListener("end", (event) => {
+            setTTSS1()
+            console.log(
+                `TTSError: end`, text,
+            );
+        });
+        synth.speak(utterance);
     };
-  
+
     const handleSpeechStart = () => {
         console.log(`TTSStarted`);
-          
-      setIsSpeaking(true);
+
+        setIsSpeaking(true);
     };
-  
+
     const handleSpeechEnd = () => {
-    console.log(`TTSEnded`);
+        console.log(`TTSEnded`);
 
-      setIsSpeaking(false);
+        setIsSpeaking(false);
     };
-  
 
-    useEffect(()=>{
+
+    useEffect(() => {
 
         speak("A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z.")
 
-    },[])
+    }, [])
 
 
 
 
     const activeResponseText = useRef<any>('start');
-  
+
     const { goBack, goTo } = useNavigation();
     const dispatch = useDispatch()
     let { schedule_id } = useParams()
@@ -234,13 +233,13 @@ if ('speechSynthesis' in window) {
         setProcessCallInprogress(false)
         console.log("SpeakText01", response)
         // {"next_step":[{"response_type":"ANSWER_IN_PROGRESS","reason":"No response from interviewee yet","question_id":"47912654-738b-4395-a8c4-3e1a001480d8","message_type":"SPEAK","response_text":"","message":""}]}
-        const {response_text, message_type, response_type } = response.next_step[0]
+        const { response_text, message_type, response_type } = response.next_step[0]
 
         if (message_type === "SPEAK" && response_text !== '' && window.location.pathname === `/interview/${schedule_id}`) {
             // proceedStopListening()
             resetLastMessage()
             console.log("SpeakText02",)
-            console.log("SpeakText",response_text)
+            console.log("SpeakText", response_text)
 
             speak(response_text);
         }
@@ -265,14 +264,14 @@ if ('speechSynthesis' in window) {
             socket.addEventListener('close', () => {
                 console.log('WebSocket connection closed');
             });
-    
+
             // Listen for messages
             socket.onmessage = event => {
-            console.log("Received001")
-            const response = JSON.parse(event.data);
-            proceedHandleResponseV1(response)
-            // Handle the response data here
-            console.log('Received002:', response);
+                console.log("Received001")
+                const response = JSON.parse(event.data);
+                proceedHandleResponseV1(response)
+                // Handle the response data here
+                console.log('Received002:', response);
             };
         }
 
@@ -307,18 +306,17 @@ if ('speechSynthesis' in window) {
                                 schedule_id: schedule_id,
                                 blob_data: base64String,
                                 is_speaking: speakingShouldProcess.current,
-                                is_tts_speaking:ttsRef.current
+                                is_tts_speaking: ttsRef.current
                             }
                             socketRef.current.send(JSON.stringify(syncD));
                         }
-                        else{
+                        else {
                             // console.log("t0000000000000000000015")
                         }
                     }
                     reader.readAsDataURL(file);
                 }
-                else
-                {
+                else {
                     // console.log("t0000000000000000000017")
 
                 }
@@ -531,7 +529,7 @@ if ('speechSynthesis' in window) {
                         {
                             mimeType: 'audio/webm',
                             type: 'audio',
-                            timeSlice:500,
+                            timeSlice: 500,
                             recorderType: StereoAudioRecorder,
                             ondataavailable: onDataAvailable,
                             sampleRate: 44100,
@@ -702,9 +700,9 @@ if ('speechSynthesis' in window) {
         setProcessCallInprogress(false)
         resetLastMessage()
         setInterviewStarted(true)
-        setTimeout(()=>{
-        validateProceedStartListening()
-        },5000)
+        setTimeout(() => {
+            validateProceedStartListening()
+        }, 5000)
     }
 
     function endInterviewHandler() {
@@ -715,7 +713,7 @@ if ('speechSynthesis' in window) {
 
     const IV_SPEAKING = 1
     const IV_IDLE = 2
-    const IV_PROCESSION = 3
+    const IV_PROCESSING = 3
 
 
     const IE_SPEAKING = 1
@@ -764,7 +762,7 @@ if ('speechSynthesis' in window) {
                         </>
                     }
                     {
-                        !interviewStarted  ?
+                        !interviewStarted ?
 
                             <Guidelines
                                 scheduleInfo={scheduleInfo}

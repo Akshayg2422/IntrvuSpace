@@ -117,7 +117,7 @@ function Call() {
         setProcessCallInprogress(false)
         console.log("Socket Response 01", response)
         // {"next_step":[{"response_type":"ANSWER_IN_PROGRESS","reason":"No response from interviewee yet","question_id":"47912654-738b-4395-a8c4-3e1a001480d8","message_type":"SPEAK","response_text":"","message":""}]}
-        const {response_text, message_type, response_type } = response.next_step[0]
+        const { response_text, message_type, response_type } = response.next_step[0]
 
         if (message_type === "SPEAK" && response_text !== '' && window.location.pathname === `/interview/${schedule_id}`) {
             // proceedStopListening()
@@ -147,14 +147,14 @@ function Call() {
             socket.addEventListener('close', () => {
                 console.log('WebSocket connection closed');
             });
-    
+
             // Listen for messages
             socket.onmessage = event => {
-            console.log("Received001")
-            const response = JSON.parse(event.data);
-            proceedHandleResponseV1(response)
-            // Handle the response data here
-            console.log('Received002:', response);
+                console.log("Received001")
+                const response = JSON.parse(event.data);
+                proceedHandleResponseV1(response)
+                // Handle the response data here
+                console.log('Received002:', response);
             };
         }
 
@@ -216,7 +216,7 @@ function Call() {
 
 
 
-                    
+
                     // // // Create a temporary URL for the file
                     // const url = URL.createObjectURL(file);
 
@@ -241,18 +241,17 @@ function Call() {
                                 schedule_id: schedule_id,
                                 blob_data: fileB64,
                                 is_speaking: speakingShouldProcess.current,
-                                is_tts_speaking:ttsRef.current
+                                is_tts_speaking: ttsRef.current
                             }
                             socketRef.current.send(JSON.stringify(syncD));
                         }
-                        else{
+                        else {
                             // console.log("t0000000000000000000015")
                         }
                     }
                     reader.readAsDataURL(file);
                 }
-                else
-                {
+                else {
                     // console.log("t0000000000000000000017")
 
                 }
@@ -278,8 +277,8 @@ function Call() {
             // // const uint8Array = new Uint8Array(arrayBuffer);
             // // console.log("uint8Arrayaa", JSON.stringify(uint8Array))
             // // // const base64String = btoa(String.fromCharCode(...uint8Array));
-       
-       
+
+
             // const syncD = {
             //     timestamp: moment(),
             //     schedule_id: schedule_id,
@@ -497,7 +496,7 @@ function Call() {
                         {
                             mimeType: 'audio/webm',
                             type: 'audio',
-                            timeSlice:500,
+                            timeSlice: 500,
                             recorderType: StereoAudioRecorder,
                             ondataavailable: onDataAvailable,
                             sampleRate: 44100,
@@ -712,14 +711,14 @@ function Call() {
 
     const IV_SPEAKING = 1
     const IV_IDLE = 2
-    const IV_PROCESSION = 3
+    const IV_PROCESSING = 3
 
 
     const IE_SPEAKING = 1
     const IE_IDLE = 2
 
 
-    const interviewer_state = isTtfSpeaking ? IV_SPEAKING : processCallInprogress ? IV_PROCESSION : IV_IDLE
+    const interviewer_state = isTtfSpeaking ? IV_SPEAKING : processCallInprogress ? IV_PROCESSING : IV_IDLE
     const interviewee_state = voiceUp ? IE_SPEAKING : IE_IDLE
 
 
@@ -738,7 +737,7 @@ function Call() {
                                     <div>
                                         <div className='row  justify-content-center align-items-center'>
                                             <div className='text-center col-5'>
-                                                <AnimatedImage show={interviewer_state === IV_PROCESSION} name={getShortName(scheduleInfo?.interviewer_name)} shouldBlink={interviewer_state === IV_SPEAKING} />
+                                                <AnimatedImage show={interviewer_state === IV_PROCESSING} name={getShortName(scheduleInfo?.interviewer_name)} shouldBlink={interviewer_state === IV_SPEAKING} />
                                             </div>
                                             <div className='mx-4'></div>
                                             <div className='text-center col-5'>
