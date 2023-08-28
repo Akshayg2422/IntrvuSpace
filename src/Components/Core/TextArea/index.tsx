@@ -7,6 +7,7 @@ function TextArea({ id, heading, value, onChange, className, placeholder, error 
 
     console.log(error + '====eror');
 
+
     return (
         <FormGroup>
             <InputHeading heading={heading} id={id} />
