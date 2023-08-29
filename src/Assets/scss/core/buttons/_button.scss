@@ -11,6 +11,7 @@
     letter-spacing: $btn-letter-spacing;
     font-size: $input-btn-font-size;
     will-change: transform;
+    box-shadow: none;
 
     &:hover {
         @include box-shadow($btn-hover-box-shadow);
@@ -21,7 +22,7 @@
         margin-right: .5rem;
     }
 
-   // Icons
+    // Icons
 
     i:not(:first-child),
     svg:not(:first-child) {
@@ -90,6 +91,6 @@
 }
 
 
-.pointer{
+.pointer {
     cursor: pointer;
 }

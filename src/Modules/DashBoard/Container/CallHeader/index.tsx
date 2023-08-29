@@ -72,7 +72,7 @@ function CallHeader({ webcam, mic, onMicChange, onWebCamChange, onEndClick }: Ca
                     </div>
 
                     <div>
-                        <Button color={'warning'} variant={'icon-with-text'} icon={icons.phone} text={'End now'} height={16} width={16} onClick={onEndClick} />
+                        <Button color={'warning'} variant={'icon-rounded'} icon={icons.phone} height={16} width={16} onClick={onEndClick} />
                     </div>
                 </div>
             </div>

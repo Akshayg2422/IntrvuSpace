@@ -206,18 +206,16 @@ function TopNavbar() {
 
             <Modal title={'Logout User'} isOpen={logoutModal.visible} onClose={logoutModal.hide}>
                 <div>
-                    <span className='ml-3'>{"Please click on Proceed to Logout user"}</span>
+                    <span>{"Please click on proceed to logout user"}</span>
                     <div
-                        className='d-flex justify-content-end m-3'
+                        className='d-flex justify-content-end'
                     >
                         <Button
-                            size='lg'
                             color='white'
                             text={'Cancel'}
                             onClick={() => logoutModal.hide()}
                         />
                         <Button
-                            size='lg'
                             text={'Proceed'}
                             onClick={proceedLogout}
                         />
