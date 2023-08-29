@@ -1,5 +1,5 @@
 import { icons } from '@Assets'
-import { Designation, WeightageCountForm, CreateQuestionForm, Clients, Sector, Questions, Call, Report, QuestionSections, AnalyzingAnimation, Schedules, Login, Otp, Splash, Register, LoginWithOtp, AdminLogin, VariantInfo, PrivacyPolicy, TermsAndConditions,ReturnAndRefund } from '@Modules';
+import { Designation, WeightageCountForm, CreateQuestionForm, Clients, Sector, Questions, Call, Report, QuestionSections, AnalyzingAnimation, Schedules, Login, Otp, Splash, Register, LoginWithOtp, AdminLogin, VariantInfo, PrivacyPolicy, TermsAndConditions, ReturnAndRefund } from '@Modules';
 
 
 
@@ -78,7 +78,7 @@ export const AUTH_ROUTES = [
   {
     key: 9,
     path: ROUTES['auth-module'].ReturnAndRefund,
-    component: <ReturnAndRefund/>
+    component: <ReturnAndRefund />
   },
 
 

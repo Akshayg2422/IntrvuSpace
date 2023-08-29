@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { Modal as RsModal } from "reactstrap";
 import { GenerateModalProps } from './interfaces'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-import { videos } from '@Assets'
+import { videos } from '@Assets';
 
 function GenerateModal({ isOpen, onClose, children, title, ...rest }: GenerateModalProps) {
 
