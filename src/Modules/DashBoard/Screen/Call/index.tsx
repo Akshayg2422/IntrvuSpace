@@ -231,7 +231,7 @@ function Call() {
 
     const loader = useLoader(false);
     const proceedCallLoader = useLoader(false);
-    const [showCam, setShowCam] = useState(false);
+    const [showCam, setShowCam] = useState(true);
     const [mute, setMute] = useState(false);
     const ttsRef = useRef<any>(false);
 
