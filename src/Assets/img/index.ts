@@ -29,6 +29,7 @@ export const image = {
 
     RED_DOT: require('./theme/full-stop.png'),
     LOGIN_SIDE_IMAGE: require('./brand/P007_1-2.png'),
-    AuthenticationImage: require('./theme/authenticationModule.jpg')
+    AuthenticationImage: require('./theme/authenticationModule.jpg'),
+    DashboardModule: require('./theme/dashboardModule.jpg')
 
 }
