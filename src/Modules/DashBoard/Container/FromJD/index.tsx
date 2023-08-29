@@ -271,7 +271,7 @@ function FromJD() {
                                                 modifiedSchedules &&
                                                 modifiedSchedules.length > 0 &&
                                                 modifiedSchedules.slice().reverse().map((each: any, index: number) => {
-                                                    const { is_complete, is_report_complete, id, created_at } = each;
+                                                    const { is_complete, is_report_complete, id, created_at,updated_at } = each;
 
                                                     const getDisplayTimeFromMoment = (timestamp: any) => {
                                                         const currentTime = new Date().getTime();
@@ -293,7 +293,7 @@ function FromJD() {
                                                         <>
                                                             <div className='row align-items-center'>
                                                                 <h5 className='col mb-0 m-0 p-0'>{"Interview " + (index + 1)}</h5>
-                                                                <h5 className='col mb-0 text-center'>{(is_complete ? "Completed: " : "Created at: ") + getDisplayTimeFromMoment(created_at)}</h5>
+                                                                <h5 className='col mb-0 text-center'>{(is_complete ? "Completed: " + getDisplayTimeFromMoment(updated_at) : "Created at:" + getDisplayTimeFromMoment(created_at))}</h5>
                                                                 <div className='col text-right m-0 p-0'>
                                                                     {is_report_complete &&
                                                                         <Button
@@ -379,7 +379,7 @@ function FromJD() {
                         </div>
                     </div>
                     <div className='text-center py-3'>
-                        <small className='text-black'>Click on Start Now to Start Interview</small>
+                        <small className='text-black'>Click Below to Start Interview</small>
                         <div className='row justify-content-center pt-1'>
                             <div className='col-4'>
                                 <Button

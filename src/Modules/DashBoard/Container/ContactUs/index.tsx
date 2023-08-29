@@ -12,7 +12,7 @@ function ContactUs() {
                         <Card className=' mt-5 mb-4 pt-5'>
                             <Row className="">
                                 <Col className="ml-auto mr-auto text-center mt-5" md="8">
-                                    <Badge color="primary">Leave a message</Badge>
+                                    <Badge className={'bg-customGradient'} color="white">Leave a message</Badge>
                                     <h1 className="title">
                                         Tell us more about <b>yourself</b>
                                     </h1>
@@ -118,8 +118,7 @@ function ContactUs() {
                                             <Row>
                                                 <Col className="text-center">
                                                     <Button
-                                                        className="btn-round "
-                                                        color="primary"
+                                                        className="btn-round bg-customGradient text-white"
                                                         onClick={() => {
 
                                                         }}

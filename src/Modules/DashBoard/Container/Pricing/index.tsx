@@ -54,7 +54,7 @@ function Pricing() {
                                                     borderRadius: '20px'
                                                 }
                                             }
-                                            href={"https://tmsprimary.quantaedat.com/authentication/payment/?name=React&amount=700"}
+                                            href={"https://mockeazyprimary.leorainfotech.in/authentication/payment/?name=subscription&amount=1"}
                                         >
                                             Buy Now
                                         </Button>
@@ -143,7 +143,7 @@ function Pricing() {
                                     <div className="card-header text-sm-start text-center pt-4 pb-3 px-4">
                                         <div className=''>
                                             <img
-                                                src={icons.documentJd} 
+                                                src={icons.documentMultipleJd} 
                                                 alt='...'
                                                 height={60}
                                                 width={60}
@@ -161,7 +161,7 @@ function Pricing() {
                                                     borderRadius: '20px'
                                                 }
                                             }
-                                            href={"https://tmsprimary.quantaedat.com/authentication/payment/?name=Python&amount=500"}
+                                            href={"https://mockeazyprimary.leorainfotech.in/authentication/payment/?name=subscription&amount=50"}
                                         >
                                             Buy Now
                                         </Button>
@@ -250,7 +250,7 @@ function Pricing() {
                                     <div className="card-header text-sm-start text-center pt-4 pb-3 px-4">
                                         <div>
                                             <img
-                                                src={icons.documentJd}
+                                                src={icons.documentMultipleJd}
                                                 alt='...'
                                                 height={60}
                                                 width={60}
@@ -267,7 +267,7 @@ function Pricing() {
                                                     borderRadius: '20px'
                                                 }
                                             }
-                                            href={"https://tmsprimary.quantaedat.com/authentication/payment/?name=HTML&amount=300"}
+                                            href={"https://mockeazyprimary.leorainfotech.in/authentication/payment/?name=subscription&amount=300"}
                                         >
                                             Buy Now
                                         </Button>
@@ -340,7 +340,7 @@ function Pricing() {
                                     <div className="card-header text-sm-start text-center pt-4 pb-3 px-4">
                                         <div>
                                             <img
-                                                src={icons.documentJd} 
+                                                src={icons.documentUnlimitedJd} 
                                                 alt='...'
                                                 height={60}
                                                 width={60}
@@ -357,7 +357,7 @@ function Pricing() {
                                                     borderRadius: '20px'
                                                 }
                                             }
-                                            href={"https://tmsprimary.quantaedat.com/authentication/payment/?name=CSS&amount=300"}
+                                            href={"https://mockeazyprimary.leorainfotech.in/authentication/payment/?name=subscription&amount=400"}
                                         >
                                             Buy Now
                                         </Button>
