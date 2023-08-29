@@ -22,16 +22,19 @@ function Button({
   return (
     <>
       {variant === 'default' && (
-        <RSButton
-          type="button"
-          size={size}
-          color={color}
-          {...rest}
-          onClick={loading ? undefined : onClick}
-        >
-          {loading && <Spinner color='white' />}
-          {!loading && text}
-        </RSButton>
+        <>
+          <RSButton
+            className="btn btn-primary"
+            size={size}
+            color={color}
+            {...rest}
+            onClick={loading ? undefined : onClick}
+          >
+            {loading && <Spinner color='white' />}
+            {!loading && text}
+          </RSButton>
+        </>
+
       )}
 
       {(variant === 'icon' || variant === 'icon-with-text') && (
@@ -59,7 +62,7 @@ function Button({
         <RSButton
           type="button"
           size={size}
-          className="btn-icon-only rounded-circle d-flex align-items-center justify-content-center"
+          className="btn-icon-only  d-flex align-items-center justify-content-center"
           color={color}
           onClick={onClick}
           {...rest}

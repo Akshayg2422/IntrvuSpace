@@ -6,7 +6,7 @@ import Webcam from 'react-webcam';
 const WebCamRecorder = () => {
   return (
     <div>
-      <Webcam mirrored style={{ height: "36vh", width: '36vh', objectFit: "cover", marginTop: 20, backgroundColor: color.primary, borderRadius: 6 }} audio={false} screenshotFormat="image/jpeg" />
+      <Webcam mirrored style={{ height: 270, width: 270, objectFit: "cover", marginTop: 18, backgroundColor: color.primary, borderRadius: 6 }} audio={false} screenshotFormat="image/jpeg" />
     </div>
   );
 };

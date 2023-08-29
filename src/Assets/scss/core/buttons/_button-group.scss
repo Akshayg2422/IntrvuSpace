@@ -14,7 +14,7 @@
 // Colors
 
 [data-toggle="buttons"]:not(.btn-group-colors) {
-    & > .btn {
+    &>.btn {
         background-color: $gray-100;
         cursor: pointer;
         box-shadow: none;
@@ -33,7 +33,7 @@
 }
 
 .btn-group-colors {
-    & > .btn {
+    &>.btn {
         box-shadow: none;
         border-radius: 50% !important;
         width: 30px;

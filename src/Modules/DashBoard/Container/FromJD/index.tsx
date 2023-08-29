@@ -163,167 +163,170 @@ function FromJD() {
     return (
         <>
             {loading ? <div className={'d-flex justify-content-center my-9 py-5'}><Spinner /></div> :
-                jdItem && jdItem.length > 0 ? <div>
-                    <div className={'mx--1 mt--4'}>
-                        {openAddJdModalButton()}
-                    </div>
-                    <div style={{
-                        paddingTop: '20px'
-                    }}></div>
-                    {
-                        <div className={'mt-3'}>
-                            {jdItem && jdItem.length > 0 && jdItem.map((item: any, index: any) => {
+                jdItem && jdItem.length > 0 ?
+                    <div>
+                        <div className={'mx--1 mt--4'}>
+                            {openAddJdModalButton()}
+                        </div>
+                        <div style={{
+                            paddingTop: '20px'
+                        }}></div>
+                        {
+                            <div className={'mt-3'}>
+                                {jdItem && jdItem.length > 0 && jdItem.map((item: any, index: any) => {
 
-                                const { job_description: { details, experience }, schedules, sector, name, id } = item
+                                    const { job_description: { details, experience }, schedules, sector, name, id } = item
 
-                                const more = jdMore[index]?.more
+                                    const more = jdMore[index]?.more
 
-                                const modifiedSchedules = schedules.filter((each: any) => {
-                                    const { is_started, is_complete } = each
-                                    return is_started && is_complete
-                                })
+                                    const modifiedSchedules = schedules.filter((each: any) => {
+                                        const { is_started, is_complete } = each
+                                        return is_started && is_complete
+                                    })
 
-                                const proceedInterview = schedules.find((each: any) => {
-                                    const { is_complete } = each
-                                    return !is_complete
-                                })
+                                    const proceedInterview = schedules.find((each: any) => {
+                                        const { is_complete } = each
+                                        return !is_complete
+                                    })
 
-                                return (
-                                    <Card className="mt--3">
-                                        <div className={'d-flex justify-content-between'}>
-                                            <h3 className='mb-0 pointer text-black'>{name}</h3>
-                                            {proceedInterview ?
-                                                <div>
+                                    return (
+                                        <Card className="mt--3">
+                                            <div className={'d-flex justify-content-between'}>
+                                                <h3 className='mb-0 pointer text-black'>{name}</h3>
+                                                {proceedInterview ?
+                                                    <div>
+                                                        <Button
+                                                            className={'px-4 border border-primary'}
+                                                            text={proceedInterview.is_started ? "Resume Interview" : "Start Interview"}
+                                                            onClick={() => {
+                                                                proceedInterviewHandler(proceedInterview?.id);
+                                                            }}
+                                                        />
+                                                    </div> :
                                                     <Button
-                                                        className={'px-4 border border-primary'}
-                                                        text={proceedInterview.is_started ? "Resume Interview" : "Start Interview"}
+                                                        size={'sm'}
+                                                        text={'Try Another'}
                                                         onClick={() => {
-                                                            proceedInterviewHandler(proceedInterview?.id);
+                                                            createNewJdScheduleApiHandler(id);
                                                         }}
                                                     />
-                                                </div> :
-                                                <Button
-                                                    size={'sm'}
-                                                    text={'Try Another'}
-                                                    onClick={() => {
-                                                        createNewJdScheduleApiHandler(id);
-                                                    }}
-                                                />
-                                            }
-                                        </div>
-                                        <h5 className='mb-0 pointer text-muted'>{sector}</h5>
-                                        <div className='col mt-3'>
-                                            <div className='row align-items-center'>
-                                                <img src={icons.briefCaseBlack} alt="Comment Icon" height={16} width={16} />
-                                                <small className='text-sm text-black col'>Experience with {experience} years</small>
+                                                }
                                             </div>
-                                        </div>
-                                        <div className='col mt-2'>
-                                            <div className='row'>
-                                                <img src={icons.information} alt="Comment Icon" height={16} width={16} style={{
-                                                    marginTop: 2
-                                                }} />
-                                                <div className='col ml-3'>
-                                                    {
-                                                        details.length < VIEW_MORE_LENGTH ?
-                                                            <div className='row'>
-                                                                <small className='text-sm text-black'>{details}</small>
-                                                            </div>
-                                                            :
-                                                            <>
-                                                                {more ?
-                                                                    <div className='row'>
-                                                                        <small className='text-sm text-black'>
-                                                                            {details}
-                                                                            <span className='h5 text-primary ml-1 pointer'
-                                                                                onClick={() => {
-                                                                                    const updatedData: any = [...jdMore]
-                                                                                    updatedData[index] = { ...updatedData[index], more: false }
-                                                                                    setJdMore(updatedData)
-                                                                                }}>
-                                                                                View Less
-                                                                            </span>
-                                                                        </small>
-                                                                    </div>
-                                                                    :
-                                                                    <div className='row'>
-                                                                        <small className='text-sm text-black'>{details.slice(0, VIEW_MORE_LENGTH) + " ..."}
-                                                                            <span className='h5 text-primary ml-1 pointer'
-                                                                                onClick={() => {
-                                                                                    const updatedData: any = [...jdMore]
-                                                                                    updatedData[index] = { ...updatedData[index], more: true }
-                                                                                    setJdMore(updatedData)
-                                                                                }}
-                                                                            >
-                                                                                View More
-                                                                            </span>
-                                                                        </small>
-                                                                    </div>
-                                                                }
-                                                            </>
-                                                    }
+                                            <h5 className='mb-0 pointer text-muted'>{sector}</h5>
+                                            <div className='col mt-3'>
+                                                <div className='row align-items-center'>
+                                                    <img src={icons.briefCaseBlack} alt="Comment Icon" height={16} width={16} />
+                                                    <small className='text-sm text-black col'>Experience with {experience} years</small>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div className='col mt-3'>
-                                            {modifiedSchedules && modifiedSchedules.length > 0 && <Divider className={'row'} space={"3"} />}
-                                            {
-                                                modifiedSchedules &&
-                                                modifiedSchedules.length > 0 &&
-                                                modifiedSchedules.slice().reverse().map((each: any, index: number) => {
-                                                    const { is_complete, is_report_complete, id, created_at } = each;
-
-                                                    const getDisplayTimeFromMoment = (timestamp: any) => {
-                                                        const currentTime = new Date().getTime();
-                                                        const createdAt = new Date(timestamp).getTime();
-                                                        const timeDifference = Math.floor((currentTime - createdAt) / (1000 * 60));
-
-                                                        if (timeDifference < 60) {
-                                                            return `${timeDifference} mins ago`;
-                                                        } else if (timeDifference < 1440) {
-                                                            const hours = Math.floor(timeDifference / 60);
-                                                            return `${hours} ${hours === 1 ? 'hour' : 'hours'} ago`;
-                                                        } else {
-                                                            const days = Math.floor(timeDifference / 1440);
-                                                            return `${days} ${days === 1 ? 'day' : 'days'} ago`;
-                                                        }
-                                                    };
-
-                                                    return (
-                                                        <>
-                                                            <div className='row align-items-center'>
-                                                                <h5 className='col mb-0'>{"Interview " + (index + 1)}</h5>
-                                                                <h5 className='col mb-0 text-center'>{(is_complete ? "Completed: " : "Created at: ") + getDisplayTimeFromMoment(created_at)}</h5>
-                                                                <div className='col text-right'>
-                                                                    {is_report_complete &&
-                                                                        <Button
-                                                                            text={'View Report'}
-                                                                            onClick={() => {
-                                                                                proceedReport(id);
-                                                                            }} />
-                                                                    }
-
-                                                                    {is_complete && !is_report_complete && <div>
-                                                                        <span className="name mb-0 text-sm">Generating Report ...</span>
-                                                                    </div>}
+                                            <div className='col mt-2'>
+                                                <div className='row'>
+                                                    <img src={icons.information} alt="Comment Icon" height={16} width={16} style={{
+                                                        marginTop: 2
+                                                    }} />
+                                                    <div className='col ml-3'>
+                                                        {
+                                                            details.length < VIEW_MORE_LENGTH ?
+                                                                <div className='row'>
+                                                                    <small className='text-sm text-black'>{details}</small>
                                                                 </div>
+                                                                :
+                                                                <>
+                                                                    {more ?
+                                                                        <div className='row'>
+                                                                            <small className='text-sm text-black'>
+                                                                                {details}
+                                                                                <span className='h5 text-primary ml-1 pointer'
+                                                                                    onClick={() => {
+                                                                                        const updatedData: any = [...jdMore]
+                                                                                        updatedData[index] = { ...updatedData[index], more: false }
+                                                                                        setJdMore(updatedData)
+                                                                                    }}>
+                                                                                    View Less
+                                                                                </span>
+                                                                            </small>
+                                                                        </div>
+                                                                        :
+                                                                        <div className='row'>
+                                                                            <small className='text-sm text-black'>{details.slice(0, VIEW_MORE_LENGTH) + " ..."}
+                                                                                <span className='h5 text-primary ml-1 pointer'
+                                                                                    onClick={() => {
+                                                                                        const updatedData: any = [...jdMore]
+                                                                                        updatedData[index] = { ...updatedData[index], more: true }
+                                                                                        setJdMore(updatedData)
+                                                                                    }}
+                                                                                >
+                                                                                    View More
+                                                                                </span>
+                                                                            </small>
+                                                                        </div>
+                                                                    }
+                                                                </>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className='col mt-3'>
+                                                {modifiedSchedules && modifiedSchedules.length > 0 && <Divider className={'row'} space={"3"} />}
+                                                {
+                                                    modifiedSchedules &&
+                                                    modifiedSchedules.length > 0 &&
+                                                    modifiedSchedules.slice().reverse().map((each: any, index: number) => {
+                                                        const { is_complete, is_report_complete, id, created_at } = each;
+
+                                                        const getDisplayTimeFromMoment = (timestamp: any) => {
+                                                            const currentTime = new Date().getTime();
+                                                            const createdAt = new Date(timestamp).getTime();
+                                                            const timeDifference = Math.floor((currentTime - createdAt) / (1000 * 60));
+
+                                                            if (timeDifference < 60) {
+                                                                return `${timeDifference} mins ago`;
+                                                            } else if (timeDifference < 1440) {
+                                                                const hours = Math.floor(timeDifference / 60);
+                                                                return `${hours} ${hours === 1 ? 'hour' : 'hours'} ago`;
+                                                            } else {
+                                                                const days = Math.floor(timeDifference / 1440);
+                                                                return `${days} ${days === 1 ? 'day' : 'days'} ago`;
+                                                            }
+                                                        };
+
+                                                        return (
+                                                            <div>
+                                                                <div className='row align-items-center'>
+                                                                    <h5 className='col m-0 p-0'>{"Interview " + (index + 1)}</h5>
+                                                                    <h5 className='col mb-0 text-center'>{(is_complete ? "Completed: " : "Created at: ") + getDisplayTimeFromMoment(created_at)}</h5>
+                                                                    <div className='col text-right p-0 m-0'>
+                                                                        {is_report_complete &&
+                                                                            <Button
+                                                                                text={'View Report'}
+                                                                                onClick={() => {
+                                                                                    proceedReport(id);
+                                                                                }} />
+                                                                        }
+
+                                                                        {is_complete && !is_report_complete && <div>
+                                                                            <span className="name mb-0 text-sm">Generating Report ...</span>
+                                                                        </div>}
+                                                                    </div>
+                                                                </div>
+                                                                <Divider className={'row'} space={"3"} />
                                                             </div>
-                                                            <Divider className={'row'} space={"3"} />
-                                                        </>
 
-                                                    )
-                                                })
-                                            }
-                                        </div>
-                                    </Card>
-                                )
-                            })
-                            }
+                                                        )
+                                                    })
+                                                }
+                                            </div>
+                                        </Card>
+                                    )
+                                })
+                                }
 
-                        </div >
+                            </div >
 
-                    }
-                </div > : <UploadJdCard openAddJdModal={openAddJdModalButton} />
+                        }
+                    </div >
+                    :
+                    <UploadJdCard openAddJdModal={openAddJdModalButton} />
             }
 
             <Modal title={'Create Interview Schedule From JD'} isOpen={addJdModal.visible} onClose={addJdModal.hide}>
