@@ -87,8 +87,8 @@ h4.topic-animation {
 /* Loading*/
 
 .loaders {
-  width: 12px;
-  height: 12px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
   background-color: #000000;
   box-shadow: 32px 0 #000000, -32px 0 #000000;
@@ -150,7 +150,7 @@ h4.topic-animation {
   height: 4.8px;
   display: inline-block;
   position: relative;
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(21, 6, 6, 0.048);
   overflow: hidden;
 }
 .loader2::after {
@@ -291,8 +291,8 @@ h4.topic-animation {
 
 .loader6, .loader6:before, .loader6:after {
   border-radius: 50%;
-  width: 1.5em;
-  height: 1.5em;
+  width: 1.3em;
+  height: 1.3em;
   animation-fill-mode: both;
   animation: bblFadInOut 1.8s infinite ease-in-out;
 }

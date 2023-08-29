@@ -292,9 +292,9 @@ function FromJD() {
                                                     return (
                                                         <>
                                                             <div className='row align-items-center'>
-                                                                <h5 className='col mb-0'>{"Interview " + (index + 1)}</h5>
+                                                                <h5 className='col mb-0 m-0 p-0'>{"Interview " + (index + 1)}</h5>
                                                                 <h5 className='col mb-0 text-center'>{(is_complete ? "Completed: " : "Created at: ") + getDisplayTimeFromMoment(created_at)}</h5>
-                                                                <div className='col text-right'>
+                                                                <div className='col text-right m-0 p-0'>
                                                                     {is_report_complete &&
                                                                         <Button
                                                                             text={'View Report'}
