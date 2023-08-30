@@ -163,5 +163,13 @@ export const icons = {
   videoCam: require('./VideoCam/icon.png'),
   videoCamMute: require('./VideoCamMute/icon.png'),
   briefCaseBlack: require('./BriefCaseBlack/icon.png'),
-  information: require('./Information/icon.png')
+  information: require('./Information/icon.png'),
+  moon: require('./Moon/moon.png'),
+  playButton: require('./PlayButton/play-button.png'),
+  dark: require('./Dark/dark.png'),
+  expand: require('./Expand/full-screen.png'),
+  minimize: require('./Minimize/minimize.png'),
+  defaultImage: require('./DefaultImage/deafaultImage.png'),
+  cancel: require('./Cancel/cancel.png'),
+  pythonLogo: require('./PythonLogo/icon.png')
 };
