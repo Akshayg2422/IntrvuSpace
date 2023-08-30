@@ -1,10 +1,28 @@
 import { Col, Container, Row } from 'reactstrap';
 import './style.scss';
+import { videos } from '@Assets';
 
 function LandingHeader() {
     return (
         <>
             <div className="header pt-5 pb-5  bg-customGradient">
+            {/* <video
+            autoPlay
+            loop
+            muted
+            style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                zIndex: -1,
+                borderRadius: 6,
+                marginBottom: -10
+                // opacity: 0.3, // Set the desired opacity value
+                // marginBottom: -10
+            }}
+        >
+            <source src={videos.backgroundLanding} type="video/mp4" />
+        </video> */}
                 <Container>
                     <div className="header-body">
                         <Row className="align-items-center h-100vh">

@@ -62,7 +62,7 @@ function AnalyzingAnimation() {
                             <h4 className={'d-flex justify-content-center align-items-center py-lg-7 py-md-7 py-sm-8 text-black h1'}>
                                 {contentStep === 1 ? 'Analyzing' : contentStep}
                                 {contentStep === 1 && (
-                                    <span className={'ml-md-5 ml-lg-5 ml-sm-3 loaders'}></span>
+                                    <span className={'ml-md-5 ml-lg-5 ml-sm-3 mt-2 loaders'}></span>
                                 )}
                             </h4>
                         </div>
@@ -80,7 +80,7 @@ function AnalyzingAnimation() {
 
                             <h4 className={'d-flex justify-content-center align-items-center text-black h1 py-md-7 py-lg-7 py-sm-8'}  >
                                 {contentStep === 1 ? 'Generating' : contentStep}
-                                <span className={'loader6 ml-md-5 ml-lg-5 ml-sm-3 mb-4'}></span>
+                                <span className={'loader6 ml-md-5 ml-lg-5 ml-sm-3 mb-4 mt-2'}></span>
                             </h4>
 
 
