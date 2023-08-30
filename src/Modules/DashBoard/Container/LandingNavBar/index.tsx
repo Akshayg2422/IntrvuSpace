@@ -8,18 +8,18 @@ import { Navbar, Container, NavbarBrand, UncontrolledCollapse, Row, Col, Nav, Na
 function LandingNavBar() {
 
     const { goTo } = useNavigation()
-    
+
     return (
         <>
             <Navbar
-                className="navbar-horizontal navbar-main navbar-dark bg-customGradient  fixed-top py-1"
+                className="navbar-horizontal navbar-main navbar-dark  fixed-top py-1"
                 expand="lg"
                 id="navbar-main"
-            // style={{
-            //     backgroundColor: '#F0FFF0',
-            //     border:' 1px solid #e9ecef'
+                style={{
+                    backgroundColor: '#ffffff',
+                    boxShadow: '0 2px 6px 0 rgba(0, 0, 0, 0.12), inset 0 -1px 0 0 #dadce0'
+                }}
 
-            // }}
             >
                 <Container>
                     <NavbarBrand to="/" tag={Link}>
@@ -27,7 +27,7 @@ function LandingNavBar() {
                             alt="..."
                             src={icons.logo}
                         />
-                        <span className='h4 ml-2 text-white'>
+                        <span className='h4 ml-2 text-black'>
                             Mock Eazy
                         </span>
                     </NavbarBrand>
@@ -75,34 +75,7 @@ function LandingNavBar() {
                                 </Col>
                             </Row>
                         </div>
-                        {/* <Nav className="mr-auto" navbar>
-                            <NavItem>
-                                <NavLink to="/admin/dashboard" tag={Link}>
-                                    <span className="nav-link-inner--text">Dashboard</span>
-                                </NavLink>
-                            </NavItem>
-                            <NavItem>
-                                <NavLink to="/auth/pricing" tag={Link}>
-                                    <span className="nav-link-inner--text">Pricing</span>
-                                </NavLink>
-                            </NavItem>
-                            <NavItem>
-                                <NavLink to="/auth/login" tag={Link}>
-                                    <span className="nav-link-inner--text">Login</span>
-                                </NavLink>
-                            </NavItem>
-                            <NavItem>
-                                <NavLink to="/auth/register" tag={Link}>
-                                    <span className="nav-link-inner--text">Register</span>
-                                </NavLink>
-                            </NavItem>
-                            <NavItem>
-                                <NavLink to="/auth/lock" tag={Link}>
-                                    <span className="nav-link-inner--text">Lock</span>
-                                </NavLink>
-                            </NavItem>
-                        </Nav> */}
-                        {/* <hr className="d-lg-none" /> */}
+
                         <Nav className="align-items-lg-center ml-lg-auto" navbar>
                             <NavItem>
                                 <NavLink
@@ -111,7 +84,7 @@ function LandingNavBar() {
                                     id="tooltip601201423"
                                     target="_blank"
                                 >
-                                    <i className="fab fa-facebook-square text-white" />
+                                    <i className="fab fa-facebook-square custom-color" />
                                     <span className="nav-link-inner--text d-lg-none">
                                         Facebook
                                     </span>
@@ -127,7 +100,7 @@ function LandingNavBar() {
                                     id="tooltip871243015"
                                     target="_blank"
                                 >
-                                    <i className="fab fa-instagram text-white" />
+                                    <i className="fab fa-instagram custom-color" />
                                     <span className="nav-link-inner--text d-lg-none">
                                         Instagram
                                     </span>
@@ -143,7 +116,7 @@ function LandingNavBar() {
                                     id="tooltip366258619"
                                     target="_blank"
                                 >
-                                    <i className="fab fa-twitter-square text-white" />
+                                    <i className="fab fa-twitter-square custom-color" />
                                     <span className="nav-link-inner--text d-lg-none">
                                         Twitter
                                     </span>
@@ -158,7 +131,7 @@ function LandingNavBar() {
                                     href="https://www.google.com/maps/place/Leora+Infotech+Private+Limited/@13.4210932,80.1274008,15z/data=!4m5!3m4!1s0x0:0xc9ff7b04d36a6217!8m2!3d13.4210932!4d80.127401?coh=164777&entry=tt"
                                     target="_blank"
                                 >
-                                    <i className="ni ni-pin-3 text-white" />
+                                    <i className="ni ni-pin-3 custom-color" />
                                     <span className="nav-link-inner--text d-lg-none">Github</span>
                                 </NavLink>
                                 {/* <UncontrolledTooltip delay={0} target="tooltip931502898">
@@ -167,27 +140,20 @@ function LandingNavBar() {
                             </NavItem>
                             <NavItem className="d-none d-lg-block ml-lg-4">
                                 <Button
-                                    className="btn-neutral btn-icon bg-white border-0 text-black "
+                                    className="btn-neutral btn-icon bg-custom border-0 text-black "
                                     size='sm'
                                     onClick={() => {
                                         goTo(ROUTES['auth-module'].login)
                                     }}
 
                                 >
-                                    {/* <span className="btn-inner--icon">
-                                        <i className="fas fa-shopping-cart mr-2" />
-                                    </span> */}
-                                    <span className="nav-link-inner--text">Login In</span>
+                                    <span className="nav-link-inner--text">Login</span>
                                 </Button>
                             </NavItem>
                             <NavItem className="d-lg-none d-sm-block ml-lg-4">
                                 <NavLink
                                     className="nav-link-icon"
-                                    onClick={() => {
-                                        // goTo(AUTH_PATH.LOGIN)
-                                    }}
                                 >
-                                    {/* <i className="fab fa-github" /> */}
                                     <span className="nav-link-inner--text d-lg-none">Login</span>
                                 </NavLink>
                             </NavItem>

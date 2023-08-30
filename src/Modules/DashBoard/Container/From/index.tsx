@@ -17,7 +17,7 @@ function From() {
     ])
 
     return (
-        <div className=''>
+        <div className='' style={{backgroundColor:'#ffffff'}}>
             <section className="pt-8 pb-9 ">
                 <Container fluid>
                     <Row className="justify-content-center text-center">
@@ -25,7 +25,7 @@ function From() {
                             <h2 className="display-2 text-black">
                                 Introduction
                             </h2>
-                            <p className="">
+                            <p className="custom-text-color">
                                 Unlock the power of advanced technology in the world of interviews with MockEasy. Our innovative web application is designed to empower both job seekers and companies, revolutionizing the way interviews are conducted. From personalized interview simulations to streamlined candidate selection, MockEasy brings a new era of efficiency and effectiveness to the hiring process.
                             </p>
 
@@ -35,7 +35,7 @@ function From() {
             </section>
             <section className="section section-lg pt-lg-0 mt--7">
                 <Container fluid>
-                    <h3 className='display-4 text-center text-black'>
+                    <h3 className='display-4 text-center text-white'>
                         Key Features
                     </h3>
                     <Row className="justify-content-center pt-5">
@@ -48,7 +48,7 @@ function From() {
                                             <Col lg="3">
                                                 <div className="card-container">
                                                     <div className="card">
-                                                        <div className="front-content ">
+                                                        <div className="front-content">
                                                             <p> {item?.heading}</p>
                                                         </div>
                                                         <div className="content">
