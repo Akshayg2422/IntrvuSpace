@@ -6,7 +6,7 @@ function LandingHeader() {
     return (
         <>
             <div className="header pt-5 pb-5  bg-customGradient">
-            <video
+            {/* <video
             autoPlay
             loop
             muted
@@ -22,7 +22,7 @@ function LandingHeader() {
             }}
         >
             <source src={videos.backgroundLanding} type="video/mp4" />
-        </video>
+        </video> */}
                 <Container>
                     <div className="header-body">
                         <Row className="align-items-center h-100vh">
