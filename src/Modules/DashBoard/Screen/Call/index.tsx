@@ -16,11 +16,12 @@ const compare_moment_format = 'YYYY-MM-DDHH:mm:ss';
 
 
 
-const GUIDELINES = ["Kindly ensure the use of headphones to optimize audio quality.",
-    "Find a quiet and secluded space to minimize background noise and distractions.",
-    "Verify the stability of your internet connection to ensure uninterrupted communication.",
-    "Keep the video function enabled throughout the session for effective interaction.",
-    " We appreciate clear and succinct responses during the conversation."]
+const GUIDELINES =
+    ["Kindly ensure the use of headphones to optimize audio quality.",
+        "Find a quiet and secluded space to minimize background noise and distractions.",
+        "Verify the stability of your internet connection to ensure uninterrupted communication.",
+        "Keep the video function enabled throughout the session for effective interaction.",
+        " We appreciate clear and succinct responses during the conversation."]
 
 function Call() {
 
@@ -53,6 +54,10 @@ function Call() {
     const [voiceUp, setVoiceUp] = useState<boolean>(false)
     const voiceUpCount = useRef<any>(0);
     const voiceUpTime = useRef<any>(moment());
+    const startStreamTime = useRef<any>();
+
+    const intitalRequestSent = useRef<any>(false);
+
     const transcriptionReferenceId = useRef<any>();
     const audioElementRef = useRef<any>();
     const activeResponseTextId = useRef<any>(generateRandomID());
@@ -99,6 +104,7 @@ function Call() {
                 proceedStopListening()
                 setButtonConditional('end')
                 getBasicInfo();
+                window.location.reload();
             }
         };
         audioElementRef.current.play();
@@ -141,6 +147,7 @@ function Call() {
         if (rt === "INTERVIEWER_END_CALL") {
 
             closeCall.current = true
+
         }
     }
 
@@ -155,6 +162,7 @@ function Call() {
 
             socket.addEventListener('open', () => {
                 console.log('WebSocket connection established===========================');
+
             });
 
             socket.addEventListener('close', () => {
@@ -182,41 +190,56 @@ function Call() {
 
     const sendDataToSocket = async (blob: Blob) => {
         if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
-
-            const buffer = await blob.arrayBuffer()
-            if (encoder.current && recorderAudio.current) {
+            if (startStreamTime.current && moment() > startStreamTime.current) {
+                console.log("sentrrrrr")
                 const buffer = await blob.arrayBuffer()
-                const mp3 = encoder.current.encodeBuffer(new Int16Array(buffer))
-                if (mp3.byteLength > 225) {
+                if (encoder.current && recorderAudio.current) {
+                    const buffer = await blob.arrayBuffer()
+                    const mp3 = encoder.current.encodeBuffer(new Int16Array(buffer))
+                    if (mp3.byteLength > 225) {
 
-                    const file = new File([blob], 'speech.wav', { type: 'audio/wav' })
+                        const file = new File([blob], 'speech.wav', { type: 'audio/wav' })
 
-                    const reader = new FileReader();
-                    reader.onload = () => {
+                        const reader = new FileReader();
+                        reader.onload = () => {
 
-                        if (typeof reader.result === 'string') {
-                            const base64String = reader.result.split(',')[1]; // Extract the base64 part
-                            const syncD = {
-                                timestamp: moment(),
-                                schedule_id: schedule_id,
-                                blob_data: base64String,
-                                is_speaking: speakingShouldProcess.current,
-                                is_tts_speaking: ttsRef.current
+                            if (typeof reader.result === 'string') {
+                                const base64String = reader.result.split(',')[1]; // Extract the base64 part
+                                const syncD = {
+                                    timestamp: moment(),
+                                    schedule_id: schedule_id,
+                                    blob_data: base64String,
+                                    is_speaking: speakingShouldProcess.current,
+                                    is_tts_speaking: ttsRef.current
+                                }
+                                socketRef.current.send(JSON.stringify(syncD));
                             }
-                            socketRef.current.send(JSON.stringify(syncD));
+                            else {
+                                // console.log("t0000000000000000000015")
+                            }
                         }
-                        else {
-                            // console.log("t0000000000000000000015")
-                        }
+                        reader.readAsDataURL(file);
                     }
-                    reader.readAsDataURL(file);
-                }
-                else {
-                    // console.log("t0000000000000000000017")
+                    else {
 
+
+                    }
                 }
 
             }
+            else if (intitalRequestSent.current === false) {
+                console.log("sentrrrrr1")
+                intitalRequestSent.current = true
+                const syncD = {
+                    timestamp: moment(),
+                    schedule_id: schedule_id,
+                    waiting_start_time: true,
+                    is_speaking: speakingShouldProcess.current,
+                    is_tts_speaking: ttsRef.current
+                }
+                socketRef.current.send(JSON.stringify(syncD));
+            }
+
         } else {
             console.log('WebSocket connection is not open.');
         }
@@ -231,7 +254,7 @@ function Call() {
 
     const loader = useLoader(false);
     const proceedCallLoader = useLoader(false);
-    const [showCam, setShowCam] = useState(false);
+    const [showCam, setShowCam] = useState(true);
     const [mute, setMute] = useState(false);
     const ttsRef = useRef<any>(false);
 
@@ -340,7 +363,9 @@ function Call() {
                 listener.current.on('volume_change', function (value) {
                     const voiceDetectionSaturation = ambianceVolume.current - 18
                     const valueP = Math.abs(value)
-                    addToDecibleCollection(valueP)
+                    // console.log("voiceDetectionSaturation", voiceDetectionSaturation, valueP)
+
+                    // addToDecibleCollection(valueP)
                     const currentDate = moment();
                     // console.log("value", value)
                     if (ttsRef.current) {
@@ -349,7 +374,7 @@ function Call() {
                         if (voiceUp === true)
                             setVoiceUp(false)
                     }
-                    else if (valueP < voiceDetectionSaturation) {
+                    else if (valueP < 49) {
 
                         /**
                          * extend waiting time if decibile is of talking size
@@ -368,7 +393,7 @@ function Call() {
                             setVoiceUp(true)
                             setErrorType1("")
 
-                            if (voiceUpCount.current == 3) {
+                            if (voiceUpCount.current === 3) {
                                 const lastSpokeActiveTimeTemp = moment().format(compare_moment_format)
                                 console.log("isUserDidntInterrupt last set value", lastSpokeActiveTimeTemp)
                                 lastSpokeActiveTime.current = lastSpokeActiveTimeTemp
@@ -549,7 +574,9 @@ function Call() {
 
         // const d = {'time':moment(), data:blob}
 
+
         sendDataToSocket(blob)
+
         // console.log("calledTTF Data Rec", ttsRef.current, speakingShouldProcess.current)
 
         // if (!ttsRef.current && speakingShouldProcess.current === true) {
@@ -605,14 +632,15 @@ function Call() {
 
 
     function startInterviewHandler() {
+        startStreamTime.current = moment().add(15, 'seconds')
         transcriptionReferenceId.current = generateRandomID()
         // proceedgetChatDetailsApiHandler({ message: "start" }, transcriptionReferenceId.current)
         setProcessCallInprogress(false)
         resetLastMessage()
         setInterviewStarted(true)
-        setTimeout(() => {
-            validateProceedStartListening()
-        }, 5000)
+        // setTimeout(() => {
+        validateProceedStartListening()
+        // }, 5000)
     }
 
     function endInterviewHandler() {
@@ -649,7 +677,7 @@ function Call() {
                                         <h3 className='display-3 mb-4 text-white mt-3'>{capitalizeFirstLetter(scheduleInfo?.interviewer_name)}</h3>
                                     </div>
                                     <div className='col-sm-6 d-flex flex-column align-items-center justify-content-center'>
-                                        <AnimatedImage show={false} showWebCam={showCam} name={getShortName(scheduleInfo?.interviewer_name)} shouldBlink={interviewer_state === IV_SPEAKING} />
+                                        <AnimatedImage show={false} showWebCam={showCam} name={getShortName(scheduleInfo?.interviewer_name)} shouldBlink={interviewee_state === IV_SPEAKING} />
                                         <h3 className='display-3 mb-4 text-white mt-3'>{capitalizeFirstLetter(scheduleInfo?.interviewee_name)}</h3>
                                     </div>
 
