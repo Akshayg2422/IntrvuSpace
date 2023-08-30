@@ -363,9 +363,9 @@ function Call() {
                 listener.current.on('volume_change', function (value) {
                     const voiceDetectionSaturation = ambianceVolume.current - 18
                     const valueP = Math.abs(value)
-                    console.log("voiceDetectionSaturation", voiceDetectionSaturation, valueP)
+                    // console.log("voiceDetectionSaturation", voiceDetectionSaturation, valueP)
 
-                    addToDecibleCollection(valueP)
+                    // addToDecibleCollection(valueP)
                     const currentDate = moment();
                     // console.log("value", value)
                     if (ttsRef.current) {
@@ -374,7 +374,7 @@ function Call() {
                         if (voiceUp === true)
                             setVoiceUp(false)
                     }
-                    else if (valueP < voiceDetectionSaturation) {
+                    else if (valueP < 49) {
 
                         /**
                          * extend waiting time if decibile is of talking size
@@ -389,11 +389,11 @@ function Call() {
                         const limitDateTime = currentDate.add(2, 'seconds');
                         voiceUpTime.current = limitDateTime
 
-                        if (voiceUpCount.current > 3) {
+                        if (voiceUpCount.current > 2) {
                             setVoiceUp(true)
                             setErrorType1("")
 
-                            if (voiceUpCount.current == 4) {
+                            if (voiceUpCount.current === 3) {
                                 const lastSpokeActiveTimeTemp = moment().format(compare_moment_format)
                                 console.log("isUserDidntInterrupt last set value", lastSpokeActiveTimeTemp)
                                 lastSpokeActiveTime.current = lastSpokeActiveTimeTemp
