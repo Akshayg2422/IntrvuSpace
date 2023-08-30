@@ -165,6 +165,8 @@ export const icons = {
   briefCaseBlack: require('./BriefCaseBlack/icon.png'),
   information: require('./Information/icon.png'),
   documentJd: require('./DocumentJd/icon.png'),
-  phone: require('./Phone/icon.png')
+  phone: require('./Phone/icon.png'),
+  documentMultipleJd:require('./DocumentMultipleJd/icon.png'),
+  documentUnlimitedJd:require('./DocumentUnlimitedJd/icon.png')
 
 };

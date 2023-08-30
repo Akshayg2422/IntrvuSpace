@@ -15,7 +15,7 @@ function Guidelines({ scheduleInfo = undefined, loading, heading, guidelines = [
                         <div className='mb-0 overflow-auto overflow-hide scroll-y card px-5'>
                             {/* // d-flex justify-content-center align-items-center'> */}
                             <div className='card-body mb-0 '>
-                                <h4 className="display-3 mb-0 ">{`Interview for ${heading}`}</h4>
+                                <h4 className="display-3">{`Interview for ${heading}`}</h4>
 
                                 <div className='mb-0 mt-3'>
                                     <h3 className="mb-0">Guidelines:</h3>
@@ -31,7 +31,7 @@ function Guidelines({ scheduleInfo = undefined, loading, heading, guidelines = [
                                                             borderRadius: 5
                                                         }}>
                                                         </div>
-                                                        <p className="text-muted mb-0 ml-3">{each}</p>
+                                                        <p className="text-muted mb-0 ml-3" style={{fontSize:'14px'}}>{each}</p>
                                                     </div>
                                                 </div>
                                             )

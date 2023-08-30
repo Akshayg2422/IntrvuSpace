@@ -382,7 +382,7 @@ function FromJD() {
                         </div>
                     </div>
                     <div className='text-center py-3'>
-                        <small className='text-black'>Click on Start Now to Start Interview</small>
+                        <small className='text-black'>Click Below to Start Interview</small>
                         <div className='row justify-content-center pt-1'>
                             <div className='col-4'>
                                 <Button
