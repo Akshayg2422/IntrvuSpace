@@ -10,7 +10,7 @@ function Data() {
 
 
     return (
-        <div className='pt-8'>
+        <div className='pt-8' style={{backgroundColor:'#f6f6f6'}}>
             <section className="py-4">
                 <Container fluid>
                     <Row className="justify-content-center text-center">
@@ -18,7 +18,7 @@ function Data() {
                             <h2 className="display-3 text-black">
                                 Why Choose MockEasy
                             </h2>
-                            <p className="font-weight-normal">
+                            <p className="font-weight-normal custom-text-color">
                                 Secure access, centralized dashboard, comprehensive courses, and social media integration for an enhanced learning experience.
                             </p>
                         </Col>
@@ -37,11 +37,11 @@ function Data() {
                         </Col>
                         <Col className="order-md-1 " md="6">
                             <div className="pr-md-5 align-items-center">
-                                <h1>Authentication Module</h1>
-                                <p>
+                                <h1 className={'text-black'}>Authentication Module</h1>
+                                <p className={'custom-text-color'}>
                                     To ensure secure access and user authentication in a learning environment, focus on the following key measures
                                 </p>
-                                <ul className="ml--2 mt-5">
+                                <ul className="ml--2 mt-5 custom-text-color">
                                     <li className="py-2">
                                         <div className="d-flex align-items-center">
                                             <div>
@@ -87,8 +87,8 @@ function Data() {
                         </Col>
                         <Col md="6">
                             <div className=' card-body mb-0'>
-                                <h1>Dashboard Module</h1>
-                                <p>
+                                <h1 className={'text-black'}>Dashboard Module</h1>
+                                <p className={'custom-text-color'}>
                                     Get an overview of your progress, upcoming tasks, and course recommendations in a centralized dashboard.
                                 </p>
                                 {
@@ -103,7 +103,7 @@ function Data() {
                                                         borderRadius: 5
                                                     }}>
                                                     </div>
-                                                    <p className="text-muted col" style={{ fontSize: '14px' }}>{each}</p>
+                                                    <p className="custom-text-color col" style={{ fontSize: '14px' }}>{each}</p>
                                                 </div>
                                        
                                         )
