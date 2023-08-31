@@ -41,6 +41,7 @@ function Call() {
 
     const stream = useRef<MediaStream>()
     const timeout = useRef<any>({})
+    const mapIdRef = useRef<any>()
 
     const [recording, setRecording] = useState<boolean>(false)
     const [speaking, setSpeaking] = useState<boolean>(false)
@@ -60,6 +61,7 @@ function Call() {
 
     const transcriptionReferenceId = useRef<any>();
     const audioElementRef = useRef<any>();
+    const mutedRef = useRef<any>(false);
     const activeResponseTextId = useRef<any>(generateRandomID());
     // const { isTtfSpeaking, speak } = useTextToSpeech();
     const ambianceVolume = useRef<any>(65);
@@ -138,10 +140,11 @@ function Call() {
     const proceedHandleResponseV1 = (response) => {
         setProcessCallInprogress(false)
         // console.log("SpeakText01", response)
-        const { data, rt } = response.next_step[0]
+        const { data, rt, mapId } = response.next_step[0]
         if (data && data !== '' && window.location.pathname === `/interview/${schedule_id}`) {
             resetLastMessage()
             speak(data);
+            mapIdRef.current = mapId
         }
 
         if (rt === "INTERVIEWER_END_CALL") {
@@ -190,8 +193,9 @@ function Call() {
 
     const sendDataToSocket = async (blob: Blob) => {
         if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
+            console.log("sentrrrrr", mutedRef.current)
             if (startStreamTime.current && moment() > startStreamTime.current) {
-                console.log("sentrrrrr")
+
                 const buffer = await blob.arrayBuffer()
                 if (encoder.current && recorderAudio.current) {
                     const buffer = await blob.arrayBuffer()
@@ -209,8 +213,10 @@ function Call() {
                                     timestamp: moment(),
                                     schedule_id: schedule_id,
                                     blob_data: base64String,
+                                    is_muted: mutedRef.current,
                                     is_speaking: speakingShouldProcess.current,
-                                    is_tts_speaking: ttsRef.current
+                                    is_tts_speaking: ttsRef.current,
+                                    map_id : mapIdRef.current
                                 }
                                 socketRef.current.send(JSON.stringify(syncD));
                             }
@@ -235,7 +241,9 @@ function Call() {
                     schedule_id: schedule_id,
                     waiting_start_time: true,
                     is_speaking: speakingShouldProcess.current,
-                    is_tts_speaking: ttsRef.current
+                    is_tts_speaking: ttsRef.current,
+                    is_muted: mutedRef.current,
+                    map_id : '1',
                 }
                 socketRef.current.send(JSON.stringify(syncD));
             }
@@ -361,7 +369,7 @@ function Call() {
                 listener.current.on('speaking', onStartSpeaking)
                 listener.current.on('stopped_speaking', onStopSpeaking)
                 listener.current.on('volume_change', function (value) {
-                    const voiceDetectionSaturation = ambianceVolume.current - 18
+                    // const voiceDetectionSaturation = ambianceVolume.current - 18
                     const valueP = Math.abs(value)
                     // console.log("voiceDetectionSaturation", voiceDetectionSaturation, valueP)
 
@@ -569,7 +577,7 @@ function Call() {
 
 
     const onDataAvailable = async (blob: Blob) => {
-        console.log("receivedddassss", blob)
+        // console.log("receivedddassss", blob)
         // console.log("receivedddassssa", blob)
 
         // const d = {'time':moment(), data:blob}
@@ -627,12 +635,13 @@ function Call() {
 
 
     function micMuteHandler() {
+        mutedRef.current = !mute 
         setMute(!mute)
     }
 
 
     function startInterviewHandler() {
-        startStreamTime.current = moment().add(15, 'seconds')
+        startStreamTime.current = moment().add(1, 'seconds')
         transcriptionReferenceId.current = generateRandomID()
         // proceedgetChatDetailsApiHandler({ message: "start" }, transcriptionReferenceId.current)
         setProcessCallInprogress(false)
@@ -658,7 +667,13 @@ function Call() {
     const IE_IDLE = 2
 
 
-    const interviewer_state = isTtfSpeaking ? IV_SPEAKING : !isTtfSpeaking && !voiceUp ? IV_PROCESSING : IV_IDLE
+    let interviewer_state = IV_IDLE
+    
+    if (!isTtfSpeaking && !voiceUp)
+        interviewer_state = IV_PROCESSING
+    else if (!isTtfSpeaking)
+        interviewer_state = IV_SPEAKING
+
     const interviewee_state = voiceUp ? IE_SPEAKING : IE_IDLE
 
 
@@ -686,7 +701,7 @@ function Call() {
                             <div className='position-absolute bottom-0 right-0 left-0' style={{
                                 marginBottom: 50
                             }}>
-                                <CallHeader webcam={showCam} mic={mute} onWebCamChange={webCamHandler} onMicChange={micMuteHandler} onEndClick={endInterviewHandler} />
+                                <CallHeader webcam={showCam} mic={!mute} onWebCamChange={webCamHandler} onMicChange={micMuteHandler} onEndClick={endInterviewHandler} />
                             </div>
                         </div >
                     }
