@@ -5,7 +5,7 @@ import { videos } from '@Assets';
 function LandingHeader() {
     return (
         <>
-            <div className="header pt-5 pb-5  bg-customGradient">
+            <div className="header pt-5 pb-5" style={{backgroundColor:'#f6f6f6'}}>
             {/* <video
             autoPlay
             loop
@@ -28,14 +28,14 @@ function LandingHeader() {
                         <Row className="align-items-center h-100vh">
                             <Col lg="6">
                                 <div className="pr-5">
-                                    <h1 className="display-2 custom-white font-weight-bold mb-0">
+                                    <h1 className="display-2 custom-black font-weight-bold mb-0">
                                         Welcome to Mock Eazy
 
                                     </h1>
-                                    <h2 className="display-4 custom-white font-weight-bold pt-4">
+                                    <h2 className="display-4 custom-black font-weight-bold pt-4">
 
                                     </h2>
-                                    <p className="text-white i7,kujtmli7,khw uy6y7y45t5tu-t-2">
+                                    <p className="custom-text-color ">
                                         Embrace the Next Era of Interviews - Choose MockEasy (or)"Step into the Future of Interviews with MockEasy" (or) "Your Gateway to Futuristic Interviews - MockEasy" (or) Pioneering the Future of Interviewing - MockEasy"
                                     </p>
                                     <div className="mt-5">
