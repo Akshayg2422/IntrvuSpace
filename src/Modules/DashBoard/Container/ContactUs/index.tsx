@@ -1,25 +1,28 @@
 import classnames from 'classnames'
 import React from 'react'
 import { Card, Row, Col, Badge, Form, CardBody, InputGroup, InputGroupAddon, InputGroupText, Input, FormGroup, Button } from 'reactstrap'
+import './index.css'
 
 function ContactUs() {
     return (
         <>
             <section>
                 <div >
-                    <div className='container-fluid'>
+                    <div className='container-fluid' style={{
+                        backgroundColor: '#ffffff'
+                    }}>
 
-                        <Card className=' mt-5 mb-4 pt-5'>
+                        <Card className=' mt-5 mb-4 pt-5 shadow-none'>
                             <Row className="">
                                 <Col className="ml-auto mr-auto text-center mt-5" md="8">
-                                    <Badge className={'bg-customGradient'} color="white">Leave a message</Badge>
-                                    <h1 className="title">
+                                    <span className={'text-black display-4'} color="black">Leave A Message</span>
+                                    <h3 className="title text-black">
                                         Tell us more about <b>yourself</b>
-                                    </h1>
-                                    <h4 className="desc">
+                                    </h3>
+                                    <p className="custom-text-color">
                                         Whether you have questions or you would just like to say
                                         hello, contact us.
-                                    </h4>
+                                    </p>
                                 </Col>
                             </Row>
                             <Row>
@@ -116,15 +119,15 @@ function ContactUs() {
                                                 />
                                             </FormGroup>
                                             <Row>
-                                                <Col className="text-center">
-                                                    <Button
-                                                        className="btn-round bg-customGradient text-white"
-                                                        onClick={() => {
-
-                                                        }}
-                                                    >
-                                                        Send Message
-                                                    </Button>
+                                                <Col className="d-flex justify-content-center">
+                                                    <button className="button">
+                                                        <div className="icon">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-telegram" viewBox="0 0 16 16">
+                                                                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.287 5.906c-.778.324-2.334.994-4.666 2.01-.378.15-.577.298-.595.442-.03.243.275.339.69.47l.175.055c.408.133.958.288 1.243.294.26.006.549-.1.868-.32 2.179-1.471 3.304-2.214 3.374-2.23.05-.012.12-.026.166.016.047.041.042.12.037.141-.03.129-1.227 1.241-1.846 1.817-.193.18-.33.307-.358.336a8.154 8.154 0 0 1-.188.186c-.38.366-.664.64.015 1.088.327.216.589.393.85.571.284.194.568.387.936.629.093.06.183.125.27.187.331.236.63.448.997.414.214-.02.435-.22.547-.82.265-1.417.786-4.486.906-5.751a1.426 1.426 0 0 0-.013-.315.337.337 0 0 0-.114-.217.526.526 0 0 0-.31-.093c-.3.005-.763.166-2.984 1.09z"></path>
+                                                            </svg>
+                                                        </div>
+                                                        <h5 className={'pt-2'}>Send Message</h5>
+                                                    </button>
                                                 </Col>
                                             </Row>
                                         </CardBody>
@@ -149,12 +152,12 @@ function ContactUs() {
                                             style={{
                                                 fontSize: '2.5em',
                                                 marginLeft: '0.3em',
-                                                color: 'rgb(12, 237, 174)',
+                                                color: '#424242',
                                             }}
                                         />
                                     </div>
                                     <h4 className="info-title">Address</h4>
-                                    <p className="description "
+                                    <p className="description custom-color"
                                         style={{
                                             fontSize: '12px'
                                         }}
@@ -173,12 +176,12 @@ function ContactUs() {
                                             style={{
                                                 fontSize: '2.5em',
                                                 marginLeft: '0.3em',
-                                                color: '#1d8cf8'
+                                                color: '#424242'
                                             }}
                                         />
                                     </div>
                                     <h4 className="info-title">Email</h4>
-                                    <p className="description "
+                                    <p className="description custom-color"
                                         style={{
                                             fontSize: '12px'
                                         }}
@@ -197,12 +200,12 @@ function ContactUs() {
                                             style={{
                                                 fontSize: '2.5em',
                                                 marginLeft: '0.3em',
-                                                color: '#ff8d72',
+                                                color: '#424242',
                                             }}
                                         />
                                     </div>
                                     <h4 className="info-title">Phone Number</h4>
-                                    <p className="description"
+                                    <p className="description custom-color"
                                         style={{
                                             fontSize: '12px'
                                         }}
@@ -222,12 +225,12 @@ function ContactUs() {
                                             style={{
                                                 fontSize: '2.5em',
                                                 marginLeft: '0.3em',
-                                                color: '#00f2c3'
+                                                color: '#424242'
                                             }}
                                         />
                                     </div>
                                     <h4 className="info-title">Contact</h4>
-                                    <p className="description"
+                                    <p className="description custom-color"
                                         style={{
                                             fontSize: '12px'
                                         }}
