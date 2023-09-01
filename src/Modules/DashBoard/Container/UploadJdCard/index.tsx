@@ -15,9 +15,8 @@ function UploadJdCard({ openAddJdModal }) {
     ]
 
     return (
-        <div className='h-100 d-flex justify-content-center align-items-center'>
+        <div className='d-flex justify-content-center align-items-center'>
             <div className={'col-md-8 col-lg-8 col-sm-8 card p-4'}>
-
                 <div className='d-flex justify-content-center align-items-center'>
                     <div className={'row align-items-start pl-5'}>
                         <div className="text-black display-2 pl-2" style={{ fontSize: '50px' }}>

@@ -113,6 +113,13 @@ function Call() {
 
     }
 
+    function onEndCallHandler() {
+        proceedStopListening()
+        setButtonConditional('end')
+        getBasicInfo();
+        window.location.reload();
+    }
+
     const activeResponseText = useRef<any>('start');
     // const [activeResponseText, setActiveResponseText] = useState('start');
 
@@ -216,7 +223,7 @@ function Call() {
                                     is_muted: mutedRef.current,
                                     is_speaking: speakingShouldProcess.current,
                                     is_tts_speaking: ttsRef.current,
-                                    map_id : mapIdRef.current
+                                    map_id: mapIdRef.current
                                 }
                                 socketRef.current.send(JSON.stringify(syncD));
                             }
@@ -243,7 +250,7 @@ function Call() {
                     is_speaking: speakingShouldProcess.current,
                     is_tts_speaking: ttsRef.current,
                     is_muted: mutedRef.current,
-                    map_id : '1',
+                    map_id: '1',
                 }
                 socketRef.current.send(JSON.stringify(syncD));
             }
@@ -635,7 +642,7 @@ function Call() {
 
 
     function micMuteHandler() {
-        mutedRef.current = !mute 
+        mutedRef.current = !mute
         setMute(!mute)
     }
 
@@ -654,8 +661,16 @@ function Call() {
 
     function endInterviewHandler() {
         // isScreenRecording && stopScreenRecording();
+        closeCall.current = true
+        onEndCallHandler();
         goBack();
     }
+
+    function closeInterviewAPiHandler() {
+        // isScreenRecording && stopScreenRecording();
+        goBack();
+    }
+
 
 
     const IV_SPEAKING = 1
@@ -668,7 +683,7 @@ function Call() {
 
 
     let interviewer_state = IV_IDLE
-    
+
     if (!isTtfSpeaking && !voiceUp)
         interviewer_state = IV_PROCESSING
     else if (!isTtfSpeaking)
@@ -698,10 +713,10 @@ function Call() {
 
                                 </div>
                             </div>
-                            <div className='position-absolute bottom-0 right-0 left-0' style={{
+                            <div className='row position-absolute bottom-0 right-0 left-0' style={{
                                 marginBottom: 50
                             }}>
-                                <CallHeader webcam={showCam} mic={!mute} onWebCamChange={webCamHandler} onMicChange={micMuteHandler} onEndClick={endInterviewHandler} />
+                                <CallHeader webcam={showCam} mic={!mute} onWebCamChange={webCamHandler} onMicChange={micMuteHandler} onEndClick={endInterviewHandler} onEndInterViewClick={closeInterviewAPiHandler} />
                             </div>
                         </div >
                     }
