@@ -12,7 +12,7 @@ function TextArea({ id, heading, value, onChange, className, placeholder, error 
         <FormGroup>
             <InputHeading heading={heading} id={id} />
             <textarea
-                style={{ height: '140px' }}
+                style={{ height: '300px' }}
                 value={value}
                 onChange={onChange}
                 className={`${className} form-control form-control-sm`}

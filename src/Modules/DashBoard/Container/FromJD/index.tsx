@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { Button, Card, Divider, Modal, TextArea, Input, showToast, Spinner } from '@Components';
+import { Button, Card, Divider, Modal, TextArea, Input, showToast, Spinner, Checkbox } from '@Components';
 import { createNewJdSchedule, getJdItemList, postJdVariant, selectedScheduleId } from '@Redux';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -33,6 +33,7 @@ function FromJD() {
     const jdScheduleModal = useModal(false);
     const [loading, setLoading] = useState(true);
     const [jdMore, setJdMore] = useState<any>([])
+    const [fresherChecked, setFresherChecked] = useState(false)
 
 
     const [jdDescriptionError, setJdDescriptionError] = useState<any>(undefined)
@@ -64,7 +65,7 @@ function FromJD() {
         const params = {
             sector_name: sector.value,
             position: position.value,
-            experience: experience.value,
+            experience: fresherChecked ? '0' : experience.value,
             reference_link: portalUrl.value,
             jd: jd.value
         }
@@ -330,44 +331,91 @@ function FromJD() {
             }
 
             <Modal title={'Create Interview Schedule From JD'} isOpen={addJdModal.visible} onClose={addJdModal.hide}>
-                <div>
-                    <Input
-                        heading={'Sector'}
-                        placeHolder={"Sector"}
-                        value={sector.value}
-                        onChange={sector.onChange} />
-                    <Input
-                        heading={'Role'}
-                        placeHolder={"Position"}
-                        value={position.value}
-                        onChange={position.onChange} />
-                    <Input
-                        heading={'Years of experience'}
-                        type={'number'}
-                        placeHolder={"Experience"}
-                        value={experience.value}
-                        onChange={experience.onChange} />
-                    <Input
-                        heading='Portal JD URL'
-                        value={portalUrl.value}
-                        onChange={portalUrl.onChange} />
-                    <TextArea
-                        error={jdDescriptionError}
-                        heading='Job Description'
-                        value={jd.value.slice(0, CHAR_LENGTH)}
-                        onChange={(e) => {
-                            let value = e.target.value
-                            if (value.length > CHAR_LENGTH) {
-                                setJdDescriptionError(ERROR_MESSAGE)
-                            } else {
-                                setJdDescriptionError(undefined)
-                            }
-                            jd.set(value)
-                        }} />
+
+                <div className={'row'}>
+                    <div className={'col-6'}>
+                        <Input
+                            heading={'Sector'}
+                            placeHolder={"Software/Banking/Sales/Healthcare..."}
+                            value={sector.value}
+                            onChange={sector.onChange} />
+                    </div>
+                    <div className={'col-6'}>
+                        <Input
+                            heading={'Role'}
+                            placeHolder={"Developer/Manager/Analyst/Nurse..."}
+                            value={position.value}
+                            onChange={position.onChange} />
+                    </div>
                 </div>
+
+                <div className={'row'}>
+                    <span className={'position-absolute left-9 pl-2'}>
+                        <Checkbox className={'text-primary'} text={'Fresher'} defaultChecked={fresherChecked} onCheckChange={(checked) => {
+                            setFresherChecked(checked)
+                        }} />
+                    </span>
+
+                    <div className={'col-6'}>
+                        {fresherChecked ? (
+                            <Input
+                                heading={'Years of experience'}
+                                type={'text'}
+                                placeHolder={'Fresher'}
+                                value={'Fresher'}
+                                disabled
+                            />
+                        ) : (
+                            <Input
+                                heading={'Years of experience'}
+                                type={'number'}
+                                placeHolder={'Experience'}
+                                value={experience.value}
+                                onChange={experience.onChange}
+                            />
+                        )}
+                    </div>
+
+                    <div className={'col-6'}>
+                        <Input
+                            heading='Portal JD URL'
+                            placeHolder={'Naukri.com/LinkedIn/Monster India/Shine.com/TimesJobs...'}
+                            value={portalUrl.value}
+                            onChange={portalUrl.onChange} />
+                    </div>
+                </div>
+                <TextArea
+                    error={jdDescriptionError}
+                    placeholder={`Copy a Job Description from the Job portal(Naukri.com/LinkedIn/Monster India/Shine.com/TimesJobs):
+
+1.Visit the Job Portal: Open your web browser and navigate to the job portal of your choice, such as Naukri.com.
+                    
+2.Search for a Job: Use the search bar to find a job listing that interests you. You can enter relevant keywords, job titles, or locations to narrow down your search.
+                    
+3.Select a Job Posting: Click on the job title to view the full job description.
+                    
+4.Highlight the Text: Left-click your mouse and drag it over the text you want to copy. This will highlight the text.
+                    
+5.Copy the Text: After highlighting the desired text, right-click on the selected area, and choose "Copy" from the context menu. Alternatively, you can use the keyboard shortcut Ctrl+C (Windows) or Command+C (Mac) to copy the text.
+                    
+6.Paste the Text: Open the application where you want to paste the job description (e.g., a word processor or text editor), right-click in the desired location, and choose "Paste" from the context menu. You can also use the keyboard shortcut Ctrl+V (Windows) or Command+V (Mac) to paste the text.`
+                    }
+                    heading='Job Description'
+                    value={jd.value.slice(0, CHAR_LENGTH)}
+                    onChange={(e) => {
+                        let value = e.target.value
+                        if (value.length > CHAR_LENGTH) {
+                            setJdDescriptionError(ERROR_MESSAGE)
+                        } else {
+                            setJdDescriptionError(undefined)
+                        }
+                        jd.set(value)
+                    }} />
+
                 <div className='text-center'>
                     <Button block size='md' text={'Submit'} onClick={submitJdApiHandler} />
                 </div>
+
             </Modal>
 
             <GenerateModal title={'Create Interview Schedule From JD'} isOpen={generateJdModal.visible} onClose={generateJdModal.hide}>
