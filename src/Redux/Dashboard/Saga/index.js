@@ -483,14 +483,11 @@ function* closeInterviewSaga(action) {
   try {
     const response = yield call(Api.closeInterviewApi, action.payload.params);
     if (response.success) {
-      yield put(Action.closeInterviewSuccess(response));
       yield call(action.payload.onSuccess(response));
     } else {
-      yield put(Action.closeInterviewFailure(response.error_message));
       yield call(action.payload.onError(response));
     }
   } catch (error) {
-    yield put(Action.closeInterviewFailure(error));
     yield call(action.payload.onError(error));
   }
 }

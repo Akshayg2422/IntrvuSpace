@@ -1,7 +1,7 @@
 import { AnimatedImage, Button, Spinner } from '@Components';
 import { useLoader, useModal, useNavigation } from '@Hooks';
 import { CallHeader, Guidelines } from '@Modules';
-import { getScheduleBasicInfo } from '@Redux';
+import { getScheduleBasicInfo, closeInterview } from '@Redux';
 import { capitalizeFirstLetter, getShortName } from '@Utils';
 import type { Harker } from 'hark';
 import type { Encoder } from 'lamejs';
@@ -667,8 +667,21 @@ function Call() {
     }
 
     function closeInterviewAPiHandler() {
-        // isScreenRecording && stopScreenRecording();
-        goBack();
+        const params = { schedule_id: schedule_id }
+        dispatch(
+            closeInterview(
+                {
+                    params,
+                    onSuccess: () => () => {
+                        endInterviewHandler();
+                    },
+                    onError: () => () => {
+
+                    }
+                }
+            )
+        )
+
     }
 
 
