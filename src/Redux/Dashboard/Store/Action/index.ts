@@ -603,7 +603,7 @@ export const getJdItemList = (params: any) => {
   }
 }
 export const getJdItemListSuccess = (response: any) => {
-  
+
   return {
     type: ActionTypes.GET_JD_ITEM_LIST_SUCCESS,
     payload: response
@@ -704,6 +704,32 @@ export const getKnowledgeGroupVariantDetailsSuccess = (response: any) => {
 export const getKnowledgeGroupVariantDetailsFailure = (error: any) => {
   return {
     type: ActionTypes.GET_KNOWLEDGE_GROUP_VARIANT_DETAILS_FAILURE,
+    payload: error
+  }
+}
+
+
+/**
+ * close interview
+ */
+
+export const closeInterview = (params: any) => {
+  return {
+    type: ActionTypes.CLOSE_INTERVIEW,
+    payload: params,
+  }
+}
+export const closeInterviewSuccess = (response: any) => {
+
+  return {
+    type: ActionTypes.CLOSE_INTERVIEW_SUCCESS,
+    payload: response
+  }
+}
+
+export const closeInterviewFailure = (error: any) => {
+  return {
+    type: ActionTypes.CLOSE_INTERVIEW_FAILURE,
     payload: error
   }
 }

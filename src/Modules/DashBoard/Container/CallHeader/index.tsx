@@ -5,7 +5,7 @@ import { icons } from '@Assets'
 import { color } from '@Themes';
 
 
-function CallHeader({ webcam, mic, onMicChange, onWebCamChange, onEndClick }: CallHeaderProps) {
+function CallHeader({ webcam, mic, onMicChange, onWebCamChange, onEndClick, onEndInterViewClick }: CallHeaderProps) {
 
 
     const [time, setTime] = useState({ hours: 0, minutes: 0, seconds: 0 });
@@ -40,44 +40,51 @@ function CallHeader({ webcam, mic, onMicChange, onWebCamChange, onEndClick }: Ca
         : `${formatTime(time.minutes)}:${formatTime(time.seconds)}`;
 
     return (
-        <div
-            className='container align-items-center d-flex'
-            style={{
-                height: "60px",
-                backgroundColor: color.davyGrey,
-                borderRadius: 5,
-                width: '30%'
-            }}>
+        <>
+            <div className='row align-items-center d-flex justify-content-center w-100'>
+                <div className='align-items-center d-flex px-3'
+                    style={{
+                        backgroundColor: color.davyGrey,
+                        width: '30%',
+                        height: "60px",
+                        borderRadius: 5,
 
-            <div className='col-auto mb-0'>
-                <span className="btn-inner--icon">
-                    <i className="fas fa-circle text-red" />
-                </span>
-                <span className="nav-link-inner--text ml-2" style={{ color: '#c4c4c4' }}>{formattedTime ? formattedTime : '00:00'}</span>
-            </div>
-            <div className='col d-flex justify-content-end align-items-center'>
-                <div className='row align-items-center'>
-                    <div className='text-center mr-3 pointer' onClick={onMicChange}>
-                        <Image src={mic ? icons.microPhone : icons.microPhoneMute} height={mic ? 22 : 24} width={mic ? 22 : 24} />
-                        {/* <h6 className="text-muted ls-1 mb-1"
+                    }}>
+                    <div className='col-auto mb-0'>
+                        <span className="btn-inner--icon">
+                            <i className="fas fa-circle text-red" />
+                        </span>
+                        <span className="nav-link-inner--text ml-2" style={{ color: '#c4c4c4' }}>{formattedTime ? formattedTime : '00:00'}</span>
+                    </div>
+                    <div className='col d-flex justify-content-end align-items-center'>
+                        <div className='row align-items-center'>
+                            <div className='text-center mr-3 pointer' onClick={onMicChange}>
+                                <Image src={mic ? icons.microPhone : icons.microPhoneMute} height={mic ? 22 : 24} width={mic ? 22 : 24} />
+                                {/* <h6 className="text-muted ls-1 mb-1"
                             style={{
                                 fontSize: '8px'
                             }}>Mic</h6> */}
-                    </div>
-                    <div className="text-center mr-4 pointer" onClick={onWebCamChange}>
-                        <Image src={webcam ? icons.videoCam : icons.videoCamMute} height={webcam ? 24 : 25} width={webcam ? 24 : 25} />
-                        {/* <h6 className="text-muted ls-1 mb-1" style={{
+                            </div>
+                            <div className="text-center mr-4 pointer" onClick={onWebCamChange}>
+                                <Image src={webcam ? icons.videoCam : icons.videoCamMute} height={webcam ? 24 : 25} width={webcam ? 24 : 25} />
+                                {/* <h6 className="text-muted ls-1 mb-1" style={{
                             fontSize: '8px'
                         }}>Camera</h6> */}
-                    </div>
+                            </div>
 
-                    <div>
-                        <Button color={'warning'} variant={'icon-rounded'} icon={icons.phone} height={16} width={16} onClick={onEndClick} />
+                            <div>
+                                <Button color={'warning'} variant={'icon-rounded'} icon={icons.phone} height={16} width={16} onClick={onEndClick} />
+                            </div>
+                        </div>
                     </div>
+                </div>
+
+                <div className='ml-3'>
+                    <Button text={"End Interview"} onClick={onEndInterViewClick} />
                 </div>
             </div>
 
-        </div>
+        </>
     )
 }
 
