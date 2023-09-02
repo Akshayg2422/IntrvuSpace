@@ -31,7 +31,7 @@ function Guidelines({ scheduleInfo = undefined, loading, heading, guidelines = [
                                                             borderRadius: 5
                                                         }}>
                                                         </div>
-                                                        <p className="text-muted mb-0 ml-3" style={{fontSize:'14px'}}>{each}</p>
+                                                        <p className="text-muted mb-0 ml-3" style={{ fontSize: '14px' }}>{each}</p>
                                                     </div>
                                                 </div>
                                             )

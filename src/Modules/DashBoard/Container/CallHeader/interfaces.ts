@@ -4,4 +4,5 @@ export interface CallHeaderProps {
     onWebCamChange?: () => void;
     onMicChange?: () => void;
     onEndClick?: () => void;
+    onEndInterViewClick?: () => void;
 }

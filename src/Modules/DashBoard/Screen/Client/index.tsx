@@ -75,10 +75,11 @@ function Clients() {
                         })
                     } */}
                 </div >
-                {
-                    renderComponent()
-                }
-
+                <div>
+                    {
+                        renderComponent()
+                    }
+                </div>
             </div >
         </>
     )

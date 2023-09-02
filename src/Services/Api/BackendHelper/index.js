@@ -118,3 +118,6 @@ export const createCorporateVariantForm = payload => post(URL.URL_CREATE_CORPORA
 
 export const getKnowledgeGroupVariantDetails = payload => post(URL.URL_GET_KNOWLEDGE_GROUP_VARIANT_DETAILS, payload, {});
 
+export const closeInterviewApi = payload => post(URL.URL_CLOSE_INTERVIEW, payload, {});
+
+
