@@ -18,11 +18,11 @@ function From() {
 
     return (
         <div className='' style={{backgroundColor:'#ffffff'}}>
-            <section className="pt-8 pb-9 ">
+            <section className="pt-0 pb-9 ">
                 <Container fluid>
                     <Row className="justify-content-center text-center">
                         <Col md="8">
-                            <h2 className="display-2 text-black">
+                            <h2 className="h3 text-black">
                                 Introduction
                             </h2>
                             <p className="custom-text-color">
