@@ -1,10 +1,9 @@
 import React, { useState } from 'react'
 import { Col, Container, Row } from 'reactstrap'
 import { icons } from '@Assets';
+import './index.css'
 
 function Reports() {
-
-
 
     const [cardContent, setCardContent] = useState([
         { id: 1, icon: <img src={icons.lock} alt="Authentication icon" height={45} width={45} style={{ borderRadius: '10px' }} />, heading: 'Basic Report', para: `The Basic Report in MockEazy provides a fundamental overview of your interview preparation journey. It offers insights into your overall progress, highlighting key areas where you've excelled and areas that may require more attention. This report serves as a valuable starting point for your interview preparation, allowing you to build a strong foundation for success.` },
@@ -38,8 +37,8 @@ function Reports() {
                         {cardContent && cardContent.length > 0 && cardContent.map((item) => {
                             return (
                                 <div className="col-lg-4 col-sm-6 mb-lg-0 mb-4 py-3" key={item.id}>
-                                    <div className="card h-100">
-                                        <div className="text-sm-start text-center pt-5 pb-2 px-4">
+                                    <div className="card h-100 card-animation card-animation:hover">
+                                        <div className="text-sm-start text-center pt-5 px-4">
                                             <span>{item.icon}</span>
                                             <h5 className="mb-2 mt-3 h2 text-uppercase text-primary">{item.heading}</h5>
                                             <p>{item.para}</p>
