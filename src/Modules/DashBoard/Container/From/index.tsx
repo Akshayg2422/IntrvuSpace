@@ -1,74 +1,69 @@
 import React, { useState } from 'react'
 import { Container, Row, Col, Card, CardBody } from 'reactstrap'
-import { Image } from "@Components";
-import './style.css'
+import { icons } from '@Assets';
+import { Image, Tabs } from "@Components";
+import { Tab1, Tab2, Tab3, Tab4, Tab5, Tab6 } from '@Modules'
 
 
 
 function From() {
 
+    const TABS = [
+        { id: "1", title: <div className="text-center pointer">Interview by Experience</div>, component: <Tab1 /> },
+        { id: "2", title: <div className="text-center pointer">Mock Interviews by Company</div>, component: <Tab2 /> },
+        { id: "3", title: <div className="text-center pointer">Seamless Registration</div>, component: <Tab3 /> },
+        { id: "4", title: <div className="text-center pointer">Personalized Interview Process</div>, component: <Tab4 /> },
+        { id: "5", title: <div className="text-center pointer">Excel in Your Interviews -Nailing Your Responses</div>, component: <Tab5/> },
+        { id: "6", title: <div className="text-center pointer">Insights for Improvement</div>, component: <Tab6 /> },
+    ];
+    const [selectedTab, setSelectedTab] = useState(TABS[0]);
 
-
-    const [cardContent, setCardContent] = useState([
-        { id: 1, heading: 'Comprehensive Courses', para: 'Learn a wide range of programming languages and skills for enhanced career opportunities.' },
-        { id: 2, heading: 'Authentic Learning', para: '  Engage in real-world tasks and mock interviews to gain practical experience.' },
-        { id: 3, heading: 'Skill Showcase', para: 'Share your progress and achievements across social platforms to build a professional online presence.' },
-        { id: 4, heading: 'Task Storage', para: 'Keep track of task details and recordings for future reference and improvement.' }
-    ])
 
     return (
-        <div className='' style={{backgroundColor:'#ffffff'}}>
-            <section className="pt-0 pb-9 ">
-                <Container fluid>
+        <div style={{ backgroundColor: '#ffffff' }}>
+            <section className="pt-0 pb-5 ">
+                <Container>
                     <Row className="justify-content-center text-center">
                         <Col md="8">
-                            <h2 className="h3 text-black">
+                            <h3 className="text-primary">
                                 Introduction
-                            </h2>
-                            <p className="custom-text-color">
-                                Unlock the power of advanced technology in the world of interviews with MockEasy. Our innovative web application is designed to empower both job seekers and companies, revolutionizing the way interviews are conducted. From personalized interview simulations to streamlined candidate selection, MockEasy brings a new era of efficiency and effectiveness to the hiring process.
+                            </h3>
+                            <span className={'display-3 text-black font-weight-bolder'}>Land Your Dream Job<br></br>
+                                with Confidence</span>
+                            <p className="custom-text-color pt-2" style={{ fontSize: '17px' }}>
+                                Are you a job seeker on the hunt for the perfect opportunity? Are you determined to shine in your interviews and secure that dream job? Look no further! Easy Interview is exclusively designed to support you in mastering the art of interviews through realistic mock practice.
                             </p>
 
                         </Col>
                     </Row>
                 </Container>
             </section>
-            <section className="section section-lg pt-lg-0 mt--7">
-                <Container fluid>
-                    <h3 className='display-4 text-center text-white'>
-                        Key Features
-                    </h3>
-                    <Row className="justify-content-center pt-5">
-                        <Col lg="12">
-                            <Row>
-
-                                {cardContent && cardContent.length > 0 && cardContent.map((item) => {
-                                    return (
-                                        <>
-                                            <Col lg="3">
-                                                <div className="card-container">
-                                                    <div className="card">
-                                                        <div className="front-content">
-                                                            <p> {item?.heading}</p>
-                                                        </div>
-                                                        <div className="content">
-                                                            <p className="heading text-white"> {item?.heading}</p>
-                                                            <p className='text-white'>
-                                                                {item?.para}
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </Col >
-                                        </>
-                                    )
-                                })
-                                }
-                            </Row>
+            <section>
+                <Container>
+                    <Row>
+                        <Col className={'mb-4'}>
+                            <h4 className='display-5 text-primary'>
+                                Key Features
+                            </h4>
+                            <span className={'display-3 text-black font-weight-bolder'}>Experience in multiple<br></br>
+                                interview practices
+                            </span>
                         </Col>
                     </Row>
-                </Container >
-            </section >
+                </Container>
+            </section>
+            <section className="">
+                <Container>
+                    <Row>
+                        <Col lg={'12'}>
+                            <div>
+                                <Tabs tabs={TABS} selected={selectedTab} onChange={(item: any) => { setSelectedTab(item) }} />
+                            </div>
+                        </Col>
+                    </Row>
+
+                </Container>
+            </section>
         </div>
     )
 }

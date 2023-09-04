@@ -1,47 +1,52 @@
 .button {
-    font-family: inherit;
-    background: linear-gradient(112.2deg, #5bf707 -1.1%, #5ede41 100.7%);
-    color: #ffffff;
-    padding: 0.35em 0;
-    font-size: 15px;
-    border: none;
-    border-radius: 0.7em;
-    letter-spacing: 0.08em;
-    position: relative;
-    display: flex;
-    align-content: center;
-    align-items: center;
-    overflow: hidden;
-    height: 2.5em;
-    padding-left: 2.8em;
-    padding-right: 0.92em;
-  }
-  
-  .button .icon {
-    background: #fff;
-    height: 2em;
-    width: 2em;
-    border-radius: 2em;
-    position: absolute;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    left: 0.4em;
-    transition: all 0.5s;
-  }
-  
-  .icon svg {
-    transition: all 0.5s;
-    color: #67f60e;
-    width: 1.2rem;
-    height: 1.2rem;
-  }
-  
-  .button:hover .icon svg {
-    transform: rotate(360deg);
-  }
-  
-  .button:hover .icon {
-    width: calc(100% - 0.85rem);
-    border-radius: 0.5em;
-  }
+  font-family: inherit;
+  background: linear-gradient(112.2deg, #68d75c -1.1%, #68d75c 100.7%);
+  color: #ffffff;
+  padding: 0.35em 0;
+  font-size: 15px;
+  border: none;
+  border-radius: 0.7em;
+  letter-spacing: 0.08em;
+  position: relative;
+  display: flex;
+  align-content: center;
+  align-items: center;
+  overflow: hidden;
+  height: 2.5em;
+  padding-left: 2.8em;
+  padding-right: 0.92em;
+}
+
+.button .icon {
+  background: #fff;
+  height: 2em;
+  width: 2em;
+  border-radius: 2em;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  left: 0.4em;
+  transition: all 0.5s;
+}
+
+.icon svg {
+  transition: all 0.5s;
+  color: #68d75c;
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.button:hover .icon svg {
+  transform: rotate(360deg);
+}
+
+.button:hover .icon {
+  width: calc(100% - 0.85rem);
+  border-radius: 0.5em;
+}
+
+.NavItem:hover .NavLink {
+  color: #000;
+  /* Change the text color on hover */
+}

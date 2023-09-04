@@ -1,54 +1,39 @@
+import { icons } from '@Assets'
 import { useNavigation } from '@Hooks'
 import { ROUTES } from '@Routes'
-import { Container, Row, Col, Nav, NavItem, NavLink } from 'reactstrap'
+import { Link } from 'react-router-dom'
+import { Container, Row, Col, Nav, NavItem, NavLink, NavbarBrand } from 'reactstrap'
 
 function Footer() {
     const { goTo } = useNavigation()
     return (
         <>
-            <footer className="pt-7 pb-5" id="footer-main" style={{backgroundColor:'#f6f6f6'}}>
+            <footer className="pt-4 pb-4" id="footer-main" style={{ backgroundColor: '#ffffff' }}>
+            <hr></hr>
                 <Container>
-                    <Row className="align-items-center justify-content-xl-between">
-                        <Col xl="6">
-                            <div className="copyright text-center text-xl-left text-muted">
-                                © {new Date().getFullYear()}{" "}
-                                <a
-                                    className="font-weight-bold ml-1"
-                                    // href="https://www.creative-tim.com?ref=adpr-auth-footer"
-                                    target="_blank"
-                                >
-                                    Mock Eazy
-                                </a>
+                    <div className="d-flex">
+                        
+                        <div>
+                            <div>
+                                <NavbarBrand to="/" tag={Link}>
+                                    <img
+                                        height={30}
+                                        width={30}
+                                        alt="..."
+                                        src={icons.logo}
+                                    />
+                                    <span className='h4 ml-2 text-black'>
+                                        Mock Eazy
+                                    </span>
+                                </NavbarBrand>
                             </div>
-                        </Col>
-                        <Col xl="6">
-                            <Nav className="nav-footer justify-content-center justify-content-xl-end">
-                                <NavItem>
-                                    <NavLink>
-                                        <p style={{ cursor: 'pointer' }} className=''>  <a className='custom-color' onClick={() => goTo(ROUTES["auth-module"].privacy)}><b> Privacy Policy </b> </a></p>
-                                    </NavLink>
-                                </NavItem>
-                                <NavItem>
-                                    <NavLink>
-                                        <p style={{ cursor: 'pointer' }} className=''>  <a className='custom-color' onClick={() => goTo(ROUTES["auth-module"].TermsAndConditions)}><b> Terms & Conditions </b> </a></p>
-                                    </NavLink>
-                                </NavItem>
-                                <NavItem>
-                                    <NavLink>
-                                        <p style={{ cursor: 'pointer' }} className=''>  <a className='custom-color' onClick={() => goTo(ROUTES["auth-module"].ReturnAndRefund)}><b> Return & Refund Policy </b> </a></p>
-                                    </NavLink>
-                                </NavItem>
-                                {/* <NavItem>
-                                    <NavLink
-                                        href="https://www.creative-tim.com/license?ref=adpr-auth-footer"
-                                        target="_blank"
-                                    >
-                                        License
-                                    </NavLink>
-                                </NavItem> */}
-                            </Nav>
-                        </Col>
-                    </Row>
+                        </div>
+                        <div className='ml-auto p-2'>
+                            <small className={'copyright h5 text-sm'}>
+                                Copyright © {new Date().getFullYear()}{" "} Mock Eazy. All Rights Reserved.
+                            </small>
+                        </div>
+                    </div>
                 </Container>
             </footer>
         </>

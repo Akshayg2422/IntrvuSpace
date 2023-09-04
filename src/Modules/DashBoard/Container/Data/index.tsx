@@ -1,7 +1,9 @@
-import { image } from '@Assets'
 import { color } from '@Themes'
 import React, { useState } from 'react'
 import { Container, Row, Col } from 'reactstrap'
+import { videos, image, icons } from '@Assets';
+import { Image, Tabs } from "@Components";
+import { Tab1, Tab2, Tab3, Tab4 } from '@Modules'
 
 function Data() {
 
@@ -10,106 +12,33 @@ function Data() {
 
 
     return (
-        <div className='pt-8' style={{backgroundColor:'#f6f6f6'}}>
-            <section className="py-4">
-                <Container fluid>
-                    <Row className="justify-content-center text-center">
-                        <Col md="7">
-                            <h2 className="display-3 text-black">
-                                Why Choose MockEasy
-                            </h2>
-                            <p className="font-weight-normal custom-text-color">
-                                Secure access, centralized dashboard, comprehensive courses, and social media integration for an enhanced learning experience.
-                            </p>
-                        </Col>
-                    </Row>
-                </Container>
-            </section>
-            <section className="pt-4">
-                <Container>
-                    <Row className="row-grid align-items-center">
-                        <Col className="order-md-2" md="6">
-                            <img
-                                alt="..."
-                                className="img-fluid"
-                                src={image.AuthenticationImage}
-                            />
-                        </Col>
-                        <Col className="order-md-1 " md="6">
-                            <div className="pr-md-5 align-items-center">
-                                <h1 className={'text-black'}>Authentication Module</h1>
-                                <p className={'custom-text-color'}>
-                                    To ensure secure access and user authentication in a learning environment, focus on the following key measures
-                                </p>
-                                <ul className="ml--2 mt-5 custom-text-color">
-                                    <li className="py-2">
-                                        <div className="d-flex align-items-center">
-                                            <div>
-                                                <p className="mb-0 text-sm">
-                                                    Implement multi-factor authentication (MFA) for enhanced security.
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li className="py-2">
-                                        <div className="d-flex align-items-center">
-                                            <div>
-                                                <p className="mb-0 text-sm">
-                                                    Enforce strong password policies to prevent unauthorized access.
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li className="py-2">
-                                        <div className="d-flex align-items-center">
-                                            <div>
-                                                <p className="mb-0 text-sm">
-                                                    Stay up to date with regular security updates and patches.
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </Col>
-                    </Row>
-                </Container>
-            </section>
+        <div style={{ backgroundColor: '#ffffff' }}>
             <section className="">
                 <Container>
-                    <Row className="row-grid align-items-center">
-                        <Col md="6">
-                            <img
-                                alt="..."
-                                className="img-fluid"
-                                src={image.DashboardModule}
-                            />
-                        </Col>
-                        <Col md="6">
-                            <div className=' card-body mb-0'>
-                                <h1 className={'text-black'}>Dashboard Module</h1>
-                                <p className={'custom-text-color'}>
-                                    Get an overview of your progress, upcoming tasks, and course recommendations in a centralized dashboard.
-                                </p>
-                                {
-                                    dashBoardModule && dashBoardModule.length > 0 && dashBoardModule.map(each => {
-                                        return (
-                                          
-                                                <div className='row align-items-center'>
-                                                    <div style={{
-                                                        width: 7,
-                                                        height: 7,
-                                                        backgroundColor: color.davyGrey,
-                                                        borderRadius: 5
-                                                    }}>
-                                                    </div>
-                                                    <p className="custom-text-color col" style={{ fontSize: '14px' }}>{each}</p>
-                                                </div>
-                                       
-                                        )
-                                    })
-                                }
-                            </div>
+                    <div className="header-body">
+                        <Row className="align-items-center h-100vh">
+                            <Col lg="6" className='pl-sm-5' >
+                                <Image
+                                    src={image.MockEazy1}
+                                    width={"100%"}
+                                    height={"100%"}
+                                />
+                            </Col>
+                            <Col lg="6 pl-sm-7">
+                                <div className={''}>
+                                    <span className={'display-3 text-black font-weight-bolder'}> Why Choose MockEasy</span>
+                                    <p className="custom-text-color" style={{ fontSize: '17px' }}>
+                                    Embracing the next era of interviews means staying ahead of the curve, and that's exactly what MockEazy offers. In an ever-evolving job market, where competition is fierce and expectations are higher than ever, MockEazy stands as your gateway to the future of interviews. Our innovative platform redefines the interviewing experience, providing you with the tools and insights needed to excel. With MockEazy, you can prepare for interviews with confidence, sharpen your skills, and gain the edge you need to succeed in today's fast-paced professional world. Say goodbye to traditional interview preparation and step into the future with MockEazy.
+                                    </p>
+                                </div>
+                            </Col>
+                        </Row>
+                    </div>
+
+                </Container >
+                <Container>
+                    <Row className="justify-content-end">
+                        <Col md="7">
 
                         </Col>
                     </Row>

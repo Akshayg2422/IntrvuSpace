@@ -1,5 +1,5 @@
 import React from 'react';
-import { ContactUs, Data, Footer, From, LandingHeader, LandingNavBar, Pricing } from '@Modules';
+import { AuthenticationAndDashboardModule, ContactUs, Data, Footer, From, LandingHeader, LandingNavBar, Pricing, Reports } from '@Modules';
 
 function Landing() {
 
@@ -43,7 +43,8 @@ function Landing() {
                 <LandingHeader />
                 <From />
                 <Data />
-                {/* <Features /> */}
+                <Reports/>
+                <AuthenticationAndDashboardModule/>
                 <Pricing />
                 <ContactUs />
                 <Footer />
