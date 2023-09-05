@@ -1,5 +1,5 @@
 import { icons } from '@Assets'
-import { Designation, WeightageCountForm, CreateQuestionForm, Clients, Sector, Questions, Call, Report, QuestionSections, AnalyzingAnimation, Schedules, Login, Otp, Splash, Register, LoginWithOtp, AdminLogin, VariantInfo, PrivacyPolicy, TermsAndConditions, ReturnAndRefund, Reports } from '@Modules';
+import { Designation, WeightageCountForm, CreateQuestionForm, Clients, Sector, Questions, Call, Report, QuestionSections, AnalyzingAnimation, Schedules, Login, Otp, Splash, Register, LoginWithOtp, AdminLogin, VariantInfo, PrivacyPolicy, TermsAndConditions, ReturnAndRefund, Reports, HowItWorks } from '@Modules';
 
 
 
@@ -15,6 +15,7 @@ export const ROUTES = {
     TermsAndConditions: '/terms-and-condition',
     ReturnAndRefund: '/return-and-refund',
     reports: '/reports',
+    'how-it-works': '/how-it-works'
   },
   'designation-module': {
     Dashboard: "/dashboard",
@@ -85,6 +86,11 @@ export const AUTH_ROUTES = [
     key: 10,
     path: ROUTES['auth-module'].reports,
     component: <Reports />
+  },
+  {
+    key: 11,
+    path: ROUTES['auth-module']['how-it-works'],
+    component: <HowItWorks/>
   },
 
 ]

@@ -1,6 +1,8 @@
 .card-animation {
-    width: 20.5rem;
-    height: 17rem;
+    width: 22rem;
+    height: 28rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
     background-color: #ffffff;
     border-radius: 1rem;
     border: #ffffff 0.2rem solid;

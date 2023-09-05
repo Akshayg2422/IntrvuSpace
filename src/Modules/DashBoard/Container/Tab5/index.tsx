@@ -23,10 +23,10 @@ function Tab5() {
                   <img className={''} src={icons.lock} alt="Authentication icon" height={45} width={45} style={{ borderRadius: '10px' }} />
                 </div>
 
-                <div className={'text-black h2 font-weight-bolder'}>Tailored Interview Experiences</div>
+                <div className={'text-black h2 font-weight-bolder'}>Perfecting Your Interview Responses for Success</div>
 
                 <p className={'custom-text-color'} style={{ maxWidth: '400px' }}>
-                  If you choose "Interview by Experience," our app will craft personalized questions to match your expertise level. For "Mock Interviews by Company," you'll face industry-specific questions for your desired employers.
+                Embrace each question as an opportunity to showcase your best self and leave a lasting impression on potential employers.
                 </p>
               </div>
             </Col>

@@ -20,5 +20,6 @@
 
 /* Define the button style on hover */
 .custom-btn:hover {
-  background: linear-gradient(0deg, #88da7e 0%, #087105 100%); /* Change to linear gradient on hover */
+  transform: translateY(-0.2rem);
+  background: linear-gradient(0deg, rgb(33, 173, 15) 0%, #31c92c 100%); /* Change to linear gradient on hover */
 }

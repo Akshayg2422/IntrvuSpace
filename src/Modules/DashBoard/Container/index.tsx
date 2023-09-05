@@ -25,6 +25,7 @@ export * from './Tab5'
 export * from './Tab6'
 export * from './Reports'
 export * from './AuthenticationAndDashboardModule'
+export * from './HowItWorks'
 
 
 

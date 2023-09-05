@@ -36,13 +36,6 @@ function Data() {
                     </div>
 
                 </Container >
-                <Container>
-                    <Row className="justify-content-end">
-                        <Col md="7">
-
-                        </Col>
-                    </Row>
-                </Container>
             </section>
 
         </div>

@@ -1478,6 +1478,13 @@ $tag-box-shadow: 0 1px 2px rgba(68, 68, 68, 0.25);
   color: #1e1e1e
 }
 
+.custom-font-size {
+  font-size: 17px; // Override the font size
+  font-weight: $paragraph-font-weight; // Use the default font weight
+  line-height: $paragraph-line-height; // Use the default line height
+  color: #424242
+}
+
 // Import Bootstrap variable defaults
 
 @import "~bootstrap/scss/variables";

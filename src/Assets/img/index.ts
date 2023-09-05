@@ -39,6 +39,6 @@ export const image = {
     Tab2Image:require('./theme/Tab2Image.jpg'),
     Tab3Image:require('./theme/Tab3Image.jpg'),
     Tab4Image:require('./theme/Tab4Image.jpg'),
-    Tab5Image:require('./theme/Tab4Image.jpg'),
+    Tab5Image:require('./theme/Tab5Image.jpg'),
     Tab6Image:require('./theme/Tab6Image.jpg'),
 }
