@@ -41,4 +41,9 @@ export const image = {
     Tab4Image:require('./theme/Tab4Image.jpg'),
     Tab5Image:require('./theme/Tab5Image.jpg'),
     Tab6Image:require('./theme/Tab6Image.jpg'),
+    InterviewReady:require('./theme/interviewReady.jpg'),
+    FormJd:require('./theme/formjd.jpg'),
+    LoginLanding:require('./theme/LoginS.jpg'),
+    trait:require('./theme/trait.jpg'),
+    Communication:require('./theme/communication.jpg')
 }

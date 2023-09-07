@@ -44,7 +44,7 @@ function HowItWorks() {
                             </Col>
                             <Col lg="6" className='pl-sm-7' >
                                 <Image
-                                    src={image.Tab3Image}
+                                    src={image.FormJd}
                                     width={"100%"}
                                     height={"100%"}
                                 />
@@ -76,7 +76,7 @@ function HowItWorks() {
                             </Col>
                             <Col lg="6" className='pl-sm-7' >
                                 <Image
-                                    src={image.Tab2Image}
+                                    src={image.InterviewReady}
                                     width={"100%"}
                                     height={"100%"}
                                 />
@@ -147,7 +147,7 @@ function HowItWorks() {
                             </Col>
                             <Col lg="6" className='pl-sm-7' >
                                 <Image
-                                    src={image.Tab6Image}
+                                    src={image.Communication}
                                     width={"100%"}
                                     height={"100%"}
                                 />
@@ -174,7 +174,7 @@ function HowItWorks() {
                             </Col>
                             <Col lg="6" className='pl-sm-7' >
                                 <Image
-                                    src={image.Tab6Image}
+                                    src={image.trait}
                                     width={"100%"}
                                     height={"100%"}
                                 />
