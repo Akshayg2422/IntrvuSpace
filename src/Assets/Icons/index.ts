@@ -167,6 +167,12 @@ export const icons = {
   documentJd: require('./DocumentJd/icon.png'),
   phone: require('./Phone/icon.png'),
   documentMultipleJd:require('./DocumentMultipleJd/icon.png'),
-  documentUnlimitedJd:require('./DocumentUnlimitedJd/icon.png')
-
+  documentUnlimitedJd:require('./DocumentUnlimitedJd/icon.png'),
+  lock:require('./Lock/icon.png'),
+  basicReport:require('./BasicReport/icon.png'),
+  skillMatrixReport:require('./SkillMatrixReport/icon.png'),
+  communicationReport:require('./CommunicationReport/icon.png'),
+  traitReport:require('./TraitReport/icon.png'),
+  skillMatrixAdvanced:require('./SkillMatrixAdvanced/icon.png'),
+  communicationAdvanced:require('./CommunicationAdvanced/icon.png')
 };

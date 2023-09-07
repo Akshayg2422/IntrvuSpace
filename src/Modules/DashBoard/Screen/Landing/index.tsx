@@ -1,5 +1,5 @@
 import React from 'react';
-import { ContactUs, Data, Footer, From, LandingHeader, LandingNavBar, Pricing } from '@Modules';
+import { AuthenticationAndDashboardModule, ContactUs, Data, Footer, From, HowItWorks, LandingHeader, LandingNavBar, Pricing, Reports } from '@Modules';
 
 function Landing() {
 
@@ -41,9 +41,11 @@ function Landing() {
             <div className="main-content">
                 <LandingNavBar />
                 <LandingHeader />
-                <From />
+                <HowItWorks/>
+                <Reports/>
                 <Data />
-                {/* <Features /> */}
+                <From />
+                <AuthenticationAndDashboardModule/>
                 <Pricing />
                 <ContactUs />
                 <Footer />

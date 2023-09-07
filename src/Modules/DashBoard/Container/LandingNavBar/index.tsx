@@ -1,4 +1,4 @@
-import { icons } from '@Assets'
+import { icons, image } from '@Assets'
 import { useNavigation } from '@Hooks'
 import { ROUTES } from '@Routes'
 import React from 'react'
@@ -12,7 +12,7 @@ function LandingNavBar() {
     return (
         <>
             <Navbar
-                className="navbar-horizontal navbar-main navbar-dark  fixed-top py-1"
+                className="navbar-horizontal navbar-main navbar-dark  fixed-top py-3"
                 expand="lg"
                 id="navbar-main"
                 style={{
@@ -77,71 +77,11 @@ function LandingNavBar() {
                         </div>
 
                         <Nav className="align-items-lg-center ml-lg-auto" navbar>
-                            <NavItem>
-                                <NavLink
-                                    className="nav-link-icon"
-                                    href="https://www.facebook.com/profile.php?id=100089929992241&mibextid=ZbWKwL"
-                                    id="tooltip601201423"
-                                    target="_blank"
-                                >
-                                    <i className="fab fa-facebook-square custom-color" />
-                                    <span className="nav-link-inner--text d-lg-none">
-                                        Facebook
-                                    </span>
-                                </NavLink>
-                                {/* <UncontrolledTooltip delay={0} target="tooltip601201423">
-                                    Like us on Facebook
-                                </UncontrolledTooltip> */}
-                            </NavItem>
-                            <NavItem>
-                                <NavLink
-                                    className="nav-link-icon"
-                                    href="https://www.instagram.com/leorainfotech27/?igshid=ZDdkNTZiNTM%3D"
-                                    id="tooltip871243015"
-                                    target="_blank"
-                                >
-                                    <i className="fab fa-instagram custom-color" />
-                                    <span className="nav-link-inner--text d-lg-none">
-                                        Instagram
-                                    </span>
-                                </NavLink>
-                                {/* <UncontrolledTooltip delay={0} target="tooltip871243015">
-                                    Follow us on Instagram
-                                </UncontrolledTooltip> */}
-                            </NavItem>
-                            <NavItem>
-                                <NavLink
-                                    className="nav-link-icon"
-                                    href="https://twitter.com/Leora_Infotech?t=L0eNeuCutuNAVYRaQKYeAA&s=08"
-                                    id="tooltip366258619"
-                                    target="_blank"
-                                >
-                                    <i className="fab fa-twitter-square custom-color" />
-                                    <span className="nav-link-inner--text d-lg-none">
-                                        Twitter
-                                    </span>
-                                </NavLink>
-                                {/* <UncontrolledTooltip delay={0} target="tooltip366258619">
-                                    Follow us on Twitter
-                                </UncontrolledTooltip> */}
-                            </NavItem>
-                            <NavItem>
-                                <NavLink
-                                    className="nav-link-icon"
-                                    href="https://www.google.com/maps/place/Leora+Infotech+Private+Limited/@13.4210932,80.1274008,15z/data=!4m5!3m4!1s0x0:0xc9ff7b04d36a6217!8m2!3d13.4210932!4d80.127401?coh=164777&entry=tt"
-                                    target="_blank"
-                                >
-                                    <i className="ni ni-pin-3 custom-color" />
-                                    <span className="nav-link-inner--text d-lg-none">Github</span>
-                                </NavLink>
-                                {/* <UncontrolledTooltip delay={0} target="tooltip931502898">
-                                    Location
-                                </UncontrolledTooltip> */}
-                            </NavItem>
                             <NavItem className="d-none d-lg-block ml-lg-4">
                                 <Button
-                                    className="btn-neutral btn-icon bg-custom border-0 text-black "
-                                    size='sm'
+                                    className="bg-primary px-4 text-white "
+                                    style={{ borderRadius: '25px' }}
+                                    size='md'
                                     onClick={() => {
                                         goTo(ROUTES['auth-module'].login)
                                     }}
@@ -149,13 +89,6 @@ function LandingNavBar() {
                                 >
                                     <span className="nav-link-inner--text">Login</span>
                                 </Button>
-                            </NavItem>
-                            <NavItem className="d-lg-none d-sm-block ml-lg-4">
-                                <NavLink
-                                    className="nav-link-icon"
-                                >
-                                    <span className="nav-link-inner--text d-lg-none">Login</span>
-                                </NavLink>
                             </NavItem>
                         </Nav>
                     </UncontrolledCollapse>

@@ -17,6 +17,15 @@ export * from './Footer'
 export * from './Guidelines'
 export * from './CallHeader'
 export * from './UploadJdCard'
+export * from './Tab1'
+export * from './Tab2'
+export * from './Tab3'
+export * from './Tab4'
+export * from './Tab5'
+export * from './Tab6'
+export * from './Reports'
+export * from './AuthenticationAndDashboardModule'
+export * from './HowItWorks'
 
 
 

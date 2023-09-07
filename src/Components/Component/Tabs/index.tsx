@@ -16,25 +16,9 @@ export function Tabs({ tabs, selected, onChange, height }: TabsProps) {
   const getSelectedTabIndex = () =>
     tabs.findIndex((item) => item.id === selected?.id);
 
-
-
-
   return (
     <div>
-      <nav
-
-      >
-        <div
-          style={{
-            position: "absolute",
-            bottom: 0,
-            left: `calc((100% / ${tabs.length}) * ${getSelectedTabIndex()})`,
-            height: "2px",
-            width: `calc(100% / ${tabs.length})`,
-            //background: "#BFEDF0",
-            transition: "all ease 0.2s",
-          }}
-        />
+      <nav>
         <div
           style={{
             display: "flex",
@@ -44,20 +28,34 @@ export function Tabs({ tabs, selected, onChange, height }: TabsProps) {
             return (
               <a
                 key={item.id}
-                className="text-uppercase text-sm font-weight-bold"
+                className="text-sm"
                 style={{
                   flexGrow: 1,
                   display: "block",
                   padding: "1rem",
                   textDecoration: "none",
-                  color: "#32325d",
+                  color: selected?.id === item.id ? "#000000" : "#cac9cd",
                   background: selected?.id === item.id ? "#ffffff" : "#ffffff",
+                  position: "relative", // Add this line
                 }}
                 onClick={() => { changeTab(item) }}
                 data-tab={item}
               >
                 {item.title}
 
+                {/* Display the colored bar at the bottom */}
+                {selected?.id === item.id && (
+                  <div
+                    style={{
+                      position: "absolute",
+                      bottom: 0,
+                      left: 0,
+                      height: "4px",
+                      width: "100%",
+                      background: "#67f60e",
+                    }}
+                  />
+                )}
               </a>
             );
           })}
@@ -72,6 +70,6 @@ export function Tabs({ tabs, selected, onChange, height }: TabsProps) {
           );
         })}
       </div>
-    </div >
+    </div>
   );
 }

@@ -2,8 +2,11 @@ import { Col, Container, Row } from 'reactstrap';
 import './style.scss';
 import { videos, image } from '@Assets';
 import { Image, Button } from "@Components";
+import { useNavigation } from '@Hooks';
+import { ROUTES } from '@Routes';
 
 function LandingHeader() {
+    const { goTo } = useNavigation()
     return (
         <>
             <div className="header pt-5 pb-5" style={{ backgroundColor: '#ffffff' }}>
@@ -28,22 +31,21 @@ function LandingHeader() {
                     <div className="header-body">
                         <Row className="align-items-center h-100vh">
                             <Col lg="6">
-                                <div className="pr-5">
+                                <div className="pr-5 mt--3">
                                     <h1 className="display-1 custom-black font-weight-bolder mb-0" style={{ fontSize: '60px' }}>
-                                        Welcome to Mock Eazy
-
+                                        Welcome to 
+                                        <br></br>
+                                        <div className={'mt--3'}>Mock Eazy</div>
                                     </h1>
-                                    <h2 className="display-4 custom-black font-weight-bold pt-4">
-
-                                    </h2>
-                                    <p className="custom-text-color h5 ">
+                                    <p className="custom-text-color" style={{ fontSize: '17px' }}>
                                         Embrace the Next Era of Interviews - Choose MockEazy (or)"Step into the Future of Interviews with MockEazy" (or) "Your Gateway to Futuristic Interviews - MockEazy" (or) Pioneering the Future of Interviewing - MockEazy"
                                     </p>
-                                    <div className="mt-5">
-                                        <Button  className={'px-6'}
-                                            style={{ borderRadius: '25px'}}
+                                    <div className="mt-4">
+                                        <Button className={'px-6'}
+                                            style={{ borderRadius: '25px' }}
                                             size={'lg'}
                                             text={'Register Now'}
+                                            onClick={() => { goTo(ROUTES['auth-module'].register) }}
                                         />
                                     </div>
                                 </div>
@@ -55,15 +57,6 @@ function LandingHeader() {
                                     height={"100%"}
                                 />
                             </Col>
-                            {/* <Col lg='12'>
-                                   
-                                   
-                                </Col> */}
-                            {/* <div className="ocean">
-                                <div className="wave"></div>
-                                <div className="wave"></div>
-                                <div className="wave"></div>
-                            </div> */}
                         </Row>
                     </div>
 

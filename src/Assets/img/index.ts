@@ -32,6 +32,18 @@ export const image = {
     AuthenticationImage: require('./theme/authenticationModule.jpg'),
     DashboardModule: require('./theme/dashboardModule.jpg'),
     MockEazy1:require('./theme/MockEazy1.jpg'),
-    MockEazy2:require('./theme/MockEazy2.jpg')
-
+    MockEazy2:require('./theme/MockEazy2.jpg'),
+    Login:require('./theme/Login.jpg'),
+    Register:require('./theme/Register.jpg'),
+    Tab1Image:require('./theme/Tab1Image.jpg'),
+    Tab2Image:require('./theme/Tab2Image.jpg'),
+    Tab3Image:require('./theme/Tab3Image.jpg'),
+    Tab4Image:require('./theme/Tab4Image.jpg'),
+    Tab5Image:require('./theme/Tab5Image.jpg'),
+    Tab6Image:require('./theme/Tab6Image.jpg'),
+    InterviewReady:require('./theme/interviewReady.jpg'),
+    FormJd:require('./theme/formjd.jpg'),
+    LoginLanding:require('./theme/LoginS.jpg'),
+    trait:require('./theme/trait.jpg'),
+    Communication:require('./theme/communication.jpg')
 }
