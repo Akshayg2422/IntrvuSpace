@@ -1752,7 +1752,7 @@ myTextarea {
 }
 
 .bg-customGradient {
-  background: linear-gradient(112.2deg, rgb(0, 204, 255) -1.1%, rgb(0, 221, 61) 100.7%);
+  background: linear-gradient(112.2deg, #18d1e9 -1.1%, rgb(0, 221, 61) 100.7%);
 }
 
 :root {
@@ -7777,7 +7777,7 @@ a.close.disabled {
 }
 @media (min-width: 1200px) {
   .modal-xl {
-    max-width: 1140px;
+    max-width: 1100px;
   }
 }
 .tooltip {
@@ -15941,6 +15941,7 @@ a.text-darker:hover, a.text-darker:focus {
   letter-spacing: 0.025em;
   font-size: 0.875rem;
   will-change: transform;
+  box-shadow: none;
 }
 .btn:hover {
   box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
@@ -20434,8 +20435,8 @@ input[type=number] {
   color: #595959;
 }
 .table .thead-light th {
-  background-color: #f6f9fc;
-  color: #8898aa;
+  background-color: #68d75c;
+  color: #fefefe;
 }
 .table .thead-light th a {
   color: #8898aa;

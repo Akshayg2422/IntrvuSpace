@@ -30,7 +30,7 @@ export const palette = {
   lightSliverGrey: '#f0eff4',
   ActionGrey: '#f0f0f0',
   HintLightDarkGrey: '#b8b8b8',
-  black: '#000',
+  black: '#000000',
   buttonDarkGrey: '#030303',
   primaryButtonBlack: '#30303',
   buttonRed: '#FB403D',

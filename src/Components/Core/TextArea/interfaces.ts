@@ -6,5 +6,6 @@ export interface TextAreaProps {
   onChange?: any;
   className?: string;
   placeholder?: any;
+  error?: any
 
 }

@@ -23,7 +23,8 @@
 /* for the pen */
 /* waves */
 .ocean {
-  height: 30vh; /* change the height of the waves here */
+  height: 30vh;
+  /* change the height of the waves here */
   width: 100%;
   position: absolute;
   bottom: 0;

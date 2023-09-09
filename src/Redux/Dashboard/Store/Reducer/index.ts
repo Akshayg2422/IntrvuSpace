@@ -32,6 +32,9 @@ const initialState: DashboardProp = {
   scheduleInfo: undefined,
   selectedSection: 0,
   variantDetails: undefined,
+  loading: false,
+  studentCodeOutput: undefined,
+  codeOutputData: undefined
 };
 
 const DashboardReducer = (state = initialState, action: any) => {
@@ -378,6 +381,26 @@ const DashboardReducer = (state = initialState, action: any) => {
       break;
     case ActionTypes.GET_KNOWLEDGE_GROUP_VARIANT_DETAILS_FAILURE:
       state = { ...state, variantDetails: undefined };
+      break;
+
+    /**
+    * Student CODE submission
+    */
+
+    case ActionTypes.STUDENT_CODE_SUBMISSION:
+      state = { ...state, loading: true };
+      break;
+    case ActionTypes.STUDENT_CODE_SUBMISSION_SUCCESS:
+      state = { ...state, studentCodeOutput: action.payload };
+      break;
+    case ActionTypes.STUDENT_CODE_SUBMISSION_FAILURE:
+      state = { ...state, loading: false };
+      break;
+
+      // setting code output data
+
+      case ActionTypes.SETTING_CODE_OUTPUT_DATA:
+      state = { ...state, codeOutputData: action.payload };
       break;
 
 

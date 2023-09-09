@@ -136,13 +136,13 @@ function TopNavbar() {
                         <Nav className="align-items-lg-center ml-lg-auto mr--4  justify-content-end" navbar>
                             <NavItem>
                                 <NavLink to="/client" tag={Link}>
-                                    <span className={`nav-link-inner--text  ${'/client' !== pathName ? "text-black" : 'text-primary'}`}>Home</span>
+                                    <span className={`nav-link-inner--text  ${'/client' !== pathName ? "text-black h4" : 'text-primary h4'}`}>Home</span>
                                 </NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink to="/schedules" tag={Link}>
-                                    <span className={`nav-link-inner--text  ${'/schedules' !== pathName ? "text-black" : 'text-primary'}`}>My Schedule</span>
-                                </NavLink>
+                                {/* <NavLink to="/schedules" tag={Link}>
+                                    <span className={`nav-link-inner--text  ${'/schedules' !== pathName ? "text-black h4" : 'text-primary h4'}`}>My Schedule</span>
+                                </NavLink> */}
                             </NavItem>
                             <NavItem className="d-none d-lg-block ml-lg-4">
                                 <div className='row align-items-center m-auto'>
@@ -206,18 +206,16 @@ function TopNavbar() {
 
             <Modal title={'Logout User'} isOpen={logoutModal.visible} onClose={logoutModal.hide}>
                 <div>
-                    <span className='ml-3'>{"Please click on Proceed to Logout user"}</span>
+                    <span>{"Please click on proceed to logout user"}</span>
                     <div
-                        className='d-flex justify-content-end m-3'
+                        className='d-flex justify-content-end'
                     >
                         <Button
-                            size='lg'
                             color='white'
                             text={'Cancel'}
                             onClick={() => logoutModal.hide()}
                         />
                         <Button
-                            size='lg'
                             text={'Proceed'}
                             onClick={proceedLogout}
                         />

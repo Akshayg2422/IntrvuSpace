@@ -26,4 +26,7 @@ export interface DashboardProp {
   scheduleInfo: any,
   selectedSection: number,
   variantDetails: any,
+  studentCodeOutput?: any;
+  loading?: boolean;
+  codeOutputData?: any;
 }

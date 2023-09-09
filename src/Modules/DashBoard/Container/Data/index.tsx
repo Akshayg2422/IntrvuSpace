@@ -1,9 +1,12 @@
+import { image } from '@Assets'
+import { color } from '@Themes'
 import React, { useState } from 'react'
 import { Container, Row, Col } from 'reactstrap'
 
 function Data() {
 
     const [data, setData] = useState('')
+    const dashBoardModule = ['Track progress, manage tasks, assignments, and deadlines for improved organization and productivity.', 'Tailored course suggestions based on interests, goals, and performance, promoting focused learning.', 'Easy access to resources: Retrieve course materials, lecture notes, videos, and engage in discussions, facilitating collaboration and resource retrieval.']
 
 
     return (
@@ -13,7 +16,7 @@ function Data() {
                     <Row className="justify-content-center text-center">
                         <Col md="7">
                             <h2 className="display-3 text-black">
-                            Why Choose MockEasy
+                                Why Choose MockEasy
                             </h2>
                             <p className="font-weight-normal">
                                 Secure access, centralized dashboard, comprehensive courses, and social media integration for an enhanced learning experience.
@@ -29,7 +32,7 @@ function Data() {
                             <img
                                 alt="..."
                                 className="img-fluid"
-                            // src={icons.authenticationModule}
+                                src={image.AuthenticationImage}
                             />
                         </Col>
                         <Col className="order-md-1 " md="6">
@@ -79,50 +82,40 @@ function Data() {
                             <img
                                 alt="..."
                                 className="img-fluid"
-                            // src={icons.dashboardModule}
+                                src={image.DashboardModule}
                             />
                         </Col>
                         <Col md="6">
-                            <div className="pr-md-5">
+                            <div className=' card-body mb-0'>
                                 <h1>Dashboard Module</h1>
                                 <p>
                                     Get an overview of your progress, upcoming tasks, and course recommendations in a centralized dashboard.
                                 </p>
-                                <ul className="ml--2 mt-5">
-                                    <li className="py-2">
-                                        <div className="d-flex align-items-center">
-                                            <div>
-                                                <p className="text-sm  mb-0">
-                                                    Centralized dashboard: Track progress, manage tasks, assignments, and deadlines for improved organization and productivity.
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li className="py-2">
-                                        <div className="d-flex align-items-center">
-                                            <div>
-                                                <p className="text-sm  mb-0">
-                                                    Personalized recommendations: Tailored course suggestions based on interests, goals, and performance, promoting focused learning.
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li className="py-2">
-                                        <div className="d-flex align-items-center">
-                                            <div>
-                                                <p className="mb-0 text-sm">
-                                                    Easy access to resources: Retrieve course materials, lecture notes, videos, and engage in discussions, facilitating collaboration and resource retrieval.
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
+                                {
+                                    dashBoardModule && dashBoardModule.length > 0 && dashBoardModule.map(each => {
+                                        return (
+                                          
+                                                <div className='row align-items-center'>
+                                                    <div style={{
+                                                        width: 7,
+                                                        height: 7,
+                                                        backgroundColor: color.davyGrey,
+                                                        borderRadius: 5
+                                                    }}>
+                                                    </div>
+                                                    <p className="text-muted col" style={{ fontSize: '14px' }}>{each}</p>
+                                                </div>
+                                       
+                                        )
+                                    })
+                                }
                             </div>
+
                         </Col>
                     </Row>
                 </Container>
             </section>
-          
+
         </div>
     )
 }

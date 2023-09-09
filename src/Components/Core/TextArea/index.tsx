@@ -3,7 +3,11 @@ import { TextAreaProps } from './interfaces'
 import { FormGroup } from 'reactstrap'
 import { InputHeading } from '@Components'
 
-function TextArea({ id, heading, value, onChange, className, placeholder }: TextAreaProps) {
+function TextArea({ id, heading, value, onChange, className, placeholder, error }: TextAreaProps) {
+
+    console.log(error + '====eror');
+
+
     return (
         <FormGroup>
             <InputHeading heading={heading} id={id} />
@@ -15,6 +19,7 @@ function TextArea({ id, heading, value, onChange, className, placeholder }: Text
                 placeholder={placeholder}
 
             />
+            {error ? <small className='text-red'>{error}</small> : <></>}
         </FormGroup>
     )
 }

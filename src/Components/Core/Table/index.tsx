@@ -32,7 +32,7 @@ function Table({ tableDataSet, displayDataSet, tableOnClick }: TableProps) {
 
   return (
 
-    <table className="table align-items-center table-flush ">
+    <table className="table align-items-center table-flush">
       <thead className="thead-light ">
         <tr >
           {

@@ -3,15 +3,16 @@ import "./AnimatedImageFrame.scss";
 import { Col, Row } from "reactstrap";
 import { AnimatedLoader, WebCamRecorder } from "@Components";
 
-const AnimatedImage = ({ name, shouldBlink, show, variant = 'name', showWebCam = false }) => {
-  const imageClasses = classNames("animated-image", { blink: shouldBlink });
+const AnimatedImage = ({ name, shouldBlink, show, variant = 'name', showWebCam = false, isMuted = false }) => {
+  const imageClasses = classNames(!isMuted ? "animated-image" : "", { blink: shouldBlink });
 
   return (
 
     <div className="card-profile-image">
-      <a className={`avatar rounded-circle ${imageClasses}`}
+      <a className={`${imageClasses}`}
         style={{
-          backgroundColor: '#42f542'
+          backgroundColor: '#42f542',
+          borderRadius: 6
         }}
       >
         <div className="name-overlay text-white position-absolute "
@@ -22,14 +23,15 @@ const AnimatedImage = ({ name, shouldBlink, show, variant = 'name', showWebCam =
           {!show ?
             <div>
               {showWebCam ?
-                <WebCamRecorder /> :
+                <WebCamRecorder isMuted={isMuted} /> :
                 <h1 className="text-white" style={{
                   fontSize: "70px"
                 }}>{name}</h1>
               }
             </div> :
             <div style={{ marginLeft: 35 }}>
-              <AnimatedLoader /></div>}
+              <AnimatedLoader /></div>
+          }
         </div>
       </a>
     </div>

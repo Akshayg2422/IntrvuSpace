@@ -1,27 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { Image } from '@Components';
-import { icons } from '@Assets';
+import { icons, videos } from '@Assets';
 import './index.css'
 
 function AnalyzingAnimation() {
     const [analyzing, setAnalyzing] = useState(true);
     const [generating, setGenerating] = useState(false);
     const [contentStep, setContentStep] = useState(1);
-    const [isLoading, setIsLoading] = useState(false)
-
     useEffect(() => {
         // After 3 seconds, stop "Analyzing" and start "Generating"
         setTimeout(() => {
             setAnalyzing(false);
             setGenerating(true);
-            setIsLoading(true)
         }, 3000);
 
         // After 63 seconds (3 seconds + 20 seconds + 20 seconds), reset the steps
         setTimeout(() => {
             setAnalyzing(true);
             setGenerating(false);
-            setIsLoading(true)
             setContentStep(1);
         }, 63000);
     }, []);
@@ -39,12 +35,12 @@ function AnalyzingAnimation() {
 
     return (
         <>
-            <div className={'vh-100 d-flex justify-content-center align-items-center'}>
-                <div className={'text-white p-4'} style={{ height: '75vh', width: '50vw', backgroundColor: '#68d75c' }}>
+            <div className={'h-100 d-flex justify-content-center align-items-center'}>
+                <div className={'text-black p-4 h-100'} style={{ height: '75vh', width: '50vw' }}>
                     {/* For the first 3 seconds */}
                     {analyzing && (
                         <div className={''}>
-                            {contentStep <= 3 && (
+                            {/* {contentStep <= 3 && (
                                 <div className={'d-flex justify-content-center mr-7 align-items-center'}>
                                     <img
                                         height={'30%'}
@@ -61,11 +57,12 @@ function AnalyzingAnimation() {
                                         }
                                     />
                                 </div>
-                            )}
-                            <h4 className={'d-flex justify-content-center align-items-center text-white mt-8 h1'} style={{ backgroundColor: "#fabe2c" }}>
+                            )} */}
+
+                            <h4 className={'d-flex justify-content-center align-items-center py-lg-7 py-md-7 py-sm-8 text-black h1'}>
                                 {contentStep === 1 ? 'Analyzing' : contentStep}
                                 {contentStep === 1 && (
-                                    <span className={'ml-md-5 ml-lg-5 ml-sm-3 loaders'}></span>
+                                    <span className={'ml-md-5 ml-lg-5 ml-sm-3 mt-2 loaders'}></span>
                                 )}
                             </h4>
                         </div>
@@ -75,15 +72,15 @@ function AnalyzingAnimation() {
                     {/* For the next 20 seconds */}
                     {generating && contentStep === 1 && (
                         <div className={'mt--2'}>
-                            <h4 className={'d-flex justify-content-center align-items-center mt-3'} >
+                            {/* <h4 className={'d-flex justify-content-center align-items-center mt-3'} >
                                 {contentStep === 1 && (
                                     <span className={'loader3 mr-2 mt-md--7 mt-lg-md--7 mt-sm--5'}></span>
                                 )}
-                            </h4>
+                            </h4> */}
 
-                            <h4 className={'d-flex justify-content-center align-items-center text-white h1 mt-md-6 mt-lg-6 mt-sm-8'} style={{ backgroundColor: "#fabe2c" }} >
+                            <h4 className={'d-flex justify-content-center align-items-center text-black h1 py-md-7 py-lg-7 py-sm-8'}  >
                                 {contentStep === 1 ? 'Generating' : contentStep}
-                                <span className={'loader6 ml-md-5 ml-lg-5 ml-sm-3 mb-4'}></span>
+                                <span className={'loader6 ml-md-5 ml-lg-5 ml-sm-3 mb-4 mt-2'}></span>
                             </h4>
 
 
@@ -95,7 +92,7 @@ function AnalyzingAnimation() {
                         {
                             generating && contentStep === 2 && (
                                 <>
-                                    <h4 className={'d-flex justify-content-center align-items-center text-white span-animation h1'} style={{ backgroundColor: "#fabe2c" }}>Generating Topics</h4>
+                                    <h4 className={'d-flex justify-content-center align-items-center text-black span-animation h1'} >Generating Topics</h4>
 
                                     {contentStep === 2 && (
                                         <span className={'loader2'}></span>
@@ -105,18 +102,22 @@ function AnalyzingAnimation() {
                             )
                         }
 
-
                         {/* For the next 10 seconds */}
                         {generating && contentStep === 3 && (
                             <>
-                                <h4 className={'d-flex justify-content-center align-items-center topic-animation text-white h3'} >
-                                    1. Topics Generated <span><Image height={20} width={20} src={icons.tickGreen} /></span>
-                                </h4>
-                                <h4 className={'d-flex justify-content-center align-items-center text-white topic-animation h1'} style={{ backgroundColor: "#fabe2c" }}>Generating Questions</h4>
+
+                                <h4 className={'d-flex justify-content-center align-items-center text-black topic-animation h1'} >Generating Questions</h4>
                                 {contentStep === 3 && (
                                     <span className={'loader2'}></span>
                                 )}
-
+                                <h4 className={'d-flex justify-content-center align-items-center topic-animation text-black h3'}
+                                    style={{
+                                        position: 'absolute',
+                                        left: '38%',
+                                        top: '130%'
+                                    }} >
+                                    1. Topics Generated <span className={'pb-1 ml-2'}><Image height={20} width={20} src={icons.tickGreen} /></span>
+                                </h4>
                             </>
                         )}
 
@@ -124,18 +125,30 @@ function AnalyzingAnimation() {
                         {/* For the next 10 seconds */}
                         {generating && contentStep === 4 && (
                             <>
-                                <h4 className={'d-flex justify-content-center align-items-center topic-animation text-white h3'}>
-                                    1. Topics Generated  <span><Image height={20} width={20} src={icons.tickGreen} /></span>
-                                </h4>
-                                <h4 className={'d-flex justify-content-center align-items-center topic-animation text-white h3'}>
-                                    2. Questions Generated <span><Image height={20} width={20} src={icons.tickGreen} /></span>
-                                </h4>
-                                <h4 className={'d-flex justify-content-center align-items-center text-white topic-animation h1'} style={{ backgroundColor: "#fabe2c" }}>Generating Rules</h4>
+
+                                <h4 className={'d-flex justify-content-center align-items-center text-black topic-animation h1'} >Generating Rules</h4>
 
                                 {contentStep === 4 && (
                                     <span className={'loader2'}></span>
                                 )}
-
+                                <h4 className={'d-flex justify-content-center align-items-center topic-animation text-black h3'}
+                                    style={{
+                                        position: 'absolute',
+                                        left: '38%',
+                                        top: '115%'
+                                    }}
+                                >
+                                    1. Topics Generated  <span className={'pb-1 ml-2'}><Image height={20} width={20} src={icons.tickGreen} /></span>
+                                </h4>
+                                <h4 className={'d-flex justify-content-center align-items-center topic-animation text-black h3'}
+                                    style={{
+                                        position: 'absolute',
+                                        left: '38%',
+                                        top: '130%'
+                                    }}
+                                >
+                                    2. Questions Generated <span className={'pb-1 ml-2'}><Image height={20} width={20} src={icons.tickGreen} /></span>
+                                </h4>
                             </>
                         )}
 
@@ -143,37 +156,80 @@ function AnalyzingAnimation() {
                         {/* For the next 10 seconds */}
                         {generating && contentStep === 5 && (
                             <>
-                                <h4 className={'d-flex justify-content-center align-items-center topic-animation text-white h3'}>
-                                    1. Topics Generated <span><Image height={20} width={20} src={icons.tickGreen} /></span>
-                                </h4>
-                                <h4 className={'d-flex justify-content-center align-items-center topic-animation text-white h3'}>
-                                    2. Questions Generated <span><Image height={20} width={20} src={icons.tickGreen} /></span>
-                                </h4>
-                                <h4 className={'d-flex justify-content-center align-items-center topic-animation text-white h3'}>
-                                    3. Rules Generated <span><Image height={20} width={20} src={icons.tickGreen} /></span>
-                                </h4>
-                                <h4 className={'d-flex justify-content-center align-items-center text-white topic-animation h1'} style={{ backgroundColor: "#fabe2c" }}>Preparing Criteria  </h4>
+
+                                <h4 className={'d-flex justify-content-center align-items-center text-black topic-animation h1'} >Preparing Criteria  </h4>
 
                                 {contentStep === 5 && (
                                     <span className={'loader2'}></span>
                                 )}
+                                <h4 className={'d-flex justify-content-center align-items-center topic-animation text-black h3'}
+                                    style={{
+                                        position: 'absolute',
+                                        left: '38%',
+                                        top: '100%'
+                                    }}
+                                >
+                                    1. Topics Generated <span className={'pb-1 ml-2'}><Image height={20} width={20} src={icons.tickGreen} /></span>
+                                </h4>
+                                <h4 className={'d-flex justify-content-center align-items-center topic-animation text-black h3'}
+                                    style={{
+                                        position: 'absolute',
+                                        left: '38%',
+                                        top: '115%'
+                                    }}
+                                >
+                                    2. Questions Generated <span className={'pb-1 ml-2'}><Image height={20} width={20} src={icons.tickGreen} /></span>
+                                </h4>
+                                <h4 className={'d-flex justify-content-center align-items-center topic-animation text-black h3'}
+                                    style={{
+                                        position: 'absolute',
+                                        left: '38%',
+                                        top: '130%'
+                                    }}
+                                >
+                                    3. Rules Generated <span className={'pb-1 ml-2'}><Image height={20} width={20} src={icons.tickGreen} /></span>
+                                </h4>
 
                             </>
                         )}
 
                         {generating && contentStep === 6 && (
                             <>
-                                <h4 className={'d-flex justify-content-center align-items-center topic-animation text-white h3'}>
-                                    1. Topics Generated <span><Image height={20} width={20} src={icons.tickGreen} /></span>
+                                <h4 className={'d-flex justify-content-center align-items-center topic-animation text-black h3'}
+                                    style={{
+                                        position: 'absolute',
+                                        left: '38%',
+                                        top: '85%'
+                                    }}
+                                >
+                                    1. Topics Generated <span className={'pb-1 ml-2'}><Image height={20} width={20} src={icons.tickGreen} /></span>
                                 </h4>
-                                <h4 className={'d-flex justify-content-center align-items-center topic-animation text-white h3'}>
-                                    2. Questions Generated <span><Image height={20} width={20} src={icons.tickGreen} /></span>
+                                <h4 className={'d-flex justify-content-center align-items-center topic-animation text-black h3'}
+                                    style={{
+                                        position: 'absolute',
+                                        left: '38%',
+                                        top: '100%'
+                                    }}
+                                >
+                                    2. Questions Generated <span className={'pb-1 ml-2'}><Image height={20} width={20} src={icons.tickGreen} /></span>
                                 </h4>
-                                <h4 className={'d-flex justify-content-center align-items-center topic-animation text-white h3'}>
-                                    3. Rules Generated <span><Image height={20} width={20} src={icons.tickGreen} /></span>
+                                <h4 className={'d-flex justify-content-center align-items-center topic-animation text-black h3'}
+                                    style={{
+                                        position: 'absolute',
+                                        left: '38%',
+                                        top: '115%'
+                                    }}
+                                >
+                                    3. Rules Generated <span className={'pb-1 ml-2'}><Image height={20} width={20} src={icons.tickGreen} /></span>
                                 </h4>
-                                <h4 className={'d-flex justify-content-center align-items-center topic-animation text-white h3'}>
-                                    4. Criteria Prepared <span><Image height={20} width={20} src={icons.tickGreen} /></span>
+                                <h4 className={'d-flex justify-content-center align-items-center topic-animation text-black h3'}
+                                    style={{
+                                        position: 'absolute',
+                                        left: '38%',
+                                        top: '130%'
+                                    }}
+                                >
+                                    4. Criteria Prepared <span className={'pb-1 ml-2'}><Image height={20} width={20} src={icons.tickGreen} /></span>
                                 </h4>
                             </>
                         )}

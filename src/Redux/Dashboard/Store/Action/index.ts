@@ -603,7 +603,7 @@ export const getJdItemList = (params: any) => {
   }
 }
 export const getJdItemListSuccess = (response: any) => {
-  
+
   return {
     type: ActionTypes.GET_JD_ITEM_LIST_SUCCESS,
     payload: response
@@ -707,3 +707,37 @@ export const getKnowledgeGroupVariantDetailsFailure = (error: any) => {
     payload: error
   }
 }
+
+
+/**
+ * student code submission
+ */
+
+export const postStudentCodeSubmission = (params: any) => {
+  return {
+    type: ActionTypes.STUDENT_CODE_SUBMISSION,
+    payload: params,
+  };
+};
+
+export const postStudentCodeSubmissionSuccess = (response: any) => {
+  return {
+    type: ActionTypes.STUDENT_CODE_SUBMISSION_SUCCESS,
+    payload: response,
+  };
+};
+
+export const postStudentCodeSubmissionFailure = (response: any) => {
+  return {
+    type: ActionTypes.STUDENT_CODE_SUBMISSION_FAILURE,
+    payload: response,
+  };
+};
+
+// settingCodeOutputData
+export const settingCodeOutputData = (response: any) => {
+  return {
+    type: ActionTypes.SETTING_CODE_OUTPUT_DATA,
+    payload: response,
+  };
+};

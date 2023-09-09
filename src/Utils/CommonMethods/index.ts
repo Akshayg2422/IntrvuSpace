@@ -19,6 +19,14 @@ export const filteredName = (value: any, length: number) => {
     return value
   }
 }
+export const showMore = (value: any, length: number) => {
+  if (value?.length > length) {
+    return value.substring(0, length).trim() + '';
+  }
+  else {
+    return value
+  }
+}
 
 
 export function changeDropDownDataKey(arr: any) {
@@ -65,8 +73,10 @@ export function getArrayFromArrayOfObject(data: Array<any>, key: string) {
   return modifiedArr;
 }
 
+
 export function capitalizeFirstLetter(string: any) {
-  return string.charAt(0).toUpperCase() + string.slice(1);
+  if (string !== undefined && string !== null && string.length > 0)
+    return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 export function stringSlice(string: any, slice: number = 3) {
@@ -185,4 +195,32 @@ export function getShortName(fullName: string) {
   const lastNameInitial = names[names.length - 1][0].toUpperCase();
   return `${firstNameInitial}${lastNameInitial}`;
 }
+
+
+export const hexToHue = (hexColor) => {
+  // Convert hex to RGB values
+  const r = parseInt(hexColor.slice(1, 3), 16);
+  const g = parseInt(hexColor.slice(3, 5), 16);
+  const b = parseInt(hexColor.slice(5, 7), 16);
+
+  // Calculate hue angle
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+
+  let hue;
+
+  if (max === r) {
+    hue = (g - b) / (max - min);
+  } else if (max === g) {
+    hue = 2 + (b - r) / (max - min);
+  } else {
+    hue = 4 + (r - g) / (max - min);
+  }
+
+  hue *= 60;
+  if (hue < 0) hue += 360;
+
+  return hue;
+};
+
 

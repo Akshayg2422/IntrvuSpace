@@ -9,17 +9,17 @@ import { Tooltip, UncontrolledTooltip } from 'reactstrap'
 function Clients() {
 
     const search = useInput('');
-    const INTERVIEW_TYPE = [
-        {
-            id: 1, title: 'From Collection'
-        },
-        {
-            id: 2, title: 'From JD'
-        },
-        {
-            id: 3, title: 'From Skills'
-        }
-    ]
+    // const INTERVIEW_TYPE = [
+    //     {
+    //         id: 1, title: 'From Collection'
+    //     },
+    //     {
+    //         id: 2, title: 'From JD'
+    //     },
+    //     {
+    //         id: 3, title: 'From Skills'
+    //     }
+    // ]
 
     const dispatch = useDispatch()
     const { selectedSection } = useSelector((state: any) => state.DashboardReducer)
@@ -38,20 +38,20 @@ function Clients() {
 
     function renderComponent() {
 
-        let component = <FromCollection />
+        let component = <FromJD />
 
-        switch (selectedSection) {
-            case 0:
-                component = <FromCollection />
-                break;
-            case 1:
-                component = <FromJD />
-                break;
-            case 2:
-                component = <FromSkills />
-                break;
+        // switch (selectedSection) {
+        //     case 0:
+        //         component = <FromCollection />
+        //         break;
+        //     case 1:
+        //         component = <FromJD />
+        //         break;
+        //     case 2:
+        //         component = <FromSkills />
+        //         break;
 
-        }
+        // }
         return component;
     }
 
@@ -61,13 +61,13 @@ function Clients() {
             <TopNavbar />
             <div className={`container-fluid mt-7`}>
                 <div className='row align-items-center'>
-                    <div className='col-sm-5 mb-sm-0 mb-2 px-2'>
+                    {/* <div className='col-sm-9 mb-sm-0 mb-2 px-2'>
                         <SearchInput defaultValue={search.value} onSearch={search.set} />
-                    </div>
+                    </div> */}
 
                     {/**ide modal .....................................................................................................................*/}
 
-                    <i className="bi bi-code-square text-primary pointer fa-lg" onClick={() => {
+                    {/* <i className="bi bi-code-square text-primary pointer fa-lg" onClick={() => {
                         setIsOpenIdeModal(true)
                     }}
                         data-placement="top"
@@ -82,11 +82,12 @@ function Clients() {
                             {"Open IDE"}
 
                         </UncontrolledTooltip>
-                    </i>
+                    </i> */}
 
                     {/**....................................................................................................................................... */}
 
-                    {
+                    
+                    {/* {
                         INTERVIEW_TYPE.map((interview: any, index: number) => {
                             const { title } = interview;
                             const selected = index === selectedSection
@@ -105,7 +106,7 @@ function Clients() {
                                 </div>
                             )
                         })
-                    }
+                    } */}
                 </div >
                 {
                     renderComponent()

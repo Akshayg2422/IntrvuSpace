@@ -27,8 +27,6 @@ function From() {
                             </h2>
                             <p className="">
                                 Unlock the power of advanced technology in the world of interviews with MockEasy. Our innovative web application is designed to empower both job seekers and companies, revolutionizing the way interviews are conducted. From personalized interview simulations to streamlined candidate selection, MockEasy brings a new era of efficiency and effectiveness to the hiring process.
-
-
                             </p>
 
                         </Col>

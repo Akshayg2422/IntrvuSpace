@@ -10,6 +10,9 @@ export * from './Register'
 export * from './Splash'
 export * from './AdminLogin'
 export * from './VariantInfo'
+export * from './PrivacyPolicy'
+export * from './TermsAndConditions'
+export * from './ReturnAndRefund'
 
 
 

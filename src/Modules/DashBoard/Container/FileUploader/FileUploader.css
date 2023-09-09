@@ -1,0 +1,75 @@
+/* FileUploader.css */
+
+/* Container */
+/* .container {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+} */
+
+/* Dropzone */
+.file-uploader {
+    border: 2px dashed #5FD777;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: border 0.3s ease-in-out;
+}
+
+.file-uploader.drag-active {
+    border: 2px dashed #5FD777;
+}
+
+/* Uploaded Files */
+.text-white {
+    color: #fff;
+}
+
+/* Uploaded File Icons */
+.bg-gradient-primary {
+    background: linear-gradient(to bottom, #7de291, #5FD777);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bg-gradient-primary img {
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 5px;
+}
+
+/* Delete Button */
+.pointer {
+    cursor: pointer;
+}
+
+/* Modal */
+.modal-content {
+    border: none;
+    border-radius: 0;
+}
+
+/* Submit Button */
+.mt-4 .btn-primary {
+    background-color: #5FD777;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.mt-4 .btn-primary:hover {
+    background-color: #5FD799;
+}
+
+.deleteIcon {
+    transition: transform .1s
+}
+
+.deleteIcon:hover {
+    transform: scale(1.05);
+}

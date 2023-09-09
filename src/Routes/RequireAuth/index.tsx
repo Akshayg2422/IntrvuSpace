@@ -39,6 +39,8 @@ export const RequireAuth = ({ children }: RequireAuthProps) => {
     }
 
 
+
+
     const toggleSideNav = () => {
         if (document.body.classList.contains("g-sidenav-pinned")) {
             document.body.classList.remove("g-sidenav-pinned");

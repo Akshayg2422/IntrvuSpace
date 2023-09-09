@@ -1,7 +1,9 @@
-import React from 'react'
+import { useNavigation } from '@Hooks'
+import { ROUTES } from '@Routes'
 import { Container, Row, Col, Nav, NavItem, NavLink } from 'reactstrap'
 
 function Footer() {
+    const { goTo } = useNavigation()
     return (
         <>
             <footer className="pt-7 pb-5" id="footer-main">
@@ -22,27 +24,18 @@ function Footer() {
                         <Col xl="6">
                             <Nav className="nav-footer justify-content-center justify-content-xl-end">
                                 <NavItem>
-                                    <NavLink
-                                        href="/privacy-policy"
-                                    // target="_blank"
-                                    >
-                                        Privacy Policy
+                                    <NavLink>
+                                        <p style={{ cursor: 'pointer' }} className=''>  <a className='' onClick={() => goTo(ROUTES["auth-module"].privacy)}><b> Privacy Policy </b> </a></p>
                                     </NavLink>
                                 </NavItem>
                                 <NavItem>
-                                    <NavLink
-                                        href="/terms-and-conditions"
-                                    // target="_blank"
-                                    >
-                                        Terms & Conditions
+                                    <NavLink>
+                                        <p style={{ cursor: 'pointer' }} className=''>  <a className='' onClick={() => goTo(ROUTES["auth-module"].TermsAndConditions)}><b> Terms & Conditions </b> </a></p>
                                     </NavLink>
                                 </NavItem>
                                 <NavItem>
-                                    <NavLink
-                                        href="/return-and-refund"
-                                    // target="_blank"
-                                    >
-                                        Return & Refund Policy
+                                    <NavLink>
+                                        <p style={{ cursor: 'pointer' }} className=''>  <a className='text-black' onClick={() => goTo(ROUTES["auth-module"].ReturnAndRefund)}><b> Return & Refund Policy </b> </a></p>
                                     </NavLink>
                                 </NavItem>
                                 {/* <NavItem>

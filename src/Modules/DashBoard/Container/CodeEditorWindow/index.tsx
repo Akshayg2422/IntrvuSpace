@@ -45,9 +45,9 @@ const CodeEditorWindow = ({ value, onChange, language, fileType, ide, theme, isF
   }
 
 
-  useEffect(() => {
-    editorRef.current?.focus();
-  }, [fileType]);
+  // useEffect(() => {
+  //   editorRef.current?.focus();
+  // }, [fileType]);
 
 
   const handleEditorDidMount = (editor, monaco) => {
@@ -65,8 +65,9 @@ const CodeEditorWindow = ({ value, onChange, language, fileType, ide, theme, isF
     <>
       {/* <div>{height}</div> */}
       <Editor
+        className=""
         height={isExpandCodeEditor ? dynamicHeight.dynamicWidth <= 1400 ? dynamicHeight.dynamicHeight - 36 : dynamicHeight.dynamicHeight - 44 : '80vh'}
-        theme={theme ? "vs-dark" : ""}
+        theme={ide === 'HTML' ? 'vs-light' : theme ? "vs-dark" : ""}
         path={fileType}
         value={value}
         onChange={selectedLanguage}
