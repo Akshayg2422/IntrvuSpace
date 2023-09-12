@@ -741,3 +741,36 @@ export const settingCodeOutputData = (response: any) => {
     payload: response,
   };
 };
+ {/* close interview
+*/}
+
+export const closeInterview = (params: any) => {
+  return {
+    type: ActionTypes.CLOSE_INTERVIEW,
+    payload: params,
+  }
+}
+export const closeInterviewSuccess = (response: any) => {
+
+  return {
+    type: ActionTypes.CLOSE_INTERVIEW_SUCCESS,
+    payload: response
+  }
+}
+
+export const closeInterviewFailure = (error: any) => {
+  return {
+    type: ActionTypes.CLOSE_INTERVIEW_FAILURE,
+    payload: error
+  }
+}
+
+// setting Selected Section Id
+
+export const settingSelectedSectionId = (response: any) => {
+
+  return {
+    type: ActionTypes.SETTING_SELECTED_SECTION_ID,
+    payload: response
+  }
+}

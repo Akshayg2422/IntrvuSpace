@@ -6,7 +6,7 @@ function Footer() {
     const { goTo } = useNavigation()
     return (
         <>
-            <footer className="pt-7 pb-5" id="footer-main">
+            <footer className="pt-7 pb-5" id="footer-main" style={{backgroundColor:'#f6f6f6'}}>
                 <Container>
                     <Row className="align-items-center justify-content-xl-between">
                         <Col xl="6">
@@ -25,17 +25,17 @@ function Footer() {
                             <Nav className="nav-footer justify-content-center justify-content-xl-end">
                                 <NavItem>
                                     <NavLink>
-                                        <p style={{ cursor: 'pointer' }} className=''>  <a className='' onClick={() => goTo(ROUTES["auth-module"].privacy)}><b> Privacy Policy </b> </a></p>
+                                        <p style={{ cursor: 'pointer' }} className=''>  <a className='custom-color' onClick={() => goTo(ROUTES["auth-module"].privacy)}><b> Privacy Policy </b> </a></p>
                                     </NavLink>
                                 </NavItem>
                                 <NavItem>
                                     <NavLink>
-                                        <p style={{ cursor: 'pointer' }} className=''>  <a className='' onClick={() => goTo(ROUTES["auth-module"].TermsAndConditions)}><b> Terms & Conditions </b> </a></p>
+                                        <p style={{ cursor: 'pointer' }} className=''>  <a className='custom-color' onClick={() => goTo(ROUTES["auth-module"].TermsAndConditions)}><b> Terms & Conditions </b> </a></p>
                                     </NavLink>
                                 </NavItem>
                                 <NavItem>
                                     <NavLink>
-                                        <p style={{ cursor: 'pointer' }} className=''>  <a className='text-black' onClick={() => goTo(ROUTES["auth-module"].ReturnAndRefund)}><b> Return & Refund Policy </b> </a></p>
+                                        <p style={{ cursor: 'pointer' }} className=''>  <a className='custom-color' onClick={() => goTo(ROUTES["auth-module"].ReturnAndRefund)}><b> Return & Refund Policy </b> </a></p>
                                     </NavLink>
                                 </NavItem>
                                 {/* <NavItem>

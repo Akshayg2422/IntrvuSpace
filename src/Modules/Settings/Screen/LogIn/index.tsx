@@ -102,7 +102,7 @@ function Login() {
                 <div className="col-xl-6 col-md-6">
                     <LoginSideContent />
                 </div>
-                <div className="col-xl-6 col-md-6 d-flex justify-content-center align-items-center my-sm-0 my-4 ">
+                <div className="col-xl-6 col-md-6 d-flex bg-white justify-content-center align-items-center my-sm-0 my-4 ">
                     <div className="col-xl-8">
                         <div className="mb--2 ml-xl-4 ml-sm-0 ml-3 ml-md-5">
                             <h1 className="text-black mb--3">Login in to your Account</h1><br></br>

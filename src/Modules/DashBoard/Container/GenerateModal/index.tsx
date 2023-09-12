@@ -9,7 +9,7 @@ function GenerateModal({ isOpen, onClose, children, title, ...rest }: GenerateMo
     return (
         <RsModal
             fade={false}
-            className={`modal-dialog-centered modal-lg rounded`}
+            className={`modal-dialog-centered modal-xl rounded`}
             isOpen={isOpen}
             {...rest}
         >

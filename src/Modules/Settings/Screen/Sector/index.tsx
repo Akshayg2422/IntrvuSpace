@@ -17,7 +17,7 @@ function Sector() {
   const [image, setImage] = useState("");
   const addSectorLoader = useLoader(false);
 
-  const [photo, setPhoto] = useState<any>();
+  const [photo, setPhoto] = useState<any>("");
   const { sectors } = useSelector((state: any) => state.DashboardReducer)
 
 
@@ -55,6 +55,7 @@ function Sector() {
         })
       )
     } else {
+      addSectorLoader.hide()
       showToast(getValidateError(validation))
     }
   };
@@ -107,7 +108,12 @@ function Sector() {
           </div>
         </div>
       </div>
-      < Modal size={'lg'} title={"Add Sector"} isOpen={addSector.visible} onClose={addSector.hide} >
+      < Modal size={'lg'} title={"Add Sector"} isOpen={addSector.visible} onClose={()=>{
+        addSector.hide()
+        name.set("")
+        description.set("")
+        setPhoto("")
+      }} >
         <div className="col-md-9">
           <div className="mt--2">
             <Input

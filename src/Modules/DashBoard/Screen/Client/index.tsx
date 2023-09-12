@@ -108,10 +108,11 @@ function Clients() {
                         })
                     } */}
                 </div >
-                {
-                    renderComponent()
-                }
-
+                <div>
+                    {
+                        renderComponent()
+                    }
+                </div>
             </div >
             <Modal
                 title='JavaScript IDE'

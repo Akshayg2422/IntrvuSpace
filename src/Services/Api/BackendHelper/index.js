@@ -119,3 +119,6 @@ export const createCorporateVariantForm = payload => post(URL.URL_CREATE_CORPORA
 export const getKnowledgeGroupVariantDetails = payload => post(URL.URL_GET_KNOWLEDGE_GROUP_VARIANT_DETAILS, payload, {});
 
 export const postStudentCodeSubmissionApi = (payload) => post(URL.STUDENT_CODE_SUBMISSION_URL, payload, {}, 'https://codesubmitprimary.leorainfotech.in/')
+export const closeInterviewApi = payload => post(URL.URL_CLOSE_INTERVIEW, payload, {});
+
+

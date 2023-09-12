@@ -498,6 +498,22 @@ function* postStudentCodeSubmissionSaga(action) {
 
 
 
+// close interview api handler
+
+function* closeInterviewSaga(action) {
+  try {
+    const response = yield call(Api.closeInterviewApi, action.payload.params);
+    if (response.success) {
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield call(action.payload.onError(response));
+    }
+  } catch (error) {
+    yield call(action.payload.onError(error));
+  }
+}
+
+
 function* DashboardSaga() {
   yield takeLatest(Action.GET_START_CHAT, getChatSaga);
   yield takeLatest(Action.CREATE_KNOWLEDGE_GROUP_VARIANT, createKnowledgeGroupVariantSaga);
@@ -526,6 +542,8 @@ function* DashboardSaga() {
   yield takeLatest(Action.CREATE_CORPORATE_VARIANT, createCorporateFormSaga);
   yield takeLatest(Action.GET_KNOWLEDGE_GROUP_VARIANT_DETAILS, getKnowledgeGroupVariantDetailsSaga);
   yield takeLatest(Action.STUDENT_CODE_SUBMISSION, postStudentCodeSubmissionSaga);
+  yield takeLatest(Action.CLOSE_INTERVIEW, closeInterviewSaga);
+
 
 }
 export default DashboardSaga;

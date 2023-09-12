@@ -9,12 +9,14 @@ import {
 import {
   CallHeader,
   CodeEditor,
+  ContentRenderer,
   FileUploader,
   FlowDiagram,
   Guidelines,
+  QuestionAndChoices,
   QuestionWithMultipleChoices,
 } from "@Modules";
-import { getScheduleBasicInfo, settingCodeOutputData } from "@Redux";
+import { getScheduleBasicInfo, closeInterview } from "@Redux";
 import { capitalizeFirstLetter, getShortName } from "@Utils";
 import type { Harker } from "hark";
 import type { Encoder } from "lamejs";
@@ -24,9 +26,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { RecordRTCPromisesHandler, StereoAudioRecorder } from "recordrtc";
 import { useScreenRecorder } from "./useScreenRecorder";
-import { color } from "@Themes";
-import { QuestionAndChoices } from "@Modules";
-
 const compare_moment_format = "YYYY-MM-DDHH:mm:ss";
 
 const GUIDELINES = [
@@ -49,55 +48,10 @@ const CHOICE_TYPE = [
   { id: "FILE_ALL", text: "FILE_ALL" },
 ];
 
-const questions =
-  // [
-  {
-    question: "What is your favorite programming language?",
-    choices: ["JavaScript", "Python", "Java", "C#", "Ruby"],
-  };
-//   {
-//     question: "Which is your favorite web framework?",
-//     choices: ["React", "Angular", "Vue.js", "Express.js", "Django"],
-//   },
-//   {
-//     question: "What is your favorite front-end library?",
-//     choices: [
-//       "jQuery",
-//       "Bootstrap",
-//       "Tailwind CSS",
-//       "Semantic UI",
-//       "Foundation",
-//     ],
-//   },
-//   {
-//     question: "What is your fadvorite front-end library?",
-//     choices: [
-//       "jQuery",
-//       "Bootstrap",
-//       "Tailwind CSS",
-//       "Semantic UI",
-//       "Foundation",
-//     ],
-//   },
-//   {
-//     question: "What is your favofrite front-end library?",
-//     choices: [
-//       "jQuery",
-//       "Bootstrap",
-//       "Tailwind CSS",
-//       "Semantic UI",
-//       "Foundation",
-//     ],
-//   },
-//   {
-//     question: "Whats is your favorite programming language?",
-//     choices: ["JavaScript", "Python", "Java", "C#", "Ruby"],
-//   },
-//   {
-//     question: "Whate is your favorite programming language?",
-//     choices: ["JavaScript", "Python", "Java", "C#", "Ruby"],
-//   },
-// ];
+const questions = {
+  question: "What is your favorite programming language?",
+  choices: ["JavaScript", "Python", "Java", "C#", "Ruby"],
+};
 
 function Call() {
   const { startScreenRecording } = useScreenRecorder();
@@ -112,6 +66,7 @@ function Call() {
 
   const stream = useRef<MediaStream>();
   const timeout = useRef<any>({});
+  const mapIdRef = useRef<any>();
 
   const [recording, setRecording] = useState<boolean>(false);
   const [speaking, setSpeaking] = useState<boolean>(false);
@@ -126,7 +81,7 @@ function Call() {
   );
 
   const [interviewStarted, setInterviewStarted] = useState<boolean>(false);
-  let dynamicHeight: any = useDynamicHeight();
+
   const [voiceUp, setVoiceUp] = useState<boolean>(false);
   const voiceUpCount = useRef<any>(0);
   const voiceUpTime = useRef<any>(moment());
@@ -136,13 +91,17 @@ function Call() {
 
   const transcriptionReferenceId = useRef<any>();
   const audioElementRef = useRef<any>();
+  const mutedRef = useRef<any>(false);
   const activeResponseTextId = useRef<any>(generateRandomID());
   // const { isTtfSpeaking, speak } = useTextToSpeech();
   const ambianceVolume = useRef<any>(65);
   const decibleCollection = useRef<any>([]);
   const closeCall = useRef<any>(false);
   const [isTtfSpeaking, setIsTtfSpeaking] = useState<boolean>(false);
+
   const [themeColor, setThemeColor] = useState<boolean>(true);
+
+  let dynamicHeight: any = useDynamicHeight();
 
   // dropdown to select ide, flow chart etc
   const filter = useDropDown(CHOICE_TYPE[0]);
@@ -203,6 +162,13 @@ function Call() {
     audioElementRef.current.play();
   };
 
+  function onEndCallHandler() {
+    proceedStopListening();
+    setButtonConditional("end");
+    getBasicInfo();
+    window.location.reload();
+  }
+
   const activeResponseText = useRef<any>("start");
   // const [activeResponseText, setActiveResponseText] = useState('start');
 
@@ -232,7 +198,7 @@ function Call() {
   const proceedHandleResponseV1 = (response) => {
     setProcessCallInprogress(false);
     // console.log("SpeakText01", response)
-    const { data, rt } = response.next_step[0];
+    const { data, rt, mapId } = response.next_step[0];
     if (
       data &&
       data !== "" &&
@@ -240,6 +206,7 @@ function Call() {
     ) {
       resetLastMessage();
       speak(data);
+      mapIdRef.current = mapId;
     }
 
     if (rt === "INTERVIEWER_END_CALL") {
@@ -248,7 +215,6 @@ function Call() {
   };
 
   useEffect(() => {
-    dispatch(settingCodeOutputData(undefined)); // to clear output in editor
     // Create the WebSocket connection only if it's not already established
     if (!socketRef.current) {
       // const socket = new WebSocket('ws://192.168.218.204:8012/aaa');
@@ -289,8 +255,8 @@ function Call() {
 
   const sendDataToSocket = async (blob: Blob) => {
     if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
+      console.log("sentrrrrr", mutedRef.current);
       if (startStreamTime.current && moment() > startStreamTime.current) {
-        console.log("sentrrrrr");
         const buffer = await blob.arrayBuffer();
         if (encoder.current && recorderAudio.current) {
           const buffer = await blob.arrayBuffer();
@@ -306,8 +272,10 @@ function Call() {
                   timestamp: moment(),
                   schedule_id: schedule_id,
                   blob_data: base64String,
+                  is_muted: mutedRef.current,
                   is_speaking: speakingShouldProcess.current,
                   is_tts_speaking: ttsRef.current,
+                  map_id: mapIdRef.current,
                 };
                 socketRef.current.send(JSON.stringify(syncD));
               } else {
@@ -327,6 +295,8 @@ function Call() {
           waiting_start_time: true,
           is_speaking: speakingShouldProcess.current,
           is_tts_speaking: ttsRef.current,
+          is_muted: mutedRef.current,
+          map_id: "1",
         };
         socketRef.current.send(JSON.stringify(syncD));
       }
@@ -440,7 +410,7 @@ function Call() {
         listener.current.on("speaking", onStartSpeaking);
         listener.current.on("stopped_speaking", onStopSpeaking);
         listener.current.on("volume_change", function (value) {
-          const voiceDetectionSaturation = ambianceVolume.current - 18;
+          // const voiceDetectionSaturation = ambianceVolume.current - 18
           const valueP = Math.abs(value);
           // console.log("voiceDetectionSaturation", voiceDetectionSaturation, valueP)
 
@@ -636,7 +606,7 @@ function Call() {
   };
 
   const onDataAvailable = async (blob: Blob) => {
-    console.log("receivedddassss", blob);
+    // console.log("receivedddassss", blob)
     // console.log("receivedddassssa", blob)
 
     // const d = {'time':moment(), data:blob}
@@ -685,11 +655,12 @@ function Call() {
   }
 
   function micMuteHandler() {
+    mutedRef.current = !mute;
     setMute(!mute);
   }
 
   function startInterviewHandler() {
-    startStreamTime.current = moment().add(15, "seconds");
+    startStreamTime.current = moment().add(1, "seconds");
     transcriptionReferenceId.current = generateRandomID();
     // proceedgetChatDetailsApiHandler({ message: "start" }, transcriptionReferenceId.current)
     setProcessCallInprogress(false);
@@ -702,7 +673,22 @@ function Call() {
 
   function endInterviewHandler() {
     // isScreenRecording && stopScreenRecording();
+    closeCall.current = true;
+    onEndCallHandler();
     goBack();
+  }
+
+  function closeInterviewAPiHandler() {
+    const params = { schedule_id: schedule_id };
+    dispatch(
+      closeInterview({
+        params,
+        onSuccess: () => () => {
+          endInterviewHandler();
+        },
+        onError: () => () => {},
+      })
+    );
   }
 
   const IV_SPEAKING = 1;
@@ -712,89 +698,12 @@ function Call() {
   const IE_SPEAKING = 1;
   const IE_IDLE = 2;
 
-  const interviewer_state = isTtfSpeaking
-    ? IV_SPEAKING
-    : !isTtfSpeaking && !voiceUp
-    ? IV_PROCESSING
-    : IV_IDLE;
+  let interviewer_state = IV_IDLE;
+
+  if (!isTtfSpeaking && !voiceUp) interviewer_state = IV_PROCESSING;
+  else if (!isTtfSpeaking) interviewer_state = IV_SPEAKING;
+
   const interviewee_state = voiceUp ? IE_SPEAKING : IE_IDLE;
-
-  // console.log("themeColor", themeColor)
-
-  const selectCourseIde = (type) => {
-    switch (type) {
-      case "CODE_JS":
-        return { type: "JS", isEditor: true };
-
-      case "CODE_PY":
-        return { type: "PY", isEditor: true };
-
-      case "CODE_HTML":
-        return { type: "HTML", isEditor: true };
-
-      case "GEN_FLOW":
-        return { type, isEditor: false };
-
-      case "GEN_CHOICE":
-        return { type, isEditor: false };
-
-      case "GEN_CHOICE_MULTI":
-        return { type, isEditor: false };
-
-      case "FILE_IMG":
-        return { type, isEditor: false };
-
-      case "FILE_ALL":
-        return { type, isEditor: false };
-
-      default:
-        return;
-    }
-  };
-
-  // to hadle choice select radio button
-
-  const handleChoiceSelect = (question: any, choice: any) => {
-    let providedAnswer = { question, choice, [question]: choice };
-
-    setSelectedChoices({
-      question: providedAnswer.question,
-      choice: providedAnswer.choice,
-      [question]: choice
-    });
-  };
-
-
-  // to handle multiple choices select using checkbox
-
-  const handleMultiChoicesSelect = (question: any, choice: any) => {
-    setSelectedMultiChoices((prevSelectedChoices) => {
-      const currentChoices = prevSelectedChoices[question] || [];
-      let updatedChoices: any;
-
-      if (currentChoices.includes(choice)) {
-        // If the choice is already selected, remove it
-        updatedChoices = currentChoices.filter((c) => c !== choice);
-      } else {
-        // If the choice is not selected, add it
-        updatedChoices = [...currentChoices, choice];
-      }
-
-      return {
-        ...prevSelectedChoices,
-        question,
-        choice:updatedChoices,
-        [question]: updatedChoices,
-      };
-    });
-  };
-
-
-  const handleFileUpload = (file: any) => {
-    setUploadedFile([...uploadedFile, file]);
-  };
-
-  console.log("uploadedFile===>", uploadedFile);
 
   return (
     <div
@@ -802,9 +711,9 @@ function Call() {
       style={{
         backgroundColor: !interviewStarted
           ? "#FFFFFF"
-          : selectCourseIde(filter.value.id)?.type === "HTML"
+          : filter.value.id === "HTML"
           ? "#FFFFFF"
-          : selectCourseIde(filter.value.id)?.type === "GEN_FLOW"
+          : filter.value.id === "GEN_FLOW"
           ? "#F8F9FA"
           : themeColor
           ? "#1E1E1E"
@@ -852,7 +761,7 @@ function Call() {
                 </div>
               </div>
               <div
-                className="position-absolute right-0 left-0"
+                className="position-absolute  right-0 left-0"
                 style={{
                   bottom: "40px",
                 }}
@@ -872,124 +781,14 @@ function Call() {
               <div className="d-flex flex-column h-100">
                 <div className="col">
                   <div className="row" ref={videoRecorderRef}>
-                    <div className="col-sm-12">
-                      {selectCourseIde(filter.value.id)?.isEditor ? (
-                        <CodeEditor
-                          timeInSec={30}
-                          // value={studentProgramData}
-                          courseIde={selectCourseIde(filter.value.id)?.type}
-                          themeCallBack={(theme) => setThemeColor(theme)}
-                          // codeOutput={codeOutput}
-                          // isLoading={isLoadingSubmitButton}
-                          // isFromStudentTask
-                          // onSubmit={(code) => {
-                          // }}
-                        />
-                      ) : !selectCourseIde(filter.value.id)?.isEditor &&
-                        filter.value.id === "GEN_FLOW" ? (
-                        <FlowDiagram />
-                      ) : !selectCourseIde(filter.value.id)?.isEditor &&
-                        filter.value.id === "GEN_CHOICE" ? (
-                        <div
-                          className="container-fluid mt-4 overflow-auto overflow-hide"
-                          style={{
-                            height:
-                              dynamicHeight.dynamicWidth <= 1400
-                                ? dynamicHeight.dynamicHeight - 139
-                                : dynamicHeight.dynamicHeight - 44,
-                          }}
-                        >
-                          <div>
-                            <h1 className="text-center text-white">
-                              {"Questionnaire"}
-                            </h1>
-                            <div className="row">
-                              <QuestionAndChoices
-                                question={questions.question}
-                                choices={questions.choices}
-                                selectedChoice={
-                                  selectedChoices[questions.question]
-                                }
-                                onChoiceSelect={(choice) =>
-                                  handleChoiceSelect(questions.question, choice)
-                                }
-                              />
-                            </div>
-                            <div className="text-center mt-3">
-                              <Button
-                                className="btn btn-primary"
-                                text={"Submit"}
-                                onClick={() => console.log(selectedChoices)}
-                              />
-                            </div>
-                          </div>
-                        </div>
-                      ) : filter.value.id === "GEN_CHOICE_MULTI" ? (
-                        <div
-                          className="container-fluid mt-4 overflow-auto overflow-hide"
-                          style={{
-                            height:
-                              dynamicHeight.dynamicWidth <= 1400
-                                ? dynamicHeight.dynamicHeight - 139
-                                : dynamicHeight.dynamicHeight - 44,
-                          }}
-                        >
-                          <div>
-                            <h1 className="text-center text-white">
-                              {"Questionnaire"}
-                            </h1>
-                            <div className="row">
-                              <QuestionWithMultipleChoices
-                                question={questions.question}
-                                choices={questions.choices}
-                                selectedChoices={
-                                  selectedMultiChoices[questions.question] || []
-                                }
-                                onChoiceSelect={(question, choice) =>
-                                  handleMultiChoicesSelect(questions.question, choice)
-                                }
-                              />
-                              {/* </div>
-                                ))} */}
-                            </div>
-                            <div className="text-center mt-3">
-                              <Button
-                                className="btn btn-primary"
-                                text={"Submit"}
-                                onClick={() =>
-                                  console.log(selectedMultiChoices)
-                                }
-                              />
-                            </div>
-                          </div>
-                        </div>
-                      ) : filter.value.id === "FILE_IMG" ? (
-                        <div className="text-white pointer">
-                          <div className="container mt-4">
-                            <h1 className="text-center text-white">
-                              {"Upload Image"}
-                            </h1>
-                            <FileUploader
-                              onFileUpload={handleFileUpload}
-                              isImageUpload
-                              onClick={(imageArr) => {}}
-                            />
-                          </div>
-                        </div>
-                      ) : (
-                        filter.value.id === "FILE_ALL" && (
-                          <div className="container mt-4 text-white pointer">
-                            <h1 className="text-center text-white pointer">
-                              {"Upload File"}
-                            </h1>
-                            <FileUploader
-                              onFileUpload={handleFileUpload}
-                              onClick={(fileArr) => {}}
-                            />
-                          </div>
-                        )
-                      )}
-                    </div>
+
+                    {/** Select content like ide ---> JS, PY, HTML, flow diagram, file/ image upload, question and choice*/}
+
+                    <ContentRenderer
+                      filterContent={filter.value.id}
+                      questions={questions}
+                    />
+
                     <div
                       className="position-fixed"
                       style={{
@@ -997,9 +796,7 @@ function Call() {
                         right: filter.value.id === "DEFAULT" ? "0" : "-5vh",
                       }}
                     >
-                      <div
-                        className="linear webCam"
-                      >
+                      <div className="linear webCam">
                         <div className="col-sm-12 d-flex flex-column align-items-center justify-content-center ">
                           <AnimatedImage
                             show={false}

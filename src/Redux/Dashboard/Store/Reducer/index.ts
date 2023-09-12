@@ -1,8 +1,24 @@
-import { CREATE_KNOWLEDGE_GROUP, CREATE_KNOWLEDGE_GROUP_FAILURE, CREATE_KNOWLEDGE_GROUP_SUCCESS, CREATE_KNOWLEDGE_GROUP_VARIANT, CREATE_KNOWLEDGE_GROUP_VARIANT_FAILURE, CREATE_KNOWLEDGE_GROUP_VARIANT_SUCCESS, CREATE_SECTOR, CREATE_SECTOR_FAILURE, CREATE_SECTOR_SUCCESS, GET_KNOWLEDGE_GROUP, GET_KNOWLEDGE_GROUP_FAILURE, GET_KNOWLEDGE_GROUP_SUCCESS, GET_KNOWLEDGE_GROUP_VARIANT, GET_KNOWLEDGE_GROUP_VARIANT_FAILURE, GET_KNOWLEDGE_GROUP_VARIANT_SUCCESS, GET_START_CHAT } from '../ActionTypes';
+import {
+  CREATE_KNOWLEDGE_GROUP,
+  CREATE_KNOWLEDGE_GROUP_FAILURE,
+  CREATE_KNOWLEDGE_GROUP_SUCCESS,
+  CREATE_KNOWLEDGE_GROUP_VARIANT,
+  CREATE_KNOWLEDGE_GROUP_VARIANT_FAILURE,
+  CREATE_KNOWLEDGE_GROUP_VARIANT_SUCCESS,
+  CREATE_SECTOR,
+  CREATE_SECTOR_FAILURE,
+  CREATE_SECTOR_SUCCESS,
+  GET_KNOWLEDGE_GROUP,
+  GET_KNOWLEDGE_GROUP_FAILURE,
+  GET_KNOWLEDGE_GROUP_SUCCESS,
+  GET_KNOWLEDGE_GROUP_VARIANT,
+  GET_KNOWLEDGE_GROUP_VARIANT_FAILURE,
+  GET_KNOWLEDGE_GROUP_VARIANT_SUCCESS,
+  GET_START_CHAT,
+} from "../ActionTypes";
 
-import { DashboardProp } from '../../Interfaces';
-import * as ActionTypes from '../ActionTypes'
-
+import { DashboardProp } from "../../Interfaces";
+import * as ActionTypes from "../ActionTypes";
 
 const initialState: DashboardProp = {
   userLoggedIn: false,
@@ -34,16 +50,16 @@ const initialState: DashboardProp = {
   variantDetails: undefined,
   loading: false,
   studentCodeOutput: undefined,
-  codeOutputData: undefined
+  codeOutputData: undefined,
+  selectedSectionId: undefined,
 };
 
 const DashboardReducer = (state = initialState, action: any) => {
-
   switch (action.type) {
     case ActionTypes.GET_START_CHAT:
       state = {
         ...state,
-        chat: action.payload
+        chat: action.payload,
       };
       break;
 
@@ -51,40 +67,40 @@ const DashboardReducer = (state = initialState, action: any) => {
       state = { ...state };
       break;
     case ActionTypes.CREATE_KNOWLEDGE_GROUP_VARIANT_SUCCESS:
-      state = { ...state, };
+      state = { ...state };
       break;
     case ActionTypes.CREATE_KNOWLEDGE_GROUP_VARIANT_FAILURE:
       state = { ...state };
       break;
 
-
     case ActionTypes.CREATE_KNOWLEDGE_GROUP:
       state = { ...state };
       break;
     case ActionTypes.CREATE_KNOWLEDGE_GROUP_SUCCESS:
-      state = { ...state, };
+      state = { ...state };
       break;
     case ActionTypes.CREATE_KNOWLEDGE_GROUP_FAILURE:
       state = { ...state };
       break;
 
-
     case ActionTypes.GET_KNOWLEDGE_GROUP:
       state = { ...state, knowledgeGroups: undefined };
       break;
     case ActionTypes.GET_KNOWLEDGE_GROUP_SUCCESS:
-      state = { ...state, knowledgeGroups: action.payload.details.knowledege_groups };
+      state = {
+        ...state,
+        knowledgeGroups: action.payload.details.knowledege_groups,
+      };
       break;
     case ActionTypes.GET_KNOWLEDGE_GROUP_FAILURE:
       state = { ...state };
       break;
 
-
     case ActionTypes.GET_KNOWLEDGE_GROUP_VARIANT:
       state = { ...state };
       break;
     case ActionTypes.GET_KNOWLEDGE_GROUP_VARIANT_SUCCESS:
-      state = { ...state, };
+      state = { ...state };
       break;
     case ActionTypes.GET_KNOWLEDGE_GROUP_VARIANT_FAILURE:
       state = { ...state };
@@ -96,7 +112,7 @@ const DashboardReducer = (state = initialState, action: any) => {
       state = { ...state };
       break;
     case CREATE_SECTOR_SUCCESS:
-      state = { ...state, };
+      state = { ...state };
       break;
     case CREATE_SECTOR_FAILURE:
       state = { ...state };
@@ -104,9 +120,8 @@ const DashboardReducer = (state = initialState, action: any) => {
     //selected Group Id
 
     case ActionTypes.SET_SELECTED_ROLE:
-      state = { ...state, selectedRole: action.payload }
+      state = { ...state, selectedRole: action.payload };
       break;
-
 
     /**
      * get sectors
@@ -127,17 +142,15 @@ const DashboardReducer = (state = initialState, action: any) => {
       state = { ...state };
       break;
     case ActionTypes.CREATE_QUESTION_FORM_SUCCESS:
-      state = { ...state, };
+      state = { ...state };
       break;
     case ActionTypes.CREATE_QUESTION_FORM_FAILURE:
       state = { ...state };
       break;
 
-
-
     /**
- *  set client sectors
- */
+     *  set client sectors
+     */
 
     case ActionTypes.SET_CLIENT_SECTORS:
       state = { ...state, selectedClientSector: action.payload };
@@ -170,7 +183,7 @@ const DashboardReducer = (state = initialState, action: any) => {
     //selected Question Form
 
     case ActionTypes.SET_SELECTED_QUESTION_FORM:
-      state = { ...state, selectedQuestionForm: action.payload }
+      state = { ...state, selectedQuestionForm: action.payload };
       break;
 
     //GET_FORM_SECTION_QUESTIONS
@@ -179,13 +192,14 @@ const DashboardReducer = (state = initialState, action: any) => {
       state = { ...state, formSectionQuestions: undefined };
       break;
     case ActionTypes.GET_FORM_SECTION_QUESTIONS_SUCCESS:
-      state = { ...state, formSectionQuestions: action.payload.details?.questions };
+      state = {
+        ...state,
+        formSectionQuestions: action.payload.details?.questions,
+      };
       break;
     case ActionTypes.GET_FORM_SECTION_QUESTIONS_FAILURE:
       state = { ...state, formSectionQuestions: undefined };
       break;
-
-
 
     //FETCH_BASIC_REPORT
 
@@ -228,13 +242,16 @@ const DashboardReducer = (state = initialState, action: any) => {
       state = { ...state, generateQuestionSections: undefined };
       break;
 
-    // GENERATE_FORM_SECTIONS_AND_QUESTIONS 
+    // GENERATE_FORM_SECTIONS_AND_QUESTIONS
 
     case ActionTypes.FETCH_GENERATE_FORM_SECTIONS_AND_QUESTIONS:
       state = { ...state, generateSectionsAndQuestions: undefined };
       break;
     case ActionTypes.FETCH_GENERATE_FORM_SECTIONS_AND_QUESTIONS_SUCCESS:
-      state = { ...state, generateSectionsAndQuestions: action.payload.details };
+      state = {
+        ...state,
+        generateSectionsAndQuestions: action.payload.details,
+      };
       break;
     case ActionTypes.FETCH_GENERATE_FORM_SECTIONS_AND_QUESTIONS_FAILURE:
       state = { ...state, generateSectionsAndQuestions: undefined };
@@ -269,7 +286,6 @@ const DashboardReducer = (state = initialState, action: any) => {
       state = { ...state };
       break;
 
-
     case ActionTypes.REMOVE_SIDE_NAV:
       state = { ...state, removeSideNav: action.payload };
       break;
@@ -281,8 +297,6 @@ const DashboardReducer = (state = initialState, action: any) => {
     case ActionTypes.CLEAR_BREADCRUMBS:
       state = { ...state, breadCrumb: [] };
       break;
-
-
 
     case ActionTypes.SCREEN_RECORDING_PERMISSION:
       state = { ...state, recordingPermission: action.payload };
@@ -320,7 +334,7 @@ const DashboardReducer = (state = initialState, action: any) => {
     // Create a new array without the last element
 
     case ActionTypes.CLEAR_LAST_BREADCRUMB:
-      const updatedBreadCrumb = state.breadCrumb.pop()
+      const updatedBreadCrumb = state.breadCrumb.pop();
       return { ...state, breadCrumb: updatedBreadCrumb };
       break;
 
@@ -331,7 +345,7 @@ const DashboardReducer = (state = initialState, action: any) => {
       state = { ...state, jdItem: undefined };
       break;
     case ActionTypes.GET_JD_ITEM_LIST_SUCCESS:
-      console.log('==========>', action.payload.details);
+      console.log("==========>", action.payload.details);
       state = { ...state, jdItem: action.payload.details?.jd_items };
       break;
     case ActionTypes.GET_JD_ITEM_LIST_FAILURE:
@@ -344,7 +358,10 @@ const DashboardReducer = (state = initialState, action: any) => {
       state = { ...state, scheduleInfo: undefined };
       break;
     case ActionTypes.GET_SCHEDULE_BASIC_INFO_SUCCESS:
-      state = { ...state, scheduleInfo: action.payload?.details?.schedule_details };
+      state = {
+        ...state,
+        scheduleInfo: action.payload?.details?.schedule_details,
+      };
       break;
     case ActionTypes.GET_SCHEDULE_BASIC_INFO_FAILURE:
       state = { ...state, scheduleInfo: undefined };
@@ -356,12 +373,11 @@ const DashboardReducer = (state = initialState, action: any) => {
       state = { ...state };
       break;
     case ActionTypes.CREATE_CORPORATE_VARIANT_SUCCESS:
-      state = { ...state, };
+      state = { ...state };
       break;
     case ActionTypes.CREATE_CORPORATE_VARIANT_FAILURE:
       state = { ...state };
       break;
-
 
     /**
      * set selected section
@@ -384,8 +400,8 @@ const DashboardReducer = (state = initialState, action: any) => {
       break;
 
     /**
-    * Student CODE submission
-    */
+     * Student CODE submission
+     */
 
     case ActionTypes.STUDENT_CODE_SUBMISSION:
       state = { ...state, loading: true };
@@ -397,17 +413,21 @@ const DashboardReducer = (state = initialState, action: any) => {
       state = { ...state, loading: false };
       break;
 
-      // setting code output data
+    // setting code output data
 
-      case ActionTypes.SETTING_CODE_OUTPUT_DATA:
+    case ActionTypes.SETTING_CODE_OUTPUT_DATA:
       state = { ...state, codeOutputData: action.payload };
       break;
 
+    // setting selected section id
+
+    case ActionTypes.SETTING_SELECTED_SECTION_ID:
+      state = { ...state, selectedSectionId: action.payload };
+      break;
 
     default:
       state = state;
       break;
-
   }
 
   return state;

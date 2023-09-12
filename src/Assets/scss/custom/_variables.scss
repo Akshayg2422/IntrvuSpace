@@ -1274,7 +1274,7 @@ $tooltip-font-size: $font-size-sm !default;
 // Modals
 
 $modal-inner-padding: 1.5rem !default;
-$modal-xl: 1100px !default;
+$modal-xl: 1000px !default;
 $modal-lg: 800px !default;
 $modal-md: 500px !default;
 $modal-sm: 380px !default;
@@ -1463,7 +1463,19 @@ $tag-box-shadow: 0 1px 2px rgba(68, 68, 68, 0.25);
 
 
 .bg-customGradient {
-  background: linear-gradient(112.2deg, #18d1e9 -1.1%, rgb(0, 221, 61) 100.7%);
+  background: linear-gradient(112.2deg, #ffffff -1.1%, #fafafa 100.7%);
+}
+
+.bg-custom {
+  background: linear-gradient(112.2deg, #5bf707 -1.1%, #5ede41 100.7%);
+}
+
+.custom-color {
+  color: #424242
+}
+
+.custom-text-color {
+  color: #595959
 }
 
 // Import Bootstrap variable defaults
