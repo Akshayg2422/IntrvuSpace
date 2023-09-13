@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { TabPanel } from "react-headless-tabs";
 import type { TabsProps, TabItem } from "./interfaces";
-import { useWindowDimensions } from '@Hooks'
-import { Card } from '@Components'
+import { useWindowDimensions } from "@Hooks";
+import { Card } from "@Components";
 
 export function Tabs({ tabs, selected, onChange, height }: TabsProps) {
-  //const { height } = useWindowDimensions()
+  // const { height } = useWindowDimensions()
 
   const changeTab = (item: TabItem) => {
     if (onChange) {
@@ -22,6 +22,7 @@ export function Tabs({ tabs, selected, onChange, height }: TabsProps) {
         <div
           style={{
             display: "flex",
+            flexDirection: "row", // Change to column for small screens
           }}
         >
           {tabs.map((item: TabItem) => {
@@ -35,10 +36,14 @@ export function Tabs({ tabs, selected, onChange, height }: TabsProps) {
                   padding: "1rem",
                   textDecoration: "none",
                   color: selected?.id === item.id ? "#000000" : "#cac9cd",
-                  background: selected?.id === item.id ? "#ffffff" : "#ffffff",
-                  position: "relative", // Add this line
+                  background:
+                    selected?.id === item.id ? "#ffffff" : "#ffffff",
+                  position: "relative",
+                  marginBottom: "10px", // Add some space between tabs for small screens
                 }}
-                onClick={() => { changeTab(item) }}
+                onClick={() => {
+                  changeTab(item);
+                }}
                 data-tab={item}
               >
                 {item.title}
@@ -64,7 +69,10 @@ export function Tabs({ tabs, selected, onChange, height }: TabsProps) {
       <div>
         {tabs.map((item: TabItem) => {
           return (
-            <TabPanel key={item.id} hidden={selected?.id !== item.id}>
+            <TabPanel
+              key={item.id}
+              hidden={selected?.id !== item.id}
+            >
               {item.component}
             </TabPanel>
           );

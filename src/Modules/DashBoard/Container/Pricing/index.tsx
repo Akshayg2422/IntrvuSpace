@@ -9,48 +9,46 @@ function Pricing() {
     const { goTo } = useNavigation();
     const pricingOptions = [
         {
-            title: 'Single Interview!',
+            title: '1 JD - Single Interview!',
             price: 'FREE',
-            amount: '1 JD',
+            variants: 'Starter',
             reports: ['Basic Report', 'Skill Matrix Report', 'Communication Report', 'Trait Report'],
             onClick: () => { goTo(ROUTES['auth-module'].login) }
         },
         {
-            title: 'Multiple Interviews!',
+            title: '50 JD - Multiple Interviews!',
             price: '₹50',
-            amount: '50 JD',
+            variants: 'Pro',
             reports: ['Basic Report', 'Skill Matrix Report', 'Communication Report', 'Trait Report', 'Skill Matrix Advanced', 'Communication Advanced'],
             link: 'https://mockeazyprimary.leorainfotech.in/authentication/payment/?name=subscription&amount=50'
         },
         {
-            title: 'Multiple Interviews!',
+            title: '300 JD - Multiple Interviews!',
             price: '₹300',
-            amount: '300 JD',
+            variants: 'Premium',
             reports: ['Basic Report', 'Skill Matrix Report', 'Communication Report', 'Trait Report', 'Skill Matrix Advanced', 'Communication Advanced'],
             link: 'https://mockeazyprimary.leorainfotech.in/authentication/payment/?name=subscription&amount=300'
         },
         {
-            title: 'Unlimited Interviews!',
+            title: '400 JD - Unlimited Interviews!',
             price: '₹400',
-            amount: '400 JD',
+            variants: 'Enterprise',
             reports: ['Basic Report', 'Skill Matrix Report', 'Communication Report', 'Trait Report', 'Skill Matrix Advanced', 'Communication Advanced'],
             link: 'https://mockeazyprimary.leorainfotech.in/authentication/payment/?name=subscription&amount=400'
         },
     ];
 
     return (
-        <section style={{ backgroundColor: '#ffffff' }} className="py-sm-7" id="pricing-now-ui">
+        <section style={{ backgroundColor: '#ffffff' }} className="py-sm-4" id="pricing-now-ui">
             <div className=" position-relative">
                 <div className="container pb-lg-8 pb-7 pt-5 postion-relative z-index-2 position-relative">
-                    <div className="row">
-                        <div className="col-md-7 mx-auto text-center">
-                            <span className="text-primary mb-2 h3">Pricing</span>
-                            <h3 className="text-black">Ready to get which course you want to learn?</h3>
-                            <p className="custom-text-color">
-                                Based on the license you get, you will have direct access to our team <br /> to learn courses.
-                            </p>
+                    <div className="row col-md-7 text-center">
+                        <div className='row align-items-center pb-1'>
+                            <img className={'mt--1 ml-3'} src={icons.horizontalLine} alt="Authentication icon" height={45} width={80} style={{ borderRadius: '10px' }} />
+                            <h3 className="text-primary ml-3">Pricing</h3>
                         </div>
                     </div>
+                    <div className={'h1 text-black font-weight-bolder mb-4'}>Choose the plan that's right for you</div>
                 </div>
             </div>
             <div className="mt-lg-n8 mt-n6">
@@ -58,17 +56,17 @@ function Pricing() {
                     <div className="row">
                         {pricingOptions.map((option, index) => (
                             <div className="col-lg-3 col-sm-6 mb-lg-0 mb-4" key={index}>
-                                <div className="card h-100">
-                                    <div className="card-header text-sm-start text-center pt-4 pb-3 px-4">
+                                <div className="card shadow-none h-100 index-card">
+                                    <div className=" text-sm-start pt-4 pb-3 px-4">
                                         <div>
-                                            <img className={'mb-1'} src={icons.lock} alt="..." height={60} width={60} />
-                                            <p className="mb-1">{option.amount}</p>
+                                            <p className="mb-1 display-4">{option.variants}</p>
+                                            <p className="text-sm font-weight-bold mt--2">{option.title}</p>
+                                            <div className="font-weight-bold display-4">{option.price}</div>
                                         </div>
-                                        <p className="text-sm custom-text-color">{option.title}</p>
-                                        <h2 className="font-weight-bold mt--2">{option.price}</h2>
+
                                         {option.price === 'FREE' ? (
                                             <div
-                                                className="custom-btn bg-primary text-white border-0 col mt-1"
+                                                className="custom-btn bg-primary text-center border-0 col mt-3"
                                                 style={{ borderRadius: '20px' }}
                                                 onClick={option.onClick}
                                             >
@@ -86,13 +84,13 @@ function Pricing() {
                                                     width: '100%',
                                                 }}
                                             >
-                                                <div className="custom-btn bg-primary text-white border-0 col mt-1" style={{ borderRadius: '20px' }}>
+                                                <div className="custom-btn bg-primary text-center border-0 col mt-3" style={{ borderRadius: '20px' }}>
                                                     Buy Now
                                                 </div>
                                             </a>
                                         )}
                                     </div>
-                                    <hr className={`horizontal ${index % 2 === 0 ? 'light' : 'dark'} my-0`} />
+                                    <hr className={`horizontal ${index % 2 === 0 ? 'light' : 'primary'} my-0`} />
                                     <div className={'col'}>
                                         {option.reports.map((each, subIndex) => (
                                             <div className="card-body py-2" key={subIndex}>
@@ -107,7 +105,7 @@ function Pricing() {
                                                     ></div>
                                                     <div className="d-flex">
                                                         <div className="ps-3 ml-2">
-                                                            <span className="text-sm custom-text-color">{each}</span>
+                                                            <span className="text-sm ">{each}</span>
                                                         </div>
                                                     </div>
                                                 </div>

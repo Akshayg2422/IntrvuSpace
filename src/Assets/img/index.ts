@@ -45,5 +45,7 @@ export const image = {
     FormJd:require('./theme/formjd.jpg'),
     LoginLanding:require('./theme/LoginS.jpg'),
     trait:require('./theme/trait.jpg'),
-    Communication:require('./theme/communication.jpg')
+    Communication:require('./theme/communication.jpg'),
+    Introduction:require('./theme/IntroductionImage.jpg'),
+    DontWorry:require('./theme/dontWorryImage.jpg')
 }

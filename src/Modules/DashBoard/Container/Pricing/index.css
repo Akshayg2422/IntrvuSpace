@@ -1,6 +1,6 @@
 /* Define the base button style */
 .custom-btn {
-  width: 130px;
+  width: 220px;
   height: 40px;
   color: #fff;
   border-radius: 5px;
@@ -12,14 +12,26 @@
   transition: all 0.3s ease;
   position: relative;
   display: inline-block;
-  box-shadow: inset 2px 2px 2px 0px rgba(255, 255, 255, .5),
+  /* box-shadow: inset 2px 2px 2px 0px rgba(255, 255, 255, .5),
     7px 7px 20px 0px rgba(0, 0, 0, .1),
-    4px 4px 5px 0px rgba(0, 0, 0, .1);
+    4px 4px 5px 0px rgba(0, 0, 0, .1); */
   outline: none;
 }
 
 /* Define the button style on hover */
 .custom-btn:hover {
   transform: translateY(-0.2rem);
-  background: linear-gradient(0deg, rgb(33, 173, 15) 0%, #31c92c 100%); /* Change to linear gradient on hover */
+  background: linear-gradient(0deg, #ffffff 0%, #ffffff 100%); /* Change to linear gradient on hover */
+  color:#000000
+}
+
+.index-card {
+  /* background:white; */
+  color: #000000
+}
+
+.index-card:hover {
+  transform: translateY(-0.2rem);
+  background: linear-gradient(0deg, #9af28e 0%, #85ef81 100%); /* Change to linear gradient on hover */
+  color: #ffffff
 }

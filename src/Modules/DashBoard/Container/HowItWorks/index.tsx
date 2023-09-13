@@ -1,4 +1,4 @@
-import { image } from '@Assets'
+import { icons, image } from '@Assets'
 import { Image } from '@Components'
 import { Container, Row, Col } from 'reactstrap'
 
@@ -7,201 +7,171 @@ function HowItWorks() {
 
     return (
         <div style={{ backgroundColor: '#ffffff' }}>
-            <section className="pt-0 pb-3 ">
-                <Container>
-                    <Row className="justify-content-center text-center">
-                        <Col md="8">
-                            <h3 className="text-primary">
-                                Introduction
-                            </h3>
-                            <span className={'display-3 text-black font-weight-bolder'}>Land Your Dream Job<br></br>
-                                with Confidence</span>
-                            <p className="custom-text-color pt-2" style={{ fontSize: '17px' }}>
-                                Are you a job seeker on the hunt for the perfect opportunity? Are you determined to shine in your interviews and secure that dream job? Look no further! Easy Interview is exclusively designed to support you in mastering the art of interviews through realistic mock practice.
+            <section className="pt-5 pb-0">
+                <div className="container">
+                <div className={'col-lg-8 col-md-6'}>
+                            <div className={'display-3 text-black font-weight-bolder'}>How it Works?</div>
+                            <p className={'custom-text-color mt-2'} >
+                              Are you determined to shine in your interviews and secure that dream job? Mastering the art of interviews through realistic mock practice.
                             </p>
+                        </div>
+                    <div className="row">
+                        <div className="col-lg-4 col-md-6">
+                            <div className="">
+                                <div className="position-relative">
+                                    <a className="d-block">
+                                        <img
+                                            src={image.InterviewReady}
+                                            width={"100%"}
+                                            height={"100%"}
+                                            className="img-fluid shadow-none border-radius-lg"
+                                            alt="img-blur-shadow"
+                                        />
+                                    </a>
+                                </div>
+                                <div className="card-body px-1 pt-3">
+                                    {/* <p className="text-gradient text-dark mb-2 text-sm">Maui, Hawaii</p> */}
+                                    <a href="javascript:;">
+                                        <div className='row align-items-center pb-2'>
+                                            <img className={'mt--1 ml-3'} src={icons.uploadJd} alt="Authentication icon" height={45} width={45} style={{ borderRadius: '10px' }} />
+                                            <h3 className="text-black ml-3">Upload Your JD</h3>
+                                        </div>
+                                    </a>
+                                    <p>
+                                        Siri&#39;s latest trick is offering a hands-free TV viewing experience, that will allow consumers to turn on or off their television, change inputs, fast forward.
+                                    </p>
 
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col-lg-4 col-md-6">
+                            <div className="">
+                                <div className="position-relative">
+                                    <a className="d-block">
+                                        <img
+                                            src={image.InterviewReady}
+                                            width={"100%"}
+                                            height={"100%"}
+                                            className="img-fluid shadow-none border-radius-lg"
+                                        />
+                                    </a>
+                                </div>
+                                <div className="card-body px-1 pt-3">
+                                    {/* <p className="text-gradient text-dark mb-2 text-sm">Fuerteventura, Canary Islands</p> */}
+                                    <a href="javascript:;">
+                                        <div className='row align-items-center pb-2'>
+                                            <img className={'mt--1 ml-3'} src={icons.startInterview} alt="Authentication icon" height={45} width={45} style={{ borderRadius: '10px' }} />
+                                            <h3 className="text-black ml-3">Start Your Interview</h3>
+                                        </div>
+                                    </a>
+                                    <p>
+                                        As Uber works through a huge amount of internal management turmoil, the company is also consolidating and rationalizing more of its international business.
+                                    </p>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col-lg-4 col-md-6">
+                            <div className="">
+                                <div className="position-relative">
+                                    <a className="d-block">
+                                        <img
+                                            src={image.InterviewReady}
+                                            width={"100%"}
+                                            height={"100%"}
+                                            className="img-fluid shadow-none border-radius-lg"
+                                        />
+                                    </a>
+                                </div>
+                                <div className="card-body px-1 pt-3">
+                                    {/* <p className="text-gradient text-dark mb-2 text-sm">Tayrona National Park, Colombia</p> */}
+                                    <a href="javascript:;">
+                                        <div className='row align-items-center pb-2'>
+                                            <img className={'mt--1 ml-3'} src={icons.reports} alt="Authentication icon" height={45} width={45} style={{ borderRadius: '10px' }} />
+                                            <h3 className="text-black ml-3">Access Your Report</h3>
+                                        </div>
+                                    </a>
+                                    <p>
+                                        Music is something that every person has his or her own specific opinion about. Different people have different taste, and various types of music.
+                                    </p>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            {/* <section className="pt-0 pb-3 ">
+
+                <Container>
+                    <div className={'display-3 text-black font-weight-bolder'}>How it Works?</div>
+                    <p className={'custom-text-color mt-2'} >
+                        Are you a job seeker on the hunt for the perfect opportunity? Are you determined to shine in your interviews and secure that dream job? Look no further! Easy Interview is exclusively designed to support you in mastering the art of interviews through realistic mock practice.
+                    </p>
+                    <div className="d-flex justify-content-between">
+                        <div className=" col-sm-4 d-flex align-items-center justify-content-center ml--2" style={{ borderRadius: '20px', backgroundColor: '#e9eff3', margin: '10px' }}>
+                            <img
+                                src={image.FormJd}
+                                width={"100%"}
+                                height={"100%"}
+                                style={{ borderRadius: '12px' }}
+                            />
+                        </div>
+                        <div className="col-sm-4 d-flex align-items-center justify-content-center" style={{ borderRadius: '20px', backgroundColor: '#e9eff3', marginRight: '10px' }}>
+                            <img
+                                src={image.InterviewReady}
+                                width={"100%"}
+                                height={"100%"}
+                                style={{ borderRadius: '12px' }}
+                            />
+                        </div>
+                        <div className="col-sm-4 d-flex align-items-center justify-content-center" style={{ borderRadius: '20px', backgroundColor: '#e9eff3' }}>
+                            <img
+                                src={image.trait}
+                                width={"100%"}
+                                height={"100%"}
+                                style={{ borderRadius: '12px' }}
+                            />
+                        </div>
+                    </div>
+
+                    <Row className=" mt-1 d-flex justify-content-between">
+                        <Col md="4">
+                            <div className='row align-items-center mt-4'>
+                                <img className={'mt--2 ml-3'} src={icons.lock} alt="Authentication icon" height={45} width={45} style={{ borderRadius: '10px' }} />
+                                <h1 className={'text-black h4 font-weight-bolder col'}>Upload your JD</h1>
+                            </div>
+                            <div>
+                                <span className={'custom-font-size mt-3'}>
+                                    Paste the JD copied from the job portal.Paste the JD copied from the job portal
+                                </span>
+                            </div>
+                        </Col>
+                        <Col md="4">
+                            <div className='row align-items-center mt-4'>
+                                <img className={'mt--2 ml-3'} src={icons.lock} alt="Authentication icon" height={45} width={45} style={{ borderRadius: '10px' }} />
+                                <h1 className={'text-black h4 font-weight-bolder col'}>Start your Interview</h1>
+                            </div>
+                            <div>
+                                <span className={'custom-font-size mt-3'}>
+                                    Join the interview at your convenient time..Paste the JD copied from the job portal.
+                                </span>
+                            </div>
+                        </Col>
+                        <Col md="4">
+                            <div className='row align-items-center mt-4'>
+                                <img className={'mt--2 ml-3'} src={icons.lock} alt="Authentication icon" height={45} width={45} style={{ borderRadius: '10px' }} />
+                                <h1 className={'text-black h4 font-weight-bolder col'}>Access your Reports</h1>
+                            </div>
+                            <div>
+                                <span className={'custom-font-size mt-3'}>
+                                    Join the interview at your convenient time.Specify the Sector and Role.
+                                </span>
+                            </div>
                         </Col>
                     </Row>
                 </Container>
-            </section>
-            <section className="">
-                <Container>
-                    <div className="header-body">
-                        <Row className="align-items-center h-100vh">
-
-                            <Col lg="6">
-                                <div className={''}>
-                                    <span className={'display-3 text-black font-weight-bolder'}>How it Works?</span>
-                                    <div className={'display-3 text-black font-weight-bolder mb-2 ml--2'}>
-                                        {`1. Upload your Jd details`}
-                                    </div>
-
-                                    <ul className={'custom-font-size ml-3'}>
-                                        <li>Specify the Sector and Role.</li>
-                                        <li>Paste the JD copied from the job portal.</li>
-                                    </ul>
-                                </div>
-                            </Col>
-                            <Col lg="6" className='pl-sm-7' >
-                                <Image
-                                    src={image.FormJd}
-                                    width={"100%"}
-                                    height={"100%"}
-                                />
-                            </Col>
-                        </Row>
-                    </div>
-
-                </Container >
-                <Container>
-                    <Row className="justify-content-end">
-                        <Col md="7">
-
-                        </Col>
-                    </Row>
-                </Container>
-            </section>
-            <section className="">
-                <Container>
-                    <div className="header-body">
-                        <Row className="align-items-center h-100vh">
-
-                            <Col lg="6">
-                                <div className={''}>
-                                    <span className={'display-3 text-black font-weight-bolder ml--1'}>2.Start your Interview</span>
-                                    <ul className={'custom-font-size ml-3'}>
-                                        <li>Join the interview at your convenient time.</li>
-                                    </ul>
-                                </div>
-                            </Col>
-                            <Col lg="6" className='pl-sm-7' >
-                                <Image
-                                    src={image.InterviewReady}
-                                    width={"100%"}
-                                    height={"100%"}
-                                />
-                            </Col>
-                        </Row>
-                    </div>
-
-                </Container >
-                <Container>
-                    <Row className="justify-content-end">
-                        <Col md="7">
-
-                        </Col>
-                    </Row>
-                </Container>
-            </section>
-            <section>
-                <Container>
-                    <Row><span className={'display-3 text-black font-weight-bolder mb-3'}>3.Access your Reports :</span></Row>
-                </Container>
-            </section>
-
-            <section className="">
-                <Container>
-                    <div className="header-body">
-                        <Row className="align-items-center h-100vh">
-
-                            <Col lg="6">
-                                <div className={''}>
-                                    <div className={'display-3 text-black font-weight-bolder'}>Skill Matrix</div>
-                                    <ul className={'custom-font-size ml-3'}>
-                                        <li>Get curate analytics of each questions you answered.</li>
-                                    </ul>
-                                </div>
-                            </Col>
-                            <Col style={{ borderRadius: '100px', backgroundColor: 'white' }} lg="6" className='pl-sm-7' >
-                                <img
-                                    src={image.Tab4Image}
-                                    width={"100%"}
-                                    height={"100%"}
-                                />
-                            </Col>
-                        </Row>
-                    </div>
-
-                </Container >
-                <Container>
-                    <Row className="justify-content-end">
-                        <Col md="7">
-
-                        </Col>
-                    </Row>
-                </Container>
-            </section>
-
-            <section className="">
-                <Container>
-                    <div className="header-body">
-                        <Row className="align-items-center h-100vh">
-
-                            <Col lg="6">
-                                <div className={''}>
-                                    <span className={'display-3 text-black font-weight-bolder ml--'}>Communication</span>
-                                    <ul className={'custom-font-size ml-3'}>
-                                        <li>Get insights of your communication.</li>
-                                    </ul>
-                                </div>
-                            </Col>
-                            <Col lg="6" className='pl-sm-7' >
-                                <Image
-                                    src={image.Communication}
-                                    width={"100%"}
-                                    height={"100%"}
-                                />
-                            </Col>
-                        </Row>
-                    </div>
-
-                </Container >
-            </section>
-
-
-            <section className="">
-                <Container>
-                    <div className="header-body">
-                        <Row className="align-items-center h-100vh">
-
-                            <Col lg="6">
-                                <div className={''}>
-                                    <span className={'display-3 text-black font-weight-bolder ml--'}>Traits</span>
-                                    <ul className={'custom-font-size ml-3'}>
-                                        <li>Get insights of your softskills frame of approach.</li>
-                                    </ul>
-                                </div>
-                            </Col>
-                            <Col lg="6" className='pl-sm-7' >
-                                <Image
-                                    src={image.trait}
-                                    width={"100%"}
-                                    height={"100%"}
-                                />
-                            </Col>
-                        </Row>
-                    </div>
-
-                </Container >
-            </section>
-
-            <section className="pt-0 pb-9 mt-8 ">
-                <Container>
-                    <Row className="justify-content-center text-center">
-                        <Col md="8">
-                            <h3 className="text-primary">
-                                Not happy with your Reports?
-                            </h3>
-                            <span className={'display-3 text-black font-weight-bolder'}>Don't worry<br></br>
-                                We get your concern !</span>
-                            <p className="custom-text-color pt-2" style={{ fontSize: '17px' }}>
-                                Try as many Interview for the given JD,until you are satisfied.
-                            </p>
-
-                        </Col>
-                    </Row>
-                </Container>
-            </section>
+            </section> */}
         </div>
     )
 }

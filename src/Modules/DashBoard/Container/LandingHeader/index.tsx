@@ -9,7 +9,7 @@ function LandingHeader() {
     const { goTo } = useNavigation()
     return (
         <>
-            <div className="header pt-5 pb-5" style={{ backgroundColor: '#ffffff' }}>
+            <div className="header pt-5" style={{ backgroundColor: '#ffffff' }}>
                 {/* <video
             autoPlay
             loop
@@ -38,7 +38,7 @@ function LandingHeader() {
                                         <div className={'mt--3'}>Mock Eazy</div>
                                     </h1>
                                     <p className="custom-text-color" style={{ fontSize: '17px' }}>
-                                        Embrace the Next Era of Interviews - Choose MockEazy (or)"Step into the Future of Interviews with MockEazy" (or) "Your Gateway to Futuristic Interviews - MockEazy" (or) Pioneering the Future of Interviewing - MockEazy"
+                                        Step into the Future of Interviews with MockEazy.
                                     </p>
                                     <div className="mt-4">
                                         <Button className={'px-6'}
@@ -51,10 +51,11 @@ function LandingHeader() {
                                 </div>
                             </Col>
                             <Col lg="6" className='pl-sm-5' >
-                                <Image
+                                <img
                                     src={image.MockEazy2}
                                     width={"100%"}
                                     height={"100%"}
+                                    style={{borderRadius:'20px'}}
                                 />
                             </Col>
                         </Row>
