@@ -23,11 +23,11 @@ function LandingNavBar() {
             >
                 <Container>
                     <NavbarBrand to="/" tag={Link}>
-                        <img
+                        <img className={'mt--1'}
                             alt="..."
                             src={icons.logo}
                         />
-                        <span className='h4 ml-2 text-black'>
+                        <span className='h3 ml-2 text-primary'>
                             Mock Eazy
                         </span>
                     </NavbarBrand>

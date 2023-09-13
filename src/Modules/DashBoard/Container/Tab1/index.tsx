@@ -7,12 +7,8 @@ import { Image, Tabs } from "@Components";
 
 function Tab1() {
 
-  const [data, setData] = useState('')
-  const dashBoardModule = ['Track progress, manage tasks, assignments, and deadlines for improved organization and productivity.', 'Tailored course suggestions based on interests, goals, and performance, promoting focused learning.', 'Easy access to resources: Retrieve course materials, lecture notes, videos, and engage in discussions, facilitating collaboration and resource retrieval.']
-
-
   return (
-    <div style={{ backgroundColor: '#e9eff3', borderRadius: '20px' }}>
+    <div style={{ backgroundColor: '#c7f2c1', borderRadius: '20px' }}>
 
       <section className="m-5">
         <Container>
@@ -20,13 +16,14 @@ function Tab1() {
             <Col className={'col-6'}>
               <div className="pt-6">
                 <div className='pb-4'>
-                  <img className={''} src={icons.lock} alt="Authentication icon" height={45} width={45} style={{ borderRadius: '10px' }} />
+                  <img className={''} src={icons.basicReport} alt="Authentication icon" height={45} width={45} style={{ borderRadius: '10px' }} />
                 </div>
 
-                <div className={'text-black h2 font-weight-bolder'}>Your Expertise, Your Advantage</div>
+                <div className={'text-black h2 font-weight-bolder'}>Basic Report</div>
 
                 <p className={'custom-text-color'} style={{ maxWidth: '400px' }}>
-                  Experience Matters, Practice Perfectly! In the "Interview by Experience" method, we take into account your years of professional experience. The app will present you with a series of interview questions carefully tailored to match your expertise level. This means you'll face relevant and challenging questions that resonate with your specific background and qualifications.
+                The Basic Report in MockEazy provides a fundamental overview of your interview preparation journey. It offers insights into your overall progress, highlighting key areas where you've excelled and areas that may require more attention. This report serves as a valuable starting point for your interview preparation, allowing you to build a strong foundation for success.
+                 
                 </p>
               </div>
             </Col>

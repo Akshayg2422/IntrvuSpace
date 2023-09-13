@@ -18,30 +18,36 @@ function AuthenticationAndDashboardModule() {
                 <Container>
                     <div className="header-body">
                         <Row className="align-items-center h-100vh">
-                            <Col lg="6">
+
+                            <Col lg="7" className={""}>
                                 <div className='row align-items-center pb-2'>
                                     <img className={'mt--2 ml-3'} src={icons.lock} alt="Authentication icon" height={45} width={45} style={{ borderRadius: '10px' }} />
                                     <h1 className={'text-black display-3 font-weight-bolder col'}>Authentication Module</h1>
                                 </div>
 
-                                <p className={'custom-text-color'} >
-                                    The Authentication Module is the cornerstone of MockEazy's commitment to secure and reliable interview experiences. In an era where data privacy and security are paramount, we understand the importance of safeguarding your personal information. Our Authentication Module employs cutting-edge encryption and multi-factor authentication techniques to ensure that your data remains confidential and protected. With MockEazy, you can trust that your information is in safe hands, allowing you to focus solely on your interview preparation and success.
+                                <p className={'custom-text-color'} style={{maxWidth:'550px'}} >
+                                    The Authentication Module is the cornerstone of MockEazy's commitment to secure and reliable interview experiences. In an era where data privacy and security are paramount, we understand the importance of safeguarding your personal information. <br></br>
+                                    Our Authentication Module employs cutting-edge encryption and multi-factor authentication techniques to ensure that your data remains confidential and protected. With MockEazy, you can trust that your information is in safe hands, allowing you to focus solely on your interview preparation and success.
                                 </p>
                             </Col>
-                            <Col lg="6" className='pl-sm-7' >
-                                <Image
-                                    src={image.LoginLanding}
-                                    width={"100%"}
-                                    height={"100%"}
-                                />
-                            </Col>
 
+                            <Col lg="5" className='' >
+                                <div className="d-flex align-items-center justify-content-center" style={{ borderRadius: '20px', backgroundColor: '#e9eff3' }}>
+                                    <img
+                                        src={image.AuthenticationImage}
+                                        width={"100%"}
+                                        height={"100%"}
+                                        style={{ borderRadius: '12px' }}
+                                    />
+                                </div>
+                            </Col>
                         </Row>
                     </div>
 
                 </Container >
             </section>
-            <section className="">
+
+            {/* <section className="">
                 <Container>
                     <Row>
                         <Col className={'text-center'}>
@@ -59,7 +65,7 @@ function AuthenticationAndDashboardModule() {
                     </Row>
 
                 </Container>
-            </section>
+            </section> */}
 
         </div>
     )

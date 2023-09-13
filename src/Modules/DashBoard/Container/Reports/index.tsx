@@ -1,74 +1,75 @@
-import React, { useState } from 'react'
-import { Col, Container, Row } from 'reactstrap'
-import { icons } from '@Assets';
-import './index.css'
-import { Carousel } from 'react-responsive-carousel';
-import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import React, { useState } from 'react';
+import { Container, Row, Col } from 'reactstrap';
+import { icons, image } from '@Assets';
+import { Image, Tabs } from "@Components";
+import { Tab1, Tab2, Tab3, Tab4, Tab5, Tab6 } from '@Modules';
 
 function Reports() {
-
-    const [cardContent, setCardContent] = useState([
-
-        { id: 2, icon: <img src={icons.skillMatrixReport} alt="skillMatrixReport icon" style={{ width: '45px', height: '45px', borderRadius: '10px', objectFit: 'cover', }} />, heading: 'Skill Matrix Report', para: `The Skill Matrix Report delves deeper into your specific skillset. It evaluates your proficiency in essential competencies related to the job you're targeting. This report provides a detailed breakdown of your strengths and areas that need improvement, enabling you to tailor your preparation to match the skills required for your desired role.` },
-        { id: 3, icon: <img src={icons.communicationReport} alt="communicationReport icon" style={{ width: '45px', height: '45px', borderRadius: '10px', objectFit: 'cover', }} />, heading: 'Communication Report', para: `Effective communication is often a critical factor in interview success. The Communication Report in MockEazy assesses your communication skills, including verbal and non-verbal aspects. It offers insights into your clarity, articulation, and confidence when conveying your thoughts and ideas, helping you refine your communication style for interviews.` },
-        { id: 4, icon: <img src={icons.traitReport} alt="traitReport icon" style={{ width: '45px', height: '45px', borderRadius: '10px', objectFit: 'cover', }} />, heading: 'Trait Report', para: `Your personal traits and qualities play a significant role in how you present yourself during interviews. The Trait Report evaluates your personality traits and how they may influence your interview performance. It offers valuable insights into your strengths and potential areas for improvement in showcasing your unique qualities to potential employers.` },
-        { id: 5, icon: <img src={icons.skillMatrixAdvanced} alt="skillMatrixAdvanced icon" style={{ width: '45px', height: '45px', borderRadius: '10px', objectFit: 'cover', }} />, heading: 'Skill Matrix Advanced', para: `Building on the Skill Matrix Report, the Skill Matrix Advanced report provides an even more in-depth analysis of your skills. It examines your proficiency in advanced or specialized competencies related to your desired job role. This report is ideal for candidates aiming to excel in highly specific skill areas, offering targeted guidance for improvement.` },
-        { id: 6, icon: <img src={icons.communicationAdvanced} alt="communicationAdvanced icon" style={{ width: '45px', height: '45px', borderRadius: '10px', objectFit: 'cover', }} />, heading: 'Communication Advanced', para: `For those seeking to master advanced communication skills, the Communication Advanced report is a valuable resource. It assesses your ability to handle complex communication scenarios, such as interviews with senior executives or technical discussions. This report offers insights and recommendations to enhance your communication prowess in challenging situations` },
-        { id: 1, icon: <img src={icons.basicReport} alt="basicReport icon" style={{ width: '45px', height: '45px', borderRadius: '10px', objectFit: 'cover', }} />, heading: 'Basic Report', para: `The Basic Report in MockEazy provides a fundamental overview of your interview preparation journey. It offers insights into your overall progress, highlighting key areas where you've excelled and areas that may require more attention. This report serves as a valuable starting point for your interview preparation, allowing you to build a strong foundation for success.` },
-    ])
-    const cardElements = cardContent.map((item) => (
-        <div className="col-lg-4 col-sm-6 mb-lg-0 mb-4 py-3" key={item.id}>
-            <div className="card-animation card-animation:hover">
-                <div className="text-sm-start text-center pt-5 px-4">
-                    <span>{item.icon}</span>
-                    <h5 className="mb-2 mt-3 h2 text-uppercase text-primary">{item.heading}</h5>
-                    <p>{item.para}</p>
-                </div>
-            </div>
-        </div>
-    ));
+    const TABS = [
+        { id: "1", title: <div className="text-center pointer">Basic Report</div>, component: <Tab1 /> },
+        { id: "2", title: <div className="text-center pointer">Skill Matrix Report</div>, component: <Tab2 /> },
+        { id: "3", title: <div className="text-center pointer">Communication Report</div>, component: <Tab3 /> },
+        { id: "4", title: <div className="text-center pointer">Trait Report</div>, component: <Tab4 /> },
+        { id: "5", title: <div className="text-center pointer">Skill Matrix Advanced</div>, component: <Tab5 /> },
+        { id: "6", title: <div className="text-center pointer">Communication Advanced</div>, component: <Tab6 /> },
+    ];
+    const [selectedTab, setSelectedTab] = useState(TABS[0]);
 
     return (
-
         <div style={{ backgroundColor: '#ffffff' }}>
             <section>
                 <Container>
-                    <Row className="justify-content-center text-center">
-                        <Col md="8">
-                            <h3 className="text-primary">
-                                Reports
-                            </h3>
-                            <span className={'display-3 text-black font-weight-bolder'}>Unlocking Your Interview Potential<br></br>
-                                with MockEazy Reports
-                            </span>
-                            <p className="custom-text-color" style={{ fontSize: '17px' }}>
-                                In the pursuit of interview success, MockEazy offers a comprehensive suite of reports to empower your preparation. These reports provide you with valuable insights and analytics tailored to your unique needs. Whether you're looking for a fundamental overview of your progress, a deep dive into specific skills, an assessment of your communication abilities, or an evaluation of your personality traits, our reports have you covered. We also offer advanced versions for those seeking to excel in specialized areas. With MockEazy's reports, you'll gain a clear understanding of your strengths, areas that require improvement, and actionable recommendations to ensure you present your best self in interviews. Elevate your interview preparation with data-driven insights that pave the way for success.
-                            </p>
-
+                    <Row>
+                        <Col className="mb-4 mt-8">
+                            <div className="text-center">
+                                <div className="row align-items-center justify-content-center pb-2">
+                                    <img className="mt--1 ml-3" src={icons.horizontalLine} alt="Authentication icon" height={45} width={80} style={{ borderRadius: '10px' }} />
+                                    <h3 className="text-primary ml-3">Reports</h3>
+                                </div>
+                                <div className="display-4 text-black font-weight-bolder">Unlocking Your Interview <br /><div className="mt--2">Potential with Mock Eazy Reports</div></div>
+                            </div>
                         </Col>
                     </Row>
-
-                    <div className="row mt-4">
-                        <Carousel
-                            className={'carousel carousel-slider'}
-                            showStatus={false}
-                            showThumbs={false}
-                            infiniteLoop
-                            autoPlay
-                            interval={5000}
-                            showArrows={false}
-                            showIndicators={true}
-                            centerMode={true}
-                            centerSlidePercentage={33.33}
-                        >
-                            {cardElements}
-                        </Carousel>
+                </Container>
+            </section>
+            <section className="">
+                <Container>
+                    <Row>
+                        <Col lg="12" md="12" sm="12">
+                            <div>
+                                <Tabs tabs={TABS} selected={selectedTab} onChange={(item: any) => { setSelectedTab(item) }} />
+                            </div>
+                        </Col>
+                    </Row>
+                </Container>
+            </section>
+            <section className="">
+                <Container className={'mt-8'}>
+                    <div className="header-body">
+                        <Row className="align-items-center">
+                            <Col lg="5" md="6" sm="12" className="">
+                                <img
+                                    src={image.DontWorry}
+                                    width="100%"
+                                    height="100%"
+                                    style={{ borderRadius: '20px' }}
+                                    alt="DontWorry"
+                                />
+                            </Col>
+                            <Col lg="7" md="6" sm="12" className="pl-sm-6">
+                                <div className="row align-items-center pb-2">
+                                    <img className="mt--1 ml-3" src={icons.horizontalLine} alt="Authentication icon" height={45} width={80} style={{ borderRadius: '10px' }} />
+                                    <h3 className="text-primary ml-3">Not happy with your Reports ?</h3>
+                                </div>
+                                <span className="display-3 text-black font-weight-bolder">Try as many interviews for the given JD until you are satisfied.</span>
+                                <p className="custom-text-color pt-2" style={{ fontSize: '17px' }}></p>
+                            </Col>
+                        </Row>
                     </div>
                 </Container>
             </section>
         </div>
-
     )
 }
 
-export { Reports }
+export { Reports };

@@ -12,7 +12,7 @@ function Tab6() {
 
 
     return (
-        <div style={{ backgroundColor: '#e9eff3', borderRadius: '20px' }}>
+        <div style={{ backgroundColor: '#c7f2c1', borderRadius: '20px' }}>
 
             <section className="m-5">
                 <Container>
@@ -20,13 +20,13 @@ function Tab6() {
                         <Col className={'col-6'}>
                             <div className="pt-6">
                                 <div className='pb-4'>
-                                    <img className={''} src={icons.lock} alt="Authentication icon" height={45} width={45} style={{ borderRadius: '10px' }} />
+                                    <img className={''} src={icons.communicationAdvanced} alt="Authentication icon" height={45} width={45} style={{ borderRadius: '10px' }} />
                                 </div>
 
-                                <div className={'text-black h2 font-weight-bolder'}>Insights for Improvement</div>
+                                <div className={'text-black h2 font-weight-bolder'}>Communication Advanced</div>
 
                                 <p className={'custom-text-color'} style={{ maxWidth: '400px' }}>
-                                After each interview, receive a comprehensive performance report with valuable insights. Identify your strengths and areas for growth, empowering you to refine your interview skills.
+                                For those seeking to master advanced communication skills, the Communication Advanced report is a valuable resource. It assesses your ability to handle complex communication scenarios, such as interviews with senior executives or technical discussions. This report offers insights and recommendations to enhance your communication prowess in challenging situations.
                                 </p>
                             </div>
                         </Col>

@@ -174,5 +174,9 @@ export const icons = {
   communicationReport:require('./CommunicationReport/icon.png'),
   traitReport:require('./TraitReport/icon.png'),
   skillMatrixAdvanced:require('./SkillMatrixAdvanced/icon.png'),
-  communicationAdvanced:require('./CommunicationAdvanced/icon.png')
+  communicationAdvanced:require('./CommunicationAdvanced/icon.png'),
+  horizontalLine:require('./Line/icon.png'),
+  uploadJd:require('./UploadJd/icon.png'),
+  startInterview:require('./Start/icon.png'),
+  reports:require('./Reports/icon.png')
 };

@@ -7,12 +7,10 @@ import { Image, Tabs } from "@Components";
 
 function Tab2() {
 
-    const [data, setData] = useState('')
-    const dashBoardModule = ['Track progress, manage tasks, assignments, and deadlines for improved organization and productivity.', 'Tailored course suggestions based on interests, goals, and performance, promoting focused learning.', 'Easy access to resources: Retrieve course materials, lecture notes, videos, and engage in discussions, facilitating collaboration and resource retrieval.']
    
 
     return (
-      <div style={{ backgroundColor: '#e9eff3', borderRadius: '20px' }}>
+      <div style={{ backgroundColor: '#c7f2c1', borderRadius: '20px' }}>
 
       <section className="m-5">
         <Container>
@@ -20,13 +18,13 @@ function Tab2() {
             <Col className={'col-6'}>
               <div className="pt-6">
                 <div className='pb-4'>
-                  <img className={''} src={icons.lock} alt="Authentication icon" height={45} width={45} style={{ borderRadius: '10px' }} />
+                  <img className={''} src={icons.skillMatrixReport} alt="Authentication icon" height={45} width={45} style={{ borderRadius: '10px' }} />
                 </div>
 
-                <div className={'text-black h2 font-weight-bolder'}>Targeted Preparation for Your Dream Job</div>
+                <div className={'text-black h2 font-weight-bolder'}>Skill Matrix Report</div>
 
                 <p className={'custom-text-color'} style={{ maxWidth: '400px' }}>
-                Select your desired company, and we'll simulate an interview experience with commonly asked questions. Prepare thoroughly for your dream employer and stand out among other candidates.
+                The Skill Matrix Report delves deeper into your specific skillset. It evaluates your proficiency in essential competencies related to the job you're targeting. This report provides a detailed breakdown of your strengths and areas that need improvement, enabling you to tailor your preparation to match the skills required for your desired role.
                 </p>
               </div>
             </Col>
