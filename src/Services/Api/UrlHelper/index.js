@@ -115,6 +115,9 @@ export const URL_CREATE_CORPORATE_VARIANT = ASSISTANT + 'createNewCorporateSched
 export const URL_GET_KNOWLEDGE_GROUP_VARIANT_DETAILS = ASSISTANT + 'getKnowledgeGroupVariantDetails'
 
 
+// https://codesubmitprimary.leorainfotech.in/submissions?base64_encoded=true&wait=true
+
+export const STUDENT_CODE_SUBMISSION_URL = 'submissions?base64_encoded=true&wait=true'
 export const URL_CLOSE_INTERVIEW = ASSISTANT + 'endInterviewCall'
 
 

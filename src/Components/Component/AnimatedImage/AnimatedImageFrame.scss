@@ -13,7 +13,7 @@
 
 .animated-image::after,
 .animated-image:before {
-  content: '';
+  content: "";
   position: absolute;
   z-index: 9;
   background-color: #42f542;
@@ -31,7 +31,6 @@
   animation: blinkAnimation 2s 1s ease-out infinite;
 }
 
-
 @media (max-width: 768px) {
   .animated-image {
     border-radius: 10;
@@ -48,7 +47,7 @@
 
   .animated-image::after,
   .animated-image:before {
-    content: '';
+    content: "";
     position: absolute;
     z-index: 9;
     background-color: #42f542;
@@ -66,14 +65,12 @@
   }
 }
 
-
 @keyframes blinkAnimation {
   100% {
     transform: scale(2.5);
     opacity: 0;
   }
 }
-
 
 .animated-button {
   border-radius: 7;
@@ -82,10 +79,9 @@
   z-index: 9;
 }
 
-
 .animated-button::after,
 .animated-button:before {
-  content: '';
+  content: "";
   display: flex;
   justify-content: center;
   align-items: center;
@@ -110,8 +106,6 @@
   margin-top: -28px;
 }
 
-
-
 @keyframes blinkAnimationButton {
   100% {
     transform: scale(2.5);
@@ -124,4 +118,48 @@
   font-size: 50px;
   text-align: center;
   color: #000;
+}
+
+.linear::before {
+  content: "";
+  position: absolute;
+  width: 250%;
+  height: 250%;
+  background-image: conic-gradient(rgb(25, 228, 109) 20deg, transparent 120deg);
+  border-radius: 5px;
+  animation-name: rotate;
+  animation-duration: 3s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+.linear::after {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  // background: #000;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+}
+
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.webCam {
+  width: 157px;
+  height: 157px;
+  border-radius: 5px;
+  // background: #000;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  margin: 2rem;
+  right: 20px;
 }

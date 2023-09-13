@@ -164,9 +164,22 @@ export const icons = {
   videoCamMute: require('./VideoCamMute/icon.png'),
   briefCaseBlack: require('./BriefCaseBlack/icon.png'),
   information: require('./Information/icon.png'),
+  moon: require('./Moon/moon.png'),
+  playButton: require('./PlayButton/play-button.png'),
+  dark: require('./Dark/dark.png'),
+  expand: require('./Expand/full-screen.png'),
+  minimize: require('./Minimize/minimize.png'),
+  defaultImage: require('./DefaultImage/deafaultImage.png'),
+  cancel: require('./Cancel/cancel.png'),
+  pythonLogo: require('./PythonLogo/icon.png'),
   documentJd: require('./DocumentJd/icon.png'),
   phone: require('./Phone/icon.png'),
   documentMultipleJd:require('./DocumentMultipleJd/icon.png'),
-  documentUnlimitedJd:require('./DocumentUnlimitedJd/icon.png')
+  documentUnlimitedJd:require('./DocumentUnlimitedJd/icon.png'),
+  playBlack: require('./PlayBlack/icon.png'),
+  playWhite: require('./PlayWhite/icon.png'),
+  darkWhite: require('./DarkWhite/icon.png'),
+
+
 
 };
