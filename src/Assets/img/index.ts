@@ -33,7 +33,7 @@ export const image = {
     DashboardModule: require('./theme/dashboardModule.jpg'),
     MockEazy1:require('./theme/MockEazy1.jpg'),
     MockEazy2:require('./theme/MockEazy2.jpg'),
-    Login:require('./theme/Login.jpg'),
+
     Register:require('./theme/Register.jpg'),
     Tab1Image:require('./theme/Tab1Image.jpg'),
     Tab2Image:require('./theme/Tab2Image.jpg'),
@@ -47,5 +47,10 @@ export const image = {
     trait:require('./theme/trait.jpg'),
     Communication:require('./theme/communication.jpg'),
     Introduction:require('./theme/IntroductionImage.jpg'),
-    DontWorry:require('./theme/dontWorryImage.jpg')
+    DontWorry:require('./theme/dontWorryImage.jpg'),
+    AccessReport:require('./theme/report.jpg'),
+    BasicReport:require('./theme/basicReport.jpg'),
+    SkillMatrix:require('./theme/skillMatrixReport.jpg'),
+    CommunicationReport:require('./theme/communicationReport.jpg'),
+    TraitReport:require('./theme/traitReport.jpg')
 }

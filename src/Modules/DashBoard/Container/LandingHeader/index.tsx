@@ -31,9 +31,9 @@ function LandingHeader() {
                     <div className="header-body">
                         <Row className="align-items-center h-100vh">
                             <Col lg="6">
-                                <div className="pr-5 mt--3">
+                                <div className="mt--3">
                                     <h1 className="display-1 custom-black font-weight-bolder mb-0" style={{ fontSize: '60px' }}>
-                                        Welcome to 
+                                        Welcome to
                                         <br></br>
                                         <div className={'mt--3'}>Mock Eazy</div>
                                     </h1>
@@ -50,14 +50,15 @@ function LandingHeader() {
                                     </div>
                                 </div>
                             </Col>
-                            <Col lg="6" className='pl-sm-5' >
+                            <Col lg="6" className='pl-sm-5'>
                                 <img
                                     src={image.MockEazy2}
                                     width={"100%"}
                                     height={"100%"}
-                                    style={{borderRadius:'20px'}}
+                                    style={{ borderRadius: '20px' }}
                                 />
                             </Col>
+
                         </Row>
                     </div>
 

@@ -263,11 +263,11 @@ function ContactUs() {
                                     >
                                         Features
                                         <br></br>
-                                        <a className='custom-color pointer' onClick={() => goTo(ROUTES["auth-module"].privacy)}> Privacy Policy </a>
+                                        <a className='custom-color pointer text-decoration-underline-hover' onClick={() => goTo(ROUTES["auth-module"].privacy)}> Privacy Policy </a>
                                         <br></br>
-                                        <a className='custom-color pointer' onClick={() => goTo(ROUTES["auth-module"].TermsAndConditions)}> Terms & Conditions </a>
+                                        <a className='custom-color pointer text-decoration-underline-hover' onClick={() => goTo(ROUTES["auth-module"].TermsAndConditions)}> Terms & Conditions </a>
                                         <br></br>
-                                        <a className='custom-color pointer' onClick={() => goTo(ROUTES["auth-module"].ReturnAndRefund)}> Return & Refund Policy </a>
+                                        <a className='custom-color pointer text-decoration-underline-hover' onClick={() => goTo(ROUTES["auth-module"].ReturnAndRefund)}> Return & Refund Policy </a>
                                     </p>
                                 </div>
                             </div>

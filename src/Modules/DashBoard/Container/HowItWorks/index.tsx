@@ -12,16 +12,16 @@ function HowItWorks() {
                 <div className={'col-lg-8 col-md-6'}>
                             <div className={'display-3 text-black font-weight-bolder'}>How it Works?</div>
                             <p className={'custom-text-color mt-2'} >
-                              Are you determined to shine in your interviews and secure that dream job? Mastering the art of interviews through realistic mock practice.
+                              Are you determined to shine in your interviews and secure that dream job?<br></br> Mastering the art of interviews through realistic mock practice.
                             </p>
                         </div>
                     <div className="row">
                         <div className="col-lg-4 col-md-6">
                             <div className="">
-                                <div className="position-relative">
+                                <div className="position-relative mb-3 mt-2">
                                     <a className="d-block">
                                         <img
-                                            src={image.InterviewReady}
+                                            src={image.Tab1Image}
                                             width={"100%"}
                                             height={"100%"}
                                             className="img-fluid shadow-none border-radius-lg"
@@ -46,10 +46,10 @@ function HowItWorks() {
                         </div>
                         <div className="col-lg-4 col-md-6">
                             <div className="">
-                                <div className="position-relative">
+                                <div className="position-relative mb-3 mt-2">
                                     <a className="d-block">
                                         <img
-                                            src={image.InterviewReady}
+                                            src={image.Tab2Image}
                                             width={"100%"}
                                             height={"100%"}
                                             className="img-fluid shadow-none border-radius-lg"
@@ -65,7 +65,7 @@ function HowItWorks() {
                                         </div>
                                     </a>
                                     <p>
-                                        As Uber works through a huge amount of internal management turmoil, the company is also consolidating and rationalizing more of its international business.
+                                    When you're ready to begin, click the "Start Now" button. You can also access your scheduled interview from the home page, In the top right corner of the card, you'll find a "Start Interview" button to initiate the interview.
                                     </p>
 
                                 </div>
@@ -73,10 +73,10 @@ function HowItWorks() {
                         </div>
                         <div className="col-lg-4 col-md-6">
                             <div className="">
-                                <div className="position-relative">
+                                <div className="position-relative mb-3 mt-2">
                                     <a className="d-block">
                                         <img
-                                            src={image.InterviewReady}
+                                            src={image.Tab5Image}
                                             width={"100%"}
                                             height={"100%"}
                                             className="img-fluid shadow-none border-radius-lg"
@@ -92,7 +92,7 @@ function HowItWorks() {
                                         </div>
                                     </a>
                                     <p>
-                                        Music is something that every person has his or her own specific opinion about. Different people have different taste, and various types of music.
+                                    Once your interview is complete, a report will be generated. On the home screen, you can click "View Report" to access both basic and detailed reports. You can also print these reports if needed.
                                     </p>
 
                                 </div>

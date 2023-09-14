@@ -14,28 +14,25 @@ function Tab3() {
   return (
     <div style={{ backgroundColor: '#c7f2c1', borderRadius: '20px' }}>
 
-      <section className="m-5">
+      <section className="m-3 m-md-5">
         <Container>
           <Row>
-            <Col className={'col-6'}>
-              <div className="pt-6">
-                <div className='pb-4'>
-                  <img className={''} src={icons.communicationReport} alt="Authentication icon" height={45} width={45} style={{ borderRadius: '10px' }} />
+            <Col xs={'12'} md={'6'} className={'d-flex flex-column'}>
+              <div className="pt-4 pb-2">
+                <img className={''} src={icons.communicationReport} alt="Authentication icon" height={45} width={45} style={{ borderRadius: '10px' }} />
                 </div>
-
                 <div className={'text-black h2 font-weight-bolder'}>Communication Report</div>
-
                 <p className={'custom-text-color'} style={{ maxWidth: '400px' }}>
-                Effective communication is often a critical factor in interview success. The Communication Report in MockEazy assesses your communication skills, including verbal and non-verbal aspects. It offers insights into your clarity, articulation, and confidence when conveying your thoughts and ideas, helping you refine your communication style for interviews.
+                  Effective communication is often a critical factor in interview success. The Communication Report in MockEazy assesses your communication skills, including verbal and non-verbal aspects. It offers insights into your clarity, articulation, and confidence when conveying your thoughts and ideas, helping you refine your communication style for interviews.
                 </p>
-              </div>
+              
             </Col>
-            <Col className="order-md-2 col-6 py-4">
+            <Col xs={12} md={6} className="d-flex justify-content-center align-items-center py-4">
               <img
-                style={{ borderRadius: '20px', backgroundColor: 'white' }}
+                style={{ borderRadius: '20px', backgroundColor: 'white', maxWidth: '100%' }}
                 alt="..."
                 className="img-fluid"
-                src={image.Tab3Image}
+                src={image.CommunicationReport}
               />
             </Col>
           </Row>
