@@ -22,7 +22,8 @@ export function Tabs({ tabs, selected, onChange, height }: TabsProps) {
         <div
           style={{
             display: "flex",
-            flexDirection: "row", // Change to column for small screens
+            flexDirection: "row", // Display tabs in a row for all screens
+            flexWrap: "wrap", // Wrap tabs to the next line if the screen is too narrow
           }}
         >
           {tabs.map((item: TabItem) => {
@@ -39,7 +40,7 @@ export function Tabs({ tabs, selected, onChange, height }: TabsProps) {
                   background:
                     selected?.id === item.id ? "#ffffff" : "#ffffff",
                   position: "relative",
-                  marginBottom: "10px", // Add some space between tabs for small screens
+                  flex: "0 0 50%", // Make tabs take 50% of the width for small screens
                 }}
                 onClick={() => {
                   changeTab(item);
@@ -51,15 +52,16 @@ export function Tabs({ tabs, selected, onChange, height }: TabsProps) {
                 {/* Display the colored bar at the bottom */}
                 {selected?.id === item.id && (
                   <div
-                    style={{
-                      position: "absolute",
-                      bottom: 0,
-                      left: 0,
-                      height: "4px",
-                      width: "100%",
-                      background: "#67f60e",
-                    }}
-                  />
+                  style={{
+                    position: "absolute",
+                    bottom: 0,
+                    left: "50%",        // Horizontally center the div
+                    transform: "translateX(-50%)",  // Adjust for centering
+                    height: "4px",
+                    width: "40%",
+                    background: "#67f60e",
+                  }}
+                />                
                 )}
               </a>
             );

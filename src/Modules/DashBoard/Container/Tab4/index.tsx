@@ -14,34 +14,27 @@ function Tab4() {
   return (
     <div style={{ backgroundColor: '#c7f2c1', borderRadius: '20px' }}>
 
-      <section className="m-5">
+      <section className="m-3 m-md-5">
         <Container>
           <Row>
-            <Col className={'col-6'}>
-              <div className="pt-6">
-                <div className='pb-4'>
-                  <img className={''} src={icons.traitReport} alt="Authentication icon" height={45} width={45} style={{ borderRadius: '10px' }} />
-                </div>
-
-                <div className={'text-black h2 font-weight-bolder'}>Traits Reports</div>
-
-                <p className={'custom-text-color'} style={{ maxWidth: '400px' }}>
-                Your personal traits and qualities play a significant role in how you present yourself during interviews. The Trait Report evaluates your personality traits and how they may influence your interview performance. It offers valuable insights into your strengths and potential areas for improvement in showcasing your unique qualities to potential employers.
-                </p>
+            <Col xs={'12'} md={'6'} className={'d-flex flex-column'}>
+              <div className='pt-4 pb-2'>
+                <img className={''} src={icons.traitReport} alt="Authentication icon" height={45} width={45} style={{ borderRadius: '10px' }} />
               </div>
+              <div className={'text-black h2 font-weight-bolder'}>Traits Reports</div>
+              <p className={'custom-text-color'} style={{ maxWidth: '400px' }}>
+                Your personal traits and qualities play a significant role in how you present yourself during interviews. The Trait Report evaluates your personality traits and how they may influence your interview performance. It offers valuable insights into your strengths and potential areas for improvement in showcasing your unique qualities to potential employers.
+              </p>
             </Col>
             <Col className="order-md-2 col-6 py-4">
               <img
-                style={{ borderRadius: '20px', backgroundColor: 'white' }}
+                style={{ borderRadius: '20px', backgroundColor: 'white', maxWidth: '100%' }}
                 alt="..."
                 className="img-fluid"
-                src={image.Tab4Image}
+                src={image.TraitReport}
               />
             </Col>
           </Row>
-
-
-
         </Container>
       </section>
 
