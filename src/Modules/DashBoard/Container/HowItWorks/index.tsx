@@ -21,7 +21,7 @@ function HowItWorks() {
                                 <div className="position-relative mb-3 mt-2">
                                     <a className="d-block">
                                         <img
-                                            src={image.InterviewReady}
+                                            src={image.Tab1Image}
                                             width={"100%"}
                                             height={"100%"}
                                             className="img-fluid shadow-none border-radius-lg"
@@ -49,7 +49,7 @@ function HowItWorks() {
                                 <div className="position-relative mb-3 mt-2">
                                     <a className="d-block">
                                         <img
-                                            src={image.InterviewReady}
+                                            src={image.Tab2Image}
                                             width={"100%"}
                                             height={"100%"}
                                             className="img-fluid shadow-none border-radius-lg"
@@ -76,7 +76,7 @@ function HowItWorks() {
                                 <div className="position-relative mb-3 mt-2">
                                     <a className="d-block">
                                         <img
-                                            src={image.InterviewReady}
+                                            src={image.Tab5Image}
                                             width={"100%"}
                                             height={"100%"}
                                             className="img-fluid shadow-none border-radius-lg"

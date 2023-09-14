@@ -26,7 +26,7 @@ function Tab4() {
                 Your personal traits and qualities play a significant role in how you present yourself during interviews. The Trait Report evaluates your personality traits and how they may influence your interview performance. It offers valuable insights into your strengths and potential areas for improvement in showcasing your unique qualities to potential employers.
               </p>
             </Col>
-            <Col className="order-md-2 col-6 py-4">
+            <Col xs={12} md={6} className="d-flex justify-content-center align-items-center py-4">
               <img
                 style={{ borderRadius: '20px', backgroundColor: 'white', maxWidth: '100%' }}
                 alt="..."

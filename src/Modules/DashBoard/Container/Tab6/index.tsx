@@ -29,12 +29,12 @@ function Tab6() {
                                 For those seeking to master advanced communication skills, the Communication Advanced report is a valuable resource. It assesses your ability to handle complex communication scenarios, such as interviews with senior executives or technical discussions. This report offers insights and recommendations to enhance your communication prowess in challenging situations.
                             </p>
                         </Col>
-                        <Col className="order-md-2 col-6 py-4">
+                        <Col xs={12} md={6} className="d-flex justify-content-center align-items-center py-4">
                             <img
                                 style={{ borderRadius: '20px', backgroundColor: 'white', maxWidth: '100%' }}
                                 alt="..."
                                 className="img-fluid"
-                                src={image.Tab6Image}
+                                src={image.CommunicationReport}
                             />
                         </Col>
                     </Row>

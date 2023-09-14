@@ -27,12 +27,12 @@ function Tab5() {
                 Building on the Skill Matrix Report, the Skill Matrix Advanced report provides an even more in-depth analysis of your skills. It examines your proficiency in advanced or specialized competencies related to your desired job role. This report is ideal for candidates aiming to excel in highly specific skill areas, offering targeted guidance for improvement.
               </p>
             </Col>
-            <Col className="order-md-2 col-6 py-4">
+            <Col xs={12} md={6} className="d-flex justify-content-center align-items-center py-4">
               <img
                 style={{ borderRadius: '20px', backgroundColor: 'white', maxWidth: '100%' }}
                 alt="..."
                 className="img-fluid"
-                src={image.Tab5Image}
+                src={image.SkillMatrix}
               />
             </Col>
           </Row>

@@ -27,7 +27,7 @@ function Tab3() {
                 </p>
               
             </Col>
-            <Col className="order-md-2 col-6 py-5">
+            <Col xs={12} md={6} className="d-flex justify-content-center align-items-center py-4">
               <img
                 style={{ borderRadius: '20px', backgroundColor: 'white', maxWidth: '100%' }}
                 alt="..."
