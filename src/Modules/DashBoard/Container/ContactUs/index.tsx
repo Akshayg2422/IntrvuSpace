@@ -12,8 +12,8 @@ function ContactUs() {
         <>
             <section style={{ backgroundColor: '#ffffff' }}>
                 <div >
-                    <div className='container-fluid'>
-                        <Card className=' mb-4 pt-5 shadow-none'>
+                    <div className='container'>
+                        <Card className=' mb-4 pt-5'>
                             <Row className="">
                                 <Col className="ml-auto mr-auto text-center mt-5" md="8">
                                     <span className="text-primary mb-2 h3">Leave A Message</span>
@@ -212,11 +212,10 @@ function ContactUs() {
                                                         Twitter
                                                     </span>
                                                 </NavLink>
-                                                {/* <UncontrolledTooltip delay={0} target="tooltip366258619">
-                                    Follow us on Twitter
-                                </UncontrolledTooltip> */}
+                                        
                                             </NavItem>
-                                            <NavItem>
+                                          
+                                            {/* <NavItem>
                                                 <NavLink
                                                     className="nav-link-icon"
                                                     style={{ fontSize: '24px', color: '#1e73e2' }}
@@ -226,7 +225,7 @@ function ContactUs() {
                                                     <i className="ni ni-pin-3" />
                                                     <span className="nav-link-inner--text d-lg-none">Location</span>
                                                 </NavLink>
-                                            </NavItem>
+                                            </NavItem> */}
 
                                         </Nav>
 
@@ -290,7 +289,6 @@ function ContactUs() {
                     </div>
                 </div>
             </section>
-
         </>
     )
 }
