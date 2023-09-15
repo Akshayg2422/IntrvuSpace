@@ -40,6 +40,7 @@ function Pricing() {
 
     return (
         <section style={{ backgroundColor: '#ffffff' }} className="py-sm-4" id="pricing-now-ui">
+        
             <div className=" position-relative">
                 <div className="container pb-lg-8 pb-7 pt-5 postion-relative z-index-2 position-relative">
                     <div className="row col-md-7 text-center">
@@ -59,14 +60,14 @@ function Pricing() {
                                 <div className="card shadow-none h-100 index-card">
                                     <div className=" text-sm-start pt-4 pb-3 px-4">
                                         <div>
-                                            <p className="mb-1 display-4">{option.variants}</p>
+                                            <p className="mb-2 display-4 d-flex align-items-start font-weight-bolder">{option.variants}</p>
                                             <p className="text-sm font-weight-bold mt--2">{option.title}</p>
                                             <div className="font-weight-bold display-4">{option.price}</div>
                                         </div>
 
                                         {option.price === 'FREE' ? (
                                             <div
-                                                className="custom-btn bg-primary text-center border-0 col mt-3"
+                                                className="custom-btn text-center border-0 col mt-3"
                                                 style={{ borderRadius: '20px' }}
                                                 onClick={option.onClick}
                                             >
@@ -84,7 +85,7 @@ function Pricing() {
                                                     width: '100%',
                                                 }}
                                             >
-                                                <div className="custom-btn bg-primary text-center border-0 col mt-3" style={{ borderRadius: '20px' }}>
+                                                <div className="custom-btn text-center border-0 col mt-3" style={{ borderRadius: '20px' }}>
                                                     Buy Now
                                                 </div>
                                             </a>
@@ -95,13 +96,13 @@ function Pricing() {
                                         {option.reports.map((each, subIndex) => (
                                             <div className="card-body py-2" key={subIndex}>
                                                 <div className="row align-items-center">
-                                                    <div
-                                                        style={{
-                                                            width: 10,
-                                                            height: 10,
-                                                            backgroundColor: '#424242',
-                                                            borderRadius: 5,
-                                                        }}
+                                                    <div className={'color-change'}
+                                                        // style={{
+                                                        //     width: 10,
+                                                        //     height: 10,
+                                                        //     backgroundColor: '#42cd33',
+                                                        //     borderRadius: 60,
+                                                        // }}
                                                     ></div>
                                                     <div className="d-flex">
                                                         <div className="ps-3 ml-2">
@@ -119,6 +120,7 @@ function Pricing() {
                 </div>
             </div>
         </section>
+
     );
 }
 

@@ -12,7 +12,7 @@ function LandingNavBar() {
     return (
         <>
             <Navbar
-                className="navbar-horizontal navbar-main navbar-dark  fixed-top py-3"
+                className="navbar-horizontal navbar-main navbar-dark fixed-top py-3"
                 expand="lg"
                 id="navbar-main"
                 style={{
@@ -79,7 +79,7 @@ function LandingNavBar() {
                         <Nav className="align-items-lg-center ml-lg-auto" navbar>
                             <NavItem className="d-none d-lg-block ml-lg-4">
                                 <Button
-                                    className="bg-primary px-4 text-white "
+                                    className="bg-primary px-4 text-white"
                                     style={{ borderRadius: '25px' }}
                                     size='md'
                                     onClick={() => {
