@@ -40,7 +40,7 @@ export function Tabs({ tabs, selected, onChange, height }: TabsProps) {
                   background:
                     selected?.id === item.id ? "#ffffff" : "#ffffff",
                   position: "relative",
-                  flex: "0 0 50%", // Make tabs take 50% of the width for small screens
+                  flex: "0 0 0 50%", // Make tabs take 50% of the width for small screens
                 }}
                 onClick={() => {
                   changeTab(item);
@@ -58,7 +58,7 @@ export function Tabs({ tabs, selected, onChange, height }: TabsProps) {
                     left: "50%",        // Horizontally center the div
                     transform: "translateX(-50%)",  // Adjust for centering
                     height: "4px",
-                    width: "40%",
+                    width: "70%",
                     background: "#67f60e",
                   }}
                 />                
