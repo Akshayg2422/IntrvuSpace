@@ -33,7 +33,7 @@ export * from './DownloadImage'
 export * from './ButtonGroup'
 export * from './TextArea'
 export * from './DragAndReorder'
-
+export * from './SliderComponent'
 
 
 

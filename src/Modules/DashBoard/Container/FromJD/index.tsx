@@ -1,13 +1,14 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { Button, Card, Divider, Modal, TextArea, Input, showToast, Spinner, Checkbox } from '@Components';
+import { Button, Card, Divider, Modal, TextArea, Input, showToast, Spinner, Checkbox, SliderComponent } from '@Components';
 import { createNewJdSchedule, getJdItemList, postJdVariant, selectedScheduleId } from '@Redux';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useInput, useNavigation, useModal } from '@Hooks';
 import { AnalyzingAnimation, GenerateModal, UploadJdCard } from '@Modules';
 import { ROUTES } from '@Routes';
 import { validate, FROM_JD_RULES, ifObjectExist, getValidateError } from '@Utils';
 import { icons } from '@Assets';
+
 
 
 function FromJD() {
@@ -34,6 +35,7 @@ function FromJD() {
     const [loading, setLoading] = useState(true);
     const [jdMore, setJdMore] = useState<any>([])
     const [fresherChecked, setFresherChecked] = useState(false)
+    const [sliderValue, setSliderValue] = useState<number>(50);
 
 
     const [jdDescriptionError, setJdDescriptionError] = useState<any>(undefined)
@@ -144,6 +146,10 @@ function FromJD() {
             }
         }
     }
+
+    const handleSliderChange = (newValue: number) => {
+        setSliderValue(newValue);
+    };
 
 
     function proceedReport(id: string) {
@@ -312,7 +318,6 @@ function FromJD() {
                                                                 </div>
                                                                 <Divider className={'row'} space={"3"} />
                                                             </div>
-
                                                         )
                                                     })
                                                 }
@@ -356,6 +361,7 @@ function FromJD() {
                         }} />
                     </span>
 
+
                     <div className={'col-6'}>
                         {fresherChecked ? (
                             <Input
@@ -366,13 +372,14 @@ function FromJD() {
                                 disabled
                             />
                         ) : (
-                            <Input
-                                heading={'Years of experience'}
-                                type={'number'}
-                                placeHolder={'Experience'}
-                                value={experience.value}
-                                onChange={experience.onChange}
-                            />
+                            <SliderComponent/>
+                            // <Input
+                            //     heading={'Years of experience'}
+                            //     type={'number'}
+                            //     placeHolder={'Experience'}
+                            //     value={experience.value}
+                            //     onChange={experience.onChange}
+                            // />
                         )}
                     </div>
 
