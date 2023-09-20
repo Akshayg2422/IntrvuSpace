@@ -160,9 +160,7 @@ function Call() {
         }
 
         if (uu_action === "INTERVIEWER_END_CALL") {
-
             closeCall.current = true
-
         }
     }
 
@@ -170,8 +168,8 @@ function Call() {
     useEffect(() => {
         // Create the WebSocket connection only if it's not already established
         if (!socketRef.current) {
-            const socket = new WebSocket('ws://localhost:8012/aaa');
-            // const socket = new WebSocket('wss://mockeazyprimary.leorainfotech.in/aaa');
+            // const socket = new WebSocket('ws://localhost:8012/aaa');
+            const socket = new WebSocket('wss://mockeazyprimary.leorainfotech.in/aaa');
 
             socketRef.current = socket; // Store the WebSocket instance in the ref
 
@@ -203,7 +201,7 @@ function Call() {
         };
     }, []);
 
-    const sendDataToSocket = async (blob: Blob, is_voiceup_current_chunk_state:Boolean) => {
+    const sendDataToSocket = async (blob: Blob, is_voiceup_current_chunk_state: Boolean) => {
 
         const syncD = {
             timestamp: moment(),
@@ -212,11 +210,11 @@ function Call() {
             is_speaking: speakingShouldProcess.current,
             is_tts_speaking: ttsRef.current,
             map_id: intitalRequestSent.current === false ? '1' : mapIdRef.current,
-            ie_interaction_chunk_ref_id:activeResponseTextId.current,
-            waiting_start_time: intitalRequestSent.current === false ? true :  false,
+            ie_interaction_chunk_ref_id: activeResponseTextId.current,
+            waiting_start_time: intitalRequestSent.current === false ? true : false,
             is_voiceup_current_chunk_state: is_voiceup_current_chunk_state,
             proceed_refresh: !intitalRequestSent.current,
-            blob_data:"",
+            blob_data: "",
         }
 
         if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
@@ -239,7 +237,7 @@ function Call() {
 
                             if (typeof reader.result === 'string') {
                                 const base64String = reader.result.split(',')[1]; // Extract the base64 part
-                                socketRef.current.send(JSON.stringify({...syncD, blob_data: base64String}));
+                                socketRef.current.send(JSON.stringify({ ...syncD, blob_data: base64String }));
                             }
                             else {
                                 // console.log("t0000000000000000000015")
@@ -254,7 +252,7 @@ function Call() {
                 }
 
             }
-            
+
         } else {
             console.log('WebSocket connection is not open.');
         }
@@ -402,7 +400,7 @@ function Call() {
                         else {
                             voiceUpCount.current = 0
                         }
-                        
+
                         const limitDateTime = currentDate.add(2, 'seconds');
                         voiceUpTime.current = limitDateTime
 
