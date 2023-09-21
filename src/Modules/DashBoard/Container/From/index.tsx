@@ -1,75 +1,69 @@
 import React, { useState } from 'react'
-import { Container, Row, Col, Card, CardBody } from 'reactstrap'
-import { Image } from "@Components";
-import './style.css'
-
-
+import { Col, Container, Row } from 'reactstrap'
+import { icons } from '@Assets';
+import './index.css'
+import { Carousel } from 'react-responsive-carousel';
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
 function From() {
 
-
-
     const [cardContent, setCardContent] = useState([
-        { id: 1, heading: 'Comprehensive Courses', para: 'Learn a wide range of programming languages and skills for enhanced career opportunities.' },
-        { id: 2, heading: 'Authentic Learning', para: '  Engage in real-world tasks and mock interviews to gain practical experience.' },
-        { id: 3, heading: 'Skill Showcase', para: 'Share your progress and achievements across social platforms to build a professional online presence.' },
-        { id: 4, heading: 'Task Storage', para: 'Keep track of task details and recordings for future reference and improvement.' }
+
+        { id: 2, icon: <img src={icons.skillMatrixReport} alt="skillMatrixReport icon" style={{ width: '45px', height: '45px', borderRadius: '10px', objectFit: 'cover', }} />, heading: 'Your Expertise, Your Advantage', para: '' },
+        { id: 3, icon: <img src={icons.communicationReport} alt="communicationReport icon" style={{ width: '45px', height: '45px', borderRadius: '10px', objectFit: 'cover', }} />, heading: 'Mock Interviews by Company', para: '' },
+        { id: 4, icon: <img src={icons.traitReport} alt="traitReport icon" style={{ width: '45px', height: '45px', borderRadius: '10px', objectFit: 'cover', }} />, heading: 'Seamless Registration', para: '' },
+        { id: 5, icon: <img src={icons.skillMatrixAdvanced} alt="skillMatrixAdvanced icon" style={{ width: '45px', height: '45px', borderRadius: '10px', objectFit: 'cover', }} />, heading: 'Personalized Interview Process', para: '' },
+        { id: 6, icon: <img src={icons.communicationAdvanced} alt="communicationAdvanced icon" style={{ width: '45px', height: '45px', borderRadius: '10px', objectFit: 'cover', }} />, heading: 'Mastering Your Interview Success', para: '' },
+        { id: 1, icon: <img src={icons.basicReport} alt="basicReport icon" style={{ width: '45px', height: '45px', borderRadius: '10px', objectFit: 'cover', }} />, heading: 'Insights for Improvement', para: ` Experience Matters, Practice Perfectly! In the "Interview by Experience" method, we take into account your years of professional experience. The app will present you with a series of interview questions carefully tailored to match your expertise level. This means you'll face relevant and challenging questions that resonate with your specific background and qualifications.` },
     ])
+    const cardElements = cardContent.map((item) => (
+        <div className="col-lg-4 col-sm-6 mb-lg-0 mb-4 py-3" key={item.id}>
+            <div className="card-animation card-animation:hover">
+                <div className="text-sm-start text-center pt-5 px-4">
+                    <span>{item.icon}</span>
+                    <h5 className="mb-2 mt-3 h2 text-uppercase text-primary">{item.heading}</h5>
+                    <p>{item.para}</p>
+                </div>
+            </div>
+        </div>
+    ));
 
     return (
-        <div className='' style={{backgroundColor:'#ffffff'}}>
-            <section className="pt-8 pb-9 ">
-                <Container fluid>
-                    <Row className="justify-content-center text-center">
+
+        <div style={{ backgroundColor: '#ffffff' }}>
+            <section>
+                <Container>
+                    <Row className="">
                         <Col md="8">
-                            <h2 className="display-2 text-black">
-                                Introduction
-                            </h2>
-                            <p className="custom-text-color">
-                                Unlock the power of advanced technology in the world of interviews with MockEasy. Our innovative web application is designed to empower both job seekers and companies, revolutionizing the way interviews are conducted. From personalized interview simulations to streamlined candidate selection, MockEasy brings a new era of efficiency and effectiveness to the hiring process.
-                            </p>
+                            <div className='row align-items-center pb-2'>
+                                <img className={'mt--1 ml-3'} src={icons.horizontalLine} alt="Authentication icon" height={45} width={80} style={{ borderRadius: '10px' }} />
+                                <h3 className="text-primary ml-3">Key Features</h3>
+                            </div>
+                            <span className={'display-3 text-black font-weight-bolder'}>Experience in multipleinterview<br></br><div className={'mt--2'}>practices</div></span>
 
                         </Col>
                     </Row>
+
+                    <div className="row mt-4">
+                        <Carousel
+                            className={'carousel carousel-slider'}
+                            showStatus={false}
+                            showThumbs={false}
+                            infiniteLoop
+                            autoPlay
+                            interval={5000}
+                            showArrows={false}
+                            showIndicators={true}
+                            centerMode={true}
+                            centerSlidePercentage={33.33}
+                        >
+                            {cardElements}
+                        </Carousel>
+                    </div>
                 </Container>
             </section>
-            <section className="section section-lg pt-lg-0 mt--7">
-                <Container fluid>
-                    <h3 className='display-4 text-center text-white'>
-                        Key Features
-                    </h3>
-                    <Row className="justify-content-center pt-5">
-                        <Col lg="12">
-                            <Row>
-
-                                {cardContent && cardContent.length > 0 && cardContent.map((item) => {
-                                    return (
-                                        <>
-                                            <Col lg="3">
-                                                <div className="card-container">
-                                                    <div className="card">
-                                                        <div className="front-content">
-                                                            <p> {item?.heading}</p>
-                                                        </div>
-                                                        <div className="content">
-                                                            <p className="heading text-white"> {item?.heading}</p>
-                                                            <p className='text-white'>
-                                                                {item?.para}
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </Col >
-                                        </>
-                                    )
-                                })
-                                }
-                            </Row>
-                        </Col>
-                    </Row>
-                </Container >
-            </section >
         </div>
+
     )
 }
 

@@ -1,5 +1,5 @@
 import { icons } from '@Assets'
-import { Designation, WeightageCountForm, CreateQuestionForm, Clients, Sector, Questions, Call, Report, QuestionSections, AnalyzingAnimation, Schedules, Login, Otp, Splash, Register, LoginWithOtp, AdminLogin, VariantInfo, PrivacyPolicy, TermsAndConditions, ReturnAndRefund } from '@Modules';
+import { Designation, WeightageCountForm, CreateQuestionForm, Clients, Sector, Questions, Call, Report, QuestionSections, AnalyzingAnimation, Schedules, Login, Otp, Splash, Register, LoginWithOtp, AdminLogin, VariantInfo, PrivacyPolicy, TermsAndConditions, ReturnAndRefund, Reports, HowItWorks, Introduction } from '@Modules';
 
 
 
@@ -13,7 +13,10 @@ export const ROUTES = {
     admin_login: '/login-admin',
     privacy: '/privacy-policy',
     TermsAndConditions: '/terms-and-condition',
-    ReturnAndRefund: '/return-and-refund'
+    ReturnAndRefund: '/return-and-refund',
+    reports: '/reports',
+    'how-it-works': '/how-it-works',
+    introduction: '/introduction'
   },
   'designation-module': {
     Dashboard: "/dashboard",
@@ -23,13 +26,13 @@ export const ROUTES = {
     'interview': '/interview',
     dashboard: "/dashboard",
     designation: "/designation",
-    client: "/client",
+    client: "/home",
     questions: "/questions",
     report: '/report',
     'question-sections': '/question-sections',
     'analyzing-animation': '/analyzing-animation',
     schedules: '/schedules',
-    'variant-info': '/variant-info'
+    'variant-info': '/variant-info',
   }
 }
 
@@ -80,7 +83,21 @@ export const AUTH_ROUTES = [
     path: ROUTES['auth-module'].ReturnAndRefund,
     component: <ReturnAndRefund />
   },
-
+  {
+    key: 10,
+    path: ROUTES['auth-module'].reports,
+    component: <Reports />
+  },
+  {
+    key: 11,
+    path: ROUTES['auth-module']['how-it-works'],
+    component: <HowItWorks/>
+  },
+  {
+    key: 12,
+    path: ROUTES['auth-module'].introduction,
+    component: <Introduction />
+  },
 
 ]
 

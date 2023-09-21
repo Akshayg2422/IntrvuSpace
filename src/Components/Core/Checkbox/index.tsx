@@ -34,7 +34,7 @@ function Checkbox({ id = '0', text, defaultChecked, variant = 'primary', onCheck
                     className={'custom-control-label'}
                     htmlFor={id}>
                     {
-                        text
+                        <span className={'position-absolute left--2'}>{text}</span>
                     }
                 </label>
             </div>

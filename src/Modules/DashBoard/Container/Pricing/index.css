@@ -1,29 +1,52 @@
+/* Define the base button style */
 .custom-btn {
-    width: 130px;
-    height: 40px;
-    color: #fff;
-    border-radius: 5px;
-    padding: 10px 25px;
-    font-family: 'Lato', sans-serif;
-    font-weight: 500;
-    background: transparent;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    position: relative;
-    display: inline-block;
-    box-shadow: inset 2px 2px 2px 0px rgba(255,255,255,.5),
-      7px 7px 20px 0px rgba(0,0,0,.1),
-      4px 4px 5px 0px rgba(0,0,0,.1);
-    outline: none;
-   }
-   
-   .btn-1 {
-    background: #5cf115;
-    background: linear-gradient(112.2deg, #5bf707 -1.1%, #5ede41 100.7%);
-    border: none;
-   }
-   
-   .btn-1:hover {
-    background: #5cf115;
-    background: linear-gradient(0deg, #06a32d 0%, #02fb7a 100%);
-   }
+  width: 220px;
+  height: 40px;
+  color: #fff;
+  border-radius: 5px;
+  padding: 10px 25px;
+  font-family: 'Lato', sans-serif;
+  font-weight: 500;
+  background: #68d75c; /* Set the initial background color */
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  display: inline-block;
+  outline: none;
+}
+
+/* Define the button style on hover */
+/* .custom-btn:hover {
+  transform: translateY(-0.2rem);
+  background: linear-gradient(0deg, #ffffff 0%, #ffffff 100%);
+  color:#000000
+} */
+
+.index-card {
+  /* background:white; */
+  color: #000000
+}
+
+.index-card:hover {
+  transform: translateY(-0.2rem);
+  background: linear-gradient(0deg, #9af28e 0%, #85ef81 100%); /* Change to linear gradient on hover */
+  color: #ffffff
+}
+
+.color-change {
+  width: 10px;
+  height: 10px;
+  background-color: #42cd33;
+  border-radius: 60px;
+  transition: background-color 0.3s ease; /* Add smooth transition effect */
+}
+
+.index-card:hover .color-change {
+  background-color: #ffffff; /* Change the background color of .color-change to white on .index-card hover */
+}
+
+
+.index-card:hover .custom-btn {
+  background-color: #ffffff; /* Change the background color of .custom-btn to white on .index-card hover */
+  color: #000000; /* Change the text color to black on .index-card hover */
+}

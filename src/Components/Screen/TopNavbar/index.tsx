@@ -135,8 +135,8 @@ function TopNavbar() {
 
                         <Nav className="align-items-lg-center ml-lg-auto mr--4  justify-content-end" navbar>
                             <NavItem>
-                                <NavLink to="/client" tag={Link}>
-                                    <span className={`nav-link-inner--text  ${'/client' !== pathName ? "text-black h4" : 'text-primary h4'}`}>Home</span>
+                                <NavLink to="/home" tag={Link}>
+                                    <span className={`nav-link-inner--text  ${'/home' !== pathName ? "text-black h4" : 'text-primary h4'}`}>Home</span>
                                 </NavLink>
                             </NavItem>
                             <NavItem>

@@ -651,8 +651,25 @@ function Call() {
   };
 
   function webCamHandler() {
-    setShowCam(!showCam);
-  }
+    setShowCam((prevWebcam) => {
+        if (prevWebcam === true) {
+            closeWebcam();
+        }
+        return !prevWebcam;
+    });
+}
+
+// Function to close the laptop camera
+
+function closeWebcam() {
+    if (stream.current) {
+        stream.current.getTracks().forEach((track) => {
+            if (track.kind === 'video') {
+                track.stop(); // Stop the video track
+            }
+        });
+    }
+}
 
   function micMuteHandler() {
     mutedRef.current = !mute;

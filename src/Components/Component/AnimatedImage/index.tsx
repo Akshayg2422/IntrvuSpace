@@ -12,7 +12,7 @@ const AnimatedImage = ({ name, shouldBlink, show, variant = 'name', showWebCam =
       <a className={`${imageClasses}`}
         style={{
           backgroundColor: '#42f542',
-          borderRadius: 6
+          borderRadius: 12
         }}
       >
         <div className="name-overlay text-white position-absolute "
