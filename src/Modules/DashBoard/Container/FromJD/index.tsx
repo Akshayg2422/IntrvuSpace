@@ -8,7 +8,7 @@ import { AnalyzingAnimation, GenerateModal, UploadJdCard } from '@Modules';
 import { ROUTES } from '@Routes';
 import { validate, FROM_JD_RULES, ifObjectExist, getValidateError } from '@Utils';
 import { icons } from '@Assets';
-
+import Slider from "nouislider";
 
 
 function FromJD() {
@@ -35,14 +35,29 @@ function FromJD() {
     const [loading, setLoading] = useState(true);
     const [jdMore, setJdMore] = useState<any>([])
     const [fresherChecked, setFresherChecked] = useState(false)
-    const [sliderValue, setSliderValue] = useState<number>(50);
 
 
     const [jdDescriptionError, setJdDescriptionError] = useState<any>(undefined)
+    const [slider1Value, setSlider1Value] = useState("1");
 
     useEffect(() => {
         getKnowledgeGroupFromJdHandler();
     }, [])
+    useEffect(() => {
+        const slider1 = document.getElementById("slider1");
+
+        if (slider1) {
+            Slider.create(slider1, {
+                start: [1],
+                connect: [true, false],
+                step: 0.01,
+                range: { min: 1.0, max: 100.0 },
+            }).on("update", (values, handle) => {
+                const valueWithoutDecimal = parseInt(values[0] as string); // Remove decimal places
+                setSlider1Value(valueWithoutDecimal.toString());
+            });
+        }
+    }, []);
 
 
 
@@ -67,7 +82,7 @@ function FromJD() {
         const params = {
             sector_name: sector.value,
             position: position.value,
-            experience: fresherChecked ? '0' : experience.value,
+            experience: fresherChecked ? '0' : slider1Value,
             reference_link: portalUrl.value,
             jd: jd.value
         }
@@ -147,10 +162,6 @@ function FromJD() {
         }
     }
 
-    const handleSliderChange = (newValue: number) => {
-        setSliderValue(newValue);
-    };
-
 
     function proceedReport(id: string) {
         if (id) {
@@ -166,6 +177,8 @@ function FromJD() {
             onClick={addJdModal.show}
         />
     );
+    // const experienceValue = 1.0;
+    // const experienceRange = { min: 1.0, max: 20.0 };
 
     return (
         <>
@@ -372,7 +385,16 @@ function FromJD() {
                                 disabled
                             />
                         ) : (
-                            <SliderComponent/>
+                            <div>
+                                <div className="input-slider-container">
+                                    <div className="input-slider" id="slider1" />
+                                    <div className="mt-3 row">
+                                        <div className={'col-xs-6'}>
+                                            <span className="range-slider-value">{slider1Value}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             // <Input
                             //     heading={'Years of experience'}
                             //     type={'number'}

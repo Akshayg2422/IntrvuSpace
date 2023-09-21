@@ -3,19 +3,20 @@ import Slider from "nouislider";
 import { Form, Row, Col } from "reactstrap";
 
 const SliderComponent = () => {
-    const [slider1Value, setSlider1Value] = useState("0");
+    const [slider1Value, setSlider1Value] = useState("1");
 
     useEffect(() => {
         const slider1 = document.getElementById("slider1");
 
         if (slider1) {
             Slider.create(slider1, {
-                start: [100],
+                start: [1],
                 connect: [true, false],
                 step: 0.01,
-                range: { min: 100.0, max: 500.0 },
+                range: { min: 1.0, max: 100.0 },
             }).on("update", (values, handle) => {
-                setSlider1Value(values[0].toString()); // Convert to string
+                const valueWithoutDecimal = parseInt(values[0] as string); // Remove decimal places
+                setSlider1Value(valueWithoutDecimal.toString());
             });
         }
     }, []);
@@ -36,4 +37,4 @@ const SliderComponent = () => {
     );
 };
 
-export {SliderComponent}
+export { SliderComponent };
