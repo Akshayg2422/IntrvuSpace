@@ -26,7 +26,7 @@ export const ROUTES = {
     'interview': '/interview',
     dashboard: "/dashboard",
     designation: "/designation",
-    client: "/client",
+    client: "/home",
     questions: "/questions",
     report: '/report',
     'question-sections': '/question-sections',

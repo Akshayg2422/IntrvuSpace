@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react'
 import { CallHeaderProps } from './interfaces'
-import { Button, Image } from '@Components'
+import { Button, Image, Modal } from '@Components'
 import { icons } from '@Assets'
 import { color } from '@Themes';
+import { useModal } from '@Hooks';
 
 
 function CallHeader({ webcam, mic, onMicChange, onWebCamChange, onEndClick, onEndInterViewClick }: CallHeaderProps) {
 
 
     const [time, setTime] = useState({ hours: 0, minutes: 0, seconds: 0 });
+    const endInterviewModal = useModal(false)
 
     useEffect(() => {
 
@@ -80,9 +82,16 @@ function CallHeader({ webcam, mic, onMicChange, onWebCamChange, onEndClick, onEn
                 </div>
 
                 <div className='ml-3'>
-                    <Button text={"End Interview"} onClick={onEndInterViewClick} />
+                    <Button text={"End Interview"} onClick={endInterviewModal.show} />
                 </div>
             </div>
+            <Modal isOpen={endInterviewModal.visible} onClose={endInterviewModal.hide}>
+                <h4 className={'mt--4'}>Are you sure you want to end the interview? Once you end it, you cannot rejoin.</h4>
+                <div className={'d-flex justify-content-end'}>
+                <Button color={'secondary'} text={'Cancel'} size={'sm'} onClick={endInterviewModal.hide}/>
+                <Button text={'Proceed'} size={'sm'} onClick={onEndInterViewClick}/>
+                </div>
+            </Modal>
 
         </>
     )

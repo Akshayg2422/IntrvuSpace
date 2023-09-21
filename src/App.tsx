@@ -28,7 +28,7 @@ function App() {
   const AUTH = 1
 
   const { removeSideNav } = useSelector((state: any) => state.DashboardReducer)
-  const [pathName, setPathName] = useState<any>('/client')
+  const [pathName, setPathName] = useState<any>('/home')
   const dispatch = useDispatch()
 
   useEffect(() => {

@@ -62,12 +62,10 @@ function Call() {
     const transcriptionReferenceId = useRef<any>();
     const audioElementRef = useRef<any>();
     const mutedRef = useRef<any>(false);
-    const activeResponseTextId = useRef<any>();
+    const activeResponseTextId = useRef<any>(generateRandomID());
     // const { isTtfSpeaking, speak } = useTextToSpeech();
     const ambianceVolume = useRef<any>(65);
     const decibleCollection = useRef<any>([]);
-    const isVoiceUpCurrentChunk = useRef<any>(false);
-
     const closeCall = useRef<any>(false);
     const [isTtfSpeaking, setIsTtfSpeaking] = useState<boolean>(false)
 
@@ -76,9 +74,7 @@ function Call() {
         const min = 100000;
         const max = 999999;
         const randomID = Math.floor(Math.random() * (max - min + 1)) + min;
-        console.log("resss01", randomID)
         return randomID;
-
     }
 
     const speak = (ttsBase64) => {
@@ -151,15 +147,14 @@ function Call() {
     const proceedHandleResponseV1 = (response) => {
         setProcessCallInprogress(false)
         // console.log("SpeakText01", response)
-        const { data, rt, uu_action, mapId } = response.next_step[0]
+        const { data, rt, mapId } = response.next_step[0]
         if (data && data !== '' && window.location.pathname === `/interview/${schedule_id}`) {
-            console.log("resss011")
             resetLastMessage()
             speak(data);
             mapIdRef.current = mapId
         }
 
-        if (uu_action === "INTERVIEWER_END_CALL") {
+        if (rt === "INTERVIEWER_END_CALL") {
 
             closeCall.current = true
 
@@ -170,8 +165,8 @@ function Call() {
     useEffect(() => {
         // Create the WebSocket connection only if it's not already established
         if (!socketRef.current) {
-            const socket = new WebSocket('ws://localhost:8012/aaa');
-            // const socket = new WebSocket('wss://mockeazyprimary.leorainfotech.in/aaa');
+            // const socket = new WebSocket('ws://192.168.218.204:8012/aaa');
+            const socket = new WebSocket('wss://mockeazyprimary.leorainfotech.in/aaa');
 
             socketRef.current = socket; // Store the WebSocket instance in the ref
 
@@ -203,30 +198,12 @@ function Call() {
         };
     }, []);
 
-    const sendDataToSocket = async (blob: Blob, is_voiceup_current_chunk_state:Boolean) => {
-
-        const syncD = {
-            timestamp: moment(),
-            schedule_id: schedule_id,
-            is_muted: mutedRef.current,
-            is_speaking: speakingShouldProcess.current,
-            is_tts_speaking: ttsRef.current,
-            map_id: intitalRequestSent.current === false ? '1' : mapIdRef.current,
-            ie_interaction_chunk_ref_id:activeResponseTextId.current,
-            waiting_start_time: intitalRequestSent.current === false ? true :  false,
-            is_voiceup_current_chunk_state: is_voiceup_current_chunk_state,
-            proceed_refresh: !intitalRequestSent.current,
-            blob_data:"",
-        }
-
+    const sendDataToSocket = async (blob: Blob) => {
         if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
-            if (intitalRequestSent.current === false) {
-                console.log("sentrrrrra1", JSON.stringify(syncD))
-                socketRef.current.send(JSON.stringify(syncD));
-                intitalRequestSent.current = true
+            console.log("sentrrrrr", mutedRef.current)
+            if (startStreamTime.current && moment() > startStreamTime.current) {
 
-            }
-            else if (startStreamTime.current && moment() > startStreamTime.current) {
+                const buffer = await blob.arrayBuffer()
                 if (encoder.current && recorderAudio.current) {
                     const buffer = await blob.arrayBuffer()
                     const mp3 = encoder.current.encodeBuffer(new Int16Array(buffer))
@@ -239,7 +216,16 @@ function Call() {
 
                             if (typeof reader.result === 'string') {
                                 const base64String = reader.result.split(',')[1]; // Extract the base64 part
-                                socketRef.current.send(JSON.stringify({...syncD, blob_data: base64String}));
+                                const syncD = {
+                                    timestamp: moment(),
+                                    schedule_id: schedule_id,
+                                    blob_data: base64String,
+                                    is_muted: mutedRef.current,
+                                    is_speaking: speakingShouldProcess.current,
+                                    is_tts_speaking: ttsRef.current,
+                                    map_id: mapIdRef.current
+                                }
+                                socketRef.current.send(JSON.stringify(syncD));
                             }
                             else {
                                 // console.log("t0000000000000000000015")
@@ -254,7 +240,21 @@ function Call() {
                 }
 
             }
-            
+            else if (intitalRequestSent.current === false) {
+                console.log("sentrrrrr1")
+                intitalRequestSent.current = true
+                const syncD = {
+                    timestamp: moment(),
+                    schedule_id: schedule_id,
+                    waiting_start_time: true,
+                    is_speaking: speakingShouldProcess.current,
+                    is_tts_speaking: ttsRef.current,
+                    is_muted: mutedRef.current,
+                    map_id: '1',
+                }
+                socketRef.current.send(JSON.stringify(syncD));
+            }
+
         } else {
             console.log('WebSocket connection is not open.');
         }
@@ -373,12 +373,14 @@ function Call() {
                     interval: 100,
                     play: false,
                 })
+
+
                 listener.current.on('speaking', onStartSpeaking)
                 listener.current.on('stopped_speaking', onStopSpeaking)
                 listener.current.on('volume_change', function (value) {
                     // const voiceDetectionSaturation = ambianceVolume.current - 18
                     const valueP = Math.abs(value)
-                    // console.log("voiceDetectionSaturation", voiceDetectionSaturation, valueP)
+                    console.log("voiceDetectionSaturation==========>", valueP)
 
                     // addToDecibleCollection(valueP)
                     const currentDate = moment();
@@ -391,8 +393,6 @@ function Call() {
                     }
                     else if (valueP < 49) {
 
-                        isVoiceUpCurrentChunk.current = true
-
                         /**
                          * extend waiting time if decibile is of talking size
                          */
@@ -402,7 +402,7 @@ function Call() {
                         else {
                             voiceUpCount.current = 0
                         }
-                        
+
                         const limitDateTime = currentDate.add(2, 'seconds');
                         voiceUpTime.current = limitDateTime
 
@@ -592,8 +592,8 @@ function Call() {
         // const d = {'time':moment(), data:blob}
 
 
-        sendDataToSocket(blob, isVoiceUpCurrentChunk.current)
-        isVoiceUpCurrentChunk.current = false
+        sendDataToSocket(blob)
+
         // console.log("calledTTF Data Rec", ttsRef.current, speakingShouldProcess.current)
 
         // if (!ttsRef.current && speakingShouldProcess.current === true) {
@@ -633,14 +633,30 @@ function Call() {
     const resetLastMessage = () => {
         activeResponseText.current = '';
         accumulatedBlobs.current = []
-        console.log("resss012")
         const newid = generateRandomID()
         activeResponseTextId.current = newid
     }
 
 
     function webCamHandler() {
-        setShowCam(!showCam)
+        setShowCam((prevWebcam) => {
+            if (prevWebcam === true) {
+                closeWebcam();
+            }
+            return !prevWebcam;
+        });
+    }
+
+    // Function to close the laptop camera
+
+    function closeWebcam() {
+        if (stream.current) {
+            stream.current.getTracks().forEach((track) => {
+                if (track.kind === 'video') {
+                    track.stop(); // Stop the video track
+                }
+            });
+        }
     }
 
 
@@ -655,7 +671,6 @@ function Call() {
         transcriptionReferenceId.current = generateRandomID()
         // proceedgetChatDetailsApiHandler({ message: "start" }, transcriptionReferenceId.current)
         setProcessCallInprogress(false)
-        console.log("resss0114")
         resetLastMessage()
         setInterviewStarted(true)
         // setTimeout(() => {
@@ -699,15 +714,14 @@ function Call() {
     const IE_IDLE = 2
 
 
-
-    const interviewee_state = voiceUp && !mute ? IE_SPEAKING : IE_IDLE
-
     let interviewer_state = IV_IDLE
 
-    if (isTtfSpeaking)
-        interviewer_state = IV_SPEAKING
-    else if (!voiceUp && !mute)
+    if (!isTtfSpeaking && !voiceUp)
         interviewer_state = IV_PROCESSING
+    else if (!isTtfSpeaking)
+        interviewer_state = IV_SPEAKING
+
+    const interviewee_state = voiceUp ? IE_SPEAKING : IE_IDLE
 
 
     return (
@@ -725,7 +739,7 @@ function Call() {
                                         <h3 className='display-3 mb-4 text-white mt-3'>{capitalizeFirstLetter(scheduleInfo?.interviewer_name)}</h3>
                                     </div>
                                     <div className='col-sm-6 d-flex flex-column align-items-center justify-content-center'>
-                                        <AnimatedImage show={false} showWebCam={showCam} name={getShortName(scheduleInfo?.interviewer_name)} shouldBlink={interviewee_state === IE_SPEAKING} />
+                                        <AnimatedImage show={false} showWebCam={showCam} name={getShortName(scheduleInfo?.interviewer_name)} shouldBlink={interviewee_state === IV_SPEAKING} />
                                         <h3 className='display-3 mb-4 text-white mt-3'>{capitalizeFirstLetter(scheduleInfo?.interviewee_name)}</h3>
                                     </div>
 
