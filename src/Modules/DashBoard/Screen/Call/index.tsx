@@ -157,7 +157,6 @@ function Call() {
         if (rt === "INTERVIEWER_END_CALL") {
 
             closeCall.current = true
-
         }
     }
 
