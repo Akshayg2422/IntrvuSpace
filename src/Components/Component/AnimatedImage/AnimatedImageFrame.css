@@ -113,4 +113,46 @@
   font-size: 50px;
   text-align: center;
   color: #000;
+}
+
+.linear::before {
+  content: "";
+  position: absolute;
+  width: 250%;
+  height: 250%;
+  background-image: conic-gradient(rgb(25, 228, 109) 20deg, transparent 120deg);
+  border-radius: 5px;
+  animation-name: rotate;
+  animation-duration: 3s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.linear::after {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+}
+
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.webCam {
+  width: 157px;
+  height: 157px;
+  border-radius: 5px;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  margin: 2rem;
+  right: 20px;
 }/*# sourceMappingURL=AnimatedImageFrame.css.map */

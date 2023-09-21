@@ -55,10 +55,18 @@ export async function get(url, config) {
     .then(response => response.data);
 }
 
-export async function post(url, data, config) {
+export async function post(url, data, config, submissionUrl) {
+
+  submissionUrl = submissionUrl || SERVER
+
+  const baseUrl = axios.create({
+    baseURL: submissionUrl,
+    timeout: 50000,
+  });
+
   let headers = { ...(await getHeaders()) };
 
-  return await axiosApi
+  return await baseUrl
     .post(url, data, {
       ...config,
       headers: headers,

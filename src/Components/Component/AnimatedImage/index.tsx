@@ -3,8 +3,8 @@ import "./AnimatedImageFrame.scss";
 import { Col, Row } from "reactstrap";
 import { AnimatedLoader, WebCamRecorder } from "@Components";
 
-const AnimatedImage = ({ name, shouldBlink, show, variant = 'name', showWebCam = false }) => {
-  const imageClasses = classNames("animated-image", { blink: shouldBlink });
+const AnimatedImage = ({ name, shouldBlink, show, variant = 'name', showWebCam = false, isMuted = false }) => {
+  const imageClasses = classNames(!isMuted ? "animated-image" : "", { blink: shouldBlink });
 
   return (
 
@@ -23,7 +23,7 @@ const AnimatedImage = ({ name, shouldBlink, show, variant = 'name', showWebCam =
           {!show ?
             <div>
               {showWebCam ?
-                <WebCamRecorder /> :
+                <WebCamRecorder isMuted={isMuted} /> :
                 <h1 className="text-white" style={{
                   fontSize: "70px"
                 }}>{name}</h1>

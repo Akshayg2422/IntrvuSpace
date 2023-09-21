@@ -43,7 +43,7 @@ function Designation() {
 
     const loader = useLoader(false);
 
-
+console.log("position===>", position.value)
     useEffect(() => {
         dispatch(clearBreadCrumbs([]))
         getSectorsApiHandler();
@@ -166,7 +166,10 @@ function Designation() {
                         className={'text-white shadow-none'}
                         size={'sm'}
                         text={"Add Designation"}
-                        onClick={addDesignationModal.show}
+                        onClick={()=>{
+                            addDesignationModal.show()
+                            title.set("")
+                        }}
                     />
 
                     <Button
@@ -223,10 +226,13 @@ function Designation() {
                                         }}
 
                                         onEdit={(designation, role) => {
+                                            // console.log("desss-->", designation, "riolee==?>", role)
                                             setSelectedDesignation(designation)
                                             dispatch(setSelectedRole(role))
                                             const { name, description } = role
                                             title.set(name)
+                                            position.set(name)
+                                            // jd.set(designation)
                                             if (description) {
                                                 description.set(description)
                                             }
@@ -253,7 +259,12 @@ function Designation() {
                         </div>
                     }
                 </div>
-                < Modal size={'lg'} title={"Add Designation"} isOpen={addDesignationModal.visible} onClose={addDesignationModal.hide} >
+                < Modal size={'lg'} title={"Add Designation"} isOpen={addDesignationModal.visible} onClose={()=>{
+                    addDesignationModal.hide()
+                    title.set("")
+                    description.set("")
+                    sector.set({})
+                    }} >
                     <div className='col-7'>
                         <Input
                             heading={"Name"}
@@ -282,7 +293,12 @@ function Designation() {
                     </div>
                 </Modal >
 
-                < Modal size={'lg'} title={"Add Role"} isOpen={addRoleModal.visible} onClose={addRoleModal.hide} >
+                <Modal size={'lg'} title={"Add Role"} isOpen={addRoleModal.visible} onClose={()=>{
+                    addRoleModal.hide()
+                    position.set("")
+                    experience.set("")
+                    jd.set("")
+                }}>
                     <div className={'col-6'}>
                         <Input
                             heading={"Position"}

@@ -475,6 +475,27 @@ function* getKnowledgeGroupVariantDetailsSaga(action) {
   }
 }
 
+// student code submission
+
+
+function* postStudentCodeSubmissionSaga(action) {
+  try {
+    const response = yield call(Api.postStudentCodeSubmissionApi, action.payload.params);
+    console.log("response============--->", response);
+    if (response) {
+      yield put(Action.postStudentCodeSubmissionSuccess(response));
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield put(Action.postStudentCodeSubmissionFailure(response.error_message));
+      yield call(action.payload.onError(response));
+    }
+  } catch (error) {
+    yield put(Action.postStudentCodeSubmissionFailure(error));
+    yield call(action.payload.onError(error));
+  }
+}
+
+
 
 
 // close interview api handler
@@ -520,6 +541,7 @@ function* DashboardSaga() {
   yield takeLatest(Action.CREATE_NEW_JD_SCHEDULE, createNewJdScheduleSaga);
   yield takeLatest(Action.CREATE_CORPORATE_VARIANT, createCorporateFormSaga);
   yield takeLatest(Action.GET_KNOWLEDGE_GROUP_VARIANT_DETAILS, getKnowledgeGroupVariantDetailsSaga);
+  yield takeLatest(Action.STUDENT_CODE_SUBMISSION, postStudentCodeSubmissionSaga);
   yield takeLatest(Action.CLOSE_INTERVIEW, closeInterviewSaga);
 
 

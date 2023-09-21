@@ -8,5 +8,6 @@ export interface DropDownProps extends InputHeadingProps {
     value?: Option;
     disabled?: boolean;
     selected?: Option;
-    className?:string;
+    className?: string;
+    Class?: any
 }
