@@ -82,7 +82,7 @@ function FromJD() {
         const params = {
             sector_name: sector.value,
             position: position.value,
-            experience: fresherChecked ? '0' : slider1Value,
+            experience: fresherChecked ? '0' : experience.value,
             reference_link: portalUrl.value,
             jd: jd.value
         }
@@ -385,23 +385,23 @@ function FromJD() {
                                 disabled
                             />
                         ) : (
-                            <div>
-                                <div className="input-slider-container">
-                                    <div className="input-slider" id="slider1" />
-                                    <div className="mt-3 row">
-                                        <div className={'col-xs-6'}>
-                                            <span className="range-slider-value">{slider1Value}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            // <Input
-                            //     heading={'Years of experience'}
-                            //     type={'number'}
-                            //     placeHolder={'Experience'}
-                            //     value={experience.value}
-                            //     onChange={experience.onChange}
-                            // />
+                            // <div>
+                            //     <div className="input-slider-container">
+                            //         <div className="input-slider" id="slider1" />
+                            //         <div className="mt-3 row">
+                            //             <div className={'col-xs-6'}>
+                            //                 <span className="range-slider-value">{slider1Value}</span>
+                            //             </div>
+                            //         </div>
+                            //     </div>
+                            // </div>
+                            <Input
+                                heading={'Years of experience'}
+                                type={'number'}
+                                placeHolder={'Experience'}
+                                value={experience.value}
+                                onChange={experience.onChange}
+                            />
                         )}
                     </div>
 
