@@ -21,7 +21,6 @@ function Image({ variant = 'default', className, alt, size, tintColor, ...rest }
         return styles;
     }
 
-    console.log(tintColor + '====tintColor');
 
 
     return (

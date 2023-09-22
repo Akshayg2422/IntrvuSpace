@@ -177,8 +177,6 @@ function FromJD() {
             onClick={addJdModal.show}
         />
     );
-    // const experienceValue = 1.0;
-    // const experienceRange = { min: 1.0, max: 20.0 };
 
     return (
         <>
