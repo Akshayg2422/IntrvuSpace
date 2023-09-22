@@ -85,11 +85,11 @@ function CallHeader({ webcam, mic, onMicChange, onWebCamChange, onEndClick, onEn
                     <Button text={"End Interview"} onClick={endInterviewModal.show} />
                 </div>
             </div>
-            <Modal isOpen={endInterviewModal.visible} onClose={endInterviewModal.hide}>
-                <h4 className={'mt--4'}>Are you sure you want to end the interview? Once you end it, you cannot rejoin.</h4>
-                <div className={'d-flex justify-content-end'}>
-                <Button color={'secondary'} text={'Cancel'} size={'sm'} onClick={endInterviewModal.hide}/>
-                <Button text={'Proceed'} size={'sm'} onClick={onEndInterViewClick}/>
+            <Modal title={'End Interview'} isOpen={endInterviewModal.visible} onClose={endInterviewModal.hide}>
+                <div className={'mt--4'}>Are you sure you want to end the interview? Once you end it, you cannot rejoin.</div>
+                <div className={'d-flex justify-content-end mt-3'}>
+                    <Button color={'warning'} text={'Cancel'} size={'sm'} onClick={endInterviewModal.hide} />
+                    <Button text={'Proceed'} size={'sm'} onClick={onEndInterViewClick} />
                 </div>
             </Modal>
 

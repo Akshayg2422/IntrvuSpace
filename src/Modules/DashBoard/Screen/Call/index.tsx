@@ -1,4 +1,4 @@
-import { AnimatedImage, Button, DropDown, Spinner } from "@Components";
+import { AnimatedImage, Button, Spinner } from "@Components";
 import {
   useDropDown,
   useDynamicHeight,
@@ -8,15 +8,10 @@ import {
 } from "@Hooks";
 import {
   CallHeader,
-  CodeEditor,
   ContentRenderer,
-  FileUploader,
-  FlowDiagram,
-  Guidelines,
-  QuestionAndChoices,
-  QuestionWithMultipleChoices,
+  Guidelines
 } from "@Modules";
-import { getScheduleBasicInfo, closeInterview } from "@Redux";
+import { closeInterview, getScheduleBasicInfo } from "@Redux";
 import { capitalizeFirstLetter, getShortName } from "@Utils";
 import type { Harker } from "hark";
 import type { Encoder } from "lamejs";
@@ -652,24 +647,24 @@ function Call() {
 
   function webCamHandler() {
     setShowCam((prevWebcam) => {
-        if (prevWebcam === true) {
-            closeWebcam();
-        }
-        return !prevWebcam;
+      if (prevWebcam === true) {
+        closeWebcam();
+      }
+      return !prevWebcam;
     });
-}
+  }
 
-// Function to close the laptop camera
+  // Function to close the laptop camera
 
-function closeWebcam() {
+  function closeWebcam() {
     if (stream.current) {
-        stream.current.getTracks().forEach((track) => {
-            if (track.kind === 'video') {
-                track.stop(); // Stop the video track
-            }
-        });
+      stream.current.getTracks().forEach((track) => {
+        if (track.kind === 'video') {
+          track.stop(); // Stop the video track
+        }
+      });
     }
-}
+  }
 
   function micMuteHandler() {
     mutedRef.current = !mute;
@@ -696,6 +691,9 @@ function closeWebcam() {
   }
 
   function closeInterviewAPiHandler() {
+
+    console.log(closeInterviewAPiHandler + "====onEndInterViewClick");
+
     const params = { schedule_id: schedule_id };
     dispatch(
       closeInterview({
@@ -703,7 +701,7 @@ function closeWebcam() {
         onSuccess: () => () => {
           endInterviewHandler();
         },
-        onError: () => () => {},
+        onError: () => () => { },
       })
     );
   }
@@ -729,12 +727,12 @@ function closeWebcam() {
         backgroundColor: !interviewStarted
           ? "#FFFFFF"
           : filter.value.id === "HTML"
-          ? "#FFFFFF"
-          : filter.value.id === "GEN_FLOW"
-          ? "#F8F9FA"
-          : themeColor
-          ? "#1E1E1E"
-          : "#ffffff",
+            ? "#FFFFFF"
+            : filter.value.id === "GEN_FLOW"
+              ? "#F8F9FA"
+              : themeColor
+                ? "#1E1E1E"
+                : "#ffffff",
       }}
     >
       {scheduleInfo && (
@@ -789,6 +787,7 @@ function closeWebcam() {
                   onWebCamChange={webCamHandler}
                   onMicChange={micMuteHandler}
                   onEndClick={endInterviewHandler}
+                  onEndInterViewClick={closeInterviewAPiHandler}
                 />
               </div>
             </div>
@@ -842,13 +841,12 @@ function closeWebcam() {
                         }}
                       >
                         <h4
-                          className={`${
-                            filter.value.id === "CODE_HTML"
-                              ? "text-dark"
-                              : themeColor
+                          className={`${filter.value.id === "CODE_HTML"
+                            ? "text-dark"
+                            : themeColor
                               ? "text-white"
                               : "text-dark"
-                          }`}
+                            }`}
                         >
                           {capitalizeFirstLetter(
                             scheduleInfo?.interviewee_name
@@ -870,6 +868,7 @@ function closeWebcam() {
                     onWebCamChange={webCamHandler}
                     onMicChange={micMuteHandler}
                     onEndClick={endInterviewHandler}
+                    onEndInterViewClick={closeInterviewAPiHandler}
                   />
                 </div>
               </div>
