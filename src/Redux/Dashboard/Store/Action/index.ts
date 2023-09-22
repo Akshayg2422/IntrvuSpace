@@ -710,8 +710,39 @@ export const getKnowledgeGroupVariantDetailsFailure = (error: any) => {
 
 
 /**
- * close interview
+ * student code submission
  */
+
+export const postStudentCodeSubmission = (params: any) => {
+  return {
+    type: ActionTypes.STUDENT_CODE_SUBMISSION,
+    payload: params,
+  };
+};
+
+export const postStudentCodeSubmissionSuccess = (response: any) => {
+  return {
+    type: ActionTypes.STUDENT_CODE_SUBMISSION_SUCCESS,
+    payload: response,
+  };
+};
+
+export const postStudentCodeSubmissionFailure = (response: any) => {
+  return {
+    type: ActionTypes.STUDENT_CODE_SUBMISSION_FAILURE,
+    payload: response,
+  };
+};
+
+// settingCodeOutputData
+export const settingCodeOutputData = (response: any) => {
+  return {
+    type: ActionTypes.SETTING_CODE_OUTPUT_DATA,
+    payload: response,
+  };
+};
+ {/* close interview
+*/}
 
 export const closeInterview = (params: any) => {
   return {
@@ -731,5 +762,15 @@ export const closeInterviewFailure = (error: any) => {
   return {
     type: ActionTypes.CLOSE_INTERVIEW_FAILURE,
     payload: error
+  }
+}
+
+// setting Selected Section Id
+
+export const settingSelectedSectionId = (response: any) => {
+
+  return {
+    type: ActionTypes.SETTING_SELECTED_SECTION_ID,
+    payload: response
   }
 }

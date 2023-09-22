@@ -1,13 +1,14 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { Button, Card, Divider, Modal, TextArea, Input, showToast, Spinner, Checkbox } from '@Components';
+import { Button, Card, Divider, Modal, TextArea, Input, showToast, Spinner, Checkbox, SliderComponent } from '@Components';
 import { createNewJdSchedule, getJdItemList, postJdVariant, selectedScheduleId } from '@Redux';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useInput, useNavigation, useModal } from '@Hooks';
 import { AnalyzingAnimation, GenerateModal, UploadJdCard } from '@Modules';
 import { ROUTES } from '@Routes';
 import { validate, FROM_JD_RULES, ifObjectExist, getValidateError } from '@Utils';
 import { icons } from '@Assets';
+import Slider from "nouislider";
 
 
 function FromJD() {
@@ -37,10 +38,26 @@ function FromJD() {
 
 
     const [jdDescriptionError, setJdDescriptionError] = useState<any>(undefined)
+    const [slider1Value, setSlider1Value] = useState("1");
 
     useEffect(() => {
         getKnowledgeGroupFromJdHandler();
     }, [])
+    useEffect(() => {
+        const slider1 = document.getElementById("slider1");
+
+        if (slider1) {
+            Slider.create(slider1, {
+                start: [1],
+                connect: [true, false],
+                step: 0.01,
+                range: { min: 1.0, max: 100.0 },
+            }).on("update", (values, handle) => {
+                const valueWithoutDecimal = parseInt(values[0] as string); // Remove decimal places
+                setSlider1Value(valueWithoutDecimal.toString());
+            });
+        }
+    }, []);
 
 
 
@@ -312,7 +329,6 @@ function FromJD() {
                                                                 </div>
                                                                 <Divider className={'row'} space={"3"} />
                                                             </div>
-
                                                         )
                                                     })
                                                 }
@@ -356,6 +372,7 @@ function FromJD() {
                         }} />
                     </span>
 
+
                     <div className={'col-6'}>
                         {fresherChecked ? (
                             <Input
@@ -366,6 +383,16 @@ function FromJD() {
                                 disabled
                             />
                         ) : (
+                            // <div>
+                            //     <div className="input-slider-container">
+                            //         <div className="input-slider" id="slider1" />
+                            //         <div className="mt-3 row">
+                            //             <div className={'col-xs-6'}>
+                            //                 <span className="range-slider-value">{slider1Value}</span>
+                            //             </div>
+                            //         </div>
+                            //     </div>
+                            // </div>
                             <Input
                                 heading={'Years of experience'}
                                 type={'number'}

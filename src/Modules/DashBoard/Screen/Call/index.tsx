@@ -1,772 +1,911 @@
-import { AnimatedImage, Button, Spinner } from '@Components';
-import { useLoader, useModal, useNavigation } from '@Hooks';
-import { CallHeader, Guidelines } from '@Modules';
-import { getScheduleBasicInfo, closeInterview } from '@Redux';
-import { capitalizeFirstLetter, getShortName } from '@Utils';
-import type { Harker } from 'hark';
-import type { Encoder } from 'lamejs';
-import moment from 'moment';
-import { useEffect, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
-import { RecordRTCPromisesHandler, StereoAudioRecorder } from 'recordrtc';
-import { useScreenRecorder } from './useScreenRecorder';
-const compare_moment_format = 'YYYY-MM-DDHH:mm:ss';
+import { AnimatedImage, Button, Spinner } from "@Components";
+import {
+  useDropDown,
+  useDynamicHeight,
+  useLoader,
+  useModal,
+  useNavigation,
+} from "@Hooks";
+import {
+  CallHeader,
+  ContentRenderer,
+  Guidelines
+} from "@Modules";
+import { closeInterview, getScheduleBasicInfo } from "@Redux";
+import { capitalizeFirstLetter, getShortName } from "@Utils";
+import type { Harker } from "hark";
+import type { Encoder } from "lamejs";
+import moment from "moment";
+import { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { RecordRTCPromisesHandler, StereoAudioRecorder } from "recordrtc";
+import { useScreenRecorder } from "./useScreenRecorder";
+const compare_moment_format = "YYYY-MM-DDHH:mm:ss";
 
+const GUIDELINES = [
+  "Kindly ensure the use of headphones to optimize audio quality.",
+  "Find a quiet and secluded space to minimize background noise and distractions.",
+  "Verify the stability of your internet connection to ensure uninterrupted communication.",
+  "Keep the video function enabled throughout the session for effective interaction.",
+  " We appreciate clear and succinct responses during the conversation.",
+];
 
+const CHOICE_TYPE = [
+  { id: "DEFAULT", text: "DEFAULT" },
+  { id: "CODE_JS", text: "CODE_JS", color: "black" },
+  { id: "CODE_PY", text: "CODE_PY", color: "black" },
+  { id: "CODE_HTML", text: "CODE_HTML", color: "orange" },
+  { id: "GEN_FLOW", text: "GEN_FLOW", color: "red" },
+  { id: "GEN_CHOICE", text: "GEN_CHOICE", color: "gray" },
+  { id: "GEN_CHOICE_MULTI", text: "GEN_CHOICE_MULTI" },
+  { id: "FILE_IMG", text: "FILE_IMG" },
+  { id: "FILE_ALL", text: "FILE_ALL" },
+];
 
-
-const GUIDELINES =
-    ["Kindly ensure the use of headphones to optimize audio quality.",
-        "Find a quiet and secluded space to minimize background noise and distractions.",
-        "Verify the stability of your internet connection to ensure uninterrupted communication.",
-        "Keep the video function enabled throughout the session for effective interaction.",
-        " We appreciate clear and succinct responses during the conversation."]
+const questions = {
+  question: "What is your favorite programming language?",
+  choices: ["JavaScript", "Python", "Java", "C#", "Ruby"],
+};
 
 function Call() {
+  const { startScreenRecording } = useScreenRecorder();
 
-    const {
-        startScreenRecording,
+  const speakingShouldProcess = useRef<any>(false);
 
-    } = useScreenRecorder();
+  const chunks = useRef<Blob[]>([]);
+  const encoder = useRef<Encoder>();
+  const listener = useRef<Harker>();
+  const recorderAudio = useRef<RecordRTCPromisesHandler>();
+  // const recorderAudio = useRef<RecordRTCPromisesHandler>()
 
+  const stream = useRef<MediaStream>();
+  const timeout = useRef<any>({});
+  const mapIdRef = useRef<any>();
 
-    const speakingShouldProcess = useRef<any>(false);
+  const [recording, setRecording] = useState<boolean>(false);
+  const [speaking, setSpeaking] = useState<boolean>(false);
+  const [transcribing, setTranscribing] = useState<boolean>(false);
+  const lastSpokeActiveTime = useRef<any>(
+    moment().format(compare_moment_format)
+  );
+  const [lastTranscriptionStartTime, setLastTranscriptionStartTime] =
+    useState<any>(moment().format(compare_moment_format));
+  const [lastTranscriptionEndTime, setLastTranscriptionEndTime] = useState<any>(
+    moment().format(compare_moment_format)
+  );
 
-    const chunks = useRef<Blob[]>([])
-    const encoder = useRef<Encoder>()
-    const listener = useRef<Harker>()
-    const recorderAudio = useRef<RecordRTCPromisesHandler>()
-    // const recorderAudio = useRef<RecordRTCPromisesHandler>()
+  const [interviewStarted, setInterviewStarted] = useState<boolean>(false);
 
-    const stream = useRef<MediaStream>()
-    const timeout = useRef<any>({})
-    const mapIdRef = useRef<any>()
+  const [voiceUp, setVoiceUp] = useState<boolean>(false);
+  const voiceUpCount = useRef<any>(0);
+  const voiceUpTime = useRef<any>(moment());
+  const startStreamTime = useRef<any>();
 
-    const [recording, setRecording] = useState<boolean>(false)
-    const [speaking, setSpeaking] = useState<boolean>(false)
-    const [transcribing, setTranscribing] = useState<boolean>(false)
-    const lastSpokeActiveTime = useRef<any>(moment().format(compare_moment_format))
-    const [lastTranscriptionStartTime, setLastTranscriptionStartTime] = useState<any>(moment().format(compare_moment_format))
-    const [lastTranscriptionEndTime, setLastTranscriptionEndTime] = useState<any>(moment().format(compare_moment_format))
+  const intitalRequestSent = useRef<any>(false);
 
-    const [interviewStarted, setInterviewStarted] = useState<boolean>(false)
+  const transcriptionReferenceId = useRef<any>();
+  const audioElementRef = useRef<any>();
+  const mutedRef = useRef<any>(false);
+  const activeResponseTextId = useRef<any>(generateRandomID());
+  // const { isTtfSpeaking, speak } = useTextToSpeech();
+  const ambianceVolume = useRef<any>(65);
+  const decibleCollection = useRef<any>([]);
+  const closeCall = useRef<any>(false);
+  const [isTtfSpeaking, setIsTtfSpeaking] = useState<boolean>(false);
 
-    const [voiceUp, setVoiceUp] = useState<boolean>(false)
-    const voiceUpCount = useRef<any>(0);
-    const voiceUpTime = useRef<any>(moment());
-    const startStreamTime = useRef<any>();
+  const [themeColor, setThemeColor] = useState<boolean>(true);
 
-    const intitalRequestSent = useRef<any>(false);
+  let dynamicHeight: any = useDynamicHeight();
 
-    const transcriptionReferenceId = useRef<any>();
-    const audioElementRef = useRef<any>();
-    const mutedRef = useRef<any>(false);
-    const activeResponseTextId = useRef<any>();
-    // const { isTtfSpeaking, speak } = useTextToSpeech();
-    const ambianceVolume = useRef<any>(65);
-    const decibleCollection = useRef<any>([]);
-    const isVoiceUpCurrentChunk = useRef<any>(false);
+  // dropdown to select ide, flow chart etc
+  const filter = useDropDown(CHOICE_TYPE[0]);
 
-    const closeCall = useRef<any>(false);
-    const [isTtfSpeaking, setIsTtfSpeaking] = useState<boolean>(false)
+  // gen_choice
 
+  const [selectedChoices, setSelectedChoices] = useState({});
 
-    function generateRandomID() {
-        const min = 100000;
-        const max = 999999;
-        const randomID = Math.floor(Math.random() * (max - min + 1)) + min;
-        console.log("resss01", randomID)
-        return randomID;
+  //gen_choice_multi
 
+  const [selectedMultiChoices, setSelectedMultiChoices] = useState({});
+
+  // file_all and file_img
+
+  const [uploadedFile, setUploadedFile] = useState<any>([]);
+
+  function generateRandomID() {
+    const min = 100000;
+    const max = 999999;
+    const randomID = Math.floor(Math.random() * (max - min + 1)) + min;
+    return randomID;
+  }
+
+  const speak = (ttsBase64) => {
+    setIsTtfSpeaking(true);
+
+    const ttsData = Array.from(atob(ttsBase64));
+    const audioBlob = new Blob(
+      [new Uint8Array(ttsData.map((char) => char.charCodeAt(0)))],
+      { type: "audio/wav" }
+    );
+
+    if (audioElementRef.current && !audioElementRef.current.paused) {
+      audioElementRef.current.pause();
+      audioElementRef.current.currentTime = 0;
     }
 
-    const speak = (ttsBase64) => {
-
-        setIsTtfSpeaking(true)
-
-        const ttsData = Array.from(atob(ttsBase64));
-        const audioBlob = new Blob([new Uint8Array(ttsData.map(char => char.charCodeAt(0)))], { type: 'audio/wav' });
-
-        if (audioElementRef.current && !audioElementRef.current.paused) {
-            audioElementRef.current.pause();
-            audioElementRef.current.currentTime = 0;
-        }
-
-        // Create an audio element and play the received TTS audio
-        audioElementRef.current = new Audio(URL.createObjectURL(audioBlob));
-        audioElementRef.current.onerror = function (event) {
-            console.error("Audio An error occurred:", event);
-            setIsTtfSpeaking(false)
-        };
-
-        audioElementRef.current.onloadstart = function () {
-            console.log("Audio playback started.");
-        };
-        audioElementRef.current.onended = function () {
-            console.log("Audio playback ended.");
-            setIsTtfSpeaking(false)
-            if (closeCall.current === true) {
-                proceedStopListening()
-                setButtonConditional('end')
-                getBasicInfo();
-                window.location.reload();
-            }
-        };
-        audioElementRef.current.play();
-
-    }
-
-    function onEndCallHandler() {
-        proceedStopListening()
-        setButtonConditional('end')
-        getBasicInfo();
-        window.location.reload();
-    }
-
-    const activeResponseText = useRef<any>('start');
-    // const [activeResponseText, setActiveResponseText] = useState('start');
-
-    // const [activeResponseTextId, setActiveResponseTextId] = useState<any>(generateRandomID());
-    const lastTranscribedText = useRef<any>('');
-
-    const { goBack, goTo } = useNavigation();
-    const dispatch = useDispatch()
-    let { schedule_id } = useParams()
-    let callModel = useModal(true)
-    const { scheduleInfo, recordingPermission } = useSelector((state: any) => state.DashboardReducer)
-    const [processCallInprogress, setProcessCallInprogress] = useState(false)
-    const responseDelayTimeOutRef = useRef<any>(undefined)
-    const [isRecording, setIsRecording] = useState(false)
-    const [buttonConditional, setButtonConditional] = useState<any>('start')
-    const [errorType1, setErrorType1] = useState('')
-
-    const accumulatedBlobs = useRef<any>([]);
-
-    // const { startScreenRecording, stopScreenRecording, isScreenRecording } = useScreenRecorder();
-
-    const socketRef = useRef<any>(null);
-    const videoRecorderRef = useRef(null);
-
-    const proceedHandleResponseV1 = (response) => {
-        setProcessCallInprogress(false)
-        // console.log("SpeakText01", response)
-        const { data, rt, uu_action, mapId } = response.next_step[0]
-        if (data && data !== '' && window.location.pathname === `/interview/${schedule_id}`) {
-            console.log("resss011")
-            resetLastMessage()
-            speak(data);
-            mapIdRef.current = mapId
-        }
-
-        if (uu_action === "INTERVIEWER_END_CALL") {
-            closeCall.current = true
-        }
-    }
-
-
-    useEffect(() => {
-        // Create the WebSocket connection only if it's not already established
-        if (!socketRef.current) {
-            // const socket = new WebSocket('ws://localhost:8012/aaa');
-            const socket = new WebSocket('wss://mockeazyprimary.leorainfotech.in/aaa');
-
-            socketRef.current = socket; // Store the WebSocket instance in the ref
-
-            socket.addEventListener('open', () => {
-                console.log('WebSocket connection established===========================');
-
-            });
-
-            socket.addEventListener('close', () => {
-                console.log('WebSocket connection closed');
-            });
-
-            // Listen for messages
-            socket.onmessage = event => {
-                console.log("Received001")
-                const response = JSON.parse(event.data);
-                proceedHandleResponseV1(response)
-                // Handle the response data here
-                console.log('Received002:', response);
-            };
-        }
-
-        // Clean up the WebSocket connection when the component unmounts
-        return () => {
-            if (socketRef.current) {
-                socketRef.current.close();
-                socketRef.current = null;
-            }
-        };
-    }, []);
-
-    const sendDataToSocket = async (blob: Blob, is_voiceup_current_chunk_state: Boolean) => {
-
-        const syncD = {
-            timestamp: moment(),
-            schedule_id: schedule_id,
-            is_muted: mutedRef.current,
-            is_speaking: speakingShouldProcess.current,
-            is_tts_speaking: ttsRef.current,
-            map_id: intitalRequestSent.current === false ? '1' : mapIdRef.current,
-            ie_interaction_chunk_ref_id: activeResponseTextId.current,
-            waiting_start_time: intitalRequestSent.current === false ? true : false,
-            is_voiceup_current_chunk_state: is_voiceup_current_chunk_state,
-            proceed_refresh: !intitalRequestSent.current,
-            blob_data: "",
-        }
-
-        if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
-            if (intitalRequestSent.current === false) {
-                console.log("sentrrrrra1", JSON.stringify(syncD))
-                socketRef.current.send(JSON.stringify(syncD));
-                intitalRequestSent.current = true
-
-            }
-            else if (startStreamTime.current && moment() > startStreamTime.current) {
-                if (encoder.current && recorderAudio.current) {
-                    const buffer = await blob.arrayBuffer()
-                    const mp3 = encoder.current.encodeBuffer(new Int16Array(buffer))
-                    if (mp3.byteLength > 225) {
-
-                        const file = new File([blob], 'speech.wav', { type: 'audio/wav' })
-
-                        const reader = new FileReader();
-                        reader.onload = () => {
-
-                            if (typeof reader.result === 'string') {
-                                const base64String = reader.result.split(',')[1]; // Extract the base64 part
-                                socketRef.current.send(JSON.stringify({ ...syncD, blob_data: base64String }));
-                            }
-                            else {
-                                // console.log("t0000000000000000000015")
-                            }
-                        }
-                        reader.readAsDataURL(file);
-                    }
-                    else {
-
-
-                    }
-                }
-
-            }
-
-        } else {
-            console.log('WebSocket connection is not open.');
-        }
+    // Create an audio element and play the received TTS audio
+    audioElementRef.current = new Audio(URL.createObjectURL(audioBlob));
+    audioElementRef.current.onerror = function (event) {
+      console.error("Audio An error occurred:", event);
+      setIsTtfSpeaking(false);
     };
 
+    audioElementRef.current.onloadstart = function () {
+      console.log("Audio playback started.");
+    };
+    audioElementRef.current.onended = function () {
+      console.log("Audio playback ended.");
+      setIsTtfSpeaking(false);
+      if (closeCall.current === true) {
+        proceedStopListening();
+        setButtonConditional("end");
+        getBasicInfo();
+        window.location.reload();
+      }
+    };
+    audioElementRef.current.play();
+  };
 
+  function onEndCallHandler() {
+    proceedStopListening();
+    setButtonConditional("end");
+    getBasicInfo();
+    window.location.reload();
+  }
 
+  const activeResponseText = useRef<any>("start");
+  // const [activeResponseText, setActiveResponseText] = useState('start');
 
-    /**
-     * state jayFromJD
-     */
+  // const [activeResponseTextId, setActiveResponseTextId] = useState<any>(generateRandomID());
+  const lastTranscribedText = useRef<any>("");
 
-    const loader = useLoader(false);
-    const proceedCallLoader = useLoader(false);
-    const [showCam, setShowCam] = useState(true);
-    const [mute, setMute] = useState(false);
-    const ttsRef = useRef<any>(false);
+  const { goBack, goTo } = useNavigation();
+  const dispatch = useDispatch();
+  let { schedule_id } = useParams();
+  let callModel = useModal(true);
+  const { scheduleInfo, recordingPermission } = useSelector(
+    (state: any) => state.DashboardReducer
+  );
+  const [processCallInprogress, setProcessCallInprogress] = useState(false);
+  const responseDelayTimeOutRef = useRef<any>(undefined);
+  const [isRecording, setIsRecording] = useState(false);
+  const [buttonConditional, setButtonConditional] = useState<any>("start");
+  const [errorType1, setErrorType1] = useState("");
 
+  const accumulatedBlobs = useRef<any>([]);
 
-    /**
-     * Handle Speech To text Starts
-     */
+  // const { startScreenRecording, stopScreenRecording, isScreenRecording } = useScreenRecorder();
 
+  const socketRef = useRef<any>(null);
+  const videoRecorderRef = useRef(null);
 
-    useEffect(() => {
-        ttsRef.current = isTtfSpeaking
-        console.log("isTtfSpeakingisTtfSpeakingisTtfSpeaking", isTtfSpeaking)
-    }, [isTtfSpeaking])
-
-
-
-    useEffect(() => {
-        getBasicInfo()
-    }, [])
-
-
-    const getBasicInfo = () => {
-        const params = { schedule_id: schedule_id }
-
-        loader.show();
-        dispatch(
-            getScheduleBasicInfo(
-                {
-                    params,
-                    onSuccess: () => () => {
-                        loader.hide();
-                    },
-                    onError: () => () => {
-                        loader.hide();
-                    }
-                }
-            )
-        )
+  const proceedHandleResponseV1 = (response) => {
+    setProcessCallInprogress(false);
+    // console.log("SpeakText01", response)
+    const { data, rt, mapId } = response.next_step[0];
+    if (
+      data &&
+      data !== "" &&
+      window.location.pathname === `/interview/${schedule_id}`
+    ) {
+      resetLastMessage();
+      speak(data);
+      mapIdRef.current = mapId;
     }
 
-    useEffect(() => {
-        return () => {
-            if (chunks.current) {
-                chunks.current = []
-            }
-            if (encoder.current) {
-                encoder.current.flush()
-                encoder.current = undefined
-            }
-            if (recorderAudio.current) {
-                recorderAudio.current.destroy()
-                recorderAudio.current = undefined
-            }
-            if (listener.current) {
-                // @ts-ignore
-                listener.current.off('speaking', onStartSpeaking)
-                // @ts-ignore
-                listener.current.off('stopped_speaking', onStopSpeaking)
-            }
-            if (stream.current) {
-                stream.current.getTracks().forEach((track) => track.stop())
-                stream.current = undefined
-            }
+    if (rt === "INTERVIEWER_END_CALL") {
+      closeCall.current = true;
+    }
+  };
+
+  useEffect(() => {
+    // Create the WebSocket connection only if it's not already established
+    if (!socketRef.current) {
+      // const socket = new WebSocket('ws://192.168.218.204:8012/aaa');
+      const socket = new WebSocket(
+        "wss://mockeazyprimary.leorainfotech.in/aaa"
+      );
+
+      socketRef.current = socket; // Store the WebSocket instance in the ref
+
+      socket.addEventListener("open", () => {
+        console.log(
+          "WebSocket connection established==========================="
+        );
+      });
+
+      socket.addEventListener("close", () => {
+        console.log("WebSocket connection closed");
+      });
+
+      // Listen for messages
+      socket.onmessage = (event) => {
+        console.log("Received001");
+        const response = JSON.parse(event.data);
+        proceedHandleResponseV1(response);
+        // Handle the response data here
+        console.log("Received002:", response);
+      };
+    }
+
+    // Clean up the WebSocket connection when the component unmounts
+    return () => {
+      if (socketRef.current) {
+        socketRef.current.close();
+        socketRef.current = null;
+      }
+    };
+  }, []);
+
+  const sendDataToSocket = async (blob: Blob) => {
+    if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
+      console.log("sentrrrrr", mutedRef.current);
+      if (startStreamTime.current && moment() > startStreamTime.current) {
+        const buffer = await blob.arrayBuffer();
+        if (encoder.current && recorderAudio.current) {
+          const buffer = await blob.arrayBuffer();
+          const mp3 = encoder.current.encodeBuffer(new Int16Array(buffer));
+          if (mp3.byteLength > 225) {
+            const file = new File([blob], "speech.wav", { type: "audio/wav" });
+
+            const reader = new FileReader();
+            reader.onload = () => {
+              if (typeof reader.result === "string") {
+                const base64String = reader.result.split(",")[1]; // Extract the base64 part
+                const syncD = {
+                  timestamp: moment(),
+                  schedule_id: schedule_id,
+                  blob_data: base64String,
+                  is_muted: mutedRef.current,
+                  is_speaking: speakingShouldProcess.current,
+                  is_tts_speaking: ttsRef.current,
+                  map_id: mapIdRef.current,
+                };
+                socketRef.current.send(JSON.stringify(syncD));
+              } else {
+                // console.log("t0000000000000000000015")
+              }
+            };
+            reader.readAsDataURL(file);
+          } else {
+          }
         }
-    }, [])
-
-
-    function addToDecibleCollection(receivedData) {
-        decibleCollection.current.push(receivedData);
-        // if (decibleCollection.current.length > 30) {
-        //     decibleCollection.current.shift();
-        // }
-        // if (decibleCollection.current.length >= 25 and is) {
-        //    const lastIt = decibleCollection.current[decibleCollection.current.length -1]
-        //     const decibleCollectionIngorIngnoice =  decibleCollection.current.map((it)=>{
-        //         lastIt
-        //         decibleCollectionIngorIngnoice
-
-        //     })
-        // }
+      } else if (intitalRequestSent.current === false) {
+        console.log("sentrrrrr1");
+        intitalRequestSent.current = true;
+        const syncD = {
+          timestamp: moment(),
+          schedule_id: schedule_id,
+          waiting_start_time: true,
+          is_speaking: speakingShouldProcess.current,
+          is_tts_speaking: ttsRef.current,
+          is_muted: mutedRef.current,
+          map_id: "1",
+        };
+        socketRef.current.send(JSON.stringify(syncD));
+      }
+    } else {
+      console.log("WebSocket connection is not open.");
     }
-
-    /**
-     * get user media stream event
-     * - try to stop all previous media streams
-     * - ask user for media stream with a system popup
-     * - register hark speaking detection listeners
-     */
-    const onStartStreaming = async () => {
-        try {
-            if (stream.current) {
-                stream.current.getTracks().forEach((track) => track.stop())
-            }
-            stream.current = await navigator.mediaDevices.getUserMedia({
-                audio: true,
-                video: true,
-            })
-            if (!listener.current) {
-                const { default: hark } = await import('hark')
-                listener.current = hark(stream.current, {
-                    interval: 100,
-                    play: false,
-                })
-                listener.current.on('speaking', onStartSpeaking)
-                listener.current.on('stopped_speaking', onStopSpeaking)
-                listener.current.on('volume_change', function (value) {
-                    // const voiceDetectionSaturation = ambianceVolume.current - 18
-                    const valueP = Math.abs(value)
-                    // console.log("voiceDetectionSaturation", voiceDetectionSaturation, valueP)
-
-                    // addToDecibleCollection(valueP)
-                    const currentDate = moment();
-                    // console.log("value", value)
-                    if (ttsRef.current) {
-                        voiceUpCount.current = 0
-                        speakingShouldProcess.current = false
-                        if (voiceUp === true)
-                            setVoiceUp(false)
-                    }
-                    else if (valueP < 49) {
-
-                        isVoiceUpCurrentChunk.current = true
-
-                        /**
-                         * extend waiting time if decibile is of talking size
-                         */
-                        if (currentDate < voiceUpTime.current) {
-                            voiceUpCount.current = voiceUpCount.current + 1
-                        }
-                        else {
-                            voiceUpCount.current = 0
-                        }
-
-                        const limitDateTime = currentDate.add(2, 'seconds');
-                        voiceUpTime.current = limitDateTime
-
-                        if (voiceUpCount.current > 2) {
-                            setVoiceUp(true)
-                            setErrorType1("")
-
-                            if (voiceUpCount.current === 3) {
-                                const lastSpokeActiveTimeTemp = moment().format(compare_moment_format)
-                                console.log("isUserDidntInterrupt last set value", lastSpokeActiveTimeTemp)
-                                lastSpokeActiveTime.current = lastSpokeActiveTimeTemp
-                            }
-                            speakingShouldProcess.current = true
-                        }
-                    }
-                    else {
-
-
-                        if (voiceUpCount.current == 2) {
-
-                            // const limitDateTime = currentDate.add(4, 'seconds');
-                            // voiceUpTime.current = limitDateTime
-                        }
-                        if (currentDate > voiceUpTime.current) {
-                            // console.log("voiceUpCount.currentaaav", voiceUpCount.current)
-                            setErrorType1("Please speak little louder, Your voice is low!")
-
-                            voiceUpCount.current = 0
-                            setVoiceUp(false)
-                            speakingShouldProcess.current = false
-                        }
-                    }
-
-                });
-            }
-        } catch (err) {
-            console.error(err)
-        }
-    }
-
-    /**
-     * start speech recording and start listen for speaking event
-     */
-    const startRecording = async () => {
-        try {
-            if (!stream.current) {
-                await onStartStreaming()
-            }
-            if (stream.current) {
-                if (!recorderAudio.current) {
-                    const videoElement = videoRecorderRef.current;
-
-
-                    // const recorderConfig: Options = {
-                    //     mimeType: 'video/webm',
-                    //     type: 'video',
-                    //     recorderType: MediaStreamRecorder,
-                    //     timeSlice: 500,
-                    //     canvas: {
-                    //         width: 640,
-                    //         height: 480
-                    //     },
-                    //     sampleRate: 44100,
-                    //     bufferSize: 16384,
-                    //     numberOfAudioChannels: 2,
-                    //     frameRate: 12,
-                    //     video: videoElement,
-
-                    //     // bitrate: 64000,
-                    //     elementClass: 'multi-streams-mixer',
-                    //     ondataavailable: onDataAvailable,
-                    // }
-
-                    recorderAudio.current = new RecordRTCPromisesHandler(
-                        stream.current,
-                        {
-                            mimeType: 'audio/webm',
-                            type: 'audio',
-                            timeSlice: 500,
-                            recorderType: StereoAudioRecorder,
-                            ondataavailable: onDataAvailable,
-                            sampleRate: 44100,
-                            desiredSampRate: 16000,
-                            numberOfAudioChannels: 1,
-                        }
-                    )
-                }
-                if (!encoder.current) {
-                    const { Mp3Encoder } = await import('lamejs')
-                    encoder.current = new Mp3Encoder(1, 44100, 96)
-                }
-                const recordState = await recorderAudio.current.getState()
-                if (recordState === 'inactive' || recordState === 'stopped') {
-                    await recorderAudio.current.startRecording()
-                }
-                if (recordState === 'paused') {
-                    await recorderAudio.current.resumeRecording()
-                }
-                setRecording(true)
-            }
-        } catch (err) {
-            console.error(err)
-        }
-    }
-
-    /**
-     * pause speech recording also stop media stream
-     */
-    const pauseRecording = async () => {
-        try {
-            if (recorderAudio.current) {
-                const recordState = await recorderAudio.current.getState()
-                if (recordState === 'recording') {
-                    await recorderAudio.current.pauseRecording()
-                }
-                setRecording(false)
-            }
-        } catch (err) {
-            console.error(err)
-        }
-    }
-
-    /**
-     * stop speech recording and start the transcription
-     */
-    const stopRecording = async () => {
-        try {
-            if (recorderAudio.current) {
-                const recordState = await recorderAudio.current.getState()
-                if (recordState === 'recording' || recordState === 'paused') {
-                    await recorderAudio.current.stopRecording()
-                }
-                onStopStreaming()
-                setRecording(false)
-
-                await recorderAudio.current.destroy()
-                chunks.current = []
-                if (encoder.current) {
-                    encoder.current.flush()
-                    encoder.current = undefined
-                }
-                recorderAudio.current = undefined
-            }
-        } catch (err) {
-            console.error(err)
-        }
-    }
-
-
-    const onStartSpeaking = () => {
-        console.log('start speaking')
-        setSpeaking(true)
-    }
-
-    const onStopSpeaking = () => {
-        console.log('stop speaking')
-        setSpeaking(false)
-    }
-
-
-
-    /**
-     * stop media stream event
-     * - remove hark speaking detection listeners
-     * - stop all media stream tracks
-     * - clear media stream from ref
-     */
-    const onStopStreaming = () => {
-        if (listener.current) {
-            // @ts-ignore
-            listener.current.off('speaking', onStartSpeaking)
-            // @ts-ignore
-            listener.current.off('stopped_speaking', onStopSpeaking)
-            listener.current = undefined
-        }
-        if (stream.current) {
-            stream.current.getTracks().forEach((track) => track.stop())
-            stream.current = undefined
-        }
-    }
-
-
-    const onDataAvailable = async (blob: Blob) => {
-        // console.log("receivedddassss", blob)
-        // console.log("receivedddassssa", blob)
-
-        // const d = {'time':moment(), data:blob}
-
-
-        sendDataToSocket(blob, isVoiceUpCurrentChunk.current)
-        isVoiceUpCurrentChunk.current = false
-        // console.log("calledTTF Data Rec", ttsRef.current, speakingShouldProcess.current)
-
-        // if (!ttsRef.current && speakingShouldProcess.current === true) {
-        //     accumulatedBlobs.current.push(blob);
-        //     // processBlobAudio()
-        // }
-
-    }
-
-
-
-    const proceedStopListening = () => {
-        stopRecording()
-        setIsRecording(false)
-        // setCallState(CALL_STATE_TRANSCRIBING)
-        // lastCallState.current = CALL_STATE_TRANSCRIBING
-    }
-
-
-    const turnOnMicAndAudioRecording = () => {
-        if (!isRecording) {
-            startRecording()
-            setIsRecording(true)
-            setMute(false)
-        }
-
-    }
-    const validateProceedStartListening = async () => {
-        if (!isRecording) {
-            startRecording()
-            setIsRecording(true);
-            setMute(false);
-        }
-    }
-
-
-    const resetLastMessage = () => {
-        activeResponseText.current = '';
-        accumulatedBlobs.current = []
-        console.log("resss012")
-        const newid = generateRandomID()
-        activeResponseTextId.current = newid
-    }
-
-
-    function webCamHandler() {
-        setShowCam(!showCam)
-    }
-
-
-    function micMuteHandler() {
-        mutedRef.current = !mute
-        setMute(!mute)
-    }
-
-
-    function startInterviewHandler() {
-        startStreamTime.current = moment().add(1, 'seconds')
-        transcriptionReferenceId.current = generateRandomID()
-        // proceedgetChatDetailsApiHandler({ message: "start" }, transcriptionReferenceId.current)
-        setProcessCallInprogress(false)
-        console.log("resss0114")
-        resetLastMessage()
-        setInterviewStarted(true)
-        // setTimeout(() => {
-        validateProceedStartListening()
-        // }, 5000)
-    }
-
-    function endInterviewHandler() {
-        // isScreenRecording && stopScreenRecording();
-        closeCall.current = true
-        onEndCallHandler();
-        goBack();
-    }
-
-    function closeInterviewAPiHandler() {
-        const params = { schedule_id: schedule_id }
-        dispatch(
-            closeInterview(
-                {
-                    params,
-                    onSuccess: () => () => {
-                        endInterviewHandler();
-                    },
-                    onError: () => () => {
-
-                    }
-                }
-            )
-        )
-
-    }
-
-
-
-    const IV_SPEAKING = 1
-    const IV_IDLE = 2
-    const IV_PROCESSING = 3
-
-
-    const IE_SPEAKING = 1
-    const IE_IDLE = 2
-
-
-
-    const interviewee_state = voiceUp && !mute ? IE_SPEAKING : IE_IDLE
-
-    let interviewer_state = IV_IDLE
-
-    if (isTtfSpeaking)
-        interviewer_state = IV_SPEAKING
-    else if (!voiceUp && !mute)
-        interviewer_state = IV_PROCESSING
-
-
-    return (
-        <div className='h-100vh' style={{
-            backgroundColor: !interviewStarted ? "#FFFFF" : "#1B1B1B"
-        }}>
-            {scheduleInfo &&
-                <>
-                    {interviewStarted &&
-                        <div className='d-flex flex-column h-100'>
-                            <div className='col'>
-                                <div className='row h-100' ref={videoRecorderRef}>
-                                    <div className='col-sm-6 d-flex flex-column align-items-center justify-content-center'>
-                                        <AnimatedImage show={interviewer_state === IV_PROCESSING} name={getShortName(scheduleInfo?.interviewer_name)} shouldBlink={interviewer_state === IV_SPEAKING} />
-                                        <h3 className='display-3 mb-4 text-white mt-3'>{capitalizeFirstLetter(scheduleInfo?.interviewer_name)}</h3>
-                                    </div>
-                                    <div className='col-sm-6 d-flex flex-column align-items-center justify-content-center'>
-                                        <AnimatedImage show={false} showWebCam={showCam} name={getShortName(scheduleInfo?.interviewer_name)} shouldBlink={interviewee_state === IE_SPEAKING} />
-                                        <h3 className='display-3 mb-4 text-white mt-3'>{capitalizeFirstLetter(scheduleInfo?.interviewee_name)}</h3>
-                                    </div>
-
-                                </div>
-                            </div>
-                            <div className='row position-absolute bottom-0 right-0 left-0' style={{
-                                marginBottom: 50
-                            }}>
-                                <CallHeader webcam={showCam} mic={!mute} onWebCamChange={webCamHandler} onMicChange={micMuteHandler} onEndClick={endInterviewHandler} onEndInterViewClick={closeInterviewAPiHandler} />
-                            </div>
-                        </div >
-                    }
-                    {
-                        !interviewStarted ?
-                            <Guidelines
-                                guidelines={GUIDELINES}
-                                scheduleInfo={scheduleInfo}
-                                loading={proceedCallLoader.loader}
-                                heading={scheduleInfo?.interviewee_expected_designation}
-                                onClick={startInterviewHandler}
-                            />
-                            :
-                            <></>
-                    }
-
-                </>
+  };
+
+  /**
+   * state jayFromJD
+   */
+
+  const loader = useLoader(false);
+  const proceedCallLoader = useLoader(false);
+  const [showCam, setShowCam] = useState(true);
+  const [mute, setMute] = useState(false);
+  const ttsRef = useRef<any>(false);
+
+  /**
+   * Handle Speech To text Starts
+   */
+
+  useEffect(() => {
+    ttsRef.current = isTtfSpeaking;
+    console.log("isTtfSpeakingisTtfSpeakingisTtfSpeaking", isTtfSpeaking);
+  }, [isTtfSpeaking]);
+
+  useEffect(() => {
+    getBasicInfo();
+  }, []);
+
+  const getBasicInfo = () => {
+    const params = { schedule_id: schedule_id };
+
+    loader.show();
+    dispatch(
+      getScheduleBasicInfo({
+        params,
+        onSuccess: () => () => {
+          loader.hide();
+        },
+        onError: () => () => {
+          loader.hide();
+        },
+      })
+    );
+  };
+
+  useEffect(() => {
+    return () => {
+      if (chunks.current) {
+        chunks.current = [];
+      }
+      if (encoder.current) {
+        encoder.current.flush();
+        encoder.current = undefined;
+      }
+      if (recorderAudio.current) {
+        recorderAudio.current.destroy();
+        recorderAudio.current = undefined;
+      }
+      if (listener.current) {
+        // @ts-ignore
+        listener.current.off("speaking", onStartSpeaking);
+        // @ts-ignore
+        listener.current.off("stopped_speaking", onStopSpeaking);
+      }
+      if (stream.current) {
+        stream.current.getTracks().forEach((track) => track.stop());
+        stream.current = undefined;
+      }
+    };
+  }, []);
+
+  function addToDecibleCollection(receivedData) {
+    decibleCollection.current.push(receivedData);
+    // if (decibleCollection.current.length > 30) {
+    //     decibleCollection.current.shift();
+    // }
+    // if (decibleCollection.current.length >= 25 and is) {
+    //    const lastIt = decibleCollection.current[decibleCollection.current.length -1]
+    //     const decibleCollectionIngorIngnoice =  decibleCollection.current.map((it)=>{
+    //         lastIt
+    //         decibleCollectionIngorIngnoice
+
+    //     })
+    // }
+  }
+
+  /**
+   * get user media stream event
+   * - try to stop all previous media streams
+   * - ask user for media stream with a system popup
+   * - register hark speaking detection listeners
+   */
+  const onStartStreaming = async () => {
+    try {
+      if (stream.current) {
+        stream.current.getTracks().forEach((track) => track.stop());
+      }
+      stream.current = await navigator.mediaDevices.getUserMedia({
+        audio: true,
+        video: true,
+      });
+      if (!listener.current) {
+        const { default: hark } = await import("hark");
+        listener.current = hark(stream.current, {
+          interval: 100,
+          play: false,
+        });
+        listener.current.on("speaking", onStartSpeaking);
+        listener.current.on("stopped_speaking", onStopSpeaking);
+        listener.current.on("volume_change", function (value) {
+          // const voiceDetectionSaturation = ambianceVolume.current - 18
+          const valueP = Math.abs(value);
+          // console.log("voiceDetectionSaturation", voiceDetectionSaturation, valueP)
+
+          // addToDecibleCollection(valueP)
+          const currentDate = moment();
+          // console.log("value", value)
+          if (ttsRef.current) {
+            voiceUpCount.current = 0;
+            speakingShouldProcess.current = false;
+            if (voiceUp === true) setVoiceUp(false);
+          } else if (valueP < 49) {
+            /**
+             * extend waiting time if decibile is of talking size
+             */
+            if (currentDate < voiceUpTime.current) {
+              voiceUpCount.current = voiceUpCount.current + 1;
+            } else {
+              voiceUpCount.current = 0;
             }
 
-            {loader.loader && <div className='d-flex align-items-center justify-content-center h-100'><Spinner /></div>}
-            {
-                !loader.loader && !scheduleInfo &&
-                <div className='d-flex align-items-center justify-content-center h-100 '>
-                    <div className='text-center '>
-                        <h4 className="display-4 mb-0">Technical breakdown please try again</h4>
-                        <div className='my-3'></div>
-                        <Button text={'Try Again'} onClick={getBasicInfo} />
-                    </div>
+            const limitDateTime = currentDate.add(2, "seconds");
+            voiceUpTime.current = limitDateTime;
+
+            if (voiceUpCount.current > 2) {
+              setVoiceUp(true);
+              setErrorType1("");
+
+              if (voiceUpCount.current === 3) {
+                const lastSpokeActiveTimeTemp = moment().format(
+                  compare_moment_format
+                );
+                console.log(
+                  "isUserDidntInterrupt last set value",
+                  lastSpokeActiveTimeTemp
+                );
+                lastSpokeActiveTime.current = lastSpokeActiveTimeTemp;
+              }
+              speakingShouldProcess.current = true;
+            }
+          } else {
+            if (voiceUpCount.current == 2) {
+              // const limitDateTime = currentDate.add(4, 'seconds');
+              // voiceUpTime.current = limitDateTime
+            }
+            if (currentDate > voiceUpTime.current) {
+              // console.log("voiceUpCount.currentaaav", voiceUpCount.current)
+              setErrorType1("Please speak little louder, Your voice is low!");
+
+              voiceUpCount.current = 0;
+              setVoiceUp(false);
+              speakingShouldProcess.current = false;
+            }
+          }
+        });
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  /**
+   * start speech recording and start listen for speaking event
+   */
+  const startRecording = async () => {
+    try {
+      if (!stream.current) {
+        await onStartStreaming();
+      }
+      if (stream.current) {
+        if (!recorderAudio.current) {
+          const videoElement = videoRecorderRef.current;
+
+          // const recorderConfig: Options = {
+          //     mimeType: 'video/webm',
+          //     type: 'video',
+          //     recorderType: MediaStreamRecorder,
+          //     timeSlice: 500,
+          //     canvas: {
+          //         width: 640,
+          //         height: 480
+          //     },
+          //     sampleRate: 44100,
+          //     bufferSize: 16384,
+          //     numberOfAudioChannels: 2,
+          //     frameRate: 12,
+          //     video: videoElement,
+
+          //     // bitrate: 64000,
+          //     elementClass: 'multi-streams-mixer',
+          //     ondataavailable: onDataAvailable,
+          // }
+
+          recorderAudio.current = new RecordRTCPromisesHandler(stream.current, {
+            mimeType: "audio/webm",
+            type: "audio",
+            timeSlice: 500,
+            recorderType: StereoAudioRecorder,
+            ondataavailable: onDataAvailable,
+            sampleRate: 44100,
+            desiredSampRate: 16000,
+            numberOfAudioChannels: 1,
+          });
+        }
+        if (!encoder.current) {
+          const { Mp3Encoder } = await import("lamejs");
+          encoder.current = new Mp3Encoder(1, 44100, 96);
+        }
+        const recordState = await recorderAudio.current.getState();
+        if (recordState === "inactive" || recordState === "stopped") {
+          await recorderAudio.current.startRecording();
+        }
+        if (recordState === "paused") {
+          await recorderAudio.current.resumeRecording();
+        }
+        setRecording(true);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  /**
+   * pause speech recording also stop media stream
+   */
+  const pauseRecording = async () => {
+    try {
+      if (recorderAudio.current) {
+        const recordState = await recorderAudio.current.getState();
+        if (recordState === "recording") {
+          await recorderAudio.current.pauseRecording();
+        }
+        setRecording(false);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  /**
+   * stop speech recording and start the transcription
+   */
+  const stopRecording = async () => {
+    try {
+      if (recorderAudio.current) {
+        const recordState = await recorderAudio.current.getState();
+        if (recordState === "recording" || recordState === "paused") {
+          await recorderAudio.current.stopRecording();
+        }
+        onStopStreaming();
+        setRecording(false);
+
+        await recorderAudio.current.destroy();
+        chunks.current = [];
+        if (encoder.current) {
+          encoder.current.flush();
+          encoder.current = undefined;
+        }
+        recorderAudio.current = undefined;
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const onStartSpeaking = () => {
+    console.log("start speaking");
+    setSpeaking(true);
+  };
+
+  const onStopSpeaking = () => {
+    console.log("stop speaking");
+    setSpeaking(false);
+  };
+
+  /**
+   * stop media stream event
+   * - remove hark speaking detection listeners
+   * - stop all media stream tracks
+   * - clear media stream from ref
+   */
+  const onStopStreaming = () => {
+    if (listener.current) {
+      // @ts-ignore
+      listener.current.off("speaking", onStartSpeaking);
+      // @ts-ignore
+      listener.current.off("stopped_speaking", onStopSpeaking);
+      listener.current = undefined;
+    }
+    if (stream.current) {
+      stream.current.getTracks().forEach((track) => track.stop());
+      stream.current = undefined;
+    }
+  };
+
+  const onDataAvailable = async (blob: Blob) => {
+    // console.log("receivedddassss", blob)
+    // console.log("receivedddassssa", blob)
+
+    // const d = {'time':moment(), data:blob}
+
+    sendDataToSocket(blob);
+
+    // console.log("calledTTF Data Rec", ttsRef.current, speakingShouldProcess.current)
+
+    // if (!ttsRef.current && speakingShouldProcess.current === true) {
+    //     accumulatedBlobs.current.push(blob);
+    //     // processBlobAudio()
+    // }
+  };
+
+  const proceedStopListening = () => {
+    stopRecording();
+    setIsRecording(false);
+    // setCallState(CALL_STATE_TRANSCRIBING)
+    // lastCallState.current = CALL_STATE_TRANSCRIBING
+  };
+
+  const turnOnMicAndAudioRecording = () => {
+    if (!isRecording) {
+      startRecording();
+      setIsRecording(true);
+      setMute(false);
+    }
+  };
+  const validateProceedStartListening = async () => {
+    if (!isRecording) {
+      startRecording();
+      setIsRecording(true);
+      setMute(false);
+    }
+  };
+
+  const resetLastMessage = () => {
+    activeResponseText.current = "";
+    accumulatedBlobs.current = [];
+    const newid = generateRandomID();
+    activeResponseTextId.current = newid;
+  };
+
+  function webCamHandler() {
+    setShowCam((prevWebcam) => {
+      if (prevWebcam === true) {
+        closeWebcam();
+      }
+      return !prevWebcam;
+    });
+  }
+
+  // Function to close the laptop camera
+
+  function closeWebcam() {
+    if (stream.current) {
+      stream.current.getTracks().forEach((track) => {
+        if (track.kind === 'video') {
+          track.stop(); // Stop the video track
+        }
+      });
+    }
+  }
+
+  function micMuteHandler() {
+    mutedRef.current = !mute;
+    setMute(!mute);
+  }
+
+  function startInterviewHandler() {
+    startStreamTime.current = moment().add(1, "seconds");
+    transcriptionReferenceId.current = generateRandomID();
+    // proceedgetChatDetailsApiHandler({ message: "start" }, transcriptionReferenceId.current)
+    setProcessCallInprogress(false);
+    resetLastMessage();
+    setInterviewStarted(true);
+    // setTimeout(() => {
+    validateProceedStartListening();
+    // }, 5000)
+  }
+
+  function endInterviewHandler() {
+    // isScreenRecording && stopScreenRecording();
+    closeCall.current = true;
+    onEndCallHandler();
+    goBack();
+  }
+
+  function closeInterviewAPiHandler() {
+
+    console.log(closeInterviewAPiHandler + "====onEndInterViewClick");
+
+    const params = { schedule_id: schedule_id };
+    dispatch(
+      closeInterview({
+        params,
+        onSuccess: () => () => {
+          endInterviewHandler();
+        },
+        onError: () => () => { },
+      })
+    );
+  }
+
+  const IV_SPEAKING = 1;
+  const IV_IDLE = 2;
+  const IV_PROCESSING = 3;
+
+  const IE_SPEAKING = 1;
+  const IE_IDLE = 2;
+
+  let interviewer_state = IV_IDLE;
+
+  if (!isTtfSpeaking && !voiceUp) interviewer_state = IV_PROCESSING;
+  else if (!isTtfSpeaking) interviewer_state = IV_SPEAKING;
+
+  const interviewee_state = voiceUp ? IE_SPEAKING : IE_IDLE;
+
+  return (
+    <div
+      className="h-100vh"
+      style={{
+        backgroundColor: !interviewStarted
+          ? "#FFFFFF"
+          : filter.value.id === "HTML"
+            ? "#FFFFFF"
+            : filter.value.id === "GEN_FLOW"
+              ? "#F8F9FA"
+              : themeColor
+                ? "#1E1E1E"
+                : "#ffffff",
+      }}
+    >
+      {scheduleInfo && (
+        <>
+          {interviewStarted && filter.value.id === "DEFAULT" ? (
+            <div className="d-flex flex-column h-100 bg-dark">
+              {/** choice field to select the ide, image upload, flow diagram and choice field*/}
+              <div className="col-sm-3 float-right">
+                {/* <DropDown
+                  Class={"text-white"}
+                  heading={"Select Choice"}
+                  placeHolder="Select Choice"
+                  data={CHOICE_TYPE}
+                  selected={filter.value}
+                  onChange={(e) => filter.onChange(e)}
+                /> */}
+              </div>
+              <div className="col">
+                <div className="row" ref={videoRecorderRef}>
+                  <div className="col-sm-6 d-flex flex-column align-items-center justify-content-center">
+                    <AnimatedImage
+                      show={interviewer_state === IV_PROCESSING}
+                      name={getShortName(scheduleInfo?.interviewer_name)}
+                      shouldBlink={interviewer_state === IV_SPEAKING}
+                    />
+                    <h2 className=" mb-4 text-white mt-3">
+                      {capitalizeFirstLetter(scheduleInfo?.interviewer_name)}
+                    </h2>
+                  </div>
+                  <div className="col-sm-6 d-flex flex-column align-items-center justify-content-center">
+                    <AnimatedImage
+                      show={false}
+                      showWebCam={showCam}
+                      name={getShortName(scheduleInfo?.interviewer_name)}
+                      shouldBlink={interviewee_state === IV_SPEAKING}
+                    />
+                    <h2 className=" mb-4 text-white mt-3">
+                      {capitalizeFirstLetter(scheduleInfo?.interviewee_name)}
+                    </h2>
+                  </div>
                 </div>
-            }
-        </div >
-    )
+              </div>
+              <div
+                className="position-absolute  right-0 left-0"
+                style={{
+                  bottom: "40px",
+                }}
+              >
+                <CallHeader
+                  webcam={showCam}
+                  mic={mute}
+                  onWebCamChange={webCamHandler}
+                  onMicChange={micMuteHandler}
+                  onEndClick={endInterviewHandler}
+                  onEndInterViewClick={closeInterviewAPiHandler}
+                />
+              </div>
+            </div>
+          ) : (
+            interviewStarted &&
+            filter.value.id !== "DEFAULT" && (
+              <div className="d-flex flex-column h-100">
+                <div className="col">
+                  <div className="row" ref={videoRecorderRef}>
+
+                    {/** Select content like ide ---> JS, PY, HTML, flow diagram, file/ image upload, question and choice*/}
+
+                    <ContentRenderer
+                      filterContent={filter.value.id}
+                      questions={questions}
+                    />
+
+                    <div
+                      className="position-fixed"
+                      style={{
+                        bottom: filter.value.id === "DEFAULT" ? "0" : "37vh",
+                        right: filter.value.id === "DEFAULT" ? "0" : "-5vh",
+                      }}
+                    >
+                      <div className="linear webCam">
+                        <div className="col-sm-12 d-flex flex-column align-items-center justify-content-center ">
+                          <AnimatedImage
+                            show={false}
+                            showWebCam={showCam}
+                            name={getShortName(scheduleInfo?.interviewer_name)}
+                            shouldBlink={interviewee_state === IV_SPEAKING}
+                            isMuted={filter.value.id !== "DEFAULT"}
+                          />
+                          {filter.value.id === "DEFAULT" && (
+                            <h3 className="display-3 mb-4 text-white mt-3">
+                              {capitalizeFirstLetter(
+                                scheduleInfo?.interviewee_name
+                              )}
+                            </h3>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+
+                    {filter.value.id !== "DEFAULT" && (
+                      <div
+                        className=" position-fixed"
+                        style={{
+                          bottom: "-0.5vh",
+                          right: "3.5vh",
+                        }}
+                      >
+                        <h4
+                          className={`${filter.value.id === "CODE_HTML"
+                            ? "text-dark"
+                            : themeColor
+                              ? "text-white"
+                              : "text-dark"
+                            }`}
+                        >
+                          {capitalizeFirstLetter(
+                            scheduleInfo?.interviewee_name
+                          )}
+                        </h4>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div
+                  className="position-absolute bottom-0 right-0 left-0"
+                  style={{
+                    marginBottom: 50,
+                  }}
+                >
+                  <CallHeader
+                    webcam={showCam}
+                    mic={mute}
+                    onWebCamChange={webCamHandler}
+                    onMicChange={micMuteHandler}
+                    onEndClick={endInterviewHandler}
+                    onEndInterViewClick={closeInterviewAPiHandler}
+                  />
+                </div>
+              </div>
+            )
+          )}
+          {!interviewStarted ? (
+            <Guidelines
+              guidelines={GUIDELINES}
+              scheduleInfo={scheduleInfo}
+              loading={proceedCallLoader.loader}
+              heading={scheduleInfo?.interviewee_expected_designation}
+              onClick={startInterviewHandler}
+            />
+          ) : (
+            <></>
+          )}
+        </>
+      )}
+
+      {loader.loader && (
+        <div className="d-flex align-items-center justify-content-center h-100">
+          <Spinner />
+        </div>
+      )}
+      {!loader.loader && !scheduleInfo && (
+        <div className="d-flex align-items-center justify-content-center h-100 ">
+          <div className="text-center ">
+            <h4 className="display-4 mb-0">
+              Technical breakdown please try again
+            </h4>
+            <div className="my-3"></div>
+            <Button text={"Try Again"} onClick={getBasicInfo} />
+          </div>
+        </div>
+      )}
+    </div>
+  );
 }
 
 export { Call };
-
-
