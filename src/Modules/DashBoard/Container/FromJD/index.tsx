@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 const PLACE_HOLDER = {
     "sector": "Software, Banking...",
     "role": "Developer, Manager...",
-    "portal": " Naukri, LinkedIn...",
+    "portal": "Naukri, LinkedIn...",
     "jd": `Copy a Job Description from the Job portal(Naukri, LinkedIn...\n\n1.Visit the job portal of choice (e.g., Naukri.com) in your web browser.\n2.Search using keywords for a job listing that interests you.\n3.Click the job title to view the full description.\n4.Highlight, copy, and paste the text into your preferred application seamlessly.`
 }
 
