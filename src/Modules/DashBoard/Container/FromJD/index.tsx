@@ -1,12 +1,11 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { icons } from '@Assets';
-import { Button, Card, Checkbox, Divider, Input, Modal, Spinner, TextArea, showToast } from '@Components';
+import { Button, Card, Checkbox, Divider, Input, Modal, Spinner, TextArea, showToast, Sliders } from '@Components';
 import { useInput, useModal, useNavigation } from '@Hooks';
 import { AnalyzingAnimation, GenerateModal, UploadJdCard } from '@Modules';
 import { createNewJdSchedule, getJdItemList, postJdVariant, selectedScheduleId } from '@Redux';
 import { ROUTES } from '@Routes';
 import { FROM_JD_RULES, getValidateError, ifObjectExist, validate } from '@Utils';
-import Slider from "nouislider";
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -47,28 +46,11 @@ function FromJD() {
 
 
     const [jdDescriptionError, setJdDescriptionError] = useState<any>(undefined)
-    const [slider1Value, setSlider1Value] = useState("1");
+
 
     useEffect(() => {
         getKnowledgeGroupFromJdHandler();
     }, [])
-
-    useEffect(() => {
-        const slider1 = document.getElementById("slider1");
-
-        if (slider1) {
-            Slider.create(slider1, {
-                start: [1],
-                connect: [true, false],
-                step: 0.01,
-                range: { min: 1.0, max: 100.0 },
-            }).on("update", (values, handle) => {
-                const valueWithoutDecimal = parseInt(values[0] as string); // Remove decimal places
-                setSlider1Value(valueWithoutDecimal.toString());
-            });
-        }
-    }, []);
-
 
 
     const dispatch = useDispatch()
@@ -190,6 +172,8 @@ function FromJD() {
 
     return (
         <>
+            <Sliders />
+
             {loading ? <div className={'d-flex justify-content-center my-9 py-5'}><Spinner /></div> :
                 jdItem && jdItem.length > 0 ?
                     <div>
@@ -384,7 +368,7 @@ function FromJD() {
 
 
                     <div className={'col-6'}>
-                        {fresherChecked ? (
+                        {/* {fresherChecked ? (
                             <Input
                                 heading={'Years of experience'}
                                 type={'text'}
@@ -393,16 +377,6 @@ function FromJD() {
                                 disabled
                             />
                         ) : (
-                            // <div>
-                            //     <div className="input-slider-container">
-                            //         <div className="input-slider" id="slider1" />
-                            //         <div className="mt-3 row">
-                            //             <div className={'col-xs-6'}>
-                            //                 <span className="range-slider-value">{slider1Value}</span>
-                            //             </div>
-                            //         </div>
-                            //     </div>
-                            // </div>
                             <Input
                                 heading={'Years of experience'}
                                 type={'number'}
@@ -410,8 +384,9 @@ function FromJD() {
                                 value={experience.value}
                                 onChange={experience.onChange}
                             />
-                        )}
+                        )} */}
                     </div>
+
 
                     <div className={'col-6'}>
                         <Input
@@ -442,7 +417,7 @@ function FromJD() {
                     <Button block size='md' text={'Submit'} onClick={submitJdApiHandler} />
                 </div>
 
-            </Modal>
+            </Modal >
 
             <GenerateModal title={'Create Interview Schedule From JD'} isOpen={generateJdModal.visible} onClose={generateJdModal.hide}>
                 <AnalyzingAnimation />
