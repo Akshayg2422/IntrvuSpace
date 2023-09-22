@@ -7,7 +7,7 @@ const Input = React.forwardRef(({ id, className, heading, variant = 'default', .
     return (
         <FormGroup>
             <InputHeading heading={heading} id={id} />
-            <RsInput ref={ref}  className={`${className} ${variant !== 'default' && 'form-control-' + variant}`} id={id} {...rest} ></RsInput>
+            <RsInput ref={ref} className={`${className} ${variant !== 'default' && 'form-control-' + variant} text-black`} id={id} {...rest} ></RsInput>
         </FormGroup>
     )
 });
