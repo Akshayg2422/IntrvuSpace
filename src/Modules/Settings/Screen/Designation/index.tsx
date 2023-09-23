@@ -9,7 +9,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Nav, NavItem, NavLink } from 'reactstrap';
 import classnames from 'classnames'
 
-
+const PLACE_HOLDER = {
+    "sector": "Software, Banking...",
+}
 
 
 function Designation() {
@@ -40,10 +42,11 @@ function Designation() {
     const experience = useInput('')
     const jd = useInput('');
     const portalUrl = useInput('')
+    const sectorInput = useInput('');
 
     const loader = useLoader(false);
 
-console.log("position===>", position.value)
+    console.log("position===>", position.value)
     useEffect(() => {
         dispatch(clearBreadCrumbs([]))
         getSectorsApiHandler();
@@ -126,6 +129,7 @@ console.log("position===>", position.value)
             const params = {
                 knowledge_group_id: selectedDesignation?.id,
                 position: position?.value,
+                // sector:sectorInput.value,
                 experience: experience.value,
                 reference_link: portalUrl.value,
                 jd: jd.value,
@@ -166,7 +170,7 @@ console.log("position===>", position.value)
                         className={'text-white shadow-none'}
                         size={'sm'}
                         text={"Add Designation"}
-                        onClick={()=>{
+                        onClick={() => {
                             addDesignationModal.show()
                             title.set("")
                         }}
@@ -259,12 +263,12 @@ console.log("position===>", position.value)
                         </div>
                     }
                 </div>
-                < Modal size={'lg'} title={"Add Designation"} isOpen={addDesignationModal.visible} onClose={()=>{
+                < Modal size={'lg'} title={"Add Designation"} isOpen={addDesignationModal.visible} onClose={() => {
                     addDesignationModal.hide()
                     title.set("")
                     description.set("")
                     sector.set({})
-                    }} >
+                }} >
                     <div className='col-7'>
                         <Input
                             heading={"Name"}
@@ -293,7 +297,7 @@ console.log("position===>", position.value)
                     </div>
                 </Modal >
 
-                <Modal size={'lg'} title={"Add Role"} isOpen={addRoleModal.visible} onClose={()=>{
+                <Modal size={'lg'} title={"Create Job Description"} isOpen={addRoleModal.visible} onClose={() => {
                     addRoleModal.hide()
                     position.set("")
                     experience.set("")
@@ -306,6 +310,13 @@ console.log("position===>", position.value)
                             value={position.value}
                             onChange={position.onChange}
                         />
+                        {/* <Input
+                            isMandatory
+                            heading={'Sector'}
+                            placeHolder={PLACE_HOLDER.sector}
+                            value={sectorInput.value}
+                            onChange={sector.onChange} /> */}
+
                         <Input
                             heading={'Years of experience'}
                             type={'number'}
