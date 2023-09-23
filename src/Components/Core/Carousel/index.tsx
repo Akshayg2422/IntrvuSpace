@@ -1,21 +1,20 @@
 import React from 'react'
 import { SliderProps } from './interface'
-import { Carousel } from 'react-responsive-carousel';
-import {Image} from '@Components'
+import { Carousel as RsCarousel } from 'react-responsive-carousel';
+import { Image } from '@Components'
 // import {getImageUri} from '@utils'
 
-function Slider({ images, isServer = true, ...props }: SliderProps) {
-    return(
-    <Carousel >
-        {
-            images.map(item => {
-                return <Image />
-            })
-        }
+function Carousel({ images, isServer = true, ...props }: SliderProps) {
+    return (
+        <RsCarousel>
+            {
+                images.map(item => {
+                    return <Image />
+                })
+            }
 
-    </Carousel>
-
-)
+        </RsCarousel>
+    )
 
 }
-export { Slider };
+export { Carousel };

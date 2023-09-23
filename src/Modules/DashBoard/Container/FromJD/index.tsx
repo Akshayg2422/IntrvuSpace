@@ -1,12 +1,11 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { icons } from '@Assets';
-import { Button, Card, Checkbox, Divider, Input, Modal, Spinner, TextArea, showToast } from '@Components';
+import { Button, Card, Checkbox, Divider, Input, Modal, Spinner, TextArea, showToast, Sliders } from '@Components';
 import { useInput, useModal, useNavigation } from '@Hooks';
 import { AnalyzingAnimation, GenerateModal, UploadJdCard } from '@Modules';
 import { createNewJdSchedule, getJdItemList, postJdVariant, selectedScheduleId } from '@Redux';
 import { ROUTES } from '@Routes';
 import { FROM_JD_RULES, getValidateError, ifObjectExist, validate } from '@Utils';
-import Slider from "nouislider";
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -47,28 +46,11 @@ function FromJD() {
 
 
     const [jdDescriptionError, setJdDescriptionError] = useState<any>(undefined)
-    const [slider1Value, setSlider1Value] = useState("1");
+
 
     useEffect(() => {
         getKnowledgeGroupFromJdHandler();
     }, [])
-
-    useEffect(() => {
-        const slider1 = document.getElementById("slider1");
-
-        if (slider1) {
-            Slider.create(slider1, {
-                start: [1],
-                connect: [true, false],
-                step: 0.01,
-                range: { min: 1.0, max: 100.0 },
-            }).on("update", (values, handle) => {
-                const valueWithoutDecimal = parseInt(values[0] as string); // Remove decimal places
-                setSlider1Value(valueWithoutDecimal.toString());
-            });
-        }
-    }, []);
-
 
 
     const dispatch = useDispatch()
@@ -90,7 +72,7 @@ function FromJD() {
 
     function submitJdApiHandler() {
         const params = {
-            sector_name: sector.value,
+            ...(sector && sector.value && { sector_name: sector.value }),
             position: position.value,
             experience: fresherChecked ? '0' : experience.value,
             reference_link: portalUrl.value,
@@ -116,6 +98,7 @@ function FromJD() {
                     showToast(res.status, 'success')
                 },
                 onError: (error) => () => {
+
                     generateJdModal.hide();
                     addJdModal.show();
                     showToast(error.error_message, 'error')
@@ -190,6 +173,7 @@ function FromJD() {
 
     return (
         <>
+
             {loading ? <div className={'d-flex justify-content-center my-9 py-5'}><Spinner /></div> :
                 jdItem && jdItem.length > 0 ?
                     <div>
@@ -359,29 +343,27 @@ function FromJD() {
 
             <Modal title={'Create Interview'} isOpen={addJdModal.visible} onClose={addJdModal.hide}>
                 <div className={'row'}>
-                    <div className={'col-6'}>
+                    {/* <div className={'col-6'}>
                         <Input
+                            isMandatory
                             heading={'Sector'}
                             placeHolder={PLACE_HOLDER.sector}
                             value={sector.value}
                             onChange={sector.onChange} />
-                    </div>
+                    </div> */}
                     <div className={'col-6'}>
                         <Input
+                            isMandatory
                             heading={'Role'}
                             placeHolder={PLACE_HOLDER.role}
                             value={position.value}
                             onChange={position.onChange} />
                     </div>
-                </div>
-
-                <div className={'row'}>
-                    <span className={'position-absolute left-9 pl-2'}>
+                    {/* <span className={'position-absolute left-9 pl-2'}>
                         <Checkbox className={'text-primary'} text={'Fresher'} defaultChecked={fresherChecked} onCheckChange={(checked) => {
                             setFresherChecked(checked)
                         }} />
-                    </span>
-
+                    </span> */}
 
                     <div className={'col-6'}>
                         {fresherChecked ? (
@@ -393,17 +375,8 @@ function FromJD() {
                                 disabled
                             />
                         ) : (
-                            // <div>
-                            //     <div className="input-slider-container">
-                            //         <div className="input-slider" id="slider1" />
-                            //         <div className="mt-3 row">
-                            //             <div className={'col-xs-6'}>
-                            //                 <span className="range-slider-value">{slider1Value}</span>
-                            //             </div>
-                            //         </div>
-                            //     </div>
-                            // </div>
                             <Input
+                                isMandatory
                                 heading={'Years of experience'}
                                 type={'number'}
                                 placeHolder={'Experience'}
@@ -412,9 +385,13 @@ function FromJD() {
                             />
                         )}
                     </div>
+                </div>
+
+                <div className={'row'}>
 
                     <div className={'col-6'}>
                         <Input
+                            isMandatory
                             heading='Portal JD URL'
                             placeHolder={PLACE_HOLDER.portal}
                             value={portalUrl.value}
@@ -423,6 +400,7 @@ function FromJD() {
                 </div>
 
                 <TextArea
+                    isMandatory
                     error={jdDescriptionError}
                     placeholder={PLACE_HOLDER.jd}
                     heading='Job Description'
@@ -442,9 +420,9 @@ function FromJD() {
                     <Button block size='md' text={'Submit'} onClick={submitJdApiHandler} />
                 </div>
 
-            </Modal>
+            </Modal >
 
-            <GenerateModal title={'Create Interview Schedule From JD'} isOpen={generateJdModal.visible} onClose={generateJdModal.hide}>
+            <GenerateModal title={'Preparing your Interview'} isOpen={generateJdModal.visible} onClose={generateJdModal.hide}>
                 <AnalyzingAnimation />
             </GenerateModal>
 
@@ -456,7 +434,7 @@ function FromJD() {
                         </div>
                     </div>
                     <div className='text-center py-3'>
-                        <small className='text-black'>Click Below to Start Interview</small>
+                        <small className='text-black'>Click below to start Interview</small>
                         <div className='row justify-content-center pt-1'>
                             <div className='col-4'>
                                 <Button
