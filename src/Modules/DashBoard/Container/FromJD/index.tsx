@@ -1,14 +1,22 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { Button, Card, Divider, Modal, TextArea, Input, showToast, Spinner, Checkbox, SliderComponent } from '@Components';
-import { createNewJdSchedule, getJdItemList, postJdVariant, selectedScheduleId } from '@Redux';
-import { useEffect, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useInput, useNavigation, useModal } from '@Hooks';
-import { AnalyzingAnimation, GenerateModal, UploadJdCard } from '@Modules';
-import { ROUTES } from '@Routes';
-import { validate, FROM_JD_RULES, ifObjectExist, getValidateError } from '@Utils';
 import { icons } from '@Assets';
-import Slider from "nouislider";
+import { Button, Card, Checkbox, Divider, Input, Modal, Spinner, TextArea, showToast, Sliders } from '@Components';
+import { useInput, useModal, useNavigation } from '@Hooks';
+import { AnalyzingAnimation, GenerateModal, UploadJdCard } from '@Modules';
+import { createNewJdSchedule, getJdItemList, postJdVariant, selectedScheduleId } from '@Redux';
+import { ROUTES } from '@Routes';
+import { FROM_JD_RULES, getValidateError, ifObjectExist, validate } from '@Utils';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
+
+const PLACE_HOLDER = {
+    "sector": "Software, Banking...",
+    "role": "Developer, Manager...",
+    "portal": "Naukri, LinkedIn...",
+    "jd": `Copy a Job Description from the Job portal(Naukri, LinkedIn...\n\n1.Visit the job portal of choice (e.g., Naukri.com) in your web browser.\n2.Search using keywords for a job listing that interests you.\n3.Click the job title to view the full description.\n4.Highlight, copy, and paste the text into your preferred application seamlessly.`
+}
+
 
 
 function FromJD() {
@@ -38,27 +46,11 @@ function FromJD() {
 
 
     const [jdDescriptionError, setJdDescriptionError] = useState<any>(undefined)
-    const [slider1Value, setSlider1Value] = useState("1");
+
 
     useEffect(() => {
         getKnowledgeGroupFromJdHandler();
     }, [])
-    useEffect(() => {
-        const slider1 = document.getElementById("slider1");
-
-        if (slider1) {
-            Slider.create(slider1, {
-                start: [1],
-                connect: [true, false],
-                step: 0.01,
-                range: { min: 1.0, max: 100.0 },
-            }).on("update", (values, handle) => {
-                const valueWithoutDecimal = parseInt(values[0] as string); // Remove decimal places
-                setSlider1Value(valueWithoutDecimal.toString());
-            });
-        }
-    }, []);
-
 
 
     const dispatch = useDispatch()
@@ -80,7 +72,7 @@ function FromJD() {
 
     function submitJdApiHandler() {
         const params = {
-            sector_name: sector.value,
+            ...(sector && sector.value && { sector_name: sector.value }),
             position: position.value,
             experience: fresherChecked ? '0' : experience.value,
             reference_link: portalUrl.value,
@@ -106,6 +98,7 @@ function FromJD() {
                     showToast(res.status, 'success')
                 },
                 onError: (error) => () => {
+
                     generateJdModal.hide();
                     addJdModal.show();
                     showToast(error.error_message, 'error')
@@ -180,6 +173,7 @@ function FromJD() {
 
     return (
         <>
+
             {loading ? <div className={'d-flex justify-content-center my-9 py-5'}><Spinner /></div> :
                 jdItem && jdItem.length > 0 ?
                     <div>
@@ -346,32 +340,30 @@ function FromJD() {
                     <UploadJdCard openAddJdModal={openAddJdModalButton} />
             }
 
-            <Modal title={'Create Interview Schedule From JD'} isOpen={addJdModal.visible} onClose={addJdModal.hide}>
 
+            <Modal title={'Create Interview'} isOpen={addJdModal.visible} onClose={addJdModal.hide}>
                 <div className={'row'}>
-                    <div className={'col-6'}>
+                    {/* <div className={'col-6'}>
                         <Input
+                            isMandatory
                             heading={'Sector'}
-                            placeHolder={"Software/Banking/Sales/Healthcare..."}
+                            placeHolder={PLACE_HOLDER.sector}
                             value={sector.value}
                             onChange={sector.onChange} />
-                    </div>
+                    </div> */}
                     <div className={'col-6'}>
                         <Input
+                            isMandatory
                             heading={'Role'}
-                            placeHolder={"Developer/Manager/Analyst/Nurse..."}
+                            placeHolder={PLACE_HOLDER.role}
                             value={position.value}
                             onChange={position.onChange} />
                     </div>
-                </div>
-
-                <div className={'row'}>
-                    <span className={'position-absolute left-9 pl-2'}>
+                    {/* <span className={'position-absolute left-9 pl-2'}>
                         <Checkbox className={'text-primary'} text={'Fresher'} defaultChecked={fresherChecked} onCheckChange={(checked) => {
                             setFresherChecked(checked)
                         }} />
-                    </span>
-
+                    </span> */}
 
                     <div className={'col-6'}>
                         {fresherChecked ? (
@@ -383,17 +375,8 @@ function FromJD() {
                                 disabled
                             />
                         ) : (
-                            // <div>
-                            //     <div className="input-slider-container">
-                            //         <div className="input-slider" id="slider1" />
-                            //         <div className="mt-3 row">
-                            //             <div className={'col-xs-6'}>
-                            //                 <span className="range-slider-value">{slider1Value}</span>
-                            //             </div>
-                            //         </div>
-                            //     </div>
-                            // </div>
                             <Input
+                                isMandatory
                                 heading={'Years of experience'}
                                 type={'number'}
                                 placeHolder={'Experience'}
@@ -402,31 +385,24 @@ function FromJD() {
                             />
                         )}
                     </div>
+                </div>
+
+                <div className={'row'}>
 
                     <div className={'col-6'}>
                         <Input
+                            isMandatory
                             heading='Portal JD URL'
-                            placeHolder={'Naukri.com/LinkedIn/Monster India/Shine.com/TimesJobs...'}
+                            placeHolder={PLACE_HOLDER.portal}
                             value={portalUrl.value}
                             onChange={portalUrl.onChange} />
                     </div>
                 </div>
-                <TextArea
-                    error={jdDescriptionError}
-                    placeholder={`Copy a Job Description from the Job portal(Naukri.com/LinkedIn/Monster India/Shine.com/TimesJobs):
 
-1.Visit the Job Portal: Open your web browser and navigate to the job portal of your choice, such as Naukri.com.
-                    
-2.Search for a Job: Use the search bar to find a job listing that interests you. You can enter relevant keywords, job titles, or locations to narrow down your search.
-                    
-3.Select a Job Posting: Click on the job title to view the full job description.
-                    
-4.Highlight the Text: Left-click your mouse and drag it over the text you want to copy. This will highlight the text.
-                    
-5.Copy the Text: After highlighting the desired text, right-click on the selected area, and choose "Copy" from the context menu. Alternatively, you can use the keyboard shortcut Ctrl+C (Windows) or Command+C (Mac) to copy the text.
-                    
-6.Paste the Text: Open the application where you want to paste the job description (e.g., a word processor or text editor), right-click in the desired location, and choose "Paste" from the context menu. You can also use the keyboard shortcut Ctrl+V (Windows) or Command+V (Mac) to paste the text.`
-                    }
+                <TextArea
+                    isMandatory
+                    error={jdDescriptionError}
+                    placeholder={PLACE_HOLDER.jd}
                     heading='Job Description'
                     value={jd.value.slice(0, CHAR_LENGTH)}
                     onChange={(e) => {
@@ -437,15 +413,16 @@ function FromJD() {
                             setJdDescriptionError(undefined)
                         }
                         jd.set(value)
-                    }} />
+                    }}
+                />
 
                 <div className='text-center'>
                     <Button block size='md' text={'Submit'} onClick={submitJdApiHandler} />
                 </div>
 
-            </Modal>
+            </Modal >
 
-            <GenerateModal title={'Create Interview Schedule From JD'} isOpen={generateJdModal.visible} onClose={generateJdModal.hide}>
+            <GenerateModal title={'Preparing your Interview'} isOpen={generateJdModal.visible} onClose={generateJdModal.hide}>
                 <AnalyzingAnimation />
             </GenerateModal>
 
@@ -457,7 +434,7 @@ function FromJD() {
                         </div>
                     </div>
                     <div className='text-center py-3'>
-                        <small className='text-black'>Click Below to Start Interview</small>
+                        <small className='text-black'>Click below to start Interview</small>
                         <div className='row justify-content-center pt-1'>
                             <div className='col-4'>
                                 <Button
