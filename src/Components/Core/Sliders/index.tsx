@@ -23,7 +23,7 @@ const Sliders = () => {
                 setSliderValue(values[0]);
             });
         }
-    }, []);
+    }, [sliderValue]);
 
     return (
         <Form>

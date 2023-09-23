@@ -72,7 +72,7 @@ function FromJD() {
 
     function submitJdApiHandler() {
         const params = {
-            sector_name: sector.value,
+            ...(sector && sector.value && { sector_name: sector.value }),
             position: position.value,
             experience: fresherChecked ? '0' : experience.value,
             reference_link: portalUrl.value,
@@ -98,6 +98,7 @@ function FromJD() {
                     showToast(res.status, 'success')
                 },
                 onError: (error) => () => {
+
                     generateJdModal.hide();
                     addJdModal.show();
                     showToast(error.error_message, 'error')
@@ -172,7 +173,6 @@ function FromJD() {
 
     return (
         <>
-            <Sliders />
 
             {loading ? <div className={'d-flex justify-content-center my-9 py-5'}><Spinner /></div> :
                 jdItem && jdItem.length > 0 ?
@@ -343,32 +343,30 @@ function FromJD() {
 
             <Modal title={'Create Interview'} isOpen={addJdModal.visible} onClose={addJdModal.hide}>
                 <div className={'row'}>
-                    <div className={'col-6'}>
+                    {/* <div className={'col-6'}>
                         <Input
+                            isMandatory
                             heading={'Sector'}
                             placeHolder={PLACE_HOLDER.sector}
                             value={sector.value}
                             onChange={sector.onChange} />
-                    </div>
+                    </div> */}
                     <div className={'col-6'}>
                         <Input
+                            isMandatory
                             heading={'Role'}
                             placeHolder={PLACE_HOLDER.role}
                             value={position.value}
                             onChange={position.onChange} />
                     </div>
-                </div>
-
-                <div className={'row'}>
-                    <span className={'position-absolute left-9 pl-2'}>
+                    {/* <span className={'position-absolute left-9 pl-2'}>
                         <Checkbox className={'text-primary'} text={'Fresher'} defaultChecked={fresherChecked} onCheckChange={(checked) => {
                             setFresherChecked(checked)
                         }} />
-                    </span>
-
+                    </span> */}
 
                     <div className={'col-6'}>
-                        {/* {fresherChecked ? (
+                        {fresherChecked ? (
                             <Input
                                 heading={'Years of experience'}
                                 type={'text'}
@@ -378,18 +376,22 @@ function FromJD() {
                             />
                         ) : (
                             <Input
+                                isMandatory
                                 heading={'Years of experience'}
                                 type={'number'}
                                 placeHolder={'Experience'}
                                 value={experience.value}
                                 onChange={experience.onChange}
                             />
-                        )} */}
+                        )}
                     </div>
+                </div>
 
+                <div className={'row'}>
 
                     <div className={'col-6'}>
                         <Input
+                            isMandatory
                             heading='Portal JD URL'
                             placeHolder={PLACE_HOLDER.portal}
                             value={portalUrl.value}
@@ -398,6 +400,7 @@ function FromJD() {
                 </div>
 
                 <TextArea
+                    isMandatory
                     error={jdDescriptionError}
                     placeholder={PLACE_HOLDER.jd}
                     heading='Job Description'
@@ -419,7 +422,7 @@ function FromJD() {
 
             </Modal >
 
-            <GenerateModal title={'Create Interview Schedule From JD'} isOpen={generateJdModal.visible} onClose={generateJdModal.hide}>
+            <GenerateModal title={'Preparing your Interview'} isOpen={generateJdModal.visible} onClose={generateJdModal.hide}>
                 <AnalyzingAnimation />
             </GenerateModal>
 
@@ -431,7 +434,7 @@ function FromJD() {
                         </div>
                     </div>
                     <div className='text-center py-3'>
-                        <small className='text-black'>Click Below to Start Interview</small>
+                        <small className='text-black'>Click below to start Interview</small>
                         <div className='row justify-content-center pt-1'>
                             <div className='col-4'>
                                 <Button
