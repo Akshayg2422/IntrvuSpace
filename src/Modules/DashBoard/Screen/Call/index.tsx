@@ -71,12 +71,15 @@ function Call() {
   const closeCall = useRef<any>(false);
   const [isTtfSpeaking, setIsTtfSpeaking] = useState<boolean>(false)
 
+  const [networkError, setNetworkError] = useState(false)
+  const [websocketError, setWebSocketError] = useState(false)
+
 
   function generateRandomID() {
     const min = 100000;
     const max = 999999;
     const randomID = Math.floor(Math.random() * (max - min + 1)) + min;
-    console.log("resss01", randomID)
+    // console.log("resss01", randomID)
     return randomID;
 
   }
@@ -142,6 +145,10 @@ function Call() {
   const [errorType1, setErrorType1] = useState('')
 
   const accumulatedBlobs = useRef<any>([]);
+  const reconnectAttempts = useRef<any>(0)
+  const maxReconnectAttempts = 3;
+  let reconnectInterval: any = null;
+
 
   // const { startScreenRecording, stopScreenRecording, isScreenRecording } = useScreenRecorder();
 
@@ -166,32 +173,62 @@ function Call() {
     }
   }
 
+  // Create the WebSocket connection only if it's not already established
+
+  function createWebSocket(showError = true) {
+
+
+    // const socket = new WebSocket('wss://mockeazyprimary.leorainfotech.in/aaa');
+    const socket = new WebSocket('wss://mockeazyprimary.leorainfotech.in/aaa');
+
+
+
+    socketRef.current = socket; // Store the WebSocket instance in the ref
+
+    socket.addEventListener('open', () => {
+      console.log('WebSocket connection established===========================');
+      setWebSocketError(false);
+
+      // Clear the reconnect interval when the connection is open
+      clearInterval(reconnectInterval);
+      reconnectAttempts.current = 0; // Reset the reconnect attempts counter
+    });
+
+    socket.addEventListener('close', () => {
+      if (showError)
+        setWebSocketError(true)
+
+      if (reconnectAttempts.current < maxReconnectAttempts) {
+
+        setTimeout(() => {
+          createWebSocket();
+          reconnectAttempts.current++;
+        }, 2000)
+
+      } else {
+        clearInterval(reconnectInterval);
+        if (!showError)
+          setWebSocketError(true)
+      }
+
+    });
+
+    // Listen for messages
+    socket.onmessage = event => {
+      console.log("Received001")
+      const response = JSON.parse(event.data);
+      proceedHandleResponseV1(response)
+      // Handle the response data here
+      // console.log('Received002:', response);
+    };
+
+  }
 
   useEffect(() => {
-    // Create the WebSocket connection only if it's not already established
+
+    // Create the WebSocket when the component mounts
     if (!socketRef.current) {
-      // const socket = new WebSocket('ws://localhost:8012/aaa');
-      const socket = new WebSocket('wss://mockeazyprimary.leorainfotech.in/aaa');
-
-      socketRef.current = socket; // Store the WebSocket instance in the ref
-
-      socket.addEventListener('open', () => {
-        console.log('WebSocket connection established===========================');
-
-      });
-
-      socket.addEventListener('close', () => {
-        console.log('WebSocket connection closed');
-      });
-
-      // Listen for messages
-      socket.onmessage = event => {
-        console.log("Received001")
-        const response = JSON.parse(event.data);
-        proceedHandleResponseV1(response)
-        // Handle the response data here
-        console.log('Received002:', response);
-      };
+      createWebSocket();
     }
 
     // Clean up the WebSocket connection when the component unmounts
@@ -199,6 +236,7 @@ function Call() {
       if (socketRef.current) {
         socketRef.current.close();
         socketRef.current = null;
+        clearInterval(reconnectInterval);
       }
     };
   }, []);
@@ -221,7 +259,7 @@ function Call() {
 
     if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
       if (intitalRequestSent.current === false) {
-        console.log("sentrrrrra1", JSON.stringify(syncD))
+        // console.log("sentrrrrra1", JSON.stringify(syncD))
         socketRef.current.send(JSON.stringify(syncD));
         intitalRequestSent.current = true
 
@@ -256,11 +294,9 @@ function Call() {
 
     } else {
       console.log('WebSocket connection is not open.');
+      createWebSocket(false);
     }
   };
-
-
-
 
   /**
    * state jayFromJD
@@ -280,7 +316,7 @@ function Call() {
 
   useEffect(() => {
     ttsRef.current = isTtfSpeaking
-    console.log("isTtfSpeakingisTtfSpeakingisTtfSpeaking", isTtfSpeaking)
+    // console.log("isTtfSpeakingisTtfSpeakingisTtfSpeaking", isTtfSpeaking)
   }, [isTtfSpeaking])
 
 
@@ -300,8 +336,10 @@ function Call() {
           params,
           onSuccess: () => () => {
             loader.hide();
+            setNetworkError(false);
           },
           onError: () => () => {
+            setNetworkError(true);
             loader.hide();
           }
         }
@@ -411,7 +449,7 @@ function Call() {
 
               if (voiceUpCount.current === 3) {
                 const lastSpokeActiveTimeTemp = moment().format(compare_moment_format)
-                console.log("isUserDidntInterrupt last set value", lastSpokeActiveTimeTemp)
+                // console.log("isUserDidntInterrupt last set value", lastSpokeActiveTimeTemp)
                 lastSpokeActiveTime.current = lastSpokeActiveTimeTemp
               }
               speakingShouldProcess.current = true
@@ -552,12 +590,12 @@ function Call() {
 
 
   const onStartSpeaking = () => {
-    console.log('start speaking')
+    // console.log('start speaking')
     setSpeaking(true)
   }
 
   const onStopSpeaking = () => {
-    console.log('stop speaking')
+    // console.log('stop speaking')
     setSpeaking(false)
   }
 
@@ -632,7 +670,7 @@ function Call() {
   const resetLastMessage = () => {
     activeResponseText.current = '';
     accumulatedBlobs.current = []
-    console.log("resss012")
+    // console.log("resss012")
     const newid = generateRandomID()
     activeResponseTextId.current = newid
   }
@@ -654,7 +692,7 @@ function Call() {
     transcriptionReferenceId.current = generateRandomID()
     // proceedgetChatDetailsApiHandler({ message: "start" }, transcriptionReferenceId.current)
     setProcessCallInprogress(false)
-    console.log("resss0114")
+    // console.log("resss0114")
     resetLastMessage()
     setInterviewStarted(true)
     // setTimeout(() => {
@@ -688,6 +726,11 @@ function Call() {
   }
 
 
+  function refreshScreen() {
+    window.location.reload();
+  }
+
+
 
   const IV_SPEAKING = 1
   const IV_IDLE = 2
@@ -713,7 +756,7 @@ function Call() {
     <div className='h-100vh' style={{
       backgroundColor: !interviewStarted ? "#FFFFF" : "#1B1B1B"
     }}>
-      {scheduleInfo &&
+      {(!networkError && !websocketError && scheduleInfo) &&
         <>
           {interviewStarted &&
             <div className='d-flex flex-column h-100'>
@@ -755,12 +798,12 @@ function Call() {
 
       {loader.loader && <div className='d-flex align-items-center justify-content-center h-100'><Spinner /></div>}
       {
-        !loader.loader && !scheduleInfo &&
+        (networkError || websocketError) &&
         <div className='d-flex align-items-center justify-content-center h-100 '>
           <div className='text-center '>
             <h4 className="display-4 mb-0">Technical breakdown please try again</h4>
             <div className='my-3'></div>
-            <Button text={'Try Again'} onClick={getBasicInfo} />
+            <Button text={'Try Again'} onClick={refreshScreen} />
           </div>
         </div>
       }
