@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-redeclare */
-import { ScreenWrapper, Breadcrumbs, Back, PageNotFound } from "@Components";
+import { ScreenWrapper, Breadcrumbs, Back, PageNotFound, Sliders } from "@Components";
 import { Route, Routes } from "react-router-dom";
 import { HOME_ROUTES, RequireAuth, DASHBOARD_ROUTES, AUTH_ROUTES, RequireHome } from "@Routes";
 import { ToastContainer } from "react-toastify";
@@ -72,7 +72,7 @@ function App() {
 
   return (
     <ScreenWrapper>
-
+      <Sliders />
       <Routes>
         <Route path="/" element={<Splash />} />
         {getRoutes(AUTH_ROUTES, AUTH)}
