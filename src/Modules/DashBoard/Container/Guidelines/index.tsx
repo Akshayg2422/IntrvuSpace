@@ -16,7 +16,7 @@ function Guidelines({
     return (
         <>
             {!scheduleInfo.is_complete && (
-                <div className={`vh-100 container-fluid`} style={{ backgroundImage: `url(${image.Guideline})`,objectFit:'contain' }}>
+                <div className={`vh-100 container-fluid`} style={{ backgroundImage: `url(${image.Guideline})`, objectFit: 'contain' }}>
                     <div className='mb-0 overflow-auto overflow-hide scroll-y'>
                         <div className='card-body mb-0 my-6'>
                             <h1 className='display-2'>{`Interview for the role of ${heading}`}</h1>
