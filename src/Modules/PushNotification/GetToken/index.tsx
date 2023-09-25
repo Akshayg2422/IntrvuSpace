@@ -22,7 +22,7 @@ const GetToken = () => {
                     .register("./firebase-messaging-sw.js")
                     .then(async function (registration) {
                         console.log("Registration successful, scope is:", registration.scope);
-                        await getToken(messaging, { vapidKey: "BJ6Zhlt6n6SvJ1vb6ERTdgbdPfa-mQY0_2ojN28VyUAXoNI0TqRdFpZisYdrHz6aHps1f2jnTElAr0FXF4aIJME", serviceWorkerRegistration: registration })
+                        await getToken(messaging, { vapidKey: "BD5aZHwZIyX059dLk82eWD3UkTRU_dQmAItEmoOteN23g_puGV-6VBKXc4yAuKvaATzc7b2iBTtLmhf4K78AeSU", serviceWorkerRegistration: registration })
                             .then((currentToken) => {
                                 if (currentToken) {
                                     console.log('current getToken for client: ', currentToken);
@@ -32,22 +32,18 @@ const GetToken = () => {
                                     console.log('No registration token available. Request permission to generate one.');
                                 }
                             }).catch((err) => {
-                                console.log('An error occurred while retrieving token. ', err);
+                                console.log('GetToken An error occurred while retrieving token. ', err);
                             });
                     })
                     .catch(function (err) {
-                        console.log("Service worker registration failed, error:", err);
+                        console.log("GetToken Service worker registration failed, error:", err);
                     });
             }
-
         }
         else if (permission === "denied") {
             console.log("Denied Notifications")
         }
-
     }
-
-
     return (
         <div></div>
     )
