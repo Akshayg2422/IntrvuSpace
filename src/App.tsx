@@ -72,7 +72,6 @@ function App() {
 
   return (
     <ScreenWrapper>
-      <Sliders />
       <Routes>
         <Route path="/" element={<Splash />} />
         {getRoutes(AUTH_ROUTES, AUTH)}
@@ -80,8 +79,6 @@ function App() {
         {getRoutes(DASHBOARD_ROUTES)}
         <Route path={"*"} element={<PageNotFound />} />
       </Routes>
-
-
       <ToastContainer />
     </ScreenWrapper >
 

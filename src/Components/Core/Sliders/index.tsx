@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import './index.css';
+import { SlidersProps } from './interface'
 
-const Sliders = () => {
-    const [sliderValue, setSliderValue] = useState(0);
+const Sliders = ({ min, max, value, step, onChange, heading, disabled }: SlidersProps) => {
     const [isSliderActive, setIsSliderActive] = useState(false);
 
     const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = e.target;
-        setSliderValue(Number(value));
+        onChange(Number(value));
     };
 
     const handleSliderFocus = () => {
@@ -18,37 +18,44 @@ const Sliders = () => {
         setIsSliderActive(false);
     };
 
-    const trackBackgroundColor = `linear-gradient(to right, #68d75c ${sliderValue * 3.33}%, #ddd ${sliderValue * 3.33}%)`;
+    const trackBackgroundColor = `linear-gradient(to right, #68d75c ${value * (100 / max)}%, #ddd ${value * (100 / max)}%)`;
 
     const trackBackgroundStyle = {
         background: trackBackgroundColor,
     };
 
-    const spanLeft = `${sliderValue * 3.33}%`;
+    const spanLeft = `calc(${value * (100 / max)}%)`;
 
     const sliderValueStyle = {
         left: spanLeft,
     };
 
     return (
-        <div className="range mt-9">
-            <div className='sliderValue' style={sliderValueStyle}>
-                <span className={isSliderActive ? 'show' : ''}>{sliderValue}</span>
+        <div className={'range'}>
+            {
+                heading &&
+                <h5 style={{ color: '#525f7f' }} className={'mb-5'}>
+                    {heading}
+                </h5>
+            }
+            <div className='sliderValue d-flex justify-content-center' style={sliderValueStyle}>
+                <span className={isSliderActive ? 'show' : ''}>{value}</span>
             </div>
-            <div className="field">
-                <div className="value left">0</div>
+            <div className={'field'}>
+                <div className={'value left'}>{min} Yrs</div>
                 <input
                     type="range"
-                    min="0"
-                    max="30"
-                    value={sliderValue}
-                    step="1"
+                    min={min}
+                    max={max}
+                    value={value}
+                    step={step}
                     onChange={handleSliderChange}
                     onFocus={handleSliderFocus}
                     onBlur={handleSliderBlur}
                     style={trackBackgroundStyle}
+                    disabled={disabled}
                 />
-                <div className="value right">200</div>
+                <div className={'value right'}>{max} Yrs</div>
             </div>
         </div>
     );
