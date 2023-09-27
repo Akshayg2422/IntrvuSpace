@@ -135,9 +135,9 @@ export const FROM_JD_RULES = {
   experience: {
     presence: { allowEmpty: false, message: "Experience cannot be empty" },
   },
-  reference_link: {
-    presence: { allowEmpty: true, message: "Reference Link cannot be empty" },
-  },
+  // reference_link: {
+  //   presence: { allowEmpty: true, message: "Reference Link cannot be empty" },
+  // },
   jd: {
     presence: { allowEmpty: false, message: "Job Description cannot be empty" },
   },
