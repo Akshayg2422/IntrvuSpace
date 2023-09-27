@@ -69,6 +69,7 @@ function Designation() {
     };
 
     const fetchKnowledgeData = (id) => {
+        console.log('1111111111111111111111111111', id)
         const params = {
             sector_id: id
         }
@@ -186,33 +187,37 @@ function Designation() {
                     />
                 </div>
                 <div className='d-flex pt-3 overflow-auto overflow-hide mx--4'>
-                    {navList && navList.map((el, index) => {
-                        return (
-                            <div className='col-sm-3 px-2'>
-                                <Nav
-                                    className="nav-fill flex-column flex-sm-row pointer"
-                                    id="tabs-text"
-                                    pills
-                                    role="tablist"
-                                >
-                                    <NavItem>
-                                        <NavLink
-                                            aria-selected={index === navIndex}
-                                            className={classnames(`mb-sm-3 mb-md-0 shadow-none ${index !== navIndex ? 'text-black font-weight-normal' : 'font-weight-bold'}`, {
-                                                active: index === navIndex
-                                            })}
-                                            onClick={() => {
-                                                setNavIndex(index)
-                                                fetchKnowledgeData(el.id)
-                                            }}
-                                            role="tab"
+                    {navList && navList.map((el:any, index:number) => {
+                        {
+                            if (el?.id && el?.name) {
+                                return (
+                                    <div className='col-sm-3 px-2'>
+                                        <Nav
+                                            className="nav-fill flex-column flex-sm-row pointer"
+                                            id="tabs-text"
+                                            pills
+                                            role="tablist"
                                         >
-                                            {el.name}
-                                        </NavLink>
-                                    </NavItem>
-                                </Nav>
-                            </div>
-                        )
+                                            <NavItem>
+                                                <NavLink
+                                                    aria-selected={index === navIndex}
+                                                    className={classnames(`mb-sm-3 mb-md-0 shadow-none ${index !== navIndex ? 'text-black font-weight-normal' : 'font-weight-bold'}`, {
+                                                        active: index === navIndex
+                                                    })}
+                                                    onClick={() => {
+                                                        setNavIndex(index)
+                                                        fetchKnowledgeData(el.id)
+                                                    }}
+                                                    role="tab"
+                                                >
+                                                    {el.name}
+                                                </NavLink>
+                                            </NavItem>
+                                        </Nav>
+                                    </div>
+                                )
+                            }
+                        }
                     })
 
                     }
