@@ -21,7 +21,7 @@ const PLACE_HOLDER = {
 
 
 function FromJD() {
-    const CHAR_LENGTH = 2000
+    const CHAR_LENGTH = 3000
     const VIEW_MORE_LENGTH = 350
 
 
@@ -414,11 +414,11 @@ function FromJD() {
                     </div>
 
                     <div className={'col-6'}>
-                        <Input
+                        {/* <Input
                             heading='Portal JD URL'
                             placeHolder={PLACE_HOLDER.portal}
                             value={portalUrl.value}
-                            onChange={portalUrl.onChange} />
+                            onChange={portalUrl.onChange} /> */}
                     </div>
                 </div>
 
