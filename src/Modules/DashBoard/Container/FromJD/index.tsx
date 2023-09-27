@@ -43,6 +43,12 @@ function FromJD() {
     const [loading, setLoading] = useState(true);
     const [jdMore, setJdMore] = useState<any>([])
     const [fresherChecked, setFresherChecked] = useState(false)
+    const [sliderValue, setSliderValue] = useState(0);
+
+    const handleSliderChange = (newValue: any) => {
+        console.log('Slider value changed:', newValue);
+        setSliderValue(newValue)
+    }
 
 
     const [jdDescriptionError, setJdDescriptionError] = useState<any>(undefined)
@@ -74,7 +80,7 @@ function FromJD() {
         const params = {
             ...(sector && sector.value && { sector_name: sector.value }),
             position: position.value,
-            experience: fresherChecked ? '0' : experience.value,
+            experience: fresherChecked ? '0' : sliderValue,
             reference_link: portalUrl.value,
             jd: jd.value
         }
@@ -202,6 +208,8 @@ function FromJD() {
                                     })
 
                                     return (
+
+
                                         <Card className="mt--3">
                                             <div className={'d-flex justify-content-between'}>
                                                 <h3 className='mb-0 pointer text-black'>{name}</h3>
@@ -212,17 +220,14 @@ function FromJD() {
                                                             text={proceedInterview.is_started ? "Resume Interview" : "Start Interview"}
                                                             onClick={() => {
                                                                 proceedInterviewHandler(proceedInterview?.id);
-                                                            }}
-                                                        />
+                                                            }} />
                                                     </div> :
                                                     <Button
                                                         size={'sm'}
                                                         text={'Try Another'}
                                                         onClick={() => {
                                                             createNewJdScheduleApiHandler(id);
-                                                        }}
-                                                    />
-                                                }
+                                                        }} />}
                                             </div>
                                             <h5 className='mb-0 pointer text-muted'>{sector}</h5>
                                             <div className='col mt-3'>
@@ -237,51 +242,47 @@ function FromJD() {
                                                         marginTop: 2
                                                     }} />
                                                     <div className='col ml-3'>
-                                                        {
-                                                            details.length < VIEW_MORE_LENGTH ?
-                                                                <div className='row'>
-                                                                    <small className='text-sm text-black'>{details}</small>
-                                                                </div>
-                                                                :
-                                                                <>
-                                                                    {more ?
-                                                                        <div className='row'>
-                                                                            <small className='text-sm text-black'>
-                                                                                {details}
-                                                                                <span className='h5 text-primary ml-1 pointer'
-                                                                                    onClick={() => {
-                                                                                        const updatedData: any = [...jdMore]
-                                                                                        updatedData[index] = { ...updatedData[index], more: false }
-                                                                                        setJdMore(updatedData)
-                                                                                    }}>
-                                                                                    View Less
-                                                                                </span>
-                                                                            </small>
-                                                                        </div>
-                                                                        :
-                                                                        <div className='row'>
-                                                                            <small className='text-sm text-black'>{details.slice(0, VIEW_MORE_LENGTH) + " ..."}
-                                                                                <span className='h5 text-primary ml-1 pointer'
-                                                                                    onClick={() => {
-                                                                                        const updatedData: any = [...jdMore]
-                                                                                        updatedData[index] = { ...updatedData[index], more: true }
-                                                                                        setJdMore(updatedData)
-                                                                                    }}
-                                                                                >
-                                                                                    View More
-                                                                                </span>
-                                                                            </small>
-                                                                        </div>
-                                                                    }
-                                                                </>
-                                                        }
+                                                        {details.length < VIEW_MORE_LENGTH ?
+                                                            <div className='row'>
+                                                                <small className='text-sm text-black'>{details}</small>
+                                                            </div>
+                                                            :
+                                                            <>
+                                                                {more ?
+                                                                    <div className='row'>
+                                                                        <small className='text-sm text-black'>
+                                                                            {details}
+                                                                            <span className='h5 text-primary ml-1 pointer'
+                                                                                onClick={() => {
+                                                                                    const updatedData: any = [...jdMore];
+                                                                                    updatedData[index] = { ...updatedData[index], more: false };
+                                                                                    setJdMore(updatedData);
+                                                                                }}>
+                                                                                View Less
+                                                                            </span>
+                                                                        </small>
+                                                                    </div>
+                                                                    :
+                                                                    <div className='row'>
+                                                                        <small className='text-sm text-black'>{details.slice(0, VIEW_MORE_LENGTH) + " ..."}
+                                                                            <span className='h5 text-primary ml-1 pointer'
+                                                                                onClick={() => {
+                                                                                    const updatedData: any = [...jdMore];
+                                                                                    updatedData[index] = { ...updatedData[index], more: true };
+                                                                                    setJdMore(updatedData);
+                                                                                }}
+                                                                            >
+                                                                                View More
+                                                                            </span>
+                                                                        </small>
+                                                                    </div>}
+                                                            </>}
                                                     </div>
                                                 </div>
                                             </div>
                                             <div className='col mt-3'>
                                                 {modifiedSchedules && modifiedSchedules.length > 0 && <Divider className={'row'} space={"3"} />}
-                                                {
-                                                    modifiedSchedules &&
+                                                {modifiedSchedules &&
                                                     modifiedSchedules.length > 0 &&
                                                     modifiedSchedules.slice().reverse().map((each: any, index: number) => {
                                                         const { is_complete, is_report_complete, id, created_at } = each;
@@ -313,8 +314,7 @@ function FromJD() {
                                                                                 text={'View Report'}
                                                                                 onClick={() => {
                                                                                     proceedReport(id);
-                                                                                }} />
-                                                                        }
+                                                                                }} />}
 
                                                                         {is_complete && !is_report_complete && <div>
                                                                             <span className="name mb-0 text-sm">Generating Report ...</span>
@@ -323,9 +323,8 @@ function FromJD() {
                                                                 </div>
                                                                 <Divider className={'row'} space={"3"} />
                                                             </div>
-                                                        )
-                                                    })
-                                                }
+                                                        );
+                                                    })}
                                             </div>
                                         </Card>
                                     )
@@ -343,14 +342,6 @@ function FromJD() {
 
             <Modal title={'Create Interview'} isOpen={addJdModal.visible} onClose={addJdModal.hide}>
                 <div className={'row'}>
-                    {/* <div className={'col-6'}>
-                        <Input
-                            isMandatory
-                            heading={'Sector'}
-                            placeHolder={PLACE_HOLDER.sector}
-                            value={sector.value}
-                            onChange={sector.onChange} />
-                    </div> */}
                     <div className={'col-6'}>
                         <Input
                             isMandatory
@@ -358,32 +349,12 @@ function FromJD() {
                             placeHolder={PLACE_HOLDER.role}
                             value={position.value}
                             onChange={position.onChange} />
-                    </div>
-                    {/* <span className={'position-absolute left-9 pl-2'}>
-                        <Checkbox className={'text-primary'} text={'Fresher'} defaultChecked={fresherChecked} onCheckChange={(checked) => {
-                            setFresherChecked(checked)
-                        }} />
-                    </span> */}
-
-                    <div className={'col-6'}>
-                        {fresherChecked ? (
-                            <Input
-                                heading={'Years of experience'}
-                                type={'text'}
-                                placeHolder={'Fresher'}
-                                value={'Fresher'}
-                                disabled
-                            />
-                        ) : (
-                            <Input
-                                isMandatory
-                                heading={'Years of experience'}
-                                type={'number'}
-                                placeHolder={'Experience'}
-                                value={experience.value}
-                                onChange={experience.onChange}
-                            />
-                        )}
+                        {/* <Input
+                            isMandatory
+                            heading={'Sector'}
+                            placeHolder={PLACE_HOLDER.sector}
+                            value={sector.value}
+                            onChange={sector.onChange} /> */}
                     </div>
                 </div>
 
@@ -396,6 +367,37 @@ function FromJD() {
                             placeHolder={PLACE_HOLDER.portal}
                             value={portalUrl.value}
                             onChange={portalUrl.onChange} />
+                    </div>
+                </div>
+                <div className={'row m-0 p-0 mb-5'}>
+                <div className={'col-6'}>
+                        {fresherChecked ? (
+                            <Sliders
+                                heading={'Years of Experience'}
+                                min={0}
+                                max={30}
+                                value={'sliderValue'}
+                                step={1}
+                                onChange={handleSliderChange}
+                                disabled={true}
+                            />
+                        ) : (
+                            <div>
+                                <Sliders
+                                    heading={'Years of Experience'}
+                                    min={0}
+                                    max={30}
+                                    value={sliderValue}
+                                    step={1}
+                                    onChange={handleSliderChange}
+                                />
+                            </div>
+                        )}
+                        <span className={'position-absolute left-9 pl-5 top-0'}>
+                        <Checkbox className={'text-primary'} text={'Fresher'} defaultChecked={fresherChecked} onCheckChange={(checked) => {
+                            setFresherChecked(checked)
+                        }} />
+                    </span>
                     </div>
                 </div>
 

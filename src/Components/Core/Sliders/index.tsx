@@ -1,44 +1,63 @@
-import React, { useEffect, useRef, useState } from "react";
-import noUiSlider from "nouislider";
-import { Row, Col, Form } from "reactstrap";
+import React, { useState } from 'react';
+import './index.css';
+import { SlidersProps } from './interface'
 
-const Sliders = () => {
+const Sliders = ({ min, max, value, step, onChange, heading, disabled }: SlidersProps) => {
+    const [isSliderActive, setIsSliderActive] = useState(false);
 
-    const sliderRef = useRef<any>(null);
-    const [sliderValue, setSliderValue] = useState("Any");
+    const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { value } = e.target;
+        onChange(Number(value));
+    };
 
-    useEffect(() => {
-        const slider = sliderRef.current;
+    const handleSliderFocus = () => {
+        setIsSliderActive(true);
+    };
 
-        if (slider && !slider.noUiSlider) {
-            noUiSlider.create(slider, {
-                start: [0],
-                connect: [true, false],
-                step: 1,
-                range: { min: 0, max: 30 },
-                tooltips: true,
-            });
+    const handleSliderBlur = () => {
+        setIsSliderActive(false);
+    };
 
-            slider.noUiSlider.on("update", function (values) {
-                setSliderValue(values[0]);
-            });
-        }
-    }, [sliderValue]);
+    const trackBackgroundColor = `linear-gradient(to right, #68d75c ${value * (100 / max)}%, #ddd ${value * (100 / max)}%)`;
+
+    const trackBackgroundStyle = {
+        background: trackBackgroundColor,
+    };
+
+    const spanLeft = `calc(${value * (100 / max)}%)`;
+
+    const sliderValueStyle = {
+        left: spanLeft,
+    };
 
     return (
-        <Form>
-            <div className="input-slider-container">
-                <div className="input-slider mb-0" ref={sliderRef}></div>
-                <Row className="mt-2">
-                    <Col xs="6">
-                        <small>{1} Yrs</small>
-                    </Col>
-                    <Col className="text-right" xs="6">
-                        <small>{30} Yrs</small>
-                    </Col>
-                </Row>
+        <div className={'range m-0 p-0 ml--3'}>
+            {
+                heading &&
+                <h5 style={{ color: '#525f7f' }} className={'mb-5'}>
+                    {heading}
+                </h5>
+            }
+            <div className='sliderValue d-flex justify-content-center' style={sliderValueStyle}>
+                <span className={isSliderActive ? 'show' : ''}>{value}</span>
             </div>
-        </Form>
+            <div className={'field'}>
+                <div className={'value left'}>{min} Yrs</div>
+                <input
+                    type="range"
+                    min={min}
+                    max={max}
+                    value={value}
+                    step={step}
+                    onChange={handleSliderChange}
+                    onFocus={handleSliderFocus}
+                    onBlur={handleSliderBlur}
+                    style={trackBackgroundStyle}
+                    disabled={disabled}
+                />
+                <div className={'value right'}>{max} Yrs</div>
+            </div>
+        </div>
     );
 };
 
