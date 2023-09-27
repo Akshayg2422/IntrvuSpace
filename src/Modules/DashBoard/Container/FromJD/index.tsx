@@ -356,7 +356,21 @@ function FromJD() {
                             value={sector.value}
                             onChange={sector.onChange} /> */}
                     </div>
+                </div>
+
+                <div className={'row'}>
+
                     <div className={'col-6'}>
+                        <Input
+                            isMandatory
+                            heading='Portal JD URL'
+                            placeHolder={PLACE_HOLDER.portal}
+                            value={portalUrl.value}
+                            onChange={portalUrl.onChange} />
+                    </div>
+                </div>
+                <div className={'row m-0 p-0 mb-5'}>
+                <div className={'col-6'}>
                         {fresherChecked ? (
                             <Sliders
                                 heading={'Years of Experience'}
@@ -384,22 +398,6 @@ function FromJD() {
                             setFresherChecked(checked)
                         }} />
                     </span>
-                    </div>
-
-                    
-
-
-                </div>
-
-                <div className={'row'}>
-
-                    <div className={'col-6'}>
-                        <Input
-                            isMandatory
-                            heading='Portal JD URL'
-                            placeHolder={PLACE_HOLDER.portal}
-                            value={portalUrl.value}
-                            onChange={portalUrl.onChange} />
                     </div>
                 </div>
 

@@ -31,7 +31,7 @@ const Sliders = ({ min, max, value, step, onChange, heading, disabled }: Sliders
     };
 
     return (
-        <div className={'range'}>
+        <div className={'range m-0 p-0 ml--3'}>
             {
                 heading &&
                 <h5 style={{ color: '#525f7f' }} className={'mb-5'}>
