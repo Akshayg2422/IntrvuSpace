@@ -1,11 +1,11 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { icons } from '@Assets';
-import { Button, Card, Checkbox, Divider, Input, Modal, Spinner, TextArea, showToast } from '@Components';
+import { Button, Card, Checkbox, Divider, H, Input, Modal, Radio, Spinner, TextArea, showToast } from '@Components';
 import { useInput, useModal, useNavigation } from '@Hooks';
 import { AnalyzingAnimation, GenerateModal, UploadJdCard } from '@Modules';
 import { createNewJdSchedule, getJdItemList, postJdVariant, selectedScheduleId } from '@Redux';
 import { ROUTES } from '@Routes';
-import { FROM_JD_RULES, getValidateError, ifObjectExist, validate } from '@Utils';
+import { FROM_JD_RULES, getValidateError, ifObjectExist, interviewDurations, validate } from '@Utils';
 import Slider from "nouislider";
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -23,18 +23,12 @@ const PLACE_HOLDER = {
 function FromJD() {
     const CHAR_LENGTH = 3000
     const VIEW_MORE_LENGTH = 350
-
-
     const ERROR_MESSAGE = "Please provide a job description within " + CHAR_LENGTH + " characters."
-
-
     const { jdItem } = useSelector((state: any) => state.DashboardReducer)
     const { goTo } = useNavigation();
-
     const position = useInput('');
     const experience = useInput('');
     const jd = useInput('');
-    const portalUrl = useInput('')
     const sector = useInput('');
     const addJdModal = useModal(false);
     const generateJdModal = useModal(false);
@@ -44,31 +38,15 @@ function FromJD() {
     const [loading, setLoading] = useState(true);
     const [jdMore, setJdMore] = useState<any>([])
     const [fresherChecked, setFresherChecked] = useState(false)
-
-
     const [jdDescriptionError, setJdDescriptionError] = useState<any>(undefined)
-    const [slider1Value, setSlider1Value] = useState("1");
+    const [selectedDuration, setSelectedDuration] = useState(interviewDurations[0]);
+    console.log(selectedDuration.value);
+    
+
 
     useEffect(() => {
         getKnowledgeGroupFromJdHandler();
     }, [])
-
-    useEffect(() => {
-        const slider1 = document.getElementById("slider1");
-
-        if (slider1) {
-            Slider.create(slider1, {
-                start: [1],
-                connect: [true, false],
-                step: 0.01,
-                range: { min: 1.0, max: 100.0 },
-            }).on("update", (values, handle) => {
-                const valueWithoutDecimal = parseInt(values[0] as string); // Remove decimal places
-                setSlider1Value(valueWithoutDecimal.toString());
-            });
-        }
-    }, []);
-
 
 
     const dispatch = useDispatch()
@@ -92,8 +70,8 @@ function FromJD() {
         const params = {
             sector_name: sector.value,
             position: position.value,
+            interview_duration: selectedDuration.value,
             experience: fresherChecked ? '0' : experience.value,
-            reference_link: portalUrl.value,
             jd: jd.value
         }
 
@@ -113,6 +91,7 @@ function FromJD() {
                     completedModal.show();
                     getKnowledgeGroupFromJdHandler();
                     resetValues();
+                    setSelectedDuration(interviewDurations[''])
                     showToast(res.status, 'success')
                 },
                 onError: (error) => () => {
@@ -130,7 +109,6 @@ function FromJD() {
         position.set('')
         experience.set('')
         jd.set('')
-        portalUrl.set('')
         sector.set('')
     }
 
@@ -393,16 +371,6 @@ function FromJD() {
                                 disabled
                             />
                         ) : (
-                            // <div>
-                            //     <div className="input-slider-container">
-                            //         <div className="input-slider" id="slider1" />
-                            //         <div className="mt-3 row">
-                            //             <div className={'col-xs-6'}>
-                            //                 <span className="range-slider-value">{slider1Value}</span>
-                            //             </div>
-                            //         </div>
-                            //     </div>
-                            // </div>
                             <Input
                                 heading={'Years of experience'}
                                 type={'number'}
@@ -413,12 +381,18 @@ function FromJD() {
                         )}
                     </div>
 
-                    <div className={'col-6'}>
-                        {/* <Input
-                            heading='Portal JD URL'
-                            placeHolder={PLACE_HOLDER.portal}
-                            value={portalUrl.value}
-                            onChange={portalUrl.onChange} /> */}
+                    <div className={'col-6 mt-1'}>
+                        <H style={{ fontSize: '13px', color: '#525f7f' }} text={'Choose Interview Duration'} tag={'h4'} />
+                        <Radio
+                            selected={selectedDuration}
+                            selectItem={selectedDuration}
+                            data={interviewDurations}
+                            onRadioChange={(selected) => {
+                                if (selected) {
+                                    setSelectedDuration(selected)
+                                }
+                            }}
+                        />
                     </div>
                 </div>
 
