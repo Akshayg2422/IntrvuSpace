@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-redeclare */
-import { ScreenWrapper, Breadcrumbs, Back, PageNotFound } from "@Components";
+import { ScreenWrapper, Breadcrumbs, Back, PageNotFound, Sliders } from "@Components";
 import { Route, Routes } from "react-router-dom";
 import { HOME_ROUTES, RequireAuth, DASHBOARD_ROUTES, AUTH_ROUTES, RequireHome } from "@Routes";
 import { ToastContainer } from "react-toastify";
@@ -18,6 +18,8 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { settingSideNavRemove } from "./Redux";
+
+
 
 
 
@@ -70,7 +72,6 @@ function App() {
 
   return (
     <ScreenWrapper>
-
       <Routes>
         <Route path="/" element={<Splash />} />
         {getRoutes(AUTH_ROUTES, AUTH)}
@@ -78,8 +79,6 @@ function App() {
         {getRoutes(DASHBOARD_ROUTES)}
         <Route path={"*"} element={<PageNotFound />} />
       </Routes>
-
-
       <ToastContainer />
     </ScreenWrapper >
 

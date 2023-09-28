@@ -46,7 +46,7 @@ function FromJD() {
         console.log('Slider value changed:', newValue);
         setSliderValue(newValue)
     }
-console.log('sliderValuesliderValue',sliderValue);
+console.log('sliderValuesliderValue',);
 
 
 

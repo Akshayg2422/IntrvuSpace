@@ -9,7 +9,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Nav, NavItem, NavLink } from 'reactstrap';
 import classnames from 'classnames'
 
-
+const PLACE_HOLDER = {
+    "sector": "Software, Banking...",
+}
 
 
 function Designation() {
@@ -40,10 +42,11 @@ function Designation() {
     const experience = useInput('')
     const jd = useInput('');
     const portalUrl = useInput('')
+    const sectorInput = useInput('');
 
     const loader = useLoader(false);
 
-console.log("position===>", position.value)
+    console.log("position===>", position.value)
     useEffect(() => {
         dispatch(clearBreadCrumbs([]))
         getSectorsApiHandler();
@@ -66,6 +69,7 @@ console.log("position===>", position.value)
     };
 
     const fetchKnowledgeData = (id) => {
+        console.log('1111111111111111111111111111', id)
         const params = {
             sector_id: id
         }
@@ -126,6 +130,7 @@ console.log("position===>", position.value)
             const params = {
                 knowledge_group_id: selectedDesignation?.id,
                 position: position?.value,
+                // sector:sectorInput.value,
                 experience: experience.value,
                 reference_link: portalUrl.value,
                 jd: jd.value,
@@ -166,7 +171,7 @@ console.log("position===>", position.value)
                         className={'text-white shadow-none'}
                         size={'sm'}
                         text={"Add Designation"}
-                        onClick={()=>{
+                        onClick={() => {
                             addDesignationModal.show()
                             title.set("")
                         }}
@@ -182,34 +187,36 @@ console.log("position===>", position.value)
                     />
                 </div>
                 <div className='d-flex pt-3 overflow-auto overflow-hide mx--4'>
-                    {navList && navList.map((el, index) => {
-                        if(el.id && el.name){
-                            return (
-                                <div className='col-sm-3 px-2'>
-                                    <Nav
-                                        className="nav-fill flex-column flex-sm-row pointer"
-                                        id="tabs-text"
-                                        pills
-                                        role="tablist"
-                                    >
-                                        <NavItem>
-                                            <NavLink
-                                                aria-selected={index === navIndex}
-                                                className={classnames(`mb-sm-3 mb-md-0 shadow-none ${index !== navIndex ? 'text-black font-weight-normal' : 'font-weight-bold'}`, {
-                                                    active: index === navIndex
-                                                })}
-                                                onClick={() => {
-                                                    setNavIndex(index)
-                                                    fetchKnowledgeData(el.id)
-                                                }}
-                                                role="tab"
-                                            >
-                                                {el.name}
-                                            </NavLink>
-                                        </NavItem>
-                                    </Nav>
-                                </div>
-                            )
+                    {navList && navList.map((el:any, index:number) => {
+                        {
+                            if (el?.id && el?.name) {
+                                return (
+                                    <div className='col-sm-3 px-2'>
+                                        <Nav
+                                            className="nav-fill flex-column flex-sm-row pointer"
+                                            id="tabs-text"
+                                            pills
+                                            role="tablist"
+                                        >
+                                            <NavItem>
+                                                <NavLink
+                                                    aria-selected={index === navIndex}
+                                                    className={classnames(`mb-sm-3 mb-md-0 shadow-none ${index !== navIndex ? 'text-black font-weight-normal' : 'font-weight-bold'}`, {
+                                                        active: index === navIndex
+                                                    })}
+                                                    onClick={() => {
+                                                        setNavIndex(index)
+                                                        fetchKnowledgeData(el.id)
+                                                    }}
+                                                    role="tab"
+                                                >
+                                                    {el.name}
+                                                </NavLink>
+                                            </NavItem>
+                                        </Nav>
+                                    </div>
+                                )
+                            }
                         }
                     })
 
@@ -261,12 +268,12 @@ console.log("position===>", position.value)
                         </div>
                     }
                 </div>
-                < Modal size={'lg'} title={"Add Designation"} isOpen={addDesignationModal.visible} onClose={()=>{
+                < Modal size={'lg'} title={"Add Designation"} isOpen={addDesignationModal.visible} onClose={() => {
                     addDesignationModal.hide()
                     title.set("")
                     description.set("")
                     sector.set({})
-                    }} >
+                }} >
                     <div className='col-7'>
                         <Input
                             heading={"Name"}
@@ -295,7 +302,7 @@ console.log("position===>", position.value)
                     </div>
                 </Modal >
 
-                <Modal size={'lg'} title={"Add Role"} isOpen={addRoleModal.visible} onClose={()=>{
+                <Modal size={'lg'} title={"Create Job Description"} isOpen={addRoleModal.visible} onClose={() => {
                     addRoleModal.hide()
                     position.set("")
                     experience.set("")
@@ -308,6 +315,13 @@ console.log("position===>", position.value)
                             value={position.value}
                             onChange={position.onChange}
                         />
+                        {/* <Input
+                            isMandatory
+                            heading={'Sector'}
+                            placeHolder={PLACE_HOLDER.sector}
+                            value={sectorInput.value}
+                            onChange={sector.onChange} /> */}
+
                         <Input
                             heading={'Years of experience'}
                             type={'number'}

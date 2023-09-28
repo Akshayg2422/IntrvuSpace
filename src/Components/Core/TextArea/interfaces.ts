@@ -1,5 +1,5 @@
-
-export interface TextAreaProps {
+import { InputHeadingProps } from '@Components'
+export interface TextAreaProps extends InputHeadingProps {
   heading?: string;
   id?: any;
   value?: any;

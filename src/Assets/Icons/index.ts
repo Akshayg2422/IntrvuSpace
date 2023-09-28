@@ -190,7 +190,9 @@ export const icons = {
   playBlack: require('./PlayBlack/icon.png'),
   playWhite: require('./PlayWhite/icon.png'),
   darkWhite: require('./DarkWhite/icon.png'),
-
-
-
+  headPhone:require('./Headphone/icon.png'),
+  room:require('./Room/icon.png'),
+  internet:require('./Internet/icon.png'),
+  video:require('./Video/icon.png'),
+  voice:require('./Voice/icon.png')
 };
