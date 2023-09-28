@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { icons } from '@Assets';
-import { Button, Card, Checkbox, Divider, H, Input, Modal, Radio, Spinner, TextArea, showToast } from '@Components';
+import { Button, Card, Checkbox, Divider, H, Input, Modal, Radio, Sliders, Spinner, TextArea, showToast } from '@Components';
 import { useInput, useModal, useNavigation } from '@Hooks';
 import { AnalyzingAnimation, GenerateModal, UploadJdCard } from '@Modules';
 import { createNewJdSchedule, getJdItemList, postJdVariant, selectedScheduleId } from '@Redux';
@@ -40,8 +40,14 @@ function FromJD() {
     const [fresherChecked, setFresherChecked] = useState(false)
     const [jdDescriptionError, setJdDescriptionError] = useState<any>(undefined)
     const [selectedDuration, setSelectedDuration] = useState(interviewDurations[0]);
-    console.log(selectedDuration.value);
-    
+    const [sliderValue, setSliderValue] = useState(0);
+
+    const handleSliderChange = (newValue: any) => {
+        console.log('Slider value changed:', newValue);
+        setSliderValue(newValue)
+    }
+console.log('sliderValuesliderValue',sliderValue);
+
 
 
     useEffect(() => {
@@ -71,7 +77,7 @@ function FromJD() {
             sector_name: sector.value,
             position: position.value,
             interview_duration: selectedDuration.value,
-            experience: fresherChecked ? '0' : experience.value,
+            experience: fresherChecked ? '0' : sliderValue,
             jd: jd.value
         }
 
@@ -354,31 +360,34 @@ function FromJD() {
                 </div>
 
                 <div className={'row'}>
-                    <span className={'position-absolute left-9 pl-2'}>
-                        <Checkbox className={'text-primary'} text={'Fresher'} defaultChecked={fresherChecked} onCheckChange={(checked) => {
-                            setFresherChecked(checked)
-                        }} />
-                    </span>
-
-
                     <div className={'col-6'}>
                         {fresherChecked ? (
-                            <Input
-                                heading={'Years of experience'}
-                                type={'text'}
-                                placeHolder={'Fresher'}
-                                value={'Fresher'}
-                                disabled
+                            <Sliders
+                                heading={'Years of Experience'}
+                                min={0}
+                                max={30}
+                                value={'sliderValue'}
+                                step={1}
+                                onChange={handleSliderChange}
+                                disabled={true}
                             />
                         ) : (
-                            <Input
-                                heading={'Years of experience'}
-                                type={'number'}
-                                placeHolder={'Experience'}
-                                value={experience.value}
-                                onChange={experience.onChange}
-                            />
+                            <div>
+                                <Sliders
+                                    heading={'Years of Experience'}
+                                    min={0}
+                                    max={30}
+                                    value={sliderValue}
+                                    step={1}
+                                    onChange={handleSliderChange}
+                                />
+                            </div>
                         )}
+                        <span className={'position-absolute left-9 pl-5 top-0'}>
+                            <Checkbox className={'text-primary'} text={'Fresher'} defaultChecked={fresherChecked} onCheckChange={(checked) => {
+                                setFresherChecked(checked)
+                            }} />
+                        </span>
                     </div>
 
                     <div className={'col-6 mt-1'}>
@@ -416,7 +425,7 @@ function FromJD() {
                     <Button block size='md' text={'Submit'} onClick={submitJdApiHandler} />
                 </div>
 
-            </Modal>
+            </Modal >
 
             <GenerateModal title={'Create Interview Schedule From JD'} isOpen={generateJdModal.visible} onClose={generateJdModal.hide}>
                 <AnalyzingAnimation />
