@@ -31,7 +31,7 @@ function Button({
             {...rest}
             onClick={loading ? undefined : onClick}
           >
-            {loading && <Spinner color='white' />}
+            {loading && <span className='mr-2'><Spinner color='white' /></span>}
             {loading ? loadingMessage : text}
           </RSButton>
         </>
@@ -47,7 +47,7 @@ function Button({
           {...rest}
           onClick={onClick}
         >
-          {loading && <div className='mr-2'><Spinner /></div>}
+          {loading && <Spinner />}
           {!loading && (
             <div className='d-flex align-items-center'>
               {variant === 'icon-with-text' && (
