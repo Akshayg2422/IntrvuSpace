@@ -29,5 +29,6 @@ export interface DashboardProp {
   studentCodeOutput?: any;
   loading?: boolean;
   codeOutputData?: any;
-  selectedSectionId?:any;
+  selectedSectionId?: any;
+  canStartInterview?: any
 }
