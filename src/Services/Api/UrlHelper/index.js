@@ -119,6 +119,9 @@ export const URL_GET_KNOWLEDGE_GROUP_VARIANT_DETAILS = ASSISTANT + 'getKnowledge
 
 export const STUDENT_CODE_SUBMISSION_URL = 'submissions?base64_encoded=true&wait=true'
 export const URL_CLOSE_INTERVIEW = ASSISTANT + 'endInterviewCall'
+export const URL_CAN_START_INTERVIEW = ASSISTANT + 'canStartInterview'
+
+
 
 
 

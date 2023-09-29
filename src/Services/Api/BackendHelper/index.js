@@ -122,3 +122,7 @@ export const postStudentCodeSubmissionApi = (payload) => post(URL.STUDENT_CODE_S
 export const closeInterviewApi = payload => post(URL.URL_CLOSE_INTERVIEW, payload, {});
 
 
+export const canStartInterviewApi = payload => post(URL.URL_CAN_START_INTERVIEW, payload, {});
+
+
+

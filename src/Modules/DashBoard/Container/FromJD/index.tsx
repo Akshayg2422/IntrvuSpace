@@ -1,9 +1,9 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { icons } from '@Assets';
 import { Button, Card, Checkbox, Divider, Input, Modal, Spinner, TextArea, showToast } from '@Components';
-import { useInput, useModal, useNavigation } from '@Hooks';
+import { useInput, useLoader, useModal, useNavigation } from '@Hooks';
 import { AnalyzingAnimation, GenerateModal, UploadJdCard } from '@Modules';
-import { createNewJdSchedule, getJdItemList, postJdVariant, selectedScheduleId } from '@Redux';
+import { createNewJdSchedule, getJdItemList, postJdVariant, selectedScheduleId, canStartInterview } from '@Redux';
 import { ROUTES } from '@Routes';
 import { FROM_JD_RULES, getValidateError, ifObjectExist, validate } from '@Utils';
 import Slider from "nouislider";
@@ -18,6 +18,7 @@ const PLACE_HOLDER = {
     "jd": `Copy a Job Description from the Job portal(Naukri, LinkedIn...\n\n1.Visit the job portal of choice (e.g., Naukri.com) in your web browser.\n2.Search using keywords for a job listing that interests you.\n3.Click the job title to view the full description.\n4.Highlight, copy, and paste the text into your preferred application seamlessly.`
 }
 
+const INTERVAL_TIME = 3000
 
 
 function FromJD() {
@@ -48,6 +49,8 @@ function FromJD() {
 
     const [jdDescriptionError, setJdDescriptionError] = useState<any>(undefined)
     const [slider1Value, setSlider1Value] = useState("1");
+
+    const startInterviewLoader = useLoader(false);
 
     useEffect(() => {
         getKnowledgeGroupFromJdHandler();
@@ -105,15 +108,28 @@ function FromJD() {
             dispatch(postJdVariant({
                 params,
                 onSuccess: (res: any) => () => {
-                    generateJdModal.hide();
                     const { details } = res;
+
                     if (details?.schedule_id) {
+                        const canStartParams = { schedule_id: details?.schedule_id }
                         setScheduleId(details?.schedule_id)
+                        const intervalId = setInterval(() => {
+                            dispatch(canStartInterview({
+                                params: canStartParams,
+                                onSuccess: (res: any) => () => {
+                                    generateJdModal.hide();
+                                    completedModal.show();
+                                    getKnowledgeGroupFromJdHandler();
+                                    resetValues();
+                                    showToast(res.status, 'success');
+                                    clearInterval(intervalId);
+                                },
+                                onError: (error: any) => () => {
+                                    console.log(error);
+                                }
+                            }))
+                        }, INTERVAL_TIME);
                     }
-                    completedModal.show();
-                    getKnowledgeGroupFromJdHandler();
-                    resetValues();
-                    showToast(res.status, 'success')
                 },
                 onError: (error) => () => {
                     generateJdModal.hide();
@@ -142,30 +158,64 @@ function FromJD() {
 
         generateJdModal.show();
 
-        dispatch(createNewJdSchedule({
-            params,
-            onSuccess: (res: any) => () => {
+        dispatch(
+            createNewJdSchedule({
+                params,
+                onSuccess: (res: any) => () => {
 
-                generateJdModal.hide();
-                const { details } = res;
-                if (details?.schedule_id) {
-                    setScheduleId(details?.schedule_id)
-                }
-                completedModal.show();
-                getKnowledgeGroupFromJdHandler();
-            },
-            onError: () => () => {
-                generateJdModal.hide();
-            },
-        }))
+                    const { details } = res;
+
+                    if (details?.schedule_id) {
+                        const canStartParams = { schedule_id: details?.schedule_id }
+                        setScheduleId(details?.schedule_id)
+                        const intervalId = setInterval(() => {
+                            dispatch(canStartInterview({
+                                params: canStartParams,
+                                onSuccess: (res: any) => () => {
+                                    generateJdModal.hide();
+                                    completedModal.show();
+                                    getKnowledgeGroupFromJdHandler();
+                                    resetValues();
+                                    showToast(res.status, 'success');
+                                    clearInterval(intervalId);
+                                },
+                                onError: (error: any) => () => {
+                                    console.log(error);
+                                }
+                            }))
+                        }, INTERVAL_TIME);
+                    }
+                },
+                onError: () => () => {
+                    generateJdModal.hide();
+                },
+            }))
     }
 
 
     function proceedInterviewHandler(id: string) {
         if (id) {
             if (id !== '-1') {
+
+                // const canStartParams = { schedule_id: id }
                 dispatch(selectedScheduleId(id))
                 goTo(ROUTES['designation-module'].interview + "/" + id)
+
+                // startInterviewLoader.show();
+                // const intervalId = setInterval(() => {
+                //     dispatch(canStartInterview({
+                //         params: canStartParams,
+                //         onSuccess: (res: any) => () => {
+                //             startInterviewLoader.hide();
+                //             goTo(ROUTES['designation-module'].interview + "/" + id)
+                //             clearInterval(intervalId);
+                //         },
+                //         onError: (error: any) => () => {
+                //             console.log(error);
+                //         }
+                //     }))
+                // }, INTERVAL_TIME);
+
             } else {
                 jdScheduleModal.show();
             }
@@ -224,6 +274,7 @@ function FromJD() {
                                                 {proceedInterview ?
                                                     <div>
                                                         <Button
+                                                            loading={startInterviewLoader.loader}
                                                             className={'px-4 border border-primary'}
                                                             text={proceedInterview.is_started ? "Resume Interview" : "Start Interview"}
                                                             onClick={() => {
@@ -460,6 +511,7 @@ function FromJD() {
                         <div className='row justify-content-center pt-1'>
                             <div className='col-4'>
                                 <Button
+                                    loading={startInterviewLoader.loader}
                                     block
                                     size='md'
                                     text={'Start Now'}
