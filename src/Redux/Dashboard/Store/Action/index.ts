@@ -741,7 +741,7 @@ export const settingCodeOutputData = (response: any) => {
     payload: response,
   };
 };
- {/* close interview
+{/* close interview
 */}
 
 export const closeInterview = (params: any) => {
@@ -772,5 +772,36 @@ export const settingSelectedSectionId = (response: any) => {
   return {
     type: ActionTypes.SETTING_SELECTED_SECTION_ID,
     payload: response
+  }
+}
+
+
+
+
+
+/**
+ * 
+ * @param params can start interview api handler
+ * @returns 
+ */
+
+export const canStartInterview = (params: any) => {
+  return {
+    type: ActionTypes.CAN_START_INTERVIEW,
+    payload: params,
+  }
+}
+export const canStartInterviewSuccess = (response: any) => {
+
+  return {
+    type: ActionTypes.CAN_START_INTERVIEW_SUCCESS,
+    payload: response
+  }
+}
+
+export const canStartInterviewFailure = (error: any) => {
+  return {
+    type: ActionTypes.CAN_START_INTERVIEW_FAILURE,
+    payload: error
   }
 }

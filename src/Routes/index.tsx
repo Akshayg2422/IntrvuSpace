@@ -91,7 +91,7 @@ export const AUTH_ROUTES = [
   {
     key: 11,
     path: ROUTES['auth-module']['how-it-works'],
-    component: <HowItWorks/>
+    component: <HowItWorks />
   },
   {
     key: 12,
@@ -118,37 +118,32 @@ export const DASHBOARD_ROUTES = [
     component: <Sector />
   },
   {
-    id: 5,
-    path: ROUTES['designation-module'].interview + '/:schedule_id',
-    component: <Call />
-  },
-  {
     id: 4,
     path: ROUTES['designation-module']['questions'],
     component: <Questions />
   },
   {
-    id: 6,
+    id: 5,
     path: ROUTES['designation-module']['question-sections'],
     component: <QuestionSections />
   },
   {
-    id: 7,
+    id: 6,
     path: ROUTES['designation-module']['analyzing-animation'],
     component: <AnalyzingAnimation />
   },
   {
-    id: 8,
+    id: 7,
     path: ROUTES['designation-module']['schedules'],
     component: <Schedules />
   },
   {
-    id: 9,
+    id: 8,
     path: ROUTES['designation-module'].report + '/:schedule_id',
     component: <Report />
   },
   {
-    id: 10,
+    id: 9,
     path: ROUTES['designation-module']['variant-info'],
     component: <VariantInfo />
   },

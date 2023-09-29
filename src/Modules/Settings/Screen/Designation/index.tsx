@@ -43,7 +43,7 @@ function Designation() {
 
     const loader = useLoader(false);
 
-console.log("position===>", position.value)
+    console.log("position===>", position.value)
     useEffect(() => {
         dispatch(clearBreadCrumbs([]))
         getSectorsApiHandler();
@@ -157,6 +157,17 @@ console.log("position===>", position.value)
         }
     };
 
+
+    function removeEmptyData(navlist) {
+        return navlist.map((el: any) => {
+            if (el.id && el.name) {
+                return el;
+            } else {
+                return null;
+            }
+        }).filter(Boolean);
+    }
+
     return (
         <>
             <div className='container-fluid pt-4'>
@@ -166,7 +177,7 @@ console.log("position===>", position.value)
                         className={'text-white shadow-none'}
                         size={'sm'}
                         text={"Add Designation"}
-                        onClick={()=>{
+                        onClick={() => {
                             addDesignationModal.show()
                             title.set("")
                         }}
@@ -182,7 +193,7 @@ console.log("position===>", position.value)
                     />
                 </div>
                 <div className='d-flex pt-3 overflow-auto overflow-hide mx--4'>
-                    {navList && navList.map((el, index) => {
+                    {navList && removeEmptyData(navList).map((el, index) => {
                         return (
                             <div className='col-sm-3 px-2'>
                                 <Nav
@@ -259,12 +270,12 @@ console.log("position===>", position.value)
                         </div>
                     }
                 </div>
-                < Modal size={'lg'} title={"Add Designation"} isOpen={addDesignationModal.visible} onClose={()=>{
+                < Modal size={'lg'} title={"Add Designation"} isOpen={addDesignationModal.visible} onClose={() => {
                     addDesignationModal.hide()
                     title.set("")
                     description.set("")
                     sector.set({})
-                    }} >
+                }} >
                     <div className='col-7'>
                         <Input
                             heading={"Name"}
@@ -293,7 +304,7 @@ console.log("position===>", position.value)
                     </div>
                 </Modal >
 
-                <Modal size={'lg'} title={"Add Role"} isOpen={addRoleModal.visible} onClose={()=>{
+                <Modal size={'lg'} title={"Add Role"} isOpen={addRoleModal.visible} onClose={() => {
                     addRoleModal.hide()
                     position.set("")
                     experience.set("")

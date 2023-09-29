@@ -496,6 +496,27 @@ function* postStudentCodeSubmissionSaga(action) {
 }
 
 
+/**
+ * can start interview
+ * @param {} action 
+ */
+
+
+function* canStartInterviewSaga(action) {
+  try {
+    const response = yield call(Api.canStartInterviewApi, action.payload.params);
+
+    if (response.success) {
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield call(action.payload.onError(response));
+    }
+  } catch (error) {
+    yield call(action.payload.onError(error));
+  }
+}
+
+
 
 
 // close interview api handler
@@ -543,7 +564,7 @@ function* DashboardSaga() {
   yield takeLatest(Action.GET_KNOWLEDGE_GROUP_VARIANT_DETAILS, getKnowledgeGroupVariantDetailsSaga);
   yield takeLatest(Action.STUDENT_CODE_SUBMISSION, postStudentCodeSubmissionSaga);
   yield takeLatest(Action.CLOSE_INTERVIEW, closeInterviewSaga);
-
+  yield takeLatest(Action.CAN_START_INTERVIEW, canStartInterviewSaga);
 
 }
 export default DashboardSaga;

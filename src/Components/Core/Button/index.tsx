@@ -17,6 +17,7 @@ function Button({
   icons,
   onEnter,
   onClick,
+  loadingMessage = '',
   ...rest
 }: ButtonProps) {
   return (
@@ -31,7 +32,7 @@ function Button({
             onClick={loading ? undefined : onClick}
           >
             {loading && <Spinner color='white' />}
-            {!loading && text}
+            {loading ? loadingMessage : text}
           </RSButton>
         </>
 
@@ -46,7 +47,7 @@ function Button({
           {...rest}
           onClick={onClick}
         >
-          {loading && <Spinner />}
+          {loading && <div className='mr-2'><Spinner /></div>}
           {!loading && (
             <div className='d-flex align-items-center'>
               {variant === 'icon-with-text' && (
