@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './index.css';
-import { SlidersProps } from './interface'
+import { SlidersProps } from './interfaces'
 
 const Sliders = ({ min, max, value, step, onChange, heading, disabled }: SlidersProps) => {
     const [isSliderActive, setIsSliderActive] = useState(false);
@@ -31,10 +31,10 @@ const Sliders = ({ min, max, value, step, onChange, heading, disabled }: Sliders
     };
 
     return (
-        <div className={'range m-0 p-0 ml--3'}>
+        <div className={'range m-0 p-0'}>
             {
                 heading &&
-                <h5 style={{ color: '#525f7f' }} className={'mb-5'}>
+                <h5 style={{ color: '#525f7f' }} className={'mb-4'}>
                     {heading}
                 </h5>
             }

@@ -1,20 +1,8 @@
+/* eslint-disable no-self-assign */
 import {
-  CREATE_KNOWLEDGE_GROUP,
-  CREATE_KNOWLEDGE_GROUP_FAILURE,
-  CREATE_KNOWLEDGE_GROUP_SUCCESS,
-  CREATE_KNOWLEDGE_GROUP_VARIANT,
-  CREATE_KNOWLEDGE_GROUP_VARIANT_FAILURE,
-  CREATE_KNOWLEDGE_GROUP_VARIANT_SUCCESS,
   CREATE_SECTOR,
   CREATE_SECTOR_FAILURE,
-  CREATE_SECTOR_SUCCESS,
-  GET_KNOWLEDGE_GROUP,
-  GET_KNOWLEDGE_GROUP_FAILURE,
-  GET_KNOWLEDGE_GROUP_SUCCESS,
-  GET_KNOWLEDGE_GROUP_VARIANT,
-  GET_KNOWLEDGE_GROUP_VARIANT_FAILURE,
-  GET_KNOWLEDGE_GROUP_VARIANT_SUCCESS,
-  GET_START_CHAT,
+  CREATE_SECTOR_SUCCESS
 } from "../ActionTypes";
 
 import { DashboardProp } from "../../Interfaces";
@@ -52,6 +40,7 @@ const initialState: DashboardProp = {
   studentCodeOutput: undefined,
   codeOutputData: undefined,
   selectedSectionId: undefined,
+  canStartInterview: undefined
 };
 
 const DashboardReducer = (state = initialState, action: any) => {

@@ -1,7 +1,7 @@
 import { AnimatedImage, Button, Spinner,Image } from '@Components';
 import { useLoader, useModal, useNavigation } from '@Hooks';
 import { CallHeader, Guidelines } from '@Modules';
-import { getScheduleBasicInfo, closeInterview } from '@Redux';
+import { getScheduleBasicInfo, closeInterview, canStartInterview } from '@Redux';
 import { capitalizeFirstLetter, getShortName } from '@Utils';
 import type { Harker } from 'hark';
 import type { Encoder } from 'lamejs';
@@ -15,7 +15,7 @@ import { icons } from '@Assets';
 const compare_moment_format = 'YYYY-MM-DDHH:mm:ss';
 
 
-
+const INTERVAL_TIME = 3000
 const GUIDELINES = [
   {
     text: "Kindly ensure the use of headphones to optimize audio quality.",
@@ -165,6 +165,7 @@ function Call() {
   const reconnectAttempts = useRef<any>(0)
   const maxReconnectAttempts = 3;
   let reconnectInterval: any = null;
+  const startInterviewLoader = useLoader(false);
 
 
   // const { startScreenRecording, stopScreenRecording, isScreenRecording } = useScreenRecorder();
@@ -705,16 +706,37 @@ function Call() {
 
 
   function startInterviewHandler() {
-    startStreamTime.current = moment().add(1, 'seconds')
-    transcriptionReferenceId.current = generateRandomID()
-    // proceedgetChatDetailsApiHandler({ message: "start" }, transcriptionReferenceId.current)
-    setProcessCallInprogress(false)
-    // console.log("resss0114")
-    resetLastMessage()
-    setInterviewStarted(true)
-    // setTimeout(() => {
-    validateProceedStartListening()
-    // }, 5000)
+
+    const canStartParams = { schedule_id }
+
+    startInterviewLoader.show();
+
+    const intervalId = setInterval(() => {
+      dispatch(canStartInterview({
+        params: canStartParams,
+        onSuccess: (res: any) => () => {
+
+          startInterviewLoader.hide();
+
+          startStreamTime.current = moment().add(1, 'seconds')
+          transcriptionReferenceId.current = generateRandomID()
+          // proceedgetChatDetailsApiHandler({ message: "start" }, transcriptionReferenceId.current)
+          setProcessCallInprogress(false)
+          // console.log("resss0114")
+          resetLastMessage()
+          setInterviewStarted(true)
+          // setTimeout(() => {
+          validateProceedStartListening()
+          // }, 5000)
+          clearInterval(intervalId);
+        },
+        onError: (error: any) => () => {
+          console.log(error);
+        }
+      }))
+    }, INTERVAL_TIME);
+
+
   }
 
   function endInterviewHandler() {
@@ -784,7 +806,7 @@ function Call() {
                     <h3 className='display-3 mb-4 text-white mt-3'>{capitalizeFirstLetter(scheduleInfo?.interviewer_name)}</h3>
                   </div>
                   <div className='col-sm-6 d-flex flex-column align-items-center justify-content-center'>
-                    <AnimatedImage show={false} showWebCam={showCam} name={getShortName(scheduleInfo?.interviewer_name)} shouldBlink={interviewee_state === IE_SPEAKING} />
+                    <AnimatedImage show={false} showWebCam={showCam} name={getShortName(scheduleInfo?.interviewee_name)} shouldBlink={interviewee_state === IE_SPEAKING} />
                     <h3 className='display-3 mb-4 text-white mt-3'>{capitalizeFirstLetter(scheduleInfo?.interviewee_name)}</h3>
                   </div>
 
@@ -802,7 +824,7 @@ function Call() {
               <Guidelines
                 guidelines={GUIDELINES}
                 scheduleInfo={scheduleInfo}
-                loading={proceedCallLoader.loader}
+                loading={startInterviewLoader.loader}
                 heading={scheduleInfo?.interviewee_expected_designation}
                 onClick={startInterviewHandler}
               />

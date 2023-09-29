@@ -17,6 +17,7 @@ function Button({
   icons,
   onEnter,
   onClick,
+  loadingMessage = '',
   ...rest
 }: ButtonProps) {
   return (
@@ -30,8 +31,8 @@ function Button({
             {...rest}
             onClick={loading ? undefined : onClick}
           >
-            {loading && <Spinner color='white' />}
-            {!loading && text}
+            {loading && <span className='mr-2'><Spinner color='white' /></span>}
+            {loading ? loadingMessage : text}
           </RSButton>
         </>
 

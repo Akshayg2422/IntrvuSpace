@@ -1,22 +1,22 @@
 /* eslint-disable @typescript-eslint/no-redeclare */
-import { ScreenWrapper, Breadcrumbs, Back, PageNotFound, Sliders } from "@Components";
+import { PageNotFound, ScreenWrapper } from "@Components";
+import { Call, Splash } from '@Modules';
+import { AUTH_ROUTES, DASHBOARD_ROUTES, HOME_ROUTES, ROUTES, RequireAuth, RequireHome } from "@Routes";
 import { Route, Routes } from "react-router-dom";
-import { HOME_ROUTES, RequireAuth, DASHBOARD_ROUTES, AUTH_ROUTES, RequireHome } from "@Routes";
 import { ToastContainer } from "react-toastify";
-import { Splash } from '@Modules'
 /**
  *  select-react  - important need to add this app.js
  */
-import "select2/dist/css/select2.min.css";
-import "react-notification-alert/dist/animate.css";
-import "react-perfect-scrollbar/dist/css/styles.css";
+import "@fortawesome/fontawesome-free/css/all.min.css";
 import "@fullcalendar/common/main.min.css";
 import "@fullcalendar/daygrid/main.min.css";
-import "sweetalert2/dist/sweetalert2.min.css";
 import "quill/dist/quill.core.css";
-import "@fortawesome/fontawesome-free/css/all.min.css";
-import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
+import "react-notification-alert/dist/animate.css";
+import "react-perfect-scrollbar/dist/css/styles.css";
+import { useDispatch, useSelector } from "react-redux";
+import "select2/dist/css/select2.min.css";
+import "sweetalert2/dist/sweetalert2.min.css";
 import { settingSideNavRemove } from "./Redux";
 
 
@@ -77,6 +77,7 @@ function App() {
         {getRoutes(AUTH_ROUTES, AUTH)}
         {getRoutes(HOME_ROUTES)}
         {getRoutes(DASHBOARD_ROUTES)}
+        <Route path={ROUTES['designation-module'].interview + '/:schedule_id'} element={<Call />} />
         <Route path={"*"} element={<PageNotFound />} />
       </Routes>
       <ToastContainer />
