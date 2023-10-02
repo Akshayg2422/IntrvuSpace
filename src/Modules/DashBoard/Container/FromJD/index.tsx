@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { icons } from '@Assets';
-import { Button, Card, Checkbox, Divider, Input, Modal, Spinner, TextArea, showToast } from '@Components';
+import { Button, Card, Checkbox, Divider, Input, Modal, Spinner, TextArea, showToast, Radio, H } from '@Components';
 import { useInput, useLoader, useModal, useNavigation } from '@Hooks';
 import { AnalyzingAnimation, GenerateModal, UploadJdCard } from '@Modules';
 import { createNewJdSchedule, getJdItemList, postJdVariant, selectedScheduleId, canStartInterview } from '@Redux';
@@ -10,6 +10,13 @@ import Slider from "nouislider";
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+
+
+export const interviewDurations = [
+    { id: '1', text: 'Short', subText: '(5 mins)', value: 5 },
+    { id: '2', text: 'Medium', subText: '(15 mins)', value: 15 },
+    { id: '3', text: 'Long', subText: '(30 mins)', value: 30 },
+];
 
 const PLACE_HOLDER = {
     "sector": "Software, Banking...",
@@ -46,6 +53,7 @@ function FromJD() {
     const [jdMore, setJdMore] = useState<any>([])
     const [fresherChecked, setFresherChecked] = useState(false)
 
+    const [selectedDuration, setSelectedDuration] = useState(interviewDurations[1]);
 
     const [jdDescriptionError, setJdDescriptionError] = useState<any>(undefined)
     const [slider1Value, setSlider1Value] = useState("1");
@@ -97,7 +105,8 @@ function FromJD() {
             position: position.value,
             experience: fresherChecked ? '0' : experience.value,
             reference_link: portalUrl.value,
-            jd: jd.value
+            jd: jd.value,
+            interview_duration: selectedDuration.value,
         }
 
         const validation = validate(FROM_JD_RULES, params)
@@ -464,13 +473,21 @@ function FromJD() {
                         )}
                     </div>
 
-                    <div className={'col-6'}>
-                        {/* <Input
-                            heading='Portal JD URL'
-                            placeHolder={PLACE_HOLDER.portal}
-                            value={portalUrl.value}
-                            onChange={portalUrl.onChange} /> */}
+
+                    <div className={'col-6 mt-1'}>
+                        <H className='mb-0' style={{ fontSize: '13px', color: '#525f7f' }} text={'Interview Duration'} tag={'h4'} />
+                        <Radio
+                            selected={selectedDuration}
+                            selectItem={selectedDuration}
+                            data={interviewDurations}
+                            onRadioChange={(selected) => {
+                                if (selected) {
+                                    setSelectedDuration(selected)
+                                }
+                            }}
+                        />
                     </div>
+
                 </div>
 
                 <TextArea
