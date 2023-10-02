@@ -10,7 +10,7 @@ function Button({
   text,
   color = 'primary',
   variant = 'default',
-  size = 'sm',
+  size = 'md',
   height = 15,
   width = 15,
   icon,
@@ -25,14 +25,15 @@ function Button({
       {variant === 'default' && (
         <>
           <RSButton
-            className="btn btn-primary"
+            className="btn text-uppercase"
             size={size}
+            style={{ fontSize: 17, height: 50, letterSpacing: 1 }}
             color={color}
             {...rest}
             onClick={loading ? undefined : onClick}
           >
             {loading && <span className='mr-2'><Spinner color='white' /></span>}
-            {loading ? loadingMessage : text}
+            {loading ? loadingMessage : text.toUpperCase()}
           </RSButton>
         </>
 

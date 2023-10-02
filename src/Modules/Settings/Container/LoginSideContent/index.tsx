@@ -15,7 +15,7 @@ function LoginSideContent() {
                 >MOCK <b className='text-black'>EAZY</b></h1>
                 <p className="text-center text-white "
                     style={{
-                        maxWidth:  '600px'
+                        maxWidth: '600px'
                     }}
                 >
                     Interview App is the easiest way to interview people automatically. Invite people to answer your question spontaneously with their webcam.

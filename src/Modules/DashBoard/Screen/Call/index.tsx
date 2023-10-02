@@ -11,8 +11,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { RecordRTCPromisesHandler, StereoAudioRecorder } from 'recordrtc';
 import { useScreenRecorder } from './useScreenRecorder';
+import { CALL_WEBSOCKET } from '@Services'
 const compare_moment_format = 'YYYY-MM-DDHH:mm:ss';
-
 
 
 const INTERVAL_TIME = 3000
@@ -108,6 +108,10 @@ function Call() {
   const lastAiResponseTime = useRef<any>(undefined);
   const [networkBreakTime, setNetworkBreakTime] = useState(0)
 
+
+  const WEBSOCKET_PROCESSING = 1
+  const WEBSOCKET_IDLE = -1
+  const websocketStatus = useRef(WEBSOCKET_IDLE);
 
 
   function generateRandomID() {
@@ -240,51 +244,61 @@ function Call() {
 
   function createWebSocket(showError = true) {
 
-
-    // const socket = new WebSocket('wss://mockeazyprimary.leorainfotech.in/aaa');
-    const socket = new WebSocket('wss://mockeazyprimary.leorainfotech.in/aaa');
-
-    // const socket = new WebSocket('ws://192.168.105.204:8002/aaa');
+    console.log('createWebSocket');
 
 
-    socketRef.current = socket; // Store the WebSocket instance in the ref
 
-    socket.addEventListener('open', () => {
-      console.log('WebSocket connection established===========================');
-      setWebSocketError(false);
+    if (websocketStatus.current !== WEBSOCKET_PROCESSING) {
 
-      // Clear the reconnect interval when the connection is open
-      clearInterval(reconnectInterval);
-      reconnectAttempts.current = 0; // Reset the reconnect attempts counter
-    });
+      const socket = new WebSocket(CALL_WEBSOCKET);
+      // const socket = new WebSocket('wss://mockeazyprimary.leorainfotech.in/aaa');
 
-    socket.addEventListener('close', () => {
-      if (showError)
-        setWebSocketError(true)
+      // const socket = new WebSocket('ws://192.168.105.204:8002/aaa');
 
-      if (reconnectAttempts.current < maxReconnectAttempts) {
+      websocketStatus.current = WEBSOCKET_PROCESSING
+      socketRef.current = socket; // Store the WebSocket instance in the ref
 
-        setTimeout(() => {
-          createWebSocket();
-          reconnectAttempts.current++;
-        }, 3000)
+      socket.addEventListener('open', () => {
+        websocketStatus.current = WEBSOCKET_IDLE
+        console.log('WebSocket connection established===========================');
+        setWebSocketError(false);
 
-      } else {
+        // Clear the reconnect interval when the connection is open
         clearInterval(reconnectInterval);
-        if (!showError)
+        reconnectAttempts.current = 0; // Reset the reconnect attempts counter
+      });
+
+      socket.addEventListener('close', () => {
+        websocketStatus.current = WEBSOCKET_IDLE
+        if (showError)
           setWebSocketError(true)
-      }
 
-    });
+        if (reconnectAttempts.current < maxReconnectAttempts) {
 
-    // Listen for messages
-    socket.onmessage = event => {
-      console.log("Received001")
-      const response = JSON.parse(event.data);
-      proceedHandleResponseV1(response)
-      // Handle the response data here
-      // console.log('Received002:', response);
-    };
+          setTimeout(() => {
+            createWebSocket();
+            reconnectAttempts.current++;
+          }, 3000)
+
+        } else {
+          clearInterval(reconnectInterval);
+          if (!showError)
+            setWebSocketError(true)
+        }
+
+      });
+
+
+      // Listen for messages
+      socket.onmessage = event => {
+        console.log("Received001")
+        const response = JSON.parse(event.data);
+        proceedHandleResponseV1(response)
+        // Handle the response data here
+        // console.log('Received002:', response);
+      };
+    }
+
 
   }
 

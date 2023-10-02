@@ -1752,7 +1752,31 @@ myTextarea {
 }
 
 .bg-customGradient {
-  background: linear-gradient(112.2deg, #18d1e9 -1.1%, rgb(0, 221, 61) 100.7%);
+  background: linear-gradient(112.2deg, #ffffff -1.1%, #fafafa 100.7%);
+}
+
+.bg-custom {
+  background: linear-gradient(112.2deg, #5bf707 -1.1%, #5ede41 100.7%);
+}
+
+.custom-color {
+  color: #424242;
+}
+
+.custom-text-color {
+  color: #1e1e1e;
+}
+
+.custom-font-size {
+  font-size: 17px;
+  font-weight: 300;
+  line-height: 1.7;
+  color: #424242;
+}
+
+.text-decoration-underline-hover:hover {
+  text-decoration: underline;
+  color: #67f60e;
 }
 
 :root {
@@ -7777,7 +7801,7 @@ a.close.disabled {
 }
 @media (min-width: 1200px) {
   .modal-xl {
-    max-width: 1100px;
+    max-width: 1000px;
   }
 }
 .tooltip {
@@ -15942,9 +15966,9 @@ a.text-darker:hover, a.text-darker:focus {
   font-size: 0.875rem;
   will-change: transform;
   box-shadow: none;
+  border-radius: 0;
 }
 .btn:hover {
-  box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
   transform: translateY(-1px);
 }
 .btn:not(:last-child) {
@@ -16418,7 +16442,7 @@ a.btn-icon-only {
 
 .card {
   margin-bottom: 30px;
-  box-shadow: 0 0 2rem 0 rgba(136, 152, 170, 0.15);
+  border-radius: 0;
   border: 0;
 }
 
@@ -17341,6 +17365,7 @@ a.btn-icon-only {
 
 .form-control {
   font-size: 0.875rem;
+  border-color: black;
   transition: all 0.15s ease-in-out;
   height: calc(1.5em + 1.25rem + 5px);
 }
@@ -21984,6 +22009,14 @@ button.section-darker:focus {
 
 .text-xxs {
   font-size: 0.45rem !important;
+}
+
+.text-xxs {
+  font-size: 0.45rem !important;
+}
+
+.text-details {
+  font-size: 18;
 }
 
 .lh-100 {
