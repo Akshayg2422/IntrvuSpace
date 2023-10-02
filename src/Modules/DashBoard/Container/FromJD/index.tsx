@@ -22,11 +22,11 @@ const INTERVAL_TIME = 3000
 
 
 function FromJD() {
-    const CHAR_LENGTH = 3000
+    const CHAR_LENGTH = 2000
     const VIEW_MORE_LENGTH = 350
 
 
-    const ERROR_MESSAGE = "Please provide a job description within " + CHAR_LENGTH + " characters."
+    const ERROR_MESSAGE = "In beta version, you can upload only max of " + CHAR_LENGTH + " characters."
 
 
     const { jdItem } = useSelector((state: any) => state.DashboardReducer)
