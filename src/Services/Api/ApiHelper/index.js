@@ -61,8 +61,9 @@ export async function post(url, data, config, submissionUrl) {
 
   const baseUrl = axios.create({
     baseURL: submissionUrl,
-    timeout: 50000,
+    timeout: 240000, // 4 minutes
   });
+
 
   let headers = { ...(await getHeaders()) };
 

@@ -2,7 +2,8 @@ import { RsInputProps } from '@Components'
 export interface RadioItem {
     id: string;
     text: string;
-    value: string
+    subText: string;
+    value: any
 }
 export interface RadioProps extends RsInputProps {
     data: Array<RadioItem>;

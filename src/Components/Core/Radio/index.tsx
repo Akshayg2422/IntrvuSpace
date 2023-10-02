@@ -6,16 +6,14 @@ function Radio({
   data,
   selected,
   onRadioChange,
-  variant = "row",
+  variant = 'row',
   disableId,
   selectItem,
   ...rest
 }: RadioProps) {
-  // const [selectItem, setSelectedItem] = useState<any>(selected);
 
   function onChangeHandler(selected: RadioItem) {
     if (onRadioChange) {
-      // setSelectedItem(selected);
       onRadioChange(selected);
     }
   }
@@ -25,7 +23,7 @@ function Radio({
     return (
       <>
         {data?.map((item: RadioItem, index: number) => {
-          const { id, text } = item;
+          const { id, text, subText } = item;
           let isSelected: boolean = false;
           const disable = disableId?.some(each => each.id === item.id)
 
@@ -36,22 +34,24 @@ function Radio({
           return (
             <div
               key={id}
-              className={`custom-control custom-radio  mb-2 ${variant === "row" && index !== 0 && "ml-4"
-                }`}
+              className={`custom-control custom-radio  mb-2 ${variant === 'row' && index !== 0 ? 'ml-4' : 'ml-0'} align-items-center mt-1`}
             >
               <input
-                className={"custom-control-input"}
+                className={'custom-control-input'}
                 id={id}
                 name={id}
                 disabled={disable}
-                type={"radio"}
+                type={'radio'}
                 onChange={() => onChangeHandler(item)}
                 checked={isSelected}
                 {...rest}
               />
-              <label className={"custom-control-label"} htmlFor={id}>
-                {text}
+              <label className={'custom-control-label mb-0'} htmlFor={id}>
+                <span >{text}</span>
               </label>
+              <div className={'d-flex justify-content-end'}>
+                <span style={{ fontSize: '8px', fontWeight: '500' }}>{subText}</span>
+              </div>
             </div>
           );
         })}
@@ -60,8 +60,8 @@ function Radio({
   }
   return (
     <Form>
-      {variant === "row" && <Row className={"ml-1"}>{renderContent()}</Row>}
-      {variant === "column" && renderContent()}
+      {variant === 'row' && <Row className={'ml-1'}>{renderContent()}</Row>}
+      {variant === 'column' && renderContent()}
     </Form>
   );
 }
