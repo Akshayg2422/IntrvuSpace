@@ -18,6 +18,10 @@ function Profile() {
     ]
 
 
+
+
+
+
     // const DropdownHandler = (item: any) => {
     //     if (item.value === 'ST') {
     //     }
@@ -60,7 +64,6 @@ function Profile() {
                                 <DropdownItem
                                     onClick={(e) => {
                                         e.preventDefault()
-                                        // DropdownHandler(item)
                                     }}
                                 >
                                     <i className={item.icon}></i>
