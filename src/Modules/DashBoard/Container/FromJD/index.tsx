@@ -292,7 +292,6 @@ function FromJD() {
                                                         />
                                                     </div> :
                                                     <Button
-                                                        size={'sm'}
                                                         text={'Try Another'}
                                                         onClick={() => {
                                                             createNewJdScheduleApiHandler(id);
@@ -316,7 +315,7 @@ function FromJD() {
                                                         {
                                                             details.length < VIEW_MORE_LENGTH ?
                                                                 <div className='row'>
-                                                                    <small className='text-sm text-black'>{`${details}`}</small>
+                                                                    <small className='text-details text-black'>{`${details}`}</small>
                                                                 </div>
                                                                 :
                                                                 <>
@@ -353,6 +352,57 @@ function FromJD() {
                                                         }
                                                     </div>
                                                 </div>
+                                            </div>
+                                            <div className='col mt-3'>
+                                                {modifiedSchedules && modifiedSchedules.length > 0 && <Divider className={'row'} space={"3"} />}
+                                                {
+                                                    modifiedSchedules &&
+                                                    modifiedSchedules.length > 0 &&
+                                                    modifiedSchedules.slice().reverse().map((each: any, index: number) => {
+                                                        const { is_complete, is_report_complete, id, created_at } = each;
+
+                                                        const getDisplayTimeFromMoment = (timestamp: any) => {
+                                                            const currentTime = new Date().getTime();
+                                                            const createdAt = new Date(timestamp).getTime();
+                                                            const timeDifference = Math.floor((currentTime - createdAt) / (1000 * 60));
+
+                                                            if (timeDifference < 60) {
+                                                                return `${timeDifference} mins ago`;
+                                                            } else if (timeDifference < 1440) {
+                                                                const hours = Math.floor(timeDifference / 60);
+                                                                return `${hours} ${hours === 1 ? 'hour' : 'hours'} ago`;
+                                                            } else {
+                                                                const days = Math.floor(timeDifference / 1440);
+                                                                return `${days} ${days === 1 ? 'day' : 'days'} ago`;
+                                                            }
+                                                        };
+
+                                                        return (
+                                                            <div>
+                                                                <div className='row align-items-center'>
+                                                                    <h5 className='col m-0 p-0'>{"Interview " + (index + 1)}</h5>
+                                                                    <h5 className='col mb-0 text-center'>{(is_complete ? "Completed: " : "Created at: ") + getDisplayTimeFromMoment(created_at)}</h5>
+                                                                    <div className='d-flex align-items-end p-0 m-0'>
+
+                                                                        {is_report_complete &&
+                                                                            <Button
+                                                                                text={'View Report'}
+                                                                                onClick={() => {
+                                                                                    proceedReport(id);
+                                                                                }} />
+                                                                        }
+
+
+                                                                        {is_complete && !is_report_complete && <div>
+                                                                            <span className="name mb-0 text-sm">Generating Report ...</span>
+                                                                        </div>}
+                                                                    </div>
+                                                                </div>
+                                                                <Divider className={'row'} space={"3"} />
+                                                            </div>
+                                                        )
+                                                    })
+                                                }
                                             </div>
                                         </Card>
                                     )
