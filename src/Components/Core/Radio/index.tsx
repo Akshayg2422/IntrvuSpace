@@ -50,7 +50,7 @@ function Radio({
                 <span >{text}</span>
               </label>
               <div className={'d-flex justify-content-end'}>
-                <span style={{ fontSize: '8px', fontWeight: '500' }}>{subText}</span>
+                <span style={{ fontSize: '12px', fontWeight: '500' }}>{subText}</span>
               </div>
             </div>
           );
