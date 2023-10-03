@@ -130,7 +130,8 @@ function AdminLogin() {
                                                 style={{
                                                     borderTopRightRadius: '0px',
                                                     borderBottomRightRadius: '0px',
-                                                    borderRight: '0px'
+                                                    borderRight: '0px',
+                                                    borderRadius: 0
                                                 }}
                                                 value={password.value}
                                                 type={showPassword ? 'text' : 'password'}
@@ -174,7 +175,7 @@ function AdminLogin() {
                                     <div className="row justify-content-between align-items-center ml-0 mr-0 pt-3 pb-2">
                                         <div className="custom-control custom-checkbox custom-checkbox-success ">
                                             <input
-                                                className="custom-control-input"
+                                                className="custom-control-input rounded-0"
                                                 defaultChecked
                                                 id="chk-todo-task-1"
                                                 type="checkbox"

@@ -126,6 +126,7 @@ function LoginWithOtp() {
                             <div>
                                 <label className="h3 font-weight-bolder text-black">Mobile Number</label>
                                 <Input
+                                    className='rounded-0'
                                     type={'number'}
                                     value={mobileNumber.value}
                                     placeholder='Enter your mobile number'
@@ -137,6 +138,7 @@ function LoginWithOtp() {
                             <div>
                                 <label className="h3 font-weight-bolder text-black">Email ID</label>
                                 <Input
+                                    className='rounded-0'
                                     type={'text'}
                                     value={email.value}
                                     placeholder='Enter your Email ID'
