@@ -43,7 +43,8 @@ function Guidelines({ scheduleInfo = undefined, loading, heading, guidelines = [
                                     <Button
                                         loading={loading}
                                         loadingMessage={'Please wait. We are preparing your interview.'}
-                                        block size={'lg'}
+                                        block
+                                        size={'lg'}
                                         text={scheduleInfo.is_started == false ? 'Start Now' : 'Resume Interview'}
                                         onClick={() => {
                                             if (onClick) {
