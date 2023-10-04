@@ -422,7 +422,7 @@ function Report() {
                     </div>
                 </div>
 
-                <div className='card flex-grow-1 m-3'>
+                <div className='card flex-grow-1 m-3 rounded-0'>
                     <div className='card-header'>
                         <div className='row pl-lg-5 pr-lg-5 pl-sm-0 pl-3 pb-0 pr-sm-0 pr-3 justify-content-between'>
                             <div className='h1 pt-1 font-weight-bolder text-black'>
