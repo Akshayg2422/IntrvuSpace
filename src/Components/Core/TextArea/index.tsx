@@ -15,7 +15,7 @@ function TextArea({ id, heading, value, onChange, className, placeholder, error,
                 style={{ height: '300px' }}
                 value={value}
                 onChange={onChange}
-                className={`${className} form-control form-control-sm text-black`}
+                className={`${className} form-control form-control-sm text-black rounded-0`}
                 placeholder={placeholder}
 
             />

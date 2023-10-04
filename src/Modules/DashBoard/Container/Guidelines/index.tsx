@@ -1,61 +1,61 @@
-import React from 'react';
-import { GuidelinesProps } from './interfaces';
-import { Button, Image } from '@Components';
-import { useNavigation } from '@Hooks';
-import { icons, image } from '@Assets';
+import React from 'react'
+import { GuidelinesProps } from './interfaces'
+import { Button, Image } from '@Components'
+import { useNavigation } from '@Hooks'
+import { icons } from '@Assets'
 
-function Guidelines({
-    scheduleInfo = undefined,
-    loading,
-    heading,
-    guidelines = [],
-    onClick,
-}: GuidelinesProps) {
-    const { goBack } = useNavigation();
+const GUIDELINES = [
+    { title: "Kindly ensure the use of headphones to optimize audio quality.", icon: icons.headPhone },
+    { title: "Find a quiet and secluded space to minimize background noise and distractions.", icon: icons.room },
+    { title: "Verify the stability of your internet connection to ensure uninterrupted communication.", icon: icons.internet },
+    { title: "Keep the video function enabled throughout the session for effective interaction.", icon: icons.video },
+    { title: "We appreciate clear and succinct responses during the conversation.", icon: icons.voice }
+];
+
+function Guidelines({ scheduleInfo = undefined, loading, heading, onClick }: GuidelinesProps) {
+    const { goBack } = useNavigation()
+
+
+    console.log(JSON.stringify(scheduleInfo) + '====scheduleInfo');
+
 
     return (
         <>
-            {!scheduleInfo.is_complete && (
-                <div className={`vh-100 container-fluid`} style={{ backgroundImage: `url(${image.Guideline})`, objectFit: 'contain',backgroundSize:'cover',backgroundPosition:'center' }}>
-                    <div className='mb-0 overflow-auto overflow-hide scroll-y'>
-                        <div className='card-body mb-0 my-6'>
-                            <h1 className='display-2'>{`Interview for the role of ${heading}`}</h1>
-                            <p className='mt-0 mb-5'>{"3 years of experience"}</p>
-                            <div className='mb-0 mt-3'>
-                                <h5 className='mb-0 text-uppercase pb-2'>Guidelines:</h5>
-                                {guidelines && guidelines.length > 0 && (
-                                    <ul className='list-unstyled'>
-                                        {guidelines.map((guideline: any, index: number) => {
-                                            console.log('guideline', JSON.stringify(guideline))
-                                            return (
-                                                <li key={index} className='mb-3'>
-                                                    <div className='d-flex align-items-center'>
-                                                        <div>
-                                                            {guideline.icon && (
-                                                                <Image height={18} width={18} src={guideline.icon} />
-                                                            )}
+            {!scheduleInfo.is_complete &&
+                <div style={{ backgroundImage: `url(${require('../../../../Assets/img/Background/Guildlines/image.jpg')})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+                    <div className='container'>
+                        <div className="d-flex flex-column justify-content-between h-100vh py-5">
+                            <div className='col'>
+                                <h2 className="display-2 mb-0">{`Interview for the role of ${heading}`}</h2>
+                                <h3 className="mb-0 pointer text-muted mt--1">{scheduleInfo?.interviewee_experience === 0 ? "Fresher" : "" + scheduleInfo?.interviewee_experience + (scheduleInfo?.interviewee_experience === 1 ? " year " : " years ") + "of experience"}</h3>
+                                <div className='mb-0 mt-6'>
+                                    <h5 className="mb-0 text-uppercase">Guidelines:</h5>
+                                    {
+                                        GUIDELINES && GUIDELINES.length > 0 && GUIDELINES.map(each => {
 
-                                                        </div>
-                                                        <p className='text-muted mb-0 ml-3' style={{ fontSize: '14px' }}>
-                                                            {guideline.text}
-                                                        </p>
+                                            const { title, icon } = each
+                                            return (
+                                                <div className='col mt-4 align-items-center'>
+                                                    <div className='row align-items-center'>
+                                                        <Image src={icon} height={28} width={28} />
+                                                        <p className="text-muted mb-0 ml-3" style={{ fontSize: '20px' }}>{title}</p>
                                                     </div>
-                                                </li>
+                                                </div>
                                             )
-                                        })}
-                                    </ul>
-                                )}
+                                        })
+                                    }
+                                </div>
                             </div>
 
-                            <div className='text-center py-3 pt-5'>
+                            <div className='col-auto'>
                                 <Button
                                     loading={loading}
+                                    loadingMessage={'Please wait. We are preparing your interview.'}
                                     block
-                                    size={'lg'}
-                                    text={scheduleInfo.is_started === false ? 'Start Now' : 'Resume Interview'}
+                                    text={!scheduleInfo.is_started ? 'Start Now' : 'Resume Interview'}
                                     onClick={() => {
                                         if (onClick) {
-                                            onClick();
+                                            onClick()
                                         }
                                     }}
                                 />
@@ -63,7 +63,7 @@ function Guidelines({
                         </div>
                     </div>
                 </div>
-            )}
+            }
 
             {scheduleInfo.is_complete ? (
                 <div className='h-100 container d-flex  justify-content-center align-items-center'>

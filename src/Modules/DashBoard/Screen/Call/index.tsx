@@ -1,4 +1,4 @@
-import { AnimatedImage, Button, Spinner,Image } from '@Components';
+import { AnimatedImage, Button, Spinner, Image } from '@Components';
 import { useLoader, useModal, useNavigation } from '@Hooks';
 import { CallHeader, Guidelines } from '@Modules';
 import { getScheduleBasicInfo, closeInterview, canStartInterview } from '@Redux';
@@ -47,29 +47,7 @@ const NETWORK_DESIGN = [
   }
 ]
 
-const GUIDELINES = [
-  {
-    text: "Kindly ensure the use of headphones to optimize audio quality.",
-    icon: icons.headPhone 
-  },
-  {
-    text: "Find a quiet and secluded space to minimize background noise and distractions.",
-    icon: icons.room
-  },
-  {
-    text: "Verify the stability of your internet connection to ensure uninterrupted communication.",
-    icon: icons.internet
-  },
-  {
-    text: "Keep the video function enabled throughout the session for effective interaction.",
-    icon: icons.video
-  },
-  {
-    text: "We appreciate clear and succinct responses during the conversation.",
-    icon: icons.voice
-  }
-];
-console.log(icons.voice)
+
 
 function Call() {
 
@@ -937,11 +915,11 @@ function Call() {
           {
             !interviewStarted ?
               <Guidelines
-                guidelines={GUIDELINES}
                 scheduleInfo={scheduleInfo}
                 loading={startInterviewLoader.loader}
                 heading={scheduleInfo?.interviewee_expected_designation}
                 onClick={startInterviewHandler}
+
               />
               :
               <></>
