@@ -61,6 +61,7 @@ function Register() {
     }
 
     const registerAsMemberHandler = () => {
+        loginLoader.show()
         const params = { first_name: firstName.value, last_name: lastName.value, email: email.value, mobile_number: mobileNumber.value, password: password.value }
 
         dispatch(registerAsMember({
@@ -70,12 +71,14 @@ function Register() {
                     dispatch(settingRegisterData(params))
                     goTo(ROUTES['auth-module'].login)
                     showToast(response.message, 'success')
+                    loginLoader.hide()
                 }
                 else {
                     showToast(response.error_message, 'error')
                 }
             },
             onError: (error) => () => {
+                loginLoader.hide()
                 showToast(error.error_message, 'error')
             },
         }))
@@ -392,6 +395,7 @@ function Register() {
                                 <div className="pt-xl-4 mb-sm-0 mb-4">
                                     <Button
                                         className={'text-white bg-primary font-weight-normal py-2 border-0 text-lg shadow-none'}
+                                        loading={loginLoader.loader}
                                         block
                                         size="lg"
                                         text={'Register Now'}

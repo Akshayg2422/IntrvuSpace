@@ -1,4 +1,4 @@
-import { AnimatedImage, Button, Spinner } from '@Components';
+import { AnimatedImage, Button, Spinner, Image } from '@Components';
 import { useLoader, useModal, useNavigation } from '@Hooks';
 import { CallHeader, Guidelines } from '@Modules';
 import { getScheduleBasicInfo, closeInterview, canStartInterview } from '@Redux';
@@ -12,6 +12,7 @@ import { useParams } from 'react-router-dom';
 import { RecordRTCPromisesHandler, StereoAudioRecorder } from 'recordrtc';
 import { useScreenRecorder } from './useScreenRecorder';
 import { CALL_WEBSOCKET } from '@Services'
+import { icons } from '@Assets';
 const compare_moment_format = 'YYYY-MM-DDHH:mm:ss';
 
 

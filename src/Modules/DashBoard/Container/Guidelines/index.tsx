@@ -1,6 +1,5 @@
 import React from 'react'
 import { GuidelinesProps } from './interfaces'
-import { color } from '@Themes'
 import { Button, Image } from '@Components'
 import { useNavigation } from '@Hooks'
 import { icons } from '@Assets'
@@ -64,29 +63,29 @@ function Guidelines({ scheduleInfo = undefined, loading, heading, onClick }: Gui
                         </div>
                     </div>
                 </div>
-
             }
 
-            {scheduleInfo.is_complete ?
+            {scheduleInfo.is_complete ? (
                 <div className='h-100 container d-flex  justify-content-center align-items-center'>
                     <div className='d-flex justify-content-center align-items-center'>
                         <div className='card mb-0 overflow-auto overflow-hide scroll-y'>
                             <div className='card-body mb-0'>
-                                <div className="col">
-                                    <h1 className="display-4">{`Interview for ${heading}`}</h1>
-                                    <p className="mt-0 mb-5">Your interview is complete. Please check your registered mail address for further details.</p>
+                                <div className='col'>
+                                    <h1 className='display-4'>{`Interview for ${heading}`}</h1>
+                                    <p className='mt-0 mb-5'>Your interview is complete. Please check your registered mail address for further details.</p>
                                     <div>
-                                        <Button text={'Go to Dashboard'} onClick={() => { goBack() }} />
+                                        <Button text={'Go to Dashboard'} onClick={() => { goBack(); }} />
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                : <></>
-            }
+            ) : (
+                <></>
+            )}
         </>
-    )
+    );
 }
 
-export { Guidelines }
+export { Guidelines };

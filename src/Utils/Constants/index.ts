@@ -561,3 +561,10 @@ export const languageOptions = [
     ide: 'HTML'
   },
 ];
+
+export const interviewDurations = [
+  { id: '1', text: 'Short', subText: '(5 mins)', value: 5 },
+  { id: '2', text: 'Medium', subText: '(15 mins)', value: 15 },
+  { id: '3', text: 'Long', subText: '(30 mins)', value: 30 },
+];
+

@@ -1,6 +1,6 @@
 import React, { forwardRef } from 'react'
 import { InputHeadingProps } from './interfaces'
-const InputHeading = forwardRef(({ heading, Class, id, isMandatory }: InputHeadingProps, ref) => {
+const InputHeading = forwardRef(({ heading, Class, id, isMandatory = false }: InputHeadingProps, ref) => {
     return (
         <>
             {heading && <label htmlFor={id} className={`form-control-label ${Class}`}>{heading}

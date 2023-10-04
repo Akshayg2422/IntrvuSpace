@@ -35,11 +35,9 @@ function FromJD() {
 
     const { jdItem } = useSelector((state: any) => state.DashboardReducer)
     const { goTo } = useNavigation();
-
     const position = useInput('');
     const experience = useInput('');
     const jd = useInput('');
-    const portalUrl = useInput('')
     const sector = useInput('');
     const addJdModal = useModal(false);
     const generateJdModal = useModal(false);
@@ -49,34 +47,23 @@ function FromJD() {
     const [loading, setLoading] = useState(true);
     const [jdMore, setJdMore] = useState<any>([])
     const [fresherChecked, setFresherChecked] = useState(false)
-
-    const [selectedDuration, setSelectedDuration] = useState(interviewDurations[1]);
-
     const [jdDescriptionError, setJdDescriptionError] = useState<any>(undefined)
-    const [slider1Value, setSlider1Value] = useState("1");
+    const [selectedDuration, setSelectedDuration] = useState(interviewDurations[0]);
+    const [sliderValue, setSliderValue] = useState(0);
+
+    const handleSliderChange = (newValue: any) => {
+        console.log('Slider value changed:', newValue);
+        setSliderValue(newValue)
+    }
+    console.log('sliderValuesliderValue',);
+
+
 
     const startInterviewLoader = useLoader(false);
 
     useEffect(() => {
         getKnowledgeGroupFromJdHandler();
     }, [])
-
-    useEffect(() => {
-        const slider1 = document.getElementById("slider1");
-
-        if (slider1) {
-            Slider.create(slider1, {
-                start: [1],
-                connect: [true, false],
-                step: 0.01,
-                range: { min: 1.0, max: 100.0 },
-            }).on("update", (values, handle) => {
-                const valueWithoutDecimal = parseInt(values[0] as string); // Remove decimal places
-                setSlider1Value(valueWithoutDecimal.toString());
-            });
-        }
-    }, []);
-
 
 
     const dispatch = useDispatch()
@@ -100,10 +87,9 @@ function FromJD() {
         const params = {
             sector_name: sector.value,
             position: position.value,
-            experience: fresherChecked ? '0' : experience.value,
-            reference_link: portalUrl.value,
-            jd: jd.value,
             interview_duration: selectedDuration.value,
+            experience: fresherChecked ? '0' : sliderValue,
+            jd: jd.value
         }
 
         const validation = validate(FROM_JD_RULES, params)
@@ -152,7 +138,6 @@ function FromJD() {
         position.set('')
         experience.set('')
         jd.set('')
-        portalUrl.set('')
         sector.set('')
     }
 
@@ -444,13 +429,6 @@ function FromJD() {
                 </div>
 
                 <div className={'row'}>
-                    <span className={'position-absolute left-9 pl-2'}>
-                        <Checkbox className={'text-primary'} text={'Fresher'} defaultChecked={fresherChecked} onCheckChange={(checked) => {
-                            setFresherChecked(checked)
-                        }} />
-                    </span>
-
-
                     <div className={'col-6'}>
                         {fresherChecked ? (
                             <div className='ml-2'>
@@ -475,6 +453,11 @@ function FromJD() {
                                 />
                             </div>
                         )}
+                        <span className={'position-absolute left-9 pl-5 top-0'}>
+                            <Checkbox className={'text-primary'} text={'Fresher'} defaultChecked={fresherChecked} onCheckChange={(checked) => {
+                                setFresherChecked(checked)
+                            }} />
+                        </span>
                     </div>
 
 
@@ -515,7 +498,7 @@ function FromJD() {
                     <Button block size='md' text={'Submit'} onClick={submitJdApiHandler} />
                 </div>
 
-            </Modal>
+            </Modal >
 
             <GenerateModal title={'Preparing your Interview'} isOpen={generateJdModal.visible} onClose={generateJdModal.hide}>
                 <AnalyzingAnimation />
