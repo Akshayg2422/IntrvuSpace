@@ -1,4 +1,4 @@
-import { AnimatedImage, Button, Spinner } from '@Components';
+import { AnimatedImage, Button, Spinner,Image } from '@Components';
 import { useLoader, useModal, useNavigation } from '@Hooks';
 import { CallHeader, Guidelines } from '@Modules';
 import { getScheduleBasicInfo, closeInterview, canStartInterview } from '@Redux';
@@ -12,6 +12,7 @@ import { useParams } from 'react-router-dom';
 import { RecordRTCPromisesHandler, StereoAudioRecorder } from 'recordrtc';
 import { useScreenRecorder } from './useScreenRecorder';
 import { CALL_WEBSOCKET } from '@Services'
+import { icons } from '@Assets';
 const compare_moment_format = 'YYYY-MM-DDHH:mm:ss';
 
 
@@ -46,12 +47,29 @@ const NETWORK_DESIGN = [
   }
 ]
 
-const GUIDELINES =
-  ["Kindly ensure the use of headphones to optimize audio quality.",
-    "Find a quiet and secluded space to minimize background noise and distractions.",
-    "Verify the stability of your internet connection to ensure uninterrupted communication.",
-    "Keep the video function enabled throughout the session for effective interaction.",
-    " We appreciate clear and succinct responses during the conversation."]
+const GUIDELINES = [
+  {
+    text: "Kindly ensure the use of headphones to optimize audio quality.",
+    icon: icons.headPhone 
+  },
+  {
+    text: "Find a quiet and secluded space to minimize background noise and distractions.",
+    icon: icons.room
+  },
+  {
+    text: "Verify the stability of your internet connection to ensure uninterrupted communication.",
+    icon: icons.internet
+  },
+  {
+    text: "Keep the video function enabled throughout the session for effective interaction.",
+    icon: icons.video
+  },
+  {
+    text: "We appreciate clear and succinct responses during the conversation.",
+    icon: icons.voice
+  }
+];
+console.log(icons.voice)
 
 function Call() {
 

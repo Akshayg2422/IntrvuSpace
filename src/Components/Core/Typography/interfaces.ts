@@ -30,7 +30,7 @@ export type PVariant =  HeadingTag
 
 
 export interface HProps extends React.HTMLAttributes<HTMLHeadingElement> {
-  tag: HeadingTag;
+  tag?: HeadingTag;
   text: string | undefined | null
   variant?: HeadingVariant
 }

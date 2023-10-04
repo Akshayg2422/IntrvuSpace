@@ -124,10 +124,10 @@ export const GENERATE_QUESTION_COUNT_RULES = {
 }
 
 export const FROM_JD_RULES = {
-  sector_name: {
-    presence: { message: "Sector name cannot be empty" },
-    length: { minimum: 3, message: "Sector name minimum 3 chars" },
-  },
+  // sector_name: {
+  //   presence: { message: "Sector name cannot be empty" },
+  //   length: { minimum: 3, message: "Sector name minimum 3 chars" },
+  // },
   position: {
     presence: { message: "Role name cannot be empty" },
     length: { minimum: 3, message: "Role minimum 3 chars" },

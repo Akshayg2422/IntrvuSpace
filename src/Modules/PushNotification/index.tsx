@@ -95,9 +95,6 @@ const PushNotification = () => {
 
             const route_type = JSON.parse(payload?.data?.extra_data.replace(/'/g, '"')).route_type
 
-
-
-
             new Notification(title, options).addEventListener('click', function () {
                 routingHandler(payload)
                 console.log("foreground message--------------->", payload);
