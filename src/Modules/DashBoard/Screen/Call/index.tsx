@@ -11,11 +11,42 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { RecordRTCPromisesHandler, StereoAudioRecorder } from 'recordrtc';
 import { useScreenRecorder } from './useScreenRecorder';
+import { CALL_WEBSOCKET } from '@Services'
 import { icons } from '@Assets';
 const compare_moment_format = 'YYYY-MM-DDHH:mm:ss';
 
 
 const INTERVAL_TIME = 3000
+
+
+const NETWORK_DESIGN = [
+  {
+    id: "1",
+    height: 3,
+    network: 5
+  },
+  {
+    id: "2",
+    height: 5,
+    network: 4
+  },
+  {
+    id: "3",
+    height: 7,
+    network: 3
+  },
+  {
+    id: "4",
+    height: 9,
+    network: 2
+  },
+  {
+    id: "5",
+    height: 11,
+    network: 1
+  }
+]
+
 const GUIDELINES = [
   {
     text: "Kindly ensure the use of headphones to optimize audio quality.",
@@ -92,6 +123,15 @@ function Call() {
   const [websocketError, setWebSocketError] = useState(false)
 
 
+  const lastAiResponseTime = useRef<any>(undefined);
+  const [networkBreakTime, setNetworkBreakTime] = useState(0)
+
+
+  const WEBSOCKET_PROCESSING = 1
+  const WEBSOCKET_IDLE = -1
+  const websocketStatus = useRef(WEBSOCKET_IDLE);
+
+
   function generateRandomID() {
     const min = 100000;
     const max = 999999;
@@ -100,6 +140,8 @@ function Call() {
     return randomID;
 
   }
+
+
 
   const speak = (ttsBase64) => {
 
@@ -175,18 +217,43 @@ function Call() {
 
   const proceedHandleResponseV1 = (response) => {
     setProcessCallInprogress(false)
-    // console.log("SpeakText01", response)
-    const { data, rt, uu_action, mapId } = response.next_step[0]
-    if (data && data !== '' && window.location.pathname === `/interview/${schedule_id}`) {
-      console.log("resss011")
-      resetLastMessage()
-      speak(data);
-      mapIdRef.current = mapId
+    console.log("SpeakText01", response)
+    if (response.type === 'PRO') {
+      lastAiResponseTime.current = undefined;
+      setNetworkBreakTime(0)
+      const { data, rt, uu_action, mapId } = response.next_step[0]
+
+      console.log("response.next_step[0]", response.next_step[0]);
+
+      if (data && data !== '' && window.location.pathname === `/interview/${schedule_id}`) {
+        console.log("resss011")
+        resetLastMessage()
+        speak(data);
+        mapIdRef.current = mapId
+      }
+
+      if (uu_action === "INTERVIEWER_END_CALL") {
+
+        closeCall.current = true
+
+      }
     }
+    else if (response.type === 'ACK') {
 
-    if (uu_action === "INTERVIEWER_END_CALL") {
+      if (!lastAiResponseTime.current) {
+        lastAiResponseTime.current = moment()
+      } else {
 
-      closeCall.current = true
+        const currentTime = moment()
+
+        if (currentTime.isValid() && lastAiResponseTime.current.isValid()) {
+          const duration = moment.duration(currentTime.diff(lastAiResponseTime.current));
+          const minutes = Math.floor(duration.asMinutes());
+          setNetworkBreakTime(minutes);
+        } else {
+          console.log('Invalid time format');
+        }
+      }
 
     }
   }
@@ -195,50 +262,61 @@ function Call() {
 
   function createWebSocket(showError = true) {
 
-
-    // const socket = new WebSocket('wss://mockeazyprimary.leorainfotech.in/aaa');
-    const socket = new WebSocket('wss://mockeazyprimary.leorainfotech.in/aaa');
+    console.log('createWebSocket');
 
 
 
-    socketRef.current = socket; // Store the WebSocket instance in the ref
+    if (websocketStatus.current !== WEBSOCKET_PROCESSING) {
 
-    socket.addEventListener('open', () => {
-      console.log('WebSocket connection established===========================');
-      setWebSocketError(false);
+      const socket = new WebSocket(CALL_WEBSOCKET);
+      // const socket = new WebSocket('wss://mockeazyprimary.leorainfotech.in/aaa');
 
-      // Clear the reconnect interval when the connection is open
-      clearInterval(reconnectInterval);
-      reconnectAttempts.current = 0; // Reset the reconnect attempts counter
-    });
+      // const socket = new WebSocket('ws://192.168.105.204:8002/aaa');
 
-    socket.addEventListener('close', () => {
-      if (showError)
-        setWebSocketError(true)
+      websocketStatus.current = WEBSOCKET_PROCESSING
+      socketRef.current = socket; // Store the WebSocket instance in the ref
 
-      if (reconnectAttempts.current < maxReconnectAttempts) {
+      socket.addEventListener('open', () => {
+        websocketStatus.current = WEBSOCKET_IDLE
+        console.log('WebSocket connection established===========================');
+        setWebSocketError(false);
 
-        setTimeout(() => {
-          createWebSocket();
-          reconnectAttempts.current++;
-        }, 2000)
-
-      } else {
+        // Clear the reconnect interval when the connection is open
         clearInterval(reconnectInterval);
-        if (!showError)
+        reconnectAttempts.current = 0; // Reset the reconnect attempts counter
+      });
+
+      socket.addEventListener('close', () => {
+        websocketStatus.current = WEBSOCKET_IDLE
+        if (showError)
           setWebSocketError(true)
-      }
 
-    });
+        if (reconnectAttempts.current < maxReconnectAttempts) {
 
-    // Listen for messages
-    socket.onmessage = event => {
-      console.log("Received001")
-      const response = JSON.parse(event.data);
-      proceedHandleResponseV1(response)
-      // Handle the response data here
-      // console.log('Received002:', response);
-    };
+          setTimeout(() => {
+            createWebSocket();
+            reconnectAttempts.current++;
+          }, 3000)
+
+        } else {
+          clearInterval(reconnectInterval);
+          if (!showError)
+            setWebSocketError(true)
+        }
+
+      });
+
+
+      // Listen for messages
+      socket.onmessage = event => {
+        console.log("Received001")
+        const response = JSON.parse(event.data);
+        proceedHandleResponseV1(response)
+        // Handle the response data here
+        // console.log('Received002:', response);
+      };
+    }
+
 
   }
 
@@ -770,6 +848,30 @@ function Call() {
   }
 
 
+  function renderNetworkRange() {
+    return NETWORK_DESIGN.map((each, index) => {
+
+      const { id, height, network } = each;
+
+      const isRender = network > networkBreakTime
+
+
+      return (
+        <div
+          key={id}
+          style={{
+            width: 2,
+            height: height,
+            backgroundColor: isRender ? 'green' : 'white',
+            marginLeft: 2,
+            borderTopLeftRadius: 2,
+            borderTopRightRadius: 2
+          }}
+        ></div>
+      );
+    })
+  }
+
 
   const IV_SPEAKING = 1
   const IV_IDLE = 2
@@ -781,7 +883,10 @@ function Call() {
 
 
 
-  const interviewee_state = voiceUp && !mute ? IE_SPEAKING : IE_IDLE
+  // const interviewee_state = voiceUp && !mute ? IE_SPEAKING : IE_IDLE
+  const interviewee_state = isVoiceUpCurrentChunk.current ? IE_SPEAKING : IE_IDLE
+
+
 
   let interviewer_state = IV_IDLE
 
@@ -795,29 +900,39 @@ function Call() {
     <div className='h-100vh' style={{
       backgroundColor: !interviewStarted ? "#FFFFF" : "#1B1B1B"
     }}>
+
       {(!networkError && !websocketError && scheduleInfo) &&
         <>
           {interviewStarted &&
-            <div className='d-flex flex-column h-100'>
-              <div className='col'>
-                <div className='row h-100' ref={videoRecorderRef}>
-                  <div className='col-sm-6 d-flex flex-column align-items-center justify-content-center'>
-                    <AnimatedImage show={interviewer_state === IV_PROCESSING} name={getShortName(scheduleInfo?.interviewer_name)} shouldBlink={interviewer_state === IV_SPEAKING} />
-                    <h3 className='display-3 mb-4 text-white mt-3'>{capitalizeFirstLetter(scheduleInfo?.interviewer_name)}</h3>
-                  </div>
-                  <div className='col-sm-6 d-flex flex-column align-items-center justify-content-center'>
-                    <AnimatedImage show={false} showWebCam={showCam} name={getShortName(scheduleInfo?.interviewee_name)} shouldBlink={interviewee_state === IE_SPEAKING} />
-                    <h3 className='display-3 mb-4 text-white mt-3'>{capitalizeFirstLetter(scheduleInfo?.interviewee_name)}</h3>
-                  </div>
+            <>
+              <div className='d-flex flex-column h-100'>
+                <div className='col'>
+                  <div className='row h-100' ref={videoRecorderRef}>
+                    <div className='col-sm-6 d-flex flex-column align-items-center justify-content-center'>
+                      <AnimatedImage show={interviewer_state === IV_PROCESSING} name={getShortName(scheduleInfo?.interviewer_name)} shouldBlink={interviewer_state === IV_SPEAKING} />
+                      <h3 className='display-3 mb-4 text-white mt-3'>{capitalizeFirstLetter(scheduleInfo?.interviewer_name)}</h3>
+                    </div>
+                    <div className='col-sm-6 d-flex flex-column align-items-center justify-content-center'>
+                      <AnimatedImage show={false} showWebCam={showCam} name={getShortName(scheduleInfo?.interviewee_name)} shouldBlink={interviewee_state === IE_SPEAKING} />
+                      <h3 className='display-3 mb-4 text-white mt-3'>{capitalizeFirstLetter(scheduleInfo?.interviewee_name)}</h3>
+                    </div>
 
+                  </div>
+                </div>
+                <div className='row position-absolute bottom-0 right-0 left-0' style={{
+                  marginBottom: 50
+                }}>
+                  <CallHeader webcam={showCam} mic={!mute} onWebCamChange={webCamHandler} onMicChange={micMuteHandler} onEndClick={endInterviewHandler} onEndInterViewClick={closeInterviewAPiHandler} />
+                </div>
+              </div >
+              <div className='position-absolute bottom-0 right-0 mr-3 mb-2 align-items-center'>
+                <div className='row align-items-end'>
+                  {
+                    renderNetworkRange()
+                  }
                 </div>
               </div>
-              <div className='row position-absolute bottom-0 right-0 left-0' style={{
-                marginBottom: 50
-              }}>
-                <CallHeader webcam={showCam} mic={!mute} onWebCamChange={webCamHandler} onMicChange={micMuteHandler} onEndClick={endInterviewHandler} onEndInterViewClick={closeInterviewAPiHandler} />
-              </div>
-            </div >
+            </>
           }
           {
             !interviewStarted ?
@@ -834,7 +949,6 @@ function Call() {
 
         </>
       }
-
       {loader.loader && <div className='d-flex align-items-center justify-content-center h-100'><Spinner /></div>}
       {
         (networkError || websocketError) &&
@@ -846,6 +960,7 @@ function Call() {
           </div>
         </div>
       }
+
     </div >
   )
 }

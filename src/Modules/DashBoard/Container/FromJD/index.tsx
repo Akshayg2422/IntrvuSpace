@@ -5,11 +5,18 @@ import { useInput, useLoader, useModal, useNavigation } from '@Hooks';
 import { AnalyzingAnimation, GenerateModal, UploadJdCard } from '@Modules';
 import { createNewJdSchedule, getJdItemList, postJdVariant, selectedScheduleId, canStartInterview } from '@Redux';
 import { ROUTES } from '@Routes';
-import { FROM_JD_RULES, getValidateError, ifObjectExist, interviewDurations, validate } from '@Utils';
+import { FROM_JD_RULES, getValidateError, ifObjectExist, validate } from '@Utils';
 import Slider from "nouislider";
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+
+
+export const interviewDurations = [
+    { id: '1', text: 'Short', subText: '(5 mins)', value: 5 },
+    { id: '2', text: 'Medium', subText: '(15 mins)', value: 15 },
+    { id: '3', text: 'Long', subText: '(30 mins)', value: 30 },
+];
 
 const PLACE_HOLDER = {
     "sector": "Software, Banking...",
@@ -22,9 +29,13 @@ const INTERVAL_TIME = 3000
 
 
 function FromJD() {
-    const CHAR_LENGTH = 3000
+    const CHAR_LENGTH = 2000
     const VIEW_MORE_LENGTH = 350
-    const ERROR_MESSAGE = "Please provide a job description within " + CHAR_LENGTH + " characters."
+
+
+    const ERROR_MESSAGE = "In beta version, you can upload only max of " + CHAR_LENGTH + " characters."
+
+
     const { jdItem } = useSelector((state: any) => state.DashboardReducer)
     const { goTo } = useNavigation();
     const position = useInput('');
@@ -251,9 +262,9 @@ console.log('sliderValuesliderValue',);
                                     })
 
                                     return (
-                                        <Card className="mt--3">
+                                        <Card className="mt--3 ">
                                             <div className={'d-flex justify-content-between'}>
-                                                <h3 className='mb-0 pointer text-black'>{name}</h3>
+                                                <h1 className='mb-0 pointer text-black'>{name}</h1>
                                                 {proceedInterview ?
                                                     <div>
                                                         <Button
@@ -266,7 +277,6 @@ console.log('sliderValuesliderValue',);
                                                         />
                                                     </div> :
                                                     <Button
-                                                        size={'sm'}
                                                         text={'Try Another'}
                                                         onClick={() => {
                                                             createNewJdScheduleApiHandler(id);
@@ -274,30 +284,30 @@ console.log('sliderValuesliderValue',);
                                                     />
                                                 }
                                             </div>
-                                            <h5 className='mb-0 pointer text-muted'>{sector}</h5>
-                                            <div className='col mt-3'>
+                                            <h5 className='mb-0 pointer text-muted' style={{ marginTop: -15 }}>{experience === 0 ? "Fresher" : "" + experience + (experience === 1 ? " year " : " years ") + "of experience"}</h5>
+                                            {/* <div className='col mt-3'>
                                                 <div className='row align-items-center'>
                                                     <img src={icons.briefCaseBlack} alt="Comment Icon" height={16} width={16} />
                                                     <small className='text-sm text-black col'>Experience with {experience} years</small>
                                                 </div>
-                                            </div>
+                                            </div> */}
                                             <div className='col mt-2'>
                                                 <div className='row'>
-                                                    <img src={icons.information} alt="Comment Icon" height={16} width={16} style={{
+                                                    {/* <img src={icons.information} alt="Comment Icon" height={16} width={16} style={{
                                                         marginTop: 2
-                                                    }} />
-                                                    <div className='col ml-3'>
+                                                    }} /> */}
+                                                    <div className='col ml-0'>
                                                         {
                                                             details.length < VIEW_MORE_LENGTH ?
                                                                 <div className='row'>
-                                                                    <small className='text-sm text-black'>{details}</small>
+                                                                    <small className='text-details text-black'>{`${details}`}</small>
                                                                 </div>
                                                                 :
                                                                 <>
                                                                     {more ?
                                                                         <div className='row'>
-                                                                            <small className='text-sm text-black'>
-                                                                                {details}
+                                                                            <div className='text-details text-black'>
+                                                                                {`${details}`}
                                                                                 <span className='h5 text-primary ml-1 pointer'
                                                                                     onClick={() => {
                                                                                         const updatedData: any = [...jdMore]
@@ -306,11 +316,11 @@ console.log('sliderValuesliderValue',);
                                                                                     }}>
                                                                                     View Less
                                                                                 </span>
-                                                                            </small>
+                                                                            </div>
                                                                         </div>
                                                                         :
                                                                         <div className='row'>
-                                                                            <small className='text-sm text-black'>{details.slice(0, VIEW_MORE_LENGTH) + " ..."}
+                                                                            <div className='text-details text-black'>{details.slice(0, VIEW_MORE_LENGTH) + " ..."}
                                                                                 <span className='h5 text-primary ml-1 pointer'
                                                                                     onClick={() => {
                                                                                         const updatedData: any = [...jdMore]
@@ -320,7 +330,7 @@ console.log('sliderValuesliderValue',);
                                                                                 >
                                                                                     View More
                                                                                 </span>
-                                                                            </small>
+                                                                            </div>
                                                                         </div>
                                                                     }
                                                                 </>
@@ -357,7 +367,8 @@ console.log('sliderValuesliderValue',);
                                                                 <div className='row align-items-center'>
                                                                     <h5 className='col m-0 p-0'>{"Interview " + (index + 1)}</h5>
                                                                     <h5 className='col mb-0 text-center'>{(is_complete ? "Completed: " : "Created at: ") + getDisplayTimeFromMoment(created_at)}</h5>
-                                                                    <div className='col text-right p-0 m-0'>
+                                                                    <div className='d-flex align-items-end p-0 m-0'>
+
                                                                         {is_report_complete &&
                                                                             <Button
                                                                                 text={'View Report'}
@@ -365,6 +376,7 @@ console.log('sliderValuesliderValue',);
                                                                                     proceedReport(id);
                                                                                 }} />
                                                                         }
+
 
                                                                         {is_complete && !is_report_complete && <div>
                                                                             <span className="name mb-0 text-sm">Generating Report ...</span>
@@ -440,8 +452,9 @@ console.log('sliderValuesliderValue',);
                         </span>
                     </div>
 
+
                     <div className={'col-6 mt-1'}>
-                        <H style={{ fontSize: '13px', color: '#525f7f' }} text={'Choose Interview Duration'} tag={'h4'} />
+                        <H className='mb-0' style={{ fontSize: '13px', color: '#525f7f' }} text={'Interview Duration'} tag={'h4'} />
                         <Radio
                             selected={selectedDuration}
                             selectItem={selectedDuration}
@@ -453,6 +466,7 @@ console.log('sliderValuesliderValue',);
                             }}
                         />
                     </div>
+
                 </div>
 
                 <TextArea

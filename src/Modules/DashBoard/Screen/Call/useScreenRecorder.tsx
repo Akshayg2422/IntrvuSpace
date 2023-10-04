@@ -38,7 +38,7 @@ const useScreenRecorder = () => {
             if (event.data.size > 0) {
               recordedChunks.push(event.data);
             }
-          setRecordedVideoData(recordedChunks);
+            setRecordedVideoData(recordedChunks);
           };
           // Start recording every 5 seconds.
           mediaRecorder.start(1000);
@@ -62,7 +62,7 @@ const useScreenRecorder = () => {
 
   const set = (value: boolean) => {
     setRecordStatus(value)
-}
+  }
 
   useEffect(() => {
     intervalIdRef.current = setInterval(() => {
@@ -73,7 +73,7 @@ const useScreenRecorder = () => {
     }, 5000);
     return () => clearInterval(intervalIdRef.current);
   }, [recordedVideoData, VideoSessionDetails]);
- 
+
 
   const stopScreenRecording = async () => {
     if (recorder) {

@@ -18,9 +18,7 @@ import { useDispatch, useSelector } from "react-redux";
 import "select2/dist/css/select2.min.css";
 import "sweetalert2/dist/sweetalert2.min.css";
 import { settingSideNavRemove } from "./Redux";
-
-
-
+import './App.css'
 
 
 

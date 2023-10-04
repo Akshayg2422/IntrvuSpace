@@ -135,9 +135,10 @@ function Login() {
                                 <div className="input-group mb-3">
                                     <input
                                         style={{
-                                            borderTopRightRadius: '0px',
-                                            borderBottomRightRadius: '0px',
-                                            borderRight: '0px'
+                                            borderTopRightRadius: 0,
+                                            borderBottomRightRadius: 0,
+                                            borderRight: 0,
+                                            borderRadius: 0
                                         }}
                                         value={password.value}
                                         type={showPassword ? 'text' : 'password'}
@@ -155,10 +156,11 @@ function Login() {
                                     />
                                     <span className="input-group-text" id="basic-addon2"
                                         style={{
-                                            borderTopLeftRadius: '0px',
-                                            borderBottomLeftRadius: '0px',
-                                            borderLeft: '0px',
-                                            borderColor: toggleInput ? '#68d75c' : ''
+                                            borderTopLeftRadius: 0,
+                                            borderBottomLeftRadius: 0,
+                                            borderLeft: 0,
+                                            borderRadius: 0,
+                                            borderColor: toggleInput ? '#68d75c' : 'black'
                                         }}
                                         onClick={() => {
                                             setShowPassword(!showPassword)

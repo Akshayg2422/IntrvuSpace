@@ -138,7 +138,9 @@ function Register() {
                                                 style={{
                                                     borderTopRightRadius: '0px',
                                                     borderBottomRightRadius: '0px',
-                                                    borderRight: '0px'
+                                                    borderRight: '0px',
+                                                    borderRadius: 0
+
                                                 }}
                                                 className="form-control"
                                                 placeholder='Enter your First name'
@@ -157,7 +159,8 @@ function Register() {
                                                     borderTopLeftRadius: '0px',
                                                     borderBottomLeftRadius: '0px',
                                                     borderLeft: '0px',
-                                                    borderColor: toggleInput === 1 ? '#68d75c' : ''
+                                                    borderRadius: 0,
+                                                    borderColor: toggleInput === 1 ? '#68d75c' : 'black'
                                                 }}
 
                                             >
@@ -177,7 +180,8 @@ function Register() {
                                                 style={{
                                                     borderTopRightRadius: '0px',
                                                     borderBottomRightRadius: '0px',
-                                                    borderRight: '0px'
+                                                    borderRight: '0px',
+                                                    borderRadius: 0
                                                 }}
                                                 className="form-control"
                                                 placeholder='Enter your Last name'
@@ -196,7 +200,8 @@ function Register() {
                                                     borderTopLeftRadius: '0px',
                                                     borderBottomLeftRadius: '0px',
                                                     borderLeft: '0px',
-                                                    borderColor: toggleInput === 6 ? '#68d75c' : ''
+                                                    borderRadius: 0,
+                                                    borderColor: toggleInput === 6 ? '#68d75c' : 'black'
                                                 }}
 
                                             >
@@ -217,7 +222,8 @@ function Register() {
                                                 style={{
                                                     borderTopRightRadius: '0px',
                                                     borderBottomRightRadius: '0px',
-                                                    borderRight: '0px'
+                                                    borderRight: '0px',
+                                                    borderRadius: 0
                                                 }}
                                                 className="form-control"
                                                 placeholder='Enter your Email ID'
@@ -236,7 +242,8 @@ function Register() {
                                                     borderTopLeftRadius: '0px',
                                                     borderBottomLeftRadius: '0px',
                                                     borderLeft: '0px',
-                                                    borderColor: toggleInput === 2 ? '#68d75c' : ''
+                                                    borderRadius: 0,
+                                                    borderColor: toggleInput === 2 ? '#68d75c' : 'black'
                                                 }}
 
                                             >
@@ -256,7 +263,8 @@ function Register() {
                                                 style={{
                                                     borderTopRightRadius: '0px',
                                                     borderBottomRightRadius: '0px',
-                                                    borderRight: '0px'
+                                                    borderRight: '0px',
+                                                    borderRadius: 0
                                                 }}
                                                 type={'password'}
                                                 className="form-control"
@@ -276,7 +284,8 @@ function Register() {
                                                     borderTopLeftRadius: '0px',
                                                     borderBottomLeftRadius: '0px',
                                                     borderLeft: '0px',
-                                                    borderColor: toggleInput === 3 ? '#68d75c' : ''
+                                                    borderRadius: 0,
+                                                    borderColor: toggleInput === 3 ? '#68d75c' : 'black'
                                                 }}
 
                                             >
@@ -296,7 +305,8 @@ function Register() {
                                                 style={{
                                                     borderTopRightRadius: '0px',
                                                     borderBottomRightRadius: '0px',
-                                                    borderRight: '0px'
+                                                    borderRight: '0px',
+                                                    borderRadius: 0
                                                 }}
                                                 type={showPassword ? 'text' : 'password'}
                                                 className="form-control"
@@ -316,7 +326,8 @@ function Register() {
                                                     borderTopLeftRadius: '0px',
                                                     borderBottomLeftRadius: '0px',
                                                     borderLeft: '0px',
-                                                    borderColor: toggleInput === 4 ? '#68d75c' : ''
+                                                    borderRadius: 0,
+                                                    borderColor: toggleInput === 4 ? '#68d75c' : 'black'
                                                 }}
                                                 onClick={() => {
                                                     setShowPassword(!showPassword)
@@ -344,7 +355,8 @@ function Register() {
                                                 style={{
                                                     borderTopRightRadius: '0px',
                                                     borderBottomRightRadius: '0px',
-                                                    borderRight: '0px'
+                                                    borderRight: '0px',
+                                                    borderRadius: 0
                                                 }}
                                                 type='number'
                                                 className="form-control"
@@ -366,7 +378,7 @@ function Register() {
                                                     borderTopLeftRadius: '0px',
                                                     borderBottomLeftRadius: '0px',
                                                     borderLeft: '0px',
-                                                    borderColor: toggleInput === 5 ? '#68d75c' : ''
+                                                    borderColor: toggleInput === 5 ? '#68d75c' : 'black'
                                                 }}
 
                                             >

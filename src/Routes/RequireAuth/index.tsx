@@ -65,7 +65,7 @@ export const RequireAuth = ({ children }: RequireAuthProps) => {
                 }}
             />}
             <div className='main-content' ref={mainContentRef}>
-                <PushNotification />
+                {/* <PushNotification /> */}
                 {children}
             </div>
 
