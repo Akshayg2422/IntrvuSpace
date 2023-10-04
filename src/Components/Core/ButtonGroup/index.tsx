@@ -5,7 +5,7 @@ import { ButtonGroupProps } from './interface'
 const ButtonGroup = ({ sortData, onClick, selected, size, customWidth = '110px' }: ButtonGroupProps) => {
     return (
         <>
-            <div className="btn-group btn-secondary btn-group-toggle" data-toggle="buttons">
+            <div className="btn-group btn-secondary btn-group-toggle shadow-none" data-toggle="buttons">
                 {sortData.map((item, index: number) => {
                     const { id, title } = item
                     const isActive = id === selected?.id
