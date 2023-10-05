@@ -152,7 +152,7 @@ function TopNavbar() {
                                         <UncontrolledDropdown nav>
                                             <DropdownToggle className="nav-link pr-0" color="" tag="a">
                                                 <Media className="align-items-center">
-                                                    <Image className={'rounded-0'}
+                                                    <Image
                                                         size={'sm'}
                                                         variant={'avatar'}
                                                         src={icons.logo}

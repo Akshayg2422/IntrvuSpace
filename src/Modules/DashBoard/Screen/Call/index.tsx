@@ -17,6 +17,7 @@ import { RecordRTCPromisesHandler, StereoAudioRecorder } from "recordrtc";
 import { useScreenRecorder } from "./useScreenRecorder";
 import { CALL_WEBSOCKET } from "@Services";
 import { icons } from '@Assets';
+import { log } from "console";
 const compare_moment_format = "YYYY-MM-DDHH:mm:ss";
 
 const INTERVAL_TIME = 3000;
@@ -172,6 +173,8 @@ function Call() {
   function onEndCallHandler() {
     proceedStopListening();
     setButtonConditional("end");
+    if (audioElementRef.current)
+      audioElementRef.current.pause();
     getBasicInfo();
     window.location.reload();
   }
@@ -775,7 +778,9 @@ function Call() {
     // isScreenRecording && stopScreenRecording();
     closeCall.current = true;
     onEndCallHandler();
-    goBack();
+
+    goBack()
+
   }
 
   function closeInterviewAPiHandler() {

@@ -24,8 +24,10 @@ function Image({ variant = 'default', className, alt, size, tintColor, ...rest }
 
 
     return (
-        <img className={`${getVariantStyle(variant)} ${className}`} alt={alt} {...rest} style={{
-            ...(tintColor && { filter: `sepia(100%) hue-rotate(${hexToHue(tintColor)}deg)` })
+        <img className={`${getVariantStyle(variant)} ${className} rounded-0`} alt={alt} {...rest} style={{
+            ...(tintColor && { filter: `sepia(100%) hue-rotate(${hexToHue(tintColor)}deg)` }),
+            objectFit: 'cover'
+
         }}></img>
     )
 }
