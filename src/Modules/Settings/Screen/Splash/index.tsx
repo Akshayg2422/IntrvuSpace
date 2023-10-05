@@ -26,7 +26,7 @@ function Splash() {
                         localStorage.removeItem('route');
                         goTo(route, true);
                     } else {
-                        goTo(ROUTES['designation-module'].designation, true);
+                        goTo(ROUTES['designation-module'].schedule, true);
                     }
                 }
                 else {

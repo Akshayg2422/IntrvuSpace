@@ -163,7 +163,7 @@ function Designation() {
     };
 
 
-    function removeEmptyData(navList:any) {
+    function removeEmptyData(navList: any) {
         return navList.map((el: any) => {
             if (el.id && el.name) {
                 return el;
@@ -176,8 +176,8 @@ function Designation() {
     return (
         <>
             <div className='container-fluid pt-4'>
-
-                <div className='row justify-content-end'>
+                <h1 className={'text-black mb-0 pb-0 mx--3'}>{'Schedules'}</h1>
+                {/* <div className='row justify-content-end'>
                     <Button
                         className={'text-white shadow-none'}
                         size={'sm'}
@@ -196,44 +196,44 @@ function Designation() {
                             goTo(ROUTES['designation-module']['sector']);
                         }}
                     />
-                </div>
+                </div> */}
                 <div className='d-flex pt-3 overflow-auto overflow-hide mx--4'>
-                    {navList && removeEmptyData(navList).map((el:any, index:number) => {
-                       return (
-                        <div className='col-sm-3 px-2'>
-                            <Nav
-                                className="nav-fill flex-column flex-sm-row pointer"
-                                id="tabs-text"
-                                pills
-                                role="tablist"
-                            >
-                                <NavItem>
-                                    <NavLink
-                                        aria-selected={index === navIndex}
-                                        className={classnames(`mb-sm-3 mb-md-0 shadow-none ${index !== navIndex ? 'text-black font-weight-normal' : 'font-weight-bold'}`, {
-                                            active: index === navIndex
-                                        })}
-                                        onClick={() => {
-                                            setNavIndex(index)
-                                            fetchKnowledgeData(el.id)
-                                        }}
-                                        role="tab"
-                                    >
-                                        {el.name}
-                                    </NavLink>
-                                </NavItem>
-                            </Nav>
-                        </div>
-                    )
+                    {navList && removeEmptyData(navList).map((el: any, index: number) => {
+                        return (
+                            <div className='col-sm-3 px-2'>
+                                <Nav
+                                    className="nav-fill flex-column flex-sm-row pointer"
+                                    id="tabs-text"
+                                    pills
+                                    role="tablist"
+                                >
+                                    <NavItem>
+                                        <NavLink
+                                            aria-selected={index === navIndex}
+                                            className={classnames(`mb-sm-3 mb-md-0 shadow-none rounded-0 ${index !== navIndex ? 'text-black font-weight-normal' : 'font-weight-bold'}`, {
+                                                active: index === navIndex
+                                            })}
+                                            onClick={() => {
+                                                setNavIndex(index)
+                                                fetchKnowledgeData(el.id)
+                                            }}
+                                            role="tab"
+                                        >
+                                            {el.name}
+                                        </NavLink>
+                                    </NavItem>
+                                </Nav>
+                            </div>
+                        )
                     })
 
                     }
                 </div>
-                <div className='row  pt-3 px-0'>
+                <div className='row pt-3'>
                     {cardData && cardData.length > 0 ?
                         cardData.map((el: any, index: number) => {
                             return (
-                                <div className='col-sm-4 col-lg-4 px-2 mb-3'>
+                                <div className='col-sm-12 col-lg-12 p-0 m-0 mb-3'>
                                     <DesignationItem
                                         item={el}
                                         onAdd={(selected) => {

@@ -195,4 +195,9 @@ export const icons = {
   internet: require('./Internet/icon.png'),
   video: require('./Video/icon.png'),
   voice: require('./Voice/icon.png'),
+  schedule: require('./Schedule/icon.png'),
+  settings: require('./Settings/icon.png'),
+  viewAsMember: require('./ViewAsMember/icon.png'),
+  selected: require('./Selected/icon.png'),
+  rejected: require('./Rejected/icon.png')
 };

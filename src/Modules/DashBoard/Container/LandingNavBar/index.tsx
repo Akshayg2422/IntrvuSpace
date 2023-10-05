@@ -17,9 +17,8 @@ function LandingNavBar() {
                 id="navbar-main"
                 style={{
                     backgroundColor: '#ffffff',
-                    boxShadow: '0 2px 6px 0 rgba(0, 0, 0, 0.12), inset 0 -1px 0 0 #dadce0'
+                    // boxShadow: '0 2px 6px 0 rgba(0, 0, 0, 0.12), inset 0 -1px 0 0 #dadce0'
                 }}
-
             >
                 <Container>
                     <NavbarBrand to="/" tag={Link}>
@@ -53,7 +52,7 @@ function LandingNavBar() {
                                 <Col className="collapse-brand" xs="6">
                                     <Link to="/admin/dashboard">
                                         <img alt="..." src={icons.logo} />
-                                        <span className='h6 ml-2 text-black'>
+                                        <span className='h6 ml-2 text-primary'>
                                             Mock Eazy
                                         </span>
                                     </Link>
@@ -79,7 +78,7 @@ function LandingNavBar() {
                         <Nav className="align-items-lg-center ml-lg-auto" navbar>
                             <NavItem className="d-none d-lg-block ml-lg-4">
                                 <Button
-                                    className="bg-primary text-white"
+                                    className="bg-primary rounded-0 text-white"
                                     size='sm'
                                     onClick={() => {
                                         goTo(ROUTES['auth-module'].login)

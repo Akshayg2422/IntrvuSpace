@@ -80,7 +80,7 @@ $colors: map-merge(("blue": $blue,
 );
 
 $default: black !default;
-$primary: #68d75c !default;
+$primary: #03b934 !default;
 $secondary: #F6E7E0 !default;
 $success: $green !default;
 $info: $teal !default;
@@ -1486,7 +1486,7 @@ $tag-box-shadow: 0 1px 2px rgba(68, 68, 68, 0.25);
 }
 .text-decoration-underline-hover:hover {
   text-decoration: underline;
-  color:#67f60e;
+  color:#03b934;
 }
 // Import Bootstrap variable defaults
 
