@@ -3,11 +3,11 @@
   width: 220px;
   height: 40px;
   color: #fff;
-  border-radius: 5px;
+  /* border-radius: 6px; */
   padding: 10px 25px;
   font-family: 'Lato', sans-serif;
   font-weight: 500;
-  background: #68d75c; /* Set the initial background color */
+  background: #03b934; /* Set the initial background color */
   cursor: pointer;
   transition: all 0.3s ease;
   position: relative;
@@ -29,14 +29,14 @@
 
 .index-card:hover {
   transform: translateY(-0.2rem);
-  background: linear-gradient(0deg, #9af28e 0%, #85ef81 100%); /* Change to linear gradient on hover */
+  background: linear-gradient(0deg, #03b934 0%, #1ddc50 100%); /* Change to linear gradient on hover */
   color: #ffffff
 }
 
 .color-change {
   width: 10px;
   height: 10px;
-  background-color: #42cd33;
+  background-color: #03b934;
   border-radius: 60px;
   transition: background-color 0.3s ease; /* Add smooth transition effect */
 }

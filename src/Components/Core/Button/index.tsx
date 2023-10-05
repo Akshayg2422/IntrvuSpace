@@ -25,15 +25,17 @@ function Button({
       {variant === 'default' && (
         <>
           <RSButton
-            className="d-flex btn btn-primary align-items-center justify-content-center"
+            className="btn btn-primary"
             size={size}
             style={{ fontSize: 17, height: 50, letterSpacing: 1 }}
             color={color}
             {...rest}
             onClick={loading ? undefined : onClick}
           >
-            {loading && <Spinner color='white' />}
-            <span className='text-uppercase ml-2'>{loading ? loadingMessage : text}</span>
+            <div className='d-flex align-items-center justify-content-center'>
+              {loading && <Spinner className={'mr-2'} color='white' />}
+              <span className='text-uppercase  btn-inner--text'>{loading ? loadingMessage : text}</span>
+            </div>
           </RSButton>
         </>
 

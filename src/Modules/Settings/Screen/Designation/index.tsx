@@ -9,7 +9,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Nav, NavItem, NavLink } from 'reactstrap';
 import classnames from 'classnames'
 
-
+const PLACE_HOLDER = {
+    "sector": "Software, Banking...",
+}
 
 
 function Designation() {
@@ -40,6 +42,7 @@ function Designation() {
     const experience = useInput('')
     const jd = useInput('');
     const portalUrl = useInput('')
+    const sectorInput = useInput('');
 
     const loader = useLoader(false);
 
@@ -66,6 +69,7 @@ function Designation() {
     };
 
     const fetchKnowledgeData = (id) => {
+        console.log('1111111111111111111111111111', id)
         const params = {
             sector_id: id
         }
@@ -126,6 +130,7 @@ function Designation() {
             const params = {
                 knowledge_group_id: selectedDesignation?.id,
                 position: position?.value,
+                // sector:sectorInput.value,
                 experience: experience.value,
                 reference_link: portalUrl.value,
                 jd: jd.value,
@@ -158,8 +163,8 @@ function Designation() {
     };
 
 
-    function removeEmptyData(navlist) {
-        return navlist.map((el: any) => {
+    function removeEmptyData(navList: any) {
+        return navList.map((el: any) => {
             if (el.id && el.name) {
                 return el;
             } else {
@@ -171,8 +176,8 @@ function Designation() {
     return (
         <>
             <div className='container-fluid pt-4'>
-
-                <div className='row justify-content-end'>
+                <h1 className={'text-black mb-0 pb-0 mx--3'}>{'Schedules'}</h1>
+                {/* <div className='row justify-content-end'>
                     <Button
                         className={'text-white shadow-none'}
                         size={'sm'}
@@ -191,9 +196,9 @@ function Designation() {
                             goTo(ROUTES['designation-module']['sector']);
                         }}
                     />
-                </div>
+                </div> */}
                 <div className='d-flex pt-3 overflow-auto overflow-hide mx--4'>
-                    {navList && removeEmptyData(navList).map((el, index) => {
+                    {navList && removeEmptyData(navList).map((el: any, index: number) => {
                         return (
                             <div className='col-sm-3 px-2'>
                                 <Nav
@@ -205,7 +210,7 @@ function Designation() {
                                     <NavItem>
                                         <NavLink
                                             aria-selected={index === navIndex}
-                                            className={classnames(`mb-sm-3 mb-md-0 shadow-none ${index !== navIndex ? 'text-black font-weight-normal' : 'font-weight-bold'}`, {
+                                            className={classnames(`mb-sm-3 mb-md-0 shadow-none rounded-0 ${index !== navIndex ? 'text-black font-weight-normal' : 'font-weight-bold'}`, {
                                                 active: index === navIndex
                                             })}
                                             onClick={() => {
@@ -224,11 +229,11 @@ function Designation() {
 
                     }
                 </div>
-                <div className='row  pt-3 px-0'>
+                <div className='row pt-3'>
                     {cardData && cardData.length > 0 ?
                         cardData.map((el: any, index: number) => {
                             return (
-                                <div className='col-sm-4 col-lg-4 px-2 mb-3'>
+                                <div className='col-sm-12 col-lg-12 p-0 m-0 mb-3'>
                                     <DesignationItem
                                         item={el}
                                         onAdd={(selected) => {
@@ -304,7 +309,7 @@ function Designation() {
                     </div>
                 </Modal >
 
-                <Modal size={'lg'} title={"Add Role"} isOpen={addRoleModal.visible} onClose={() => {
+                <Modal size={'lg'} title={"Create Job Description"} isOpen={addRoleModal.visible} onClose={() => {
                     addRoleModal.hide()
                     position.set("")
                     experience.set("")
@@ -317,6 +322,13 @@ function Designation() {
                             value={position.value}
                             onChange={position.onChange}
                         />
+                        {/* <Input
+                            isMandatory
+                            heading={'Sector'}
+                            placeHolder={PLACE_HOLDER.sector}
+                            value={sectorInput.value}
+                            onChange={sector.onChange} /> */}
+
                         <Input
                             heading={'Years of experience'}
                             type={'number'}

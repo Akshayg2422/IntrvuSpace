@@ -1,5 +1,5 @@
 import { icons } from '@Assets'
-import { Designation, WeightageCountForm, CreateQuestionForm, Clients, Sector, Questions, Call, Report, QuestionSections, AnalyzingAnimation, Schedules, Login, Otp, Splash, Register, LoginWithOtp, AdminLogin, VariantInfo, PrivacyPolicy, TermsAndConditions, ReturnAndRefund, Reports, HowItWorks, Introduction } from '@Modules';
+import { Designation, WeightageCountForm, CreateQuestionForm, Clients, Sector, Questions, Call, Report, QuestionSections, AnalyzingAnimation, Schedules, Login, Otp, Splash, Register, LoginWithOtp, AdminLogin, VariantInfo, PrivacyPolicy, TermsAndConditions, ReturnAndRefund, Reports, HowItWorks, Introduction, Settings } from '@Modules';
 
 
 
@@ -25,7 +25,7 @@ export const ROUTES = {
     'sector': "/sector",
     'interview': '/interview',
     dashboard: "/dashboard",
-    designation: "/designation",
+    schedule: "/schedule",
     client: "/home",
     questions: "/questions",
     report: '/report',
@@ -33,6 +33,7 @@ export const ROUTES = {
     'analyzing-animation': '/analyzing-animation',
     schedules: '/schedules',
     'variant-info': '/variant-info',
+    settings: '/settings'
   }
 }
 
@@ -152,16 +153,23 @@ export const DASHBOARD_ROUTES = [
 
 export const HOME_ROUTES = [
   {
-    path: ROUTES['designation-module'].designation,
-    name: "Designation",
-    icon: icons.task,
+    path: ROUTES['designation-module'].schedule,
+    name: "Schedule",
+    icon: icons.schedule,
     layout: "",
     component: <Designation />
   },
   {
+    path: ROUTES['designation-module'].settings,
+    name: "Settings",
+    icon: icons.settings,
+    layout: "",
+    component: <Settings />
+  },
+  {
     path: ROUTES['designation-module'].client,
     name: "View as Member",
-    icon: icons.company,
+    icon: icons.viewAsMember,
     layout: "",
     component: <Clients />
   },

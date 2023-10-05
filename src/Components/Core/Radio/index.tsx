@@ -34,7 +34,7 @@ function Radio({
           return (
             <div
               key={id}
-              className={`custom-control custom-radio  mb-2 ${variant === 'row' && index !== 0 ? 'ml-4' : 'ml-0'} align-items-center mt-1`}
+              className={`custom-control custom-radio  mb-2 ${variant === 'row' && index !== 0 && 'ml-4'}`}
             >
               <input
                 className={'custom-control-input'}
@@ -46,11 +46,11 @@ function Radio({
                 checked={isSelected}
                 {...rest}
               />
-              <label className={'custom-control-label mb-0'} htmlFor={id}>
+              <label className={'custom-control-label mt-1'} htmlFor={id}>
                 <span >{text}</span>
               </label>
-              <div className={'d-flex justify-content-end'}>
-                <span style={{ fontSize: '12px', fontWeight: '500' }}>{subText}</span>
+              <div className={'d-flex justify-content-center'}>
+                <span style={{ fontSize: '9px',fontWeight:'500' }}>{subText}</span>
               </div>
             </div>
           );

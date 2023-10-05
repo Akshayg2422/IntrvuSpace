@@ -153,7 +153,7 @@ function FromSkills() {
         <>
             <div>
                 <div className={'mx--1'}>
-                <Button size={'md'} className='mt-3' block text={'Upload key skills and start interview'} onClick={addJdModal.show} />
+                    <Button size={'md'} className='mt-3' block text={'Upload key skills and start interview'} onClick={addJdModal.show} />
                 </div>
                 {/* <div
                     style={{
@@ -300,7 +300,7 @@ function FromSkills() {
                         </div>
                     </div>
                     <div className='text-center py-3'>
-                        <small className='text-black'>Click Below to Start Interview</small>
+                        <small className='text-black'>Click below to start Interview</small>
                         <div className='row justify-content-center pt-1'>
                             <div className='col-4'>
                                 <Button

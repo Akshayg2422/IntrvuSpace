@@ -15,7 +15,7 @@ export const SERVER =
   BUILD_TYPE === BUILD_TYPE_LIVE
     ? LIVE_IP
     : BUILD_TYPE === BUILD_TYPE_LIVE_DEMO
-      ? 'https://dc2c-103-118-189-10.ngrok-free.app/'
+      ? 'https://8471-103-118-191-250.ngrok-free.app/'
       : BUILD_TYPE === BUILD_TYPE_LOCAL
         ? LOCAL_IP
         : BUILD_TYPE === BUILD_TYPE_STAGING

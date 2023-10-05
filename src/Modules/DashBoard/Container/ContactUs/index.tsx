@@ -43,73 +43,33 @@ function ContactUs() {
                                                             // "input-group-focus": firstNameFocus
                                                         })}
                                                     >
-                                                        <InputGroupAddon addonType="prepend">
-                                                            <InputGroupText>
-                                                                <i className="bi bi-person" />
-                                                            </InputGroupText>
-                                                        </InputGroupAddon>
                                                         <Input
-                                                            style={{
-                                                                borderLeft: '0px'
-                                                            }}
                                                             aria-label="First Name..."
                                                             placeholder="First Name..."
                                                             type="text"
-                                                        // onFocus={(e) => setFirstNameFocus(true)}
-                                                        // onBlur={(e) => setFirstNameFocus(false)}
                                                         />
                                                     </InputGroup>
                                                 </Col>
                                                 <Col md="6">
                                                     <FormGroup>
                                                         <label>Last name</label>
-                                                        <InputGroup
-                                                            className={classnames({
-                                                                //   "input-group-focus": lastNameFocus
-                                                            })}
-                                                        >
-                                                            <InputGroupAddon addonType="prepend">
-                                                                <InputGroupText>
-                                                                    <i className="bi bi-fonts" />
-                                                                </InputGroupText>
-                                                            </InputGroupAddon>
+                                                        <InputGroup>
                                                             <Input
-                                                                style={{
-                                                                    borderLeft: '0px'
-                                                                }}
                                                                 aria-label="Last Name..."
                                                                 placeholder="Last Name..."
                                                                 type="text"
-                                                            //   onFocus={(e) => setLastNameFocus(true)}
-                                                            //   onBlur={(e) => setLastNameFocus(false)}
                                                             />
                                                         </InputGroup>
                                                     </FormGroup>
                                                 </Col>
                                             </Row>
-                                            <FormGroup>
-                                                <label>Email address</label>
-                                                <InputGroup
-                                                    className={classnames({
-                                                        //   "input-group-focus": emailFocus
-                                                    })}
-                                                >
-                                                    <InputGroupAddon addonType="prepend">
-                                                        <InputGroupText>
-                                                            <i className="bi bi-envelope" />
-                                                        </InputGroupText>
-                                                    </InputGroupAddon>
-                                                    <Input
-                                                        style={{
-                                                            borderLeft: '0px'
-                                                        }}
-                                                        placeholder="Email Here..."
-                                                        type="text"
-                                                    //   onFocus={(e) => setEmailFocus(true)}
-                                                    //   onBlur={(e) => setEmailFocus(false)}
-                                                    />
-                                                </InputGroup>
-                                            </FormGroup>
+                                            {/* <FormGroup> */}
+                                            <label>Email address</label>
+                                            <Input
+
+                                                placeholder="Email Here..."
+                                                type="text"
+                                            />
                                             <FormGroup>
                                                 <label>Your message</label>
                                                 <Input
@@ -212,9 +172,9 @@ function ContactUs() {
                                                         Twitter
                                                     </span>
                                                 </NavLink>
-                                        
+
                                             </NavItem>
-                                          
+
                                             {/* <NavItem>
                                                 <NavLink
                                                     className="nav-link-icon"

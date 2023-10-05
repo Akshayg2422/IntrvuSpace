@@ -41,8 +41,8 @@ function LandingHeader() {
                                         Step into the Future of Interviews with MockEazy.
                                     </p>
                                     <div className="mt-4">
-                                        <Button className={'px-6'}
-                                            style={{ borderRadius: '25px' }}
+                                        <Button 
+                                        className={'px-6 bg-primary rounded-0 text-white'}
                                             size={'lg'}
                                             text={'Register Now'}
                                             onClick={() => { goTo(ROUTES['auth-module'].register) }}
