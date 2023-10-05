@@ -197,5 +197,7 @@ export const icons = {
   voice: require('./Voice/icon.png'),
   schedule: require('./Schedule/icon.png'),
   settings: require('./Settings/icon.png'),
-  viewAsMember: require('./ViewAsMember/icon.png')
+  viewAsMember: require('./ViewAsMember/icon.png'),
+  selected: require('./Selected/icon.png'),
+  rejected: require('./Rejected/icon.png')
 };
