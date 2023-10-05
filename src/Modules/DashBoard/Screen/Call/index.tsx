@@ -1,4 +1,4 @@
-import { AnimatedImage, Button, Modal, Spinner } from "@Components";
+import { AnimatedImage, Button, Modal, Spinner, Image } from "@Components";
 import { useLoader, useModal, useNavigation } from "@Hooks";
 import { CallHeader, Guidelines } from "@Modules";
 import {
@@ -16,6 +16,7 @@ import { useParams } from "react-router-dom";
 import { RecordRTCPromisesHandler, StereoAudioRecorder } from "recordrtc";
 import { useScreenRecorder } from "./useScreenRecorder";
 import { CALL_WEBSOCKET } from "@Services";
+import { icons } from '@Assets';
 const compare_moment_format = "YYYY-MM-DDHH:mm:ss";
 
 const INTERVAL_TIME = 3000;
@@ -55,6 +56,7 @@ const GUIDELINES = [
   "Keep the video function enabled throughout the session for effective interaction.",
   " We appreciate clear and succinct responses during the conversation.",
 ];
+
 
 function Call() {
   const { startScreenRecording } = useScreenRecorder();
@@ -908,11 +910,11 @@ function Call() {
             )}
             {!interviewStarted ? (
               <Guidelines
-                guidelines={GUIDELINES}
                 scheduleInfo={scheduleInfo}
                 loading={startInterviewLoader.loader}
                 heading={scheduleInfo?.interviewee_expected_designation}
                 onClick={startInterviewHandler}
+
               />
             ) : (
               <></>

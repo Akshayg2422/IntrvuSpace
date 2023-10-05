@@ -1,16 +1,13 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { icons } from '@Assets';
-import { Button, Card, Checkbox, Divider, Input, Modal, Spinner, TextArea, showToast, Radio, H } from '@Components';
+import { Button, Card, Checkbox, Divider, H, Input, Modal, Radio, Spinner, TextArea, showToast, InputHeading } from '@Components';
 import { useInput, useLoader, useModal, useNavigation } from '@Hooks';
 import { AnalyzingAnimation, GenerateModal, UploadJdCard } from '@Modules';
-import { createNewJdSchedule, getJdItemList, postJdVariant, selectedScheduleId, canStartInterview } from '@Redux';
+import { canStartInterview, createNewJdSchedule, getJdItemList, postJdVariant, selectedScheduleId } from '@Redux';
 import { ROUTES } from '@Routes';
 import { FROM_JD_RULES, getValidateError, ifObjectExist, validate } from '@Utils';
 import Slider from "nouislider";
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
-
 
 export const interviewDurations = [
     { id: '1', text: 'Short', subText: '(5 mins)', value: 5 },
@@ -30,7 +27,7 @@ const INTERVAL_TIME = 3000
 
 function FromJD() {
     const CHAR_LENGTH = 2000
-    const VIEW_MORE_LENGTH = 350
+    const VIEW_MORE_LENGTH = 300
 
 
     const ERROR_MESSAGE = "In beta version, you can upload only max of " + CHAR_LENGTH + " characters."
@@ -38,11 +35,9 @@ function FromJD() {
 
     const { jdItem } = useSelector((state: any) => state.DashboardReducer)
     const { goTo } = useNavigation();
-
     const position = useInput('');
     const experience = useInput('');
     const jd = useInput('');
-    const portalUrl = useInput('')
     const sector = useInput('');
     const addJdModal = useModal(false);
     const generateJdModal = useModal(false);
@@ -52,34 +47,23 @@ function FromJD() {
     const [loading, setLoading] = useState(true);
     const [jdMore, setJdMore] = useState<any>([])
     const [fresherChecked, setFresherChecked] = useState(false)
-
-    const [selectedDuration, setSelectedDuration] = useState(interviewDurations[1]);
-
     const [jdDescriptionError, setJdDescriptionError] = useState<any>(undefined)
-    const [slider1Value, setSlider1Value] = useState("1");
+    const [selectedDuration, setSelectedDuration] = useState(interviewDurations[0]);
+    const [sliderValue, setSliderValue] = useState(0);
+
+    const handleSliderChange = (newValue: any) => {
+        console.log('Slider value changed:', newValue);
+        setSliderValue(newValue)
+    }
+    console.log('sliderValuesliderValue',);
+
+
 
     const startInterviewLoader = useLoader(false);
 
     useEffect(() => {
         getKnowledgeGroupFromJdHandler();
     }, [])
-
-    useEffect(() => {
-        const slider1 = document.getElementById("slider1");
-
-        if (slider1) {
-            Slider.create(slider1, {
-                start: [1],
-                connect: [true, false],
-                step: 0.01,
-                range: { min: 1.0, max: 100.0 },
-            }).on("update", (values, handle) => {
-                const valueWithoutDecimal = parseInt(values[0] as string); // Remove decimal places
-                setSlider1Value(valueWithoutDecimal.toString());
-            });
-        }
-    }, []);
-
 
 
     const dispatch = useDispatch()
@@ -103,10 +87,9 @@ function FromJD() {
         const params = {
             sector_name: sector.value,
             position: position.value,
-            experience: fresherChecked ? '0' : experience.value,
-            reference_link: portalUrl.value,
-            jd: jd.value,
             interview_duration: selectedDuration.value,
+            experience: fresherChecked ? '0' : sliderValue,
+            jd: jd.value
         }
 
         const validation = validate(FROM_JD_RULES, params)
@@ -155,7 +138,6 @@ function FromJD() {
         position.set('')
         experience.set('')
         jd.set('')
-        portalUrl.set('')
         sector.set('')
     }
 
@@ -315,23 +297,29 @@ function FromJD() {
                                                         {
                                                             details.length < VIEW_MORE_LENGTH ?
                                                                 <div className='row'>
-                                                                    <small className='text-details text-black'>{`${details}`}</small>
+                                                                    <div className='text-details text-black'>{`${details}`}</div>
                                                                 </div>
                                                                 :
                                                                 <>
                                                                     {more ?
                                                                         <div className='row'>
                                                                             <div className='text-details text-black'>
-                                                                                {`${details}`}
-                                                                                <span className='h5 text-primary ml-1 pointer'
-                                                                                    onClick={() => {
-                                                                                        const updatedData: any = [...jdMore]
-                                                                                        updatedData[index] = { ...updatedData[index], more: false }
-                                                                                        setJdMore(updatedData)
-                                                                                    }}>
+                                                                                {details.split('\n\n').map((paragraph, index) => (
+                                                                                    <React.Fragment key={index}>
+                                                                                        {index > 0 && <br />} {/* Add <br /> between paragraphs except for the first one */}
+                                                                                        {paragraph}
+                                                                                    </React.Fragment>
+                                                                                ))}
+                                                                                <span className='h5 text-primary ml-1 pointer' onClick={() => {
+                                                                                    const updatedData: any = [...jdMore];
+                                                                                    updatedData[index] = { ...updatedData[index], more: false };
+                                                                                    setJdMore(updatedData);
+                                                                                }}>
                                                                                     View Less
                                                                                 </span>
                                                                             </div>
+
+
                                                                         </div>
                                                                         :
                                                                         <div className='row'>
@@ -382,20 +370,22 @@ function FromJD() {
                                                                 <div className='row align-items-center'>
                                                                     <h5 className='col m-0 p-0'>{"Interview " + (index + 1)}</h5>
                                                                     <h5 className='col mb-0 text-center'>{(is_complete ? "Completed: " : "Created at: ") + getDisplayTimeFromMoment(created_at)}</h5>
-                                                                    <div className='d-flex align-items-end p-0 m-0'>
-
-                                                                        {is_report_complete &&
+                                                                    <div className='col d-flex justify-content-end'>
+                                                                        {
+                                                                            is_report_complete &&
                                                                             <Button
                                                                                 text={'View Report'}
                                                                                 onClick={() => {
                                                                                     proceedReport(id);
-                                                                                }} />
+                                                                                }}
+                                                                            />
                                                                         }
-
-
-                                                                        {is_complete && !is_report_complete && <div>
-                                                                            <span className="name mb-0 text-sm">Generating Report ...</span>
-                                                                        </div>}
+                                                                        {
+                                                                            is_complete && !is_report_complete &&
+                                                                            <div>
+                                                                                <span className="name mb-0 text-sm">Generating Report ...</span>
+                                                                            </div>
+                                                                        }
                                                                     </div>
                                                                 </div>
                                                                 <Divider className={'row'} space={"3"} />
@@ -422,6 +412,7 @@ function FromJD() {
                 <div className={'row'}>
                     <div className={'col-6'}>
                         <Input
+                            isMandatory
                             heading={'Sector'}
                             placeHolder={PLACE_HOLDER.sector}
                             value={sector.value}
@@ -429,6 +420,7 @@ function FromJD() {
                     </div>
                     <div className={'col-6'}>
                         <Input
+                            isMandatory
                             heading={'Role'}
                             placeHolder={PLACE_HOLDER.role}
                             value={position.value}
@@ -437,46 +429,40 @@ function FromJD() {
                 </div>
 
                 <div className={'row'}>
-                    <span className={'position-absolute left-9 pl-2'}>
-                        <Checkbox className={'text-primary'} text={'Fresher'} defaultChecked={fresherChecked} onCheckChange={(checked) => {
-                            setFresherChecked(checked)
-                        }} />
-                    </span>
-
-
                     <div className={'col-6'}>
                         {fresherChecked ? (
-                            <Input
-                                heading={'Years of experience'}
-                                type={'text'}
-                                placeHolder={'Fresher'}
-                                value={'Fresher'}
-                                disabled
-                            />
+                            <div className='ml-2'>
+                                <Input
+                                    isMandatory
+                                    heading={'Years of experience'}
+                                    type={'text'}
+                                    placeHolder={'Fresher'}
+                                    value={'Fresher'}
+                                    disabled
+                                />
+                            </div>
                         ) : (
-                            // <div>
-                            //     <div className="input-slider-container">
-                            //         <div className="input-slider" id="slider1" />
-                            //         <div className="mt-3 row">
-                            //             <div className={'col-xs-6'}>
-                            //                 <span className="range-slider-value">{slider1Value}</span>
-                            //             </div>
-                            //         </div>
-                            //     </div>
-                            // </div>
-                            <Input
-                                heading={'Years of experience'}
-                                type={'number'}
-                                placeHolder={'Experience'}
-                                value={experience.value}
-                                onChange={experience.onChange}
-                            />
+                            <div>
+                                <Input
+                                    isMandatory
+                                    heading={'Years of experience'}
+                                    type={'number'}
+                                    placeHolder={'Experience'}
+                                    value={experience.value}
+                                    onChange={experience.onChange}
+                                />
+                            </div>
                         )}
+                        <span className={'position-absolute left-9 pl-5 top-0'}>
+                            <Checkbox className={'text-primary'} text={'Fresher'} defaultChecked={fresherChecked} onCheckChange={(checked) => {
+                                setFresherChecked(checked)
+                            }} />
+                        </span>
                     </div>
 
 
                     <div className={'col-6 mt-1'}>
-                        <H className='mb-0' style={{ fontSize: '13px', color: '#525f7f' }} text={'Interview Duration'} tag={'h4'} />
+                        <InputHeading Class={'mb-0'} heading={'Interview Duration'} isMandatory />
                         <Radio
                             selected={selectedDuration}
                             selectItem={selectedDuration}
@@ -492,6 +478,7 @@ function FromJD() {
                 </div>
 
                 <TextArea
+                    isMandatory
                     error={jdDescriptionError}
                     placeholder={PLACE_HOLDER.jd}
                     heading='Job Description'
@@ -511,9 +498,9 @@ function FromJD() {
                     <Button block size='md' text={'Submit'} onClick={submitJdApiHandler} />
                 </div>
 
-            </Modal>
+            </Modal >
 
-            <GenerateModal title={'Create Interview Schedule From JD'} isOpen={generateJdModal.visible} onClose={generateJdModal.hide}>
+            <GenerateModal title={'Preparing your Interview'} isOpen={generateJdModal.visible} onClose={generateJdModal.hide}>
                 <AnalyzingAnimation />
             </GenerateModal>
 

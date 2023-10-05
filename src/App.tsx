@@ -21,6 +21,8 @@ import { settingSideNavRemove } from "./Redux";
 import './App.css'
 
 
+
+
 function App() {
 
   const AUTH = 1
@@ -68,7 +70,6 @@ function App() {
 
   return (
     <ScreenWrapper>
-
       <Routes>
         <Route path="/" element={<Splash />} />
         {getRoutes(AUTH_ROUTES, AUTH)}
@@ -77,7 +78,6 @@ function App() {
         <Route path={ROUTES['designation-module'].interview + '/:schedule_id'} element={<Call />} />
         <Route path={"*"} element={<PageNotFound />} />
       </Routes>
-
       <ToastContainer />
     </ScreenWrapper >
 

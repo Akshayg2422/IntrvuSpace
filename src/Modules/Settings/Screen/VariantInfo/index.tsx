@@ -240,7 +240,7 @@ function VariantInfo() {
                 <div className={'text-right'}><Button size={'md'} text={'Submit'} onClick={generateNewCandidateHandler} /></div>
 
             </Modal>
-            <GenerateModal title={'Create Interview Schedule'} isOpen={generateVariantModal.visible} onClose={generateVariantModal.hide}>
+            <GenerateModal title={'Scheduling Interview'} isOpen={generateVariantModal.visible} onClose={generateVariantModal.hide}>
                 <AnalyzingAnimation />
             </GenerateModal>
         </>

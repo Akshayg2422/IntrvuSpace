@@ -79,9 +79,8 @@ function LandingNavBar() {
                         <Nav className="align-items-lg-center ml-lg-auto" navbar>
                             <NavItem className="d-none d-lg-block ml-lg-4">
                                 <Button
-                                    className="bg-primary px-4 text-white"
-                                    style={{ borderRadius: '25px' }}
-                                    size='md'
+                                    className="bg-primary text-white"
+                                    size='sm'
                                     onClick={() => {
                                         goTo(ROUTES['auth-module'].login)
                                     }}

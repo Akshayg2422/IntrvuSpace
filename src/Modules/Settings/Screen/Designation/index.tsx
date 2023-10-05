@@ -9,7 +9,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Nav, NavItem, NavLink } from 'reactstrap';
 import classnames from 'classnames'
 
-
+const PLACE_HOLDER = {
+    "sector": "Software, Banking...",
+}
 
 
 function Designation() {
@@ -40,6 +42,7 @@ function Designation() {
     const experience = useInput('')
     const jd = useInput('');
     const portalUrl = useInput('')
+    const sectorInput = useInput('');
 
     const loader = useLoader(false);
 
@@ -66,6 +69,7 @@ function Designation() {
     };
 
     const fetchKnowledgeData = (id) => {
+        console.log('1111111111111111111111111111', id)
         const params = {
             sector_id: id
         }
@@ -126,6 +130,7 @@ function Designation() {
             const params = {
                 knowledge_group_id: selectedDesignation?.id,
                 position: position?.value,
+                // sector:sectorInput.value,
                 experience: experience.value,
                 reference_link: portalUrl.value,
                 jd: jd.value,
@@ -158,8 +163,8 @@ function Designation() {
     };
 
 
-    function removeEmptyData(navlist) {
-        return navlist.map((el: any) => {
+    function removeEmptyData(navList:any) {
+        return navList.map((el: any) => {
             if (el.id && el.name) {
                 return el;
             } else {
@@ -193,33 +198,33 @@ function Designation() {
                     />
                 </div>
                 <div className='d-flex pt-3 overflow-auto overflow-hide mx--4'>
-                    {navList && removeEmptyData(navList).map((el, index) => {
-                        return (
-                            <div className='col-sm-3 px-2'>
-                                <Nav
-                                    className="nav-fill flex-column flex-sm-row pointer"
-                                    id="tabs-text"
-                                    pills
-                                    role="tablist"
-                                >
-                                    <NavItem>
-                                        <NavLink
-                                            aria-selected={index === navIndex}
-                                            className={classnames(`mb-sm-3 mb-md-0 shadow-none ${index !== navIndex ? 'text-black font-weight-normal' : 'font-weight-bold'}`, {
-                                                active: index === navIndex
-                                            })}
-                                            onClick={() => {
-                                                setNavIndex(index)
-                                                fetchKnowledgeData(el.id)
-                                            }}
-                                            role="tab"
-                                        >
-                                            {el.name}
-                                        </NavLink>
-                                    </NavItem>
-                                </Nav>
-                            </div>
-                        )
+                    {navList && removeEmptyData(navList).map((el:any, index:number) => {
+                       return (
+                        <div className='col-sm-3 px-2'>
+                            <Nav
+                                className="nav-fill flex-column flex-sm-row pointer"
+                                id="tabs-text"
+                                pills
+                                role="tablist"
+                            >
+                                <NavItem>
+                                    <NavLink
+                                        aria-selected={index === navIndex}
+                                        className={classnames(`mb-sm-3 mb-md-0 shadow-none ${index !== navIndex ? 'text-black font-weight-normal' : 'font-weight-bold'}`, {
+                                            active: index === navIndex
+                                        })}
+                                        onClick={() => {
+                                            setNavIndex(index)
+                                            fetchKnowledgeData(el.id)
+                                        }}
+                                        role="tab"
+                                    >
+                                        {el.name}
+                                    </NavLink>
+                                </NavItem>
+                            </Nav>
+                        </div>
+                    )
                     })
 
                     }
@@ -304,7 +309,7 @@ function Designation() {
                     </div>
                 </Modal >
 
-                <Modal size={'lg'} title={"Add Role"} isOpen={addRoleModal.visible} onClose={() => {
+                <Modal size={'lg'} title={"Create Job Description"} isOpen={addRoleModal.visible} onClose={() => {
                     addRoleModal.hide()
                     position.set("")
                     experience.set("")
@@ -317,6 +322,13 @@ function Designation() {
                             value={position.value}
                             onChange={position.onChange}
                         />
+                        {/* <Input
+                            isMandatory
+                            heading={'Sector'}
+                            placeHolder={PLACE_HOLDER.sector}
+                            value={sectorInput.value}
+                            onChange={sector.onChange} /> */}
+
                         <Input
                             heading={'Years of experience'}
                             type={'number'}
