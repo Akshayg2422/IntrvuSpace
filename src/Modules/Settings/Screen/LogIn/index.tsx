@@ -92,8 +92,6 @@ function Login() {
                     showToast(error.error_message, 'error')
                 },
             }))
-
-
     }
 
     return (

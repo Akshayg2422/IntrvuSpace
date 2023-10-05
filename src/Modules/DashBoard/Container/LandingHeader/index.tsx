@@ -42,7 +42,7 @@ function LandingHeader() {
                                     </p>
                                     <div className="mt-4">
                                         <Button 
-                                        className={'px-6 bg-primary text-white'}
+                                        className={'px-6 bg-primary rounded-0 text-white'}
                                             size={'lg'}
                                             text={'Register Now'}
                                             onClick={() => { goTo(ROUTES['auth-module'].register) }}

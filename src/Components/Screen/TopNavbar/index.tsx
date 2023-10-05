@@ -80,12 +80,11 @@ function TopNavbar() {
             >
                 <div className="container-fluid mx-sm-0 mx-2">
                     <NavbarBrand to="/" tag={Link}>
-                        <div className="row align-items-center">
-                            <Image src={icons.logo} height={30} width={30} />
-                            <div className='d-flex align-items-center ml-2'>
-                                <h1 className='display-4 font-weight-bolder text-primary mb-0'>MOCK <b className='text-black'>EAZY</b></h1>
-                            </div>
+                        <div className="row">
+                            <div className="col display-3 font-weight-900 text-primary px-0">MOCK</div>
+                            <div style={{ letterSpacing: '2px', fontSize: '35px' }} className="col text-black font-weight-300 pl-3">EAZY</div>
                         </div>
+
 
                     </NavbarBrand>
                     <button
@@ -153,9 +152,9 @@ function TopNavbar() {
                                         <UncontrolledDropdown nav>
                                             <DropdownToggle className="nav-link pr-0" color="" tag="a">
                                                 <Media className="align-items-center">
-                                                    <Image
+                                                    <Image className={'rounded-0'}
                                                         size={'sm'}
-                                                        variant={'rounded'}
+                                                        variant={'avatar'}
                                                         src={icons.logo}
                                                     />
                                                     <Media className="ml-2 d-none d-lg-block">
