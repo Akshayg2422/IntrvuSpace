@@ -132,6 +132,7 @@
   "devDependencies": {
     "@types/file-saver": "^2.0.5",
     "@types/nouislider": "^15.0.0",
+    "@types/react-autosuggest": "^10.1.7",
     "@types/react-beautiful-dnd": "^13.1.4",
     "@types/react-router": "^5.1.20",
     "@types/react-router-dom": "^5.3.3",
