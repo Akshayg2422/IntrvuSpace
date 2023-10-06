@@ -88,7 +88,7 @@ function FromJD() {
             sector_name: sector.value,
             position: position.value,
             interview_duration: selectedDuration.value,
-            experience: fresherChecked ? '0' : sliderValue,
+            experience: fresherChecked ? '0' : experience.value,
             jd: jd.value
         }
 
