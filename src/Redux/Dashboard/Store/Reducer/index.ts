@@ -40,7 +40,8 @@ const initialState: DashboardProp = {
   studentCodeOutput: undefined,
   codeOutputData: undefined,
   selectedSectionId: undefined,
-  canStartInterview: undefined
+  canStartInterview: undefined,
+  createJdModal: false,
 };
 
 const DashboardReducer = (state = initialState, action: any) => {
@@ -413,6 +414,18 @@ const DashboardReducer = (state = initialState, action: any) => {
     case ActionTypes.SETTING_SELECTED_SECTION_ID:
       state = { ...state, selectedSectionId: action.payload };
       break;
+
+    // open jd modal
+
+    case ActionTypes.SHOW_CREATE_JD_MODAL:
+      state = { ...state, createJdModal:  true };
+      break;
+
+      
+    case ActionTypes.HIDE_CREATE_JD_MODAL:
+      state = { ...state, createJdModal:  false };
+      break;
+
 
     default:
       state = state;

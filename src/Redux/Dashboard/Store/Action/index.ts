@@ -805,3 +805,33 @@ export const canStartInterviewFailure = (error: any) => {
     payload: error
   }
 }
+
+// OPEN_JD_MODAL
+
+
+export const showCreateJddModal = () => {
+  return {
+    type: ActionTypes.SHOW_CREATE_JD_MODAL,
+  };
+};
+
+
+export const hideCreateJdModal = () => {
+  return {
+    type: ActionTypes.HIDE_CREATE_JD_MODAL,
+  };
+};
+
+// export const openJdModalSuccess = (response: any) => {
+//   return {
+//     type: ActionTypes.OPEN_JD_MODAL_SUCCESS,
+//     payload: response,
+//   };
+// };
+
+// export const openJdModalFailure = (response: any) => {
+//   return {
+//     type: ActionTypes.OPEN_JD_MODAL_FAILURE,
+//     payload: response,
+//   };
+// };
