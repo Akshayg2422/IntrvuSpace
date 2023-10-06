@@ -166,13 +166,13 @@ export const HOME_ROUTES = [
     layout: "",
     component: <Settings/>
   },
-  // {
-  //   path: ROUTES['designation-module'].client,
-  //   name: "View as Member",
-  //   icon: icons.viewAsMember,
-  //   layout: "",
-  //   component: <Clients />
-  // },
+  {
+    path: ROUTES['designation-module'].client,
+    name: "View as Member",
+    icon: icons.viewAsMember,
+    layout: "",
+    component: <Clients />
+  },
   // {
   //   path: ROUTES['designation-module'].report,
   //   name: "Report",
