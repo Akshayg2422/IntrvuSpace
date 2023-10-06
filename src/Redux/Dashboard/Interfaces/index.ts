@@ -30,5 +30,6 @@ export interface DashboardProp {
   loading?: boolean;
   codeOutputData?: any;
   selectedSectionId?: any;
-  canStartInterview?: any
+  canStartInterview?: any;
+  createJdModal?:boolean;
 }
