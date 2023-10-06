@@ -224,3 +224,43 @@ export const hexToHue = (hexColor) => {
 };
 
 
+export async function hasMicrophonePermission() {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    return true;
+  } catch (error) {
+    return false;
+  }
+}
+
+
+export const userAgent = window.navigator.userAgent.toLowerCase();
+
+export function getOperatingSystem() {
+  if (userAgent.includes("win")) {
+    return "Windows";
+  } else if (userAgent.includes("mac")) {
+    return "MacOS";
+  } else {
+    return "Other";
+  }
+}
+
+
+export function gotoPermissionSetting() {
+  // Check if the user is using Windows
+  if (userAgent.includes("win")) {
+    // Open Windows microphone settings
+    window.open("ms-settings:privacy-microphone");
+  }
+  // Check if the user is using macOS
+  else if (userAgent.includes("mac")) {
+    // Open macOS microphone settings
+    window.open("x-apple.systempreferences:com.apple.preference.security?Privacy_Microphone");
+  }
+  // For other operating systems, provide a message
+  else {
+    alert("Microphone settings are not available on your current operating system.");
+  }
+}
+

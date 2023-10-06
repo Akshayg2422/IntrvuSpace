@@ -15,17 +15,13 @@ const GUIDELINES = [
 function Guidelines({ scheduleInfo = undefined, loading, heading, onClick }: GuidelinesProps) {
     const { goBack } = useNavigation()
 
-
-    console.log(JSON.stringify(scheduleInfo) + '====scheduleInfo');
-
-
     return (
         <>
             {!scheduleInfo.is_complete &&
                 <div className='h-100vh' style={{ position: 'relative' }}>
                     <div style={{ backgroundImage: `url(${require('../../../../Assets/img/Background/Guildlines/image.jpg')})`, backgroundSize: 'cover', backgroundPosition: 'center', position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
                         {/* White overlay */}
-                        <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(255, 255, 255, 0.9)' }}></div>
+                        <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(255, 255, 255, 0.96)' }}></div>
 
                         <div className='container'>
                             <div className="d-flex flex-column justify-content-between h-100vh py-5">

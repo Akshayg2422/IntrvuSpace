@@ -15,7 +15,9 @@ function Modal({ isOpen, children, title, size = "lg", style, onClose, ...rest }
       {...rest}
     >
       <div className="modal-content rounded-0 shadow-0">
-        <div className={"modal-header"}>
+        <div className={"modal-header mb-0"} style={{
+          paddingBottom: '0px'
+        }}>
           {title && <h6 className={"modal-title"}>{title}</h6>}
           <button
             aria-label={"Close"}
@@ -31,7 +33,7 @@ function Modal({ isOpen, children, title, size = "lg", style, onClose, ...rest }
             <span aria-hidden={true}>×</span>
           </button>
         </div>
-        <div className="modal-body scroll-hidden" style={style}>
+        <div className="modal-body scroll-hidden" style={{ ...style, marginTop: "0px" }}>
           {children}
         </div>
       </div>

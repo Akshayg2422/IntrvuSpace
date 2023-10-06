@@ -1,4 +1,4 @@
-import { AnimatedImage, Button, Modal, Spinner, Image } from "@Components";
+import { AnimatedImage, Button, Modal, Spinner, } from "@Components";
 import { useLoader, useModal, useNavigation } from "@Hooks";
 import { CallHeader, Guidelines } from "@Modules";
 import {
@@ -6,7 +6,7 @@ import {
   closeInterview,
   canStartInterview,
 } from "@Redux";
-import { capitalizeFirstLetter, getShortName } from "@Utils";
+import { capitalizeFirstLetter, getShortName, hasMicrophonePermission, getOperatingSystem, gotoPermissionSetting } from "@Utils";
 import type { Harker } from "hark";
 import type { Encoder } from "lamejs";
 import moment from "moment";
@@ -17,6 +17,7 @@ import { RecordRTCPromisesHandler, StereoAudioRecorder } from "recordrtc";
 import { useScreenRecorder } from "./useScreenRecorder";
 import { CALL_WEBSOCKET } from "@Services";
 import { icons } from '@Assets';
+import { log } from "console";
 const compare_moment_format = "YYYY-MM-DDHH:mm:ss";
 
 const INTERVAL_TIME = 3000;
@@ -114,13 +115,10 @@ function Call() {
 
   // microphone permission states
 
-  const [
-    isShowMircrophonePermissionModal,
-    setIsShowMircrophonePermissionModal,
-  ] = useState<boolean>(false);
 
-  const [isMicrophoneAllowed, setIsMicrophoneAllowed] =
-    useState<boolean>(false);
+  const micPermissionModal = useModal(false)
+
+
 
   const WEBSOCKET_PROCESSING = 1;
   const WEBSOCKET_IDLE = -1;
@@ -175,6 +173,8 @@ function Call() {
   function onEndCallHandler() {
     proceedStopListening();
     setButtonConditional("end");
+    if (audioElementRef.current)
+      audioElementRef.current.pause();
     getBasicInfo();
     window.location.reload();
   }
@@ -731,60 +731,56 @@ function Call() {
     setMute(!mute);
   }
 
-  async function microphonePermissionHandler() {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      setIsMicrophoneAllowed(true);
-      setInterviewStarted(true);
-    } catch (error) {
-      console.error("Error accessing microphone:", error);
-      setIsMicrophoneAllowed(false);
-      setIsShowMircrophonePermissionModal(true); // Show the modal on microphone permission denial
+
+
+
+  async function startInterviewHandler() {
+
+    const hasMicPermission = await hasMicrophonePermission();
+
+    if (hasMicPermission) {
+      micPermissionModal.hide()
+      const canStartParams = { schedule_id };
+
+      startInterviewLoader.show();
+
+      const intervalId = setInterval(() => {
+        dispatch(
+          canStartInterview({
+            params: canStartParams,
+            onSuccess: (res: any) => () => {
+              startInterviewLoader.hide();
+
+              startStreamTime.current = moment().add(1, "seconds");
+              transcriptionReferenceId.current = generateRandomID();
+              // proceedgetChatDetailsApiHandler({ message: "start" }, transcriptionReferenceId.current)
+              setProcessCallInprogress(false);
+              // console.log("resss0114")
+              resetLastMessage();
+              setInterviewStarted(true);
+              // setTimeout(() => {
+              validateProceedStartListening();
+              // }, 5000)
+              clearInterval(intervalId);
+            },
+            onError: (error: any) => () => {
+              console.log(error);
+            },
+          })
+        );
+      }, INTERVAL_TIME);
+    } else {
+      micPermissionModal.show()
     }
-  }
-
-  function openMicrophoneModal() {
-    setIsShowMircrophonePermissionModal(!isShowMircrophonePermissionModal);
-  }
-
-  function startInterviewHandler() {
-    const canStartParams = { schedule_id };
-
-    startInterviewLoader.show();
-
-    const intervalId = setInterval(() => {
-      dispatch(
-        canStartInterview({
-          params: canStartParams,
-          onSuccess: (res: any) => () => {
-            startInterviewLoader.hide();
-
-            startStreamTime.current = moment().add(1, "seconds");
-            transcriptionReferenceId.current = generateRandomID();
-            // proceedgetChatDetailsApiHandler({ message: "start" }, transcriptionReferenceId.current)
-            setProcessCallInprogress(false);
-            // console.log("resss0114")
-            resetLastMessage();
-            // setInterviewStarted(true);
-            microphonePermissionHandler();
-            // setTimeout(() => {
-            validateProceedStartListening();
-            // }, 5000)
-            clearInterval(intervalId);
-          },
-          onError: (error: any) => () => {
-            console.log(error);
-          },
-        })
-      );
-    }, INTERVAL_TIME);
   }
 
   function endInterviewHandler() {
     // isScreenRecording && stopScreenRecording();
     closeCall.current = true;
     onEndCallHandler();
-    goBack();
+
+    goBack()
+
   }
 
   function closeInterviewAPiHandler() {
@@ -795,7 +791,7 @@ function Call() {
         onSuccess: () => () => {
           endInterviewHandler();
         },
-        onError: () => () => {},
+        onError: () => () => { },
       })
     );
   }
@@ -853,7 +849,7 @@ function Call() {
       >
         {!networkError && !websocketError && scheduleInfo && (
           <>
-            {interviewStarted && isMicrophoneAllowed && (
+            {interviewStarted && (
               <>
                 <div className="d-flex flex-column h-100">
                   <div className="col">
@@ -939,23 +935,17 @@ function Call() {
         )}
       </div>
       <Modal
-        isOpen={isShowMircrophonePermissionModal}
-        onClose={openMicrophoneModal}
-        title="Microphone Access Required"
+        isOpen={micPermissionModal.visible}
+        onClose={micPermissionModal.hide}
+        title={'Microphone Access Required'}
       >
-        <div className="mt--4">
-          <p>
-            {`1. To proceed with the interview, the microphone access is required.`}
-            <br />
-            {`2. Kindly check both browser and system microphone access.`}
-            <br />
-            {
-              "3. For windows, goto settings - search for Microphone security settings - switch ON Microphone access"
-            }
-          </p>
-          <div className="d-flex float-right">
-            <Button text={"OK"} onClick={openMicrophoneModal} />
-          </div>
+        <div>
+          <h3 className="text-gray-dark font-weight-500">To continue, grant microphone access:</h3>
+          <p className="mb-0">{"1. Check browser settings."}</p>
+          <p className="mb-0">{'2. Enable microphone access in system settings. '}<span className="pointer text-primary font-weight-700" onClick={gotoPermissionSetting}>{`(${getOperatingSystem()})`}</span></p>
+        </div>
+        <div className="d-flex float-right">
+          <Button text={"OK"} onClick={micPermissionModal.hide} />
         </div>
       </Modal>
     </>

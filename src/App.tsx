@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-redeclare */
-import { PageNotFound, ScreenWrapper } from "@Components";
+import { PageNotFound, ScreenWrapper, ReactAutoComplete, DropDown } from "@Components";
 import { Call, Splash } from '@Modules';
 import { AUTH_ROUTES, DASHBOARD_ROUTES, HOME_ROUTES, ROUTES, RequireAuth, RequireHome } from "@Routes";
 import { Route, Routes } from "react-router-dom";
@@ -70,6 +70,7 @@ function App() {
 
   return (
     <ScreenWrapper>
+
       <Routes>
         <Route path="/" element={<Splash />} />
         {getRoutes(AUTH_ROUTES, AUTH)}
@@ -79,6 +80,9 @@ function App() {
         <Route path={"*"} element={<PageNotFound />} />
       </Routes>
       <ToastContainer />
+      {/* <div className="col-6">
+        <ReactAutoComplete heading={"Role"} placeholder={'Role'} />
+      </div> */}
     </ScreenWrapper >
 
   );

@@ -164,7 +164,7 @@ export const HOME_ROUTES = [
     name: "Settings",
     icon: icons.settings,
     layout: "",
-    component: <Settings/>
+    component: <Settings />
   },
   {
     path: ROUTES['designation-module'].client,
