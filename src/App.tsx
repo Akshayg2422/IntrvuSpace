@@ -71,7 +71,7 @@ function App() {
   return (
     <ScreenWrapper>
 
-      {/* <Routes>
+      <Routes>
         <Route path="/" element={<Splash />} />
         {getRoutes(AUTH_ROUTES, AUTH)}
         {getRoutes(HOME_ROUTES)}
@@ -79,10 +79,10 @@ function App() {
         <Route path={ROUTES['designation-module'].interview + '/:schedule_id'} element={<Call />} />
         <Route path={"*"} element={<PageNotFound />} />
       </Routes>
-      <ToastContainer /> */}
-      <div className="col-6">
+      <ToastContainer />
+      {/* <div className="col-6">
         <ReactAutoComplete heading={"Role"} placeholder={'Role'} />
-      </div>
+      </div> */}
     </ScreenWrapper >
 
   );
