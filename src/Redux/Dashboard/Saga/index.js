@@ -565,6 +565,5 @@ function* DashboardSaga() {
   yield takeLatest(Action.STUDENT_CODE_SUBMISSION, postStudentCodeSubmissionSaga);
   yield takeLatest(Action.CLOSE_INTERVIEW, closeInterviewSaga);
   yield takeLatest(Action.CAN_START_INTERVIEW, canStartInterviewSaga);
-
 }
 export default DashboardSaga;
