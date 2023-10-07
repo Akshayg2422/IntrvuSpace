@@ -122,6 +122,10 @@ export const URL_CLOSE_INTERVIEW = ASSISTANT + 'endInterviewCall'
 export const URL_CAN_START_INTERVIEW = ASSISTANT + 'canStartInterview'
 
 
+// getSectorsCorporate
 
+export const URL_GET_SECTOR_CORPORATE = ASSISTANT + 'getSectorsCorporate'
+
+export const URL_ADD_SECTOR_CORPORATE = ASSISTANT + 'addISectorcorporate'
 
 
