@@ -67,13 +67,10 @@ $size: 48px;
 
 
 .loader-43 {
-  width: 10px;
+  width: 100px;
   height: 10px;
-  border-radius: 50%;
   display: inline-block;
-  position: relative;
   color: $brand;
-  left: -100px;
   animation: shadowRolling 2s linear infinite;
 }
 
@@ -150,9 +147,8 @@ $size: 48px;
   height: $size;
   display: inline-block;
   position: relative;
-  border-radius: 4px;
-  left: -60px;
   color: $lite;
+  left: -45px;
   animation: animloader64 0.6s linear infinite;
 }
 

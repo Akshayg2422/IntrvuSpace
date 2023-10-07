@@ -41,9 +41,7 @@ function Splash() {
 
 
             }
-            // else {
-            //     goTo(ROUTES["auth-module"].splash, true);
-            // }
+
         }, SPLASH_STAY_TIME_MILE_SECONDS);
     }, []);
 
@@ -52,16 +50,13 @@ function Splash() {
             {loginDetails?.isLoggedIn ? <div className={"d-flex vh-100  justify-content-center align-items-center"}>
                 <div className="text-center">
                     <Image
-                        src={icons.logo}
-                        height={'13%'}
-                        width={'13%'}
-                    />
-                    <div className='pb-0 mb--1 font-weight-bolder  display-3 text-primary'
+                        src={icons.logoText}
+                        height={"30%"}
+                        width={"30%"}
                         style={{
-                            fontSize: '13vh'
+                            mixBlendMode: 'color-burn',
                         }}
-                    >MOCK <b className='text-black'>EAZY</b>
-                    </div>
+                    />
                 </div>
 
             </div>

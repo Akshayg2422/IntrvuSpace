@@ -1,14 +1,13 @@
 .animated-image {
-  border-radius: 0%;
   padding: 135px;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 50px;
   width: 50px;
-  opacity: 0.7;
+  opacity: 1;
   margin: auto;
-  background-color: #42f542;
+  background-color: #001532;
 }
 
 .animated-image::after,
@@ -16,11 +15,10 @@
   content: "";
   position: absolute;
   z-index: 9;
-  background-color: #42f542;
+  background-color: #001532;
   height: 140px;
   width: 140px;
-  border-radius: 10;
-  opacity: 0.7;
+  opacity: 1;
 }
 
 .animated-image.blink:before {
@@ -33,16 +31,13 @@
 
 @media (max-width: 768px) {
   .animated-image {
-    border-radius: 10;
-    padding: 90px;
+    padding: 120px;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 30px;
-    width: 30px;
     opacity: 0.7;
     margin: auto;
-    background-color: #42f542;
+    background-color: #001532;
   }
 
   .animated-image::after,
@@ -50,18 +45,8 @@
     content: "";
     position: absolute;
     z-index: 9;
-    background-color: #42f542;
-    height: 140px;
-    width: 140px;
-    border-radius: 50%;
+    background-color: #001532;
     opacity: 0.7;
-  }
-
-  .name-overlay {
-    font-weight: 600;
-    font-size: 50px;
-    text-align: center;
-    color: #000;
   }
 }
 
@@ -132,6 +117,7 @@
   animation-timing-function: linear;
   animation-iteration-count: infinite;
 }
+
 .linear::after {
   position: absolute;
   width: 100px;

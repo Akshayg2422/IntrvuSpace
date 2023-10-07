@@ -1,11 +1,12 @@
 import React from 'react'
-import { Button, Card } from '@Components'
-import { useWindowDimensions } from '@Hooks'
-import { Guidelines } from '@Modules'
+import { Button } from '@Components'
 import { color } from '@Themes'
+import { showCreateJddModal } from '@Redux'
+import { useDispatch } from 'react-redux'
 
+function UploadJdCard() {
 
-function UploadJdCard({ openAddJdModal }) {
+    const dispatch = useDispatch();
 
     const headingAndSubtext = [
         { 'Retrieve Job Description from the Job Portal:': 'Kindly extract the Job Description (JD) from the designated Job Portal source.' },
@@ -58,10 +59,14 @@ function UploadJdCard({ openAddJdModal }) {
 
 
                 <div className='pb-4'>
-
                     <p className="mb-0 text-center h4 font-weight-500 pl-4 ml-2">{'We are committed to providing you with a streamlined and comprehensive virtual interview experience. Your active involvement will lead to valuable insights into your compatibility with the job role.'}</p>
-                    {openAddJdModal()}
-
+                    <div className='mt-4'></div>
+                    <Button
+                        block
+                        text={'Create Interview'}
+                        onClick={() => {
+                            dispatch(showCreateJddModal())
+                        }} />
                 </div>
             </div>
         </div>
