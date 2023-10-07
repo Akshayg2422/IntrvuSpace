@@ -7,10 +7,10 @@ export const BUILD_TYPE_LOCAL = 4;
 
 
 const LIVE_IP = "https://mockeazyprimary.leorainfotech.in"
-const LOCAL_IP = "https://e1b0-103-118-189-4.ngrok-free.app/"
+const LOCAL_IP = "https://616e-103-118-191-250.ngrok-free.app/"
 
 
-export const BUILD_TYPE = BUILD_TYPE_LIVE;
+export const BUILD_TYPE = BUILD_TYPE_LOCAL;
 export const SERVER =
   BUILD_TYPE === BUILD_TYPE_LIVE
     ? LIVE_IP
