@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { TripleDotProps } from './interfaces'
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap'
 import { Image } from '@Components'
@@ -10,14 +9,13 @@ function MenuBar({ toggleIcon, menuData, onClick }: TripleDotProps) {
             <UncontrolledDropdown>
                 <DropdownToggle
                     color=""
-                    size="sm"
+                    size={'md'}
                     className="text-light">
                     {toggleIcon ? <Image src={toggleIcon} width={20} height={20} /> : <i className="fas fa-ellipsis-v" />}
                 </DropdownToggle>
-                <DropdownMenu className="dropdown-menu-arrow" right>
+                <DropdownMenu className="dropdown-menu-arrow shadow-0" right>
                     {menuData && menuData.length > 0 && menuData.map((el: any, index: number) => {
-                        const { id, icon, name } = el
-
+                        const { icon, name } = el
                         return (
                             <>
                                 <DropdownItem onClick={(e) => {

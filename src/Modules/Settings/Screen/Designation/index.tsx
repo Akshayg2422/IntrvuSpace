@@ -417,7 +417,7 @@ function Designation() {
                         <div className='col'>
                         <Input
                             isMandatory
-                            heading={'Years of experience'}
+                            heading={'Experience'}
                             type={'number'}
                             placeHolder={"Experience"}
                             value={experience.value}

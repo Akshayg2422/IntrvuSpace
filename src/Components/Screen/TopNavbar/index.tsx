@@ -85,7 +85,7 @@ function TopNavbar() {
                 <div className="container-fluid mx-sm-0 mx-2">
                     <NavbarBrand to="/" tag={Link}>
                         <div className={'ml--4'}>
-                            <Image src={icons.logoIv} />
+                            <Image src={icons.logoText} />
                         </div>
                         {/* <div className="row align-items-center">
                             <div className="display-3 text-lowercase font-weight-900 text-primary px-0 mb-0">intrvu</div>
@@ -165,7 +165,10 @@ function TopNavbar() {
                                                     <Image
                                                         size={'sm'}
                                                         variant={'avatar'}
-                                                        src={icons.logo}
+                                                        src={icons.logoIcon}
+                                                        style={{
+                                                            objectFit: "contain"
+                                                        }}
                                                     />
                                                     <Media className="ml-2 d-none d-lg-block">
                                                         <div className='media-body text-black d-none d-lg-block dropdown-toggle'> </div>

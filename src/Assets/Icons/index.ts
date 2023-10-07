@@ -1,6 +1,6 @@
 export const icons = {
-  logoIv:require('./Logo/iconIv.png'),
-  logo: require('./Logo/icon.png'),
+  logoText: require('./Logo/icon-text.png'),
+  logoIcon: require('./Logo/icon.png'),
   google: require('./Google/icon.png'),
   minus: require('./Minus/icon.png'),
   plus: require('./Plus/icon.png'),

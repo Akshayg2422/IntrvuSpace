@@ -9,10 +9,10 @@ function Footer() {
     return (
         <>
             <footer className="pt-4 pb-4" id="footer-main" style={{ backgroundColor: '#ffffff' }}>
-            <hr></hr>
+                <hr></hr>
                 <Container>
                     <div className="d-flex">
-                        
+
                         <div>
                             <div>
                                 <NavbarBrand to="/" tag={Link}>
@@ -20,7 +20,7 @@ function Footer() {
                                         height={30}
                                         width={30}
                                         alt="..."
-                                        src={icons.logo}
+                                        src={icons.logoIcon}
                                     />
                                     <span className='h4 ml-2 text-black'>
                                         Mock Eazy

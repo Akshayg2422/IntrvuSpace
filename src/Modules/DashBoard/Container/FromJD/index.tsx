@@ -95,7 +95,7 @@ function FromJD() {
 
         if (ifObjectExist(validation)) {
             // addJdModal.hide();
-        //    dispatch( hideCreateJdModal())
+            dispatch(hideCreateJdModal())
             generateJdModal.show();
             dispatch(postJdVariant({
                 params,
@@ -126,7 +126,7 @@ function FromJD() {
                 onError: (error) => () => {
                     generateJdModal.hide();
                     // addJdModal.show();
-                    // dispatch(showCreateJddModal())
+                    dispatch(showCreateJddModal())
                     showToast(error.error_message, 'error')
                 },
             }))
@@ -223,17 +223,14 @@ function FromJD() {
 
     return (
         <>
-            {loading ? <div className={'d-flex justify-content-center my-9 py-5'}><Spinner /></div> :
+            {loading ? <div className={'d-flex justify-content-center my-9'}><Spinner /></div> :
                 jdItem && jdItem.length > 0 ?
                     <div>
-                        <div style={{
-                            paddingTop: '20px'
-                        }}></div>
                         {
                             <div className={'mt-3'}>
                                 {jdItem && jdItem.length > 0 && jdItem.map((item: any, index: any) => {
 
-                                    const { job_description: { details, experience }, schedules, sector, name, id } = item
+                                    const { job_description: { details, experience }, schedules, name, id } = item
 
                                     const more = jdMore[index]?.more
 
@@ -271,17 +268,9 @@ function FromJD() {
                                                 }
                                             </div>
                                             <h5 className='mb-0 pointer text-muted' style={{ marginTop: -15 }}>{experience === 0 ? "Fresher" : "" + experience + (experience === 1 ? " year " : " years ") + "of experience"}</h5>
-                                            {/* <div className='col mt-3'>
-                                                <div className='row align-items-center'>
-                                                    <img src={icons.briefCaseBlack} alt="Comment Icon" height={16} width={16} />
-                                                    <small className='text-sm text-black col'>Experience with {experience} years</small>
-                                                </div>
-                                            </div> */}
+
                                             <div className='col mt-2'>
                                                 <div className='row'>
-                                                    {/* <img src={icons.information} alt="Comment Icon" height={16} width={16} style={{
-                                                        marginTop: 2
-                                                    }} /> */}
                                                     <div className='col ml-0'>
                                                         {
                                                             details.length < VIEW_MORE_LENGTH ?
@@ -393,8 +382,7 @@ function FromJD() {
                         }
                     </div >
                     :
-                    <></>
-                // <UploadJdCard openAddJdModal= {() => { dispatch(showCreateJddModal()) }}/>
+                    <UploadJdCard />
             }
 
 

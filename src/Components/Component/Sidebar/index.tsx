@@ -181,7 +181,7 @@ function Sidebar({ toggleSideNav, sideNavOpen, routes, logo, rtlActive }: Sideba
               <Image
                 alt={logo.imgAlt}
                 className="navbar-brand-img rounded-circle "
-                src={icons.logo}
+                src={icons.logoIcon}
                 height={33}
                 width={33}
 

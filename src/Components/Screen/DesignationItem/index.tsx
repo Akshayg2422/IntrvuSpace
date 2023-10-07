@@ -49,7 +49,7 @@ function DesignationItem({ item, onAdd, onEdit, onView }: DesignationItemProps) 
                                                 }}
                                             >{name}</h1>
 
-                                            <div className='d-flex justify-content-between col-5'>
+                                            <div className='d-flex justify-content-between col-sm-5'>
                                                 <div className='d-flex align-items-center no-border' title='Total Candidates'>
                                                     <Image src={icons.profile} height={21} width={20} />
                                                     <span className={'pl-1'}>{'34'}</span>
@@ -119,11 +119,13 @@ function DesignationItem({ item, onAdd, onEdit, onView }: DesignationItemProps) 
                         )}
                     </div>
                 </CardBody>
-                <CardFooter>
-                    <h6 className={'d-flex justify-content-center m-0 p-0 my--1 text-black'}>
-                        {'Created at : 10 mins ago'}
-                    </h6>
-                </CardFooter>
+                {knowledge_group_variant && knowledge_group_variant.length > 0 && (
+                    <CardFooter>
+                        <h6 className={'d-flex justify-content-center m-0 p-0 my--1 text-black'}>
+                            {'Created at : 10 mins ago'}
+                        </h6>
+                    </CardFooter>
+                )}
             </Card>
         </>
     );
