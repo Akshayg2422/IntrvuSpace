@@ -1,5 +1,5 @@
 
-import { Button, DropDown, DesignationItem, Input, Modal, NoDataFound, Breadcrumbs, showToast, TextArea } from '@Components';
+import { Button, DropDown, DesignationItem, Input, Modal, NoDataFound, Breadcrumbs, showToast, TextArea, ReactAutoComplete } from '@Components';
 import { useDropDown, useInput, useLoader, useModal, useNavigation } from '@Hooks';
 import { CREATE_KNOWLEDGE_GROUP_VARIANT_FAILURE, breadCrumbs, clearBreadCrumbs, createKnowledgeGroup, createKnowledgeGroupVariant, getKnowledgeGroups, getSectors, setSelectedRole } from '@Redux';
 import { ROUTES } from '@Routes';
@@ -41,7 +41,8 @@ function Designation() {
     const sector = useDropDown({});
     const experience = useInput('')
     const jd = useInput('');
-    const portalUrl = useInput('')
+    const portalUrl = useInput('');
+    const role = useInput("");
     const sectorInput = useInput('');
 
     const loader = useLoader(false);
@@ -275,7 +276,7 @@ function Designation() {
                         </div>
                     }
                 </div>
-                < Modal size={'lg'} title={"Add Designation"} isOpen={addDesignationModal.visible} onClose={() => {
+                {/* < Modal size={'lg'} title={"Add Designation"} isOpen={addDesignationModal.visible} onClose={() => {
                     addDesignationModal.hide()
                     title.set("")
                     description.set("")
@@ -307,27 +308,46 @@ function Designation() {
                             text={"Submit"}
                             onClick={createKnowledgeGroupApiHandler} />
                     </div>
-                </Modal >
+                </Modal > */}
 
-                <Modal size={'lg'} title={"Create Job Description"} isOpen={addRoleModal.visible} onClose={() => {
+                <Modal size={'lg'} title={"Create Schedule"} isOpen={addRoleModal.visible} onClose={() => {
                     addRoleModal.hide()
                     position.set("")
                     experience.set("")
                     jd.set("")
                 }}>
-                    <div className={'col-6'}>
+                    {/* <div className={'col-6'}>
+                        <ReactAutoComplete
+                        isMandatory
+                        heading={"Sector"}
+                        
+                        />
+                         <ReactAutoComplete 
+                         isMandatory
+                         heading={"Department"}
+                        
+                         />
                         <Input
                             heading={"Position"}
                             placeHolder={'Position'}
                             value={position.value}
                             onChange={position.onChange}
                         />
-                        {/* <Input
+                        <Input
                             isMandatory
                             heading={'Sector'}
                             placeHolder={PLACE_HOLDER.sector}
                             value={sectorInput.value}
-                            onChange={sector.onChange} /> */}
+                            onChange={sector.onChange} />
+
+                        <Input
+                        heading = {'Role'}
+                        type = {"text"}
+                        placeHolder = {"Role"}
+                        onchange={role.onChange}
+                       
+
+                        />
 
                         <Input
                             heading={'Years of experience'}
@@ -339,7 +359,60 @@ function Designation() {
                         <TextArea
                             heading='Job Description'
                             value={jd.value}
+                            className = {"float-end"}
                             onChange={jd.onChange} />
+                    </div> */}
+
+                    <div className={'col-12'}>
+                        <div className='row'>
+                        <div className='col'>
+                        <ReactAutoComplete
+                        isMandatory
+                        heading={"Sector"}
+                        
+                        />
+                        </div>
+                        <div className='col'>
+                        <ReactAutoComplete 
+                         isMandatory
+                         heading={"Department"}
+                        
+                         />
+                        </div>
+                        </div>
+                        
+                        <div className='row'>
+                        <div className='col'>
+                            <Input
+                        isMandatory
+                        heading = {'Role'}
+                        type = {"text"}
+                        placeHolder = {"Role"}
+                        onchange={role.onChange}
+                        />
+                            </div>
+                        
+                        <div className='col'>
+                        <Input
+                            isMandatory
+                            heading={'Years of experience'}
+                            type={'number'}
+                            placeHolder={"Experience"}
+                            value={experience.value}
+                            onChange={experience.onChange} />
+                        </div>
+                        </div>
+                      
+                       
+                       <div>
+                       <TextArea
+                       isMandatory
+                            heading='Job Description'
+                            value={jd.value}
+                            className = {"float-end"}
+                            onChange={jd.onChange} />
+                       </div>
+                       
                     </div>
 
                     <div className="col text-right">
