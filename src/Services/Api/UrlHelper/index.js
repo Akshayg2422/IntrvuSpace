@@ -3,6 +3,7 @@
  */
 const ASSISTANT = '/ivoassistant/'
 const EMPLOYEE = '/employee/'
+const COMPANY = '/company/'
 
 
 export const GET_START_CHAT = ASSISTANT + 'processCall';
@@ -128,4 +129,18 @@ export const URL_GET_SECTOR_CORPORATE = ASSISTANT + 'getSectorsCorporate'
 
 export const URL_ADD_SECTOR_CORPORATE = ASSISTANT + 'addISectorcorporate'
 
+// addDepartment
 
+export const URL_ADD_DEPARTMENT = COMPANY + 'addDepartment'
+
+// getDepartments
+
+export const URL_GET_DEPARTMENT = COMPANY + 'getDepartments'
+
+// createCorporateSchedule
+
+export const URL_CREATE_CORPORATE_SCHEDULE = ASSISTANT + 'createCorporateSchedule'
+
+// getCorporateSchedules
+
+export const URL_GET_CORPORATE_SCHEDULE = ASSISTANT + 'getCorporateSchedules'
