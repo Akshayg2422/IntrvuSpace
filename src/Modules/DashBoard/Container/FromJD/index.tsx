@@ -2,7 +2,7 @@
 import { Button, Card, Checkbox, Divider, H, Input, Modal, Radio, Spinner, TextArea, showToast, InputHeading } from '@Components';
 import { useInput, useLoader, useModal, useNavigation } from '@Hooks';
 import { AnalyzingAnimation, GenerateModal, UploadJdCard } from '@Modules';
-import { canStartInterview, createNewJdSchedule, getJdItemList, postJdVariant, selectedScheduleId } from '@Redux';
+import { canStartInterview, createNewJdSchedule, getJdItemList, showCreateJddModal, hideCreateJdModal, postJdVariant, selectedScheduleId } from '@Redux';
 import { ROUTES } from '@Routes';
 import { FROM_JD_RULES, getValidateError, ifObjectExist, validate } from '@Utils';
 import Slider from "nouislider";
@@ -33,13 +33,13 @@ function FromJD() {
     const ERROR_MESSAGE = "In beta version, you can upload only max of " + CHAR_LENGTH + " characters."
 
 
-    const { jdItem } = useSelector((state: any) => state.DashboardReducer)
+    const { createJdModal, jdItem } = useSelector((state: any) => state.DashboardReducer);
+
     const { goTo } = useNavigation();
     const position = useInput('');
     const experience = useInput('');
     const jd = useInput('');
     const sector = useInput('');
-    const addJdModal = useModal(false);
     const generateJdModal = useModal(false);
     const completedModal = useModal(false);
     const [scheduleId, setScheduleId] = useState(undefined)
@@ -57,13 +57,12 @@ function FromJD() {
     }
     console.log('sliderValuesliderValue',);
 
-
-
     const startInterviewLoader = useLoader(false);
 
     useEffect(() => {
         getKnowledgeGroupFromJdHandler();
     }, [])
+
 
 
     const dispatch = useDispatch()
@@ -95,7 +94,8 @@ function FromJD() {
         const validation = validate(FROM_JD_RULES, params)
 
         if (ifObjectExist(validation)) {
-            addJdModal.hide();
+            // addJdModal.hide();
+            dispatch(hideCreateJdModal())
             generateJdModal.show();
             dispatch(postJdVariant({
                 params,
@@ -125,7 +125,8 @@ function FromJD() {
                 },
                 onError: (error) => () => {
                     generateJdModal.hide();
-                    addJdModal.show();
+                    // addJdModal.show();
+                    dispatch(showCreateJddModal())
                     showToast(error.error_message, 'error')
                 },
             }))
@@ -219,32 +220,17 @@ function FromJD() {
             goTo(ROUTES['designation-module'].report + "/" + id)
         }
     }
-    const openAddJdModalButton = () => (
-        <Button
-            size="md"
-            className="mt-3"
-            block
-            text={'CREATE INTERVIEW'}
-            onClick={addJdModal.show}
-        />
-    );
 
     return (
         <>
-            {loading ? <div className={'d-flex justify-content-center my-9 py-5'}><Spinner /></div> :
+            {loading ? <div className={'d-flex justify-content-center my-9'}><Spinner /></div> :
                 jdItem && jdItem.length > 0 ?
                     <div>
-                        <div className={'mx--1 mt--4'}>
-                            {openAddJdModalButton()}
-                        </div>
-                        <div style={{
-                            paddingTop: '20px'
-                        }}></div>
                         {
                             <div className={'mt-3'}>
                                 {jdItem && jdItem.length > 0 && jdItem.map((item: any, index: any) => {
 
-                                    const { job_description: { details, experience }, schedules, sector, name, id } = item
+                                    const { job_description: { details, experience }, schedules, name, id } = item
 
                                     const more = jdMore[index]?.more
 
@@ -396,11 +382,11 @@ function FromJD() {
                         }
                     </div >
                     :
-                    <UploadJdCard openAddJdModal={openAddJdModalButton} />
+                    <UploadJdCard />
             }
 
 
-            <Modal title={'Create Interview'} isOpen={addJdModal.visible} onClose={addJdModal.hide}>
+            <Modal title={'Create Interview'} isOpen={createJdModal} onClose={() => { dispatch(hideCreateJdModal()) }}>
                 <div className={'row'}>
                     <div className={'col-6'}>
                         <Input

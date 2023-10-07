@@ -25,10 +25,11 @@ export interface DashboardProp {
   jdItem: any
   scheduleInfo: any,
   selectedSection: number,
-  variantDetails: any,
+  corporateScheduleDetails: any,
   studentCodeOutput?: any;
   loading?: boolean;
   codeOutputData?: any;
   selectedSectionId?: any;
-  canStartInterview?: any
+  canStartInterview?: any;
+  createJdModal?:boolean;
 }

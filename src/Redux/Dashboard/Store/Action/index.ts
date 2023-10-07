@@ -686,24 +686,24 @@ export const createCorporateVariantFailure = (error: any) => {
   }
 }
 
-// GET_KNOWLEDGE_GROUP_VARIANT_DETAILS
+// GET_CORPORATE_SCHEDULE_DETAILS
 
-export const getKnowledgeGroupVariantDetails = (params: any) => {
+export const getCorporateScheduleDetails = (params: any) => {
   return {
-    type: ActionTypes.GET_KNOWLEDGE_GROUP_VARIANT_DETAILS,
+    type: ActionTypes.GET_CORPORATE_SCHEDULE_DETAILS,
     payload: params,
   }
 }
-export const getKnowledgeGroupVariantDetailsSuccess = (response: any) => {
+export const getCorporateScheduleDetailsSuccess = (response: any) => {
   return {
-    type: ActionTypes.GET_KNOWLEDGE_GROUP_VARIANT_DETAILS_SUCCESS,
+    type: ActionTypes.GET_CORPORATE_SCHEDULE_DETAILS_SUCCESS,
     payload: response
   }
 }
 
-export const getKnowledgeGroupVariantDetailsFailure = (error: any) => {
+export const getCorporateScheduleDetailsFailure = (error: any) => {
   return {
-    type: ActionTypes.GET_KNOWLEDGE_GROUP_VARIANT_DETAILS_FAILURE,
+    type: ActionTypes.GET_CORPORATE_SCHEDULE_DETAILS_FAILURE,
     payload: error
   }
 }
@@ -805,3 +805,33 @@ export const canStartInterviewFailure = (error: any) => {
     payload: error
   }
 }
+
+// OPEN_JD_MODAL
+
+
+export const showCreateJddModal = () => {
+  return {
+    type: ActionTypes.SHOW_CREATE_JD_MODAL,
+  };
+};
+
+
+export const hideCreateJdModal = () => {
+  return {
+    type: ActionTypes.HIDE_CREATE_JD_MODAL,
+  };
+};
+
+// export const openJdModalSuccess = (response: any) => {
+//   return {
+//     type: ActionTypes.OPEN_JD_MODAL_SUCCESS,
+//     payload: response,
+//   };
+// };
+
+// export const openJdModalFailure = (response: any) => {
+//   return {
+//     type: ActionTypes.OPEN_JD_MODAL_FAILURE,
+//     payload: response,
+//   };
+// };
