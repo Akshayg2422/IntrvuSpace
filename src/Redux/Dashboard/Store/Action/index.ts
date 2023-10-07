@@ -822,6 +822,48 @@ export const hideCreateJdModal = () => {
   };
 };
 
+//getsectorcorporate
+
+export const getSectorCorporate = (params: any) => {
+  return {
+    type : ActionTypes.GET_SECTORS_CORPORATE,
+    payload : params,
+  }
+}
+export const getSectorCorporateSuccess = (response: any) => {
+  return {
+    type : ActionTypes.GET_SECTORS_CORPORATE_SUCCESS,
+    payload : response,
+  }
+}
+export const getSectorCorporateFailure = (error: any) => {
+  return {
+    type : ActionTypes.GET_SECTORS_CORPORATE_FAILURE,
+    payload : error,
+  }
+}
+
+export const addSectorCorporate = (params: any) => {
+  return {
+    type : ActionTypes.ADD_SECTORS_CORPORATE,
+    payload : params,
+  }
+}
+export const addSectorCorporateSuccess = (response: any) => {
+  return {
+    type : ActionTypes.ADD_SECTORS_CORPORATE_SUCCESS,
+    payload : response,
+  }
+}
+export const addSectorCorporateFailure = (error: any) => {
+  return {
+    type : ActionTypes.ADD_SECTORS_CORPORATE_FAILURE,
+    payload : error,
+  }
+}
+
+
+
 // export const openJdModalSuccess = (response: any) => {
 //   return {
 //     type: ActionTypes.OPEN_JD_MODAL_SUCCESS,

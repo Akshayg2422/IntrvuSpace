@@ -124,5 +124,8 @@ export const closeInterviewApi = payload => post(URL.URL_CLOSE_INTERVIEW, payloa
 
 export const canStartInterviewApi = payload => post(URL.URL_CAN_START_INTERVIEW, payload, {});
 
+// createCorporateSector 
 
+export const createCorporateSectorApi = payload => post(URL.URL_GET_SECTOR_CORPORATE, payload, {});
 
+export const addCorporateSectorApi = payload => post(URL.URL_GET_SECTOR_CORPORATE, payload, {});

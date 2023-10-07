@@ -534,6 +534,46 @@ function* closeInterviewSaga(action) {
   }
 }
 
+// getSectorsCorporate
+
+function* getSectorsCorporateSaga(action) {
+  try {
+    const response = yield call(Api.createCorporateSectorApi, action.payload.params);
+    console.log(response,678);
+    if (response.success) {
+      console.log(45);
+      yield put(Action.getSectorCorporateSuccess(response));
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield put(Action.getSectorCorporateFailure(response.error_message));
+      yield call(action.payload.onError(response));
+    }
+
+  } catch (error) {
+    yield put(Action.getSectorCorporateFailure(error));
+    yield call(action.payload.onError(error));
+  }
+}
+
+
+function* addSectorsCorporateSaga(action) {
+  try {
+    const response = yield call(Api.addCorporateSectorApi, action.payload.params);
+    console.log(response,678);
+    if (response.success) {
+      console.log(45);
+      yield put(Action.addSectorCorporateSuccess(response));
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield put(Action.addSectorCorporateFailure(response.error_message));  
+      yield call(action.payload.onError(response));
+    }
+
+  } catch (error) {
+    yield put(Action.addSectorCorporateFailure(error));
+    yield call(action.payload.onError(error));
+  }
+}
 
 function* DashboardSaga() {
   yield takeLatest(Action.GET_START_CHAT, getChatSaga);
@@ -565,5 +605,9 @@ function* DashboardSaga() {
   yield takeLatest(Action.STUDENT_CODE_SUBMISSION, postStudentCodeSubmissionSaga);
   yield takeLatest(Action.CLOSE_INTERVIEW, closeInterviewSaga);
   yield takeLatest(Action.CAN_START_INTERVIEW, canStartInterviewSaga);
+  yield takeLatest(Action.GET_SECTORS_CORPORATE, getSectorsCorporateSaga);
+  yield takeLatest(Action.ADD_SECTORS_CORPORATE, addSectorsCorporateSaga);
+
+
 }
 export default DashboardSaga;

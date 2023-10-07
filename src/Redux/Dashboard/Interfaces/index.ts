@@ -32,4 +32,5 @@ export interface DashboardProp {
   selectedSectionId?: any;
   canStartInterview?: any;
   createJdModal?:boolean;
+  sectorsCorporate: any
 }

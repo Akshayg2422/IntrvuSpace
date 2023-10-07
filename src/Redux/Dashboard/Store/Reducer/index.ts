@@ -42,6 +42,7 @@ const initialState: DashboardProp = {
   selectedSectionId: undefined,
   canStartInterview: undefined,
   createJdModal: false,
+  sectorsCorporate: undefined
 };
 
 const DashboardReducer = (state = initialState, action: any) => {
@@ -426,6 +427,32 @@ const DashboardReducer = (state = initialState, action: any) => {
       state = { ...state, createJdModal:  false };
       break;
 
+
+    /**
+     * getSectorsCorporate
+     */
+
+    case ActionTypes.GET_SECTORS_CORPORATE:
+      state = { ...state, sectorsCorporate: undefined };
+      break;
+      
+    case ActionTypes.GET_SECTORS_CORPORATE_SUCCESS:
+      state = { ...state, sectorsCorporate: action.payload.details?.knowledege_groups };
+      break;
+    case ActionTypes.GET_SECTORS_CORPORATE_FAILURE:
+      state = { ...state, sectorsCorporate: undefined };
+      break;
+
+
+    case ActionTypes.ADD_SECTORS_CORPORATE:
+      state = { ...state};
+      break;
+    case ActionTypes.ADD_SECTORS_CORPORATE_SUCCESS:
+      state = { ...state};
+      break;
+    case ActionTypes.ADD_SECTORS_CORPORATE_FAILURE:
+      state = { ...state};
+      break;
 
     default:
       state = state;

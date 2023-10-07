@@ -1,7 +1,7 @@
 
 import { Button, DropDown, DesignationItem, Input, Modal, NoDataFound, Breadcrumbs, showToast, TextArea, ReactAutoComplete } from '@Components';
 import { useDropDown, useInput, useLoader, useModal, useNavigation } from '@Hooks';
-import { CREATE_KNOWLEDGE_GROUP_VARIANT_FAILURE, breadCrumbs, clearBreadCrumbs, createKnowledgeGroup, createKnowledgeGroupVariant, getKnowledgeGroups, getSectors, setSelectedRole } from '@Redux';
+import { CREATE_KNOWLEDGE_GROUP_VARIANT_FAILURE, breadCrumbs, clearBreadCrumbs, createKnowledgeGroup, createKnowledgeGroupVariant, getKnowledgeGroups, getSectorCorporate, getSectors, setSelectedRole } from '@Redux';
 import { ROUTES } from '@Routes';
 import { ADD_DESIGNATION_RULES, CREATE_KNOWLEDGE_GROUP_VARIANT_RULES, getDropDownCompanyDisplayData, getValidateError, ifObjectExist, validate } from '@Utils';
 import { useEffect, useState } from 'react';
@@ -17,6 +17,7 @@ const PLACE_HOLDER = {
 function Designation() {
 
     const { sectors } = useSelector((state: any) => state.DashboardReducer)
+    const { sectorsCorporate } = useSelector((state:any) => state.DashboardReducer)
 
     const { goTo, goBack } = useNavigation()
 
@@ -48,10 +49,29 @@ function Designation() {
     const loader = useLoader(false);
 
     console.log("position===>", position.value)
+    console.log(sectorsCorporate,564554);
+    
     useEffect(() => {
         dispatch(clearBreadCrumbs([]))
         getSectorsApiHandler();
+        getSectorsCorporateApiHandler();
     }, [])
+
+    const getSectorsCorporateApiHandler = () => {
+        const params = {}
+       dispatch(
+        getSectorCorporate({
+            params,
+            onSuccess: (response: any) => () => {
+                console.log(response?.details?.knowledege_groups,"qevwbwe");
+
+                
+            },  
+            onError: () => () => {
+            },
+        })
+       )
+    }
 
 
     const getSectorsApiHandler = () => {
@@ -162,6 +182,8 @@ function Designation() {
             }
         }
     };
+
+
 
 
     function removeEmptyData(navList: any) {
