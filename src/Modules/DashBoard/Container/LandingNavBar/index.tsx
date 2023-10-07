@@ -24,11 +24,8 @@ function LandingNavBar() {
                     <NavbarBrand to="/" tag={Link}>
                         <img className={'mt--1'}
                             alt="..."
-                            src={icons.logo}
+                            src={icons.logoText}
                         />
-                        <span className='h3 ml-2 text-primary'>
-                            Mock Eazy
-                        </span>
                     </NavbarBrand>
                     <button
                         aria-controls="navbar-collapse"
@@ -51,10 +48,10 @@ function LandingNavBar() {
                             <Row>
                                 <Col className="collapse-brand" xs="6">
                                     <Link to="/admin/dashboard">
-                                        <img alt="..." src={icons.logo} />
-                                        <span className='h6 ml-2 text-primary'>
+                                        <img alt="..." src={icons.logoIcon} />
+                                        {/* <span className='h6 ml-2 text-primary'>
                                             Mock Eazy
-                                        </span>
+                                        </span> */}
                                     </Link>
                                 </Col>
                                 <Col className="collapse-close" xs="6">

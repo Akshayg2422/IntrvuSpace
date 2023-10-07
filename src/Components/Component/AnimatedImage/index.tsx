@@ -1,40 +1,34 @@
+import { AnimatedLoader } from "@Components";
+import { color } from "@Themes";
 import classNames from "classnames";
 import "./AnimatedImageFrame.scss";
-import { Col, Row } from "reactstrap";
-import { AnimatedLoader, WebCamRecorder } from "@Components";
 
 const AnimatedImage = ({ name, shouldBlink, show, variant = 'name', showWebCam = false, isMuted = false }) => {
   const imageClasses = classNames(!isMuted ? "animated-image" : "", { blink: shouldBlink });
 
+
   return (
 
-    <div className="card-profile-image">
-      <a className={`${imageClasses}`}
+    <div className={`${imageClasses}`} >
+      <div className="text-white position-absolute"
         style={{
-          backgroundColor: '#42f542',
-          borderRadius: 12
+          zIndex: '999'
         }}
       >
-        <div className="name-overlay text-white position-absolute "
-          style={{
-            zIndex: '999'
-          }}
-        >
-          {!show ?
-            <div>
-              {showWebCam ?
-                <WebCamRecorder isMuted={isMuted} /> :
-                <h1 className="text-white" style={{
-                  fontSize: "70px"
-                }}>{name}</h1>
-              }
-            </div> :
-            <div style={{ marginLeft: 35 }}>
-              <AnimatedLoader /></div>
-          }
-        </div>
-      </a>
+        {!show ?
+          <div className="d-flex align-items-center justify-content-center">
+            <h1 className="text-white font-weight-700" style={{
+              fontSize: "70px"
+            }}>{name}
+            </h1>
+          </div> :
+          <div className="col text-center">
+            <AnimatedLoader />
+          </div>
+        }
+      </div>
     </div>
+
   )
 };
 
