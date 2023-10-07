@@ -2,14 +2,14 @@ import { icons } from '@Assets'
 import { Back, Breadcrumbs, Button, Card, CommonTable, DateTimePicker, Divider, Input, Modal, NoDataFound, showToast } from '@Components'
 import { useInput, useLoader, useModal, useNavigation, useWindowDimensions } from '@Hooks'
 import { AnalyzingAnimation, GenerateModal } from '@Modules'
-import { createSchedule, generateForm, getKnowledgeGroupVariantDetails, selectedScheduleId } from '@Redux'
+import { createSchedule, generateForm, getCorporateScheduleDetails, selectedScheduleId } from '@Redux'
 import { ROUTES } from '@Routes'
 import { VALIDATE_ADD_NEW_CANDIDATES_RULES, capitalizeFirstLetter, filteredName, getDisplayTimeDateMonthYearTime, getMomentObjFromServer, getValidateError, ifObjectExist, showMore, validate } from '@Utils'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 function VariantInfo() {
-    const { selectedRole, variantDetails } = useSelector((state: any) => state.DashboardReducer)
+    const { selectedRole, corporateScheduleDetails } = useSelector((state: any) => state.DashboardReducer)
     const { goTo } = useNavigation()
     const addNewCandidateModal = useModal(false)
     const firstName = useInput('')
@@ -38,7 +38,7 @@ function VariantInfo() {
     const getKnowledgeGroupVariantDetailsHandler = () => {
         const params = { knowledge_group_variant_id: selectedRole?.id }
         dispatch(
-            getKnowledgeGroupVariantDetails({
+            getCorporateScheduleDetails({
                 params,
                 onSuccess: (response: any) => (response: any) => {
                 },
@@ -94,7 +94,7 @@ function VariantInfo() {
         mobileNumber.set('')
     }
 
-    const { position, experience, details } = variantDetails?.job_description || {}
+    const { position, experience, details } = corporateScheduleDetails?.job_description || {}
 
     const normalizedTableData = (data: any) => {
         if (data && data?.schedules?.length > 0)
@@ -203,13 +203,13 @@ function VariantInfo() {
                                 <div><Button text={'Add New'} onClick={addNewCandidateModal.show} /></div>
                             </div>
 
-                            {variantDetails && variantDetails?.schedules.length > 0
+                            {corporateScheduleDetails && corporateScheduleDetails?.schedules.length > 0
                                 ? (
                                     <div className={'row px-0 mx--4'} style={{ overflowY: 'auto' }}>
                                         <div className={'col-sm-12 px-0'} >
                                             <CommonTable
-                                                tableDataSet={variantDetails}
-                                                displayDataSet={normalizedTableData(variantDetails)}
+                                                tableDataSet={corporateScheduleDetails}
+                                                displayDataSet={normalizedTableData(corporateScheduleDetails)}
                                             />
 
                                         </div>

@@ -457,20 +457,20 @@ function* createCorporateFormSaga(action) {
   }
 }
 
-// getKnowledgeGroupVariantDetails
+// getCorporateScheduleDetailsSaga
 
-function* getKnowledgeGroupVariantDetailsSaga(action) {
+function* getCorporateScheduleDetailsSaga(action) {
   try {
-    const response = yield call(Api.getKnowledgeGroupVariantDetails, action.payload.params);
+    const response = yield call(Api.getCorporateScheduleDetailsApi, action.payload.params);
     if (response.success) {
-      yield put(Action.getKnowledgeGroupVariantDetailsSuccess(response?.details?.variant_details));
+      yield put(Action.getCorporateScheduleDetailsSuccess(response?.details?.variant_details));
       yield call(action.payload.onSuccess(response));
     } else {
-      yield put(Action.getKnowledgeGroupVariantDetailsFailure(response.error_message));
+      yield put(Action.getCorporateScheduleDetailsFailure(response.error_message));
       yield call(action.payload.onError(response));
     }
   } catch (error) {
-    yield put(Action.getKnowledgeGroupVariantDetailsFailure(error));
+    yield put(Action.getCorporateScheduleDetailsFailure(error));
     yield call(action.payload.onError(error));
   }
 }
@@ -561,7 +561,7 @@ function* DashboardSaga() {
   yield takeLatest(Action.GET_SCHEDULE_BASIC_INFO, getScheduleBasicInfoSaga);
   yield takeLatest(Action.CREATE_NEW_JD_SCHEDULE, createNewJdScheduleSaga);
   yield takeLatest(Action.CREATE_CORPORATE_VARIANT, createCorporateFormSaga);
-  yield takeLatest(Action.GET_KNOWLEDGE_GROUP_VARIANT_DETAILS, getKnowledgeGroupVariantDetailsSaga);
+  yield takeLatest(Action.GET_CORPORATE_SCHEDULE_DETAILS, getCorporateScheduleDetailsSaga);
   yield takeLatest(Action.STUDENT_CODE_SUBMISSION, postStudentCodeSubmissionSaga);
   yield takeLatest(Action.CLOSE_INTERVIEW, closeInterviewSaga);
   yield takeLatest(Action.CAN_START_INTERVIEW, canStartInterviewSaga);

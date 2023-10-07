@@ -35,7 +35,7 @@ const initialState: DashboardProp = {
   jdItem: undefined,
   scheduleInfo: undefined,
   selectedSection: 0,
-  variantDetails: undefined,
+  corporateScheduleDetails: undefined,
   loading: false,
   studentCodeOutput: undefined,
   codeOutputData: undefined,
@@ -377,16 +377,16 @@ const DashboardReducer = (state = initialState, action: any) => {
       state = { ...state, selectedSection: action.payload };
       break;
 
-    // GET_KNOWLEDGE_GROUP_VARIANT_DETAILS
+    // GET_CORPORATE_SCHEDULE_DETAILS
 
-    case ActionTypes.GET_KNOWLEDGE_GROUP_VARIANT_DETAILS:
-      state = { ...state, variantDetails: undefined };
+    case ActionTypes.GET_CORPORATE_SCHEDULE_DETAILS:
+      state = { ...state, corporateScheduleDetails: undefined };
       break;
-    case ActionTypes.GET_KNOWLEDGE_GROUP_VARIANT_DETAILS_SUCCESS:
-      state = { ...state, variantDetails: action.payload };
+    case ActionTypes.GET_CORPORATE_SCHEDULE_DETAILS_SUCCESS:
+      state = { ...state, corporateScheduleDetails: action.payload };
       break;
-    case ActionTypes.GET_KNOWLEDGE_GROUP_VARIANT_DETAILS_FAILURE:
-      state = { ...state, variantDetails: undefined };
+    case ActionTypes.GET_CORPORATE_SCHEDULE_DETAILS_FAILURE:
+      state = { ...state, corporateScheduleDetails: undefined };
       break;
 
     /**
