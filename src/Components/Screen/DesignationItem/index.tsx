@@ -40,7 +40,6 @@ function DesignationItem({ item, onAdd, onEdit, onView }: DesignationItemProps) 
                                         <div className='d-flex align-items-center'>
                                             <h1
                                                 className='text-black pointer col'
-                                                // style={{ maxWidth: '30rem', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}
                                                 onClick={(e) => {
                                                     if (onView) {
                                                         e.preventDefault();
@@ -120,11 +119,13 @@ function DesignationItem({ item, onAdd, onEdit, onView }: DesignationItemProps) 
                         )}
                     </div>
                 </CardBody>
-                <CardFooter>
-                    <h6 className={'d-flex justify-content-center m-0 p-0 my--1 text-black'}>
-                        {'Created at : 10 mins ago'}
-                    </h6>
-                </CardFooter>
+                {knowledge_group_variant && knowledge_group_variant.length > 0 && (
+                    <CardFooter>
+                        <h6 className={'d-flex justify-content-center m-0 p-0 my--1 text-black'}>
+                            {'Created at : 10 mins ago'}
+                        </h6>
+                    </CardFooter>
+                )}
             </Card>
         </>
     );
