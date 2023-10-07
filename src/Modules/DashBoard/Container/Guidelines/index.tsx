@@ -54,7 +54,6 @@ function Guidelines({ scheduleInfo = undefined, loading, heading, onClick }: Gui
                                 <div className='col-auto'>
                                     <Button
                                         loading={loading}
-                                        loadingMessage={'Please wait. We are preparing your interview.'}
                                         block
                                         text={!scheduleInfo.is_started ? 'Start Now' : 'Resume Interview'}
                                         onClick={() => {

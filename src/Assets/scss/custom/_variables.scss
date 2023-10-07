@@ -814,7 +814,7 @@ $table-dark-action-color: lighten(theme-color("default"), 35%) !default;
 
 // Buttons + Forms
 
-$input-btn-padding-y: .625rem !default;
+$input-btn-padding-y: .675rem !default;
 $input-btn-padding-x: .75rem !default;
 $input-btn-line-height: $shape-height-base !default;
 
@@ -956,8 +956,6 @@ $custom-toggle-border-color: $gray-400;
 // Buttons
 
 $btn-padding-y: $input-btn-padding-y !default;
-$btn-padding-y: $input-btn-padding-y !default;
-
 $btn-padding-x: $input-btn-padding-x + 0.5 !default;
 $btn-line-height: $input-btn-line-height !default;
 

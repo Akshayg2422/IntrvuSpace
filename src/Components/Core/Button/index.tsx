@@ -17,7 +17,6 @@ function Button({
   icons,
   onEnter,
   onClick,
-  loadingMessage = '',
   ...rest
 }: ButtonProps) {
   return (
@@ -32,47 +31,52 @@ function Button({
             onClick={loading ? undefined : onClick}
           >
             <div className='d-flex align-items-center justify-content-center'>
-              {/* {loading && <Spinner className={'mr-2'} color='white' />} */}
-              <span className='text-uppercase  btn-inner--text'>{loading ? loadingMessage : text}</span>
+              {loading && <div className='my-1'><Spinner color='white' /></div>}
+              {!loading && <span className='text-uppercase'>{text}</span>}
             </div>
           </RSButton>
         </>
 
-      )}
+      )
+      }
 
-      {(variant === 'icon' || variant === 'icon-with-text') && (
-        <RSButton
-          type="button"
-          size={size}
-          className="btn-icon"
-          color={color}
-          {...rest}
-          onClick={onClick}
-        >
-          {loading && <Spinner />}
-          {!loading && (
-            <div className='d-flex align-items-center'>
-              {variant === 'icon-with-text' && (
-                <img src={icon} alt="" height={height} width={width} />
-              )}
-              <span className="btn-inner--text">{text}</span>
-            </div>
-          )}
-        </RSButton>
-      )}
+      {
+        (variant === 'icon' || variant === 'icon-with-text') && (
+          <RSButton
+            type="button"
+            size={size}
+            className="btn-icon"
+            color={color}
+            {...rest}
+            onClick={onClick}
+          >
+            {loading && <Spinner />}
+            {!loading && (
+              <div className='d-flex align-items-center'>
+                {variant === 'icon-with-text' && (
+                  <img src={icon} alt="" height={height} width={width} />
+                )}
+                <span className="btn-inner--text">{text}</span>
+              </div>
+            )}
+          </RSButton>
+        )
+      }
 
-      {variant === 'icon-rounded' && (
-        <RSButton
-          type="button"
-          size={size}
-          className="btn-icon-only  d-flex align-items-center justify-content-center"
-          color={color}
-          onClick={onClick}
-          {...rest}
-        >
-          {icons ? <i className={icons} /> : <img src={icon} alt="" height={height} width={width} />}
-        </RSButton>
-      )}
+      {
+        variant === 'icon-rounded' && (
+          <RSButton
+            type="button"
+            size={size}
+            className="btn-icon-only  d-flex align-items-center justify-content-center"
+            color={color}
+            onClick={onClick}
+            {...rest}
+          >
+            {icons ? <i className={icons} /> : <img src={icon} alt="" height={height} width={width} />}
+          </RSButton>
+        )
+      }
 
 
       {/* {variant === 'icon-rounded' &&

@@ -282,17 +282,9 @@ function FromJD() {
                                                 }
                                             </div>
                                             <h5 className='mb-0 pointer text-muted' style={{ marginTop: -15 }}>{experience === 0 ? "Fresher" : "" + experience + (experience === 1 ? " year " : " years ") + "of experience"}</h5>
-                                            {/* <div className='col mt-3'>
-                                                <div className='row align-items-center'>
-                                                    <img src={icons.briefCaseBlack} alt="Comment Icon" height={16} width={16} />
-                                                    <small className='text-sm text-black col'>Experience with {experience} years</small>
-                                                </div>
-                                            </div> */}
+
                                             <div className='col mt-2'>
                                                 <div className='row'>
-                                                    {/* <img src={icons.information} alt="Comment Icon" height={16} width={16} style={{
-                                                        marginTop: 2
-                                                    }} /> */}
                                                     <div className='col ml-0'>
                                                         {
                                                             details.length < VIEW_MORE_LENGTH ?
