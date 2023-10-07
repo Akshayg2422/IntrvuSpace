@@ -96,10 +96,10 @@ function ReactAutoComplete({ isMandatory, heading, placeholder, ...rest }: React
     const getSuggestionValue = (suggestion: any) => {
         console.log(suggestion);
 
-        // if (suggestion.isAddNew) {
-        //     return value;
-        // }
-        // return suggestion.name;
+        if (suggestion.isAddNew) {
+            return value;
+        }
+        return suggestion.name;
     };
 
     return (
