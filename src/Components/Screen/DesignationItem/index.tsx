@@ -40,6 +40,7 @@ function DesignationItem({ item, onAdd, onEdit, onView }: DesignationItemProps) 
                                         <div className='d-flex align-items-center'>
                                             <h1
                                                 className='text-black pointer col'
+                                                // style={{ maxWidth: '30rem', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}
                                                 onClick={(e) => {
                                                     if (onView) {
                                                         e.preventDefault();
@@ -49,7 +50,7 @@ function DesignationItem({ item, onAdd, onEdit, onView }: DesignationItemProps) 
                                                 }}
                                             >{name}</h1>
 
-                                            <div className='d-flex justify-content-between col-5'>
+                                            <div className='d-flex justify-content-between col-sm-5'>
                                                 <div className='d-flex align-items-center no-border' title='Total Candidates'>
                                                     <Image src={icons.profile} height={21} width={20} />
                                                     <span className={'pl-1'}>{'34'}</span>
