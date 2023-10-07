@@ -575,6 +575,27 @@ function* addSectorsCorporateSaga(action) {
   }
 }
 
+//getDepartment
+
+function* getDepartmentSaga(action) {
+  try {
+    const response = yield call(Api.getDepartmentApi, action.payload.params);
+    if (response.success) {
+      yield put(Action.getDepartmentSuccess(response));
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield put(Action.getDepartmentFailure(response.error_message));  
+      yield call(action.payload.onError(response));
+    }
+
+  } catch (error) {
+    yield put(Action.getDepartmentFailure(error));
+    yield call(action.payload.onError(error));
+  }
+}
+
+
+
 function* DashboardSaga() {
   yield takeLatest(Action.GET_START_CHAT, getChatSaga);
   yield takeLatest(Action.CREATE_KNOWLEDGE_GROUP_VARIANT, createKnowledgeGroupVariantSaga);
@@ -607,6 +628,8 @@ function* DashboardSaga() {
   yield takeLatest(Action.CAN_START_INTERVIEW, canStartInterviewSaga);
   yield takeLatest(Action.GET_SECTORS_CORPORATE, getSectorsCorporateSaga);
   yield takeLatest(Action.ADD_SECTORS_CORPORATE, addSectorsCorporateSaga);
+  yield takeLatest(Action.GET_DEPARTMENT, getDepartmentSaga);
+
 
 
 }

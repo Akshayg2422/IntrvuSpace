@@ -42,7 +42,8 @@ const initialState: DashboardProp = {
   selectedSectionId: undefined,
   canStartInterview: undefined,
   createJdModal: false,
-  sectorsCorporate: undefined
+  sectorsCorporate: undefined,
+  getDepartment: undefined
 };
 
 const DashboardReducer = (state = initialState, action: any) => {
@@ -452,6 +453,19 @@ const DashboardReducer = (state = initialState, action: any) => {
       break;
     case ActionTypes.ADD_SECTORS_CORPORATE_FAILURE:
       state = { ...state};
+      break;
+
+
+    //addDepartment
+
+    case ActionTypes.GET_DEPARTMENT:
+      state = { ...state, getDepartment: undefined};
+      break;
+    case ActionTypes.GET_DEPARTMENT_SUCCESS:
+      state = { ...state, getDepartment: action.payload.details?.knowledege_groups};
+      break;
+    case ActionTypes.GET_DEPARTMENT_FAILURE:
+      state = { ...state, getDepartment: undefined};
       break;
 
     default:

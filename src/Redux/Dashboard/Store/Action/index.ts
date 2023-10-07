@@ -862,6 +862,26 @@ export const addSectorCorporateFailure = (error: any) => {
   }
 }
 
+// getDepartments
+
+export const getDepartment = (params: any) => {
+  return {
+    type : ActionTypes.GET_DEPARTMENT,
+    payload : params
+  }
+}
+export const getDepartmentSuccess = (response: any) => {
+  return {
+    type : ActionTypes.GET_DEPARTMENT_SUCCESS,
+    payload : response
+  }
+}
+export const getDepartmentFailure = (error: any) => {
+  return {
+    type : ActionTypes.GET_DEPARTMENT_FAILURE,
+    payload : error
+  }
+}
 
 
 // export const openJdModalSuccess = (response: any) => {

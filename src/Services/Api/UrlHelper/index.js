@@ -128,4 +128,8 @@ export const URL_GET_SECTOR_CORPORATE = ASSISTANT + 'getSectorsCorporate'
 
 export const URL_ADD_SECTOR_CORPORATE = ASSISTANT + 'addISectorcorporate'
 
+//getDepartment
+
+export const URL_GET_DEPARTMENT = ASSISTANT + 'getDepartments'
+
 
