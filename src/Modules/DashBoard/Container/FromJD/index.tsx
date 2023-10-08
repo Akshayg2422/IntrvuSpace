@@ -5,7 +5,6 @@ import { AnalyzingAnimation, GenerateModal, UploadJdCard } from '@Modules';
 import { canStartInterview, createNewJdSchedule, getJdItemList, showCreateJddModal, hideCreateJdModal, postJdVariant, selectedScheduleId } from '@Redux';
 import { ROUTES } from '@Routes';
 import { FROM_JD_RULES, getValidateError, ifObjectExist, validate } from '@Utils';
-import Slider from "nouislider";
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -190,6 +189,7 @@ function FromJD() {
             if (id !== '-1') {
 
                 // const canStartParams = { schedule_id: id }
+                startInterviewLoader.hide();
                 dispatch(selectedScheduleId(id))
                 goTo(ROUTES['designation-module'].interview + "/" + id)
 

@@ -20,6 +20,7 @@ function Modal({ isOpen, children, title, size = "lg", style, onClose, ...rest }
         }}>
           {title && <h6 className={"modal-title"}>{title}</h6>}
           <button
+
             aria-label={"Close"}
             className={"close"}
             data-dismiss={"modal"}
