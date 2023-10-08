@@ -457,20 +457,20 @@ function* createCorporateFormSaga(action) {
   }
 }
 
-// getKnowledgeGroupVariantDetails
+// getCorporateScheduleDetailsSaga
 
-function* getKnowledgeGroupVariantDetailsSaga(action) {
+function* getCorporateScheduleDetailsSaga(action) {
   try {
-    const response = yield call(Api.getKnowledgeGroupVariantDetails, action.payload.params);
+    const response = yield call(Api.getCorporateScheduleDetailsApi, action.payload.params);
     if (response.success) {
-      yield put(Action.getKnowledgeGroupVariantDetailsSuccess(response?.details?.variant_details));
+      yield put(Action.getCorporateScheduleDetailsSuccess(response?.details?.variant_details));
       yield call(action.payload.onSuccess(response));
     } else {
-      yield put(Action.getKnowledgeGroupVariantDetailsFailure(response.error_message));
+      yield put(Action.getCorporateScheduleDetailsFailure(response.error_message));
       yield call(action.payload.onError(response));
     }
   } catch (error) {
-    yield put(Action.getKnowledgeGroupVariantDetailsFailure(error));
+    yield put(Action.getCorporateScheduleDetailsFailure(error));
     yield call(action.payload.onError(error));
   }
 }
@@ -534,6 +534,128 @@ function* closeInterviewSaga(action) {
   }
 }
 
+// getSectorsCorporate
+
+function* getSectorsCorporateSaga(action) {
+  try {
+    const response = yield call(Api.createCorporateSectorApi, action.payload.params);
+    console.log(response, 678);
+    if (response.success) {
+      console.log(45);
+      yield put(Action.getSectorCorporateSuccess(response));
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield put(Action.getSectorCorporateFailure(response.error_message));
+      yield call(action.payload.onError(response));
+    }
+
+  } catch (error) {
+    yield put(Action.getSectorCorporateFailure(error));
+    yield call(action.payload.onError(error));
+  }
+}
+
+
+function* addSectorsCorporateSaga(action) {
+  try {
+    const response = yield call(Api.addCorporateSectorApi, action.payload.params);
+    console.log(response, 678);
+    if (response.success) {
+      console.log(45);
+      yield put(Action.addSectorCorporateSuccess(response));
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield put(Action.addSectorCorporateFailure(response.error_message));
+      yield call(action.payload.onError(response));
+    }
+
+  } catch (error) {
+    yield put(Action.addSectorCorporateFailure(error));
+    yield call(action.payload.onError(error));
+  }
+}
+
+// addDepartment
+function* addDepartmentCorporateSaga(action) {
+  try {
+    const response = yield call(Api.addDepartmentCorporateApi, action.payload.params);
+    console.log(response, '----->addDepartmentCorporateApi');
+    if (response.success) {
+      console.log('addDepartmentCorporateApi');
+      yield put(Action.addDepartmentCorporateSuccess(response));
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield put(Action.addDepartmentCorporateFailure(response.error_message));
+      yield call(action.payload.onError(response));
+    }
+
+  } catch (error) {
+    yield put(Action.addDepartmentCorporateFailure(error));
+    yield call(action.payload.onError(error));
+  }
+}
+
+// getDepartments 
+
+function* getDepartmentCorporateSaga(action) {
+  try {
+    const response = yield call(Api.getDepartmentCorporateApi, action.payload.params);
+    console.log(response, '----->getDepartmentCorporateApi');
+    if (response.success) {
+      console.log('getDepartmentCorporateApi');
+      yield put(Action.getDepartmentCorporateSuccess(response));
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield put(Action.getDepartmentCorporateFailure(response.error_message));
+      yield call(action.payload.onError(response));
+    }
+
+  } catch (error) {
+    yield put(Action.getDepartmentCorporateFailure(error));
+    yield call(action.payload.onError(error));
+  }
+}
+
+// createCorporateSchedule
+
+function* createCorporateSchedulesSaga(action) {
+  try {
+    const response = yield call(Api.createCorporateScheduleApi, action.payload.params);
+    console.log(response, '----->createCorporateScheduleApi');
+    if (response.success) {
+      console.log('createCorporateScheduleApi');
+      yield put(Action.createCorporateSchedulesSuccess(response));
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield put(Action.createCorporateSchedulesFailure(response.error_message));
+      yield call(action.payload.onError(response));
+    }
+  } catch (error) {
+    yield put(Action.createCorporateSchedulesFailure(error));
+    yield call(action.payload.onError(error));
+  }
+}
+
+// getCorporateSchedules
+
+function* getCorporateSchedulesSaga(action) {
+  try {
+    const response = yield call(Api.getCorporateSchedulesApi, action.payload.params);
+    console.log(response, '----->getCorporateSchedulesApi');
+    if (response.success) {
+      console.log('getCorporateSchedulesApi');
+      yield put(Action.getCorporateSchedulesSuccess(response));
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield put(Action.getCorporateSchedulesFailure(response.error_message));
+      yield call(action.payload.onError(response));
+    }
+  } catch (error) {
+    yield put(Action.getCorporateSchedulesFailure(error));
+    yield call(action.payload.onError(error));
+  }
+}
+
 
 function* DashboardSaga() {
   yield takeLatest(Action.GET_START_CHAT, getChatSaga);
@@ -561,10 +683,15 @@ function* DashboardSaga() {
   yield takeLatest(Action.GET_SCHEDULE_BASIC_INFO, getScheduleBasicInfoSaga);
   yield takeLatest(Action.CREATE_NEW_JD_SCHEDULE, createNewJdScheduleSaga);
   yield takeLatest(Action.CREATE_CORPORATE_VARIANT, createCorporateFormSaga);
-  yield takeLatest(Action.GET_KNOWLEDGE_GROUP_VARIANT_DETAILS, getKnowledgeGroupVariantDetailsSaga);
+  yield takeLatest(Action.GET_CORPORATE_SCHEDULE_DETAILS, getCorporateScheduleDetailsSaga);
   yield takeLatest(Action.STUDENT_CODE_SUBMISSION, postStudentCodeSubmissionSaga);
   yield takeLatest(Action.CLOSE_INTERVIEW, closeInterviewSaga);
   yield takeLatest(Action.CAN_START_INTERVIEW, canStartInterviewSaga);
-
+  yield takeLatest(Action.GET_SECTORS_CORPORATE, getSectorsCorporateSaga);
+  yield takeLatest(Action.ADD_SECTORS_CORPORATE, addSectorsCorporateSaga);
+  yield takeLatest(Action.ADD_DEPARTMENT_CORPORATE, addDepartmentCorporateSaga);
+  yield takeLatest(Action.GET_DEPARTMENT_CORPORATE, getDepartmentCorporateSaga);
+  yield takeLatest(Action.CREATE_CORPORATE_SCHEDULES, createCorporateSchedulesSaga);
+  yield takeLatest(Action.GET_CORPORATE_SCHEDULES, getCorporateSchedulesSaga);
 }
 export default DashboardSaga;

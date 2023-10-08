@@ -60,7 +60,7 @@ export const RequireAuth = ({ children }: RequireAuthProps) => {
                 sideNavOpen={sideNavOpen}
                 logo={{
                     innerLink: "/",
-                    imgSrc: icons.logo,
+                    imgSrc: icons.logoIcon,
                     imgAlt: "...",
                 }}
             />}

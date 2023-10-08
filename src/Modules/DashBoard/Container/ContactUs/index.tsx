@@ -108,7 +108,7 @@ function ContactUs() {
                                                 height={30}
                                                 width={30}
                                                 alt="..."
-                                                src={icons.logo}
+                                                src={icons.logoIcon}
                                             />
                                             <span className='h2 font-weight-bolder ml-2 text-black'>
                                                 Mock Eazy

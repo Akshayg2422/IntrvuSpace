@@ -686,24 +686,24 @@ export const createCorporateVariantFailure = (error: any) => {
   }
 }
 
-// GET_KNOWLEDGE_GROUP_VARIANT_DETAILS
+// GET_CORPORATE_SCHEDULE_DETAILS
 
-export const getKnowledgeGroupVariantDetails = (params: any) => {
+export const getCorporateScheduleDetails = (params: any) => {
   return {
-    type: ActionTypes.GET_KNOWLEDGE_GROUP_VARIANT_DETAILS,
+    type: ActionTypes.GET_CORPORATE_SCHEDULE_DETAILS,
     payload: params,
   }
 }
-export const getKnowledgeGroupVariantDetailsSuccess = (response: any) => {
+export const getCorporateScheduleDetailsSuccess = (response: any) => {
   return {
-    type: ActionTypes.GET_KNOWLEDGE_GROUP_VARIANT_DETAILS_SUCCESS,
+    type: ActionTypes.GET_CORPORATE_SCHEDULE_DETAILS_SUCCESS,
     payload: response
   }
 }
 
-export const getKnowledgeGroupVariantDetailsFailure = (error: any) => {
+export const getCorporateScheduleDetailsFailure = (error: any) => {
   return {
-    type: ActionTypes.GET_KNOWLEDGE_GROUP_VARIANT_DETAILS_FAILURE,
+    type: ActionTypes.GET_CORPORATE_SCHEDULE_DETAILS_FAILURE,
     payload: error
   }
 }
@@ -803,5 +803,145 @@ export const canStartInterviewFailure = (error: any) => {
   return {
     type: ActionTypes.CAN_START_INTERVIEW_FAILURE,
     payload: error
+  }
+}
+
+// OPEN_JD_MODAL
+
+
+export const showCreateJddModal = () => {
+  return {
+    type: ActionTypes.SHOW_CREATE_JD_MODAL,
+  };
+};
+
+
+export const hideCreateJdModal = () => {
+  return {
+    type: ActionTypes.HIDE_CREATE_JD_MODAL,
+  };
+};
+
+//getsectorcorporate
+
+export const getSectorCorporate = (params: any) => {
+  return {
+    type : ActionTypes.GET_SECTORS_CORPORATE,
+    payload : params,
+  }
+}
+export const getSectorCorporateSuccess = (response: any) => {
+  return {
+    type : ActionTypes.GET_SECTORS_CORPORATE_SUCCESS,
+    payload : response,
+  }
+}
+export const getSectorCorporateFailure = (error: any) => {
+  return {
+    type : ActionTypes.GET_SECTORS_CORPORATE_FAILURE,
+    payload : error,
+  }
+}
+
+export const addSectorCorporate = (params: any) => {
+  return {
+    type : ActionTypes.ADD_SECTORS_CORPORATE,
+    payload : params,
+  }
+}
+export const addSectorCorporateSuccess = (response: any) => {
+  return {
+    type : ActionTypes.ADD_SECTORS_CORPORATE_SUCCESS,
+    payload : response,
+  }
+}
+export const addSectorCorporateFailure = (error: any) => {
+  return {
+    type : ActionTypes.ADD_SECTORS_CORPORATE_FAILURE,
+    payload : error,
+  }
+}
+
+// addDepartment
+
+export const addDepartmentCorporate = (params: any) => {
+  return {
+    type : ActionTypes.ADD_DEPARTMENT_CORPORATE,
+    payload : params,
+  }
+}
+export const addDepartmentCorporateSuccess = (response: any) => {
+  return {
+    type : ActionTypes.ADD_DEPARTMENT_CORPORATE_SUCCESS,
+    payload : response,
+  }
+}
+export const addDepartmentCorporateFailure = (error: any) => {
+  return {
+    type : ActionTypes.ADD_DEPARTMENT_CORPORATE_FAILURE,
+    payload : error,
+  }
+} 
+
+// getDepartments
+
+export const getDepartmentCorporate = (params: any) => {
+  return {
+    type : ActionTypes.GET_DEPARTMENT_CORPORATE,
+    payload : params,
+  }
+}
+export const getDepartmentCorporateSuccess = (response: any) => {
+  return {
+    type : ActionTypes.GET_DEPARTMENT_CORPORATE_SUCCESS,
+    payload : response,
+  }
+}
+export const getDepartmentCorporateFailure = (error: any) => {
+  return {
+    type : ActionTypes.GET_DEPARTMENT_CORPORATE_FAILURE,
+    payload : error,
+  }
+}
+
+// createCorporateSchedule
+
+export const createCorporateSchedules = (params: any) => {
+  return {
+    type : ActionTypes.CREATE_CORPORATE_SCHEDULES,
+    payload : params,
+  }
+}
+export const createCorporateSchedulesSuccess = (response: any) => {
+  return {
+    type : ActionTypes.CREATE_CORPORATE_SCHEDULES_SUCCESS,
+    payload : response,
+  }
+}
+export const createCorporateSchedulesFailure = (error: any) => {
+  return {
+    type : ActionTypes.CREATE_CORPORATE_SCHEDULES_FAILURE,
+    payload : error,
+  }
+}
+
+// getCorporateSchedules
+
+export const getCorporateSchedules = (params: any) => {
+  return {
+    type : ActionTypes.GET_CORPORATE_SCHEDULES,
+    payload : params,
+  }
+}
+export const getCorporateSchedulesSuccess = (response: any) => {
+  return {
+    type : ActionTypes.GET_CORPORATE_SCHEDULES_SUCCESS,
+    payload : response,
+  }
+}
+export const getCorporateSchedulesFailure = (error: any) => {
+  return {
+    type : ActionTypes.GET_CORPORATE_SCHEDULES_FAILURE,
+    payload : error,
   }
 }

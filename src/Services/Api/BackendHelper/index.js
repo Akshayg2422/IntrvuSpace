@@ -116,7 +116,7 @@ export const createCorporateVariantForm = payload => post(URL.URL_CREATE_CORPORA
 
 // URL_GET_KNOWLEDGE_GROUP_VARIANT_DETAILS
 
-export const getKnowledgeGroupVariantDetails = payload => post(URL.URL_GET_KNOWLEDGE_GROUP_VARIANT_DETAILS, payload, {});
+export const getCorporateScheduleDetailsApi = payload => post(URL.URL_GET_CORPORATE_SCHEDULE_DETAILS, payload, {});
 
 export const postStudentCodeSubmissionApi = (payload) => post(URL.STUDENT_CODE_SUBMISSION_URL, payload, {}, 'https://codesubmitprimary.leorainfotech.in/')
 export const closeInterviewApi = payload => post(URL.URL_CLOSE_INTERVIEW, payload, {});
@@ -124,5 +124,24 @@ export const closeInterviewApi = payload => post(URL.URL_CLOSE_INTERVIEW, payloa
 
 export const canStartInterviewApi = payload => post(URL.URL_CAN_START_INTERVIEW, payload, {});
 
+// createCorporateSector 
 
+export const createCorporateSectorApi = payload => post(URL.URL_GET_SECTOR_CORPORATE, payload, {});
 
+export const addCorporateSectorApi = payload => post(URL.URL_GET_SECTOR_CORPORATE, payload, {});
+
+// addDepartment
+
+export const addDepartmentCorporateApi = payload => post(URL.URL_ADD_DEPARTMENT, payload, {});
+
+// getDepartments
+
+export const getDepartmentCorporateApi = payload => post(URL.URL_GET_DEPARTMENT, payload, {});
+
+// createCorporateSchedule
+
+export const createCorporateScheduleApi = payload => post(URL.URL_CREATE_CORPORATE_SCHEDULE, payload, {});
+
+// getCorporateSchedules
+
+export const getCorporateSchedulesApi = payload => post(URL.URL_GET_CORPORATE_SCHEDULE, payload, {});

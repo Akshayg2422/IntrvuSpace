@@ -851,66 +851,65 @@ function Call() {
           <>
             {interviewStarted && (
               <>
-                <div className="d-flex flex-column h-100">
-                  <div className="col">
-                    <div className="row h-100">
-                      <div className="col-sm-6 d-flex flex-column align-items-center justify-content-center">
-                        <AnimatedImage
-                          show={interviewer_state === IV_PROCESSING}
-                          name={getShortName(scheduleInfo?.interviewer_name)}
-                          shouldBlink={interviewer_state === IV_SPEAKING}
-                        />
-                        <h3 className="display-3 mb-4 text-white mt-3">
-                          {capitalizeFirstLetter(
-                            scheduleInfo?.interviewer_name
-                          )}
-                        </h3>
-                      </div>
-                      <div className="col-sm-6 d-flex flex-column align-items-center justify-content-center">
-                        <AnimatedImage
-                          show={false}
-                          showWebCam={showCam}
-                          name={getShortName(scheduleInfo?.interviewee_name)}
-                          shouldBlink={interviewee_state === IE_SPEAKING}
-                        />
-                        <h3 className="display-3 mb-4 text-white mt-3">
-                          {capitalizeFirstLetter(
-                            scheduleInfo?.interviewee_name
-                          )}
-                        </h3>
+                <div className="d-flex flex-column h-100vh">
+                  {/* Column 1 (80% Height) */}
+                  <div className="d-flex flex-grow-1 flex-column flex-md-row  align-items-center justify-content-center">
+
+                    <div className="d-flex flex-column align-items-center justify-content-center col-md-6">
+                      <AnimatedImage
+                        show={interviewer_state === IV_PROCESSING}
+                        name={getShortName(scheduleInfo?.interviewer_name)}
+                        shouldBlink={interviewer_state === IV_SPEAKING}
+                      />
+                      <h3 className="display-3 mb-4 text-white mt-3">
+                        {capitalizeFirstLetter(scheduleInfo?.interviewer_name)}
+                      </h3>
+                    </div>
+                    <div className="d-flex flex-column align-items-center justify-content-center col-md-6">
+                      <AnimatedImage
+                        show={false}
+                        showWebCam={showCam}
+                        name={getShortName(scheduleInfo?.interviewee_name)}
+                        shouldBlink={interviewee_state === IE_SPEAKING}
+                      />
+                      <h3 className="display-3 mb-4 text-white mt-3">
+                        {capitalizeFirstLetter(
+                          scheduleInfo?.interviewee_name
+                        )}
+                      </h3>
+                    </div>
+                  </div>
+                  <div className="d-flex align-items-center justify-content-center" style={{
+                    height: '20%'
+                  }}>
+                    <div className="col-md-5">
+                      <CallHeader
+                        webcam={showCam}
+                        mic={!mute}
+                        onWebCamChange={webCamHandler}
+                        onMicChange={micMuteHandler}
+                        onEndClick={endInterviewHandler}
+                        onEndInterViewClick={closeInterviewAPiHandler}
+                      />
+                    </div>
+                    <div className="position-absolute bottom-0 right-0 mr-3 mb-2 align-items-center">
+                      <div className="row align-items-end">
+                        {renderNetworkRange()}
                       </div>
                     </div>
                   </div>
-                  <div
-                    className="row position-absolute bottom-0 right-0 left-0"
-                    style={{
-                      marginBottom: 50,
-                    }}
-                  >
-                    <CallHeader
-                      webcam={showCam}
-                      mic={!mute}
-                      onWebCamChange={webCamHandler}
-                      onMicChange={micMuteHandler}
-                      onEndClick={endInterviewHandler}
-                      onEndInterViewClick={closeInterviewAPiHandler}
-                    />
-                  </div>
-                </div>
-                <div className="position-absolute bottom-0 right-0 mr-3 mb-2 align-items-center">
-                  <div className="row align-items-end">
-                    {renderNetworkRange()}
-                  </div>
+
+
                 </div>
               </>
             )}
             {!interviewStarted ? (
+
               <Guidelines
                 scheduleInfo={scheduleInfo}
                 loading={startInterviewLoader.loader}
                 heading={scheduleInfo?.interviewee_expected_designation}
                 onClick={startInterviewHandler}
-
               />
             ) : (
               <></>
@@ -933,7 +932,7 @@ function Call() {
             </div>
           </div>
         )}
-      </div>
+      </div >
       <Modal
         isOpen={micPermissionModal.visible}
         onClose={micPermissionModal.hide}

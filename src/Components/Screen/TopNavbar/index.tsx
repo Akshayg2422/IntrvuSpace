@@ -23,7 +23,7 @@ import { getPhoto, } from '@Utils'
 import { useModal, useNavigation } from '@Hooks';
 import { ROUTES } from '@Routes';
 import { useLocation } from 'react-router-dom'
-import { userLogout } from "@Redux";
+import { showCreateJddModal, userLogout } from "@Redux";
 import { useDispatch, useSelector } from "react-redux";
 
 function TopNavbar() {
@@ -71,6 +71,10 @@ function TopNavbar() {
         }
     }
 
+    const handleCreateInterviewClick = () => {
+        dispatch(showCreateJddModal());
+    };
+
     return (
         <>
             <Navbar
@@ -80,10 +84,15 @@ function TopNavbar() {
             >
                 <div className="container-fluid mx-sm-0 mx-2">
                     <NavbarBrand to="/" tag={Link}>
-                        <div className="row">
-                            <div className="col display-3 font-weight-900 text-primary px-0">MOCK</div>
-                            <div style={{ letterSpacing: '2px', fontSize: '35px' }} className="col text-black font-weight-300 pl-3">EAZY</div>
+                        <div className={'ml--4'}>
+                            <Image src={icons.logoText} />
                         </div>
+                        {/* <div className="row align-items-center">
+                            <div className="display-3 text-lowercase font-weight-900 text-primary px-0 mb-0">intrvu</div>
+                
+                            <div style={{ letterSpacing: '2px', fontSize: '29px', marginTop: 27 }} className="text-black mb-0 font-weight-300 text-center mb-0 mt-2 ml-2">SPACE</div>
+                        </div> */}
+
 
 
                     </NavbarBrand>
@@ -132,10 +141,11 @@ function TopNavbar() {
 
                         {/* <hr className="d-lg-none" /> */}
 
-                        <Nav className="align-items-lg-center ml-lg-auto mr--4  justify-content-end" navbar>
+                        <Nav className="align-items-lg-center ml-lg-auto mr--4 justify-content-end" navbar>
                             <NavItem>
                                 <NavLink to="/home" tag={Link}>
-                                    <span className={`nav-link-inner--text  ${'/home' !== pathName ? "text-black h4" : 'text-primary h4'}`}>Home</span>
+                                    {/* <span className={`nav-link-inner--text  ${'/home' !== pathName ? "text-black h4" : 'text-primary h4'}`}>Create Interview</span> */}
+                                    <span style={{ fontSize: '15px' }} className={'text-primary font-weight-bolder'} onClick={handleCreateInterviewClick}>Create Interview</span>
                                 </NavLink>
                             </NavItem>
                             <NavItem>
@@ -145,7 +155,7 @@ function TopNavbar() {
                             </NavItem>
                             <NavItem className="d-none d-lg-block ml-lg-4">
                                 <div className='row align-items-center m-auto'>
-                                    <span className='mb-0 font-weight-bold text-black'>
+                                    <span className='mb-0 text-primary font-weight-bolder'>
                                         {loginDetails?.user}
                                     </span>
                                     <Nav navbar>
@@ -155,7 +165,10 @@ function TopNavbar() {
                                                     <Image
                                                         size={'sm'}
                                                         variant={'avatar'}
-                                                        src={icons.logo}
+                                                        src={icons.logoIcon}
+                                                        style={{
+                                                            objectFit: "contain"
+                                                        }}
                                                     />
                                                     <Media className="ml-2 d-none d-lg-block">
                                                         <div className='media-body text-black d-none d-lg-block dropdown-toggle'> </div>

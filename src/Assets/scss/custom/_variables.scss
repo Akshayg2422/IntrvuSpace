@@ -9,7 +9,7 @@
 // Global settings
 
 $enable-caret: true !default;
-$enable-rounded: true !default;
+$enable-rounded: false !default;
 $enable-gradients: false !default;
 $enable-transitions: true !default;
 $enable-grid-classes: true !default;
@@ -18,7 +18,7 @@ $enable-print-styles: true !default;
 
 // Shadows
 
-$enable-shadows: true !default;
+$enable-shadows: false !default;
 
 
 
@@ -80,7 +80,7 @@ $colors: map-merge(("blue": $blue,
 );
 
 $default: black !default;
-$primary: #03b934 !default;
+$primary: #001532 !default;
 $secondary: #F6E7E0 !default;
 $success: $green !default;
 $info: $teal !default;
@@ -814,7 +814,7 @@ $table-dark-action-color: lighten(theme-color("default"), 35%) !default;
 
 // Buttons + Forms
 
-$input-btn-padding-y: .625rem !default;
+$input-btn-padding-y: .675rem !default;
 $input-btn-padding-x: .75rem !default;
 $input-btn-line-height: $shape-height-base !default;
 
@@ -833,7 +833,7 @@ $input-btn-line-height-lg: $shape-height-lg !default;
 $input-btn-border-width: 1px !default;
 
 $input-btn-font-size-sm: .75rem !default;
-$input-btn-font-size: .875rem !default;
+$input-btn-font-size: 1.063rem !default;
 $input-btn-font-size-lg: .875rem !default;
 
 
@@ -970,7 +970,9 @@ $btn-line-height-lg: $input-btn-line-height-lg !default;
 $btn-border-width: $input-btn-border-width !default;
 
 $btn-font-weight: 600 !default;
-$btn-letter-spacing: .025em !default;
+$btn-letter-spacing: 1px !default;
+// $btn-letter-spacing: .025em !default; 
+
 $btn-text-transform: none !default;
 $btn-box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08) !default;
 $btn-hover-box-shadow: 0 7px 14px rgba(50, 50, 93, .1), 0 3px 6px rgba(0, 0, 0, .08) !default;
@@ -1484,10 +1486,12 @@ $tag-box-shadow: 0 1px 2px rgba(68, 68, 68, 0.25);
   line-height: $paragraph-line-height; // Use the default line height
   color: #424242
 }
+
 .text-decoration-underline-hover:hover {
   text-decoration: underline;
-  color:#03b934;
+  color: #03b934;
 }
+
 // Import Bootstrap variable defaults
 
 @import "~bootstrap/scss/variables";

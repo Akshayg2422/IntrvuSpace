@@ -35,12 +35,16 @@ const initialState: DashboardProp = {
   jdItem: undefined,
   scheduleInfo: undefined,
   selectedSection: 0,
-  variantDetails: undefined,
+  corporateScheduleDetails: undefined,
   loading: false,
   studentCodeOutput: undefined,
   codeOutputData: undefined,
   selectedSectionId: undefined,
-  canStartInterview: undefined
+  canStartInterview: undefined,
+  createJdModal: false,
+  sectorsCorporate: undefined,
+  departmentCorporate: undefined,
+  corporateSchedules:undefined,
 };
 
 const DashboardReducer = (state = initialState, action: any) => {
@@ -376,16 +380,16 @@ const DashboardReducer = (state = initialState, action: any) => {
       state = { ...state, selectedSection: action.payload };
       break;
 
-    // GET_KNOWLEDGE_GROUP_VARIANT_DETAILS
+    // GET_CORPORATE_SCHEDULE_DETAILS
 
-    case ActionTypes.GET_KNOWLEDGE_GROUP_VARIANT_DETAILS:
-      state = { ...state, variantDetails: undefined };
+    case ActionTypes.GET_CORPORATE_SCHEDULE_DETAILS:
+      state = { ...state, corporateScheduleDetails: undefined };
       break;
-    case ActionTypes.GET_KNOWLEDGE_GROUP_VARIANT_DETAILS_SUCCESS:
-      state = { ...state, variantDetails: action.payload };
+    case ActionTypes.GET_CORPORATE_SCHEDULE_DETAILS_SUCCESS:
+      state = { ...state, corporateScheduleDetails: action.payload };
       break;
-    case ActionTypes.GET_KNOWLEDGE_GROUP_VARIANT_DETAILS_FAILURE:
-      state = { ...state, variantDetails: undefined };
+    case ActionTypes.GET_CORPORATE_SCHEDULE_DETAILS_FAILURE:
+      state = { ...state, corporateScheduleDetails: undefined };
       break;
 
     /**
@@ -412,6 +416,92 @@ const DashboardReducer = (state = initialState, action: any) => {
 
     case ActionTypes.SETTING_SELECTED_SECTION_ID:
       state = { ...state, selectedSectionId: action.payload };
+      break;
+
+    // open jd modal
+
+    case ActionTypes.SHOW_CREATE_JD_MODAL:
+      state = { ...state, createJdModal: true };
+      break;
+
+
+    case ActionTypes.HIDE_CREATE_JD_MODAL:
+      state = { ...state, createJdModal: false };
+      break;
+
+
+    /**
+     * getSectorsCorporate
+     */
+
+    case ActionTypes.GET_SECTORS_CORPORATE:
+      state = { ...state, sectorsCorporate: undefined };
+      break;
+
+    case ActionTypes.GET_SECTORS_CORPORATE_SUCCESS:
+      state = { ...state, sectorsCorporate: action.payload.details?.knowledege_groups };
+      break;
+    case ActionTypes.GET_SECTORS_CORPORATE_FAILURE:
+      state = { ...state, sectorsCorporate: undefined };
+      break;
+
+
+    case ActionTypes.ADD_SECTORS_CORPORATE:
+      state = { ...state };
+      break;
+    case ActionTypes.ADD_SECTORS_CORPORATE_SUCCESS:
+      state = { ...state };
+      break;
+    case ActionTypes.ADD_SECTORS_CORPORATE_FAILURE:
+      state = { ...state };
+      break;
+
+    /** addDepartment */
+
+    case ActionTypes.ADD_DEPARTMENT_CORPORATE:
+      state = { ...state };
+      break;
+    case ActionTypes.ADD_DEPARTMENT_CORPORATE_SUCCESS:
+      state = { ...state };
+      break;
+    case ActionTypes.ADD_DEPARTMENT_CORPORATE_FAILURE:
+      state = { ...state };
+      break;
+
+    /**getDepartments */
+
+    case ActionTypes.GET_DEPARTMENT_CORPORATE:
+      state = { ...state, departmentCorporate: undefined };
+      break;
+    case ActionTypes.GET_DEPARTMENT_CORPORATE_SUCCESS:
+      state = { ...state, departmentCorporate: action.payload };
+      break;
+    case ActionTypes.GET_DEPARTMENT_CORPORATE_FAILURE:
+      state = { ...state, departmentCorporate: undefined };
+      break;
+
+    /**createCorporateSchedule */
+
+    case ActionTypes.CREATE_CORPORATE_SCHEDULES:
+      state = { ...state };
+      break;
+    case ActionTypes.CREATE_CORPORATE_SCHEDULES_SUCCESS:
+      state = { ...state };
+      break;
+    case ActionTypes.CREATE_CORPORATE_SCHEDULES_FAILURE:
+      state = { ...state };
+      break;
+
+    /**getCorporateSchedulesD */
+
+    case ActionTypes.GET_CORPORATE_SCHEDULES:
+      state = { ...state, corporateSchedules: undefined };
+      break;
+    case ActionTypes.GET_CORPORATE_SCHEDULES_SUCCESS:
+      state = { ...state, corporateSchedules: action.payload};
+      break;
+    case ActionTypes.GET_CORPORATE_SCHEDULES_FAILURE:
+      state = { ...state, corporateSchedules: undefined };
       break;
 
     default:

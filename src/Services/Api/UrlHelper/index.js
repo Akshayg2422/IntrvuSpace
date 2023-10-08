@@ -3,6 +3,7 @@
  */
 const ASSISTANT = '/ivoassistant/'
 const EMPLOYEE = '/employee/'
+const COMPANY = '/company/'
 
 
 export const GET_START_CHAT = ASSISTANT + 'processCall';
@@ -90,7 +91,7 @@ export const URL_GET_OTP = EMPLOYEE + 'getOtp'
 
 // create Schedule
 
-export const URL_CREATE_SCHEDULE = ASSISTANT + 'createSchedule'
+export const URL_CREATE_SCHEDULE = ASSISTANT + 'addCandidateCorporate'
 
 // recordInterviewSession 
 
@@ -112,7 +113,7 @@ export const URL_CREATE_CORPORATE_VARIANT = ASSISTANT + 'createNewCorporateSched
 
 // getKnowledgeGroupVariantDetails
 
-export const URL_GET_KNOWLEDGE_GROUP_VARIANT_DETAILS = ASSISTANT + 'getKnowledgeGroupVariantDetails'
+export const URL_GET_CORPORATE_SCHEDULE_DETAILS = ASSISTANT + 'getCorporateScheduleDetails'
 
 
 // https://codesubmitprimary.leorainfotech.in/submissions?base64_encoded=true&wait=true
@@ -122,6 +123,24 @@ export const URL_CLOSE_INTERVIEW = ASSISTANT + 'endInterviewCall'
 export const URL_CAN_START_INTERVIEW = ASSISTANT + 'canStartInterview'
 
 
+// getSectorsCorporate
 
+export const URL_GET_SECTOR_CORPORATE = ASSISTANT + 'getSectorsCorporate'
 
+export const URL_ADD_SECTOR_CORPORATE = ASSISTANT + 'addISectorcorporate'
 
+// addDepartment
+
+export const URL_ADD_DEPARTMENT = COMPANY + 'addDepartment'
+
+// getDepartments
+
+export const URL_GET_DEPARTMENT = COMPANY + 'getDepartments'
+
+// createCorporateSchedule
+
+export const URL_CREATE_CORPORATE_SCHEDULE = ASSISTANT + 'createCorporateSchedule'
+
+// getCorporateSchedules
+
+export const URL_GET_CORPORATE_SCHEDULE = ASSISTANT + 'getCorporateSchedules'
