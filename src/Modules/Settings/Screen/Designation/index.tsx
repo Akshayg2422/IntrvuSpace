@@ -1,9 +1,9 @@
 
 import { Button, DropDown, DesignationItem, Input, Modal, NoDataFound, Breadcrumbs, showToast, TextArea, ReactAutoComplete } from '@Components';
 import { useDropDown, useInput, useLoader, useModal, useNavigation } from '@Hooks';
-import { CREATE_KNOWLEDGE_GROUP_VARIANT_FAILURE, breadCrumbs, clearBreadCrumbs, createKnowledgeGroup, createKnowledgeGroupVariant, getKnowledgeGroups, getSectorCorporate, getSectors, setSelectedRole } from '@Redux';
+import { CREATE_KNOWLEDGE_GROUP_VARIANT_FAILURE, breadCrumbs, clearBreadCrumbs, createCorporateSchedules, createKnowledgeGroup, createKnowledgeGroupVariant, getCorporateSchedules, getKnowledgeGroups, getSectorCorporate, getSectors, setSelectedRole } from '@Redux';
 import { ROUTES } from '@Routes';
-import { ADD_DESIGNATION_RULES, CREATE_KNOWLEDGE_GROUP_VARIANT_RULES, getDropDownCompanyDisplayData, getValidateError, ifObjectExist, validate } from '@Utils';
+import { ADD_DESIGNATION_RULES, CREATE_CORPORATE_SCHEDULE_RULES, CREATE_KNOWLEDGE_GROUP_VARIANT_RULES, getDropDownCompanyDisplayData, getValidateError, ifObjectExist, validate } from '@Utils';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Nav, NavItem, NavLink } from 'reactstrap';
@@ -17,7 +17,7 @@ const PLACE_HOLDER = {
 function Designation() {
 
     const { sectors } = useSelector((state: any) => state.DashboardReducer)
-    const { sectorsCorporate } = useSelector((state:any) => state.DashboardReducer)
+    const { sectorsCorporate } = useSelector((state: any) => state.DashboardReducer)
 
     const { goTo, goBack } = useNavigation()
 
@@ -49,8 +49,8 @@ function Designation() {
     const loader = useLoader(false);
 
     console.log("position===>", position.value)
-    console.log(sectorsCorporate,564554);
-    
+    console.log(sectorsCorporate, 564554);
+
     useEffect(() => {
         dispatch(clearBreadCrumbs([]))
         getSectorsApiHandler();
@@ -59,18 +59,18 @@ function Designation() {
 
     const getSectorsCorporateApiHandler = () => {
         const params = {}
-       dispatch(
-        getSectorCorporate({
-            params,
-            onSuccess: (response: any) => () => {
-                console.log(response?.details?.knowledege_groups,"qevwbwe");
+        dispatch(
+            getSectorCorporate({
+                params,
+                onSuccess: (response: any) => () => {
+                    console.log(response?.details?.knowledege_groups, "qevwbwe");
 
-                
-            },  
-            onError: () => () => {
-            },
-        })
-       )
+
+                },
+                onError: () => () => {
+                },
+            })
+        )
     }
 
 
@@ -145,44 +145,89 @@ function Designation() {
 
     }
 
-    const createKnowledgeGroupVariantApiHandler = () => {
+    // const createKnowledgeGroupVariantApiHandler = () => {
 
-        if (selectedDesignation) {
-            const params = {
-                knowledge_group_id: selectedDesignation?.id,
-                position: position?.value,
-                // sector:sectorInput.value,
-                experience: experience.value,
-                reference_link: portalUrl.value,
-                jd: jd.value,
-                // id: selectedRole?.id
-            };
-            const validation = validate(CREATE_KNOWLEDGE_GROUP_VARIANT_RULES, params)
+    //     if (selectedDesignation) {
+    //         const params = {
+    //             knowledge_group_id: selectedDesignation?.id,
+    //             position: position?.value,
+    //             // sector:sectorInput.value,
+    //             experience: experience.value,
+    //             reference_link: portalUrl.value,
+    //             jd: jd.value,
+    //             // id: selectedRole?.id
+    //         };
+    //         const validation = validate(CREATE_KNOWLEDGE_GROUP_VARIANT_RULES, params)
 
-            if (ifObjectExist(validation)) {
-                loader.show()
-                dispatch(
-                    createKnowledgeGroupVariant({
-                        params,
-                        onSuccess: (response: any) => () => {
-                            loader.hide();
-                            addRoleModal.hide();
-                            resetValue();
-                            fetchKnowledgeData(navList[navIndex]?.id)
-                            showToast(response.message, 'success')
-                        },
-                        onError: (error: any) => () => {
-                            showToast(error.error_message, 'error')
-                            loader.hide()
-                        },
-                    })
-                )
-            } else {
-                showToast(getValidateError(validation))
-            }
+    //         if (ifObjectExist(validation)) {
+    //             loader.show()
+    //             dispatch(
+    //                 createKnowledgeGroupVariant({
+    //                     params,
+    //                     onSuccess: (response: any) => () => {
+    //                         loader.hide();
+    //                         addRoleModal.hide();
+    //                         resetValue();
+    //                         fetchKnowledgeData(navList[navIndex]?.id)
+    //                         showToast(response.message, 'success')
+    //                     },
+    //                     onError: (error: any) => () => {
+    //                         showToast(error.error_message, 'error')
+    //                         loader.hide()
+    //                     },
+    //                 })
+    //             )
+    //         } else {
+    //             showToast(getValidateError(validation))
+    //         }
+    //     }
+    // };
+
+    const createCorporateScheduleApiHandler = () => {
+
+        const params = {
+            sector_id: "b3f5404c-cc7d-47eb-8e03-6d935a75beb2",
+            department_id: "2f6c2924-de69-4d0c-b0a5-6752616a3ca9",
+            role: "React js Developer",
+            experience: "4",
+            jd: "Developing new user-facing features using React js Experience with common front-end development tools Knowledge of modern authorization mechanisms Thorough understanding of React js and its core principles Building reusable components and front-end libraries for future use Translating designs and wireframes into high quality code Optimizing components for maximum performance across a vast array of web-capable devices and browsers"
+        }
+
+        const validation = validate(CREATE_CORPORATE_SCHEDULE_RULES, params)
+
+        if (ifObjectExist(validation)) {
+            loader.show()
+            dispatch(
+                createCorporateSchedules({
+                    params,
+                    onSuccess: (response) => () => {
+                        loader.hide()
+                        showToast(response.message, 'success');
+                    },
+                    onError: (error) => () => {
+                        showToast(error.error_message, 'error');
+                        loader.hide()
+                    },
+                })
+            )
+        } else {
+            showToast(getValidateError(validation))
         }
     };
 
+    const getCorporateScheduleApiHandler = () => {
+        console.log('getCorporateScheduleApiHandler----------->', getCorporateScheduleApiHandler)
+        const params = {}
+        dispatch(getCorporateSchedules({
+            params,
+            onSuccess: (response: any) => () => {
+                console.log('getCorporateScheduleApiHandler---->',response)
+            },
+            onError: (error) => () => {
+
+            },
+        }))
+    }
 
 
 
@@ -387,61 +432,61 @@ function Designation() {
 
                     <div className={'col-12'}>
                         <div className='row'>
-                        <div className='col'>
-                        <ReactAutoComplete
-                        isMandatory
-                        heading={"Sector"}
-                        
-                        />
-                        </div>
-                        <div className='col'>
-                        <ReactAutoComplete 
-                         isMandatory
-                         heading={"Department"}
-                        
-                         />
-                        </div>
-                        </div>
-                        
-                        <div className='row'>
-                        <div className='col'>
-                            <Input
-                        isMandatory
-                        heading = {'Role'}
-                        type = {"text"}
-                        placeHolder = {"Role"}
-                        onchange={role.onChange}
-                        />
+                            <div className='col'>
+                                <ReactAutoComplete
+                                    isMandatory
+                                    heading={"Sector"}
+
+                                />
                             </div>
-                        
-                        <div className='col'>
-                        <Input
-                            isMandatory
-                            heading={'Experience'}
-                            type={'number'}
-                            placeHolder={"Experience"}
-                            value={experience.value}
-                            onChange={experience.onChange} />
+                            <div className='col'>
+                                <ReactAutoComplete
+                                    isMandatory
+                                    heading={"Department"}
+
+                                />
+                            </div>
                         </div>
+
+                        <div className='row'>
+                            <div className='col'>
+                                <Input
+                                    isMandatory
+                                    heading={'Role'}
+                                    type={"text"}
+                                    placeHolder={"Role"}
+                                    onchange={role.onChange}
+                                />
+                            </div>
+
+                            <div className='col'>
+                                <Input
+                                    isMandatory
+                                    heading={'Experience'}
+                                    type={'number'}
+                                    placeHolder={"Experience"}
+                                    value={experience.value}
+                                    onChange={experience.onChange} />
+                            </div>
                         </div>
-                      
-                       
-                       <div>
-                       <TextArea
-                       isMandatory
-                            heading='Job Description'
-                            value={jd.value}
-                            className = {"float-end"}
-                            onChange={jd.onChange} />
-                       </div>
-                       
+
+
+                        <div>
+                            <TextArea
+                                isMandatory
+                                heading='Job Description'
+                                value={jd.value}
+                                className={"float-end"}
+                                onChange={jd.onChange} />
+                        </div>
+
                     </div>
 
                     <div className="col text-right">
                         <Button size={'md'}
                             loading={loader.loader}
                             text={"Submit"}
-                            onClick={createKnowledgeGroupVariantApiHandler}
+                            onClick={createCorporateScheduleApiHandler}
                         />
                     </div>
 
