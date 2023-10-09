@@ -1,7 +1,7 @@
 
 import { Button, DropDown, DesignationItem, Input, Modal, NoDataFound, Breadcrumbs, showToast, TextArea, ReactAutoComplete } from '@Components';
 import { useDropDown, useInput, useLoader, useModal, useNavigation } from '@Hooks';
-import { CREATE_KNOWLEDGE_GROUP_VARIANT_FAILURE, breadCrumbs, clearBreadCrumbs, createKnowledgeGroup, createKnowledgeGroupVariant, getKnowledgeGroups, getSectorCorporate, getSectors, setSelectedRole } from '@Redux';
+import { CREATE_KNOWLEDGE_GROUP_VARIANT_FAILURE, breadCrumbs, clearBreadCrumbs, createKnowledgeGroup, createKnowledgeGroupVariant, getDepartmentCorporate, getKnowledgeGroups, getSectorCorporate, getSectors, setSelectedRole } from '@Redux';
 import { ROUTES } from '@Routes';
 import { ADD_DESIGNATION_RULES, CREATE_KNOWLEDGE_GROUP_VARIANT_RULES, getDropDownCompanyDisplayData, getValidateError, ifObjectExist, validate } from '@Utils';
 import { useEffect, useState } from 'react';
@@ -18,6 +18,9 @@ function Designation() {
 
     const { sectors } = useSelector((state: any) => state.DashboardReducer)
     const { sectorsCorporate } = useSelector((state:any) => state.DashboardReducer)
+    const { departmentCorporate} = useSelector((state:any) => state.DashboardReducer)
+    console.log(sectorsCorporate,56);
+    
 
     const { goTo, goBack } = useNavigation()
 
@@ -49,12 +52,12 @@ function Designation() {
     const loader = useLoader(false);
 
     console.log("position===>", position.value)
-    console.log(sectorsCorporate,564554);
     
     useEffect(() => {
         dispatch(clearBreadCrumbs([]))
         getSectorsApiHandler();
         getSectorsCorporateApiHandler();
+        getDepartmentCorporateApiHandler();
     }, [])
 
     const getSectorsCorporateApiHandler = () => {
@@ -63,7 +66,23 @@ function Designation() {
         getSectorCorporate({
             params,
             onSuccess: (response: any) => () => {
-                console.log(response?.details?.knowledege_groups,"qevwbwe");
+                console.log(response,"qevwbwe");
+
+                
+            },  
+            onError: () => () => {
+            },
+        })
+       )
+    }
+
+    const getDepartmentCorporateApiHandler = () => {
+        const params = {}
+       dispatch(
+        getDepartmentCorporate({
+            params,
+            onSuccess: (response: any) => () => {
+                // console.log(response?.details,"qevwbwe");
 
                 
             },  
@@ -390,6 +409,7 @@ function Designation() {
                         <div className='col'>
                         <ReactAutoComplete
                         isMandatory
+                        data={sectorsCorporate}
                         heading={"Sector"}
                         
                         />
@@ -397,6 +417,7 @@ function Designation() {
                         <div className='col'>
                         <ReactAutoComplete 
                          isMandatory
+                         data={departmentCorporate}
                          heading={"Department"}
                         
                          />
