@@ -56,7 +56,6 @@ function Designation() {
 
     useEffect(() => {
         dispatch(clearBreadCrumbs([]))
-        getSectorsApiHandler();
         getSectorsCorporateApiHandler();
         getDepartmentCorporateApiHandler();
         getCorporateScheduleApiHandler();
@@ -68,7 +67,7 @@ function Designation() {
             getSectorCorporate({
                 params,
                 onSuccess: (response: any) => () => {
-                    console.log(response, "qevwbwe");
+                    console.log(JSON.stringify(response), "===========getSectorCorporate");
 
 
                 },
@@ -84,7 +83,7 @@ function Designation() {
             getDepartmentCorporate({
                 params,
                 onSuccess: (response: any) => () => {
-                    // console.log(response?.details,"qevwbwe");
+                   console.log('getDepartmentCorporate-------->',JSON.stringify(response))
                 },
                 onError: () => () => {
                 },
@@ -93,36 +92,36 @@ function Designation() {
     }
 
 
-    const getSectorsApiHandler = () => {
-        const params = {}
-        dispatch(
-            getSectors({
-                params,
-                onSuccess: (response: any) => () => {
-                    setNavList(response?.details?.knowledege_groups)
-                    fetchKnowledgeData(response?.details?.knowledege_groups[0]?.id)
-                },
-                onError: () => () => {
-                },
-            })
-        );
-    };
+    // const getSectorsApiHandler = () => {
+    //     const params = {}
+    //     dispatch(
+    //         getSectors({
+    //             params,
+    //             onSuccess: (response: any) => () => {
+    //                 setNavList(response?.details?.knowledege_groups)
+    //                 fetchKnowledgeData(response?.details?.knowledege_groups[0]?.id)
+    //             },
+    //             onError: () => () => {
+    //             },
+    //         })
+    //     );
+    // };
 
-    const fetchKnowledgeData = (id) => {
-        console.log('1111111111111111111111111111', id)
-        const params = {
-            sector_id: id
-        }
-        dispatch(getKnowledgeGroups({
-            params,
-            onSuccess: (response: any) => () => {
-                setCardData(response.details.knowledege_groups)
-            },
-            onError: (error) => () => {
+    // const fetchKnowledgeData = (id) => {
+    //     console.log('1111111111111111111111111111', id)
+    //     const params = {
+    //         sector_id: id
+    //     }
+    //     dispatch(getKnowledgeGroups({
+    //         params,
+    //         onSuccess: (response: any) => () => {
+    //             setCardData(response.details.knowledege_groups)
+    //         },
+    //         onError: (error) => () => {
 
-            },
-        }))
-    }
+    //         },
+    //     }))
+    // }
 
     // const createKnowledgeGroupApiHandler = () => {
 
@@ -157,12 +156,12 @@ function Designation() {
     //     }
     // };
 
-    function resetValue() {
-        title.set('')
-        description.set('')
-        sector.set({})
+    // function resetValue() {
+    //     title.set('')
+    //     description.set('')
+    //     sector.set({})
 
-    }
+    // }
 
     // const createKnowledgeGroupVariantApiHandler = () => {
 
