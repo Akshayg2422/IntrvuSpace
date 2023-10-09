@@ -129,14 +129,8 @@ export const URL_GET_SECTOR_CORPORATE = ASSISTANT + 'getSectorsCorporate'
 
 export const URL_ADD_SECTOR_CORPORATE = ASSISTANT + 'addISectorcorporate'
 
-<<<<<<< HEAD
-//getDepartment
 
-export const URL_GET_DEPARTMENT = ASSISTANT + 'getDepartments'
-
-=======
 // addDepartment
->>>>>>> ac14ac5689e7fa76e4d4a479bc53e13eb74e08df
 
 export const URL_ADD_DEPARTMENT = COMPANY + 'addDepartment'
 
