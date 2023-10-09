@@ -539,7 +539,7 @@ function* closeInterviewSaga(action) {
 function* getSectorsCorporateSaga(action) {
   try {
     const response = yield call(Api.createCorporateSectorApi, action.payload.params);
-    console.log(response,678);
+    console.log(response, 678);
     if (response.success) {
       console.log(45);
       yield put(Action.getSectorCorporateSuccess(response));
@@ -559,13 +559,13 @@ function* getSectorsCorporateSaga(action) {
 function* addSectorsCorporateSaga(action) {
   try {
     const response = yield call(Api.addCorporateSectorApi, action.payload.params);
-    console.log(response,678);
+    console.log(response, 678);
     if (response.success) {
       console.log(45);
       yield put(Action.addSectorCorporateSuccess(response));
       yield call(action.payload.onSuccess(response));
     } else {
-      yield put(Action.addSectorCorporateFailure(response.error_message));  
+      yield put(Action.addSectorCorporateFailure(response.error_message));
       yield call(action.payload.onError(response));
     }
 
@@ -575,25 +575,86 @@ function* addSectorsCorporateSaga(action) {
   }
 }
 
-//getDepartment
-
-function* getDepartmentSaga(action) {
+// addDepartment
+function* addDepartmentCorporateSaga(action) {
   try {
-    const response = yield call(Api.getDepartmentApi, action.payload.params);
+    const response = yield call(Api.addDepartmentCorporateApi, action.payload.params);
+    console.log(response, '----->addDepartmentCorporateApi');
     if (response.success) {
-      yield put(Action.getDepartmentSuccess(response));
+      console.log('addDepartmentCorporateApi');
+      yield put(Action.addDepartmentCorporateSuccess(response));
       yield call(action.payload.onSuccess(response));
     } else {
-      yield put(Action.getDepartmentFailure(response.error_message));  
+      yield put(Action.addDepartmentCorporateFailure(response.error_message));
       yield call(action.payload.onError(response));
     }
 
   } catch (error) {
-    yield put(Action.getDepartmentFailure(error));
+    yield put(Action.addDepartmentCorporateFailure(error));
     yield call(action.payload.onError(error));
   }
 }
 
+// getDepartments 
+
+function* getDepartmentCorporateSaga(action) {
+  try {
+    const response = yield call(Api.getDepartmentCorporateApi, action.payload.params);
+    console.log(response, '----->getDepartmentCorporateApi');
+    if (response.success) {
+      console.log('getDepartmentCorporateApi');
+      yield put(Action.getDepartmentCorporateSuccess(response));
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield put(Action.getDepartmentCorporateFailure(response.error_message));
+      yield call(action.payload.onError(response));
+    }
+
+  } catch (error) {
+    yield put(Action.getDepartmentCorporateFailure(error));
+    yield call(action.payload.onError(error));
+  }
+}
+
+// createCorporateSchedule
+
+function* createCorporateSchedulesSaga(action) {
+  try {
+    const response = yield call(Api.createCorporateScheduleApi, action.payload.params);
+    console.log(response, '----->createCorporateScheduleApi');
+    if (response.success) {
+      console.log('createCorporateScheduleApi');
+      yield put(Action.createCorporateSchedulesSuccess(response));
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield put(Action.createCorporateSchedulesFailure(response.error_message));
+      yield call(action.payload.onError(response));
+    }
+  } catch (error) {
+    yield put(Action.createCorporateSchedulesFailure(error));
+    yield call(action.payload.onError(error));
+  }
+}
+
+// getCorporateSchedules
+
+function* getCorporateSchedulesSaga(action) {
+  try {
+    const response = yield call(Api.getCorporateSchedulesApi, action.payload.params);
+    console.log(response, '----->getCorporateSchedulesApi');
+    if (response.success) {
+      console.log('getCorporateSchedulesApi');
+      yield put(Action.getCorporateSchedulesSuccess(response));
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield put(Action.getCorporateSchedulesFailure(response.error_message));
+      yield call(action.payload.onError(response));
+    }
+  } catch (error) {
+    yield put(Action.getCorporateSchedulesFailure(error));
+    yield call(action.payload.onError(error));
+  }
+}
 
 
 function* DashboardSaga() {
@@ -628,9 +689,9 @@ function* DashboardSaga() {
   yield takeLatest(Action.CAN_START_INTERVIEW, canStartInterviewSaga);
   yield takeLatest(Action.GET_SECTORS_CORPORATE, getSectorsCorporateSaga);
   yield takeLatest(Action.ADD_SECTORS_CORPORATE, addSectorsCorporateSaga);
-  yield takeLatest(Action.GET_DEPARTMENT, getDepartmentSaga);
-
-
-
+  yield takeLatest(Action.ADD_DEPARTMENT_CORPORATE, addDepartmentCorporateSaga);
+  yield takeLatest(Action.GET_DEPARTMENT_CORPORATE, getDepartmentCorporateSaga);
+  yield takeLatest(Action.CREATE_CORPORATE_SCHEDULES, createCorporateSchedulesSaga);
+  yield takeLatest(Action.GET_CORPORATE_SCHEDULES, getCorporateSchedulesSaga);
 }
 export default DashboardSaga;

@@ -130,6 +130,18 @@ export const createCorporateSectorApi = payload => post(URL.URL_GET_SECTOR_CORPO
 
 export const addCorporateSectorApi = payload => post(URL.URL_GET_SECTOR_CORPORATE, payload, {});
 
-//getDepartment
+// addDepartment
 
-export const getDepartmentApi = payload => post(URL.URL_GET_DEPARTMENT, payload,{})
+export const addDepartmentCorporateApi = payload => post(URL.URL_ADD_DEPARTMENT, payload, {});
+
+// getDepartments
+
+export const getDepartmentCorporateApi = payload => post(URL.URL_GET_DEPARTMENT, payload, {});
+
+// createCorporateSchedule
+
+export const createCorporateScheduleApi = payload => post(URL.URL_CREATE_CORPORATE_SCHEDULE, payload, {});
+
+// getCorporateSchedules
+
+export const getCorporateSchedulesApi = payload => post(URL.URL_GET_CORPORATE_SCHEDULE, payload, {});

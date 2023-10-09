@@ -43,7 +43,8 @@ const initialState: DashboardProp = {
   canStartInterview: undefined,
   createJdModal: false,
   sectorsCorporate: undefined,
-  getDepartment: undefined
+  departmentCorporate: undefined,
+  corporateSchedules:undefined,
 };
 
 const DashboardReducer = (state = initialState, action: any) => {
@@ -420,12 +421,12 @@ const DashboardReducer = (state = initialState, action: any) => {
     // open jd modal
 
     case ActionTypes.SHOW_CREATE_JD_MODAL:
-      state = { ...state, createJdModal:  true };
+      state = { ...state, createJdModal: true };
       break;
 
-      
+
     case ActionTypes.HIDE_CREATE_JD_MODAL:
-      state = { ...state, createJdModal:  false };
+      state = { ...state, createJdModal: false };
       break;
 
 
@@ -436,7 +437,7 @@ const DashboardReducer = (state = initialState, action: any) => {
     case ActionTypes.GET_SECTORS_CORPORATE:
       state = { ...state, sectorsCorporate: undefined };
       break;
-      
+
     case ActionTypes.GET_SECTORS_CORPORATE_SUCCESS:
       state = { ...state, sectorsCorporate: action.payload.details?.knowledege_groups };
       break;
@@ -446,26 +447,61 @@ const DashboardReducer = (state = initialState, action: any) => {
 
 
     case ActionTypes.ADD_SECTORS_CORPORATE:
-      state = { ...state};
+      state = { ...state };
       break;
     case ActionTypes.ADD_SECTORS_CORPORATE_SUCCESS:
-      state = { ...state};
+      state = { ...state };
       break;
     case ActionTypes.ADD_SECTORS_CORPORATE_FAILURE:
       state = { ...state};
       break;
+      
+    /** addDepartment */
 
-
-    //addDepartment
-
-    case ActionTypes.GET_DEPARTMENT:
-      state = { ...state, getDepartment: undefined};
+    case ActionTypes.ADD_DEPARTMENT_CORPORATE:
+      state = { ...state };
       break;
-    case ActionTypes.GET_DEPARTMENT_SUCCESS:
-      state = { ...state, getDepartment: action.payload.details?.knowledege_groups};
+    case ActionTypes.ADD_DEPARTMENT_CORPORATE_SUCCESS:
+      state = { ...state };
       break;
-    case ActionTypes.GET_DEPARTMENT_FAILURE:
-      state = { ...state, getDepartment: undefined};
+    case ActionTypes.ADD_DEPARTMENT_CORPORATE_FAILURE:
+      state = { ...state };
+      break;
+
+    /**getDepartments */
+
+    case ActionTypes.GET_DEPARTMENT_CORPORATE:
+      state = { ...state, departmentCorporate: undefined };
+      break;
+    case ActionTypes.GET_DEPARTMENT_CORPORATE_SUCCESS:
+      state = { ...state, departmentCorporate: action.payload };
+      break;
+    case ActionTypes.GET_DEPARTMENT_CORPORATE_FAILURE:
+      state = { ...state, departmentCorporate: undefined };
+      break;
+
+    /**createCorporateSchedule */
+
+    case ActionTypes.CREATE_CORPORATE_SCHEDULES:
+      state = { ...state };
+      break;
+    case ActionTypes.CREATE_CORPORATE_SCHEDULES_SUCCESS:
+      state = { ...state };
+      break;
+    case ActionTypes.CREATE_CORPORATE_SCHEDULES_FAILURE:
+      state = { ...state };
+      break;
+
+    /**getCorporateSchedulesD */
+
+    case ActionTypes.GET_CORPORATE_SCHEDULES:
+      state = { ...state, corporateSchedules: undefined };
+      break;
+    case ActionTypes.GET_CORPORATE_SCHEDULES_SUCCESS:
+      state = { ...state, corporateSchedules: action.payload};
+      break;
+    case ActionTypes.GET_CORPORATE_SCHEDULES_FAILURE:
+      state = { ...state, corporateSchedules: undefined };
       break;
 
     default:

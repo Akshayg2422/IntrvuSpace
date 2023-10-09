@@ -862,38 +862,86 @@ export const addSectorCorporateFailure = (error: any) => {
   }
 }
 
+// addDepartment
+
+export const addDepartmentCorporate = (params: any) => {
+  return {
+    type : ActionTypes.ADD_DEPARTMENT_CORPORATE,
+    payload : params,
+  }
+}
+export const addDepartmentCorporateSuccess = (response: any) => {
+  return {
+    type : ActionTypes.ADD_DEPARTMENT_CORPORATE_SUCCESS,
+    payload : response,
+  }
+}
+export const addDepartmentCorporateFailure = (error: any) => {
+  return {
+    type : ActionTypes.ADD_DEPARTMENT_CORPORATE_FAILURE,
+    payload : error,
+  }
+} 
+
 // getDepartments
 
-export const getDepartment = (params: any) => {
+export const getDepartmentCorporate = (params: any) => {
   return {
-    type : ActionTypes.GET_DEPARTMENT,
-    payload : params
+    type : ActionTypes.GET_DEPARTMENT_CORPORATE,
+    payload : params,
   }
 }
-export const getDepartmentSuccess = (response: any) => {
+export const getDepartmentCorporateSuccess = (response: any) => {
   return {
-    type : ActionTypes.GET_DEPARTMENT_SUCCESS,
-    payload : response
+    type : ActionTypes.GET_DEPARTMENT_CORPORATE_SUCCESS,
+    payload : response,
   }
 }
-export const getDepartmentFailure = (error: any) => {
+export const getDepartmentCorporateFailure = (error: any) => {
   return {
-    type : ActionTypes.GET_DEPARTMENT_FAILURE,
-    payload : error
+    type : ActionTypes.GET_DEPARTMENT_CORPORATE_FAILURE,
+    payload : error,
   }
 }
 
+// createCorporateSchedule
 
-// export const openJdModalSuccess = (response: any) => {
-//   return {
-//     type: ActionTypes.OPEN_JD_MODAL_SUCCESS,
-//     payload: response,
-//   };
-// };
+export const createCorporateSchedules = (params: any) => {
+  return {
+    type : ActionTypes.CREATE_CORPORATE_SCHEDULES,
+    payload : params,
+  }
+}
+export const createCorporateSchedulesSuccess = (response: any) => {
+  return {
+    type : ActionTypes.CREATE_CORPORATE_SCHEDULES_SUCCESS,
+    payload : response,
+  }
+}
+export const createCorporateSchedulesFailure = (error: any) => {
+  return {
+    type : ActionTypes.CREATE_CORPORATE_SCHEDULES_FAILURE,
+    payload : error,
+  }
+}
 
-// export const openJdModalFailure = (response: any) => {
-//   return {
-//     type: ActionTypes.OPEN_JD_MODAL_FAILURE,
-//     payload: response,
-//   };
-// };
+// getCorporateSchedules
+
+export const getCorporateSchedules = (params: any) => {
+  return {
+    type : ActionTypes.GET_CORPORATE_SCHEDULES,
+    payload : params,
+  }
+}
+export const getCorporateSchedulesSuccess = (response: any) => {
+  return {
+    type : ActionTypes.GET_CORPORATE_SCHEDULES_SUCCESS,
+    payload : response,
+  }
+}
+export const getCorporateSchedulesFailure = (error: any) => {
+  return {
+    type : ActionTypes.GET_CORPORATE_SCHEDULES_FAILURE,
+    payload : error,
+  }
+}
