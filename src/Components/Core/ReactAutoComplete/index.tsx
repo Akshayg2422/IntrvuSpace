@@ -14,7 +14,7 @@ import './custom.css'
 //     { id: 6, title: 'Dummy oneeeeee', value: 'Dummy Value 6' },
 // ];
 
-function ReactAutoComplete({ isMandatory, heading, placeholder, any, data, ...rest }: ReactAutoCompleteProp) {
+function ReactAutoComplete({ isMandatory, heading, placeholder, data, ...rest }: ReactAutoCompleteProp) {
     const [value, setValue] = useState('')
     const [suggestions, setSuggestions] = useState<any>([])
     console.log(data,3456);
