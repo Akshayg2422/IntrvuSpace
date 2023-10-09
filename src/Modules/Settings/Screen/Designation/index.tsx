@@ -17,9 +17,9 @@ const PLACE_HOLDER = {
 function Designation() {
 
     const { sectors } = useSelector((state: any) => state.DashboardReducer)
-    const { sectorsCorporate, departmentCorporate } = useSelector((state: any) => state.DashboardReducer)
-    
-    console.log('departmentCorporate---------->', JSON.stringify(departmentCorporate));
+    const { sectorsCorporate, departmentCorporate, corporateSchedules } = useSelector((state: any) => state.DashboardReducer)
+
+    console.log('corporateSchedules---------->', JSON.stringify(corporateSchedules));
 
 
     const { goTo, goBack } = useNavigation()
@@ -59,6 +59,7 @@ function Designation() {
         getSectorsApiHandler();
         getSectorsCorporateApiHandler();
         getDepartmentCorporateApiHandler();
+        getCorporateScheduleApiHandler();
     }, [])
 
     const getSectorsCorporateApiHandler = () => {
@@ -84,8 +85,6 @@ function Designation() {
                 params,
                 onSuccess: (response: any) => () => {
                     // console.log(response?.details,"qevwbwe");
-
-
                 },
                 onError: () => () => {
                 },
@@ -203,7 +202,7 @@ function Designation() {
     //     }
     // };
 
-   
+
 
     const createCorporateScheduleApiHandler = () => {
 
@@ -243,7 +242,8 @@ function Designation() {
         dispatch(getCorporateSchedules({
             params,
             onSuccess: (response: any) => () => {
-                console.log('getCorporateScheduleApiHandler---->', response)
+                setCardData(response.details.corporate_jd_items)
+                console.log('getCorporateScheduleApiHandler---->', JSON.stringify(response))
             },
             onError: (error) => () => {
 
@@ -266,7 +266,7 @@ function Designation() {
     return (
         <>
             <div className='container-fluid pt-4'>
-                <h1 className={'text-black mb-0 pb-0 mx--3'}>{'Schedules'}</h1>
+                <h1 className={'text-black mb-0 pb-3'}>{'Schedules'}</h1>
                 {/* <div className='row justify-content-end'>
                     <Button
                         className={'text-white shadow-none'}
@@ -287,7 +287,7 @@ function Designation() {
                         }}
                     />
                 </div> */}
-                <div className='d-flex pt-3 overflow-auto overflow-hide mx--4'>
+                {/* <div className='d-flex pt-3 overflow-auto overflow-hide mx--4'>
                     {navList && removeEmptyData(navList).map((el: any, index: number) => {
                         return (
                             <div className='col-sm-3 px-2'>
@@ -317,6 +317,17 @@ function Designation() {
                         )
                     })
 
+                    }
+                </div> */}
+                <div className='text-right mb-3'>
+                    {
+                        <Button
+                            text={'Create Schedule'}
+                            block
+                            onClick={() => {
+                                addRoleModal.show()
+                            }}
+                        />
                     }
                 </div>
                 <div className='row pt-3'>

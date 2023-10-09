@@ -11,19 +11,7 @@ function DesignationItem({ item, onAdd, onEdit, onView, }: DesignationItemProps)
 
     return (
         <>
-            <div className='text-right mb-3'>
-                {onAdd && (
-                    <Button
-                        text={'Create Schedule'}
-                        block
-                        onClick={() => {
-                            if (onAdd) {
-                                onAdd(item);
-                            }
-                        }}
-                    />
-                )}
-            </div>
+            
             <Card className=''>
                 <CardBody className='pt-1 pb-1 px-0'>
                     <div>
@@ -67,7 +55,7 @@ function DesignationItem({ item, onAdd, onEdit, onView, }: DesignationItemProps)
                                                     <span className={'pl-1'}>{'10'}</span>
                                                 </div>
                                                 <div className='d-flex align-items-center' title='Rejected'>
-                                                    <Image src={icons.rejected} height={20} width={20} />
+                                                    <Image tintColor={'#001532'} src={icons.rejected} height={20} width={20} />
                                                     <span className={'pl-1'}>{'24'}</span>
                                                 </div>
                                             </div>
