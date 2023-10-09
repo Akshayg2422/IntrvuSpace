@@ -23,22 +23,14 @@ function Designation() {
 
 
     const { goTo, goBack } = useNavigation()
-
-
     const dispatch = useDispatch()
     const [navIndex, setNavIndex] = useState<any>(0)
     const [navList, setNavList] = useState<any>([])
     const [cardData, setCardData] = useState<any>([])
-
     const [selectedDesignation, setSelectedDesignation] = useState<any>({})
     const [selectedVariant, setSelectedVariant] = useState<any>({})
-
-
-
-
     const addDesignationModal = useModal(false);
     const addRoleModal = useModal(false);
-
     const title = useInput("");
     const position = useInput('')
     const description = useInput("");
@@ -48,11 +40,8 @@ function Designation() {
     const portalUrl = useInput('');
     const role = useInput("");
     const sectorInput = useInput('');
-
     const loader = useLoader(false);
 
-    console.log("position===>", position.value)
-    console.log(sectorsCorporate, 564554);
 
     useEffect(() => {
         dispatch(clearBreadCrumbs([]))
