@@ -5,7 +5,6 @@ import { AnalyzingAnimation, GenerateModal, UploadJdCard } from '@Modules';
 import { canStartInterview, createNewJdSchedule, getJdItemList, showCreateJddModal, hideCreateJdModal, postJdVariant, selectedScheduleId } from '@Redux';
 import { ROUTES } from '@Routes';
 import { FROM_JD_RULES, getValidateError, ifObjectExist, validate } from '@Utils';
-import Slider from "nouislider";
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -50,6 +49,14 @@ function FromJD() {
     const [jdDescriptionError, setJdDescriptionError] = useState<any>(undefined)
     const [selectedDuration, setSelectedDuration] = useState(interviewDurations[0]);
     const [sliderValue, setSliderValue] = useState(0);
+    const [skeletonLoader, setSkeletonLoader] = useState(true);
+
+    useEffect(() => {
+        // Simulate loading delay for demonstration purposes
+        setTimeout(() => {
+            setSkeletonLoader(false);
+        }, 2000); // Set a time to simulate loading
+    }, []);
 
     const handleSliderChange = (newValue: any) => {
         console.log('Slider value changed:', newValue);
@@ -221,9 +228,12 @@ function FromJD() {
         }
     }
 
+    const SkeletonLoader = () => (
+        <div className="skeleton-loader" style={{ height: '100px' }}></div>
+      );
     return (
         <>
-            {loading ? <div className={'d-flex justify-content-center my-9'}><Spinner /></div> :
+            {loading ? <div className={'d-flex justify-content-center my-9'}><SkeletonLoader /></div> :
                 jdItem && jdItem.length > 0 ?
                     <div>
                         {
