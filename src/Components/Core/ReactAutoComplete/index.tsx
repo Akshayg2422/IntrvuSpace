@@ -5,19 +5,20 @@ import { Input, InputHeading } from '@Components'
 import { ReactAutoCompleteProp } from './interfaces'
 import './custom.css'
 
-const data = [
-    { id: 1, title: 'Dummy one', value: 'Dummy Value 1' },
-    { id: 2, title: 'Dummy onee', value: 'Dummy Value 2' },
-    { id: 3, title: 'Dummy oneee', value: 'Dummy Value 3' },
-    { id: 4, title: 'Dummy oneeee', value: 'Dummy Value 4' },
-    { id: 5, title: 'Dummy oneeeee', value: 'Dummy Value 5' },
-    { id: 6, title: 'Dummy oneeeeee', value: 'Dummy Value 6' },
-];
+// const data = [
+//     { id: 1, title: 'Dummy one', value: 'Dummy Value 1' },
+//     { id: 2, title: 'Dummy onee', value: 'Dummy Value 2' },
+//     { id: 3, title: 'Dummy oneee', value: 'Dummy Value 3' },
+//     { id: 4, title: 'Dummy oneeee', value: 'Dummy Value 4' },
+//     { id: 5, title: 'Dummy oneeeee', value: 'Dummy Value 5' },
+//     { id: 6, title: 'Dummy oneeeeee', value: 'Dummy Value 6' },
+// ];
 
-function ReactAutoComplete({ isMandatory, heading, placeholder, ...rest }: ReactAutoCompleteProp) {
+function ReactAutoComplete({ isMandatory, heading, placeholder, any, data, ...rest }: ReactAutoCompleteProp) {
     const [value, setValue] = useState('')
     const [suggestions, setSuggestions] = useState<any>([])
-
+    console.log(data,3456);
+    
 
     const escapeRegexCharacters = str => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
@@ -29,7 +30,7 @@ function ReactAutoComplete({ isMandatory, heading, placeholder, ...rest }: React
         }
 
         const regex = new RegExp('^' + escapedValue, 'i');
-        const suggestions = data.filter(each => regex.test(each.title));
+        const suggestions = data.filter(each => regex.test(each.name));
 
         if (suggestions.length < 5) {
             return [
@@ -77,7 +78,7 @@ function ReactAutoComplete({ isMandatory, heading, placeholder, ...rest }: React
         return (
             <div className='ml--2'>
                 {
-                    isExist && <span className='h5'>{suggestion.title}</span>
+                    isExist && <span className='h5'>{suggestion.name}</span>
                 }
                 {
                     !isExist && <h3 className='text-primary align-items-center mb-0'>{"ADD NEW"}</h3>

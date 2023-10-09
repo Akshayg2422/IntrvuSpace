@@ -1,7 +1,7 @@
 
 import { Button, DropDown, DesignationItem, Input, Modal, NoDataFound, Breadcrumbs, showToast, TextArea, ReactAutoComplete } from '@Components';
 import { useDropDown, useInput, useLoader, useModal, useNavigation } from '@Hooks';
-import { CREATE_KNOWLEDGE_GROUP_VARIANT_FAILURE, breadCrumbs, clearBreadCrumbs, createCorporateSchedules, createKnowledgeGroup, createKnowledgeGroupVariant, getCorporateSchedules, getKnowledgeGroups, getSectorCorporate, getSectors, setSelectedRole } from '@Redux';
+import { CREATE_KNOWLEDGE_GROUP_VARIANT_FAILURE, breadCrumbs, clearBreadCrumbs, createCorporateSchedules, createKnowledgeGroup, createKnowledgeGroupVariant, getDepartmentCorporate, getCorporateSchedules, getKnowledgeGroups, getSectorCorporate, getSectors, setSelectedRole } from '@Redux';
 import { ROUTES } from '@Routes';
 import { ADD_DESIGNATION_RULES, CREATE_CORPORATE_SCHEDULE_RULES, CREATE_KNOWLEDGE_GROUP_VARIANT_RULES, getDropDownCompanyDisplayData, getValidateError, ifObjectExist, validate } from '@Utils';
 import { useEffect, useState } from 'react';
@@ -17,7 +17,10 @@ const PLACE_HOLDER = {
 function Designation() {
 
     const { sectors } = useSelector((state: any) => state.DashboardReducer)
-    const { sectorsCorporate } = useSelector((state: any) => state.DashboardReducer)
+    const { sectorsCorporate, departmentCorporate } = useSelector((state: any) => state.DashboardReducer)
+    
+    console.log('departmentCorporate---------->', JSON.stringify(departmentCorporate));
+
 
     const { goTo, goBack } = useNavigation()
 
@@ -55,6 +58,7 @@ function Designation() {
         dispatch(clearBreadCrumbs([]))
         getSectorsApiHandler();
         getSectorsCorporateApiHandler();
+        getDepartmentCorporateApiHandler();
     }, [])
 
     const getSectorsCorporateApiHandler = () => {
@@ -63,7 +67,23 @@ function Designation() {
             getSectorCorporate({
                 params,
                 onSuccess: (response: any) => () => {
-                    console.log(response?.details?.knowledege_groups, "qevwbwe");
+                    console.log(response, "qevwbwe");
+
+
+                },
+                onError: () => () => {
+                },
+            })
+        )
+    }
+
+    const getDepartmentCorporateApiHandler = () => {
+        const params = {}
+        dispatch(
+            getDepartmentCorporate({
+                params,
+                onSuccess: (response: any) => () => {
+                    // console.log(response?.details,"qevwbwe");
 
 
                 },
@@ -105,38 +125,38 @@ function Designation() {
         }))
     }
 
-    const createKnowledgeGroupApiHandler = () => {
+    // const createKnowledgeGroupApiHandler = () => {
 
-        const params = {
-            name: title?.value,
-            description: description?.value,
-            sector_id: sector.value?.id
-        };
+    //     const params = {
+    //         name: title?.value,
+    //         description: description?.value,
+    //         sector_id: sector.value?.id
+    //     };
 
-        const validation = validate(ADD_DESIGNATION_RULES, params)
+    //     const validation = validate(ADD_DESIGNATION_RULES, params)
 
-        if (ifObjectExist(validation)) {
-            loader.show()
-            dispatch(
-                createKnowledgeGroup({
-                    params,
-                    onSuccess: (response) => () => {
-                        loader.hide()
-                        addDesignationModal.hide()
-                        fetchKnowledgeData(navList[navIndex]?.id)
-                        resetValue();
-                        showToast(response.message, 'success');
-                    },
-                    onError: (error) => () => {
-                        showToast(error.error_message, 'error');
-                        loader.hide()
-                    },
-                })
-            )
-        } else {
-            showToast(getValidateError(validation))
-        }
-    };
+    //     if (ifObjectExist(validation)) {
+    //         loader.show()
+    //         dispatch(
+    //             createKnowledgeGroup({
+    //                 params,
+    //                 onSuccess: (response) => () => {
+    //                     loader.hide()
+    //                     addDesignationModal.hide()
+    //                     fetchKnowledgeData(navList[navIndex]?.id)
+    //                     resetValue();
+    //                     showToast(response.message, 'success');
+    //                 },
+    //                 onError: (error) => () => {
+    //                     showToast(error.error_message, 'error');
+    //                     loader.hide()
+    //                 },
+    //             })
+    //         )
+    //     } else {
+    //         showToast(getValidateError(validation))
+    //     }
+    // };
 
     function resetValue() {
         title.set('')
@@ -183,6 +203,8 @@ function Designation() {
     //     }
     // };
 
+   
+
     const createCorporateScheduleApiHandler = () => {
 
         const params = {
@@ -221,7 +243,7 @@ function Designation() {
         dispatch(getCorporateSchedules({
             params,
             onSuccess: (response: any) => () => {
-                console.log('getCorporateScheduleApiHandler---->',response)
+                console.log('getCorporateScheduleApiHandler---->', response)
             },
             onError: (error) => () => {
 
@@ -435,6 +457,7 @@ function Designation() {
                             <div className='col'>
                                 <ReactAutoComplete
                                     isMandatory
+                                    data={sectorsCorporate}
                                     heading={"Sector"}
 
                                 />
@@ -442,8 +465,21 @@ function Designation() {
                             <div className='col'>
                                 <ReactAutoComplete
                                     isMandatory
+                                    data={departmentCorporate}
                                     heading={"Department"}
 
+                                />
+                            </div>
+                        </div>
+
+                        <div className='row'>
+                            <div className='col'>
+                                <Input
+                                    isMandatory
+                                    heading={'Role'}
+                                    type={"text"}
+                                    placeHolder={"Role"}
+                                    onchange={role.onChange}
                                 />
                             </div>
                         </div>

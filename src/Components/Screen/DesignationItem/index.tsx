@@ -3,7 +3,7 @@ import { NoDataFound, Button, MenuBar, Image } from '@Components';
 import { icons } from '@Assets';
 import { Card, CardBody, CardFooter } from 'reactstrap';
 
-function DesignationItem({ item, onAdd, onEdit, onView }: DesignationItemProps) {
+function DesignationItem({ item, onAdd, onEdit, onView, }: DesignationItemProps) {
     console.log('DesignationItem---->', item);
 
     const { name, knowledge_group_variant } = item;
