@@ -35,7 +35,9 @@ function GenerateModal({ isOpen, onClose, children, title, ...rest }: GenerateMo
                 </video>
                 <div className="position-absolute" style={{ top: 0, left: 0, right: 0, bottom: 0, borderRadius: 7 }}>
                     <div className={`modal-header d-flex align-items-center justify-content-center`}>
-                        <h6 className={"modal-title text-black"}>{title}</h6>
+                        {title && <div className='display-3 text-primary font-weight-700'>
+                            {title}
+                        </div>}
                     </div>
                     <div className={`modal-body scroll-hidden text-center`} >
                         {children}

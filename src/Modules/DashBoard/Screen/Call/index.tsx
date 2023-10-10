@@ -1,6 +1,6 @@
 import { AnimatedImage, Button, Modal, Spinner, } from "@Components";
 import { useLoader, useModal, useNavigation } from "@Hooks";
-import { CallHeader, Guidelines } from "@Modules";
+import { CallHeader, Guidelines, Report } from "@Modules";
 import {
   getScheduleBasicInfo,
   closeInterview,
@@ -16,8 +16,8 @@ import { useParams } from "react-router-dom";
 import { RecordRTCPromisesHandler, StereoAudioRecorder } from "recordrtc";
 import { useScreenRecorder } from "./useScreenRecorder";
 import { CALL_WEBSOCKET } from "@Services";
-import { icons } from '@Assets';
-import { log } from "console";
+import { color } from "@Themes";
+
 const compare_moment_format = "YYYY-MM-DDHH:mm:ss";
 
 const INTERVAL_TIME = 3000;
@@ -492,7 +492,7 @@ function Call() {
             voiceUpCount.current = 0;
             speakingShouldProcess.current = false;
             if (voiceUp === true) setVoiceUp(false);
-          } else if (valueP < 49) {
+          } else if (valueP < 46) {
             isVoiceUpCurrentChunk.current = true;
 
             /**
@@ -812,7 +812,7 @@ function Call() {
           style={{
             width: 2,
             height: height,
-            backgroundColor: isRender ? "green" : "white",
+            backgroundColor: isRender ? color.primary : "white",
             marginLeft: 2,
             borderTopLeftRadius: 2,
             borderTopRightRadius: 2,
@@ -839,12 +839,16 @@ function Call() {
   if (isTtfSpeaking) interviewer_state = IV_SPEAKING;
   else if (!voiceUp && !mute) interviewer_state = IV_PROCESSING;
 
+
+  console.log(JSON.stringify(scheduleInfo) + '=====');
+
+
   return (
     <>
       <div
         className="h-100vh"
         style={{
-          backgroundColor: !interviewStarted ? "#FFFFF" : "#1B1B1B",
+          backgroundColor: "#FFFFFF"
         }}
       >
         {!networkError && !websocketError && scheduleInfo && (
@@ -852,8 +856,8 @@ function Call() {
             {interviewStarted && (
               <>
                 <div className="d-flex flex-column h-100vh">
-                  {/* Column 1 (80% Height) */}
-                  <div className="d-flex flex-grow-1 flex-column flex-md-row  align-items-center justify-content-center">
+                  <h3 className="text-center display-3 mb-0 font-weight-bolder text-primary mb-0 py-5">{`Interview for the role of ${scheduleInfo?.interviewee_expected_role}`}</h3>
+                  <div className="d-flex flex-column flex-md-row  align-items-center justify-content-center h-100">
 
                     <div className="d-flex flex-column align-items-center justify-content-center col-md-6">
                       <AnimatedImage
@@ -861,7 +865,7 @@ function Call() {
                         name={getShortName(scheduleInfo?.interviewer_name)}
                         shouldBlink={interviewer_state === IV_SPEAKING}
                       />
-                      <h3 className="display-3 mb-4 text-white mt-3">
+                      <h3 className="display-3 mb-4 text-primary mt-3">
                         {capitalizeFirstLetter(scheduleInfo?.interviewer_name)}
                       </h3>
                     </div>
@@ -872,17 +876,15 @@ function Call() {
                         name={getShortName(scheduleInfo?.interviewee_name)}
                         shouldBlink={interviewee_state === IE_SPEAKING}
                       />
-                      <h3 className="display-3 mb-4 text-white mt-3">
+                      <h3 className="display-3 mb-4 text-primary mt-3">
                         {capitalizeFirstLetter(
                           scheduleInfo?.interviewee_name
                         )}
                       </h3>
                     </div>
                   </div>
-                  <div className="d-flex align-items-center justify-content-center" style={{
-                    height: '20%'
-                  }}>
-                    <div className="col-md-5">
+                  <div className="position-absolute d-flex align-items-center justify-content-center bottom-0 w-100 mb-5" >
+                    <div className="col-md-6">
                       <CallHeader
                         webcam={showCam}
                         mic={!mute}
@@ -892,14 +894,13 @@ function Call() {
                         onEndInterViewClick={closeInterviewAPiHandler}
                       />
                     </div>
-                    <div className="position-absolute bottom-0 right-0 mr-3 mb-2 align-items-center">
-                      <div className="row align-items-end">
-                        {renderNetworkRange()}
-                      </div>
-                    </div>
                   </div>
 
-
+                  <div className="position-absolute bottom-0 right-0 mr-3 mb-2 align-items-center">
+                    <div className="row align-items-end">
+                      {renderNetworkRange()}
+                    </div>
+                  </div>
                 </div>
               </>
             )}
@@ -914,6 +915,9 @@ function Call() {
             ) : (
               <></>
             )}
+            {
+              scheduleInfo?.is_report_complete && <Report />
+            }
           </>
         )}
         {loader.loader && (
