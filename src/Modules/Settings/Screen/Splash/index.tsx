@@ -47,7 +47,7 @@ function Splash() {
 
     return (
         <div>
-            {loginDetails?.isLoggedIn ? <div className={"d-flex vh-100  justify-content-center align-items-center"}>
+            {loginDetails?.isLoggedIn ? <div className={"d-flex vh-100  justify-content-center align-items-center bg-white"}>
                 <div className="text-center">
                     <Image
                         src={icons.logoText}
