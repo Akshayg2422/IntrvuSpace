@@ -267,7 +267,7 @@ function FromJD() {
                                                         {name}
                                                     </span>
                                                     {interview_duration &&
-                                                        <div className='row align-items-center mb-1'>
+                                                        <div className='row align-items-center'>
                                                             <Image src={icons.clock} height={17} width={17} style={{
                                                                 objectFit: 'contain'
                                                             }} />

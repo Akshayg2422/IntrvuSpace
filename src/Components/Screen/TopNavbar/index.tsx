@@ -85,7 +85,9 @@ function TopNavbar() {
                 <div className="container-fluid mx-sm-0 mx-2">
                     <NavbarBrand to="/" tag={Link}>
                         <div className={'ml--4'}>
-                            <Image src={icons.logoText} />
+                            <Image src={icons.logoText} style={{
+                                objectFit: 'contain'
+                            }} />
                         </div>
 
                     </NavbarBrand>
