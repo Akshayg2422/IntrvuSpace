@@ -150,15 +150,15 @@ function Call() {
     // Create an audio element and play the received TTS audio
     audioElementRef.current = new Audio(URL.createObjectURL(audioBlob));
     audioElementRef.current.onerror = function (event) {
-      console.error("Audio An error occurred:", event);
+      // console.error("Audio An error occurred:", event);
       setIsTtfSpeaking(false);
     };
 
     audioElementRef.current.onloadstart = function () {
-      console.log("Audio playback started.");
+      // console.log("Audio playback started.");
     };
     audioElementRef.current.onended = function () {
-      console.log("Audio playback ended.");
+      // console.log("Audio playback ended.");
       setIsTtfSpeaking(false);
       if (closeCall.current === true) {
         proceedStopListening();
@@ -209,20 +209,20 @@ function Call() {
 
   const proceedHandleResponseV1 = (response) => {
     setProcessCallInprogress(false);
-    console.log("SpeakText01", response);
+    // console.log("SpeakText01", response);
     if (response.type === "PRO") {
       lastAiResponseTime.current = undefined;
       setNetworkBreakTime(0);
       const { data, rt, uu_action, mapId } = response.next_step[0];
 
-      console.log("response.next_step[0]", response.next_step[0]);
+      // console.log("response.next_step[0]", response.next_step[0]);
 
       if (
         data &&
         data !== "" &&
         window.location.pathname === `/interview/${schedule_id}`
       ) {
-        console.log("resss011");
+        // console.log("resss011");
         resetLastMessage();
         speak(data);
         mapIdRef.current = mapId;
@@ -244,7 +244,7 @@ function Call() {
           const minutes = Math.floor(duration.asMinutes());
           setNetworkBreakTime(minutes);
         } else {
-          console.log("Invalid time format");
+          // console.log("Invalid time format");
         }
       }
     }
@@ -253,7 +253,7 @@ function Call() {
   // Create the WebSocket connection only if it's not already established
 
   function createWebSocket(showError = true) {
-    console.log("createWebSocket");
+    // console.log("createWebSocket");
 
     if (websocketStatus.current !== WEBSOCKET_PROCESSING) {
       const socket = new WebSocket(CALL_WEBSOCKET);
@@ -266,9 +266,9 @@ function Call() {
 
       socket.addEventListener("open", () => {
         websocketStatus.current = WEBSOCKET_IDLE;
-        console.log(
-          "WebSocket connection established==========================="
-        );
+        // console.log(
+        //   "WebSocket connection established==========================="
+        // );
         setWebSocketError(false);
 
         // Clear the reconnect interval when the connection is open
@@ -293,7 +293,7 @@ function Call() {
 
       // Listen for messages
       socket.onmessage = (event) => {
-        console.log("Received001");
+        // console.log("Received001");
         const response = JSON.parse(event.data);
         proceedHandleResponseV1(response);
         // Handle the response data here
@@ -368,7 +368,7 @@ function Call() {
         }
       }
     } else {
-      console.log("WebSocket connection is not open.");
+      // console.log("WebSocket connection is not open.");
       createWebSocket(false);
     }
   };
@@ -537,7 +537,7 @@ function Call() {
         });
       }
     } catch (err) {
-      console.error(err);
+      // console.error(err);
     }
   };
 
@@ -598,7 +598,7 @@ function Call() {
         setRecording(true);
       }
     } catch (err) {
-      console.error(err);
+      // console.error(err);
     }
   };
 
@@ -615,7 +615,7 @@ function Call() {
         setRecording(false);
       }
     } catch (err) {
-      console.error(err);
+      // console.error(err);
     }
   };
 
@@ -641,7 +641,7 @@ function Call() {
         recorderAudio.current = undefined;
       }
     } catch (err) {
-      console.error(err);
+      // console.error(err);
     }
   };
 
@@ -764,7 +764,7 @@ function Call() {
               clearInterval(intervalId);
             },
             onError: (error: any) => () => {
-              console.log(error);
+              // console.log(error);
             },
           })
         );
@@ -840,7 +840,7 @@ function Call() {
   else if (!voiceUp && !mute) interviewer_state = IV_PROCESSING;
 
 
-  console.log(JSON.stringify(scheduleInfo) + '=====');
+  // console.log(JSON.stringify(scheduleInfo) + '=====');
 
 
   return (
@@ -956,3 +956,4 @@ function Call() {
 }
 
 export { Call };
+
