@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, CommonTable, Divider, NoRecordsFound, Spinner, } from '@Components';
+import { Button, ButtonGroup, CommonTable, Divider, Image, NoRecordsFound, Spinner, } from '@Components';
 import React, { useEffect, useRef, useState } from 'react'
 import { Badge, Card, CardBody, CardHeader, CardTitle, DropdownItem, DropdownMenu, DropdownToggle, Media, Progress, Table, UncontrolledDropdown, UncontrolledTooltip } from 'reactstrap'
 import ReactToPrint from 'react-to-print';
@@ -7,6 +7,8 @@ import { fetchBasicReport } from '@Redux';
 import { useDropDown, useLoader } from '@Hooks';
 import moment from 'moment';
 import { useParams } from 'react-router-dom';
+import { icons } from '@Assets';
+import { Link } from 'react-router-dom';
 
 
 function Report() {
@@ -404,8 +406,8 @@ function Report() {
     return (
         <>
             <div className='h-100vh w-100 d-flex flex-column position-relative'>
-                <div className='row position-absolute bottom-0 right-0 m-3 p-3  ' style={{
-                    zIndex: 1
+                <div className='row position-fixed bottom-0 right-0 m-3 p-3' style={{
+                    zIndex: 1,
                 }}>
                     <ButtonGroup size={'btn-sm'} sortData={FILTER} selected={filter.value} onClick={handleButtonClick} />
                     <div className='ml-3'>
@@ -422,8 +424,33 @@ function Report() {
                     </div>
                 </div>
 
-                <div className='card flex-grow-1 m-3 rounded-0'>
+                <div className='card flex-grow-1 m-3 rounded-0' ref={componentRef}>
                     <div className='card-header'>
+                        <div className={'d-flex justify-content-end'}>
+                            <div className="d-flex align-items-center ">
+                                <div className={'col'}>
+                                    <Image
+                                        className={'m-0 p-0'}
+                                        src={icons.logoIcon}
+                                        height={'50'}
+                                        width={'50'}
+                                    />
+                                </div>
+                                <div className={'col'}>
+                                    <Image
+                                        style={{ objectFit: 'contain' }}
+                                        src={icons.logoText}
+                                        width={'150'}
+                                    />
+                                    <div className={'row text-decoration-underline-hover'}>
+                                        <Link to={'https://www.intrvu.space/'} target="_blank">
+                                            https://www.intrvu.space/
+                                        </Link>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
                         <div className='row pl-lg-5 pr-lg-5 pl-sm-0 pl-3 pb-0 pr-sm-0 pr-3 justify-content-between'>
                             <div className='h1 pt-1 font-weight-bolder text-black'>
                                 {basicReportData.name}
