@@ -453,9 +453,9 @@ const DashboardReducer = (state = initialState, action: any) => {
       state = { ...state };
       break;
     case ActionTypes.ADD_SECTORS_CORPORATE_FAILURE:
-      state = { ...state };
+      state = { ...state};
       break;
-
+      
     /** addDepartment */
 
     case ActionTypes.ADD_DEPARTMENT_CORPORATE:
@@ -474,7 +474,7 @@ const DashboardReducer = (state = initialState, action: any) => {
       state = { ...state, departmentCorporate: undefined };
       break;
     case ActionTypes.GET_DEPARTMENT_CORPORATE_SUCCESS:
-      state = { ...state, departmentCorporate: action.payload };
+      state = { ...state, departmentCorporate: action.payload.details };
       break;
     case ActionTypes.GET_DEPARTMENT_CORPORATE_FAILURE:
       state = { ...state, departmentCorporate: undefined };

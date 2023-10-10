@@ -26,7 +26,17 @@ function Guidelines({ scheduleInfo = undefined, loading, heading, onClick }: Gui
                         <div className='container'>
                             <div className="d-flex flex-column justify-content-between h-100vh py-3 py-md-5 py-sm-5">
                                 <div className='col-md-auto'>
-                                    <h2 className="display-2 mb-0">{`Interview for the role of ${heading}`}</h2>
+                                    <h2 className="display-2 mb-0 font-weight-bolder text-primary mb-0">{`Interview for the role of ${heading}`}</h2>
+                                    {scheduleInfo?.interview_duration &&
+                                        <div className='col row align-items-center mb-1'>
+                                            <Image src={icons.clock} height={18} width={18} style={{
+                                                objectFit: 'contain'
+                                            }} />
+                                            <h5 style={{
+                                                fontSize: "16px"
+                                            }} className='mb-0 text-primary font-weight-bolder ml-2'>{`${scheduleInfo?.interview_duration} mins`}</h5>
+                                        </div>
+                                    }
                                     <h3 className="mb-0 pointer text-muted mt--1">{scheduleInfo?.interviewee_experience === 0 ? "Fresher" : "" + scheduleInfo?.interviewee_experience + (scheduleInfo?.interviewee_experience === 1 ? " year " : " years ") + "of experience"}</h3>
                                 </div>
                                 <div className='col my-5'>
@@ -70,14 +80,14 @@ function Guidelines({ scheduleInfo = undefined, loading, heading, onClick }: Gui
             }
 
             {
-                scheduleInfo.is_complete ? (
-                    <div className='h-100 container d-flex  justify-content-center align-items-center'>
+                scheduleInfo.is_complete && !scheduleInfo.is_report_complete ? (
+                    <div className='h-100 container d-flex  justify-content-center align-items-center rounded-0 shadow-none'>
                         <div className='d-flex justify-content-center align-items-center'>
                             <div className='card mb-0 overflow-auto overflow-hide scroll-y'>
-                                <div className='card-body mb-0'>
+                                <div className='card-body mb-0 shadow-none'>
                                     <div className='col'>
-                                        <h1 className='display-4'>{`Interview for ${heading}`}</h1>
-                                        <p className='mt-0 mb-5'>Your interview is complete. Please check your registered mail address for further details.</p>
+                                        <div className='display-3 text-primary font-weight-700'>{'Report generation inprogress'}</div>
+                                        <p className='mt-0 mb-5'>We are generating your report, It might take a couple of minutes please check back after sometime.</p>
                                         <div>
                                             <Button text={'Go to Dashboard'} onClick={() => { goBack(); }} />
                                         </div>

@@ -1,9 +1,9 @@
 
 import { Button, DropDown, DesignationItem, Input, Modal, NoDataFound, Breadcrumbs, showToast, TextArea, ReactAutoComplete } from '@Components';
 import { useDropDown, useInput, useLoader, useModal, useNavigation } from '@Hooks';
-import { CREATE_KNOWLEDGE_GROUP_VARIANT_FAILURE, breadCrumbs, clearBreadCrumbs, createKnowledgeGroup, createKnowledgeGroupVariant, getKnowledgeGroups, getSectorCorporate, getSectors, setSelectedRole } from '@Redux';
+import { CREATE_KNOWLEDGE_GROUP_VARIANT_FAILURE, breadCrumbs, clearBreadCrumbs, createCorporateSchedules, createKnowledgeGroup, createKnowledgeGroupVariant, getDepartmentCorporate, getCorporateSchedules, getKnowledgeGroups, getSectorCorporate, getSectors, setSelectedRole } from '@Redux';
 import { ROUTES } from '@Routes';
-import { ADD_DESIGNATION_RULES, CREATE_KNOWLEDGE_GROUP_VARIANT_RULES, getDropDownCompanyDisplayData, getValidateError, ifObjectExist, validate } from '@Utils';
+import { ADD_DESIGNATION_RULES, CREATE_CORPORATE_SCHEDULE_RULES, CREATE_KNOWLEDGE_GROUP_VARIANT_RULES, getDropDownCompanyDisplayData, getValidateError, ifObjectExist, validate } from '@Utils';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Nav, NavItem, NavLink } from 'reactstrap';
@@ -17,25 +17,20 @@ const PLACE_HOLDER = {
 function Designation() {
 
     const { sectors } = useSelector((state: any) => state.DashboardReducer)
-    const { sectorsCorporate } = useSelector((state:any) => state.DashboardReducer)
+    const { sectorsCorporate, departmentCorporate, corporateSchedules } = useSelector((state: any) => state.DashboardReducer)
+
+    console.log('corporateSchedules---------->', JSON.stringify(corporateSchedules));
+
 
     const { goTo, goBack } = useNavigation()
-
-
     const dispatch = useDispatch()
     const [navIndex, setNavIndex] = useState<any>(0)
     const [navList, setNavList] = useState<any>([])
     const [cardData, setCardData] = useState<any>([])
-
     const [selectedDesignation, setSelectedDesignation] = useState<any>({})
     const [selectedVariant, setSelectedVariant] = useState<any>({})
-
-
-
-
     const addDesignationModal = useModal(false);
     const addRoleModal = useModal(false);
-
     const title = useInput("");
     const position = useInput('')
     const description = useInput("");
@@ -45,86 +40,177 @@ function Designation() {
     const portalUrl = useInput('');
     const role = useInput("");
     const sectorInput = useInput('');
-
     const loader = useLoader(false);
 
-    console.log("position===>", position.value)
-    console.log(sectorsCorporate,564554);
-    
+
     useEffect(() => {
         dispatch(clearBreadCrumbs([]))
-        getSectorsApiHandler();
         getSectorsCorporateApiHandler();
+        getDepartmentCorporateApiHandler();
+        getCorporateScheduleApiHandler();
     }, [])
 
     const getSectorsCorporateApiHandler = () => {
         const params = {}
-       dispatch(
-        getSectorCorporate({
-            params,
-            onSuccess: (response: any) => () => {
-                console.log(response?.details?.knowledege_groups,"qevwbwe");
-
-                
-            },  
-            onError: () => () => {
-            },
-        })
-       )
-    }
-
-
-    const getSectorsApiHandler = () => {
-        const params = {}
         dispatch(
-            getSectors({
+            getSectorCorporate({
                 params,
                 onSuccess: (response: any) => () => {
-                    setNavList(response?.details?.knowledege_groups)
-                    fetchKnowledgeData(response?.details?.knowledege_groups[0]?.id)
+                    console.log(JSON.stringify(response), "===========getSectorCorporate");
+
+
                 },
                 onError: () => () => {
                 },
             })
-        );
-    };
-
-    const fetchKnowledgeData = (id) => {
-        console.log('1111111111111111111111111111', id)
-        const params = {
-            sector_id: id
-        }
-        dispatch(getKnowledgeGroups({
-            params,
-            onSuccess: (response: any) => () => {
-                setCardData(response.details.knowledege_groups)
-            },
-            onError: (error) => () => {
-
-            },
-        }))
+        )
     }
 
-    const createKnowledgeGroupApiHandler = () => {
+    const getDepartmentCorporateApiHandler = () => {
+        const params = {}
+        dispatch(
+            getDepartmentCorporate({
+                params,
+                onSuccess: (response: any) => () => {
+                   console.log('getDepartmentCorporate-------->',JSON.stringify(response))
+                },
+                onError: () => () => {
+                },
+            })
+        )
+    }
+
+
+    // const getSectorsApiHandler = () => {
+    //     const params = {}
+    //     dispatch(
+    //         getSectors({
+    //             params,
+    //             onSuccess: (response: any) => () => {
+    //                 setNavList(response?.details?.knowledege_groups)
+    //                 fetchKnowledgeData(response?.details?.knowledege_groups[0]?.id)
+    //             },
+    //             onError: () => () => {
+    //             },
+    //         })
+    //     );
+    // };
+
+    // const fetchKnowledgeData = (id) => {
+    //     console.log('1111111111111111111111111111', id)
+    //     const params = {
+    //         sector_id: id
+    //     }
+    //     dispatch(getKnowledgeGroups({
+    //         params,
+    //         onSuccess: (response: any) => () => {
+    //             setCardData(response.details.knowledege_groups)
+    //         },
+    //         onError: (error) => () => {
+
+    //         },
+    //     }))
+    // }
+
+    // const createKnowledgeGroupApiHandler = () => {
+
+    //     const params = {
+    //         name: title?.value,
+    //         description: description?.value,
+    //         sector_id: sector.value?.id
+    //     };
+
+    //     const validation = validate(ADD_DESIGNATION_RULES, params)
+
+    //     if (ifObjectExist(validation)) {
+    //         loader.show()
+    //         dispatch(
+    //             createKnowledgeGroup({
+    //                 params,
+    //                 onSuccess: (response) => () => {
+    //                     loader.hide()
+    //                     addDesignationModal.hide()
+    //                     fetchKnowledgeData(navList[navIndex]?.id)
+    //                     resetValue();
+    //                     showToast(response.message, 'success');
+    //                 },
+    //                 onError: (error) => () => {
+    //                     showToast(error.error_message, 'error');
+    //                     loader.hide()
+    //                 },
+    //             })
+    //         )
+    //     } else {
+    //         showToast(getValidateError(validation))
+    //     }
+    // };
+
+    // function resetValue() {
+    //     title.set('')
+    //     description.set('')
+    //     sector.set({})
+
+    // }
+
+    // const createKnowledgeGroupVariantApiHandler = () => {
+
+    //     if (selectedDesignation) {
+    //         const params = {
+    //             knowledge_group_id: selectedDesignation?.id,
+    //             position: position?.value,
+    //             // sector:sectorInput.value,
+    //             experience: experience.value,
+    //             reference_link: portalUrl.value,
+    //             jd: jd.value,
+    //             // id: selectedRole?.id
+    //         };
+    //         const validation = validate(CREATE_KNOWLEDGE_GROUP_VARIANT_RULES, params)
+
+    //         if (ifObjectExist(validation)) {
+    //             loader.show()
+    //             dispatch(
+    //                 createKnowledgeGroupVariant({
+    //                     params,
+    //                     onSuccess: (response: any) => () => {
+    //                         loader.hide();
+    //                         addRoleModal.hide();
+    //                         resetValue();
+    //                         fetchKnowledgeData(navList[navIndex]?.id)
+    //                         showToast(response.message, 'success')
+    //                     },
+    //                     onError: (error: any) => () => {
+    //                         showToast(error.error_message, 'error')
+    //                         loader.hide()
+    //                     },
+    //                 })
+    //             )
+    //         } else {
+    //             showToast(getValidateError(validation))
+    //         }
+    //     }
+    // };
+
+
+
+    const createCorporateScheduleApiHandler = () => {
 
         const params = {
-            name: title?.value,
-            description: description?.value,
-            sector_id: sector.value?.id
-        };
+            sector_id: "b3f5404c-cc7d-47eb-8e03-6d935a75beb2",
+            department_id: "2f6c2924-de69-4d0c-b0a5-6752616a3ca9",
+            role: "React js Developer",
+            experience: "4",
+            jd: "Developing new user-facing features using React js Experience with common front-end development tools Knowledge of modern authorization mechanisms Thorough understanding of React js and its core principles Building reusable components and front-end libraries for future use Translating designs and wireframes into high quality code Optimizing components for maximum performance across a vast array of web-capable devices and browsers"
+        }
 
-        const validation = validate(ADD_DESIGNATION_RULES, params)
+        const validation = validate(CREATE_CORPORATE_SCHEDULE_RULES, params)
 
         if (ifObjectExist(validation)) {
             loader.show()
             dispatch(
-                createKnowledgeGroup({
+                createCorporateSchedules({
                     params,
                     onSuccess: (response) => () => {
                         loader.hide()
-                        addDesignationModal.hide()
-                        fetchKnowledgeData(navList[navIndex]?.id)
-                        resetValue();
                         showToast(response.message, 'success');
                     },
                     onError: (error) => () => {
@@ -138,51 +224,20 @@ function Designation() {
         }
     };
 
-    function resetValue() {
-        title.set('')
-        description.set('')
-        sector.set({})
+    const getCorporateScheduleApiHandler = () => {
+        console.log('getCorporateScheduleApiHandler----------->', getCorporateScheduleApiHandler)
+        const params = {}
+        dispatch(getCorporateSchedules({
+            params,
+            onSuccess: (response: any) => () => {
+                setCardData(response.details.corporate_jd_items)
+                console.log('getCorporateScheduleApiHandler---->', JSON.stringify(response))
+            },
+            onError: (error) => () => {
 
+            },
+        }))
     }
-
-    const createKnowledgeGroupVariantApiHandler = () => {
-
-        if (selectedDesignation) {
-            const params = {
-                knowledge_group_id: selectedDesignation?.id,
-                position: position?.value,
-                // sector:sectorInput.value,
-                experience: experience.value,
-                reference_link: portalUrl.value,
-                jd: jd.value,
-                // id: selectedRole?.id
-            };
-            const validation = validate(CREATE_KNOWLEDGE_GROUP_VARIANT_RULES, params)
-
-            if (ifObjectExist(validation)) {
-                loader.show()
-                dispatch(
-                    createKnowledgeGroupVariant({
-                        params,
-                        onSuccess: (response: any) => () => {
-                            loader.hide();
-                            addRoleModal.hide();
-                            resetValue();
-                            fetchKnowledgeData(navList[navIndex]?.id)
-                            showToast(response.message, 'success')
-                        },
-                        onError: (error: any) => () => {
-                            showToast(error.error_message, 'error')
-                            loader.hide()
-                        },
-                    })
-                )
-            } else {
-                showToast(getValidateError(validation))
-            }
-        }
-    };
-
 
 
 
@@ -199,7 +254,7 @@ function Designation() {
     return (
         <>
             <div className='container-fluid pt-4'>
-                <h1 className={'text-black mb-0 pb-0 mx--3'}>{'Schedules'}</h1>
+                <h1 className={'text-black mb-0 pb-3'}>{'Schedules'}</h1>
                 {/* <div className='row justify-content-end'>
                     <Button
                         className={'text-white shadow-none'}
@@ -220,7 +275,7 @@ function Designation() {
                         }}
                     />
                 </div> */}
-                <div className='d-flex pt-3 overflow-auto overflow-hide mx--4'>
+                {/* <div className='d-flex pt-3 overflow-auto overflow-hide mx--4'>
                     {navList && removeEmptyData(navList).map((el: any, index: number) => {
                         return (
                             <div className='col-sm-3 px-2'>
@@ -250,6 +305,17 @@ function Designation() {
                         )
                     })
 
+                    }
+                </div> */}
+                <div className='text-right mb-3'>
+                    {
+                        <Button
+                            text={'Create Schedule'}
+                            block
+                            onClick={() => {
+                                addRoleModal.show()
+                            }}
+                        />
                     }
                 </div>
                 <div className='row pt-3'>
@@ -387,61 +453,75 @@ function Designation() {
 
                     <div className={'col-12'}>
                         <div className='row'>
-                        <div className='col'>
-                        <ReactAutoComplete
-                        isMandatory
-                        heading={"Sector"}
-                        
-                        />
-                        </div>
-                        <div className='col'>
-                        <ReactAutoComplete 
-                         isMandatory
-                         heading={"Department"}
-                        
-                         />
-                        </div>
-                        </div>
-                        
-                        <div className='row'>
-                        <div className='col'>
-                            <Input
-                        isMandatory
-                        heading = {'Role'}
-                        type = {"text"}
-                        placeHolder = {"Role"}
-                        onchange={role.onChange}
-                        />
+                            <div className='col'>
+                                <ReactAutoComplete
+                                    isMandatory
+                                    data={sectorsCorporate}
+                                    heading={"Sector"}
+
+                                />
                             </div>
-                        
-                        <div className='col'>
-                        <Input
-                            isMandatory
-                            heading={'Experience'}
-                            type={'number'}
-                            placeHolder={"Experience"}
-                            value={experience.value}
-                            onChange={experience.onChange} />
+                            <div className='col'>
+                                <ReactAutoComplete
+                                    isMandatory
+                                    data={departmentCorporate}
+                                    heading={"Department"}
+
+                                />
+                            </div>
                         </div>
+
+                        <div className='row'>
+                            <div className='col'>
+                                <Input
+                                    isMandatory
+                                    heading={'Role'}
+                                    type={"text"}
+                                    placeHolder={"Role"}
+                                    onchange={role.onChange}
+                                />
+                            </div>
                         </div>
-                      
-                       
-                       <div>
-                       <TextArea
-                       isMandatory
-                            heading='Job Description'
-                            value={jd.value}
-                            className = {"float-end"}
-                            onChange={jd.onChange} />
-                       </div>
-                       
+
+                        <div className='row'>
+                            <div className='col'>
+                                <Input
+                                    isMandatory
+                                    heading={'Role'}
+                                    type={"text"}
+                                    placeHolder={"Role"}
+                                    onchange={role.onChange}
+                                />
+                            </div>
+
+                            <div className='col'>
+                                <Input
+                                    isMandatory
+                                    heading={'Experience'}
+                                    type={'number'}
+                                    placeHolder={"Experience"}
+                                    value={experience.value}
+                                    onChange={experience.onChange} />
+                            </div>
+                        </div>
+
+
+                        <div>
+                            <TextArea
+                                isMandatory
+                                heading='Job Description'
+                                value={jd.value}
+                                className={"float-end"}
+                                onChange={jd.onChange} />
+                        </div>
+
                     </div>
 
                     <div className="col text-right">
                         <Button size={'md'}
                             loading={loader.loader}
                             text={"Submit"}
-                            onClick={createKnowledgeGroupVariantApiHandler}
+                            onClick={createCorporateScheduleApiHandler}
                         />
                     </div>
 

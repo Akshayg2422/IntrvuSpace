@@ -1,10 +1,13 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { Button, Card, Checkbox, Divider, H, Input, Modal, Radio, Spinner, TextArea, showToast, InputHeading } from '@Components';
+import { icons } from '@Assets';
+import { Button, Card, Checkbox, Divider, Image, Input, InputHeading, Modal, Radio, TextArea, showToast } from '@Components';
 import { useInput, useLoader, useModal, useNavigation } from '@Hooks';
 import { AnalyzingAnimation, GenerateModal, UploadJdCard } from '@Modules';
-import { canStartInterview, createNewJdSchedule, getJdItemList, showCreateJddModal, hideCreateJdModal, postJdVariant, selectedScheduleId } from '@Redux';
+import { canStartInterview, createNewJdSchedule, getJdItemList, hideCreateJdModal, postJdVariant, selectedScheduleId, showCreateJddModal } from '@Redux';
 import { ROUTES } from '@Routes';
 import { FROM_JD_RULES, getValidateError, ifObjectExist, validate } from '@Utils';
+import { time } from 'console';
+import { title } from 'process';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -49,6 +52,14 @@ function FromJD() {
     const [jdDescriptionError, setJdDescriptionError] = useState<any>(undefined)
     const [selectedDuration, setSelectedDuration] = useState(interviewDurations[0]);
     const [sliderValue, setSliderValue] = useState(0);
+    const [skeletonLoader, setSkeletonLoader] = useState(true);
+
+    useEffect(() => {
+        // Simulate loading delay for demonstration purposes
+        setTimeout(() => {
+            setSkeletonLoader(false);
+        }, 2000); // Set a time to simulate loading
+    }, []);
 
     const handleSliderChange = (newValue: any) => {
         console.log('Slider value changed:', newValue);
@@ -221,16 +232,19 @@ function FromJD() {
         }
     }
 
+    const SkeletonLoader = () => (
+        <div className="skeleton-loader" style={{ height: '100px' }}></div>
+    );
     return (
         <>
-            {loading ? <div className={'d-flex justify-content-center my-9'}><Spinner /></div> :
+            {loading ? <div className={'d-flex justify-content-center my-9'}><SkeletonLoader /></div> :
                 jdItem && jdItem.length > 0 ?
                     <div>
                         {
                             <div className={'mt-3'}>
                                 {jdItem && jdItem.length > 0 && jdItem.map((item: any, index: any) => {
 
-                                    const { job_description: { details, experience }, schedules, name, id } = item
+                                    const { job_description: { details, experience }, schedules, name, id, interview_duration } = item
 
                                     const more = jdMore[index]?.more
 
@@ -247,29 +261,47 @@ function FromJD() {
                                     return (
                                         <Card className="mt--3 ">
                                             <div className={'d-flex justify-content-between'}>
-                                                <h1 className='mb-0 pointer text-black'>{name}</h1>
-                                                {proceedInterview ?
-                                                    <div>
+                                                <div>
+                                                    <span style={{
+                                                        fontSize: "21px"
+                                                    }} className='mb-0 text-primary font-weight-bolder'>
+                                                        {name}
+                                                    </span>
+                                                    {interview_duration &&
+                                                        <div className='col row align-items-center mb-1'>
+                                                            <Image src={icons.clock} height={17} width={17} style={{
+                                                                objectFit: 'contain'
+                                                            }} />
+                                                            <h5 style={{
+                                                                fontSize: "14px"
+                                                            }} className='mb-0 text-primary font-weight-bolder ml-2'>{`${interview_duration} mins`}</h5>
+                                                        </div>
+                                                    }
+                                                    <h5 className='mb-0 pointer'>{experience === 0 ? "Fresher" : "" + experience + (experience === 1 ? " year " : " years ") + "of experience"}</h5>
+
+                                                </div>
+
+                                                {
+                                                    proceedInterview ?
+                                                        <div>
+                                                            <Button
+                                                                loading={startInterviewLoader.loader}
+                                                                className={'px-4 border border-primary'}
+                                                                text={proceedInterview.is_started ? "Resume Interview" : "Start Interview"}
+                                                                onClick={() => {
+                                                                    proceedInterviewHandler(proceedInterview?.id);
+                                                                }}
+                                                            />
+                                                        </div> :
                                                         <Button
-                                                            loading={startInterviewLoader.loader}
-                                                            className={'px-4 border border-primary'}
-                                                            text={proceedInterview.is_started ? "Resume Interview" : "Start Interview"}
+                                                            text={'Try Another'}
                                                             onClick={() => {
-                                                                proceedInterviewHandler(proceedInterview?.id);
+                                                                createNewJdScheduleApiHandler(id);
                                                             }}
                                                         />
-                                                    </div> :
-                                                    <Button
-                                                        text={'Try Another'}
-                                                        onClick={() => {
-                                                            createNewJdScheduleApiHandler(id);
-                                                        }}
-                                                    />
                                                 }
                                             </div>
-                                            <h5 className='mb-0 pointer text-muted' style={{ marginTop: -15 }}>{experience === 0 ? "Fresher" : "" + experience + (experience === 1 ? " year " : " years ") + "of experience"}</h5>
-
-                                            <div className='col mt-2'>
+                                            <div className='col mt-3'>
                                                 <div className='row'>
                                                     <div className='col ml-0'>
                                                         {

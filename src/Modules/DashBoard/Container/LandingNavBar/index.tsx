@@ -50,7 +50,7 @@ function LandingNavBar() {
                                     <Link to="/admin/dashboard">
                                         <img alt="..." src={icons.logoIcon} />
                                         {/* <span className='h6 ml-2 text-primary'>
-                                            Mock Eazy
+                                            intrvu SPACE
                                         </span> */}
                                     </Link>
                                 </Col>

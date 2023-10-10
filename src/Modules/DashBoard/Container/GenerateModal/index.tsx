@@ -34,23 +34,10 @@ function GenerateModal({ isOpen, onClose, children, title, ...rest }: GenerateMo
                     <source src={videos.background} type="video/mp4" />
                 </video>
                 <div className="position-absolute" style={{ top: 0, left: 0, right: 0, bottom: 0, borderRadius: 7 }}>
-                    <div className={"modal-header"}>
-                        <div className="col text-center">
-                            <h6 className={"modal-title text-black font-weight-700"}>{title}</h6>
-                        </div>
-                        <button
-                            aria-label={"Close"}
-                            className={"close"}
-                            data-dismiss={"modal"}
-                            type={"button"}
-                            onClick={() => {
-                                if (onClose) {
-                                    onClose();
-                                }
-                            }}
-                        >
-                            <span aria-hidden={true}>×</span>
-                        </button>
+                    <div className={`modal-header d-flex align-items-center justify-content-center`}>
+                        {title && <div className='display-3 text-primary font-weight-700'>
+                            {title}
+                        </div>}
                     </div>
 
                     <div className={`modal-body scroll-hidden text-center`} >
