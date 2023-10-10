@@ -1,6 +1,6 @@
 import { AnimatedImage, Button, Modal, Spinner, } from "@Components";
 import { useLoader, useModal, useNavigation } from "@Hooks";
-import { CallHeader, Guidelines } from "@Modules";
+import { CallHeader, Guidelines, Report } from "@Modules";
 import {
   getScheduleBasicInfo,
   closeInterview,
@@ -839,6 +839,10 @@ function Call() {
   if (isTtfSpeaking) interviewer_state = IV_SPEAKING;
   else if (!voiceUp && !mute) interviewer_state = IV_PROCESSING;
 
+
+  console.log(JSON.stringify(scheduleInfo) + '=====');
+
+
   return (
     <>
       <div
@@ -911,6 +915,9 @@ function Call() {
             ) : (
               <></>
             )}
+            {
+              scheduleInfo?.is_report_complete && <Report />
+            }
           </>
         )}
         {loader.loader && (

@@ -80,14 +80,14 @@ function Guidelines({ scheduleInfo = undefined, loading, heading, onClick }: Gui
             }
 
             {
-                scheduleInfo.is_complete ? (
+                scheduleInfo.is_complete && !scheduleInfo.is_report_complete ? (
                     <div className='h-100 container d-flex  justify-content-center align-items-center rounded-0 shadow-none'>
                         <div className='d-flex justify-content-center align-items-center'>
                             <div className='card mb-0 overflow-auto overflow-hide scroll-y'>
                                 <div className='card-body mb-0 shadow-none'>
                                     <div className='col'>
-                                        <h1 className='display-4'>{`Interview for ${heading}`}</h1>
-                                        <p className='mt-0 mb-5'>Your interview is complete. Please check your registered mail address for further details.</p>
+                                        <div className='display-3 text-primary font-weight-700'>{'Report generation inprogress'}</div>
+                                        <p className='mt-0 mb-5'>We are generating your report, It might take a couple of minutes please check back after sometime.</p>
                                         <div>
                                             <Button text={'Go to Dashboard'} onClick={() => { goBack(); }} />
                                         </div>

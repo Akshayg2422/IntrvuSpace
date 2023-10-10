@@ -1,14 +1,12 @@
-import { Button, ButtonGroup, CommonTable, Divider, Image, NoRecordsFound, Spinner, } from '@Components';
-import React, { useEffect, useRef, useState } from 'react'
-import { Badge, Card, CardBody, CardHeader, CardTitle, DropdownItem, DropdownMenu, DropdownToggle, Media, Progress, Table, UncontrolledDropdown, UncontrolledTooltip } from 'reactstrap'
-import ReactToPrint from 'react-to-print';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchBasicReport } from '@Redux';
-import { useDropDown, useLoader } from '@Hooks';
-import moment from 'moment';
-import { useParams } from 'react-router-dom';
 import { icons } from '@Assets';
-import { Link } from 'react-router-dom';
+import { Button, ButtonGroup, CommonTable, Divider, Image } from '@Components';
+import { useDropDown, useLoader } from '@Hooks';
+import { fetchBasicReport } from '@Redux';
+import { useEffect, useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import ReactToPrint from 'react-to-print';
+import { Card, CardBody, CardHeader, Progress } from 'reactstrap';
 
 
 function Report() {
@@ -426,8 +424,8 @@ function Report() {
 
                 <div className='card flex-grow-1 m-3 rounded-0' ref={componentRef}>
                     <div className='card-header'>
-                        <div className={'d-flex justify-content-end'}>
-                            <div className="d-flex align-items-center ">
+                        <div className={'col d-flex justify-content-end'}>
+                            <div className="d-flex align-items-center mr-4">
                                 <div className={'col'}>
                                     <Image
                                         className={'m-0 p-0'}
@@ -438,20 +436,21 @@ function Report() {
                                 </div>
                                 <div className={'col'}>
                                     <Image
+                                        height={30}
+                                        width={'100%'}
                                         style={{ objectFit: 'contain' }}
                                         src={icons.logoText}
-                                        width={'150'}
                                     />
                                     <div className={'row text-decoration-underline-hover'}>
-                                        <Link to={'https://www.intrvu.space/'} target="_blank">
-                                            https://www.intrvu.space/
-                                        </Link>
+                                        <a href={'https://www.intrvu.space'} target="_blank" rel="noreferrer">
+                                            https://www.intrvu.space
+                                        </a>
                                     </div>
                                 </div>
                             </div>
 
                         </div>
-                        <div className='row pl-lg-5 pr-lg-5 pl-sm-0 pl-3 pb-0 pr-sm-0 pr-3 justify-content-between'>
+                        <div className='row pl-lg-5 pr-lg-5 pl-sm-0 pl-3 pb-0 pr-sm-0 pr-3 justify-content-between mt-5'>
                             <div className='h1 pt-1 font-weight-bolder text-black'>
                                 {basicReportData.name}
                                 <h5 className='text-black font-weight-bolder'>
@@ -751,4 +750,4 @@ function Report() {
     )
 }
 
-export { Report }
+export { Report };

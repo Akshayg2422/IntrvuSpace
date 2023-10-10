@@ -48,9 +48,7 @@ function CallHeader({ webcam, mic, onMicChange, onWebCamChange, onEndClick, onEn
 
     function proceedMenuClickHandler(selected: any) {
         if (selected?.id === CALL_MENU[0].id) {
-            if (onEndInterViewClick) {
-                onEndInterViewClick();
-            }
+            endInterviewModal.show()
         }
     }
 
