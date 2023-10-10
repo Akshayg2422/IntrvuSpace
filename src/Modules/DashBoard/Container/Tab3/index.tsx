@@ -20,12 +20,12 @@ function Tab3() {
             <Col xs={'12'} md={'6'} className={'d-flex flex-column'}>
               <div className="pt-4 pb-2">
                 <img className={''} src={icons.communicationReport} alt="Authentication icon" height={45} width={45} style={{ borderRadius: '10px' }} />
-                </div>
-                <div className={'text-black h2 font-weight-bolder'}>Communication Report</div>
-                <p className={'custom-text-color'} style={{ maxWidth: '400px' }}>
-                  Effective communication is often a critical factor in interview success. The Communication Report in MockEazy assesses your communication skills, including verbal and non-verbal aspects. It offers insights into your clarity, articulation, and confidence when conveying your thoughts and ideas, helping you refine your communication style for interviews.
-                </p>
-              
+              </div>
+              <div className={'text-black h2 font-weight-bolder'}>Communication Report</div>
+              <p className={'custom-text-color'} style={{ maxWidth: '400px' }}>
+                Effective communication is often a critical factor in interview success. The Communication Report in intrvu SPACE assesses your communication skills, including verbal and non-verbal aspects. It offers insights into your clarity, articulation, and confidence when conveying your thoughts and ideas, helping you refine your communication style for interviews.
+              </p>
+
             </Col>
             <Col xs={12} md={6} className="d-flex justify-content-center align-items-center py-4">
               <img

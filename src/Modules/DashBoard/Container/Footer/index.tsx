@@ -23,14 +23,14 @@ function Footer() {
                                         src={icons.logoIcon}
                                     />
                                     <span className='h4 ml-2 text-black'>
-                                        Mock Eazy
+                                        intrvu SPACE
                                     </span>
                                 </NavbarBrand>
                             </div>
                         </div>
                         <div className='ml-auto p-2'>
                             <small className={'copyright h5 text-sm'}>
-                                Copyright © {new Date().getFullYear()}{" "} Mock Eazy. All Rights Reserved.
+                                Copyright © {new Date().getFullYear()}{" "} intrvu SPACE. All Rights Reserved.
                             </small>
                         </div>
                     </div>

@@ -35,4 +35,5 @@ export const palette = {
   buttonDarkGrey: '#030303',
   primaryButtonBlack: '#30303',
   buttonRed: '#FB403D',
+  callFooter: "#f5f5f5"
 };

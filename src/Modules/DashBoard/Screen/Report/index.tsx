@@ -502,7 +502,7 @@ function Report() {
                             }
                         </div>
                     </div>
-                    <div className='card-body'>
+                    <div className='card-body overflow-hide overflow-auto h-100vh' style={{ maxHeight: 'calc(100vh - 100px)' }}>
                         {Object.keys(basicReportData).reverse()?.map((heading, index) => {
 
                             if (heading === "skill_matrix") {
@@ -715,7 +715,6 @@ function Report() {
                                 )
                             }
                         })
-
                         }
                     </div>
                 </div>

@@ -87,13 +87,6 @@ function TopNavbar() {
                         <div className={'ml--4'}>
                             <Image src={icons.logoText} />
                         </div>
-                        {/* <div className="row align-items-center">
-                            <div className="display-3 text-lowercase font-weight-900 text-primary px-0 mb-0">intrvu</div>
-                
-                            <div style={{ letterSpacing: '2px', fontSize: '29px', marginTop: 27 }} className="text-black mb-0 font-weight-300 text-center mb-0 mt-2 ml-2">SPACE</div>
-                        </div> */}
-
-
 
                     </NavbarBrand>
                     <button

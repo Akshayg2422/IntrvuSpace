@@ -106,7 +106,7 @@ function Otp() {
                                     </div> : `You OTP should arrive in ${(seconds < 10 ? "0" + seconds : seconds)} Seconds`}
                             </h3>
                             <h4 className='text-black  font-weight-normal text-sm'>
-                                An OTP has been sent to {registerData?.mobile_number || registerData?.email}. You may not receive the OTP if the email/number is not registered with Mockeazy.
+                                An OTP has been sent to {registerData?.mobile_number || registerData?.email}. You may not receive the OTP if the email/number is not registered with intrvu SPACE.
                             </h4>
 
                             <div className="py-3 ">
