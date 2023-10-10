@@ -8,7 +8,7 @@ function Features() {
     const [featureOfData, setFeatureOfData] = useState([
         { id: 1, heading: 'Comprehensive Courses', para: 'EDAT offers a wide range of courses in programming languages such as Java, JavaScript, and Python.', img: '', filter: "" },
         { id: 2, heading: 'Task-Based Learning', para: ' Each course includes multiple tasks that allow you to apply your knowledge and gain practical experience.', img: '', filter: '' },
-        { id: 3, heading: 'Mock Interviews', para: 'After completing tasks, EDAT conducts mock interviews to help you refine your skills and prepare for real-world scenarios.', img: '', filter: '' },
+        { id: 3, heading: 'intrvu SPACE Interviews', para: 'After completing tasks, EDAT conducts intrvu SPACE interviews to help you refine your skills and prepare for real-world scenarios.', img: '', filter: '' },
         { id: 4, heading: 'Progress Tracking', para: 'EDAT tracks your progress, ensuring that you can monitor your growth and identify areas for improvement.', img: '', filter: '' },
         { id: 5, heading: 'Digital Branding', para: 'Showcase your efforts and achievements by leveraging EDAT"s digital branding features across social platforms and professional networks.', img: '', filter: '' },
         { id: 6, heading: 'Recording and Storage', para: 'EDAT stores all task details and recordings, enabling you to review your performance and refer back to them in the future.', img: '', filter: '' },

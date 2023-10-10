@@ -41,12 +41,12 @@ function Landing() {
             <div className="main-content">
                 <LandingNavBar />
                 <LandingHeader />
-                <Introduction/>
-                <HowItWorks/>
-                <Reports/>
+                <Introduction />
+                <HowItWorks />
+                <Reports />
                 <Data />
                 {/* <From /> */}
-                <AuthenticationAndDashboardModule/>
+                <AuthenticationAndDashboardModule />
                 <Pricing />
                 <ContactUs />
                 <Footer />

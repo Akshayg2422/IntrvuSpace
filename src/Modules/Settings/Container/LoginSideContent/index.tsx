@@ -12,7 +12,7 @@ function LoginSideContent() {
                     style={{
                         fontSize: '100px'
                     }}
-                >MOCK <b className='text-black'>EAZY</b></h1>
+                >intrvu <b className='text-black'>SPACE</b></h1>
                 <p className="text-center text-white "
                     style={{
                         maxWidth: '600px'

@@ -111,14 +111,14 @@ function ContactUs() {
                                                 src={icons.logoIcon}
                                             />
                                             <span className='h2 font-weight-bolder ml-2 text-black'>
-                                                Mock Eazy
+                                                intrvu SPACE
                                             </span>
                                         </NavbarBrand>
                                         <p className="description custom-color mt-3 d-flex justify-content-start"
                                             style={{
                                                 fontSize: '13px'
                                             }}
-                                        >Mock Easy  is your dedicated companion in the pursuit of interview success. Prepare effectively,
+                                        >intrvu SPACE  is your dedicated companion in the pursuit of interview success. Prepare effectively,
                                             outshine the competition, and unlock the job you deserve!
                                         </p>
                                         <Nav className="align-items-lg-center ml-lg-auto">

@@ -18,7 +18,10 @@ function Modal({ isOpen, children, title, size = "lg", style, onClose, ...rest }
         <div className={"modal-header mb-0"} style={{
           paddingBottom: '0px'
         }}>
-          {title && <h6 className={"modal-title"}>{title}</h6>}
+
+          {title && <div className='display-3 text-primary font-weight-700'>
+            {title}
+          </div>}
           <button
             aria-label={"Close"}
             className={"close"}

@@ -1,12 +1,13 @@
-import { Button, ButtonGroup, CommonTable, Divider, NoRecordsFound, Spinner, } from '@Components';
-import React, { useEffect, useRef, useState } from 'react'
-import { Badge, Card, CardBody, CardHeader, CardTitle, DropdownItem, DropdownMenu, DropdownToggle, Media, Progress, Table, UncontrolledDropdown, UncontrolledTooltip } from 'reactstrap'
-import ReactToPrint from 'react-to-print';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchBasicReport } from '@Redux';
+import { icons } from '@Assets';
+import { Button, ButtonGroup, CommonTable, Divider, Image } from '@Components';
 import { useDropDown, useLoader } from '@Hooks';
-import moment from 'moment';
+import { fetchBasicReport } from '@Redux';
+import { color } from '@Themes';
+import { useEffect, useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import ReactToPrint from 'react-to-print';
+import { Card, CardBody, CardHeader, Progress } from 'reactstrap';
 
 
 function Report() {
@@ -404,8 +405,8 @@ function Report() {
     return (
         <>
             <div className='h-100vh w-100 d-flex flex-column position-relative'>
-                <div className='row position-absolute bottom-0 right-0 m-3 p-3  ' style={{
-                    zIndex: 1
+                <div className='row position-fixed bottom-0 right-0 m-3 p-3' style={{
+                    zIndex: 1,
                 }}>
                     <ButtonGroup size={'btn-sm'} sortData={FILTER} selected={filter.value} onClick={handleButtonClick} />
                     <div className='ml-3'>
@@ -422,8 +423,39 @@ function Report() {
                     </div>
                 </div>
 
-                <div className='card flex-grow-1 m-3 rounded-0'>
+                <div className='card flex-grow-1 m-3 rounded-0' ref={componentRef}>
                     <div className='card-header'>
+                        <div className={'col d-flex justify-content-end'} >
+
+                            {/* <div className="d-flex align-items-center mr-4" style={{
+                                borderWidth: "1px",
+                                borderBlockColor: color.primary
+                            }}>
+                                <div className={'d-flex-column'}>
+                                    <Image
+                                        className='bg-primary'
+                                        height={40}
+                                        src={icons.logoText}
+                                    />
+                                    <small style={{
+                                        fontSize: "12px"
+                                    }} className={'row text-decoration-underline-hover text-right'}>
+                                        <a href={'https://www.intrvu.space'} target="_blank" rel="noreferrer">
+                                            https://www.intrvu.space
+                                        </a>
+                                    </small>
+                                </div>
+                                <div className='ml-2'>
+                                    <Image
+                                        className={'m-0 p-0'}
+                                        src={icons.logoIcon}
+                                        height={40}
+                                        width={40}
+                                    />
+                                </div>
+                            </div> */}
+
+                        </div>
                         <div className='row pl-lg-5 pr-lg-5 pl-sm-0 pl-3 pb-0 pr-sm-0 pr-3 justify-content-between'>
                             <div className='h1 pt-1 font-weight-bolder text-black'>
                                 {basicReportData.name}
@@ -434,8 +466,39 @@ function Report() {
                                     {basicReportData.sub_text2}
                                 </p>
                             </div>
-                            <div>
-                                <h1 className='font-weight-bolder display-3'
+                            <div className='flex-column text-right' >
+
+
+                                <div className='row' style={{
+                                    border: "1px solid",
+                                    padding: "10px 10px 8px 10px"
+                                }}>
+                                    <div className={'d-flex flex-column justify-content-end align-items-end'}  >
+                                        <Image
+                                            className='justify-content-end'
+                                            height={15}
+                                            src={icons.logoText}
+                                        />
+                                        <small style={{
+                                            fontSize: "10px"
+                                        }}>
+                                            <a href={'https://www.intrvu.space'} target="_blank" rel="noreferrer">
+                                                https://www.intrvu.space
+                                            </a>
+                                        </small>
+                                    </div>
+
+                                    <div className='ml-2'>
+                                        <Image
+                                            className={'m-0 p-0'}
+                                            src={icons.logoIcon}
+                                            height={30}
+                                            width={30}
+                                        />
+                                    </div>
+                                </div>
+
+                                <h1 className='font-weight-bolder display-3 my-3'
                                     style={{
                                         color: colorVariant(+percentage?.overAll)
                                     }}
@@ -502,7 +565,7 @@ function Report() {
                             }
                         </div>
                     </div>
-                    <div className='card-body'>
+                    <div className='card-body overflow-hide overflow-auto h-100vh' style={{ maxHeight: 'calc(100vh - 100px)' }}>
                         {Object.keys(basicReportData).reverse()?.map((heading, index) => {
 
                             if (heading === "skill_matrix") {
@@ -715,14 +778,13 @@ function Report() {
                                 )
                             }
                         })
-
                         }
                     </div>
-                </div>
-            </div>
+                </div >
+            </div >
 
         </>
     )
 }
 
-export { Report }
+export { Report };

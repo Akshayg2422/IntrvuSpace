@@ -23,8 +23,6 @@ function Designation() {
 
 
     const { goTo, goBack } = useNavigation()
-
-
     const dispatch = useDispatch()
     const [navIndex, setNavIndex] = useState<any>(0)
     const [navList, setNavList] = useState<any>([])
@@ -40,7 +38,6 @@ console.log(selectSector,"card selectSectorselectSectorselectSector------>");
 
     const addDesignationModal = useModal(false);
     const addRoleModal = useModal(false);
-
     const title = useInput("");
     const position = useInput('')
     const description = useInput("");
@@ -50,7 +47,6 @@ console.log(selectSector,"card selectSectorselectSectorselectSector------>");
     const portalUrl = useInput('');
     const role1 = useInput('');
     const sectorInput = useInput('');
-
     const loader = useLoader(false);
 
     // console.log("position===>", position.value)
@@ -101,9 +97,7 @@ console.log(selectSector,"card selectSectorselectSectorselectSector------>");
             getDepartmentCorporate({
                 params,
                 onSuccess: (response: any) => () => {
-                    // console.log(response?.details,"qevwbwe");
-
-
+                   console.log('getDepartmentCorporate-------->',JSON.stringify(response))
                 },
                 onError: () => () => {
                 },
@@ -194,12 +188,12 @@ console.log(selectSector,"card selectSectorselectSectorselectSector------>");
     //     }
     // };
 
-    function resetValue() {
-        title.set('')
-        description.set('')
-        sector.set({})
+    // function resetValue() {
+    //     title.set('')
+    //     description.set('')
+    //     sector.set({})
 
-    }
+    // }
 
     // const createKnowledgeGroupVariantApiHandler = () => {
 
@@ -239,7 +233,7 @@ console.log(selectSector,"card selectSectorselectSectorselectSector------>");
     //     }
     // };
 
-   
+
 
     const createCorporateScheduleApiHandler = () => {
 
