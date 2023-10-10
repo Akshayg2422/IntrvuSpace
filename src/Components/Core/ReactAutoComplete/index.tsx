@@ -14,11 +14,12 @@ import './custom.css'
 //     { id: 6, title: 'Dummy oneeeeee', value: 'Dummy Value 6' },
 // ];
 
-function ReactAutoComplete({ isMandatory, heading, placeholder, any, data, ...rest }: ReactAutoCompleteProp) {
+function ReactAutoComplete({ isMandatory, heading, placeholder, data, state, onAdd, ...rest }: ReactAutoCompleteProp) {
     const [value, setValue] = useState('')
     const [suggestions, setSuggestions] = useState<any>([])
-    console.log(data,3456);
-    
+    const [addValue, setAddValue] = useState<any>('')
+
+
 
     const escapeRegexCharacters = str => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
@@ -30,7 +31,7 @@ function ReactAutoComplete({ isMandatory, heading, placeholder, any, data, ...re
         }
 
         const regex = new RegExp('^' + escapedValue, 'i');
-        const suggestions = data.filter(each => regex.test(each.name));
+        const suggestions = data && data.filter(each => regex.test(each.name)).slice(0, 5);
 
         if (suggestions.length < 5) {
             return [
@@ -47,8 +48,8 @@ function ReactAutoComplete({ isMandatory, heading, placeholder, any, data, ...re
     );
 
     const onSuggestionsFetchRequested = ({ value }) => {
+        console.log(suggestions, "suggestions");
         setSuggestions(getSuggestions(value))
-
     };
 
     const onChange = (event, { newValue, method }) => {
@@ -56,7 +57,6 @@ function ReactAutoComplete({ isMandatory, heading, placeholder, any, data, ...re
 
         setValue(newValue)
     };
-
 
     const inputProps = {
         placeholder,
@@ -72,8 +72,13 @@ function ReactAutoComplete({ isMandatory, heading, placeholder, any, data, ...re
 
     const renderSuggestion = suggestion => {
 
-
         const isExist = suggestion.isAddNew === undefined;
+        if (!isExist) {
+            setAddValue(value)
+        }
+        console.log(addValue, 'check');
+
+
 
         return (
             <div className='ml--2'>
@@ -81,7 +86,11 @@ function ReactAutoComplete({ isMandatory, heading, placeholder, any, data, ...re
                     isExist && <span className='h5'>{suggestion.name}</span>
                 }
                 {
-                    !isExist && <h3 className='text-primary align-items-center mb-0'>{"ADD NEW"}</h3>
+                    !isExist && <h3 className='text-primary align-items-center mb-0' onClick={() => {
+                        console.log(addValue, "check2");
+
+                        onAdd(addValue)
+                    }}>{"ADD NEW"}</h3>
                 }
             </div>
         )
@@ -89,15 +98,22 @@ function ReactAutoComplete({ isMandatory, heading, placeholder, any, data, ...re
     };
 
     const onSuggestionSelected = (event, { suggestion }) => {
+
         if (suggestion.isAddNew) {
             console.log('Add new:', value);
+            state(value)
+        }
+        else {
+            state(suggestion)
         }
     };
 
     const getSuggestionValue = (suggestion: any) => {
         console.log(suggestion);
 
+
         if (suggestion.isAddNew) {
+
             return value;
         }
         return suggestion.name;

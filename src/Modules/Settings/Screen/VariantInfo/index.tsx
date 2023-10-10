@@ -10,6 +10,8 @@ import { useDispatch, useSelector } from 'react-redux'
 
 function VariantInfo() {
     const { selectedRole, corporateScheduleDetails } = useSelector((state: any) => state.DashboardReducer)
+    console.log(corporateScheduleDetails,"corporateScheduleDetails-------->");
+    
     const { goTo } = useNavigation()
     const addNewCandidateModal = useModal(false)
     const firstName = useInput('')
@@ -36,7 +38,7 @@ function VariantInfo() {
     }
 
     const getKnowledgeGroupVariantDetailsHandler = () => {
-        const params = { knowledge_group_variant_id: selectedRole?.id }
+        const params = { corporate_openings_details_id: selectedRole?.id }
         dispatch(
             getCorporateScheduleDetails({
                 params,
@@ -51,7 +53,7 @@ function VariantInfo() {
     function generateNewCandidateHandler() {
 
         const params = {
-            knowledge_group_variant_id: selectedRole?.id,
+            corporate_openings_details_id: selectedRole?.id,
             first_name: firstName.value,
             last_name: lastName.value,
             email: email.value,
@@ -94,7 +96,10 @@ function VariantInfo() {
         mobileNumber.set('')
     }
 
-    const { position, experience, details } = corporateScheduleDetails?.job_description || {}
+    const { id, position, experience, details } = corporateScheduleDetails?.job_description || {}
+
+    console.log(corporateScheduleDetails?.job_description,45);
+    
 
     const normalizedTableData = (data: any) => {
         if (data && data?.schedules?.length > 0)
@@ -163,7 +168,7 @@ function VariantInfo() {
                                     <i className="pr-2">
                                         <img src={icons.briefCaseBlack} alt="Comment Icon" height={'20'} width={'20'} />
                                     </i>
-                                    Experience with {experience} years
+                                    Experience with {experience}
                                 </span>
                             </div>
                             <div className={'row pb-1 text-sm text-black font-weight-500'}>

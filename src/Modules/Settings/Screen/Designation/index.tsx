@@ -1,7 +1,7 @@
 
 import { Button, DropDown, DesignationItem, Input, Modal, NoDataFound, Breadcrumbs, showToast, TextArea, ReactAutoComplete } from '@Components';
 import { useDropDown, useInput, useLoader, useModal, useNavigation } from '@Hooks';
-import { CREATE_KNOWLEDGE_GROUP_VARIANT_FAILURE, breadCrumbs, clearBreadCrumbs, createCorporateSchedules, createKnowledgeGroup, createKnowledgeGroupVariant, getDepartmentCorporate, getCorporateSchedules, getKnowledgeGroups, getSectorCorporate, getSectors, setSelectedRole } from '@Redux';
+import { CREATE_KNOWLEDGE_GROUP_VARIANT_FAILURE, breadCrumbs, clearBreadCrumbs, createCorporateSchedules, createKnowledgeGroup, createKnowledgeGroupVariant, getDepartmentCorporate, getCorporateSchedules, getKnowledgeGroups, getSectorCorporate, getSectors, setSelectedRole, addSectorCorporate, addDepartmentCorporate } from '@Redux';
 import { ROUTES } from '@Routes';
 import { ADD_DESIGNATION_RULES, CREATE_CORPORATE_SCHEDULE_RULES, CREATE_KNOWLEDGE_GROUP_VARIANT_RULES, getDropDownCompanyDisplayData, getValidateError, ifObjectExist, validate } from '@Utils';
 import { useEffect, useState } from 'react';
@@ -17,9 +17,9 @@ const PLACE_HOLDER = {
 function Designation() {
 
     const { sectors } = useSelector((state: any) => state.DashboardReducer)
-    const { sectorsCorporate, departmentCorporate, corporateSchedules } = useSelector((state: any) => state.DashboardReducer)
-
-    console.log('corporateSchedules---------->', JSON.stringify(corporateSchedules));
+    const { sectorsCorporate, departmentCorporate } = useSelector((state: any) => state.DashboardReducer)
+    
+    // console.log('departmentCorporate---------->', JSON.stringify(departmentCorporate));
 
 
     const { goTo, goBack } = useNavigation()
@@ -27,8 +27,15 @@ function Designation() {
     const [navIndex, setNavIndex] = useState<any>(0)
     const [navList, setNavList] = useState<any>([])
     const [cardData, setCardData] = useState<any>([])
+    const [selectSector, setSelectedSector] = useState<any>('')
+    const [selectDepartment, setSelectedDepartment] = useState<any>('')
+
     const [selectedDesignation, setSelectedDesignation] = useState<any>({})
     const [selectedVariant, setSelectedVariant] = useState<any>({})
+
+console.log(selectSector,"card selectSectorselectSectorselectSector------>");
+
+
     const addDesignationModal = useModal(false);
     const addRoleModal = useModal(false);
     const title = useInput("");
@@ -38,16 +45,19 @@ function Designation() {
     const experience = useInput('')
     const jd = useInput('');
     const portalUrl = useInput('');
-    const role = useInput("");
+    const role1 = useInput('');
     const sectorInput = useInput('');
     const loader = useLoader(false);
 
+    // console.log("position===>", position.value)
+    // console.log(sectorsCorporate, 564554);
 
     useEffect(() => {
         dispatch(clearBreadCrumbs([]))
+        // getSectorsApiHandler();
         getSectorsCorporateApiHandler();
         getDepartmentCorporateApiHandler();
-        getCorporateScheduleApiHandler();
+        getCorporateScheduleApiHandler()
     }, [])
 
     const getSectorsCorporateApiHandler = () => {
@@ -56,11 +66,26 @@ function Designation() {
             getSectorCorporate({
                 params,
                 onSuccess: (response: any) => () => {
-                    console.log(JSON.stringify(response), "===========getSectorCorporate");
-
-
+                   
                 },
                 onError: () => () => {
+                },
+            })
+        )
+    }
+
+    const addSectorCorporateApiHandler = (value) => {
+        console.log(value, "apiCheck");
+        const params = {name: value, description: null }
+        dispatch(
+            addSectorCorporate({
+                params,
+                onSuccess: (response) => () => {
+                    console.log(response, "addSectorCorporateApiHandler");
+                    
+                    getSectorsCorporateApiHandler();
+                },
+                onError: (error) => () => {
                 },
             })
         )
@@ -75,6 +100,24 @@ function Designation() {
                    console.log('getDepartmentCorporate-------->',JSON.stringify(response))
                 },
                 onError: () => () => {
+                },
+            })
+        )
+    }
+
+    const addDepartmentApiHandler = (value) => {
+        console.log(value, "apiCheck");
+        
+  const params = {name: value}
+        dispatch(
+            addDepartmentCorporate({
+                params,
+                onSuccess: (response) => () => {
+                    console.log(response, 'addDepartapiHandler');
+                    
+                    getDepartmentCorporateApiHandler();
+                },
+                onError: (error) => () => {
                 },
             })
         )
@@ -195,13 +238,12 @@ function Designation() {
     const createCorporateScheduleApiHandler = () => {
 
         const params = {
-            sector_id: "b3f5404c-cc7d-47eb-8e03-6d935a75beb2",
-            department_id: "2f6c2924-de69-4d0c-b0a5-6752616a3ca9",
-            role: "React js Developer",
-            experience: "4",
-            jd: "Developing new user-facing features using React js Experience with common front-end development tools Knowledge of modern authorization mechanisms Thorough understanding of React js and its core principles Building reusable components and front-end libraries for future use Translating designs and wireframes into high quality code Optimizing components for maximum performance across a vast array of web-capable devices and browsers"
+            sector_id: selectSector.id,
+            department_id: selectDepartment.id,
+            role: role1.value,
+            experience: experience.value,
+            jd: jd.value
         }
-
         const validation = validate(CREATE_CORPORATE_SCHEDULE_RULES, params)
 
         if (ifObjectExist(validation)) {
@@ -210,6 +252,8 @@ function Designation() {
                 createCorporateSchedules({
                     params,
                     onSuccess: (response) => () => {
+                        console.log(response, "submit");
+                        getCorporateScheduleApiHandler()
                         loader.hide()
                         showToast(response.message, 'success');
                     },
@@ -231,7 +275,7 @@ function Designation() {
             params,
             onSuccess: (response: any) => () => {
                 setCardData(response.details.corporate_jd_items)
-                console.log('getCorporateScheduleApiHandler---->', JSON.stringify(response))
+                console.log('getCorporateScheduleApiHandler---->', response)
             },
             onError: (error) => () => {
 
@@ -307,28 +351,32 @@ function Designation() {
 
                     }
                 </div> */}
+
                 <div className='text-right mb-3'>
-                    {
-                        <Button
-                            text={'Create Schedule'}
-                            block
-                            onClick={() => {
-                                addRoleModal.show()
-                            }}
-                        />
-                    }
-                </div>
+                         <Button
+                        text={'Create Schedule'}
+                         block
+                         onClick={()=>{
+                         addRoleModal.show();
+                         } 
+                     }
+                    />
+                 </div>
+
                 <div className='row pt-3'>
+               
+
                     {cardData && cardData.length > 0 ?
                         cardData.map((el: any, index: number) => {
                             return (
                                 <div className='col-sm-12 col-lg-12 p-0 m-0 mb-3'>
+                                    
                                     <DesignationItem
                                         item={el}
-                                        onAdd={(selected) => {
-                                            addRoleModal.show();
-                                            setSelectedDesignation(selected);
-                                        }}
+                                        // onAdd={(selected) => {
+                                        //     addRoleModal.show();
+                                        //     setSelectedDesignation(selected);
+                                        // }}
 
                                         onEdit={(designation, role) => {
                                             // console.log("desss-->", designation, "riolee==?>", role)
@@ -343,7 +391,7 @@ function Designation() {
                                             }
                                             addRoleModal.show();
                                         }}
-                                        onView={(designation, role) => {
+                                        onView={(role) => {
                                             console.log('role-------------->', role)
                                             dispatch(setSelectedRole(role))
                                             dispatch(breadCrumbs({ name: role?.name, title: el?.name, path: window.location.pathname }))
@@ -403,6 +451,7 @@ function Designation() {
                     position.set("")
                     experience.set("")
                     jd.set("")
+                    role1.set('')
                 }}>
                     {/* <div className={'col-6'}>
                         <ReactAutoComplete
@@ -458,7 +507,10 @@ function Designation() {
                                     isMandatory
                                     data={sectorsCorporate}
                                     heading={"Sector"}
-
+                                    onAdd = {(value )=>{
+                                        addSectorCorporateApiHandler(value)
+                                    }}
+                                    state={setSelectedSector}
                                 />
                             </div>
                             <div className='col'>
@@ -466,32 +518,23 @@ function Designation() {
                                     isMandatory
                                     data={departmentCorporate}
                                     heading={"Department"}
-
+                                    onAdd = {(value )=>{
+                                        addDepartmentApiHandler(value)
+                                    }}
+                                    state={setSelectedDepartment}
                                 />
                             </div>
                         </div>
 
                         <div className='row'>
                             <div className='col'>
-                                <Input
+                                 <Input
                                     isMandatory
                                     heading={'Role'}
-                                    type={"text"}
+                                    type={'text'}
                                     placeHolder={"Role"}
-                                    onchange={role.onChange}
-                                />
-                            </div>
-                        </div>
-
-                        <div className='row'>
-                            <div className='col'>
-                                <Input
-                                    isMandatory
-                                    heading={'Role'}
-                                    type={"text"}
-                                    placeHolder={"Role"}
-                                    onchange={role.onChange}
-                                />
+                                    value={role1.value}
+                                    onChange={role1.onChange} />
                             </div>
 
                             <div className='col'>
