@@ -83,10 +83,10 @@ function TopNavbar() {
                 id="navbar-main"
             >
                 <div className="container-fluid mx-sm-0 mx-2">
-                    <NavbarBrand to="/" tag={Link}>
-                        <div className={'ml--4'}>
-                            <Image src={icons.logoText} />
-                        </div>
+                    <NavbarBrand tag={Link}>
+                        <Image src={icons.logoText} width={'65%'} style={{
+                            objectFit: 'contain'
+                        }} />
 
                     </NavbarBrand>
                     <button

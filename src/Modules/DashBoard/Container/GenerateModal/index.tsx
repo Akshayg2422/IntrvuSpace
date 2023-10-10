@@ -39,6 +39,7 @@ function GenerateModal({ isOpen, onClose, children, title, ...rest }: GenerateMo
                             {title}
                         </div>}
                     </div>
+
                     <div className={`modal-body scroll-hidden text-center`} >
                         {children}
                     </div>

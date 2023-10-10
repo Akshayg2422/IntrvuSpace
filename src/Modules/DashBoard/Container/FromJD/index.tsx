@@ -200,6 +200,7 @@ function FromJD() {
             if (id !== '-1') {
 
                 // const canStartParams = { schedule_id: id }
+                startInterviewLoader.hide();
                 dispatch(selectedScheduleId(id))
                 goTo(ROUTES['designation-module'].interview + "/" + id)
 
@@ -267,7 +268,7 @@ function FromJD() {
                                                         {name}
                                                     </span>
                                                     {interview_duration &&
-                                                        <div className='row align-items-center mb-1'>
+                                                        <div className='col row align-items-center mb-1'>
                                                             <Image src={icons.clock} height={17} width={17} style={{
                                                                 objectFit: 'contain'
                                                             }} />
@@ -292,12 +293,14 @@ function FromJD() {
                                                                 }}
                                                             />
                                                         </div> :
-                                                        <Button
-                                                            text={'Try Another'}
-                                                            onClick={() => {
-                                                                createNewJdScheduleApiHandler(id);
-                                                            }}
-                                                        />
+                                                        <div>
+                                                            <Button
+                                                                text={'Try Another'}
+                                                                onClick={() => {
+                                                                    createNewJdScheduleApiHandler(id);
+                                                                }}
+                                                            />
+                                                        </div>
                                                 }
                                             </div>
                                             <div className='col mt-3'>
