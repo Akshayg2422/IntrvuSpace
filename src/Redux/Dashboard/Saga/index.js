@@ -539,9 +539,7 @@ function* closeInterviewSaga(action) {
 function* getSectorsCorporateSaga(action) {
   try {
     const response = yield call(Api.createCorporateSectorApi, action.payload.params);
-    console.log(response, 678);
     if (response.success) {
-      console.log(45);
       yield put(Action.getSectorCorporateSuccess(response));
       yield call(action.payload.onSuccess(response));
     } else {
@@ -600,9 +598,7 @@ function* addDepartmentCorporateSaga(action) {
 function* getDepartmentCorporateSaga(action) {
   try {
     const response = yield call(Api.getDepartmentCorporateApi, action.payload.params);
-    console.log(response, '----->getDepartmentCorporateApi');
     if (response.success) {
-      console.log('getDepartmentCorporateApi');
       yield put(Action.getDepartmentCorporateSuccess(response));
       yield call(action.payload.onSuccess(response));
     } else {

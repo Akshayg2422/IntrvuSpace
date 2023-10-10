@@ -11,7 +11,7 @@ function DesignationItem({ item, onAdd, onEdit, onView, }: DesignationItemProps)
 
     return (
         <>
-            <div className='text-right mb-3'>
+            {/* <div className='text-right mb-3'>
                 {onAdd && (
                     <Button
                         text={'Create Schedule'}
@@ -23,7 +23,7 @@ function DesignationItem({ item, onAdd, onEdit, onView, }: DesignationItemProps)
                         }}
                     />
                 )}
-            </div>
+            </div> */}
             <Card className=''>
                 <CardBody className='pt-1 pb-1 px-0'>
                     <div>

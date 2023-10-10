@@ -14,10 +14,10 @@ import './custom.css'
 //     { id: 6, title: 'Dummy oneeeeee', value: 'Dummy Value 6' },
 // ];
 
-function ReactAutoComplete({ isMandatory, heading, placeholder, data, ...rest }: ReactAutoCompleteProp) {
+function ReactAutoComplete({ isMandatory, heading, placeholder, data, state, ...rest }: ReactAutoCompleteProp) {
     const [value, setValue] = useState('')
     const [suggestions, setSuggestions] = useState<any>([])
-    console.log(data,3456);
+
     
 
     const escapeRegexCharacters = str => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -57,7 +57,6 @@ function ReactAutoComplete({ isMandatory, heading, placeholder, data, ...rest }:
         setValue(newValue)
     };
 
-
     const inputProps = {
         placeholder,
         value,
@@ -89,15 +88,22 @@ function ReactAutoComplete({ isMandatory, heading, placeholder, data, ...rest }:
     };
 
     const onSuggestionSelected = (event, { suggestion }) => {
+        
         if (suggestion.isAddNew) {
             console.log('Add new:', value);
+            state(value)
+        }
+        else {
+            state(suggestion)
         }
     };
 
     const getSuggestionValue = (suggestion: any) => {
         console.log(suggestion);
 
+
         if (suggestion.isAddNew) {
+            
             return value;
         }
         return suggestion.name;

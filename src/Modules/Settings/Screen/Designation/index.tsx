@@ -19,7 +19,7 @@ function Designation() {
     const { sectors } = useSelector((state: any) => state.DashboardReducer)
     const { sectorsCorporate, departmentCorporate } = useSelector((state: any) => state.DashboardReducer)
     
-    console.log('departmentCorporate---------->', JSON.stringify(departmentCorporate));
+    // console.log('departmentCorporate---------->', JSON.stringify(departmentCorporate));
 
 
     const { goTo, goBack } = useNavigation()
@@ -29,11 +29,13 @@ function Designation() {
     const [navIndex, setNavIndex] = useState<any>(0)
     const [navList, setNavList] = useState<any>([])
     const [cardData, setCardData] = useState<any>([])
+    const [selectSector, setSelectedSector] = useState<any>('')
+    const [selectDepartment, setSelectedDepartment] = useState<any>('')
 
     const [selectedDesignation, setSelectedDesignation] = useState<any>({})
     const [selectedVariant, setSelectedVariant] = useState<any>({})
 
-
+console.log(cardData,"card data------>");
 
 
     const addDesignationModal = useModal(false);
@@ -46,17 +48,17 @@ function Designation() {
     const experience = useInput('')
     const jd = useInput('');
     const portalUrl = useInput('');
-    const role = useInput("");
+    const role1 = useInput('');
     const sectorInput = useInput('');
 
     const loader = useLoader(false);
 
-    console.log("position===>", position.value)
-    console.log(sectorsCorporate, 564554);
+    // console.log("position===>", position.value)
+    // console.log(sectorsCorporate, 564554);
 
     useEffect(() => {
         dispatch(clearBreadCrumbs([]))
-        getSectorsApiHandler();
+        // getSectorsApiHandler();
         getSectorsCorporateApiHandler();
         getDepartmentCorporateApiHandler();
     }, [])
@@ -67,9 +69,7 @@ function Designation() {
             getSectorCorporate({
                 params,
                 onSuccess: (response: any) => () => {
-                    console.log(response, "qevwbwe");
-
-
+                    setCardData(response?.details?.knowledege_groups)
                 },
                 onError: () => () => {
                 },
@@ -94,36 +94,36 @@ function Designation() {
     }
 
 
-    const getSectorsApiHandler = () => {
-        const params = {}
-        dispatch(
-            getSectors({
-                params,
-                onSuccess: (response: any) => () => {
-                    setNavList(response?.details?.knowledege_groups)
-                    fetchKnowledgeData(response?.details?.knowledege_groups[0]?.id)
-                },
-                onError: () => () => {
-                },
-            })
-        );
-    };
+    // const getSectorsApiHandler = () => {
+    //     const params = {}
+    //     dispatch(
+    //         getSectors({
+    //             params,
+    //             onSuccess: (response: any) => () => {
+    //                 setNavList(response?.details?.knowledege_groups)
+    //                 fetchKnowledgeData(response?.details?.knowledege_groups[0]?.id)
+    //             },
+    //             onError: () => () => {
+    //             },
+    //         })
+    //     );
+    // };
 
-    const fetchKnowledgeData = (id) => {
-        console.log('1111111111111111111111111111', id)
-        const params = {
-            sector_id: id
-        }
-        dispatch(getKnowledgeGroups({
-            params,
-            onSuccess: (response: any) => () => {
-                setCardData(response.details.knowledege_groups)
-            },
-            onError: (error) => () => {
+    // const fetchKnowledgeData = (id) => {
+    //     console.log('1111111111111111111111111111', id)
+    //     const params = {
+    //         sector_id: id
+    //     }
+    //     dispatch(getKnowledgeGroups({
+    //         params,
+    //         onSuccess: (response: any) => () => {
+    //             setCardData(response.details.knowledege_groups)
+    //         },
+    //         onError: (error) => () => {
 
-            },
-        }))
-    }
+    //         },
+    //     }))
+    // }
 
     // const createKnowledgeGroupApiHandler = () => {
 
@@ -208,13 +208,12 @@ function Designation() {
     const createCorporateScheduleApiHandler = () => {
 
         const params = {
-            sector_id: "b3f5404c-cc7d-47eb-8e03-6d935a75beb2",
-            department_id: "2f6c2924-de69-4d0c-b0a5-6752616a3ca9",
-            role: "React js Developer",
-            experience: "4",
-            jd: "Developing new user-facing features using React js Experience with common front-end development tools Knowledge of modern authorization mechanisms Thorough understanding of React js and its core principles Building reusable components and front-end libraries for future use Translating designs and wireframes into high quality code Optimizing components for maximum performance across a vast array of web-capable devices and browsers"
+            sector_id: selectSector.id,
+            department_id: selectDepartment.id,
+            role: role1.value,
+            experience: experience.value,
+            jd: jd.value
         }
-
         const validation = validate(CREATE_CORPORATE_SCHEDULE_RULES, params)
 
         if (ifObjectExist(validation)) {
@@ -223,6 +222,8 @@ function Designation() {
                 createCorporateSchedules({
                     params,
                     onSuccess: (response) => () => {
+                        console.log(response, "submit");
+                        getCorporateScheduleApiHandler()
                         loader.hide()
                         showToast(response.message, 'success');
                     },
@@ -266,7 +267,7 @@ function Designation() {
     return (
         <>
             <div className='container-fluid pt-4'>
-                <h1 className={'text-black mb-0 pb-0 mx--3'}>{'Schedules'}</h1>
+                <h1 className={'text-black mb-0 pb-3'}>{'Schedules'}</h1>
                 {/* <div className='row justify-content-end'>
                     <Button
                         className={'text-white shadow-none'}
@@ -287,7 +288,7 @@ function Designation() {
                         }}
                     />
                 </div> */}
-                <div className='d-flex pt-3 overflow-auto overflow-hide mx--4'>
+                {/* <div className='d-flex pt-3 overflow-auto overflow-hide mx--4'>
                     {navList && removeEmptyData(navList).map((el: any, index: number) => {
                         return (
                             <div className='col-sm-3 px-2'>
@@ -318,18 +319,33 @@ function Designation() {
                     })
 
                     }
-                </div>
+                </div> */}
+
+                <div className='text-right mb-3'>
+                         <Button
+                        text={'Create Schedule'}
+                         block
+                         onClick={()=>{
+                         addRoleModal.show();
+                         } 
+                     }
+                    />
+                 </div>
+
                 <div className='row pt-3'>
+               
+
                     {cardData && cardData.length > 0 ?
                         cardData.map((el: any, index: number) => {
                             return (
                                 <div className='col-sm-12 col-lg-12 p-0 m-0 mb-3'>
+                                    
                                     <DesignationItem
                                         item={el}
-                                        onAdd={(selected) => {
-                                            addRoleModal.show();
-                                            setSelectedDesignation(selected);
-                                        }}
+                                        // onAdd={(selected) => {
+                                        //     addRoleModal.show();
+                                        //     setSelectedDesignation(selected);
+                                        // }}
 
                                         onEdit={(designation, role) => {
                                             // console.log("desss-->", designation, "riolee==?>", role)
@@ -459,6 +475,7 @@ function Designation() {
                                     isMandatory
                                     data={sectorsCorporate}
                                     heading={"Sector"}
+                                    state={setSelectedSector}
 
                                 />
                             </div>
@@ -467,32 +484,20 @@ function Designation() {
                                     isMandatory
                                     data={departmentCorporate}
                                     heading={"Department"}
-
+                                    state={setSelectedDepartment}
                                 />
                             </div>
                         </div>
 
                         <div className='row'>
                             <div className='col'>
-                                <Input
+                                 <Input
                                     isMandatory
                                     heading={'Role'}
-                                    type={"text"}
+                                    type={'text'}
                                     placeHolder={"Role"}
-                                    onchange={role.onChange}
-                                />
-                            </div>
-                        </div>
-
-                        <div className='row'>
-                            <div className='col'>
-                                <Input
-                                    isMandatory
-                                    heading={'Role'}
-                                    type={"text"}
-                                    placeHolder={"Role"}
-                                    onchange={role.onChange}
-                                />
+                                    value={role1.value}
+                                    onChange={role1.onChange} />
                             </div>
 
                             <div className='col'>
