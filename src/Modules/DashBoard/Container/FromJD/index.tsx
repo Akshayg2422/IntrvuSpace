@@ -293,12 +293,14 @@ function FromJD() {
                                                                 }}
                                                             />
                                                         </div> :
-                                                        <Button
-                                                            text={'Try Another'}
-                                                            onClick={() => {
-                                                                createNewJdScheduleApiHandler(id);
-                                                            }}
-                                                        />
+                                                        <div>
+                                                            <Button
+                                                                text={'Try Another'}
+                                                                onClick={() => {
+                                                                    createNewJdScheduleApiHandler(id);
+                                                                }}
+                                                            />
+                                                        </div>
                                                 }
                                             </div>
                                             <div className='col mt-3'>
