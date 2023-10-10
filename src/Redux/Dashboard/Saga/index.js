@@ -463,7 +463,7 @@ function* getCorporateScheduleDetailsSaga(action) {
   try {
     const response = yield call(Api.getCorporateScheduleDetailsApi, action.payload.params);
     if (response.success) {
-      yield put(Action.getCorporateScheduleDetailsSuccess(response?.details?.variant_details));
+      yield put(Action.getCorporateScheduleDetailsSuccess(response));
       yield call(action.payload.onSuccess(response));
     } else {
       yield put(Action.getCorporateScheduleDetailsFailure(response.error_message));
@@ -652,7 +652,6 @@ function* getCorporateSchedulesSaga(action) {
   }
 }
 
-
 function* DashboardSaga() {
   yield takeLatest(Action.GET_START_CHAT, getChatSaga);
   yield takeLatest(Action.CREATE_KNOWLEDGE_GROUP_VARIANT, createKnowledgeGroupVariantSaga);
@@ -689,5 +688,6 @@ function* DashboardSaga() {
   yield takeLatest(Action.GET_DEPARTMENT_CORPORATE, getDepartmentCorporateSaga);
   yield takeLatest(Action.CREATE_CORPORATE_SCHEDULES, createCorporateSchedulesSaga);
   yield takeLatest(Action.GET_CORPORATE_SCHEDULES, getCorporateSchedulesSaga);
+
 }
 export default DashboardSaga;

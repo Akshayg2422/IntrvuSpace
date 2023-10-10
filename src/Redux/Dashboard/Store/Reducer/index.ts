@@ -8,6 +8,7 @@ import {
 import { DashboardProp } from "../../Interfaces";
 import * as ActionTypes from "../ActionTypes";
 
+
 const initialState: DashboardProp = {
   userLoggedIn: false,
   chat: [],
@@ -386,7 +387,7 @@ const DashboardReducer = (state = initialState, action: any) => {
       state = { ...state, corporateScheduleDetails: undefined };
       break;
     case ActionTypes.GET_CORPORATE_SCHEDULE_DETAILS_SUCCESS:
-      state = { ...state, corporateScheduleDetails: action.payload };
+      state = { ...state, corporateScheduleDetails: action.payload.details.corporate_schedule_details };
       break;
     case ActionTypes.GET_CORPORATE_SCHEDULE_DETAILS_FAILURE:
       state = { ...state, corporateScheduleDetails: undefined };

@@ -1,7 +1,7 @@
 
 import { Button, DropDown, DesignationItem, Input, Modal, NoDataFound, Breadcrumbs, showToast, TextArea, ReactAutoComplete } from '@Components';
 import { useDropDown, useInput, useLoader, useModal, useNavigation } from '@Hooks';
-import { CREATE_KNOWLEDGE_GROUP_VARIANT_FAILURE, breadCrumbs, clearBreadCrumbs, createCorporateSchedules, createKnowledgeGroup, createKnowledgeGroupVariant, getDepartmentCorporate, getCorporateSchedules, getKnowledgeGroups, getSectorCorporate, getSectors, setSelectedRole } from '@Redux';
+import { CREATE_KNOWLEDGE_GROUP_VARIANT_FAILURE, breadCrumbs, clearBreadCrumbs, createCorporateSchedules, createKnowledgeGroup, createKnowledgeGroupVariant, getDepartmentCorporate, getCorporateSchedules, getKnowledgeGroups, getSectorCorporate, getSectors, setSelectedRole, addSectorCorporate, addDepartmentCorporate } from '@Redux';
 import { ROUTES } from '@Routes';
 import { ADD_DESIGNATION_RULES, CREATE_CORPORATE_SCHEDULE_RULES, CREATE_KNOWLEDGE_GROUP_VARIANT_RULES, getDropDownCompanyDisplayData, getValidateError, ifObjectExist, validate } from '@Utils';
 import { useEffect, useState } from 'react';
@@ -35,7 +35,7 @@ function Designation() {
     const [selectedDesignation, setSelectedDesignation] = useState<any>({})
     const [selectedVariant, setSelectedVariant] = useState<any>({})
 
-console.log(cardData,"card data------>");
+console.log(selectSector,"card selectSectorselectSectorselectSector------>");
 
 
     const addDesignationModal = useModal(false);
@@ -61,6 +61,7 @@ console.log(cardData,"card data------>");
         // getSectorsApiHandler();
         getSectorsCorporateApiHandler();
         getDepartmentCorporateApiHandler();
+        getCorporateScheduleApiHandler()
     }, [])
 
     const getSectorsCorporateApiHandler = () => {
@@ -69,9 +70,26 @@ console.log(cardData,"card data------>");
             getSectorCorporate({
                 params,
                 onSuccess: (response: any) => () => {
-                    setCardData(response?.details?.knowledege_groups)
+                   
                 },
                 onError: () => () => {
+                },
+            })
+        )
+    }
+
+    const addSectorCorporateApiHandler = (value) => {
+        console.log(value, "apiCheck");
+        const params = {name: value, description: null }
+        dispatch(
+            addSectorCorporate({
+                params,
+                onSuccess: (response) => () => {
+                    console.log(response, "addSectorCorporateApiHandler");
+                    
+                    getSectorsCorporateApiHandler();
+                },
+                onError: (error) => () => {
                 },
             })
         )
@@ -88,6 +106,24 @@ console.log(cardData,"card data------>");
 
                 },
                 onError: () => () => {
+                },
+            })
+        )
+    }
+
+    const addDepartmentApiHandler = (value) => {
+        console.log(value, "apiCheck");
+        
+  const params = {name: value}
+        dispatch(
+            addDepartmentCorporate({
+                params,
+                onSuccess: (response) => () => {
+                    console.log(response, 'addDepartapiHandler');
+                    
+                    getDepartmentCorporateApiHandler();
+                },
+                onError: (error) => () => {
                 },
             })
         )
@@ -244,6 +280,7 @@ console.log(cardData,"card data------>");
         dispatch(getCorporateSchedules({
             params,
             onSuccess: (response: any) => () => {
+                setCardData(response.details.corporate_jd_items)
                 console.log('getCorporateScheduleApiHandler---->', response)
             },
             onError: (error) => () => {
@@ -360,7 +397,7 @@ console.log(cardData,"card data------>");
                                             }
                                             addRoleModal.show();
                                         }}
-                                        onView={(designation, role) => {
+                                        onView={(role) => {
                                             console.log('role-------------->', role)
                                             dispatch(setSelectedRole(role))
                                             dispatch(breadCrumbs({ name: role?.name, title: el?.name, path: window.location.pathname }))
@@ -420,6 +457,7 @@ console.log(cardData,"card data------>");
                     position.set("")
                     experience.set("")
                     jd.set("")
+                    role1.set('')
                 }}>
                     {/* <div className={'col-6'}>
                         <ReactAutoComplete
@@ -475,8 +513,10 @@ console.log(cardData,"card data------>");
                                     isMandatory
                                     data={sectorsCorporate}
                                     heading={"Sector"}
+                                    onAdd = {(value )=>{
+                                        addSectorCorporateApiHandler(value)
+                                    }}
                                     state={setSelectedSector}
-
                                 />
                             </div>
                             <div className='col'>
@@ -484,6 +524,9 @@ console.log(cardData,"card data------>");
                                     isMandatory
                                     data={departmentCorporate}
                                     heading={"Department"}
+                                    onAdd = {(value )=>{
+                                        addDepartmentApiHandler(value)
+                                    }}
                                     state={setSelectedDepartment}
                                 />
                             </div>
