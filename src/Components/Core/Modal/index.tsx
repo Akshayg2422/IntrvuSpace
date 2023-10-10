@@ -23,6 +23,7 @@ function Modal({ isOpen, children, title, size = "lg", style, onClose, ...rest }
             {title}
           </div>}
           <button
+
             aria-label={"Close"}
             className={"close"}
             data-dismiss={"modal"}

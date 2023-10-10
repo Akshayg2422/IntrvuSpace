@@ -200,6 +200,7 @@ function FromJD() {
             if (id !== '-1') {
 
                 // const canStartParams = { schedule_id: id }
+                startInterviewLoader.hide();
                 dispatch(selectedScheduleId(id))
                 goTo(ROUTES['designation-module'].interview + "/" + id)
 
