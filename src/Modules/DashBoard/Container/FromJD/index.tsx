@@ -268,13 +268,15 @@ function FromJD() {
                                                         {name}
                                                     </span>
                                                     {interview_duration &&
-                                                        <div className='col row align-items-center mb-1'>
+                                                    <div className='col'>
+                                                        <div className='row d-flex align-items-center mb-1'>
                                                             <Image src={icons.clock} height={17} width={17} style={{
                                                                 objectFit: 'contain'
                                                             }} />
                                                             <h5 style={{
                                                                 fontSize: "14px"
                                                             }} className='mb-0 text-primary font-weight-bolder ml-2'>{`${interview_duration} mins`}</h5>
+                                                        </div>
                                                         </div>
                                                     }
                                                     <h5 className='mb-0 pointer'>{experience === 0 ? "Fresher" : "" + experience + (experience === 1 ? " year " : " years ") + "of experience"}</h5>
