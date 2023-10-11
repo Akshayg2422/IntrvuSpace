@@ -19,14 +19,7 @@ function Guidelines({ scheduleInfo = undefined, loading, heading, onClick }: Gui
         <>
             {!scheduleInfo.is_complete &&
                 <div className='h-100vh' style={{ position: 'relative' }}>
-                    {/* 
-                    <div className='position-absolute container' style={{
-                        zIndex: 1,
-                        top: 30,
-                        left: 30
-                    }}>
-                        <Back h={40} w={40} />
-                    </div> */}
+
                     <div style={{ backgroundImage: `url(${require('../../../../Assets/img/Background/Guildlines/image.jpg')})`, backgroundSize: 'cover', backgroundPosition: 'center', position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
                         {/* White overlay */}
                         <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(255, 255, 255, 0.96)' }}></div>

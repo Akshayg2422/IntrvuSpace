@@ -1,8 +1,8 @@
 import "./AnimatedLoader.scss";
-function AnimatedLoader() {
-
+import { AnimatedLoaderProps } from './interfaces'
+function AnimatedLoader({ variant = "lg" }: AnimatedLoaderProps) {
     return (
-        <div className="loader-64">
+        <div className={`${variant === 'lg' ? "loader-64" : "loader-32"}`}>
         </div>
     );
 }

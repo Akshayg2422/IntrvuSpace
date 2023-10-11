@@ -1,5 +1,5 @@
 .animated-image {
-  padding: 135px;
+  padding: 125px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -31,11 +31,20 @@
 
 @media (max-width: 768px) {
   .animated-image {
-    padding: 120px;
+    padding: 110px;
     display: flex;
     justify-content: center;
     align-items: center;
-    opacity: 0.7;
+    opacity: 1;
+    margin: auto;
+    background-color: #001532;
+  }
+  .animated-image-small {
+    padding: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 1;
     margin: auto;
     background-color: #001532;
   }
