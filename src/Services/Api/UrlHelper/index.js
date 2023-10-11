@@ -127,7 +127,7 @@ export const URL_CAN_START_INTERVIEW = ASSISTANT + 'canStartInterview'
 
 export const URL_GET_SECTOR_CORPORATE = ASSISTANT + 'getSectorsCorporate'
 
-export const URL_ADD_SECTOR_CORPORATE = ASSISTANT + 'addISectorcorporate'
+export const URL_ADD_SECTOR_CORPORATE = ASSISTANT + 'addISectorCorporate'
 
 
 // addDepartment
@@ -145,3 +145,4 @@ export const URL_CREATE_CORPORATE_SCHEDULE = ASSISTANT + 'createCorporateSchedul
 // getCorporateSchedules
 
 export const URL_GET_CORPORATE_SCHEDULE = ASSISTANT + 'getCorporateSchedules'
+

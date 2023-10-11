@@ -128,7 +128,7 @@ export const canStartInterviewApi = payload => post(URL.URL_CAN_START_INTERVIEW,
 
 export const createCorporateSectorApi = payload => post(URL.URL_GET_SECTOR_CORPORATE, payload, {});
 
-export const addCorporateSectorApi = payload => post(URL.URL_GET_SECTOR_CORPORATE, payload, {});
+export const addCorporateSectorApi = payload => post(URL.URL_ADD_SECTOR_CORPORATE, payload, {});
 
 // addDepartment
 
@@ -145,3 +145,4 @@ export const createCorporateScheduleApi = payload => post(URL.URL_CREATE_CORPORA
 // getCorporateSchedules
 
 export const getCorporateSchedulesApi = payload => post(URL.URL_GET_CORPORATE_SCHEDULE, payload, {});
+
