@@ -1,6 +1,6 @@
 .button {
   font-family: inherit;
-  background: linear-gradient(112.2deg, #68d75c -1.1%, #68d75c 100.7%);
+  background: linear-gradient(112.2deg, #001532 -1.1%, #001532 100.7%);
   color: #ffffff;
   padding: 0.35em 0;
   font-size: 15px;
@@ -32,7 +32,7 @@
 
 .icon svg {
   transition: all 0.5s;
-  color: #68d75c;
+  color: #001532;
   width: 1.2rem;
   height: 1.2rem;
 }
