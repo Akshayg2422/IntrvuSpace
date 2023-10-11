@@ -24,7 +24,7 @@ const PLACE_HOLDER = {
     "jd": `Copy a Job Description from the Job portal(Naukri, LinkedIn...\n\n1.Visit the job portal of choice (e.g., Naukri.com) in your web browser.\n2.Search using keywords for a job listing that interests you.\n3.Click the job title to view the full description.\n4.Highlight, copy, and paste the text into your preferred application seamlessly.`
 }
 
-const INTERVAL_TIME = 3000
+const INTERVAL_TIME = 5000
 
 
 function FromJD() {
@@ -262,19 +262,22 @@ function FromJD() {
                                         <Card className="mt--3 ">
                                             <div className={'d-flex justify-content-between'}>
                                                 <div>
-                                                    <span style={{
+                                                    {name ? <span style={{
                                                         fontSize: "21px"
                                                     }} className='mb-0 text-primary font-weight-bolder'>
-                                                        {name}
-                                                    </span>
+                                                        {name.charAt(0).toUpperCase() + name.slice(1)}
+                                                    </span> : <></>
+                                                    }
                                                     {interview_duration &&
-                                                        <div className='col row align-items-center mb-1'>
-                                                            <Image src={icons.clock} height={17} width={17} style={{
-                                                                objectFit: 'contain'
-                                                            }} />
-                                                            <h5 style={{
-                                                                fontSize: "14px"
-                                                            }} className='mb-0 text-primary font-weight-bolder ml-2'>{`${interview_duration} mins`}</h5>
+                                                        <div className='col'>
+                                                            <div className='row align-items-center mb-1'>
+                                                                <Image src={icons.clock} height={17} width={17} style={{
+                                                                    objectFit: 'contain'
+                                                                }} />
+                                                                <h5 style={{
+                                                                    fontSize: "14px"
+                                                                }} className='mb-0 text-primary font-weight-bolder ml-2'>{`${interview_duration} mins`}</h5>
+                                                            </div>
                                                         </div>
                                                     }
                                                     <h5 className='mb-0 pointer'>{experience === 0 ? "Fresher" : "" + experience + (experience === 1 ? " year " : " years ") + "of experience"}</h5>
@@ -322,7 +325,7 @@ function FromJD() {
                                                                                         {paragraph}
                                                                                     </React.Fragment>
                                                                                 ))}
-                                                                                <span className='h5 text-primary ml-1 pointer' onClick={() => {
+                                                                                <span className='h4 text-primary ml-3 pointer' onClick={() => {
                                                                                     const updatedData: any = [...jdMore];
                                                                                     updatedData[index] = { ...updatedData[index], more: false };
                                                                                     setJdMore(updatedData);
@@ -336,7 +339,7 @@ function FromJD() {
                                                                         :
                                                                         <div className='row'>
                                                                             <div className='text-details text-black'>{details.slice(0, VIEW_MORE_LENGTH) + " ..."}
-                                                                                <span className='h5 text-primary ml-1 pointer'
+                                                                                <span className='h4 text-primary ml-1 pointer'
                                                                                     onClick={() => {
                                                                                         const updatedData: any = [...jdMore]
                                                                                         updatedData[index] = { ...updatedData[index], more: true }
