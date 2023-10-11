@@ -34,9 +34,9 @@ function Guidelines({ scheduleInfo = undefined, loading, heading, onClick }: Gui
                         <div className='container'>
                             <div className="d-flex flex-column justify-content-between h-100vh py-3 py-md-5 py-sm-5">
                                 <div className='col-md-auto'>
-                                    <div>
+                                    <div className='d-flex align-items-center ml--5'>
                                         <Back h={22} w={22} />
-                                        <h2 className="display-2 mb-0 font-weight-bolder text-primary mb-0">{`Interview for the role of ${heading}`}</h2>
+                                        <h2 className="mx-4  display-2 mb-0 font-weight-bolder text-primary mb-0">{`Interview for the role of ${heading}`}</h2>
                                     </div>
                                     {scheduleInfo?.interview_duration &&
                                         <div className='col row align-items-center mb-1'>
