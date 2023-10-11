@@ -200,5 +200,6 @@ export const icons = {
   settings: require('./Settings/icon.png'),
   viewAsMember: require('./ViewAsMember/icon.png'),
   selected: require('./Selected/icon.png'),
-  rejected: require('./Rejected/icon.png')
+  rejected: require('./Rejected/icon.png'),
+  navbarToggler:require('./NavbarToggler/icon.png')
 };

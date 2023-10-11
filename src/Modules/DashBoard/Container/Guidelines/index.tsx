@@ -1,6 +1,6 @@
 import React from 'react'
 import { GuidelinesProps } from './interfaces'
-import { Button, Image } from '@Components'
+import { Back, Button, Image } from '@Components'
 import { useNavigation } from '@Hooks'
 import { icons } from '@Assets'
 
@@ -19,6 +19,14 @@ function Guidelines({ scheduleInfo = undefined, loading, heading, onClick }: Gui
         <>
             {!scheduleInfo.is_complete &&
                 <div className='h-100vh' style={{ position: 'relative' }}>
+                    {/* 
+                    <div className='position-absolute container' style={{
+                        zIndex: 1,
+                        top: 30,
+                        left: 30
+                    }}>
+                        <Back h={40} w={40} />
+                    </div> */}
                     <div style={{ backgroundImage: `url(${require('../../../../Assets/img/Background/Guildlines/image.jpg')})`, backgroundSize: 'cover', backgroundPosition: 'center', position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
                         {/* White overlay */}
                         <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(255, 255, 255, 0.96)' }}></div>
@@ -26,7 +34,10 @@ function Guidelines({ scheduleInfo = undefined, loading, heading, onClick }: Gui
                         <div className='container'>
                             <div className="d-flex flex-column justify-content-between h-100vh py-3 py-md-5 py-sm-5">
                                 <div className='col-md-auto'>
-                                    <h2 className="display-2 mb-0 font-weight-bolder text-primary mb-0">{`Interview for the role of ${heading}`}</h2>
+                                    <div>
+                                        <Back h={22} w={22} />
+                                        <h2 className="display-2 mb-0 font-weight-bolder text-primary mb-0">{`Interview for the role of ${heading}`}</h2>
+                                    </div>
                                     {scheduleInfo?.interview_duration &&
                                         <div className='col row align-items-center mb-1'>
                                             <Image src={icons.clock} height={18} width={18} style={{
@@ -37,22 +48,20 @@ function Guidelines({ scheduleInfo = undefined, loading, heading, onClick }: Gui
                                             }} className='mb-0 text-primary font-weight-bolder ml-2'>{`${scheduleInfo?.interview_duration} mins`}</h5>
                                         </div>
                                     }
-                                    <h3 className="mb-0 pointer text-muted mt--1">{scheduleInfo?.interviewee_experience === 0 ? "Fresher" : "" + scheduleInfo?.interviewee_experience + (scheduleInfo?.interviewee_experience === 1 ? " year " : " years ") + "of experience"}</h3>
+                                    <h3 className="mb-0 pointer">{scheduleInfo?.interviewee_experience === 0 ? "Fresher" : "" + scheduleInfo?.interviewee_experience + (scheduleInfo?.interviewee_experience === 1 ? " year " : " years ") + "of experience"}</h3>
                                 </div>
                                 <div className='col my-5'>
                                     <div className='mb-0'>
-                                        <h5 className="mb-0 text-uppercase">Guidelines</h5>
+                                        <h3 className="mb-0 ">Guidelines</h3>
                                         {
                                             GUIDELINES && GUIDELINES.length > 0 && GUIDELINES.map(each => {
 
                                                 const { title, icon } = each
                                                 return (
-                                                    <div className="row mt-4 align-items-center">
+                                                    <div className="col row mt-4 align-items-center">
+                                                        <Image src={icon} height={28} width={28} />
                                                         <div className="col-auto">
-                                                            <Image src={icon} height={28} width={28} />
-                                                        </div>
-                                                        <div className="col-10">
-                                                            <p className="text-muted mb-0" style={{ fontSize: '20px' }}>{title}</p>
+                                                            <span className="text-details text-black">{title}</span>
                                                         </div>
                                                     </div>
                                                 )

@@ -1,4 +1,4 @@
-import { icons } from '@Assets';
+import { icons, image } from '@Assets';
 import { Button, ButtonGroup, CommonTable, Divider, Image } from '@Components';
 import { useDropDown, useLoader } from '@Hooks';
 import { fetchBasicReport } from '@Redux';
@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import ReactToPrint from 'react-to-print';
-import { Card, CardBody, CardHeader, Progress } from 'reactstrap';
+import { Card, CardBody, CardFooter, CardHeader, Progress } from 'reactstrap';
 
 
 function Report() {
@@ -456,7 +456,7 @@ function Report() {
                             </div> */}
 
                         </div>
-                        <div className='row pl-lg-5 pr-lg-5 pl-sm-0 pl-3 pb-0 pr-sm-0 pr-3 justify-content-between'>
+                        <div className='row pl-lg-5 pr-lg-5 pl-sm-0 pl-2 pb-0 pr-sm-0 pr-3 justify-content-between'>
                             <div className='h1 pt-1 font-weight-bolder text-black'>
                                 {basicReportData.name}
                                 <h5 className='text-black font-weight-bolder'>
@@ -465,36 +465,27 @@ function Report() {
                                 <p className='description'>
                                     {basicReportData.sub_text2}
                                 </p>
+                                <h1 className='font-weight-bolder text-right display-3 d-block d-sm-none'
+                                    style={{
+                                        color: colorVariant(+percentage?.overAll)
+                                    }}
+                                >
+                                    {percentage?.overAll}
+                                </h1>
                             </div>
-                            <div className='flex-column text-right' >
 
+                            <div className='flex-column text-right d-none d-lg-block d-md-block d-xl-block' >
 
-                                <div className='row' style={{
-                                    border: "1px solid",
-                                    padding: "10px 10px 8px 10px"
-                                }}>
-                                    <div className={'d-flex flex-column justify-content-end align-items-end'}  >
-                                        <Image
-                                            className='justify-content-end'
-                                            height={15}
-                                            src={icons.logoText}
-                                        />
-                                        <small style={{
-                                            fontSize: "10px"
-                                        }}>
-                                            <a href={'https://www.intrvu.space'} target="_blank" rel="noreferrer">
-                                                https://www.intrvu.space
-                                            </a>
-                                        </small>
-                                    </div>
-
-                                    <div className='ml-2'>
-                                        <Image
-                                            className={'m-0 p-0'}
-                                            src={icons.logoIcon}
-                                            height={30}
-                                            width={30}
-                                        />
+                                <div className={'d-flex flex-column justify-content-end align-items-end'}  >
+                                    <div className='' >
+                                        <a href={'https://www.intrvu.space'} target="_blank" rel="noreferrer">
+                                            <Image
+                                                className={'m-0 p-0'}
+                                                src={image.IntrvuSpace}
+                                                // height={50}
+                                                width={130}
+                                            />
+                                        </a>
                                     </div>
                                 </div>
 
@@ -518,7 +509,7 @@ function Report() {
                                             return (
                                                 <>
                                                     <div className='col-sm-4 px-1'>
-                                                        <Card className=' '
+                                                        <Card className='shadow-none'
                                                             style={{
                                                                 boxShadow: "rgb(22 21 21 / 8%) 0px 0px 12px 3px"
                                                             }}
@@ -576,7 +567,7 @@ function Report() {
                                             <div className='pl-lg-4 pr-lg-5 mr- pt-3 pb-2'>
                                                 <div className='row justify-content-between pr-2 pl-3 pb-3'>
                                                     <h4 className='font-weight-bolder text-black mb-4 text-uppercase'>{'SKILL MATRIX'}</h4>
-                                                    <div className='font-weight-bolder display-4'
+                                                    <div className='font-weight-bolder display-4 mt--2'
                                                         style={{
                                                             color: colorVariant(+basicReportData[heading].overal_percent)
                                                         }}
@@ -611,18 +602,19 @@ function Report() {
                                                                                     </div>
 
                                                                                 </div>
-                                                                                <Progress
-                                                                                    className='mr-2'
-                                                                                    style={{
-                                                                                        height: '6px',
-                                                                                    }}
-                                                                                    barStyle={
-                                                                                        {
-                                                                                            backgroundColor: colorVariant(+el?.rating || +el?.percent)
+                                                                                <div className={'pl-3'}>
+                                                                                    <Progress
+                                                                                        className='mr-2'
+                                                                                        style={{
+                                                                                            height: '6px',
+                                                                                        }}
+                                                                                        barStyle={
+                                                                                            {
+                                                                                                backgroundColor: colorVariant(+el?.rating || +el?.percent)
+                                                                                            }
                                                                                         }
-                                                                                    }
-                                                                                    max="100" value={el?.rating ? el?.rating : 0} />
-
+                                                                                        max="100" value={el?.rating ? el?.rating : 0} />
+                                                                                </div>
                                                                             </div>
                                                                             <div className="">
                                                                                 <span className='h6'
@@ -640,11 +632,6 @@ function Report() {
                                                                     </p>
                                                                 </div >
                                                                 {el?.questions?.length > 0 && normalizedTableData(el?.questions, '')}
-
-
-
-
-
                                                             </>
                                                         )
                                                     })}
@@ -677,9 +664,9 @@ function Report() {
                                                     {basicReportData[heading].length > 0 && <>
                                                         <div className='pl-lg-4 pr-lg-5 mr- pt-3 pb-2'>
 
-                                                            <div className='row justify-content-between pr-2 pl-3 pb-3'>
-                                                                <h4 className='font-weight-bolder text-black mb-4 text-uppercase'>{heading}</h4>
-                                                                <div className='font-weight-bolder display-4'
+                                                            <div className='row justify-content-between align-items-center pr-2 pl-3 pb-3'>
+                                                                <div className='font-weight-bolder h4 text-black text-uppercase'>{heading}</div>
+                                                                <div className='font-weight-bolder display-4 mt--2'
                                                                     style={{
                                                                         color: colorVariant(heading === 'communication' ? percentage?.communicationOverAll : percentage?.traitOverAll)
                                                                     }}
@@ -692,7 +679,7 @@ function Report() {
                                                                     <>
                                                                         <div className=' px-3 my--4'>
 
-                                                                            <div className='row justify-content-between  align-items-center'
+                                                                            <div className='row justify-content-between align-items-center'
                                                                             >
                                                                                 <div className='pt-4 '>
                                                                                     <h4 className='text-black'>
@@ -711,17 +698,19 @@ function Report() {
                                                                                             </div>
 
                                                                                         </div>
-                                                                                        <Progress
-                                                                                            className='mr-2'
-                                                                                            style={{
-                                                                                                height: '6px',
-                                                                                            }}
-                                                                                            barStyle={
-                                                                                                {
-                                                                                                    backgroundColor: colorVariant(+el?.rating || +el?.percent)
+                                                                                        <div className={'pl-3'}>
+                                                                                            <Progress
+                                                                                                className='mr-2'
+                                                                                                style={{
+                                                                                                    height: '6px',
+                                                                                                }}
+                                                                                                barStyle={
+                                                                                                    {
+                                                                                                        backgroundColor: colorVariant(+el?.rating || +el?.percent)
+                                                                                                    }
                                                                                                 }
-                                                                                            }
-                                                                                            max="100" value={el?.rating || +el?.percent} />
+                                                                                                max="100" value={el?.rating || +el?.percent} />
+                                                                                        </div>
 
                                                                                     </div>
                                                                                     <div className="">
@@ -753,7 +742,6 @@ function Report() {
                                                                                             <CommonTable
                                                                                                 tableDataSet={el?.sub}
                                                                                                 displayDataSet={normalizedTableData(el?.sub, '')}
-
                                                                                             />
                                                                                         </div>}
                                                                                     </div>
@@ -779,6 +767,21 @@ function Report() {
                             }
                         })
                         }
+                        <CardFooter className={'mx--4 d-block d-sm-none '}>
+                            <div className={'mb-5'}>
+                                <p>Powered by</p>
+                                <div className='mt--3' >
+                                    <a href={'https://www.intrvu.space'} target="_blank" rel="noreferrer">
+                                        <Image
+                                            className={'m-0 p-0'}
+                                            src={image.IntrvuSpace}
+                                            // height={50}
+                                            width={130}
+                                        />
+                                    </a>
+                                </div>
+                            </div>
+                        </CardFooter>
                     </div>
                 </div >
             </div >

@@ -53,5 +53,6 @@ export const image = {
     SkillMatrix:require('./theme/skillMatrixReport.jpg'),
     CommunicationReport:require('./theme/communicationReport.jpg'),
     TraitReport:require('./theme/TraitReport.jpg'),
-    Guideline:require('./theme/guideline.jpg')
+    Guideline:require('./theme/guideline.jpg'),
+    IntrvuSpace:require('./theme/intrvuSpace.jpg')
 }

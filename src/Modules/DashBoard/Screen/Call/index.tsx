@@ -1,4 +1,4 @@
-import { AnimatedImage, Button, Modal, Spinner, } from "@Components";
+import { AnimatedImage, Back, Button, Modal, Spinner, } from "@Components";
 import { useLoader, useModal, useNavigation } from "@Hooks";
 import { CallHeader, Guidelines, Report } from "@Modules";
 import {
@@ -856,9 +856,18 @@ function Call() {
             {interviewStarted && (
               <>
                 <div className="d-flex flex-column h-100vh">
-                  <h3 className="text-center display-3 mb-0 font-weight-bolder text-primary mb-0 py-5">{`Interview for the role of ${scheduleInfo?.interviewee_expected_role}`}</h3>
+                  <div className="position-absolute" style={{
+                    top: '3%',
+                    left: '3%'
+                  }}
+                  >
+                    <div className="row align-items-center d-flex flex-column flex-md-row" >
+                      <Back variant={'override'} onClick={endInterviewHandler} />
+                      <h4 className="display-4 mb-0 font-weight-bolder text-primary ml-3 d-none d-md-block">{`Interview for the role of ${scheduleInfo?.interviewee_expected_role}`}</h4>
+                      <h4 className="mb-0 font-weight-bolder text-primary ml-3 d-block d-md-none">{`Interview for the role of ${scheduleInfo?.interviewee_expected_role}`}</h4>
+                    </div>
+                  </div>
                   <div className="d-flex flex-column flex-md-row  align-items-center justify-content-center h-100">
-
                     <div className="d-flex flex-column align-items-center justify-content-center col-md-6">
                       <AnimatedImage
                         show={interviewer_state === IV_PROCESSING}
@@ -919,23 +928,28 @@ function Call() {
               scheduleInfo?.is_report_complete && <Report />
             }
           </>
-        )}
-        {loader.loader && (
-          <div className="d-flex align-items-center justify-content-center h-100">
-            <Spinner />
-          </div>
-        )}
-        {(networkError || websocketError) && (
-          <div className="d-flex align-items-center justify-content-center h-100 ">
-            <div className="text-center ">
-              <h4 className="display-4 mb-0">
-                Technical breakdown please try again
-              </h4>
-              <div className="my-3"></div>
-              <Button text={"Try Again"} onClick={refreshScreen} />
+        )
+        }
+        {
+          loader.loader && (
+            <div className="d-flex align-items-center justify-content-center h-100">
+              <Spinner />
             </div>
-          </div>
-        )}
+          )
+        }
+        {
+          (networkError || websocketError) && (
+            <div className="d-flex align-items-center justify-content-center h-100 ">
+              <div className="text-center ">
+                <h4 className="display-4 mb-0">
+                  Technical breakdown please try again
+                </h4>
+                <div className="my-3"></div>
+                <Button text={"Try Again"} onClick={refreshScreen} />
+              </div>
+            </div>
+          )
+        }
       </div >
       <Modal
         isOpen={micPermissionModal.visible}
