@@ -53,9 +53,6 @@ function Splash() {
                         src={icons.logoText}
                         height={"30%"}
                         width={"30%"}
-                        style={{
-                            mixBlendMode: 'color-burn',
-                        }}
                     />
                 </div>
 

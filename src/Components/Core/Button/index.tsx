@@ -31,7 +31,7 @@ function Button({
             onClick={loading ? undefined : onClick}
           >
             <div className='d-flex align-items-center justify-content-center'>
-              {loading && <div className='my-1'><Spinner color='white' /></div>}
+              {loading && <div><Spinner color='white' /></div>}
               {!loading && <span className='text-uppercase'>{text}</span>}
             </div>
           </RSButton>
