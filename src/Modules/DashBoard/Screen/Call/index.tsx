@@ -20,7 +20,7 @@ import { color } from "@Themes";
 
 const compare_moment_format = "YYYY-MM-DDHH:mm:ss";
 
-const INTERVAL_TIME = 3000;
+const INTERVAL_TIME = 5000;
 
 const NETWORK_DESIGN = [
   {
