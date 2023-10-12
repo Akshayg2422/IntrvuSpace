@@ -1,7 +1,7 @@
 /* eslint-disable no-empty-pattern */
 /* eslint-disable react-hooks/rules-of-hooks */
 import { icons } from '@Assets';
-import { Button, Card, Checkbox, Divider, Image, Input, InputHeading, Modal, Radio, TextArea, showToast } from '@Components';
+import { Button, Card, Checkbox, Divider, Image, Input, InputHeading, Modal, Radio, Spinner, TextArea, showToast } from '@Components';
 import { useInput, useLoader, useModal, useNavigation } from '@Hooks';
 import { AnalyzingAnimation, GenerateModal, UploadJdCard } from '@Modules';
 import { canStartInterview, createNewJdSchedule, getJdItemList, hideCreateJdModal, postJdVariant, selectedScheduleId, showCreateJddModal } from '@Redux';
@@ -233,12 +233,9 @@ function FromJD() {
         }
     }
 
-    const SkeletonLoader = () => (
-        <div className="skeleton-loader" style={{ height: '100px' }}></div>
-    );
     return (
         <>
-            {loading ? <div className={'d-flex justify-content-center my-9'}><SkeletonLoader /></div> :
+            {loading ? <div className={'d-flex justify-content-center my-9'}><Spinner/></div> :
                 jdItem && jdItem.length > 0 ?
                     <div>
                         {
