@@ -7,7 +7,7 @@ export const BUILD_TYPE_LOCAL = 4;
 
 
 const LIVE_IP = "https://mockeazyprimary.leorainfotech.in/"
-const LOCAL_IP = "https://616e-103-118-191-250.ngrok-free.app/"
+const LOCAL_IP = "http://192.168.103.126:8009"
 
 
 export const BUILD_TYPE = BUILD_TYPE_LIVE;
