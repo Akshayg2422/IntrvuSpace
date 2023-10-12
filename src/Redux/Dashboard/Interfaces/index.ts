@@ -35,4 +35,5 @@ export interface DashboardProp {
   sectorsCorporate: any;
   departmentCorporate:any;
   corporateSchedules:any,
+  createForOthersJdModal:boolean,
 }

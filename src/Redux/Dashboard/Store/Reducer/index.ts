@@ -45,7 +45,8 @@ const initialState: DashboardProp = {
   createJdModal: false,
   sectorsCorporate: undefined,
   departmentCorporate: undefined,
-  corporateSchedules:undefined,
+  corporateSchedules: undefined,
+  createForOthersJdModal: false,
 };
 
 const DashboardReducer = (state = initialState, action: any) => {
@@ -454,9 +455,9 @@ const DashboardReducer = (state = initialState, action: any) => {
       state = { ...state };
       break;
     case ActionTypes.ADD_SECTORS_CORPORATE_FAILURE:
-      state = { ...state};
+      state = { ...state };
       break;
-      
+
     /** addDepartment */
 
     case ActionTypes.ADD_DEPARTMENT_CORPORATE:
@@ -499,11 +500,34 @@ const DashboardReducer = (state = initialState, action: any) => {
       state = { ...state, corporateSchedules: undefined };
       break;
     case ActionTypes.GET_CORPORATE_SCHEDULES_SUCCESS:
-      state = { ...state, corporateSchedules: action.payload};
+      state = { ...state, corporateSchedules: action.payload };
       break;
     case ActionTypes.GET_CORPORATE_SCHEDULES_FAILURE:
       state = { ...state, corporateSchedules: undefined };
       break;
+
+    // showModalCreateForOthers
+
+    case ActionTypes.SHOW_CREATE_FOR_OTHERS_JD_MODAL:
+      state = { ...state, createForOthersJdModal: true };
+      break;
+
+
+    case ActionTypes.HIDE_CREATE_FOR_OTHERS_JD_MODAL:
+      state = { ...state, createForOthersJdModal: false };
+      break;
+
+      // createScheduleSuperAdmin
+
+      case ActionTypes.CREATE_SCHEDULES_SUPER_ADMIN:
+        state = { ...state };
+        break;
+      case ActionTypes.CREATE_SCHEDULES_SUPER_ADMIN_SUCCESS:
+        state = { ...state };
+        break;
+      case ActionTypes.CREATE_SCHEDULES_SUPER_ADMIN_FAILURE:
+        state = { ...state };
+        break;
 
     default:
       state = state;

@@ -946,3 +946,38 @@ export const getCorporateSchedulesFailure = (error: any) => {
   }
 }
 
+
+export const showCreateForOthersJdModal = () => {
+  return {
+    type: ActionTypes.SHOW_CREATE_FOR_OTHERS_JD_MODAL,
+  };
+};
+
+// showModalCreateForOthers
+
+export const hideCreateForOthersJdModal = () => {
+  return {
+    type: ActionTypes.HIDE_CREATE_FOR_OTHERS_JD_MODAL,
+  };
+};
+
+// createScheduleSuperAdmin
+
+export const createSchedulesSuperAdmin = (params: any) => {
+  return {
+    type : ActionTypes.CREATE_SCHEDULES_SUPER_ADMIN,
+    payload : params,
+  }
+}
+export const createSchedulesSuperAdminSuccess = (response: any) => {
+  return {
+    type : ActionTypes.CREATE_SCHEDULES_SUPER_ADMIN_SUCCESS,
+    payload : response,
+  }
+}
+export const createSchedulesSuperAdminFailure = (error: any) => {
+  return {
+    type : ActionTypes.CREATE_SCHEDULES_SUPER_ADMIN_FAILURE,
+    payload : error,
+  }
+}
