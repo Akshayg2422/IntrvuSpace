@@ -1,12 +1,12 @@
 /* eslint-disable no-empty-pattern */
 /* eslint-disable react-hooks/rules-of-hooks */
 import { icons } from '@Assets';
-import { Button, Card, Checkbox, Divider, Image, Input, InputHeading, Modal, Radio, Spinner, TextArea, showToast } from '@Components';
+import { Button, Card, Checkbox, Divider, Image, Input, InputHeading, Modal, Radio, TextArea, showToast, Spinner } from '@Components';
 import { useInput, useLoader, useModal, useNavigation } from '@Hooks';
 import { AnalyzingAnimation, GenerateModal, UploadJdCard } from '@Modules';
-import { canStartInterview, createNewJdSchedule, getJdItemList, hideCreateJdModal, postJdVariant, selectedScheduleId, showCreateJddModal } from '@Redux';
+import { canStartInterview, createNewJdSchedule, createSchedulesSuperAdmin, getJdItemList, hideCreateForOthersJdModal, hideCreateJdModal, postJdVariant, selectedScheduleId, showCreateForOthersJdModal, showCreateJddModal } from '@Redux';
 import { ROUTES } from '@Routes';
-import { FROM_JD_RULES, getValidateError, ifObjectExist, validate } from '@Utils';
+import { CREATE_FOR_OTHERS_RULES, FROM_JD_RULES, getValidateError, ifObjectExist, validate } from '@Utils';
 import { time } from 'console';
 import { title } from 'process';
 import React, { useEffect, useState } from 'react';
@@ -36,7 +36,7 @@ function FromJD() {
     const ERROR_MESSAGE = "In beta version, you can upload only max of " + CHAR_LENGTH + " characters."
 
 
-    const { createJdModal, jdItem } = useSelector((state: any) => state.DashboardReducer);
+    const { createJdModal, jdItem, createForOthersJdModal } = useSelector((state: any) => state.DashboardReducer);
 
     const { goTo } = useNavigation();
     const position = useInput('');
@@ -50,17 +50,20 @@ function FromJD() {
     const [loading, setLoading] = useState(true);
     const [jdMore, setJdMore] = useState<any>([])
     const [fresherChecked, setFresherChecked] = useState(false)
+    const [notifyInterview, setNotifyInterview] = useState(false)
+    const [notifyReport, setNotifyReport] = useState(false)
     const [jdDescriptionError, setJdDescriptionError] = useState<any>(undefined)
     const [selectedDuration, setSelectedDuration] = useState(interviewDurations[0]);
+    const [selectedDurationForOthers, setSelectedDurationForOthers] = useState(interviewDurations[0]);
     const [sliderValue, setSliderValue] = useState(0);
-    const [skeletonLoader, setSkeletonLoader] = useState(true);
-
-    useEffect(() => {
-        // Simulate loading delay for demonstration purposes
-        setTimeout(() => {
-            setSkeletonLoader(false);
-        }, 2000); // Set a time to simulate loading
-    }, []);
+    const firstName = useInput('')
+    const lastName = useInput('')
+    const email = useInput('')
+    const mobileNumber = useInput('')
+    const sectorForOthers = useInput('')
+    const experienceForOthers = useInput('')
+    const positionForOthers = useInput('')
+    const jdForOthers = useInput('')
 
     const handleSliderChange = (newValue: any) => {
         console.log('Slider value changed:', newValue);
@@ -73,7 +76,6 @@ function FromJD() {
     useEffect(() => {
         getKnowledgeGroupFromJdHandler();
     }, [])
-
 
 
     const dispatch = useDispatch()
@@ -195,6 +197,56 @@ function FromJD() {
             }))
     }
 
+    function createForOthersApiHandler() {
+        const params = {
+            custom_first_name: firstName.value,
+            custom_last_name: lastName.value,
+            custom_email: email.value,
+            custom_mobile_number: mobileNumber.value,
+            sector_name: sectorForOthers.value,
+            position: positionForOthers.value,
+            is_notify_interview: notifyInterview,
+            is_notify_report: notifyReport,
+            experience: experienceForOthers.value,
+            interview_duration: selectedDurationForOthers.value,
+            jd: jdForOthers.value
+        }
+
+        const validation = validate(CREATE_FOR_OTHERS_RULES, params)
+
+        if (ifObjectExist(validation)) {
+            dispatch(hideCreateForOthersJdModal())
+            dispatch(createSchedulesSuperAdmin({
+                params,
+                onSuccess: (response: any) => () => {
+                    console.log('response---------------111-------->', response)
+                    createForOthersResetValues()
+                    setNotifyInterview(false)
+                    setNotifyReport(false)
+                    // showToast(response.status, 'success');
+                },
+                onError: (error) => () => {
+                    generateJdModal.hide();
+                    dispatch(showCreateForOthersJdModal())
+                    showToast(error.error_message, 'error')
+                },
+            }))
+        } else {
+            showToast(getValidateError(validation))
+        }
+    }
+
+    function createForOthersResetValues() {
+        firstName.set('')
+        lastName.set('')
+        email.set('')
+        mobileNumber.set('')
+        sectorForOthers.set('')
+        positionForOthers.set('')
+        experienceForOthers.set('')
+        jd.set('')
+    }
+
 
     function proceedInterviewHandler(id: string) {
         if (id) {
@@ -233,9 +285,10 @@ function FromJD() {
         }
     }
 
+
     return (
         <>
-            {loading ? <div className={'d-flex justify-content-center my-9'}><Spinner/></div> :
+            {loading ? <div className={'d-flex justify-content-center my-9'}><Spinner /></div> :
                 jdItem && jdItem.length > 0 ?
                     <div>
                         {
@@ -591,6 +644,122 @@ function FromJD() {
                     </div>
                 </div>
             </Modal>
+
+            <Modal title={'Create Interview For Others'} isOpen={createForOthersJdModal} onClose={() => { dispatch(hideCreateForOthersJdModal()) }}>
+                <div className={'row'}>
+                    <div className={'col-6'}>
+                        <Input
+                            isMandatory
+                            heading={'First Name'}
+                            placeHolder={' First Name'}
+                            value={firstName.value}
+                            onChange={firstName.onChange} />
+                    </div>
+                    <div className={'col-6 mt-2'}>
+                        <Input
+                            heading={'Last Name'}
+                            placeHolder={'Last Name'}
+                            value={lastName.value}
+                            onChange={lastName.onChange} />
+                    </div>
+                </div>
+
+                <div className={'row'}>
+                    <div className={'col-6'}>
+                        <Input
+                            heading={'Email'}
+                            placeHolder={'Email Id'}
+                            value={email.value}
+                            onChange={email.onChange} />
+                    </div>
+                    <div className={'col-6'}>
+                        <Input
+                            heading={'Mobile Number'}
+                            maxLength={10}
+                            type={'number'}
+                            placeHolder={'Mobile Number'}
+                            value={mobileNumber.value}
+                            onChange={mobileNumber.onChange} />
+                    </div>
+                </div>
+
+                <div className={'row'}>
+                    <div className={'col-6'}>
+                        <Input
+                            isMandatory
+                            heading={'Sector'}
+                            placeHolder={'Sector'}
+                            value={sectorForOthers.value}
+                            onChange={sectorForOthers.onChange} />
+                    </div>
+                    <div className={'col-6'}>
+                        <Input
+                            isMandatory
+                            type={'number'}
+                            heading={'Experience'}
+                            placeHolder={'Experience'}
+                            value={experienceForOthers.value}
+                            onChange={experienceForOthers.onChange} />
+                    </div>
+                </div>
+
+                <div className={'row'}>
+                    <div className={'col-6 mt-1'}>
+                        <InputHeading Class={'mb-0'} heading={'Interview Duration'} isMandatory />
+                        <Radio
+                            selected={selectedDurationForOthers}
+                            selectItem={selectedDurationForOthers}
+                            data={interviewDurations}
+                            onRadioChange={(selected) => {
+                                if (selected) {
+                                    setSelectedDurationForOthers(selected)
+                                }
+                            }}
+                        />
+                    </div>
+
+                    <div className={'col-6'}>
+                        <Input
+                            isMandatory
+                            heading={'Role'}
+                            placeHolder={'Role'}
+                            value={positionForOthers.value}
+                            onChange={positionForOthers.onChange} />
+                    </div>
+                </div>
+
+                <TextArea
+                    isMandatory
+                    error={jdDescriptionError}
+                    placeholder={PLACE_HOLDER.jd}
+                    heading='JD Details'
+                    value={jd.value.slice(0, CHAR_LENGTH)}
+                    onChange={(e) => {
+                        let value = e.target.value
+                        if (value.length > CHAR_LENGTH) {
+                            setJdDescriptionError(ERROR_MESSAGE)
+                        } else {
+                            setJdDescriptionError(undefined)
+                        }
+                        jd.set(value)
+                    }}
+                />
+
+                <Checkbox className={'text-primary flex-row'} text={'Notify interview'} id={'notifyInterview'} defaultChecked={notifyInterview} onCheckChange={(checked) => {
+                    setNotifyInterview(checked)
+                }} />
+
+                <div className={'d-flex justify-content-between mt--4'}>
+                    <Checkbox className={'text-primary'} text={'Notify Report'} id={'notifyReport'} defaultChecked={notifyReport} onCheckChange={(checked) => {
+                        setNotifyReport(checked)
+                    }} />
+
+                    <div className='text-right'>
+                        <Button size='md' text={'Submit'} onClick={createForOthersApiHandler} />
+                    </div>
+                </div>
+
+            </Modal >
         </>
     )
 }
