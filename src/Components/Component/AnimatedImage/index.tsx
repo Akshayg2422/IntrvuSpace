@@ -1,11 +1,9 @@
 import { AnimatedLoader } from "@Components";
-import { color } from "@Themes";
 import classNames from "classnames";
 import "./AnimatedImageFrame.scss";
 
-const AnimatedImage = ({ name, shouldBlink, show, variant = 'name', showWebCam = false, isMuted = false }) => {
-  const imageClasses = classNames(!isMuted ? "animated-image" : "", { blink: shouldBlink });
-
+const AnimatedImage = ({ name, shouldBlink, show, showWebCam = false, isMuted = false, variant = 'lg' }) => {
+  const imageClasses = classNames(!isMuted ? variant === 'sm' ? "animated-image-small" : "animated-image" : "", { blink: shouldBlink });
 
   return (
 
@@ -18,12 +16,12 @@ const AnimatedImage = ({ name, shouldBlink, show, variant = 'name', showWebCam =
         {!show ?
           <div className="d-flex align-items-center justify-content-center">
             <h1 className="text-white font-weight-700" style={{
-              fontSize: "70px"
+              fontSize: variant === "sm" ? "40px" : "70px"
             }}>{name}
             </h1>
           </div> :
           <div className="col text-center">
-            <AnimatedLoader />
+            <AnimatedLoader variant={variant} />
           </div>
         }
       </div>

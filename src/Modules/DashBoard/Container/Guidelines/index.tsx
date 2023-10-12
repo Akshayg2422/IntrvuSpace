@@ -3,6 +3,7 @@ import { GuidelinesProps } from './interfaces'
 import { Back, Button, Image } from '@Components'
 import { useNavigation } from '@Hooks'
 import { icons } from '@Assets'
+import { useSelector } from 'react-redux'
 
 const GUIDELINES = [
     { title: "Kindly ensure the use of headphones to optimize audio quality.", icon: icons.headPhone },
@@ -14,19 +15,13 @@ const GUIDELINES = [
 
 function Guidelines({ scheduleInfo = undefined, loading, heading, onClick }: GuidelinesProps) {
     const { goBack } = useNavigation()
+    const { loginDetails } = useSelector((state: any) => state.AppReducer);
 
     return (
         <>
             {!scheduleInfo.is_complete &&
                 <div className='h-100vh' style={{ position: 'relative' }}>
-                    {/* 
-                    <div className='position-absolute container' style={{
-                        zIndex: 1,
-                        top: 30,
-                        left: 30
-                    }}>
-                        <Back h={40} w={40} />
-                    </div> */}
+
                     <div style={{ backgroundImage: `url(${require('../../../../Assets/img/Background/Guildlines/image.jpg')})`, backgroundSize: 'cover', backgroundPosition: 'center', position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
                         {/* White overlay */}
                         <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(255, 255, 255, 0.96)' }}></div>
@@ -95,11 +90,13 @@ function Guidelines({ scheduleInfo = undefined, loading, heading, onClick }: Gui
                             <div className='card mb-0 overflow-auto overflow-hide scroll-y'>
                                 <div className='card-body mb-0 shadow-none'>
                                     <div className='col'>
-                                        <div className='display-3 text-primary font-weight-700'>{'Report generation inprogress'}</div>
-                                        <p className='mt-0 mb-5'>We are generating your report, It might take a couple of minutes please check back after sometime.</p>
-                                        <div>
-                                            <Button text={'Go to Dashboard'} onClick={() => { goBack(); }} />
-                                        </div>
+                                        <div className='display-3 text-primary font-weight-700'>{'Report Generation in Progress'}</div>
+                                        <p className='mt-0 mb-5'>Please revisit in a couple of minutes to access the completed report. We are currently in the process of generating your report.</p>
+                                        {
+                                            loginDetails?.isLoggedIn && <div>
+                                                <Button text={'Go to Dashboard'} onClick={() => { goBack(); }} />
+                                            </div>
+                                        }
                                     </div>
                                 </div>
                             </div>

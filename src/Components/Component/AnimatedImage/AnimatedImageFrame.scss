@@ -1,5 +1,5 @@
 .animated-image {
-  padding: 120px;
+  padding: 125px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -39,6 +39,18 @@
     margin: auto;
     background-color: #001532;
   }
+
+  .animated-image-small {
+    padding: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 1;
+    margin: auto;
+    background-color: #001532;
+  }
+
+
 
   .animated-image::after,
   .animated-image:before {

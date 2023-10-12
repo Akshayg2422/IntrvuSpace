@@ -81,6 +81,16 @@
   animation: animloader64 0.6s linear infinite;
 }
 
+.loader-32 {
+  width: 6.8571428571px;
+  height: 32px;
+  display: inline-block;
+  position: relative;
+  color: white;
+  left: -40px;
+  animation: animloader64 0.6s linear infinite;
+}
+
 @keyframes animloader64 {
   0% {
     box-shadow: 20px -10px, 40px 10px, 60px 0px;
