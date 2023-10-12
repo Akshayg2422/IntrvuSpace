@@ -915,12 +915,22 @@ function Call() {
                     </div>
                   </div>
                 </div>
+
+                {
+
+                  /**
+                   * for mobile responsive screen
+                   */
+
+                }
+
                 <div className="d-block d-md-none d-lg-none d-xl-none">
 
                   <div className="d-flex flex-column h-100vh">
                     <div style={{
                       height: '90%'
                     }}>
+
 
                       <div className="h-100">
                         <div className="position-absolute" >
@@ -971,7 +981,13 @@ function Call() {
                       height: '10%',
                       backgroundColor: color.callFooter,
                     }}>
-                      <CallHeaderMobile />
+                      <CallHeaderMobile
+                        webcam={showCam}
+                        mic={!mute}
+                        onWebCamChange={webCamHandler}
+                        onMicChange={micMuteHandler}
+                        onEndClick={endInterviewHandler}
+                        onEndInterViewClick={closeInterviewAPiHandler} />
                     </div>
 
                   </div>

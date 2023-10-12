@@ -738,7 +738,7 @@ function Report() {
                                 }
                             })
                             }
-                            <CardFooter className={'mx--4 d-block d-sm-none '}>
+                            <CardFooter className={'mx--4 d-block d-sm-no   ne '}>
                                 <div className={'mb-5'}>
                                     <p>Powered by</p>
                                     <div className='mt--3' >
