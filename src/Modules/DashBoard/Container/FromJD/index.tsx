@@ -1,3 +1,4 @@
+/* eslint-disable no-empty-pattern */
 /* eslint-disable react-hooks/rules-of-hooks */
 import { icons } from '@Assets';
 import { Button, Card, Checkbox, Divider, Image, Input, InputHeading, Modal, Radio, Spinner, TextArea, showToast } from '@Components';
@@ -255,6 +256,14 @@ function FromJD() {
                                         return !is_complete
                                     })
 
+
+                                    const basic_info = proceedInterview?.custom_interviewee_details?.basic_info
+
+                                    const basicInfo = basic_info && basic_info.first_name ? basic_info : null;
+                                    let demoDisplayName: any = ''
+                                    if (basicInfo)
+                                        demoDisplayName = " - " + basicInfo?.first_name
+
                                     return (
                                         <Card className="mt--3 ">
                                             <div className={'d-flex justify-content-between'}>
@@ -262,19 +271,19 @@ function FromJD() {
                                                     {name ? <span style={{
                                                         fontSize: "21px"
                                                     }} className='mb-0 text-primary font-weight-bolder'>
-                                                        {name.charAt(0).toUpperCase() + name.slice(1)}
+                                                        {name.charAt(0).toUpperCase() + name.slice(1) + demoDisplayName}
                                                     </span> : <></>
                                                     }
                                                     {interview_duration &&
-                                                    <div className='col'>
-                                                        <div className='row d-flex align-items-center mb-1'>
-                                                            <Image src={icons.clock} height={17} width={17} style={{
-                                                                objectFit: 'contain'
-                                                            }} />
-                                                            <h5 style={{
-                                                                fontSize: "14px"
-                                                            }} className='mb-0 text-primary font-weight-bolder ml-2'>{`${interview_duration} mins`}</h5>
-                                                        </div>
+                                                        <div className='col'>
+                                                            <div className='row d-flex align-items-center mb-1'>
+                                                                <Image src={icons.clock} height={17} width={17} style={{
+                                                                    objectFit: 'contain'
+                                                                }} />
+                                                                <h5 style={{
+                                                                    fontSize: "14px"
+                                                                }} className='mb-0 text-primary font-weight-bolder ml-2'>{`${interview_duration} mins`}</h5>
+                                                            </div>
                                                         </div>
                                                     }
                                                     <h5 className='mb-0 pointer'>{experience === 0 ? "Fresher" : "" + experience + (experience === 1 ? " year " : " years ") + "of experience"}</h5>
@@ -359,7 +368,15 @@ function FromJD() {
                                                     modifiedSchedules &&
                                                     modifiedSchedules.length > 0 &&
                                                     modifiedSchedules.slice().reverse().map((each: any, index: number) => {
-                                                        const { is_complete, is_report_complete, id, created_at } = each;
+                                                        const { is_complete, is_report_complete, id, created_at, custom_interviewee_details } = each;
+
+                                                        const basic_info = custom_interviewee_details?.basic_info
+
+
+                                                        const basicInfo = basic_info && basic_info.first_name ? basic_info : null;
+                                                        let demoDisplayName: any = ''
+                                                        if (basicInfo)
+                                                            demoDisplayName = " - " + basicInfo?.first_name
 
                                                         const getDisplayTimeFromMoment = (timestamp: any) => {
                                                             const currentTime = new Date().getTime();
@@ -380,7 +397,7 @@ function FromJD() {
                                                         return (
                                                             <div>
                                                                 <div className='row align-items-center'>
-                                                                    <h5 className='col m-0 p-0'>{"Interview " + (index + 1)}</h5>
+                                                                    <h5 className='col m-0 p-0'>{"Interview " + (index + 1) + demoDisplayName}</h5>
                                                                     <h5 className='col mb-0 text-center'>{(is_complete ? "Completed: " : "Created at: ") + getDisplayTimeFromMoment(created_at)}</h5>
                                                                     <div className='col d-flex justify-content-end'>
                                                                         {
