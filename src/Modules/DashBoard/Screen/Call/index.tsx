@@ -20,7 +20,7 @@ import { color } from "@Themes";
 
 const compare_moment_format = "YYYY-MM-DDHH:mm:ss";
 
-const INTERVAL_TIME = 3000;
+const INTERVAL_TIME = 5000;
 
 const NETWORK_DESIGN = [
   {
@@ -483,6 +483,8 @@ function Call() {
         listener.current.on("volume_change", function (value) {
           // const voiceDetectionSaturation = ambianceVolume.current - 18
           const valueP = Math.abs(value);
+          console.log("valueP", valueP);
+
           // console.log("voiceDetectionSaturation", voiceDetectionSaturation, valueP)
 
           // addToDecibleCollection(valueP)
@@ -840,7 +842,7 @@ function Call() {
   else if (!voiceUp && !mute) interviewer_state = IV_PROCESSING;
 
 
-  // console.log(JSON.stringify(scheduleInfo) + '=====');
+  console.log("voiceUp", voiceUp);
 
 
   return (
@@ -913,12 +915,22 @@ function Call() {
                     </div>
                   </div>
                 </div>
+
+                {
+
+                  /**
+                   * for mobile responsive screen
+                   */
+
+                }
+
                 <div className="d-block d-md-none d-lg-none d-xl-none">
 
                   <div className="d-flex flex-column h-100vh">
                     <div style={{
                       height: '90%'
                     }}>
+
 
                       <div className="h-100">
                         <div className="position-absolute" >
@@ -969,7 +981,13 @@ function Call() {
                       height: '10%',
                       backgroundColor: color.callFooter,
                     }}>
-                      <CallHeaderMobile />
+                      <CallHeaderMobile
+                        webcam={showCam}
+                        mic={!mute}
+                        onWebCamChange={webCamHandler}
+                        onMicChange={micMuteHandler}
+                        onEndClick={endInterviewHandler}
+                        onEndInterViewClick={closeInterviewAPiHandler} />
                     </div>
 
                   </div>
