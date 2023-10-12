@@ -59,7 +59,7 @@ export function Tabs({ tabs, selected, onChange, height }: TabsProps) {
                     transform: "translateX(-50%)",  // Adjust for centering
                     height: "4px",
                     width: "70%",
-                    background: "#67f60e",
+                    background: "#001532",
                   }}
                 />                
                 )}

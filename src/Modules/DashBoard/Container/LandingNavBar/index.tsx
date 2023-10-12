@@ -3,8 +3,9 @@ import { useNavigation } from '@Hooks'
 import { ROUTES } from '@Routes'
 import React from 'react'
 import { Link } from 'react-router-dom'
+import {Image} from '@Components'
 import { Navbar, Container, NavbarBrand, UncontrolledCollapse, Row, Col, Nav, NavItem, NavLink, Button } from 'reactstrap'
-
+import './index.css'
 function LandingNavBar() {
 
     const { goTo } = useNavigation()
@@ -37,7 +38,8 @@ function LandingNavBar() {
                         id="navbar-collapse"
                         type="button"
                     >
-                        <span className="navbar-toggler-icon" />
+                        {/* <span style={{}} className="navbar-toggler-icon " /> */}
+                        <div className={'pt-2'}><Image height={30} width={30} src={icons.navbarToggler} /></div>
                     </button>
                     <UncontrolledCollapse
                         className="navbar-custom-collapse"
@@ -59,7 +61,7 @@ function LandingNavBar() {
                                         aria-controls="navbar-collapse"
                                         aria-expanded={false}
                                         aria-label="Toggle navigation"
-                                        className="navbar-toggler"
+                                        className="navbar-toggler text-black"
                                         data-target="#navbar-collapse"
                                         data-toggle="collapse"
                                         id="navbar-collapse"
@@ -73,7 +75,7 @@ function LandingNavBar() {
                         </div>
 
                         <Nav className="align-items-lg-center ml-lg-auto" navbar>
-                            <NavItem className="d-none d-lg-block ml-lg-4">
+                            <NavItem className="d-block ml-lg-4">
                                 <Button
                                     className="bg-primary rounded-0 text-white"
                                     size='sm'

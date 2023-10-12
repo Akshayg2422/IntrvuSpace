@@ -1,6 +1,6 @@
-import { AnimatedImage, Back, Button, Modal, Spinner, } from "@Components";
+import { AnimatedImage, Back, Button, Modal, Spinner } from "@Components";
 import { useLoader, useModal, useNavigation } from "@Hooks";
-import { CallHeader, Guidelines, Report } from "@Modules";
+import { CallHeader, CallHeaderMobile, Guidelines, Report } from "@Modules";
 import {
   getScheduleBasicInfo,
   closeInterview,
@@ -857,60 +857,123 @@ function Call() {
           <>
             {interviewStarted && (
               <>
-                <div className="d-flex flex-column h-100vh">
-                  <div className="position-absolute" style={{
-                    top: '3%',
-                    left: '3%'
-                  }}
-                  >
-                    <div className="row align-items-center d-flex flex-column flex-md-row" >
-                      <Back variant={'override'} onClick={endInterviewHandler} />
-                      <h4 className="display-4 mb-0 font-weight-bolder text-primary ml-3 d-none d-md-block">{`Interview for the role of ${scheduleInfo?.interviewee_expected_role}`}</h4>
-                      <h4 className="mb-0 font-weight-bolder text-primary ml-3 d-block d-md-none">{`Interview for the role of ${scheduleInfo?.interviewee_expected_role}`}</h4>
+                <div className="d-none d-md-block d-lg-block d-xl-block">
+                  <div className="d-flex flex-column h-100vh d-none d-md-block">
+                    <div className="position-absolute" style={{
+                      top: '3%',
+                      left: '3%'
+                    }}
+                    >
+                      <div className="row align-items-center d-flex flex-column flex-md-row" >
+                        <Back variant={'override'} onClick={endInterviewHandler} />
+                        <h4 className="display-4 mb-0 font-weight-bolder text-primary ml-3 d-none d-md-block">{`Interview for the role of ${scheduleInfo?.interviewee_expected_role}`}</h4>
+                        <h4 className="mb-0 font-weight-bolder text-primary ml-3 d-block d-md-none">{`Interview for the role of ${scheduleInfo?.interviewee_expected_role}`}</h4>
+                      </div>
                     </div>
-                  </div>
-                  <div className="d-flex flex-column flex-md-row  align-items-center justify-content-center h-100">
-                    <div className="d-flex flex-column align-items-center justify-content-center col-md-6">
-                      <AnimatedImage
-                        show={interviewer_state === IV_PROCESSING}
-                        name={getShortName(scheduleInfo?.interviewer_name)}
-                        shouldBlink={interviewer_state === IV_SPEAKING}
-                      />
-                      <h3 className="display-3 mb-4 text-primary mt-3">
-                        {capitalizeFirstLetter(scheduleInfo?.interviewer_name)}
-                      </h3>
+                    <div className="d-flex flex-column flex-md-row  align-items-center justify-content-center h-100">
+                      <div className="d-flex flex-column align-items-center justify-content-center col-md-6">
+                        <AnimatedImage
+                          show={interviewer_state === IV_PROCESSING}
+                          name={getShortName(scheduleInfo?.interviewer_name)}
+                          shouldBlink={interviewer_state === IV_SPEAKING}
+                        />
+                        <h3 className="display-3 mb-4 text-primary mt-3">
+                          {capitalizeFirstLetter(scheduleInfo?.interviewer_name)}
+                        </h3>
+                      </div>
+                      <div className="d-flex flex-column align-items-center justify-content-center col-md-6">
+                        <AnimatedImage
+                          show={false}
+                          showWebCam={showCam}
+                          name={getShortName(scheduleInfo?.interviewee_name)}
+                          shouldBlink={interviewee_state === IE_SPEAKING}
+                        />
+                        <h3 className="display-3 mb-4 text-primary mt-3">
+                          {capitalizeFirstLetter(
+                            scheduleInfo?.interviewee_name
+                          )}
+                        </h3>
+                      </div>
                     </div>
-                    <div className="d-flex flex-column align-items-center justify-content-center col-md-6">
-                      <AnimatedImage
-                        show={false}
-                        showWebCam={showCam}
-                        name={getShortName(scheduleInfo?.interviewee_name)}
-                        shouldBlink={interviewee_state === IE_SPEAKING}
-                      />
-                      <h3 className="display-3 mb-4 text-primary mt-3">
-                        {capitalizeFirstLetter(
-                          scheduleInfo?.interviewee_name
-                        )}
-                      </h3>
+                    <div className="position-absolute d-flex align-items-center justify-content-center bottom-0 w-100 mb-5" >
+                      <div className="col-md-6">
+                        <CallHeader
+                          webcam={showCam}
+                          mic={!mute}
+                          onWebCamChange={webCamHandler}
+                          onMicChange={micMuteHandler}
+                          onEndClick={endInterviewHandler}
+                          onEndInterViewClick={closeInterviewAPiHandler}
+                        />
+                      </div>
                     </div>
-                  </div>
-                  <div className="position-absolute d-flex align-items-center justify-content-center bottom-0 w-100 mb-5" >
-                    <div className="col-md-6">
-                      <CallHeader
-                        webcam={showCam}
-                        mic={!mute}
-                        onWebCamChange={webCamHandler}
-                        onMicChange={micMuteHandler}
-                        onEndClick={endInterviewHandler}
-                        onEndInterViewClick={closeInterviewAPiHandler}
-                      />
-                    </div>
-                  </div>
 
-                  <div className="position-absolute bottom-0 right-0 mr-3 mb-2 align-items-center">
-                    <div className="row align-items-end">
-                      {renderNetworkRange()}
+                    <div className="position-absolute bottom-0 right-0 mr-3 mb-2 align-items-center">
+                      <div className="row align-items-end">
+                        {renderNetworkRange()}
+                      </div>
                     </div>
+                  </div>
+                </div>
+                <div className="d-block d-md-none d-lg-none d-xl-none">
+
+                  <div className="d-flex flex-column h-100vh">
+                    <div style={{
+                      height: '90%'
+                    }}>
+
+                      <div className="h-100">
+                        <div className="position-absolute" >
+                          <div className="col">
+                            <div className="d-flex m-3 align-items-center">
+                              <Back variant={'override'} onClick={endInterviewHandler} />
+                              <h4 className="mb-0 font-weight-bolder text-primary ml-3">{`Interview for the role of ${scheduleInfo?.interviewee_expected_role}`}</h4>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="d-flex  align-items-center justify-content-center h-100">
+                          <div>
+                            <AnimatedImage
+                              show={false}
+                              showWebCam={showCam}
+                              name={getShortName(scheduleInfo?.interviewee_name)}
+                              shouldBlink={interviewee_state === IE_SPEAKING}
+                            />
+                            <h3 className="display-3 mb-4  mt-3 text-center">
+                              {capitalizeFirstLetter(
+                                scheduleInfo?.interviewee_name
+                              )}
+                            </h3>
+                          </div>
+                        </div>
+                        <div>
+                          <div className="position-absolute" style={{
+                            bottom: "12%",
+                            right: "5%"
+                          }}>
+                            <div>
+                              <AnimatedImage
+                                variant={'sm'}
+                                show={interviewer_state === IV_PROCESSING}
+                                name={getShortName(scheduleInfo?.interviewer_name)}
+                                shouldBlink={interviewer_state === IV_SPEAKING}
+                              />
+                              <h3 className="font-weight-600 mt-2 text-primary"> {capitalizeFirstLetter(scheduleInfo?.interviewer_name)}</h3>
+                            </div>
+                          </div>
+
+                        </div>
+
+                      </div>
+                    </div>
+
+                    <div style={{
+                      height: '10%',
+                      backgroundColor: color.callFooter,
+                    }}>
+                      <CallHeaderMobile />
+                    </div>
+
                   </div>
                 </div>
               </>

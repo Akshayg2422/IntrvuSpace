@@ -3,7 +3,7 @@ import { SpinnerProps } from './interfaces'
 import { Spinner as RsSpinner } from 'reactstrap'
 import './style.scss'
 
-function Spinner({ color = 'black', spinner = true, className, size = 'sm' }: SpinnerProps) {
+function Spinner({ color = 'primary', spinner = true, className, size = 'sm' }: SpinnerProps) {
     return (
         <>
             {spinner ?
