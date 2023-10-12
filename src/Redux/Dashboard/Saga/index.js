@@ -672,6 +672,28 @@ function* createSchedulesSuperAdminSaga(action) {
   }
 }
 
+/**
+ * get interview schedules details
+ */
+
+function* getInterviewScheduleDetailsSaga(action) {
+  try {
+    const response = yield call(Api.getInterviewScheduleDetailsApi, action.payload.params);
+
+
+    if (response.success || true) {
+      yield put(Action.getInterviewScheduleDetailsSuccess(response));
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield put(Action.getInterviewScheduleDetailsFailure(response.error_message));
+      yield call(action.payload.onError(response));
+    }
+  } catch (error) {
+    yield put(Action.getInterviewScheduleDetailsFailure(error));
+    yield call(action.payload.onError(error));
+  }
+}
+
 function* DashboardSaga() {
   yield takeLatest(Action.GET_START_CHAT, getChatSaga);
   yield takeLatest(Action.CREATE_KNOWLEDGE_GROUP_VARIANT, createKnowledgeGroupVariantSaga);
@@ -709,6 +731,8 @@ function* DashboardSaga() {
   yield takeLatest(Action.CREATE_CORPORATE_SCHEDULES, createCorporateSchedulesSaga);
   yield takeLatest(Action.GET_CORPORATE_SCHEDULES, getCorporateSchedulesSaga);
   yield takeLatest(Action.CREATE_SCHEDULES_SUPER_ADMIN, createSchedulesSuperAdminSaga);
+  yield takeLatest(Action.GET_INTERVIEW_SCHEDULE_DETAILS, getInterviewScheduleDetailsSaga);
+
 
 }
 export default DashboardSaga;

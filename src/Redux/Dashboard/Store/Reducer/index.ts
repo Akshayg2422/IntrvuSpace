@@ -47,6 +47,7 @@ const initialState: DashboardProp = {
   departmentCorporate: undefined,
   corporateSchedules: undefined,
   createForOthersJdModal: false,
+  interviewScheduleDetails: undefined
 };
 
 const DashboardReducer = (state = initialState, action: any) => {
@@ -517,17 +518,29 @@ const DashboardReducer = (state = initialState, action: any) => {
       state = { ...state, createForOthersJdModal: false };
       break;
 
-      // createScheduleSuperAdmin
+    // createScheduleSuperAdmin
 
-      case ActionTypes.CREATE_SCHEDULES_SUPER_ADMIN:
-        state = { ...state };
-        break;
-      case ActionTypes.CREATE_SCHEDULES_SUPER_ADMIN_SUCCESS:
-        state = { ...state };
-        break;
-      case ActionTypes.CREATE_SCHEDULES_SUPER_ADMIN_FAILURE:
-        state = { ...state };
-        break;
+    case ActionTypes.CREATE_SCHEDULES_SUPER_ADMIN:
+      state = { ...state };
+      break;
+    case ActionTypes.CREATE_SCHEDULES_SUPER_ADMIN_SUCCESS:
+      state = { ...state };
+      break;
+    case ActionTypes.CREATE_SCHEDULES_SUPER_ADMIN_FAILURE:
+      state = { ...state };
+      break;
+
+    // createScheduleSuperAdmin
+
+    case ActionTypes.GET_INTERVIEW_SCHEDULE_DETAILS:
+      state = { ...state, interviewScheduleDetails: undefined };
+      break;
+    case ActionTypes.GET_INTERVIEW_SCHEDULE_DETAILS_SUCCESS:
+      state = { ...state, interviewScheduleDetails: action.payload };
+      break;
+    case ActionTypes.GET_INTERVIEW_SCHEDULE_DETAILS_FAILURE:
+      state = { ...state, interviewScheduleDetails: undefined };
+      break;
 
     default:
       state = state;

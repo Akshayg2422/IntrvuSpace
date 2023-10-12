@@ -1,14 +1,12 @@
 /* eslint-disable no-empty-pattern */
 /* eslint-disable react-hooks/rules-of-hooks */
 import { icons } from '@Assets';
-import { Button, Card, Checkbox, Divider, Image, Input, InputHeading, Modal, Radio, TextArea, showToast, Spinner } from '@Components';
+import { Button, Card, Checkbox, Divider, Image, Input, InputHeading, Modal, Radio, Spinner, TextArea, showToast } from '@Components';
 import { useInput, useLoader, useModal, useNavigation } from '@Hooks';
 import { AnalyzingAnimation, GenerateModal, UploadJdCard } from '@Modules';
 import { canStartInterview, createNewJdSchedule, createSchedulesSuperAdmin, getJdItemList, hideCreateForOthersJdModal, hideCreateJdModal, postJdVariant, selectedScheduleId, showCreateForOthersJdModal, showCreateJddModal } from '@Redux';
 import { ROUTES } from '@Routes';
 import { CREATE_FOR_OTHERS_RULES, FROM_JD_RULES, getValidateError, ifObjectExist, validate } from '@Utils';
-import { time } from 'console';
-import { title } from 'process';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -55,7 +53,6 @@ function FromJD() {
     const [jdDescriptionError, setJdDescriptionError] = useState<any>(undefined)
     const [selectedDuration, setSelectedDuration] = useState(interviewDurations[0]);
     const [selectedDurationForOthers, setSelectedDurationForOthers] = useState(interviewDurations[0]);
-    const [sliderValue, setSliderValue] = useState(0);
     const firstName = useInput('')
     const lastName = useInput('')
     const email = useInput('')
@@ -65,13 +62,10 @@ function FromJD() {
     const positionForOthers = useInput('')
     const jdForOthers = useInput('')
 
-    const handleSliderChange = (newValue: any) => {
-        console.log('Slider value changed:', newValue);
-        setSliderValue(newValue)
-    }
-    console.log('sliderValuesliderValue',);
 
     const startInterviewLoader = useLoader(false);
+    const createInterviewSuperAdminLoader = useLoader(false);
+
 
     useEffect(() => {
         getKnowledgeGroupFromJdHandler();
@@ -107,7 +101,7 @@ function FromJD() {
         const validation = validate(FROM_JD_RULES, params)
 
         if (ifObjectExist(validation)) {
-            // addJdModal.hide();
+
             dispatch(hideCreateJdModal())
             generateJdModal.show();
             dispatch(postJdVariant({
@@ -126,7 +120,7 @@ function FromJD() {
                                     completedModal.show();
                                     getKnowledgeGroupFromJdHandler();
                                     resetValues();
-                                    showToast(res.status, 'success');
+                                    // showToast(res.status, 'success');
                                     clearInterval(intervalId);
                                 },
                                 onError: (error: any) => () => {
@@ -215,20 +209,22 @@ function FromJD() {
         const validation = validate(CREATE_FOR_OTHERS_RULES, params)
 
         if (ifObjectExist(validation)) {
-            dispatch(hideCreateForOthersJdModal())
+            createInterviewSuperAdminLoader.show();
             dispatch(createSchedulesSuperAdmin({
                 params,
                 onSuccess: (response: any) => () => {
-                    console.log('response---------------111-------->', response)
                     createForOthersResetValues()
-                    setNotifyInterview(false)
-                    setNotifyReport(false)
-                    // showToast(response.status, 'success');
+                    dispatch(hideCreateForOthersJdModal())
+                    getKnowledgeGroupFromJdHandler();
+                    createInterviewSuperAdminLoader.hide();
+
                 },
                 onError: (error) => () => {
                     generateJdModal.hide();
                     dispatch(showCreateForOthersJdModal())
                     showToast(error.error_message, 'error')
+                    createInterviewSuperAdminLoader.hide();
+
                 },
             }))
         } else {
@@ -245,6 +241,9 @@ function FromJD() {
         positionForOthers.set('')
         experienceForOthers.set('')
         jd.set('')
+        setNotifyInterview(false)
+        setNotifyReport(false)
+
     }
 
 
@@ -282,6 +281,12 @@ function FromJD() {
     function proceedReport(id: string) {
         if (id) {
             goTo(ROUTES['designation-module'].report + "/" + id)
+        }
+    }
+
+    function proceedResponse(id: string) {
+        if (id) {
+            goTo(ROUTES['designation-module'].response + "/" + id)
         }
     }
 
@@ -455,12 +460,20 @@ function FromJD() {
                                                                     <div className='col d-flex justify-content-end'>
                                                                         {
                                                                             is_report_complete &&
-                                                                            <Button
-                                                                                text={'View Report'}
-                                                                                onClick={() => {
-                                                                                    proceedReport(id);
-                                                                                }}
-                                                                            />
+                                                                            <div className='row'>
+                                                                                <Button
+                                                                                    text={'View Response'}
+                                                                                    onClick={() => {
+                                                                                        proceedResponse(id);
+                                                                                    }}
+                                                                                />
+                                                                                <Button
+                                                                                    text={'View Report'}
+                                                                                    onClick={() => {
+                                                                                        proceedReport(id);
+                                                                                    }}
+                                                                                />
+                                                                            </div>
                                                                         }
                                                                         {
                                                                             is_complete && !is_report_complete &&
@@ -645,7 +658,7 @@ function FromJD() {
                 </div>
             </Modal>
 
-            <Modal title={'Create Interview For Others'} isOpen={createForOthersJdModal} onClose={() => { dispatch(hideCreateForOthersJdModal()) }}>
+            <Modal title={'Create Interview'} isOpen={createForOthersJdModal} onClose={() => { dispatch(hideCreateForOthersJdModal()) }}>
                 <div className={'row'}>
                     <div className={'col-6'}>
                         <Input
@@ -695,15 +708,25 @@ function FromJD() {
                     <div className={'col-6'}>
                         <Input
                             isMandatory
+                            heading={'Role'}
+                            placeHolder={'Role'}
+                            value={positionForOthers.value}
+                            onChange={positionForOthers.onChange} />
+                    </div>
+
+                </div>
+
+                <div className={'row'}>
+                    <div className={'col-6'}>
+                        <Input
+                            isMandatory
                             type={'number'}
                             heading={'Experience'}
                             placeHolder={'Experience'}
                             value={experienceForOthers.value}
                             onChange={experienceForOthers.onChange} />
                     </div>
-                </div>
 
-                <div className={'row'}>
                     <div className={'col-6 mt-1'}>
                         <InputHeading Class={'mb-0'} heading={'Interview Duration'} isMandatory />
                         <Radio
@@ -718,14 +741,6 @@ function FromJD() {
                         />
                     </div>
 
-                    <div className={'col-6'}>
-                        <Input
-                            isMandatory
-                            heading={'Role'}
-                            placeHolder={'Role'}
-                            value={positionForOthers.value}
-                            onChange={positionForOthers.onChange} />
-                    </div>
                 </div>
 
                 <TextArea
@@ -733,7 +748,7 @@ function FromJD() {
                     error={jdDescriptionError}
                     placeholder={PLACE_HOLDER.jd}
                     heading='JD Details'
-                    value={jd.value.slice(0, CHAR_LENGTH)}
+                    value={jdForOthers.value.slice(0, CHAR_LENGTH)}
                     onChange={(e) => {
                         let value = e.target.value
                         if (value.length > CHAR_LENGTH) {
@@ -741,23 +756,36 @@ function FromJD() {
                         } else {
                             setJdDescriptionError(undefined)
                         }
-                        jd.set(value)
+                        jdForOthers.set(value)
                     }}
                 />
 
-                <Checkbox className={'text-primary flex-row'} text={'Notify interview'} id={'notifyInterview'} defaultChecked={notifyInterview} onCheckChange={(checked) => {
-                    setNotifyInterview(checked)
-                }} />
 
-                <div className={'d-flex justify-content-between mt--4'}>
-                    <Checkbox className={'text-primary'} text={'Notify Report'} id={'notifyReport'} defaultChecked={notifyReport} onCheckChange={(checked) => {
-                        setNotifyReport(checked)
-                    }} />
 
-                    <div className='text-right'>
-                        <Button size='md' text={'Submit'} onClick={createForOthersApiHandler} />
-                    </div>
+                <div className={'d-flex'}>
+                    <Checkbox
+                        className={'text-primary flex-row'}
+                        text={'Notify interview'}
+                        id={'notifyInterview'}
+                        defaultChecked={notifyInterview}
+                        onCheckChange={(checked) => {
+                            setNotifyInterview(checked)
+                        }}
+                    />
+                    <div className='ml-4'></div>
+                    <Checkbox
+                        className={'text-primary'}
+                        text={'Notify Report'}
+                        id={'notifyReport'}
+                        defaultChecked={notifyReport}
+                        onCheckChange={(checked) => {
+                            setNotifyReport(checked)
+                        }} />
                 </div>
+                <div>
+                    <Button block loading={createInterviewSuperAdminLoader.loader} size='md' text={'Submit'} onClick={createForOthersApiHandler} />
+                </div>
+
 
             </Modal >
         </>

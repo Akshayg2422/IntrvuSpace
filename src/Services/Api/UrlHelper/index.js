@@ -148,6 +148,7 @@ export const URL_GET_CORPORATE_SCHEDULE = ASSISTANT + 'getCorporateSchedules'
 
 // createSchedulesSuperAdmin
 
-export const URL_CREATE_SCHEDULES_SUPER_ADMIN= ASSISTANT + 'createScheduleSuperAdmin'
+export const URL_CREATE_SCHEDULES_SUPER_ADMIN = ASSISTANT + 'createScheduleSuperAdmin'
+export const URL_GET_INTERVIEW_SCHEDULE_DETAILS = ASSISTANT + 'getInterviewScheduleDetails'
 
 
