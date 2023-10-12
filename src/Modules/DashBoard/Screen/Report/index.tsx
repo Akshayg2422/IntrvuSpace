@@ -42,8 +42,26 @@ function Report() {
         }
     }, [basicReportData])
 
+    const handleRating = (el: any) => {
+        if (typeof el.rating === "string" && !isNaN(el.rating)) {
+            return parseInt(el.rating);
+        } else if (typeof el.rating === "number" && !isNaN(el.rating)) {
+            return el.rating;
+        } else {
+            return 0;
+        }
+    }
+
     function getPercentage(array: any, key: string) {
-        return array.reduce(function (acc, obj) { return acc + parseFloat(obj[key]); }, 0) / array.length
+        const arrayWithUpdatedRatings = array.map((it) => {
+            return {
+                ...it,
+                rating: handleRating(it)
+
+            }
+        })
+
+        return arrayWithUpdatedRatings.reduce(function (acc, obj) { return acc + parseFloat(obj[key]); }, 0) / array.length
     }
 
     const getBasicReportData = (details) => {
@@ -65,6 +83,9 @@ function Report() {
                     const { communication, skill_matrix, trait, overall_weightage, name, sub_text } = success.details
                     setFileName(name + "_" + sub_text + '_' + filter?.value.title)
 
+                    console.log(communication, "communication data");
+                    console.log(skill_matrix, "skill_matrix data");
+                    console.log(trait, "trait data");
 
                     const communicationPercentage = communication?.length > 0 ? parseFloat((getPercentage(communication, 'rating') / 100 * overall_weightage.communication).toFixed(1)) : 0;
                     const skillMatrixPercentage = skill_matrix?.sections?.length > 0 ? parseFloat((getPercentage(skill_matrix?.sections, 'rating') / 100 * overall_weightage.skill_matrix).toFixed(1)) : 0;
@@ -73,9 +94,6 @@ function Report() {
                     console.log(communicationPercentage, "communicationPercentage==========");
                     console.log(skillMatrixPercentage, 'communicationPercentage======');
                     console.log(traitPercentage, "communicationPercentage===");
-
-
-
 
                     const total = (communicationPercentage + skillMatrixPercentage + traitPercentage).toFixed(1);
                     console.log("total0===================>", total)
@@ -87,7 +105,7 @@ function Report() {
                         communicationOverAll: communication?.length > 0 ? parseFloat((getPercentage(communication, 'rating')).toFixed(1)) : 0,
                         skillMatrixOverAll: '',
                         traitOverAll: trait.length > 0 ? parseFloat((getPercentage(trait, 'percent')).toFixed(1)) : 0,
-                        overAll: total
+                        overAll: parseFloat(total)
                     })
 
                 },
@@ -431,6 +449,7 @@ function Report() {
                                 <p className='description'>
                                     {basicReportData.sub_text2}
                                 </p>
+                                {/** for small screen */}
                                 <h1 className='font-weight-bolder text-right display-3 d-block d-sm-none'
                                     style={{
                                         color: colorVariant(+percentage?.overAll)
@@ -440,6 +459,8 @@ function Report() {
                                 </h1>
                             </div>
 
+
+                            {/**for large screen */}
                             <div className='flex-column text-right d-none d-lg-block d-md-block d-xl-block' >
 
                                 <div className={'d-flex flex-column justify-content-end align-items-end'}  >
