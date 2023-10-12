@@ -6,7 +6,7 @@ import { Image, Tabs } from "@Components";
 
 function Tab1() {
   return (
-    <div style={{ backgroundColor: '#c7f2c1', borderRadius: '20px' }}>
+    <div style={{ backgroundColor: '#001532', borderRadius: '20px' }}>
       <section className="m-3 m-md-5">
         <Container>
           <Row>
@@ -20,8 +20,8 @@ function Tab1() {
                   style={{ borderRadius: '10px' }}
                 />
               </div>
-              <div className="text-black h2 font-weight-bolder">Basic Report</div>
-              <p className="custom-text-color" style={{ maxWidth: '400px' }}>
+              <div className="text-white h2 font-weight-bolder">Basic Report</div>
+              <p className="text-white" style={{ maxWidth: '400px' }}>
                 The Basic Report in intrvu SPACE provides a fundamental overview of your interview preparation journey. It offers insights into your overall progress, highlighting key areas where you've excelled and areas that may require more attention. This report serves as a valuable starting point for your interview preparation, allowing you to build a strong foundation for success.
               </p>
             </Col>
