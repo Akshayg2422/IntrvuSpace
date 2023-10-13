@@ -652,6 +652,47 @@ function* getCorporateSchedulesSaga(action) {
   }
 }
 
+// createScheduleSuperAdmin
+
+function* createSchedulesSuperAdminSaga(action) {
+  try {
+    const response = yield call(Api.createSchedulesSuperAdminApi, action.payload.params);
+    console.log(response, '----->createCorporateScheduleApi');
+    if (response.success) {
+      console.log('createCorporateScheduleApi');
+      yield put(Action.createSchedulesSuperAdminSuccess(response));
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield put(Action.createSchedulesSuperAdminFailure(response.error_message));
+      yield call(action.payload.onError(response));
+    }
+  } catch (error) {
+    yield put(Action.createSchedulesSuperAdminFailure(error));
+    yield call(action.payload.onError(error));
+  }
+}
+
+/**
+ * get interview schedules details
+ */
+
+function* getInterviewScheduleDetailsSaga(action) {
+  try {
+    const response = yield call(Api.getInterviewScheduleDetailsApi, action.payload.params);
+
+    if (response.success) {
+      yield put(Action.getInterviewScheduleDetailsSuccess(response?.details));
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield put(Action.getInterviewScheduleDetailsFailure(response.error_message));
+      yield call(action.payload.onError(response));
+    }
+  } catch (error) {
+    yield put(Action.getInterviewScheduleDetailsFailure(error));
+    yield call(action.payload.onError(error));
+  }
+}
+
 function* DashboardSaga() {
   yield takeLatest(Action.GET_START_CHAT, getChatSaga);
   yield takeLatest(Action.CREATE_KNOWLEDGE_GROUP_VARIANT, createKnowledgeGroupVariantSaga);
@@ -688,6 +729,9 @@ function* DashboardSaga() {
   yield takeLatest(Action.GET_DEPARTMENT_CORPORATE, getDepartmentCorporateSaga);
   yield takeLatest(Action.CREATE_CORPORATE_SCHEDULES, createCorporateSchedulesSaga);
   yield takeLatest(Action.GET_CORPORATE_SCHEDULES, getCorporateSchedulesSaga);
+  yield takeLatest(Action.CREATE_SCHEDULES_SUPER_ADMIN, createSchedulesSuperAdminSaga);
+  yield takeLatest(Action.GET_INTERVIEW_SCHEDULE_DETAILS, getInterviewScheduleDetailsSaga);
+
 
 }
 export default DashboardSaga;

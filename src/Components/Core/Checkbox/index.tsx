@@ -20,7 +20,7 @@ function Checkbox({ id = '0', text, defaultChecked, variant = 'primary', onCheck
     }
 
     return (
-        <FormGroup>
+        <FormGroup className={'d-flex'}>
             <div className={`custom-control custom-checkbox custom-checkbox-${variant} mb-3`}>
                 <input
                     {...rest}
@@ -34,7 +34,7 @@ function Checkbox({ id = '0', text, defaultChecked, variant = 'primary', onCheck
                     className={'custom-control-label'}
                     htmlFor={id}>
                     {
-                        <span className={'position-absolute left--2'}>{text}</span>
+                        <span className={'position-relative left--2'}>{text}</span>
                     }
                 </label>
             </div>

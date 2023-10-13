@@ -146,3 +146,9 @@ export const createCorporateScheduleApi = payload => post(URL.URL_CREATE_CORPORA
 
 export const getCorporateSchedulesApi = payload => post(URL.URL_GET_CORPORATE_SCHEDULE, payload, {});
 
+// createSchedulesSuperAdmin
+
+export const createSchedulesSuperAdminApi = payload => post(URL.URL_CREATE_SCHEDULES_SUPER_ADMIN, payload, {});
+export const getInterviewScheduleDetailsApi = payload => post(URL.URL_GET_INTERVIEW_SCHEDULE_DETAILS, payload, {});
+
+

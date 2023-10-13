@@ -4,11 +4,9 @@ import { icons } from '@Assets';
 import { Button, Card, Checkbox, Divider, Image, Input, InputHeading, Modal, Radio, Spinner, TextArea, showToast } from '@Components';
 import { useInput, useLoader, useModal, useNavigation } from '@Hooks';
 import { AnalyzingAnimation, GenerateModal, UploadJdCard } from '@Modules';
-import { canStartInterview, createNewJdSchedule, getJdItemList, hideCreateJdModal, postJdVariant, selectedScheduleId, showCreateJddModal } from '@Redux';
+import { canStartInterview, createNewJdSchedule, createSchedulesSuperAdmin, getJdItemList, hideCreateForOthersJdModal, hideCreateJdModal, postJdVariant, selectedScheduleId, showCreateForOthersJdModal, showCreateJddModal } from '@Redux';
 import { ROUTES } from '@Routes';
-import { FROM_JD_RULES, getValidateError, ifObjectExist, validate } from '@Utils';
-import { time } from 'console';
-import { title } from 'process';
+import { CREATE_FOR_OTHERS_RULES, FROM_JD_RULES, getValidateError, ifObjectExist, validate } from '@Utils';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -29,14 +27,15 @@ const INTERVAL_TIME = 5000
 
 
 function FromJD() {
-    const CHAR_LENGTH = 2000
+    const CHAR_LENGTH = 5000
     const VIEW_MORE_LENGTH = 300
 
 
     const ERROR_MESSAGE = "In beta version, you can upload only max of " + CHAR_LENGTH + " characters."
+    const { loginDetails } = useSelector((state: any) => state.AppReducer);
 
 
-    const { createJdModal, jdItem } = useSelector((state: any) => state.DashboardReducer);
+    const { createJdModal, jdItem, createForOthersJdModal } = useSelector((state: any) => state.DashboardReducer);
 
     const { goTo } = useNavigation();
     const position = useInput('');
@@ -50,30 +49,28 @@ function FromJD() {
     const [loading, setLoading] = useState(true);
     const [jdMore, setJdMore] = useState<any>([])
     const [fresherChecked, setFresherChecked] = useState(false)
+    const [notifyInterview, setNotifyInterview] = useState(false)
+    const [notifyReport, setNotifyReport] = useState(false)
     const [jdDescriptionError, setJdDescriptionError] = useState<any>(undefined)
     const [selectedDuration, setSelectedDuration] = useState(interviewDurations[0]);
-    const [sliderValue, setSliderValue] = useState(0);
-    const [skeletonLoader, setSkeletonLoader] = useState(true);
+    const [selectedDurationForOthers, setSelectedDurationForOthers] = useState(interviewDurations[0]);
+    const firstName = useInput('')
+    const lastName = useInput('')
+    const email = useInput('')
+    const mobileNumber = useInput('')
+    const sectorForOthers = useInput('')
+    const experienceForOthers = useInput('')
+    const positionForOthers = useInput('')
+    const jdForOthers = useInput('')
 
-    useEffect(() => {
-        // Simulate loading delay for demonstration purposes
-        setTimeout(() => {
-            setSkeletonLoader(false);
-        }, 2000); // Set a time to simulate loading
-    }, []);
-
-    const handleSliderChange = (newValue: any) => {
-        console.log('Slider value changed:', newValue);
-        setSliderValue(newValue)
-    }
-    console.log('sliderValuesliderValue',);
 
     const startInterviewLoader = useLoader(false);
+    const createInterviewSuperAdminLoader = useLoader(false);
+
 
     useEffect(() => {
         getKnowledgeGroupFromJdHandler();
     }, [])
-
 
 
     const dispatch = useDispatch()
@@ -105,7 +102,7 @@ function FromJD() {
         const validation = validate(FROM_JD_RULES, params)
 
         if (ifObjectExist(validation)) {
-            // addJdModal.hide();
+
             dispatch(hideCreateJdModal())
             generateJdModal.show();
             dispatch(postJdVariant({
@@ -124,7 +121,7 @@ function FromJD() {
                                     completedModal.show();
                                     getKnowledgeGroupFromJdHandler();
                                     resetValues();
-                                    showToast(res.status, 'success');
+                                    // showToast(res.status, 'success');
                                     clearInterval(intervalId);
                                 },
                                 onError: (error: any) => () => {
@@ -195,6 +192,61 @@ function FromJD() {
             }))
     }
 
+    function createForOthersApiHandler() {
+        const params = {
+            custom_first_name: firstName.value,
+            custom_last_name: lastName.value,
+            custom_email: email.value,
+            custom_mobile_number: mobileNumber.value,
+            sector_name: sectorForOthers.value,
+            position: positionForOthers.value,
+            is_notify_interview: notifyInterview,
+            is_notify_report: notifyReport,
+            experience: experienceForOthers.value,
+            interview_duration: selectedDurationForOthers.value,
+            jd: jdForOthers.value
+        }
+
+        const validation = validate(CREATE_FOR_OTHERS_RULES, params)
+
+        if (ifObjectExist(validation)) {
+            createInterviewSuperAdminLoader.show();
+            dispatch(createSchedulesSuperAdmin({
+                params,
+                onSuccess: (response: any) => () => {
+                    createForOthersResetValues()
+                    dispatch(hideCreateForOthersJdModal())
+                    getKnowledgeGroupFromJdHandler();
+                    createInterviewSuperAdminLoader.hide();
+
+                },
+                onError: (error) => () => {
+                    generateJdModal.hide();
+                    dispatch(showCreateForOthersJdModal())
+                    showToast(error.error_message, 'error')
+                    createInterviewSuperAdminLoader.hide();
+
+                },
+            }))
+        } else {
+            showToast(getValidateError(validation))
+        }
+    }
+
+    function createForOthersResetValues() {
+        firstName.set('')
+        lastName.set('')
+        email.set('')
+        mobileNumber.set('')
+        sectorForOthers.set('')
+        positionForOthers.set('')
+        experienceForOthers.set('')
+        jd.set('')
+        setNotifyInterview(false)
+        setNotifyReport(false)
+
+    }
+
 
     function proceedInterviewHandler(id: string) {
         if (id) {
@@ -233,9 +285,16 @@ function FromJD() {
         }
     }
 
+    function proceedResponse(id: string) {
+        if (id) {
+            goTo(ROUTES['designation-module'].response + "/" + id)
+        }
+    }
+
+
     return (
         <>
-            {loading ? <div className={'d-flex justify-content-center my-9'}><Spinner/></div> :
+            {loading ? <div className={'d-flex justify-content-center my-9'}><Spinner /></div> :
                 jdItem && jdItem.length > 0 ?
                     <div>
                         {
@@ -293,6 +352,13 @@ function FromJD() {
                                                 {
                                                     proceedInterview ?
                                                         <div>
+                                                            {loginDetails?.is_super_admin ? <Button
+                                                                text={'View Response'}
+                                                                onClick={() => {
+                                                                    proceedResponse(proceedInterview?.id);
+                                                                }}
+                                                            /> : null
+                                                            }
                                                             <Button
                                                                 loading={startInterviewLoader.loader}
                                                                 className={'px-4 border border-primary'}
@@ -402,12 +468,21 @@ function FromJD() {
                                                                     <div className='col d-flex justify-content-end'>
                                                                         {
                                                                             is_report_complete &&
-                                                                            <Button
-                                                                                text={'View Report'}
-                                                                                onClick={() => {
-                                                                                    proceedReport(id);
-                                                                                }}
-                                                                            />
+                                                                            <div className='row'>
+                                                                                {loginDetails?.is_super_admin ? <Button
+                                                                                    text={'View Response'}
+                                                                                    onClick={() => {
+                                                                                        proceedResponse(id);
+                                                                                    }}
+                                                                                /> : null
+                                                                                }
+                                                                                <Button
+                                                                                    text={'View Report'}
+                                                                                    onClick={() => {
+                                                                                        proceedReport(id);
+                                                                                    }}
+                                                                                />
+                                                                            </div>
                                                                         }
                                                                         {
                                                                             is_complete && !is_report_complete &&
@@ -591,6 +666,137 @@ function FromJD() {
                     </div>
                 </div>
             </Modal>
+
+            <Modal title={'Create Interview for Others'} isOpen={createForOthersJdModal} onClose={() => { dispatch(hideCreateForOthersJdModal()) }}>
+                <div className={'row'}>
+                    <div className={'col-6'}>
+                        <Input
+                            isMandatory
+                            heading={'First Name'}
+                            placeHolder={' First Name'}
+                            value={firstName.value}
+                            onChange={firstName.onChange} />
+                    </div>
+                    <div className={'col-6 mt-2'}>
+                        <Input
+                            heading={'Last Name'}
+                            placeHolder={'Last Name'}
+                            value={lastName.value}
+                            onChange={lastName.onChange} />
+                    </div>
+                </div>
+
+                <div className={'row'}>
+                    <div className={'col-6'}>
+                        <Input
+                            heading={'Email'}
+                            placeHolder={'Email Id'}
+                            value={email.value}
+                            onChange={email.onChange} />
+                    </div>
+                    <div className={'col-6'}>
+                        <Input
+                            heading={'Mobile Number'}
+                            maxLength={10}
+                            type={'number'}
+                            placeHolder={'Mobile Number'}
+                            value={mobileNumber.value}
+                            onChange={mobileNumber.onChange} />
+                    </div>
+                </div>
+
+                <div className={'row'}>
+                    <div className={'col-6'}>
+                        <Input
+                            isMandatory
+                            heading={'Sector'}
+                            placeHolder={'Sector'}
+                            value={sectorForOthers.value}
+                            onChange={sectorForOthers.onChange} />
+                    </div>
+                    <div className={'col-6'}>
+                        <Input
+                            isMandatory
+                            heading={'Role'}
+                            placeHolder={'Role'}
+                            value={positionForOthers.value}
+                            onChange={positionForOthers.onChange} />
+                    </div>
+
+                </div>
+
+                <div className={'row'}>
+                    <div className={'col-6'}>
+                        <Input
+                            isMandatory
+                            type={'number'}
+                            heading={'Experience'}
+                            placeHolder={'Experience'}
+                            value={experienceForOthers.value}
+                            onChange={experienceForOthers.onChange} />
+                    </div>
+
+                    <div className={'col-6 mt-1'}>
+                        <InputHeading Class={'mb-0'} heading={'Interview Duration'} isMandatory />
+                        <Radio
+                            selected={selectedDurationForOthers}
+                            selectItem={selectedDurationForOthers}
+                            data={interviewDurations}
+                            onRadioChange={(selected) => {
+                                if (selected) {
+                                    setSelectedDurationForOthers(selected)
+                                }
+                            }}
+                        />
+                    </div>
+
+                </div>
+
+                <TextArea
+                    isMandatory
+                    error={jdDescriptionError}
+                    placeholder={PLACE_HOLDER.jd}
+                    heading='JD Details'
+                    value={jdForOthers.value.slice(0, CHAR_LENGTH)}
+                    onChange={(e) => {
+                        let value = e.target.value
+                        if (value.length > CHAR_LENGTH) {
+                            setJdDescriptionError(ERROR_MESSAGE)
+                        } else {
+                            setJdDescriptionError(undefined)
+                        }
+                        jdForOthers.set(value)
+                    }}
+                />
+
+
+
+                <div className={'d-flex'}>
+                    <Checkbox
+                        className={'text-primary flex-row'}
+                        text={'Notify interview'}
+                        id={'notifyInterview'}
+                        defaultChecked={notifyInterview}
+                        onCheckChange={(checked) => {
+                            setNotifyInterview(checked)
+                        }}
+                    />
+                    <div className='ml-4'></div>
+                    <Checkbox
+                        className={'text-primary'}
+                        text={'Notify Report'}
+                        id={'notifyReport'}
+                        defaultChecked={notifyReport}
+                        onCheckChange={(checked) => {
+                            setNotifyReport(checked)
+                        }} />
+                </div>
+                <div>
+                    <Button block loading={createInterviewSuperAdminLoader.loader} size='md' text={'Submit'} onClick={createForOthersApiHandler} />
+                </div>
+
+
+            </Modal >
         </>
     )
 }

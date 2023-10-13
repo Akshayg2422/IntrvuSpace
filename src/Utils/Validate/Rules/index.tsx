@@ -201,3 +201,40 @@ export const CREATE_CORPORATE_SCHEDULE_RULES = {
   },
 }
 
+export const CREATE_FOR_OTHERS_RULES = {
+  custom_first_name: {
+    presence: { message: "First name cannot be empty" },
+    length: { minimum: 3, message: "First name should be at least 3 characters" },
+  },
+  // custom_last_name: {
+  //   presence: { message: "Last name cannot be empty" },
+  //   length: { minimum: 3, message: "Last name should be at least 3 characters" },
+  // },
+  // custom_email: {
+  //   email: { message: "Email cannot be empty" },
+  // },
+  // custom_mobile_number: {
+  //   presence: { message: "Mobile number cannot be empty" },
+  //   length: { is: 10, message: "Mobile number should be 10 digits" },
+  // },
+  sector_name: {
+    presence: { message: "Sector name cannot be empty" },
+    length: { minimum: 3, message: "Sector name should be at least 3 characters" },
+  },
+  experience: {
+    presence: { allowEmpty: false, message: "Experience cannot be empty" },
+  },
+  position: {
+    presence: { message: "Role name cannot be empty" },
+    length: { minimum: 3, message: "Role name should be at least 3 characters" },
+  },
+  // jd: {
+  //   presence: { allowEmpty: false, message: "Job Details cannot be empty" },
+  // },
+  // is_notify_interview: {
+  //   inclusion: { within: [true, false], message: "Invalid value for is_notify_interview" },
+  // },
+  // is_notify_report: {
+  //   inclusion: { within: [true, false], message: "Invalid value for is_notify_report" },
+  // },
+};

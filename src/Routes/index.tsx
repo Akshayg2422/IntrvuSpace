@@ -1,5 +1,5 @@
 import { icons } from '@Assets'
-import { Designation, WeightageCountForm, CreateQuestionForm, Clients, Sector, Questions, Call, Report, QuestionSections, AnalyzingAnimation, Schedules, Login, Otp, Splash, Register, LoginWithOtp, AdminLogin, VariantInfo, PrivacyPolicy, TermsAndConditions, ReturnAndRefund, Reports, HowItWorks, Introduction, Settings } from '@Modules';
+import { Designation, WeightageCountForm, CreateQuestionForm, Clients, Sector, Questions, Call, Report, QuestionSections, AnalyzingAnimation, Schedules, Login, Otp, Splash, Register, LoginWithOtp, AdminLogin, VariantInfo, PrivacyPolicy, TermsAndConditions, ReturnAndRefund, Reports, HowItWorks, Introduction, Settings, Response } from '@Modules';
 
 
 
@@ -33,7 +33,8 @@ export const ROUTES = {
     'analyzing-animation': '/analyzing-animation',
     schedules: '/schedules',
     'variant-info': '/variant-info',
-    settings: '/settings'
+    settings: '/settings',
+    'response': '/response'
   }
 }
 
@@ -148,7 +149,11 @@ export const DASHBOARD_ROUTES = [
     path: ROUTES['designation-module']['variant-info'],
     component: <VariantInfo />
   },
-
+  {
+    id: 10,
+    path: ROUTES['designation-module'].response + '/:schedule_id',
+    component: <Response />
+  },
 ]
 
 export const HOME_ROUTES = [

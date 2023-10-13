@@ -23,7 +23,7 @@ import { getPhoto, } from '@Utils'
 import { useModal, useNavigation } from '@Hooks';
 import { ROUTES } from '@Routes';
 import { useLocation } from 'react-router-dom'
-import { showCreateJddModal, userLogout } from "@Redux";
+import { showCreateForOthersJdModal, showCreateJddModal, userLogout } from "@Redux";
 import { useDispatch, useSelector } from "react-redux";
 
 function TopNavbar() {
@@ -36,6 +36,10 @@ function TopNavbar() {
     const logoutModal = useModal(false);
     const { goTo } = useNavigation()
     const { loginDetails } = useSelector((state: any) => state.AppReducer);
+
+
+    console.log(JSON.stringify(loginDetails) + '=====loginDetails');
+
 
     const location = useLocation()
     const dispatch = useDispatch();
@@ -73,6 +77,10 @@ function TopNavbar() {
 
     const handleCreateInterviewClick = () => {
         dispatch(showCreateJddModal());
+    };
+
+    const handleCreateForOthersInterviewClick = () => {
+        dispatch(showCreateForOthersJdModal());
     };
 
     return (
@@ -135,17 +143,20 @@ function TopNavbar() {
                         {/* <hr className="d-lg-none" /> */}
 
                         <Nav className="align-items-lg-center ml-lg-auto mr--4 justify-content-end" navbar>
+                            {loginDetails?.is_super_admin && <NavItem>
+                                <NavLink to="/home" tag={Link}>
+                                    {/* <span className={`nav-link-inner--text  ${'/home' !== pathName ? "text-black h4" : 'text-primary h4'}`}>Create Interview</span> */}
+                                    <span style={{ fontSize: '15px' }} className={'text-primary font-weight-bolder'} onClick={handleCreateForOthersInterviewClick}>Create For Others</span>
+                                </NavLink>
+                            </NavItem>
+                            }
                             <NavItem>
                                 <NavLink to="/home" tag={Link}>
                                     {/* <span className={`nav-link-inner--text  ${'/home' !== pathName ? "text-black h4" : 'text-primary h4'}`}>Create Interview</span> */}
                                     <span style={{ fontSize: '15px' }} className={'text-primary font-weight-bolder'} onClick={handleCreateInterviewClick}>Create Interview</span>
                                 </NavLink>
                             </NavItem>
-                            <NavItem>
-                                {/* <NavLink to="/schedules" tag={Link}>
-                                    <span className={`nav-link-inner--text  ${'/schedules' !== pathName ? "text-black h4" : 'text-primary h4'}`}>My Schedule</span>
-                                </NavLink> */}
-                            </NavItem>
+
                             <NavItem className="d-none d-lg-block ml-lg-4">
                                 <div className='row align-items-center m-auto'>
                                     <span className='mb-0 text-primary font-weight-bolder'>
