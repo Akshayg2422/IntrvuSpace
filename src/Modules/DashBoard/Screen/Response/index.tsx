@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux'
 import { getInterviewScheduleDetails } from '@Redux'
-import { Image, Divider } from '@Components'
+import { Image, Divider, Back } from '@Components'
 import { icons } from '@Assets'
 
 function Response() {
@@ -38,7 +38,10 @@ function Response() {
         <div className='container'>
             <div className='card flex-grow-1 m-3 rounded-0'>
                 <div className='card-header'>
-                    <h2 className="display-3 mb-0 font-weight-bolder text-primary mb-0">{`Interview for the role of ${role}`}</h2>
+                    <div className='d-flex align-items-center'>
+                        <Back />
+                        <h2 className="ml-3 display-3 mb-0 font-weight-bolder text-primary mb-0">{`Interview for the role of ${role}`}</h2>
+                    </div>
                 </div>
                 <div className='card-body overflow-hide overflow-auto h-100vh' style={{ maxHeight: 'calc(100vh - px)' }}>
                     <div>
@@ -54,6 +57,7 @@ function Response() {
                                     :
                                     <></>
                                 }
+
                                 {duration &&
                                     <div className='col'>
                                         <div className='row d-flex align-items-center mb-1 mt-2'>
@@ -67,7 +71,6 @@ function Response() {
                                     </div>
                                 }
                                 <h5 className='mb-0 pointer'>{experience === 0 ? "Fresher" : "" + experience + (experience === 1 ? " year " : " years ") + "of experience"}</h5>
-
                             </div>
 
                             {jd ? <div className='col mt-3'>
