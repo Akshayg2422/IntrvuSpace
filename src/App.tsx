@@ -80,9 +80,6 @@ function App() {
         <Route path={"*"} element={<PageNotFound />} />
       </Routes>
       <ToastContainer />
-      {/* <div className="col-6">
-        <ReactAutoComplete heading={"Role"} placeholder={'Role'} />
-      </div> */}
     </ScreenWrapper >
 
   );

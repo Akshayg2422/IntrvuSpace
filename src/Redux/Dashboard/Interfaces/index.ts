@@ -31,9 +31,10 @@ export interface DashboardProp {
   codeOutputData?: any;
   selectedSectionId?: any;
   canStartInterview?: any;
-  createJdModal?:boolean;
+  createJdModal?: boolean;
   sectorsCorporate: any;
-  departmentCorporate:any;
-  corporateSchedules:any,
-  createForOthersJdModal:boolean,
+  departmentCorporate: any;
+  corporateSchedules: any,
+  createForOthersJdModal: boolean,
+  interviewScheduleDetails: any
 }

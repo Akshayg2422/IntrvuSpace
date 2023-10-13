@@ -69,8 +69,11 @@ function Login() {
             memberLoginUsingPassword({
                 params,
                 onSuccess: (response: any) => () => {
+
                     const { details } = response;
+
                     loginLoader.hide()
+
                     if (response.success) {
                         localStorage.setItem(USER_TOKEN, response.details.token);
                         dispatch(
@@ -86,6 +89,7 @@ function Login() {
                     else {
                         showToast(response.error_message, 'error')
                     }
+
                 },
                 onError: (error) => () => {
                     loginLoader.hide()
