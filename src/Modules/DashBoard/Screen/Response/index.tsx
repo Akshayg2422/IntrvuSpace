@@ -57,6 +57,8 @@ function Response() {
                                     :
                                     <></>
                                 }
+
+
                                 {duration &&
                                     <div className='col'>
                                         <div className='row d-flex align-items-center mb-1 mt-2'>

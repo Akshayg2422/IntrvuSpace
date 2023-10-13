@@ -845,9 +845,6 @@ function Call() {
   else if (!voiceUp && !mute) interviewer_state = IV_PROCESSING;
 
 
-  console.log("voiceUp", voiceUp);
-
-
   return (
     <>
       <div
