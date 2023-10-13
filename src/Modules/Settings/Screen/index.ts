@@ -14,6 +14,8 @@ export * from './PrivacyPolicy'
 export * from './TermsAndConditions'
 export * from './ReturnAndRefund'
 export * from './Settings'
+export * from './CreateNewPassword'
+export * from './ForgotPassword'
 
 
 

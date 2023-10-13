@@ -238,3 +238,16 @@ export const CREATE_FOR_OTHERS_RULES = {
   //   inclusion: { within: [true, false], message: "Invalid value for is_notify_report" },
   // },
 };
+
+export const CREATE_NEW_PASSWORD_RULES = {
+  otp: {
+    presence: { message: "OTP cannot be empty" },
+    length: { minimum: 4, message: "Enter the 4 digit OTP" },
+  },
+  new_password: {
+    email: {allowEmpty: false, message: "New Password cannot be empty" },
+  },
+  confirm_password: {
+    presence: {allowEmpty: false, message: "Confirm password cannot be empty" }
+  }
+}

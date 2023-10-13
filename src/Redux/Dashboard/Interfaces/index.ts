@@ -36,5 +36,5 @@ export interface DashboardProp {
   departmentCorporate: any;
   corporateSchedules: any,
   createForOthersJdModal: boolean,
-  interviewScheduleDetails: any
+  interviewScheduleDetails: any,
 }
