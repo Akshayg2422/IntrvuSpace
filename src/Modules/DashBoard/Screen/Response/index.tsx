@@ -12,11 +12,10 @@ function Response() {
 
     const { interviewScheduleDetails } = useSelector((state: any) => state.DashboardReducer);
 
-    const { name, jd, experience, duration } = interviewScheduleDetails?.basic_info || {}
+    const { name, jd, experience, duration, role } = interviewScheduleDetails?.basic_info || {}
 
     const { qa, items } = interviewScheduleDetails || {}
     const [jdMore, setJdMore] = useState<any>(false)
-    const CHAR_LENGTH = 2000
     const VIEW_MORE_LENGTH = 300
 
     useEffect(() => {
@@ -39,6 +38,7 @@ function Response() {
         <div className='container'>
             <div className='card flex-grow-1 m-3 rounded-0'>
                 <div className='card-header'>
+                    <h2 className="display-3 mb-0 font-weight-bolder text-primary mb-0">{`Interview for the role of ${role}`}</h2>
                 </div>
                 <div className='card-body overflow-hide overflow-auto h-100vh' style={{ maxHeight: 'calc(100vh - px)' }}>
                     <div>
@@ -169,34 +169,39 @@ function Response() {
                         </div>
                     </div>
 
-                    <Divider space={'5'} />
-                    <div>
-                        <h2 className='font-weight-700'>Items</h2>
-                        <div className='col mt-3' >
-                            {
-                                items && items.length > 0 && items.map((conversation: any) => {
-                                    const { by, message, time, type } = conversation
-                                    return (
-                                        <div className='mb-5'>
-                                            <div className='d-flex justify-content-between mb-0'>
-                                                <h4>{by === 'IV' ? "Interviewer" : "Interviewee"} - {type ? <span className='text-muted text-sm'>{type}</span> : null}</h4>
-                                                <small>{new Date(time).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) + ', ' + new Date(time).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true })}</small>
-                                            </div>
+                    {items && items.length > 0 &&
+                        <>
+                            <Divider space={'5'} />
 
-                                            <h5
-                                                className='col'
-                                                style={{
-                                                    fontSize: '14px'
-                                                }}>
-                                                {message}
-                                            </h5>
-                                        </div>
+                            <div>
+                                <h2 className='font-weight-700'>Items</h2>
+                                <div className='col mt-3' >
+                                    {
+                                        items.map((conversation: any) => {
+                                            const { by, message, time, type } = conversation
+                                            return (
+                                                <div className='mb-5'>
+                                                    <div className='d-flex justify-content-between mb-0'>
+                                                        <h4 className='font-weight-700'>{by === 'IV' ? "Interviewer" : "Interviewee"}</h4>
+                                                        <small>{new Date(time).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) + ', ' + new Date(time).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true })}</small>
+                                                    </div>
 
-                                    )
-                                })
-                            }
-                        </div>
-                    </div>
+                                                    <small
+
+                                                        style={{
+                                                            fontSize: '14px'
+                                                        }}>
+                                                        {message}
+                                                    </small>
+                                                </div>
+
+                                            )
+                                        })
+                                    }
+                                </div>
+                            </div>
+                        </>
+                    }
                 </div>
             </div>
 

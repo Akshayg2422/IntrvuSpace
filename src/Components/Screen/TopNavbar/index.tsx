@@ -37,6 +37,10 @@ function TopNavbar() {
     const { goTo } = useNavigation()
     const { loginDetails } = useSelector((state: any) => state.AppReducer);
 
+
+    console.log(JSON.stringify(loginDetails) + '=====loginDetails');
+
+
     const location = useLocation()
     const dispatch = useDispatch();
 
@@ -139,12 +143,13 @@ function TopNavbar() {
                         {/* <hr className="d-lg-none" /> */}
 
                         <Nav className="align-items-lg-center ml-lg-auto mr--4 justify-content-end" navbar>
-                            <NavItem>
+                            {loginDetails?.is_super_admin && <NavItem>
                                 <NavLink to="/home" tag={Link}>
                                     {/* <span className={`nav-link-inner--text  ${'/home' !== pathName ? "text-black h4" : 'text-primary h4'}`}>Create Interview</span> */}
                                     <span style={{ fontSize: '15px' }} className={'text-primary font-weight-bolder'} onClick={handleCreateForOthersInterviewClick}>Create For Others</span>
                                 </NavLink>
                             </NavItem>
+                            }
                             <NavItem>
                                 <NavLink to="/home" tag={Link}>
                                     {/* <span className={`nav-link-inner--text  ${'/home' !== pathName ? "text-black h4" : 'text-primary h4'}`}>Create Interview</span> */}

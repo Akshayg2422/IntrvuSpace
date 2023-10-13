@@ -680,9 +680,8 @@ function* getInterviewScheduleDetailsSaga(action) {
   try {
     const response = yield call(Api.getInterviewScheduleDetailsApi, action.payload.params);
 
-
-    if (response.success || true) {
-      yield put(Action.getInterviewScheduleDetailsSuccess(response));
+    if (response.success) {
+      yield put(Action.getInterviewScheduleDetailsSuccess(response?.details));
       yield call(action.payload.onSuccess(response));
     } else {
       yield put(Action.getInterviewScheduleDetailsFailure(response.error_message));

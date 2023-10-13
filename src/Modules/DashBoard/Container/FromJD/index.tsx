@@ -27,11 +27,12 @@ const INTERVAL_TIME = 5000
 
 
 function FromJD() {
-    const CHAR_LENGTH = 2000
+    const CHAR_LENGTH = 5000
     const VIEW_MORE_LENGTH = 300
 
 
     const ERROR_MESSAGE = "In beta version, you can upload only max of " + CHAR_LENGTH + " characters."
+    const { loginDetails } = useSelector((state: any) => state.AppReducer);
 
 
     const { createJdModal, jdItem, createForOthersJdModal } = useSelector((state: any) => state.DashboardReducer);
@@ -351,6 +352,13 @@ function FromJD() {
                                                 {
                                                     proceedInterview ?
                                                         <div>
+                                                            {loginDetails?.is_super_admin ? <Button
+                                                                text={'View Response'}
+                                                                onClick={() => {
+                                                                    proceedResponse(proceedInterview?.id);
+                                                                }}
+                                                            /> : null
+                                                            }
                                                             <Button
                                                                 loading={startInterviewLoader.loader}
                                                                 className={'px-4 border border-primary'}
@@ -461,12 +469,13 @@ function FromJD() {
                                                                         {
                                                                             is_report_complete &&
                                                                             <div className='row'>
-                                                                                <Button
+                                                                                {loginDetails?.is_super_admin ? <Button
                                                                                     text={'View Response'}
                                                                                     onClick={() => {
                                                                                         proceedResponse(id);
                                                                                     }}
-                                                                                />
+                                                                                /> : null
+                                                                                }
                                                                                 <Button
                                                                                     text={'View Report'}
                                                                                     onClick={() => {
@@ -658,7 +667,7 @@ function FromJD() {
                 </div>
             </Modal>
 
-            <Modal title={'Create Interview'} isOpen={createForOthersJdModal} onClose={() => { dispatch(hideCreateForOthersJdModal()) }}>
+            <Modal title={'Create Interview for Others'} isOpen={createForOthersJdModal} onClose={() => { dispatch(hideCreateForOthersJdModal()) }}>
                 <div className={'row'}>
                     <div className={'col-6'}>
                         <Input
