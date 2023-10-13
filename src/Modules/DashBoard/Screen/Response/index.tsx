@@ -58,7 +58,6 @@ function Response() {
                                     <></>
                                 }
 
-
                                 {duration &&
                                     <div className='col'>
                                         <div className='row d-flex align-items-center mb-1 mt-2'>
@@ -72,7 +71,6 @@ function Response() {
                                     </div>
                                 }
                                 <h5 className='mb-0 pointer'>{experience === 0 ? "Fresher" : "" + experience + (experience === 1 ? " year " : " years ") + "of experience"}</h5>
-
                             </div>
 
                             {jd ? <div className='col mt-3'>
