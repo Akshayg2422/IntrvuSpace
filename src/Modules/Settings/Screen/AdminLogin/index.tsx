@@ -187,7 +187,7 @@ function AdminLogin() {
                                             <label className="text-black text-sm">Remember me</label>
                                         </div>
                                         <div className="text-right">
-                                            <a className="text-primary text-sm" href="/">Forgot Password ?</a>
+                                            <a className="text-primary text-sm" onClick={() => { goTo(ROUTES["auth-module"].forgotPassword) }} href="/">Forgot Password ?</a>
                                         </div>
                                     </div>
                                     <div className="py-3 ">

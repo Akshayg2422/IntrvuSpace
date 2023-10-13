@@ -3,12 +3,14 @@
 import { icons } from '@Assets';
 import { Button, Card, Checkbox, Divider, Image, Input, InputHeading, Modal, Radio, Spinner, TextArea, showToast } from '@Components';
 import { useInput, useLoader, useModal, useNavigation } from '@Hooks';
-import { AnalyzingAnimation, GenerateModal, UploadJdCard } from '@Modules';
+import { AnalyzingAnimation, GenerateModal, UploadJdCard,Clipboard } from '@Modules';
 import { canStartInterview, createNewJdSchedule, createSchedulesSuperAdmin, getJdItemList, hideCreateForOthersJdModal, hideCreateJdModal, postJdVariant, selectedScheduleId, showCreateForOthersJdModal, showCreateJddModal } from '@Redux';
 import { ROUTES } from '@Routes';
 import { CREATE_FOR_OTHERS_RULES, FROM_JD_RULES, getValidateError, ifObjectExist, validate } from '@Utils';
 import React, { useEffect, useState } from 'react';
+import { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import ClipboardJS from 'clipboard';
 
 export const interviewDurations = [
     { id: '1', text: 'Short', subText: '(5 mins)', value: 5 },
@@ -36,6 +38,7 @@ function FromJD() {
 
 
     const { createJdModal, jdItem, createForOthersJdModal } = useSelector((state: any) => state.DashboardReducer);
+    console.log('jdItem---------->', JSON.stringify(jdItem))
 
     const { goTo } = useNavigation();
     const position = useInput('');
@@ -109,6 +112,7 @@ function FromJD() {
                 params,
                 onSuccess: (res: any) => () => {
                     const { details } = res;
+
 
                     if (details?.schedule_id) {
                         const canStartParams = { schedule_id: details?.schedule_id }
@@ -291,6 +295,27 @@ function FromJD() {
         }
     }
 
+    // const copyInterviewLink = () => {
+    //     if (jdItem && jdItem.length > 0) {
+    //         jdItem.forEach((item) => {
+    //             const {
+    //                 job_description: { },
+    //                 schedules,
+    //             } = item;
+
+    //             const copyInterviewLink = schedules.find((schedule) => {
+    //                 const { custom_interview_link } = schedule;
+    //                 return custom_interview_link;
+    //             });
+
+    //             if (copyInterviewLink) {
+    //                 const { custom_interview_link } = copyInterviewLink;
+    //                 console.log(`Copying interview link: ${custom_interview_link}`);
+    //             }
+    //         });
+    //     }
+    // };
+
 
     return (
         <>
@@ -306,7 +331,7 @@ function FromJD() {
                                     const more = jdMore[index]?.more
 
                                     const modifiedSchedules = schedules.filter((each: any) => {
-                                        const { is_started, is_complete } = each
+                                        const { is_started, is_complete, id } = each
                                         return is_started && is_complete
                                     })
 
@@ -315,6 +340,8 @@ function FromJD() {
                                         return !is_complete
                                     })
 
+                                    const copyInterviewLink =schedules[0].custom_interview_link;
+                                    console.log('copyInterviewLink',copyInterviewLink)
 
                                     const basic_info = proceedInterview?.custom_interviewee_details?.basic_info
 
@@ -333,6 +360,8 @@ function FromJD() {
                                                         {name.charAt(0).toUpperCase() + name.slice(1) + demoDisplayName}
                                                     </span> : <></>
                                                     }
+                                                    <Clipboard linkToCopy={copyInterviewLink}/>
+
                                                     {interview_duration &&
                                                         <div className='col'>
                                                             <div className='row d-flex align-items-center mb-1'>
@@ -346,8 +375,8 @@ function FromJD() {
                                                         </div>
                                                     }
                                                     <h5 className='mb-0 pointer'>{experience === 0 ? "Fresher" : "" + experience + (experience === 1 ? " year " : " years ") + "of experience"}</h5>
-
                                                 </div>
+
 
                                                 {
                                                     proceedInterview ?

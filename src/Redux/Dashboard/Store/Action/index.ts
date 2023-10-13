@@ -1003,3 +1003,45 @@ export const getInterviewScheduleDetailsFailure = (error: any) => {
     payload: error,
   }
 }
+
+// RESET_PASSWORD
+
+export const resetPassword = (params: any) => {
+  return {
+    type: ActionTypes.RESET_PASSWORD,
+    payload: params,
+  }
+}
+export const resetPasswordSuccess = (response: any) => {
+  return {
+    type: ActionTypes.RESET_PASSWORD_SUCCESS,
+    payload: response,
+  }
+}
+export const resetPasswordFailure = (error: any) => {
+  return {
+    type: ActionTypes.RESET_PASSWORD_FAILURE,
+    payload: error,
+  }
+}
+
+// FORGOT_PASSWORD
+
+export const forgotPassword = (params: any) => {
+  return {
+    type: ActionTypes.FORGOT_PASSWORD,
+    payload: params,
+  }
+}
+export const forgotPasswordSuccess = (response: any) => {
+  return {
+    type: ActionTypes.FORGOT_PASSWORD_SUCCESS,
+    payload: response,
+  }
+}
+export const forgotPasswordFailure = (error: any) => {
+  return {
+    type: ActionTypes.FORGOT_PASSWORD_FAILURE,
+    payload: error,
+  }
+}

@@ -1,5 +1,5 @@
 import { icons } from '@Assets'
-import { Designation, WeightageCountForm, CreateQuestionForm, Clients, Sector, Questions, Call, Report, QuestionSections, AnalyzingAnimation, Schedules, Login, Otp, Splash, Register, LoginWithOtp, AdminLogin, VariantInfo, PrivacyPolicy, TermsAndConditions, ReturnAndRefund, Reports, HowItWorks, Introduction, Settings, Response } from '@Modules';
+import { Designation, WeightageCountForm, CreateQuestionForm, Clients, Sector, Questions, Call, Report, QuestionSections, AnalyzingAnimation, Schedules, Login, Otp, Splash, Register, LoginWithOtp, AdminLogin, VariantInfo, PrivacyPolicy, TermsAndConditions, ReturnAndRefund, Reports, HowItWorks, Introduction, Settings, Response, CreateNewPassword, ForgotPassword } from '@Modules';
 
 
 
@@ -16,7 +16,9 @@ export const ROUTES = {
     ReturnAndRefund: '/return-and-refund',
     reports: '/reports',
     'how-it-works': '/how-it-works',
-    introduction: '/introduction'
+    introduction: '/introduction',
+    forgotPassword:'/forgotPassword',
+    createNewPassword: '/createNewPassword'
   },
   'designation-module': {
     Dashboard: "/dashboard",
@@ -100,6 +102,17 @@ export const AUTH_ROUTES = [
     path: ROUTES['auth-module'].introduction,
     component: <Introduction />
   },
+  {
+    key: 13,
+    path: ROUTES['auth-module'].forgotPassword,
+    component: <ForgotPassword />
+  },
+  {
+    key: 14,
+    path: ROUTES['auth-module'].createNewPassword,
+    component: <CreateNewPassword />
+  },
+
 
 ]
 

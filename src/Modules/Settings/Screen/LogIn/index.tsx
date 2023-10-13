@@ -197,7 +197,7 @@ function Login() {
                                     <label className="text-black text-sm">Remember me</label>
                                 </div>
                                 <div className="text-right">
-                                    <a className="text-primary text-sm" href="/">Forgot Password ?</a>
+                                <span className="text-primary pointer text-sm" onClick={()=>{goTo(ROUTES["auth-module"].forgotPassword)}}>Forgot Password ?</span>
                                 </div>
                             </div>
                             <div className="py-3 ">
