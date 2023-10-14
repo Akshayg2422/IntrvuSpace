@@ -160,3 +160,10 @@ export const URL_RESET_PASSWORD = EMPLOYEE + 'resetPassword'
 export const URL_FORGOT_PASSWORD = EMPLOYEE + 'forgotPassword'
 
 
+/**
+ *  reset interview
+ */
+export const URL_RESET_INTERVIEW = ASSISTANT + 'resetInterview'
+export const URL_DELETE_INTERVIEW = ASSISTANT + 'deleteInterview'
+
+

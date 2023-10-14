@@ -151,6 +151,12 @@ export const getCorporateSchedulesApi = payload => post(URL.URL_GET_CORPORATE_SC
 export const createSchedulesSuperAdminApi = payload => post(URL.URL_CREATE_SCHEDULES_SUPER_ADMIN, payload, {});
 export const getInterviewScheduleDetailsApi = payload => post(URL.URL_GET_INTERVIEW_SCHEDULE_DETAILS, payload, {});
 
+
+// createSchedulesSuperAdmin
+
+export const resetInterviewApi = payload => post(URL.URL_RESET_INTERVIEW, payload, {});
+export const deleteInterviewApi = payload => post(URL.URL_DELETE_INTERVIEW, payload, {});
+
 // resetPassword
 
 export const resetPasswordApi = payload => post(URL.URL_RESET_PASSWORD, payload, {});

@@ -60,6 +60,10 @@ const GUIDELINES = [
 
 
 function Call() {
+
+
+  let intervalId: any = null;
+
   const { startScreenRecording } = useScreenRecorder();
 
   const speakingShouldProcess = useRef<any>(false);
@@ -314,6 +318,7 @@ function Call() {
         socketRef.current.close();
         socketRef.current = null;
         clearInterval(reconnectInterval);
+        clearInterval(intervalId);
       }
     };
   }, []);
@@ -749,7 +754,7 @@ function Call() {
 
       startInterviewLoader.show();
 
-      const intervalId = setInterval(() => {
+      intervalId = setInterval(() => {
         dispatch(
           canStartInterview({
             params: canStartParams,
@@ -766,6 +771,7 @@ function Call() {
               // setTimeout(() => {
               validateProceedStartListening();
               // }, 5000)
+
               clearInterval(intervalId);
             },
             onError: (error: any) => () => {

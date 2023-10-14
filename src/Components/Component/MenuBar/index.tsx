@@ -11,9 +11,10 @@ function MenuBar({ toggleIcon, menuData, onClick }: TripleDotProps) {
                     color=""
                     size={'md'}
                     className="text-light shadow-0">
-                    {toggleIcon ? <Image src={toggleIcon} width={20} height={20} /> : <i style={{
-                        color: "#637181"
-                    }} className="fas fa-ellipsis-v" />}
+                    {toggleIcon ?
+                        <Image src={toggleIcon} width={18} height={18} /> : <i style={{
+                            color: "#637181"
+                        }} className="fas fa-ellipsis-v" />}
                 </DropdownToggle>
                 <DropdownMenu className="dropdown-menu-arrow shadow-0" right>
                     {menuData && menuData.length > 0 && menuData.map((el: any, index: number) => {

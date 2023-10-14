@@ -7,5 +7,6 @@ export interface TextAreaProps extends InputHeadingProps {
   className?: string;
   placeholder?: any;
   error?: any
+  height?: any
 
 }

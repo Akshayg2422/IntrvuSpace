@@ -338,7 +338,7 @@ const DashboardReducer = (state = initialState, action: any) => {
      * get jd item list
      */
     case ActionTypes.GET_JD_ITEM_LIST:
-      state = { ...state, jdItem: undefined };
+      state = { ...state };
       break;
     case ActionTypes.GET_JD_ITEM_LIST_SUCCESS:
       console.log("==========>", action.payload.details);
