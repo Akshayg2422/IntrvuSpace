@@ -748,7 +748,7 @@ function Call() {
 
     const hasMicPermission = await hasMicrophonePermission();
 
-    if (hasMicPermission) {
+    if (hasMicPermission || true) {
       micPermissionModal.hide()
       const canStartParams = { schedule_id };
 
@@ -930,24 +930,23 @@ function Call() {
 
                 }
 
-                <div className="d-block d-md-none d-lg-none d-xl-none">
-
-                  <div className="d-flex flex-column h-100vh">
+                <div className="d-block d-md-none d-lg-none d-xl-none h-100vh">
+                  <div className="d-flex flex-column" >
                     <div style={{
-                      height: '90%'
+                      position: 'fixed',
+                      width: '100%',
+                      height: '90%',
                     }}>
-
-
                       <div className="h-100">
                         <div className="position-absolute" >
                           <div className="col">
-                            <div className="d-flex m-3 align-items-center">
+                            <div className="d-flex m-2 align-items-center">
                               <Back variant={'override'} onClick={endInterviewHandler} />
                               <h4 className="mb-0 font-weight-bolder text-primary ml-3">{`Interview for the role of ${scheduleInfo?.interviewee_expected_role}`}</h4>
                             </div>
                           </div>
                         </div>
-                        <div className="d-flex  align-items-center justify-content-center h-100">
+                        <div className="d-flex align-items-center justify-content-center h-100">
                           <div>
                             <AnimatedImage
                               show={false}
@@ -964,7 +963,7 @@ function Call() {
                         </div>
                         <div>
                           <div className="position-absolute" style={{
-                            bottom: "12%",
+                            bottom: "3%",
                             right: "5%"
                           }}>
                             <div>
@@ -979,11 +978,14 @@ function Call() {
                           </div>
 
                         </div>
-
                       </div>
+
                     </div>
 
                     <div style={{
+                      position: 'fixed',
+                      bottom: 0,
+                      width: '100%',
                       height: '10%',
                       backgroundColor: color.callFooter,
                     }}>
