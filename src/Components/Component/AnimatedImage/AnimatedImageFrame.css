@@ -31,7 +31,7 @@
 
 @media (max-width: 768px) {
   .animated-image {
-    padding: 110px;
+    padding: 100px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -39,18 +39,15 @@
     margin: auto;
     background-color: #001532;
   }
-
   .animated-image-small {
     padding: 50px;
     display: flex;
     justify-content: center;
     align-items: center;
     opacity: 1;
-    opacity: 1;
     margin: auto;
     background-color: #001532;
   }
-
   .animated-image::after,
   .animated-image:before {
     content: "";
@@ -60,14 +57,12 @@
     opacity: 0.7;
   }
 }
-
 @keyframes blinkAnimation {
   100% {
     transform: scale(2.5);
     opacity: 0;
   }
 }
-
 .animated-button {
   border-radius: 7;
   background-color: #e29090;
@@ -108,7 +103,6 @@
     opacity: 0;
   }
 }
-
 .name-overlay {
   font-weight: 600;
   font-size: 50px;
@@ -145,7 +139,6 @@
     transform: rotate(360deg);
   }
 }
-
 .webCam {
   width: 157px;
   height: 157px;
@@ -157,6 +150,4 @@
   overflow: hidden;
   margin: 2rem;
   right: 20px;
-}
-
-/*# sourceMappingURL=AnimatedImageFrame.css.map */
+}/*# sourceMappingURL=AnimatedImageFrame.css.map */
