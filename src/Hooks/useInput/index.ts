@@ -6,12 +6,22 @@ const useInput = (initialValue: any) => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const onChangeValue = event.target.value
     const maxLength = event.target.maxLength
+
+    const type = event.target.type;
+
+
+    console.log(type);
+
     if (maxLength !== -1) {
       if (maxLength >= onChangeValue.length) {
         setValue(onChangeValue.slice(0, maxLength));
       }
     } else {
-      setValue(onChangeValue);
+      if (type === 'number') {
+        setValue(Math.abs(parseInt(onChangeValue)));
+      } else {
+        setValue(onChangeValue);
+      }
     }
   };
 

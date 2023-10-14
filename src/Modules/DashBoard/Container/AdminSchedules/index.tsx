@@ -11,11 +11,11 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 const interviewDurations = [
-    { id: '1', text: 'Short', subText: '(5 mins)', value: 5 },
+    { id: '0', text: 'Quick', subText: '(5 mins)', value: 5 },
+    { id: '1', text: 'Short', subText: '(10 mins)', value: 10 },
     { id: '2', text: 'Medium', subText: '(15 mins)', value: 15 },
     { id: '3', text: 'Long', subText: '(30 mins)', value: 30 },
 ];
-
 const PLACE_HOLDER = {
     "sector": "Software, Banking...",
     "role": "Developer, Manager...",
@@ -371,7 +371,6 @@ function AdminSchedules() {
         }
     }
 
-    console.log(addAnotherNotifyReport + '===addAnotherNotifyReport');
 
 
     return (
