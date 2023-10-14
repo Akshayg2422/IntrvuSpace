@@ -433,6 +433,9 @@ function Call() {
         listener.current.off("speaking", onStartSpeaking);
         // @ts-ignore
         listener.current.off("stopped_speaking", onStopSpeaking);
+        listener.current = undefined
+
+
       }
       if (stream.current) {
         stream.current.getTracks().forEach((track) => track.stop());
@@ -840,9 +843,6 @@ function Call() {
 
   if (isTtfSpeaking) interviewer_state = IV_SPEAKING;
   else if (!voiceUp && !mute) interviewer_state = IV_PROCESSING;
-
-
-  console.log("voiceUp", voiceUp);
 
 
   return (
