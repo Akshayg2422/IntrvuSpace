@@ -162,7 +162,7 @@ function Login() {
                                             borderBottomLeftRadius: 0,
                                             borderLeft: 0,
                                             borderRadius: 0,
-                                            borderColor: toggleInput ? '#68d75c' : 'black'
+                                            borderColor: toggleInput ? '#000000' : 'black',
                                         }}
                                         onClick={() => {
                                             setShowPassword(!showPassword)

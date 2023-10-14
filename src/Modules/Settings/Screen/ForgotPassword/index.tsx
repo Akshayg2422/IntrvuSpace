@@ -81,7 +81,7 @@ function ForgotPassword() {
                 <div className="col-xl-8 my-sm-0 my-6">
 
                     <div className="mb--2 ml-xl-4 ml-sm-0 ml-3">
-                        <h1 className="text-black mb--3">Enter the registered Email</h1><br></br>
+                        <h1 className="text-black mb--3">Verify Your Email</h1><br></br>
                     </div>
                     <div style={{ scale: '0.9' }}>
                         <div>
@@ -90,13 +90,13 @@ function ForgotPassword() {
                                 className='rounded-0'
                                 type={'text'}
                                 value={email.value}
-                                placeholder='Enter your Email ID'
+                                placeholder='Enter your Mail ID'
                                 onChange={email.onChange}
                             />
                         </div>
 
                         <h3 className=' text-black pt-3 font-weight-normal '>
-                            You will receive an OTP on the given email
+                            You will receive an OTP via email
                         </h3>
 
                         <div className="pb-3 pt-2 ">
