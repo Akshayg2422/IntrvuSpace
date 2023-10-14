@@ -10,7 +10,7 @@ const LIVE_IP = "https://mockeazyprimary.leorainfotech.in/"
 const LOCAL_IP = "https://d404-103-118-189-15.ngrok-free.app/"
 
 
-export const BUILD_TYPE = BUILD_TYPE_LOCAL;
+export const BUILD_TYPE = BUILD_TYPE_LIVE;
 export const SERVER =
   BUILD_TYPE === BUILD_TYPE_LIVE
     ? LIVE_IP

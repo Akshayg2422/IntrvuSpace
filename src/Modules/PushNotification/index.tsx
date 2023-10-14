@@ -6,7 +6,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import GetToken from './GetToken';
 import { onMessageListener } from './OnMessaging';
 import { icons } from '@Assets';
-import {  ROUTES } from "@Routes";
+import { ROUTES } from "@Routes";
 import { useDispatch } from 'react-redux'
 
 const MAX_LENGTH = 70

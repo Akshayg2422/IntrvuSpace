@@ -729,6 +729,42 @@ function* forgotPasswordSaga(action) {
   }
 }
 
+
+/**
+ * reset Interview
+ */
+
+function* resetInterviewSaga(action) {
+  try {
+    const response = yield call(Api.resetInterviewApi, action.payload.params);
+    if (response.success) {
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield call(action.payload.onError(response));
+    }
+  } catch (error) {
+    yield call(action.payload.onError(error));
+  }
+}
+
+
+/**
+ * delete Interview
+ */
+
+function* deleteInterviewSaga(action) {
+  try {
+    const response = yield call(Api.deleteInterviewApi, action.payload.params);
+    if (response.success) {
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield call(action.payload.onError(response));
+    }
+  } catch (error) {
+    yield call(action.payload.onError(error));
+  }
+}
+
 function* DashboardSaga() {
   yield takeLatest(Action.GET_START_CHAT, getChatSaga);
   yield takeLatest(Action.CREATE_KNOWLEDGE_GROUP_VARIANT, createKnowledgeGroupVariantSaga);
@@ -769,5 +805,8 @@ function* DashboardSaga() {
   yield takeLatest(Action.GET_INTERVIEW_SCHEDULE_DETAILS, getInterviewScheduleDetailsSaga);
   yield takeLatest(Action.RESET_PASSWORD, resetPasswordSaga);
   yield takeLatest(Action.FORGOT_PASSWORD, forgotPasswordSaga);
+  yield takeLatest(Action.RESET_INTERVIEW, resetInterviewSaga);
+  yield takeLatest(Action.DELETE_INTERVIEW, deleteInterviewSaga);
+
 }
 export default DashboardSaga;

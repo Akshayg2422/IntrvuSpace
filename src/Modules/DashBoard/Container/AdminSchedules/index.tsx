@@ -1,16 +1,16 @@
 /* eslint-disable no-empty-pattern */
 /* eslint-disable react-hooks/rules-of-hooks */
 import { icons } from '@Assets';
-import { Button, Card, Checkbox, Divider, Image, Input, InputHeading, Modal, Radio, Spinner, TextArea, showToast } from '@Components';
+import { Button, Card, Checkbox, Divider, Image, Input, InputHeading, MenuBar, Modal, Radio, Spinner, TextArea, showToast } from '@Components';
 import { useInput, useLoader, useModal, useNavigation } from '@Hooks';
 import { AnalyzingAnimation, GenerateModal, UploadJdCard } from '@Modules';
-import { canStartInterview, createNewJdSchedule, getJdItemList, hideCreateJdModal, postJdVariant, selectedScheduleId, showCreateJddModal } from '@Redux';
+import { canStartInterview, createNewJdSchedule, createSchedulesSuperAdmin, deleteInterview, getJdItemList, hideCreateForOthersJdModal, hideCreateJdModal, postJdVariant, resetInterview, selectedScheduleId, showCreateForOthersJdModal, showCreateJddModal } from '@Redux';
 import { ROUTES } from '@Routes';
-import { FROM_JD_RULES, getValidateError, ifObjectExist, validate } from '@Utils';
+import { CREATE_FOR_OTHERS_RULES, FROM_JD_RULES, getValidateError, ifObjectExist, validate, CREATE_FOR_ADD_ANOTHER_RULES } from '@Utils';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-export const interviewDurations = [
+const interviewDurations = [
     { id: '1', text: 'Short', subText: '(5 mins)', value: 5 },
     { id: '2', text: 'Medium', subText: '(15 mins)', value: 15 },
     { id: '3', text: 'Long', subText: '(30 mins)', value: 30 },
@@ -23,16 +23,18 @@ const PLACE_HOLDER = {
     "jd": `Copy a Job Description from the Job portal(Naukri, LinkedIn...\n\n1.Visit the job portal of choice (e.g., Naukri.com) in your web browser.\n2.Search using keywords for a job listing that interests you.\n3.Click the job title to view the full description.\n4.Highlight, copy, and paste the text into your preferred application seamlessly.`
 }
 
-const INTERVAL_TIME = 5000
 
 
-function FromJD() {
+
+function AdminSchedules() {
+
+    const INTERVAL_TIME = 5000
     const CHAR_LENGTH = 5000
     const VIEW_MORE_LENGTH = 300
 
-
+    const SCHEDULE_MENU = [{ id: 1, name: 'View Interview Info' }, { id: 2, name: 'Reset Interview' }, { id: 3, name: 'Delete Interview' }];
     const ERROR_MESSAGE = "In beta version, you can upload only max of " + CHAR_LENGTH + " characters."
-    const { createJdModal, jdItem } = useSelector((state: any) => state.DashboardReducer);
+    const { createJdModal, jdItem, createForOthersJdModal } = useSelector((state: any) => state.DashboardReducer);
 
     const { goTo } = useNavigation();
     const position = useInput('');
@@ -46,10 +48,46 @@ function FromJD() {
     const [loading, setLoading] = useState(true);
     const [jdMore, setJdMore] = useState<any>([])
     const [fresherChecked, setFresherChecked] = useState(false)
-
+    const [notifyInterview, setNotifyInterview] = useState(false)
+    const [notifyReport, setNotifyReport] = useState(false)
     const [jdDescriptionError, setJdDescriptionError] = useState<any>(undefined)
     const [selectedDuration, setSelectedDuration] = useState(interviewDurations[0]);
+    const [selectedDurationForOthers, setSelectedDurationForOthers] = useState(interviewDurations[0]);
+    const firstName = useInput('')
+    const lastName = useInput('')
+    const email = useInput(undefined)
+    const mobileNumber = useInput('')
+    const sectorForOthers = useInput('')
+    const experienceForOthers = useInput('')
+    const positionForOthers = useInput('')
+    const jdForOthers = useInput('')
+    const noteForOthers = useInput('')
+
+
+
     const startInterviewLoader = useLoader(false);
+    const createInterviewSuperAdminLoader = useLoader(false);
+
+    /**
+     * Add another start
+     */
+
+    const addAnotherFirstName = useInput('')
+    const addAnotherLastName = useInput('')
+    const addAnotherEmail = useInput(undefined)
+    const addAnotherMobileNumber = useInput('')
+    const addAnotherNote = useInput('')
+
+    const [addAnotherNotifyInterview, setAddAnotherNotifyInterview] = useState(false)
+    const [addAnotherNotifyReport, setAddAnotherNotifyReport] = useState(false)
+
+    const addAnotherModal = useModal(false);
+    const [selectedInterviewJd, setSelectedInterviewJd] = useState(undefined)
+    const [notifyError, setNotifyError] = useState(false);
+
+    /**
+     * Add another end
+     */
 
 
     useEffect(() => {
@@ -136,45 +174,174 @@ function FromJD() {
     }
 
 
-    function createNewJdScheduleApiHandler(id: string) {
+
+    function resetAddAnotherValues() {
+        addAnotherFirstName.set('')
+        addAnotherLastName.set('')
+        addAnotherEmail.set('')
+        addAnotherMobileNumber.set('')
+        addAnotherNote.set('')
+        setAddAnotherNotifyInterview(false)
+        setAddAnotherNotifyReport(false)
+        setNotifyError(false)
+    }
+
+
+    function createNewJdScheduleApiHandler() {
+
+        if (selectedInterviewJd) {
+            const params = {
+                "knowledge_group_variant_id": selectedInterviewJd,
+                custom_first_name: addAnotherFirstName.value,
+                custom_last_name: addAnotherLastName.value,
+                custom_email: addAnotherEmail.value,
+                custom_mobile_number: addAnotherMobileNumber.value,
+                is_notify_interview: addAnotherNotifyInterview,
+                is_notify_report: addAnotherNotifyReport,
+                note: addAnotherNote.value
+            }
+
+
+            const validation = validate(CREATE_FOR_ADD_ANOTHER_RULES, params)
+
+            if (ifObjectExist(validation)) {
+                addAnotherModal.hide();
+                generateJdModal.show();
+                dispatch(
+                    createNewJdSchedule({
+                        params,
+                        onSuccess: (res: any) => () => {
+                            const { details } = res;
+                            resetAddAnotherValues();
+
+                            if (details?.schedule_id) {
+                                const canStartParams = { schedule_id: details?.schedule_id }
+                                setScheduleId(details?.schedule_id)
+                                const intervalId = setInterval(() => {
+                                    dispatch(canStartInterview({
+                                        params: canStartParams,
+                                        onSuccess: (res: any) => () => {
+                                            generateJdModal.hide();
+                                            completedModal.show();
+                                            getKnowledgeGroupFromJdHandler();
+                                            showToast(res.status, 'success');
+                                            clearInterval(intervalId);
+                                        },
+                                        onError: (error: any) => () => {
+                                            console.log(error);
+                                        }
+                                    }))
+                                }, INTERVAL_TIME);
+                            }
+                        },
+                        onError: () => () => {
+                            generateJdModal.hide();
+                            addAnotherModal.hide();
+                        },
+                    }))
+            } else {
+
+                showToast(getValidateError(validation))
+            }
+        }
+    }
+
+    function createForOthersApiHandler() {
         const params = {
-            "knowledge_group_variant_id": id
+            custom_first_name: firstName.value,
+            custom_last_name: lastName.value,
+            custom_email: email.value,
+            custom_mobile_number: mobileNumber.value,
+            sector_name: sectorForOthers.value,
+            position: positionForOthers.value,
+            is_notify_interview: notifyInterview,
+            is_notify_report: notifyReport,
+            experience: experienceForOthers.value,
+            interview_duration: selectedDurationForOthers.value,
+            jd: jdForOthers.value,
+            note: noteForOthers.value
         }
 
-        generateJdModal.show();
+        const validation = validate(CREATE_FOR_OTHERS_RULES, params)
 
-        dispatch(
-            createNewJdSchedule({
+        if (ifObjectExist(validation)) {
+            createInterviewSuperAdminLoader.show();
+            dispatch(createSchedulesSuperAdmin({
                 params,
-                onSuccess: (res: any) => () => {
+                onSuccess: (response: any) => () => {
+                    createForOthersResetValues()
+                    dispatch(hideCreateForOthersJdModal())
+                    getKnowledgeGroupFromJdHandler();
+                    createInterviewSuperAdminLoader.hide();
 
-                    const { details } = res;
-
-                    if (details?.schedule_id) {
-                        const canStartParams = { schedule_id: details?.schedule_id }
-                        setScheduleId(details?.schedule_id)
-                        const intervalId = setInterval(() => {
-                            dispatch(canStartInterview({
-                                params: canStartParams,
-                                onSuccess: (res: any) => () => {
-                                    generateJdModal.hide();
-                                    completedModal.show();
-                                    getKnowledgeGroupFromJdHandler();
-                                    resetValues();
-                                    showToast(res.status, 'success');
-                                    clearInterval(intervalId);
-                                },
-                                onError: (error: any) => () => {
-                                    console.log(error);
-                                }
-                            }))
-                        }, INTERVAL_TIME);
-                    }
                 },
-                onError: () => () => {
+                onError: (error) => () => {
                     generateJdModal.hide();
+                    dispatch(showCreateForOthersJdModal())
+                    showToast(error.error_message, 'error')
+                    createInterviewSuperAdminLoader.hide();
+
                 },
             }))
+        } else {
+            showToast(getValidateError(validation))
+        }
+    }
+
+    function createForOthersResetValues() {
+        firstName.set('')
+        lastName.set('')
+        email.set('')
+        mobileNumber.set('')
+        sectorForOthers.set('')
+        positionForOthers.set('')
+        experienceForOthers.set('')
+        jd.set('')
+        setNotifyInterview(false)
+        setNotifyReport(false)
+
+    }
+
+    function proceedMenuClickHandler(selected: any, id: any) {
+
+        if (selected?.id === SCHEDULE_MENU[0].id) {
+            proceedResponse(id)
+        } else if (selected?.id === SCHEDULE_MENU[1].id) {
+            resetInterviewApiHandler(id);
+        }
+        else if (selected?.id === SCHEDULE_MENU[2].id) {
+            deleteInterviewApiHandler(id);
+        }
+    }
+
+    function resetInterviewApiHandler(sid: string) {
+        const params = { sid }
+
+        dispatch(
+            resetInterview({
+                params,
+                onSuccess: () => () => {
+                    getKnowledgeGroupFromJdHandler();
+                },
+                onError: () => () => {
+                },
+            })
+        );
+    }
+
+    function deleteInterviewApiHandler(sid: string) {
+        const params = { sid }
+
+        dispatch(
+            deleteInterview({
+                params,
+                onSuccess: () => () => {
+                    getKnowledgeGroupFromJdHandler();
+                },
+                onError: () => () => {
+                },
+            })
+        );
     }
 
 
@@ -182,27 +349,9 @@ function FromJD() {
     function proceedInterviewHandler(id: string) {
         if (id) {
             if (id !== '-1') {
-
-                // const canStartParams = { schedule_id: id }
                 startInterviewLoader.hide();
                 dispatch(selectedScheduleId(id))
                 goTo(ROUTES['designation-module'].interview + "/" + id)
-
-                // startInterviewLoader.show();
-                // const intervalId = setInterval(() => {
-                //     dispatch(canStartInterview({
-                //         params: canStartParams,
-                //         onSuccess: (res: any) => () => {
-                //             startInterviewLoader.hide();
-                //             goTo(ROUTES['designation-module'].interview + "/" + id)
-                //             clearInterval(intervalId);
-                //         },
-                //         onError: (error: any) => () => {
-                //             console.log(error);
-                //         }
-                //     }))
-                // }, INTERVAL_TIME);
-
             } else {
                 jdScheduleModal.show();
             }
@@ -216,13 +365,22 @@ function FromJD() {
         }
     }
 
+    function proceedResponse(id: string) {
+        if (id) {
+            goTo(ROUTES['designation-module'].response + "/" + id)
+        }
+    }
 
-
+    console.log(addAnotherNotifyReport + '===addAnotherNotifyReport');
 
 
     return (
         <>
-            {loading ? <div className={'d-flex justify-content-center my-9'}><Spinner /></div> :
+
+            {loading ?
+                <div className={'d-flex justify-content-center my-9'}>
+                    <Spinner />
+                </div> :
                 jdItem && jdItem.length > 0 ?
                     <div>
                         {
@@ -233,23 +391,7 @@ function FromJD() {
 
                                     const more = jdMore[index]?.more
 
-                                    const modifiedSchedules = schedules.filter((each: any) => {
-                                        const { is_started, is_complete, id } = each
-                                        return is_started && is_complete
-                                    })
-
-                                    const proceedInterview = schedules.find((each: any) => {
-                                        const { is_complete } = each
-                                        return !is_complete
-                                    })
-
-
-                                    const basic_info = proceedInterview?.custom_interviewee_details?.basic_info
-
-                                    const basicInfo = basic_info && basic_info.first_name ? basic_info : null;
-                                    let demoDisplayName: any = ''
-                                    if (basicInfo)
-                                        demoDisplayName = " - " + basicInfo?.first_name
+                                    // const copyInterviewLink = schedules[0]?.custom_interview_link;
 
                                     return (
                                         <Card className="mt--3 ">
@@ -258,9 +400,10 @@ function FromJD() {
                                                     {name ? <span style={{
                                                         fontSize: "21px"
                                                     }} className='mb-0 text-primary font-weight-bolder'>
-                                                        {name.charAt(0).toUpperCase() + name.slice(1) + demoDisplayName}
+                                                        {name.charAt(0).toUpperCase() + name.slice(1)}
                                                     </span> : <></>
                                                     }
+                                                    {/* <Clipboard linkToCopy={copyInterviewLink} /> */}
 
                                                     {interview_duration &&
                                                         <div className='col'>
@@ -277,28 +420,16 @@ function FromJD() {
                                                     <h5 className='mb-0 pointer'>{experience === 0 ? "Fresher" : "" + experience + (experience === 1 ? " year " : " years ") + "of experience"}</h5>
                                                 </div>
 
+                                                <div>
+                                                    <Button
+                                                        text={'Add Another'}
+                                                        onClick={() => {
+                                                            addAnotherModal.show()
+                                                            setSelectedInterviewJd(id)
+                                                        }}
+                                                    />
+                                                </div>
 
-                                                {
-                                                    proceedInterview ?
-                                                        <div>
-                                                            <Button
-                                                                loading={startInterviewLoader.loader}
-                                                                className={'px-4 border border-primary'}
-                                                                text={proceedInterview.is_started ? "Resume Interview" : "Start Interview"}
-                                                                onClick={() => {
-                                                                    proceedInterviewHandler(proceedInterview?.id);
-                                                                }}
-                                                            />
-                                                        </div> :
-                                                        <div>
-                                                            <Button
-                                                                text={'Try Another'}
-                                                                onClick={() => {
-                                                                    createNewJdScheduleApiHandler(id);
-                                                                }}
-                                                            />
-                                                        </div>
-                                                }
                                             </div>
                                             <div className='col mt-3'>
                                                 <div className='row'>
@@ -315,7 +446,7 @@ function FromJD() {
                                                                             <div className='text-details text-black'>
                                                                                 {details.split('\n\n').map((paragraph, index) => (
                                                                                     <React.Fragment key={index}>
-                                                                                        {index > 0 && <br />} {/* Add <br /> between paragraphs except for the first one */}
+                                                                                        {index > 0 && <br />}
                                                                                         {paragraph}
                                                                                     </React.Fragment>
                                                                                 ))}
@@ -351,15 +482,14 @@ function FromJD() {
                                                 </div>
                                             </div>
                                             <div className='col mt-3'>
-                                                {modifiedSchedules && modifiedSchedules.length > 0 && <Divider className={'row'} space={"3"} />}
+                                                {schedules && schedules.length > 0 && <Divider className={'row'} space={"3"} />}
                                                 {
-                                                    modifiedSchedules &&
-                                                    modifiedSchedules.length > 0 &&
-                                                    modifiedSchedules.slice().reverse().map((each: any, index: number) => {
-                                                        const { is_complete, is_report_complete, id, created_at, custom_interviewee_details } = each;
+                                                    schedules &&
+                                                    schedules.length > 0 &&
+                                                    schedules.map((each: any, index: number) => {
+                                                        const { is_complete, is_report_complete, id, created_at, custom_interviewee_details, is_started, interview_end_time } = each;
 
                                                         const basic_info = custom_interviewee_details?.basic_info
-
 
                                                         const basicInfo = basic_info && basic_info.first_name ? basic_info : null;
                                                         let demoDisplayName: any = ''
@@ -386,11 +516,11 @@ function FromJD() {
                                                             <div>
                                                                 <div className='row align-items-center'>
                                                                     <h5 className='col m-0 p-0'>{"Interview " + (index + 1) + demoDisplayName}</h5>
-                                                                    <h5 className='col mb-0 text-center'>{(is_complete ? "Completed: " : "Created at: ") + getDisplayTimeFromMoment(created_at)}</h5>
-                                                                    <div className='col d-flex justify-content-end'>
+                                                                    <h5 className='col mb-0 text-center'>{(is_complete ? `Completed: ${getDisplayTimeFromMoment(interview_end_time)}` : `Created at: ${getDisplayTimeFromMoment(created_at)}`)}</h5>
+                                                                    <div className='d-flex justify-content-end'>
                                                                         {
-                                                                            is_report_complete &&
-                                                                            <div className='row'>
+                                                                            is_complete && is_report_complete &&
+                                                                            <div>
                                                                                 <Button
                                                                                     text={'View Report'}
                                                                                     onClick={() => {
@@ -405,6 +535,21 @@ function FromJD() {
                                                                                 <span className="name mb-0 text-sm">Generating Report ...</span>
                                                                             </div>
                                                                         }
+                                                                        {
+                                                                            !is_complete && <div>
+                                                                                <Button
+                                                                                    loading={startInterviewLoader.loader}
+                                                                                    className={' border border-primary'}
+                                                                                    text={is_started ? "Resume Interview" : "Start Interview"}
+                                                                                    onClick={() => {
+                                                                                        proceedInterviewHandler(id);
+                                                                                    }}
+                                                                                />
+                                                                            </div>
+                                                                        }
+                                                                        <div className='d-flex align-items-center justify-content-center ml-3'>
+                                                                            <MenuBar menuData={SCHEDULE_MENU} onClick={(action) => proceedMenuClickHandler(action, id)} />
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                                 <Divider className={'row'} space={"3"} />
@@ -582,8 +727,270 @@ function FromJD() {
                 </div>
             </Modal>
 
+            <Modal title={'Create Interview for Others'} isOpen={createForOthersJdModal} onClose={() => { dispatch(hideCreateForOthersJdModal()) }}>
+                <div className={'row'}>
+                    <div className={'col-6'}>
+                        <Input
+                            isMandatory
+                            heading={'First Name'}
+                            placeHolder={' First Name'}
+                            value={firstName.value}
+                            onChange={firstName.onChange} />
+                    </div>
+                    <div className={'col-6 mt-2'}>
+                        <Input
+                            heading={'Last Name'}
+                            placeHolder={'Last Name'}
+                            value={lastName.value}
+                            onChange={lastName.onChange} />
+                    </div>
+                </div>
+
+                <div className={'row'}>
+                    <div className={'col-6'}>
+                        <Input
+                            heading={'Email'}
+                            placeHolder={'Email Id'}
+                            value={email.value}
+                            onChange={(e) => {
+                                const value = e.target.value
+                                if (value === '') {
+                                    setNotifyInterview(false)
+                                    setNotifyReport(false)
+                                }
+                                email.onChange(e)
+                            }}
+                        />
+                    </div>
+                    <div className={'col-6'}>
+                        <Input
+                            heading={'Mobile Number'}
+                            maxLength={10}
+                            type={'number'}
+                            placeHolder={'Mobile Number'}
+                            value={mobileNumber.value}
+                            onChange={mobileNumber.onChange} />
+                    </div>
+                </div>
+
+                <TextArea
+                    height={'100px'}
+                    heading={'Note'}
+                    value={noteForOthers.value}
+                    onChange={noteForOthers.onChange}
+                />
+
+
+                <div className={'row'}>
+                    <div className={'col-6'}>
+                        <Input
+                            isMandatory
+                            heading={'Sector'}
+                            placeHolder={'Sector'}
+                            value={sectorForOthers.value}
+                            onChange={sectorForOthers.onChange} />
+                    </div>
+                    <div className={'col-6'}>
+                        <Input
+                            isMandatory
+                            heading={'Role'}
+                            placeHolder={'Role'}
+                            value={positionForOthers.value}
+                            onChange={positionForOthers.onChange} />
+                    </div>
+
+                </div>
+
+                <div className={'row'}>
+                    <div className={'col-6'}>
+                        <Input
+                            isMandatory
+                            type={'number'}
+                            heading={'Experience'}
+                            placeHolder={'Experience'}
+                            value={experienceForOthers.value}
+                            onChange={experienceForOthers.onChange} />
+                    </div>
+
+                    <div className={'col-6 mt-1'}>
+                        <InputHeading Class={'mb-0'} heading={'Interview Duration'} isMandatory />
+                        <Radio
+                            selected={selectedDurationForOthers}
+                            selectItem={selectedDurationForOthers}
+                            data={interviewDurations}
+                            onRadioChange={(selected) => {
+                                if (selected) {
+                                    setSelectedDurationForOthers(selected)
+                                }
+                            }}
+                        />
+                    </div>
+
+                </div>
+
+                <TextArea
+                    isMandatory
+                    error={jdDescriptionError}
+                    placeholder={PLACE_HOLDER.jd}
+                    heading='JD Details'
+                    value={jdForOthers.value.slice(0, CHAR_LENGTH)}
+                    onChange={(e) => {
+                        let value = e.target.value
+                        if (value.length > CHAR_LENGTH) {
+                            setJdDescriptionError(ERROR_MESSAGE)
+                        } else {
+                            setJdDescriptionError(undefined)
+                        }
+                        jdForOthers.set(value)
+                    }}
+                />
+
+
+
+                <div className={'d-flex'}>
+                    <Checkbox
+                        className={'text-primary flex-row'}
+                        text={'Notify interview'}
+                        id={'notifyInterview'}
+                        defaultChecked={notifyInterview}
+                        onCheckChange={(checked) => {
+                            if (email.value) {
+                                setNotifyInterview(checked)
+                                setNotifyError(false)
+                            } else {
+                                setNotifyInterview(false)
+                                setNotifyError(true)
+                            }
+                        }}
+                    />
+                    <div className='ml-4'></div>
+                    <Checkbox
+                        className={'text-primary'}
+                        text={'Notify Report'}
+                        id={'notifyReport'}
+                        defaultChecked={notifyReport}
+                        onCheckChange={(checked) => {
+
+                            if (email.value) {
+                                setNotifyReport(checked)
+                                setNotifyError(false)
+                            } else {
+                                setNotifyReport(false)
+                                setNotifyError(true)
+                            }
+                        }} />
+                </div>
+                {
+                    notifyError ? <small className='text-red mt-2' >Please provide a valid Email.</small> : null
+                }
+                <div className='mt-5'>
+                    <Button block loading={createInterviewSuperAdminLoader.loader} size='md' text={'Submit'} onClick={createForOthersApiHandler} />
+                </div>
+
+            </Modal >
+
+            {
+                /**
+                 * Add another form
+                 */
+            }
+            <Modal title={'Create Interview for Others'} isOpen={addAnotherModal.visible} onClose={addAnotherModal.hide}>
+                <div className={'row'}>
+                    <div className={'col-6'}>
+                        <Input
+                            isMandatory
+                            heading={'First Name'}
+                            placeHolder={' First Name'}
+                            value={addAnotherFirstName.value}
+                            onChange={addAnotherFirstName.onChange} />
+                    </div>
+                    <div className={'col-6 mt-2'}>
+                        <Input
+                            heading={'Last Name'}
+                            placeHolder={'Last Name'}
+                            value={addAnotherLastName.value}
+                            onChange={addAnotherLastName.onChange} />
+                    </div>
+                </div>
+
+                <div className={'row'}>
+                    <div className={'col-6'}>
+                        <Input
+                            heading={'Email'}
+                            placeHolder={'Email Id'}
+                            value={addAnotherEmail.value}
+                            onChange={(e) => {
+                                const value = e.target.value
+                                if (value === '') {
+                                    setAddAnotherNotifyInterview(false)
+                                    setAddAnotherNotifyReport(false)
+                                }
+                                addAnotherEmail.onChange(e)
+                            }} />
+                    </div>
+                    <div className={'col-6'}>
+                        <Input
+                            heading={'Mobile Number'}
+                            maxLength={10}
+                            type={'number'}
+                            placeHolder={'Mobile Number'}
+                            value={addAnotherMobileNumber.value}
+                            onChange={addAnotherMobileNumber.onChange} />
+                    </div>
+                </div>
+
+                <TextArea
+                    height={'100px'}
+                    heading={'Note'}
+                    value={addAnotherNote.value}
+                    onChange={addAnotherNote.onChange}
+                />
+
+
+                <div className={'d-flex m-0 p-0'}>
+
+                    <Checkbox
+                        className={'text-primary flex-row'}
+                        text={'Notify interview'}
+                        id={'addAnotherNotifyInterview'}
+                        defaultChecked={addAnotherNotifyInterview}
+                        onCheckChange={(checked) => {
+                            if (addAnotherEmail.value) {
+                                setAddAnotherNotifyInterview(checked)
+                                setNotifyError(false)
+                            } else {
+                                setAddAnotherNotifyInterview(false)
+                                setNotifyError(true)
+                            }
+                        }}
+                    />
+                    <div className='ml-3'></div>
+                    <Checkbox
+                        className={'text-primary'}
+                        text={'Notify Report'}
+                        id={'addAnotherNotifyReport'}
+                        defaultChecked={addAnotherNotifyReport}
+                        onCheckChange={(checked) => {
+                            if (addAnotherEmail.value) {
+                                setAddAnotherNotifyReport(checked)
+                                setNotifyError(false)
+                            } else {
+                                setAddAnotherNotifyReport(false)
+                                setNotifyError(true)
+                            }
+                        }} />
+                </div>
+                {
+                    notifyError ? <small className='text-red mt-2' >Please provide a valid Email.</small> : null
+                }
+
+                <div className='mt-5'>
+                    <Button block loading={createInterviewSuperAdminLoader.loader} size='md' text={'Submit'} onClick={createNewJdScheduleApiHandler} />
+                </div>
+
+            </Modal >
         </>
     )
 }
 
-export { FromJD };
+export { AdminSchedules };

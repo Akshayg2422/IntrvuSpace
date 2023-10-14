@@ -1045,3 +1045,27 @@ export const forgotPasswordFailure = (error: any) => {
     payload: error,
   }
 }
+
+
+
+/**
+ *  reset interview
+ */
+
+export const resetInterview = (params: any) => {
+  return {
+    type: ActionTypes.RESET_INTERVIEW,
+    payload: params,
+  }
+}
+
+/**
+ *  reset interview
+ */
+
+export const deleteInterview = (params: any) => {
+  return {
+    type: ActionTypes.DELETE_INTERVIEW,
+    payload: params,
+  }
+}
