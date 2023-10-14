@@ -4,28 +4,28 @@ import { FormGroup } from 'reactstrap'
 
 function Checkbox({ id = '0', text, defaultChecked, variant = 'primary', onCheckChange, ...rest }: CheckboxProps) {
 
-    const [checked, setChecked] = useState(defaultChecked);
+    // const [checked, setChecked] = useState(defaultChecked);
 
 
-    useEffect(() => {
-        setChecked(defaultChecked)
-    }, [defaultChecked])
+    // useEffect(() => {
+    //     setChecked(defaultChecked)
+    // }, [defaultChecked])
 
     function onChangeHandler(e: React.ChangeEvent<HTMLInputElement>) {
         if (onCheckChange) {
             const checkStatus = e.target.checked
-            setChecked(checkStatus)
+            // setChecked(checkStatus)
             onCheckChange(checkStatus)
         }
     }
 
     return (
-        <FormGroup className={'d-flex'}>
-            <div className={`custom-control custom-checkbox custom-checkbox-${variant} mb-3`}>
+        <FormGroup className='m-0 p-0'>
+            <div className={`custom-control custom-checkbox custom-checkbox-${variant}`}>
                 <input
                     {...rest}
                     id={id}
-                    checked={checked}
+                    checked={defaultChecked}
                     className={'custom-control-input'}
                     type={'checkbox'}
                     onChange={onChangeHandler}

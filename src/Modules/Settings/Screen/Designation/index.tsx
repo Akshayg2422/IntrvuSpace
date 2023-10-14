@@ -18,7 +18,7 @@ function Designation() {
 
     const { sectors } = useSelector((state: any) => state.DashboardReducer)
     const { sectorsCorporate, departmentCorporate } = useSelector((state: any) => state.DashboardReducer)
-    
+
     // console.log('departmentCorporate---------->', JSON.stringify(departmentCorporate));
 
 
@@ -33,7 +33,7 @@ function Designation() {
     const [selectedDesignation, setSelectedDesignation] = useState<any>({})
     const [selectedVariant, setSelectedVariant] = useState<any>({})
 
-console.log(selectSector,"card selectSectorselectSectorselectSector------>");
+    console.log(selectSector, "card selectSectorselectSectorselectSector------>");
 
 
     const addDesignationModal = useModal(false);
@@ -66,7 +66,7 @@ console.log(selectSector,"card selectSectorselectSectorselectSector------>");
             getSectorCorporate({
                 params,
                 onSuccess: (response: any) => () => {
-                   
+
                 },
                 onError: () => () => {
                 },
@@ -76,13 +76,13 @@ console.log(selectSector,"card selectSectorselectSectorselectSector------>");
 
     const addSectorCorporateApiHandler = (value) => {
         console.log(value, "apiCheck");
-        const params = {name: value, description: null }
+        const params = { name: value, description: null }
         dispatch(
             addSectorCorporate({
                 params,
                 onSuccess: (response) => () => {
                     console.log(response, "addSectorCorporateApiHandler");
-                    
+
                     getSectorsCorporateApiHandler();
                 },
                 onError: (error) => () => {
@@ -97,7 +97,7 @@ console.log(selectSector,"card selectSectorselectSectorselectSector------>");
             getDepartmentCorporate({
                 params,
                 onSuccess: (response: any) => () => {
-                   console.log('getDepartmentCorporate-------->',JSON.stringify(response))
+                    console.log('getDepartmentCorporate-------->', JSON.stringify(response))
                 },
                 onError: () => () => {
                 },
@@ -107,14 +107,14 @@ console.log(selectSector,"card selectSectorselectSectorselectSector------>");
 
     const addDepartmentApiHandler = (value) => {
         console.log(value, "apiCheck");
-        
-  const params = {name: value}
+
+        const params = { name: value }
         dispatch(
             addDepartmentCorporate({
                 params,
                 onSuccess: (response) => () => {
                     console.log(response, 'addDepartapiHandler');
-                    
+
                     getDepartmentCorporateApiHandler();
                 },
                 onError: (error) => () => {
@@ -353,24 +353,24 @@ console.log(selectSector,"card selectSectorselectSectorselectSector------>");
                 </div> */}
 
                 <div className='text-right mb-3'>
-                         <Button
+                    <Button
                         text={'Create Schedule'}
-                         block
-                         onClick={()=>{
-                         addRoleModal.show();
-                         } 
-                     }
+                        block
+                        onClick={() => {
+                            addRoleModal.show();
+                        }
+                        }
                     />
-                 </div>
+                </div>
 
                 <div className='row pt-3'>
-               
+
 
                     {cardData && cardData.length > 0 ?
                         cardData.map((el: any, index: number) => {
                             return (
                                 <div className='col-sm-12 col-lg-12 p-0 m-0 mb-3'>
-                                    
+
                                     <DesignationItem
                                         item={el}
                                         // onAdd={(selected) => {
@@ -507,7 +507,7 @@ console.log(selectSector,"card selectSectorselectSectorselectSector------>");
                                     isMandatory
                                     data={sectorsCorporate}
                                     heading={"Sector"}
-                                    onAdd = {(value )=>{
+                                    onAdd={(value) => {
                                         addSectorCorporateApiHandler(value)
                                     }}
                                     state={setSelectedSector}
@@ -518,7 +518,7 @@ console.log(selectSector,"card selectSectorselectSectorselectSector------>");
                                     isMandatory
                                     data={departmentCorporate}
                                     heading={"Department"}
-                                    onAdd = {(value )=>{
+                                    onAdd={(value) => {
                                         addDepartmentApiHandler(value)
                                     }}
                                     state={setSelectedDepartment}
@@ -528,7 +528,7 @@ console.log(selectSector,"card selectSectorselectSectorselectSector------>");
 
                         <div className='row'>
                             <div className='col'>
-                                 <Input
+                                <Input
                                     isMandatory
                                     heading={'Role'}
                                     type={'text'}

@@ -47,7 +47,7 @@ const initialState: DashboardProp = {
   departmentCorporate: undefined,
   corporateSchedules: undefined,
   createForOthersJdModal: false,
-  interviewScheduleDetails: undefined
+  interviewScheduleDetails: undefined,
 };
 
 const DashboardReducer = (state = initialState, action: any) => {
@@ -338,7 +338,7 @@ const DashboardReducer = (state = initialState, action: any) => {
      * get jd item list
      */
     case ActionTypes.GET_JD_ITEM_LIST:
-      state = { ...state, jdItem: undefined };
+      state = { ...state };
       break;
     case ActionTypes.GET_JD_ITEM_LIST_SUCCESS:
       console.log("==========>", action.payload.details);
@@ -540,6 +540,30 @@ const DashboardReducer = (state = initialState, action: any) => {
       break;
     case ActionTypes.GET_INTERVIEW_SCHEDULE_DETAILS_FAILURE:
       state = { ...state, interviewScheduleDetails: undefined };
+      break;
+
+    // resetPassword
+
+    case ActionTypes.RESET_PASSWORD:
+      state = { ...state };
+      break;
+    case ActionTypes.RESET_PASSWORD_SUCCESS:
+      state = { ...state };
+      break;
+    case ActionTypes.RESET_PASSWORD_FAILURE:
+      state = { ...state };
+      break;
+
+    // forgotPassword
+
+    case ActionTypes.FORGOT_PASSWORD:
+      state = { ...state };
+      break;
+    case ActionTypes.FORGOT_PASSWORD_SUCCESS:
+      state = { ...state };
+      break;
+    case ActionTypes.FORGOT_PASSWORD_FAILURE:
+      state = { ...state };
       break;
 
     default:

@@ -693,6 +693,78 @@ function* getInterviewScheduleDetailsSaga(action) {
   }
 }
 
+// resetPassword
+
+function* resetPasswordSaga(action) {
+  try {
+    const response = yield call(Api.resetPasswordApi, action.payload.params);
+    if (response.success) {
+      yield put(Action.resetPasswordSuccess(response?.details));
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield put(Action.resetPasswordFailure(response.error_message));
+      yield call(action.payload.onError(response));
+    }
+  } catch (error) {
+    yield put(Action.resetPasswordFailure(error));
+    yield call(action.payload.onError(error));
+  }
+}
+
+// forgotPassword
+
+function* forgotPasswordSaga(action) {
+  try {
+    const response = yield call(Api.forgotPasswordApi, action.payload.params);
+    if (response.success) {
+      yield put(Action.forgotPasswordSuccess(response?.details));
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield put(Action.forgotPasswordFailure(response.error_message));
+      yield call(action.payload.onError(response));
+    }
+  } catch (error) {
+    yield put(Action.forgotPasswordFailure(error));
+    yield call(action.payload.onError(error));
+  }
+}
+
+
+/**
+ * reset Interview
+ */
+
+function* resetInterviewSaga(action) {
+  try {
+    const response = yield call(Api.resetInterviewApi, action.payload.params);
+    if (response.success) {
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield call(action.payload.onError(response));
+    }
+  } catch (error) {
+    yield call(action.payload.onError(error));
+  }
+}
+
+
+/**
+ * delete Interview
+ */
+
+function* deleteInterviewSaga(action) {
+  try {
+    const response = yield call(Api.deleteInterviewApi, action.payload.params);
+    if (response.success) {
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield call(action.payload.onError(response));
+    }
+  } catch (error) {
+    yield call(action.payload.onError(error));
+  }
+}
+
 function* DashboardSaga() {
   yield takeLatest(Action.GET_START_CHAT, getChatSaga);
   yield takeLatest(Action.CREATE_KNOWLEDGE_GROUP_VARIANT, createKnowledgeGroupVariantSaga);
@@ -731,7 +803,10 @@ function* DashboardSaga() {
   yield takeLatest(Action.GET_CORPORATE_SCHEDULES, getCorporateSchedulesSaga);
   yield takeLatest(Action.CREATE_SCHEDULES_SUPER_ADMIN, createSchedulesSuperAdminSaga);
   yield takeLatest(Action.GET_INTERVIEW_SCHEDULE_DETAILS, getInterviewScheduleDetailsSaga);
-
+  yield takeLatest(Action.RESET_PASSWORD, resetPasswordSaga);
+  yield takeLatest(Action.FORGOT_PASSWORD, forgotPasswordSaga);
+  yield takeLatest(Action.RESET_INTERVIEW, resetInterviewSaga);
+  yield takeLatest(Action.DELETE_INTERVIEW, deleteInterviewSaga);
 
 }
 export default DashboardSaga;

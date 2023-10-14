@@ -162,7 +162,7 @@ function Login() {
                                             borderBottomLeftRadius: 0,
                                             borderLeft: 0,
                                             borderRadius: 0,
-                                            borderColor: toggleInput ? '#68d75c' : 'black'
+                                            borderColor: toggleInput ? '#000000' : 'black',
                                         }}
                                         onClick={() => {
                                             setShowPassword(!showPassword)
@@ -197,7 +197,7 @@ function Login() {
                                     <label className="text-black text-sm">Remember me</label>
                                 </div>
                                 <div className="text-right">
-                                    <a className="text-primary text-sm" href="/">Forgot Password ?</a>
+                                <span className="text-primary pointer text-sm" onClick={()=>{goTo(ROUTES["auth-module"].forgotPassword)}}>Forgot Password ?</span>
                                 </div>
                             </div>
                             <div className="py-3 ">
