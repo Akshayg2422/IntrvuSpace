@@ -5,7 +5,7 @@ import { LoginSideContent } from '../../Container'
 import { useInput, useKeyPress, useLoader, useNavigation } from '@Hooks'
 import { Button, showToast } from '@Components'
 import { useDispatch } from 'react-redux'
-import { forgotPassword } from '@Redux'
+import { forgotPassword, retrieveForgottenEmail } from '@Redux'
 
 function ForgotPassword() {
     const { goTo, goBack } = useNavigation()
@@ -47,8 +47,10 @@ function ForgotPassword() {
             onSuccess: (response: any) => () => {
                 loginLoader.hide()
                 if (response.success) {
+                    console.log('111111111111',response?.details)
                     showToast(response.message, 'success')
                     goTo(ROUTES["auth-module"].createNewPassword)
+                    dispatch(retrieveForgottenEmail(response?.details))
                 }
                 else {
                     showToast(response.error_message, 'error')

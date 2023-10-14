@@ -21,6 +21,9 @@ function CreateNewPassword() {
     const [toggleNewPassword, setToggleNewPassword] = useState(false)
     const [showConfirmPassword, setShowConfirmPassword] = useState(false)
     const [toggleConfirmPassword, setToggleConfirmPassword] = useState(false)
+    const { retrieveEmail } = useSelector((state: any) => state.AuthReducer);
+
+    console.log('retrieveEmail----->', retrieveEmail)
     useEffect(() => {
         if (enterPress) {
             createNewPasswordHandler()
@@ -60,6 +63,7 @@ function CreateNewPassword() {
         }
 
         const params = {
+            email: retrieveEmail?.email,
             otp: otpValue,
             password: newPasswordValue,
         };
