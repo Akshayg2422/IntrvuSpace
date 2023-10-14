@@ -11,7 +11,8 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 export const interviewDurations = [
-    { id: '1', text: 'Short', subText: '(5 mins)', value: 5 },
+    { id: '0', text: 'Quick', subText: '(5 mins)', value: 5 },
+    { id: '1', text: 'Short', subText: '(10 mins)', value: 10 },
     { id: '2', text: 'Medium', subText: '(15 mins)', value: 15 },
     { id: '3', text: 'Long', subText: '(30 mins)', value: 30 },
 ];
@@ -524,28 +525,26 @@ function FromJD() {
             </GenerateModal>
 
             <Modal isOpen={completedModal.visible} onClose={completedModal.hide}>
-                <div className='mt--5 pb-4'>
-                    <div className='text-center '>
-                        <div className='display-1 text-black'>
-                            Your Interview is Ready!
-                        </div>
+                <div className='text-center '>
+                    <div className='display-1 text-black'>
+                        Your Interview is Ready!
                     </div>
-                    <div className='text-center py-3'>
-                        <small className='text-black'>Click Below to Start Interview</small>
-                        <div className='row justify-content-center pt-1'>
-                            <div className='col-4'>
-                                <Button
-                                    loading={startInterviewLoader.loader}
-                                    block
-                                    size='md'
-                                    text={'Start Now'}
-                                    onClick={() => {
-                                        if (scheduleId) {
-                                            proceedInterviewHandler(scheduleId)
-                                        }
-                                    }}
-                                />
-                            </div>
+                </div>
+                <div className='text-center mb-5 mt-3'>
+                    <small className='text-black'>Click Below to Start Interview</small>
+                    <div className='row justify-content-center pt-1'>
+                        <div className='col-4'>
+                            <Button
+                                loading={startInterviewLoader.loader}
+                                block
+                                size='md'
+                                text={'Start Now'}
+                                onClick={() => {
+                                    if (scheduleId) {
+                                        proceedInterviewHandler(scheduleId)
+                                    }
+                                }}
+                            />
                         </div>
                     </div>
                 </div>

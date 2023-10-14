@@ -5,7 +5,7 @@ import { HOME_ROUTES, ROUTES } from '@Routes'
 import { Sidebar } from '@Components'
 import { icons } from '@Assets'
 import { FCM_TOKEN, getDeviceInfo } from '@Utils'
-import { PushNotification } from "@Modules";
+
 
 
 type RequireAuthProps = {
