@@ -157,6 +157,15 @@ export const getInterviewScheduleDetailsApi = payload => post(URL.URL_GET_INTERV
 export const resetInterviewApi = payload => post(URL.URL_RESET_INTERVIEW, payload, {});
 export const deleteInterviewApi = payload => post(URL.URL_DELETE_INTERVIEW, payload, {});
 
+
+
+
+/**
+ * delete jd 
+ */
+export const deleteJdApi = payload => post(URL.URL_DELETE_JD, payload, {});
+
+
 // resetPassword
 
 export const resetPasswordApi = payload => post(URL.URL_RESET_PASSWORD, payload, {});
