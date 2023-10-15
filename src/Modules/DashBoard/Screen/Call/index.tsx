@@ -18,6 +18,7 @@ import { useScreenRecorder } from "./useScreenRecorder";
 import { CALL_WEBSOCKET } from "@Services";
 import { color } from "@Themes";
 import { listeners } from "process";
+import { t } from "i18n-js";
 
 const compare_moment_format = "YYYY-MM-DDHH:mm:ss";
 
@@ -64,6 +65,8 @@ function Call() {
 
 
   const intervalIdRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const socketInterviewRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
 
 
 
@@ -116,6 +119,8 @@ function Call() {
   const [websocketError, setWebSocketError] = useState(false);
 
   const lastAiResponseTime = useRef<any>(undefined);
+  const canConnect = useRef<any>(true);
+
   const [networkBreakTime, setNetworkBreakTime] = useState(0);
 
   // microphone permission states
@@ -255,25 +260,65 @@ function Call() {
     }
   };
 
+
+  function initiateSocket() {
+
+    createWebSocket();
+    socketInterviewRef.current = setInterval(() => {
+      createWebSocket(true)
+    }, 3000)
+
+  }
+
+  const stopIntervalSocket = () => {
+    if (socketInterviewRef.current !== null) {
+      clearInterval(socketInterviewRef.current);
+      socketInterviewRef.current = null;
+    }
+  };
+
+
+
+  useEffect(() => {
+
+
+    return () => {
+      stopIntervalSocket();
+
+      if (socketRef.current) {
+        try {
+          canConnect.current = false
+          socketRef.current.close();
+          socketRef.current = null;
+        } catch (e) {
+
+        }
+        clearInterval(reconnectInterval);
+
+      }
+    };
+
+  }, [])
+
   // Create the WebSocket connection only if it's not already established
 
   function createWebSocket(showError = true) {
-    // console.log("createWebSocket");
 
-    if (websocketStatus.current !== WEBSOCKET_PROCESSING) {
-      const socket = new WebSocket(CALL_WEBSOCKET);
-      // const socket = new WebSocket('wss://mockeazyprimary.leorainfotech.in/aaa');
+    console.log('00000000');
 
-      // const socket = new WebSocket('ws://192.168.105.204:8002/aaa');
 
+    if (!socketRef.current && canConnect.current) {
+
+      console.log('11111');
+
+      socketRef.current = new WebSocket(CALL_WEBSOCKET);
       websocketStatus.current = WEBSOCKET_PROCESSING;
-      socketRef.current = socket; // Store the WebSocket instance in the ref
 
-      socket.addEventListener("open", () => {
+
+      socketRef.current.addEventListener("open", () => {
         websocketStatus.current = WEBSOCKET_IDLE;
-        // console.log(
-        //   "WebSocket connection established==========================="
-        // );
+        console.log('22222222');
+
         setWebSocketError(false);
 
         // Clear the reconnect interval when the connection is open
@@ -281,23 +326,28 @@ function Call() {
         reconnectAttempts.current = 0; // Reset the reconnect attempts counter
       });
 
-      socket.addEventListener("close", () => {
-        websocketStatus.current = WEBSOCKET_IDLE;
-        if (showError) setWebSocketError(true);
+      socketRef.current.addEventListener("onerror", () => {
+        socketRef.current = undefined
+      })
 
-        if (reconnectAttempts.current < maxReconnectAttempts) {
-          setTimeout(() => {
-            createWebSocket();
-            reconnectAttempts.current++;
-          }, 3000);
-        } else {
-          clearInterval(reconnectInterval);
-          if (!showError) setWebSocketError(true);
-        }
+      socketRef.current.addEventListener("close", () => {
+        socketRef.current = undefined
+        // websocketStatus.current = WEBSOCKET_IDLE;
+        // if (showError) setWebSocketError(true);
+
+        // if (reconnectAttempts.current < maxReconnectAttempts) {
+        //   setTimeout(() => {
+        //     createWebSocket();
+        //     reconnectAttempts.current++;
+        //   }, 3000);
+        // } else {
+        //   clearInterval(reconnectInterval);
+        //   if (!showError) setWebSocketError(true);
+        // }
       });
 
       // Listen for messages
-      socket.onmessage = (event) => {
+      socketRef.current.onmessage = (event) => {
         // console.log("Received001");
         const response = JSON.parse(event.data);
         proceedHandleResponseV1(response);
@@ -305,24 +355,10 @@ function Call() {
         // console.log('Received002:', response);
       };
     }
+
   }
 
-  useEffect(() => {
-    // Create the WebSocket when the component mounts
-    if (!socketRef.current) {
-      createWebSocket();
-    }
 
-    // Clean up the WebSocket connection when the component unmounts
-    return () => {
-      if (socketRef.current) {
-        socketRef.current.close();
-        socketRef.current = null;
-        clearInterval(reconnectInterval);
-
-      }
-    };
-  }, []);
 
   const sendDataToSocket = async (
     blob: Blob,
@@ -430,7 +466,6 @@ function Call() {
         chunks.current = [];
       }
       if (encoder.current) {
-        encoder.current.flush();
         encoder.current = undefined;
       }
       if (recorderAudio.current) {
@@ -763,6 +798,10 @@ function Call() {
           canStartInterview({
             params: canStartParams,
             onSuccess: (res: any) => () => {
+
+              initiateSocket();
+
+
               startInterviewLoader.hide();
 
               startStreamTime.current = moment().add(1, "seconds");
@@ -775,6 +814,7 @@ function Call() {
               // setTimeout(() => {
               validateProceedStartListening();
               // }, 5000)
+
 
               if (intervalIdRef.current) {
                 clearInterval(intervalIdRef.current);
