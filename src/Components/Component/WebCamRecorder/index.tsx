@@ -1,12 +1,14 @@
-import { useWebCamRecorder } from "@Hooks";
-import { color } from "@Themes";
-import React, { useState, useRef, useCallback } from "react";
 import Webcam from "react-webcam";
 
 const WebCamRecorder = ({ isMuted = false }) => {
   return (
     <div>
-      <Webcam mirrored style={{ height: 271, width: 270, objectFit: "cover", marginTop: 18, backgroundColor: color.primary, borderRadius: 12 }} audio={false} screenshotFormat="image/jpeg" />
+      <div className="d-block d-md-none d-lg-none d-xl-none">
+        <Webcam mirrored style={{ marginTop: 6, height: 200, width: 200, objectFit: 'cover', alignItems: 'center', justifyContent: 'center' }} audio={false} screenshotFormat="image/jpeg" />
+      </div>
+      <div className="d-none d-md-block d-lg-block d-xl-block">
+        <Webcam mirrored style={{ marginTop: 6, height: 250, width: 250, objectFit: 'cover', alignItems: 'center', justifyContent: 'center' }} audio={false} screenshotFormat="image/jpeg" />
+      </div>
     </div>
   );
 };
