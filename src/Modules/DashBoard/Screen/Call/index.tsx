@@ -503,7 +503,7 @@ function Call() {
             voiceUpCount.current = 0;
             speakingShouldProcess.current = false;
             if (voiceUp === true) setVoiceUp(false);
-          } else if (valueP < 46) {
+          } else if (valueP < 43) {
             isVoiceUpCurrentChunk.current = true;
 
             /**
@@ -773,7 +773,7 @@ function Call() {
               validateProceedStartListening();
               // }, 5000)
 
-              clearInterval(intervalId);
+
             },
             onError: (error: any) => () => {
               // console.log(error);
