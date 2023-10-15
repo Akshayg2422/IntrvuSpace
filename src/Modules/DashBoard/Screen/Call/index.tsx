@@ -17,6 +17,7 @@ import { RecordRTCPromisesHandler, StereoAudioRecorder } from "recordrtc";
 import { useScreenRecorder } from "./useScreenRecorder";
 import { CALL_WEBSOCKET } from "@Services";
 import { color } from "@Themes";
+import { listeners } from "process";
 
 const compare_moment_format = "YYYY-MM-DDHH:mm:ss";
 
@@ -318,7 +319,7 @@ function Call() {
         socketRef.current.close();
         socketRef.current = null;
         clearInterval(reconnectInterval);
-        clearInterval(intervalId);
+
       }
     };
   }, []);
@@ -438,8 +439,8 @@ function Call() {
         listener.current.off("speaking", onStartSpeaking);
         // @ts-ignore
         listener.current.off("stopped_speaking", onStopSpeaking);
-        listener.current = undefined
-
+        listener.current.off("volume_change");
+        listener.current = null;
 
       }
       if (stream.current) {
@@ -748,7 +749,7 @@ function Call() {
 
     const hasMicPermission = await hasMicrophonePermission();
 
-    if (hasMicPermission || true) {
+    if (hasMicPermission) {
       micPermissionModal.hide()
       const canStartParams = { schedule_id };
 
@@ -841,7 +842,7 @@ function Call() {
   const IE_IDLE = 2;
 
   // const interviewee_state = voiceUp && !mute ? IE_SPEAKING : IE_IDLE
-  const interviewee_state = isVoiceUpCurrentChunk.current
+  const interviewee_state = isVoiceUpCurrentChunk.current && !mute
     ? IE_SPEAKING
     : IE_IDLE;
 
