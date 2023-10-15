@@ -765,6 +765,26 @@ function* deleteInterviewSaga(action) {
   }
 }
 
+
+
+/**
+ * delete JD
+ */
+
+function* deleteJdSaga(action) {
+  try {
+    const response = yield call(Api.deleteJdApi, action.payload.params);
+    if (response.success) {
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield call(action.payload.onError(response));
+    }
+  } catch (error) {
+    yield call(action.payload.onError(error));
+  }
+}
+
+
 function* DashboardSaga() {
   yield takeLatest(Action.GET_START_CHAT, getChatSaga);
   yield takeLatest(Action.CREATE_KNOWLEDGE_GROUP_VARIANT, createKnowledgeGroupVariantSaga);
@@ -807,6 +827,7 @@ function* DashboardSaga() {
   yield takeLatest(Action.FORGOT_PASSWORD, forgotPasswordSaga);
   yield takeLatest(Action.RESET_INTERVIEW, resetInterviewSaga);
   yield takeLatest(Action.DELETE_INTERVIEW, deleteInterviewSaga);
+  yield takeLatest(Action.DELETE_JD, deleteJdSaga);
 
 }
 export default DashboardSaga;

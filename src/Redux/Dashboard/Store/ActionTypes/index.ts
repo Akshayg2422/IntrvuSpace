@@ -334,3 +334,12 @@ export const FORGOT_PASSWORD_FAILURE = 'FORGOT_PASSWORD_FAILURE';
 
 export const RESET_INTERVIEW = 'RESET_INTERVIEW';
 export const DELETE_INTERVIEW = 'DELETE_INTERVIEW';
+
+
+
+/**
+ * delete JD
+ */
+
+export const DELETE_JD = 'DELETE_JD';
+

@@ -1069,3 +1069,16 @@ export const deleteInterview = (params: any) => {
     payload: params,
   }
 }
+
+
+
+/**
+ *  delete JD
+ */
+
+export const deleteJd = (params: any) => {
+  return {
+    type: ActionTypes.DELETE_JD,
+    payload: params,
+  }
+}

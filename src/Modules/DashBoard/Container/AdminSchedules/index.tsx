@@ -4,7 +4,7 @@ import { icons } from '@Assets';
 import { Button, Card, Checkbox, Divider, Image, Input, InputHeading, MenuBar, Modal, Radio, Spinner, TextArea, showToast } from '@Components';
 import { useInput, useLoader, useModal, useNavigation } from '@Hooks';
 import { AnalyzingAnimation, GenerateModal, UploadJdCard } from '@Modules';
-import { canStartInterview, createNewJdSchedule, createSchedulesSuperAdmin, deleteInterview, getJdItemList, hideCreateForOthersJdModal, hideCreateJdModal, postJdVariant, resetInterview, selectedScheduleId, showCreateForOthersJdModal, showCreateJddModal } from '@Redux';
+import { canStartInterview, createNewJdSchedule, createSchedulesSuperAdmin, deleteInterview, getJdItemList, hideCreateForOthersJdModal, hideCreateJdModal, postJdVariant, resetInterview, selectedScheduleId, showCreateForOthersJdModal, showCreateJddModal, deleteJd } from '@Redux';
 import { ROUTES } from '@Routes';
 import { CREATE_FOR_OTHERS_RULES, FROM_JD_RULES, getValidateError, ifObjectExist, validate, CREATE_FOR_ADD_ANOTHER_RULES } from '@Utils';
 import React, { useEffect, useState } from 'react';
@@ -16,6 +16,7 @@ const interviewDurations = [
     { id: '2', text: 'Medium', subText: '(15 mins)', value: 15 },
     { id: '3', text: 'Long', subText: '(30 mins)', value: 30 },
 ];
+
 const PLACE_HOLDER = {
     "sector": "Software, Banking...",
     "role": "Developer, Manager...",
@@ -33,6 +34,8 @@ function AdminSchedules() {
     const VIEW_MORE_LENGTH = 300
 
     const SCHEDULE_MENU = [{ id: 1, name: 'View Interview Info' }, { id: 2, name: 'Reset Interview' }, { id: 3, name: 'Delete Interview' }];
+    const JD_MENU = [{ id: 0, name: 'Delete' }];
+
     const ERROR_MESSAGE = "In beta version, you can upload only max of " + CHAR_LENGTH + " characters."
     const { createJdModal, jdItem, createForOthersJdModal } = useSelector((state: any) => state.DashboardReducer);
 
@@ -346,6 +349,31 @@ function AdminSchedules() {
 
 
 
+    function proceedJDMenuClickHandler(selected: any, id: any) {
+
+        if (selected?.id === JD_MENU[0].id) {
+            deleteJdApiHandler(id);
+        }
+
+    }
+
+    function deleteJdApiHandler(kvid: string) {
+        const params = { kvid }
+
+        dispatch(
+            deleteJd({
+                params,
+                onSuccess: () => () => {
+                    getKnowledgeGroupFromJdHandler();
+                },
+                onError: () => () => {
+                },
+            })
+        );
+    }
+
+
+
     function proceedInterviewHandler(id: string) {
         if (id) {
             if (id !== '-1') {
@@ -419,14 +447,17 @@ function AdminSchedules() {
                                                     <h5 className='mb-0 pointer'>{experience === 0 ? "Fresher" : "" + experience + (experience === 1 ? " year " : " years ") + "of experience"}</h5>
                                                 </div>
 
-                                                <div>
-                                                    <Button
-                                                        text={'Add Another'}
-                                                        onClick={() => {
-                                                            addAnotherModal.show()
-                                                            setSelectedInterviewJd(id)
-                                                        }}
-                                                    />
+                                                <div className='row'>
+                                                    <div>
+                                                        <Button
+                                                            text={'Add Another'}
+                                                            onClick={() => {
+                                                                addAnotherModal.show()
+                                                                setSelectedInterviewJd(id)
+                                                            }}
+                                                        />
+                                                    </div>
+                                                    <MenuBar menuData={JD_MENU} onClick={(action) => proceedJDMenuClickHandler(action, id)} />
                                                 </div>
 
                                             </div>
@@ -486,14 +517,14 @@ function AdminSchedules() {
                                                     schedules &&
                                                     schedules.length > 0 &&
                                                     schedules.map((each: any, index: number) => {
-                                                        const { is_complete, is_report_complete, id, created_at, custom_interviewee_details, is_started, interview_end_time } = each;
+                                                        const { is_complete, is_report_complete, id, created_at, custom_interviewee_details, is_started, interview_end_time, note } = each;
 
                                                         const basic_info = custom_interviewee_details?.basic_info
 
                                                         const basicInfo = basic_info && basic_info.first_name ? basic_info : null;
-                                                        let demoDisplayName: any = ''
+                                                        let demoDisplayName: any = undefined
                                                         if (basicInfo)
-                                                            demoDisplayName = " - " + basicInfo?.first_name
+                                                            demoDisplayName = basicInfo?.first_name
 
                                                         const getDisplayTimeFromMoment = (timestamp: any) => {
                                                             const currentTime = new Date().getTime();
@@ -514,9 +545,12 @@ function AdminSchedules() {
                                                         return (
                                                             <div>
                                                                 <div className='row align-items-center'>
-                                                                    <h5 className='col m-0 p-0'>{"Interview " + (index + 1) + demoDisplayName}</h5>
+                                                                    <div className='m-0 p-0'>
+                                                                        <h5 className='m-0 p-0'>{demoDisplayName ? demoDisplayName.charAt(0).toUpperCase() + demoDisplayName.slice(1) : "Interview " + (index + 1)}</h5>
+                                                                        {note ? <small className='text-muted'>{note}</small> : null}
+                                                                    </div>
                                                                     <h5 className='col mb-0 text-center'>{(is_complete ? `Completed: ${getDisplayTimeFromMoment(interview_end_time)}` : `Created at: ${getDisplayTimeFromMoment(created_at)}`)}</h5>
-                                                                    <div className='d-flex justify-content-end'>
+                                                                    <div className='d-flex justify-content-end align-items-center'>
                                                                         {
                                                                             is_complete && is_report_complete &&
                                                                             <div>
@@ -880,7 +914,7 @@ function AdminSchedules() {
                         }} />
                 </div>
                 {
-                    notifyError ? <small className='text-red mt-2' >Please provide a valid Email.</small> : null
+                    notifyError ? <small className='text-red mt-2' >Please fill above email field to enable notification.</small> : null
                 }
                 <div className='mt-5'>
                     <Button block loading={createInterviewSuperAdminLoader.loader} size='md' text={'Submit'} onClick={createForOthersApiHandler} />
@@ -980,7 +1014,7 @@ function AdminSchedules() {
                         }} />
                 </div>
                 {
-                    notifyError ? <small className='text-red mt-2' >Please provide a valid Email.</small> : null
+                    notifyError ? <small className='text-red mt-2' >Please fill above email field to enable notification</small> : null
                 }
 
                 <div className='mt-5'>
