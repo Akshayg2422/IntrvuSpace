@@ -167,3 +167,9 @@ export const URL_RESET_INTERVIEW = ASSISTANT + 'resetInterview'
 export const URL_DELETE_INTERVIEW = ASSISTANT + 'deleteInterview'
 
 
+
+
+/**
+ * delete jd
+ */
+export const URL_DELETE_JD = ASSISTANT + 'deleteJd'
