@@ -63,9 +63,9 @@ const GUIDELINES = [
 function Call() {
 
 
-  let intervalId: any = null;
+  const intervalIdRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  const { startScreenRecording } = useScreenRecorder();
+
 
   const speakingShouldProcess = useRef<any>(false);
 
@@ -423,6 +423,9 @@ function Call() {
 
   useEffect(() => {
     return () => {
+
+      stopInterval();
+
       if (chunks.current) {
         chunks.current = [];
       }
@@ -755,7 +758,7 @@ function Call() {
 
       startInterviewLoader.show();
 
-      intervalId = setInterval(() => {
+      intervalIdRef.current = setInterval(() => {
         dispatch(
           canStartInterview({
             params: canStartParams,
@@ -772,6 +775,10 @@ function Call() {
               // setTimeout(() => {
               validateProceedStartListening();
               // }, 5000)
+
+              if (intervalIdRef.current) {
+                clearInterval(intervalIdRef.current);
+              }
 
 
             },
@@ -811,6 +818,13 @@ function Call() {
   function refreshScreen() {
     window.location.reload();
   }
+
+  const stopInterval = () => {
+    if (intervalIdRef.current !== null) {
+      clearInterval(intervalIdRef.current);
+      intervalIdRef.current = null;
+    }
+  };
 
   function renderNetworkRange() {
     return NETWORK_DESIGN.map((each, index) => {

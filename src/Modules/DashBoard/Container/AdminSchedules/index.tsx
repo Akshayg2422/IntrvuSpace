@@ -1,5 +1,6 @@
 /* eslint-disable no-empty-pattern */
 /* eslint-disable react-hooks/rules-of-hooks */
+
 import { icons } from '@Assets';
 import { Button, Card, Checkbox, Divider, Image, Input, InputHeading, MenuBar, Modal, Radio, Spinner, TextArea, showToast } from '@Components';
 import { useInput, useLoader, useModal, useNavigation } from '@Hooks';
@@ -7,7 +8,7 @@ import { AnalyzingAnimation, GenerateModal, UploadJdCard } from '@Modules';
 import { canStartInterview, createNewJdSchedule, createSchedulesSuperAdmin, deleteInterview, getJdItemList, hideCreateForOthersJdModal, hideCreateJdModal, postJdVariant, resetInterview, selectedScheduleId, showCreateForOthersJdModal, showCreateJddModal, deleteJd } from '@Redux';
 import { ROUTES } from '@Routes';
 import { CREATE_FOR_OTHERS_RULES, FROM_JD_RULES, getValidateError, ifObjectExist, validate, CREATE_FOR_ADD_ANOTHER_RULES } from '@Utils';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 const interviewDurations = [
@@ -28,6 +29,10 @@ const PLACE_HOLDER = {
 
 
 function AdminSchedules() {
+
+
+    const intervalIdRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
 
     const INTERVAL_TIME = 5000
     const CHAR_LENGTH = 5000
@@ -95,6 +100,11 @@ function AdminSchedules() {
 
     useEffect(() => {
         getKnowledgeGroupFromJdHandler();
+
+        return () => {
+            stopInterval();
+        };
+
     }, [])
 
 
@@ -139,7 +149,8 @@ function AdminSchedules() {
                     if (details?.schedule_id) {
                         const canStartParams = { schedule_id: details?.schedule_id }
                         setScheduleId(details?.schedule_id)
-                        const intervalId = setInterval(() => {
+
+                        intervalIdRef.current = setInterval(() => {
                             dispatch(canStartInterview({
                                 params: canStartParams,
                                 onSuccess: (res: any) => () => {
@@ -148,13 +159,16 @@ function AdminSchedules() {
                                     getKnowledgeGroupFromJdHandler();
                                     resetValues();
                                     // showToast(res.status, 'success');
-                                    clearInterval(intervalId);
+                                    if (intervalIdRef.current) {
+                                        clearInterval(intervalIdRef.current);
+                                    }
                                 },
                                 onError: (error: any) => () => {
                                     console.log(error);
                                 }
                             }))
                         }, INTERVAL_TIME);
+
                     }
                 },
                 onError: (error) => () => {
@@ -401,6 +415,13 @@ function AdminSchedules() {
 
 
 
+    const stopInterval = () => {
+        if (intervalIdRef.current !== null) {
+            clearInterval(intervalIdRef.current);
+            intervalIdRef.current = null;
+        }
+    };
+
     return (
         <>
 
@@ -517,7 +538,7 @@ function AdminSchedules() {
                                                     schedules &&
                                                     schedules.length > 0 &&
                                                     schedules.map((each: any, index: number) => {
-                                                        const { is_complete, is_report_complete, id, created_at, custom_interviewee_details, is_started, interview_end_time, note } = each;
+                                                        const { is_complete, is_report_complete, id, created_at, custom_interviewee_details, is_started, interview_end_time, note, q } = each;
 
                                                         const basic_info = custom_interviewee_details?.basic_info
 
@@ -542,15 +563,19 @@ function AdminSchedules() {
                                                             }
                                                         };
 
+                                                        const questions = `(Q -  ${q ? q : 0})`
                                                         return (
                                                             <div>
                                                                 <div className='row align-items-center'>
-                                                                    <div className='m-0 p-0'>
-                                                                        <h5 className='m-0 p-0'>{demoDisplayName ? demoDisplayName.charAt(0).toUpperCase() + demoDisplayName.slice(1) : "Interview " + (index + 1)}</h5>
+                                                                    <div className='col m-0 p-0'>
+                                                                        <div className='d-flex align-items-center'>
+                                                                            <h5 className='m-0 p-0'>{demoDisplayName ? demoDisplayName.charAt(0).toUpperCase() + demoDisplayName.slice(1) : "Interview " + (index + 1)}</h5>
+                                                                            <h5 className='m-0 p-0 ml-2'>{questions}</h5>
+                                                                        </div>
                                                                         {note ? <small className='text-muted'>{note}</small> : null}
                                                                     </div>
-                                                                    <h5 className='col mb-0 text-center'>{(is_complete ? `Completed: ${getDisplayTimeFromMoment(interview_end_time)}` : `Created at: ${getDisplayTimeFromMoment(created_at)}`)}</h5>
-                                                                    <div className='d-flex justify-content-end align-items-center'>
+                                                                    <h5 className='mb-0 text-center'>{(is_complete ? `Completed: ${getDisplayTimeFromMoment(interview_end_time)}` : `Created at: ${getDisplayTimeFromMoment(created_at)}`)}</h5>
+                                                                    <div className='col d-flex justify-content-end align-items-center'>
                                                                         {
                                                                             is_complete && is_report_complete &&
                                                                             <div>
