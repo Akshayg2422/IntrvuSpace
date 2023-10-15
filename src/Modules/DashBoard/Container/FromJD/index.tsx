@@ -7,7 +7,7 @@ import { AnalyzingAnimation, GenerateModal, UploadJdCard } from '@Modules';
 import { canStartInterview, createNewJdSchedule, getJdItemList, hideCreateJdModal, postJdVariant, selectedScheduleId, showCreateJddModal } from '@Redux';
 import { ROUTES } from '@Routes';
 import { FROM_JD_RULES, getValidateError, ifObjectExist, validate } from '@Utils';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 export const interviewDurations = [
@@ -30,6 +30,8 @@ const INTERVAL_TIME = 5000
 function FromJD() {
     const CHAR_LENGTH = 5000
     const VIEW_MORE_LENGTH = 300
+    const intervalIdRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
 
 
     const ERROR_MESSAGE = "In beta version, you can upload only max of " + CHAR_LENGTH + " characters."
@@ -55,6 +57,11 @@ function FromJD() {
 
     useEffect(() => {
         getKnowledgeGroupFromJdHandler();
+
+        return () => {
+            stopInterval();
+        };
+
     }, [])
 
 
@@ -99,7 +106,7 @@ function FromJD() {
                     if (details?.schedule_id) {
                         const canStartParams = { schedule_id: details?.schedule_id }
                         setScheduleId(details?.schedule_id)
-                        const intervalId = setInterval(() => {
+                        intervalIdRef.current = setInterval(() => {
                             dispatch(canStartInterview({
                                 params: canStartParams,
                                 onSuccess: (res: any) => () => {
@@ -108,7 +115,9 @@ function FromJD() {
                                     getKnowledgeGroupFromJdHandler();
                                     resetValues();
                                     // showToast(res.status, 'success');
-                                    clearInterval(intervalId);
+                                    if (intervalIdRef.current) {
+                                        clearInterval(intervalIdRef.current);
+                                    }
                                 },
                                 onError: (error: any) => () => {
                                     console.log(error);
@@ -219,6 +228,12 @@ function FromJD() {
 
 
 
+    const stopInterval = () => {
+        if (intervalIdRef.current !== null) {
+            clearInterval(intervalIdRef.current);
+            intervalIdRef.current = null;
+        }
+    };
 
 
     return (

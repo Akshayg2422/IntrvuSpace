@@ -5,6 +5,7 @@ import { useNavigation } from '@Hooks'
 import { icons } from '@Assets'
 import { useSelector } from 'react-redux'
 
+
 // const GUIDELINES = [
 //     { title: "Kindly ensure the use of headphones to optimize audio quality.", icon: icons.headPhone },
 //     { title: "Find a quiet and secluded space to minimize background noise and distractions.", icon: icons.room },
@@ -95,7 +96,9 @@ function Guidelines({ scheduleInfo = undefined, loading, heading, onClick }: Gui
                                 <div style={{ padding: 0 }} className='col-md-auto'>
 
                                     <div style={{ marginTop: 20, display: 'flex', alignItems: 'flex-start' }}>
-                                        <Image src={icons.back} height={14} width={14} style={{ flexShrink: 0, alignSelf: 'flex-start' }} />
+                                        <div onClick={() => { goBack(); }}>
+                                            <Image src={icons.back} height={14} width={14} style={{ flexShrink: 0, alignSelf: 'flex-start' }} />
+                                        </div>
                                         <div style={{ marginLeft: 10, marginTop: -5 }}>
                                             <h2 style={{ marginBottom: 0, whiteSpace: 'normal', overflow: 'hidden' }}>{title}</h2>
                                             <h5 style={{
