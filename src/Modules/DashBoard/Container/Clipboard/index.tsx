@@ -27,14 +27,14 @@ const Clipboard = ({ id, linkToCopy, tooltipText = 'Copy To Clipboard', copedTex
                     }
                     setCopiedText(linkToCopy)
                 }}>
-                <span className='pointer mb-0 text-primary font-weight-bolder' id={id}>
+                <span className='pointer mb-0 text-primary font-weight-bolder' id={`tooltip${id}`}>
                     {tooltipText}
                 </span>
             </CopyToClipboard >
             <UncontrolledTooltip
                 delay={0}
                 trigger="hover focus"
-                target={id}
+                target={`tooltip${id}`}
             >
                 {copiedText === linkToCopy
                     ? "Link copied"
