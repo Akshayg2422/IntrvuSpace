@@ -2,11 +2,13 @@ import { AnimatedImage, Back, Button, Modal, Spinner } from "@Components";
 import { useLoader, useModal, useNavigation } from "@Hooks";
 import { CallHeader, CallHeaderMobile, Guidelines, Report } from "@Modules";
 import {
-  getScheduleBasicInfo,
-  closeInterview,
   canStartInterview,
+  closeInterview,
+  getScheduleBasicInfo,
 } from "@Redux";
-import { capitalizeFirstLetter, getShortName, hasMicrophonePermission, getOperatingSystem, gotoPermissionSetting } from "@Utils";
+import { CALL_WEBSOCKET } from "@Services";
+import { color } from "@Themes";
+import { capitalizeFirstLetter, getOperatingSystem, getShortName, gotoPermissionSetting, hasMicrophonePermission } from "@Utils";
 import type { Harker } from "hark";
 import type { Encoder } from "lamejs";
 import moment from "moment";
@@ -14,11 +16,6 @@ import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { RecordRTCPromisesHandler, StereoAudioRecorder } from "recordrtc";
-import { useScreenRecorder } from "./useScreenRecorder";
-import { CALL_WEBSOCKET } from "@Services";
-import { color } from "@Themes";
-import { listeners } from "process";
-import { t } from "i18n-js";
 
 const compare_moment_format = "YYYY-MM-DDHH:mm:ss";
 
@@ -203,11 +200,13 @@ function Call() {
     (state: any) => state.DashboardReducer
   );
   const [processCallInprogress, setProcessCallInprogress] = useState(false);
+
   const responseDelayTimeOutRef = useRef<any>(undefined);
   const [isRecording, setIsRecording] = useState(false);
   const [buttonConditional, setButtonConditional] = useState<any>("start");
   const [errorType1, setErrorType1] = useState("");
 
+  const proceedOpenCallView = useRef<any>(false);
   const accumulatedBlobs = useRef<any>([]);
   const reconnectAttempts = useRef<any>(0);
   const maxReconnectAttempts = 3;
@@ -266,6 +265,10 @@ function Call() {
     createWebSocket();
     socketInterviewRef.current = setInterval(() => {
       createWebSocket(true)
+      if (proceedOpenCallView.current && socketRef.current) {
+        openCallView()
+        proceedOpenCallView.current = false
+      }
     }, 3000)
 
   }
@@ -304,20 +307,18 @@ function Call() {
 
   function createWebSocket(showError = true) {
 
-    console.log('00000000');
-
-
     if (!socketRef.current && canConnect.current) {
 
-      console.log('11111');
 
       socketRef.current = new WebSocket(CALL_WEBSOCKET);
       websocketStatus.current = WEBSOCKET_PROCESSING;
 
 
       socketRef.current.addEventListener("open", () => {
+
+        console.log('Web Socket Opened');
+
         websocketStatus.current = WEBSOCKET_IDLE;
-        console.log('22222222');
 
         setWebSocketError(false);
 
@@ -332,28 +333,15 @@ function Call() {
 
       socketRef.current.addEventListener("close", () => {
         socketRef.current = undefined
-        // websocketStatus.current = WEBSOCKET_IDLE;
-        // if (showError) setWebSocketError(true);
-
-        // if (reconnectAttempts.current < maxReconnectAttempts) {
-        //   setTimeout(() => {
-        //     createWebSocket();
-        //     reconnectAttempts.current++;
-        //   }, 3000);
-        // } else {
-        //   clearInterval(reconnectInterval);
-        //   if (!showError) setWebSocketError(true);
-        // }
       });
 
       // Listen for messages
       socketRef.current.onmessage = (event) => {
-        // console.log("Received001");
         const response = JSON.parse(event.data);
         proceedHandleResponseV1(response);
-        // Handle the response data here
-        // console.log('Received002:', response);
       };
+
+
     }
 
   }
@@ -695,12 +683,12 @@ function Call() {
   };
 
   const onStartSpeaking = () => {
-    // console.log('start speaking')
+    console.log('start speaking')
     setSpeaking(true);
   };
 
   const onStopSpeaking = () => {
-    // console.log('stop speaking')
+    console.log('stop speaking')
     setSpeaking(false);
   };
 
@@ -781,6 +769,22 @@ function Call() {
   }
 
 
+  const openCallView = () => {
+
+    setNetworkError(false)
+
+    startInterviewLoader.hide();
+
+    startStreamTime.current = moment().add(1, "seconds");
+    transcriptionReferenceId.current = generateRandomID();
+    // proceedgetChatDetailsApiHandler({ message: "start" }, transcriptionReferenceId.current)
+    setProcessCallInprogress(false);
+    // console.log("resss0114")
+    resetLastMessage();
+    setInterviewStarted(true);
+    // setTimeout(() => {
+    validateProceedStartListening();
+  }
 
 
   async function startInterviewHandler() {
@@ -801,25 +805,12 @@ function Call() {
 
               initiateSocket();
 
-
-              startInterviewLoader.hide();
-
-              startStreamTime.current = moment().add(1, "seconds");
-              transcriptionReferenceId.current = generateRandomID();
-              // proceedgetChatDetailsApiHandler({ message: "start" }, transcriptionReferenceId.current)
-              setProcessCallInprogress(false);
-              // console.log("resss0114")
-              resetLastMessage();
-              setInterviewStarted(true);
-              // setTimeout(() => {
-              validateProceedStartListening();
-              // }, 5000)
-
+              console.log(socketRef.current.readyState + '====socketRef.current.readyState===');
+              proceedOpenCallView.current = true
 
               if (intervalIdRef.current) {
                 clearInterval(intervalIdRef.current);
               }
-
 
             },
             onError: (error: any) => () => {
