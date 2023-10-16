@@ -17,7 +17,9 @@ const GUIDELINES = [
     { title: "Use of headphones for better quality", icon: icons.headPhone },
     { title: "Attend from an quiet and secluded space", icon: icons.room },
     { title: "Verify the stability of your internet connection", icon: icons.internet },
-    { title: "Keep the video function enabled throughout the session", icon: icons.video }
+    { title: "Keep the video function enabled throughout the session", icon: icons.video },
+    { title: "After completing the interview, check back in a couple of minutes to view the report", icon: icons.reports },
+
 ];
 
 function Guidelines({ scheduleInfo = undefined, loading, heading, onClick }: GuidelinesProps) {
