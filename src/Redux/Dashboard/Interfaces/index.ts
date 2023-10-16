@@ -37,4 +37,5 @@ export interface DashboardProp {
   corporateSchedules: any,
   createForOthersJdModal: boolean,
   interviewScheduleDetails: any,
+  retrieveEmail: any,
 }
