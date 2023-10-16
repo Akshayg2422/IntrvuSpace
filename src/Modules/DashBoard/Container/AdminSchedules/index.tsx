@@ -413,8 +413,6 @@ function AdminSchedules() {
         }
     }
 
-
-
     const stopInterval = () => {
         if (intervalIdRef.current !== null) {
             clearInterval(intervalIdRef.current);
