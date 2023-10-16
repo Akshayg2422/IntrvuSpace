@@ -717,6 +717,8 @@ function* forgotPasswordSaga(action) {
   try {
     const response = yield call(Api.forgotPasswordApi, action.payload.params);
     if (response.success) {
+
+      console.log(JSON.stringify(response));
       yield put(Action.forgotPasswordSuccess(response?.details));
       yield call(action.payload.onSuccess(response));
     } else {
