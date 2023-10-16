@@ -4,5 +4,4 @@ export interface AuthProps {
   loginUser: any,
   OTP: any,
   memberUsingLoginOtp: any,
-  retrieveEmail:any
 }
