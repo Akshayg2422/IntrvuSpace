@@ -99,28 +99,3 @@ export const fetchMemberUsingLoginOtpFailure = (error: any) => {
         payload: error
     }
 }
-
-// retrieveForgottenEmail
-
-export const retrieveForgottenEmail = (params: any) => {
-    console.log('Calling retrieveForgottenEmail with params:', params);
-    return {
-        type: ActionTypes.RETRIEVE_FORGOTTEN_EMAIL,
-        payload: params,
-    };
-};
-
-export const retrieveForgottenEmailSuccess = (response: any) => {
-
-    return {
-        type: ActionTypes.RETRIEVE_FORGOTTEN_EMAIL_SUCCESS,
-        payload: response
-    }
-}
-
-export const retrieveForgottenEmailFailure = (error: any) => {
-    return {
-        type: ActionTypes.RETRIEVE_FORGOTTEN_EMAIL_FAILURE,
-        payload: error
-    }
-}

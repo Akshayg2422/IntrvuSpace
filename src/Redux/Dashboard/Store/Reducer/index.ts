@@ -48,6 +48,7 @@ const initialState: DashboardProp = {
   corporateSchedules: undefined,
   createForOthersJdModal: false,
   interviewScheduleDetails: undefined,
+  retrieveEmail: undefined,
 };
 
 const DashboardReducer = (state = initialState, action: any) => {
@@ -557,13 +558,14 @@ const DashboardReducer = (state = initialState, action: any) => {
     // forgotPassword
 
     case ActionTypes.FORGOT_PASSWORD:
-      state = { ...state };
+      state = { ...state, retrieveEmail: undefined };
       break;
     case ActionTypes.FORGOT_PASSWORD_SUCCESS:
-      state = { ...state };
+      console.log(JSON.stringify(action.payload));
+      state = { ...state, retrieveEmail: action.payload };
       break;
     case ActionTypes.FORGOT_PASSWORD_FAILURE:
-      state = { ...state };
+      state = { ...state, retrieveEmail: action.payload };
       break;
 
     default:

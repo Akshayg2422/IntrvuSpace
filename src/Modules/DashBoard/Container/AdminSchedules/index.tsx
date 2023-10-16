@@ -4,7 +4,7 @@
 import { icons } from '@Assets';
 import { Button, Card, Checkbox, Divider, Image, Input, InputHeading, MenuBar, Modal, Radio, Spinner, TextArea, showToast } from '@Components';
 import { useInput, useLoader, useModal, useNavigation } from '@Hooks';
-import { AnalyzingAnimation, GenerateModal, UploadJdCard } from '@Modules';
+import { AnalyzingAnimation, GenerateModal, UploadJdCard, Clipboard } from '@Modules';
 import { canStartInterview, createNewJdSchedule, createSchedulesSuperAdmin, deleteInterview, getJdItemList, hideCreateForOthersJdModal, hideCreateJdModal, postJdVariant, resetInterview, selectedScheduleId, showCreateForOthersJdModal, showCreateJddModal, deleteJd } from '@Redux';
 import { ROUTES } from '@Routes';
 import { CREATE_FOR_OTHERS_RULES, FROM_JD_RULES, getValidateError, ifObjectExist, validate, CREATE_FOR_ADD_ANOTHER_RULES } from '@Utils';
@@ -439,10 +439,10 @@ function AdminSchedules() {
 
                                     const more = jdMore[index]?.more
 
-                                    // const copyInterviewLink = schedules[0]?.custom_interview_link;
+                                    const copyInterviewLink = schedules[0]?.custom_interview_link;
 
                                     return (
-                                        <Card className="mt--3 ">
+                                        <Card className="mt--3 " key={id}>
                                             <div className={'d-flex justify-content-between'}>
                                                 <div>
                                                     {name ? <span style={{
@@ -451,7 +451,7 @@ function AdminSchedules() {
                                                         {name.charAt(0).toUpperCase() + name.slice(1)}
                                                     </span> : <></>
                                                     }
-                                                    {/* <Clipboard linkToCopy={copyInterviewLink} /> */}
+                                                    <Clipboard id={id} linkToCopy={copyInterviewLink} />
 
                                                     {interview_duration &&
                                                         <div className='col'>

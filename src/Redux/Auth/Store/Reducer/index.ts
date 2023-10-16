@@ -9,7 +9,6 @@ const initialState: AuthProps = {
     loginUser: undefined,
     OTP: undefined,
     memberUsingLoginOtp: undefined,
-    retrieveEmail: undefined
 };
 
 
@@ -64,24 +63,6 @@ const AuthReducer = (state = initialState, action: any) => {
             break;
         case ActionTypes.FETCH_MEMBER_USING_LOGIN_OTP_FAILURE:
             state = { ...state, memberUsingLoginOtp: undefined };
-            break;
-
-        // retrieveForgottenEmail
-
-        case ActionTypes.RETRIEVE_FORGOTTEN_EMAIL:
-            console.log('22222222222222222222222222')
-            state = { ...state, retrieveEmail: undefined };
-            break;
-        case ActionTypes.RETRIEVE_FORGOTTEN_EMAIL_SUCCESS:
-            console.log('3333333333333333333333333333333');
-            
-            state = { ...state, retrieveEmail: action.payload };
-            console.log('action.payloadaction.payloadaction.payloadaction.payload-------->',action.payload)
-            break;
-        case ActionTypes.RETRIEVE_FORGOTTEN_EMAIL_FAILURE:
-            console.log('44444444444444444444444444444444444');
-            
-            state = { ...state, retrieveEmail: undefined };
             break;
 
         default:
