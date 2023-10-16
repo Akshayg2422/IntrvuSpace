@@ -97,6 +97,8 @@ function AdminSchedules() {
      * Add another end
      */
 
+    const [copiedInterviewLink, setCopiedInterviewLink] = useState('')
+
 
     useEffect(() => {
         getKnowledgeGroupFromJdHandler();
@@ -463,7 +465,6 @@ function AdminSchedules() {
 
                                     const more = jdMore[index]?.more
 
-                                    const copyInterviewLink = schedules[0]?.custom_interview_link;
 
                                     return (
                                         <Card className="mt--3 " key={id}>
@@ -475,7 +476,6 @@ function AdminSchedules() {
                                                         {name.charAt(0).toUpperCase() + name.slice(1)}
                                                     </span> : <></>
                                                     }
-                                                    <Clipboard id={id} linkToCopy={copyInterviewLink} />
 
                                                     {interview_duration &&
                                                         <div className='col'>
@@ -562,7 +562,7 @@ function AdminSchedules() {
                                                     schedules &&
                                                     schedules.length > 0 &&
                                                     schedules.map((each: any, index: number) => {
-                                                        const { is_complete, is_report_complete, id, created_at, custom_interviewee_details, is_started, interview_end_time, note, q } = each;
+                                                        const { is_complete, is_report_complete, id, created_at, custom_interviewee_details, is_started, interview_end_time, note, q, custom_interview_link } = each;
 
                                                         const basic_info = custom_interviewee_details?.basic_info
 
@@ -588,6 +588,8 @@ function AdminSchedules() {
                                                         };
 
                                                         const questions = `(Q -  ${q ? q : 0})`
+
+
                                                         return (
                                                             <div>
                                                                 <div className='row align-items-center'>
@@ -596,6 +598,7 @@ function AdminSchedules() {
                                                                             <h5 className='m-0 p-0'>{demoDisplayName ? demoDisplayName.charAt(0).toUpperCase() + demoDisplayName.slice(1) : "Interview " + (index + 1)}</h5>
                                                                             <h5 className='m-0 p-0 ml-2'>{questions}</h5>
                                                                         </div>
+                                                                        {custom_interview_link ? <Clipboard id={id} copedText={copiedInterviewLink} linkToCopy={custom_interview_link} tooltipText={'Copy Interview Link'} onCopy={setCopiedInterviewLink} /> : null}
                                                                         {note ? <small className='text-muted'>{note}</small> : null}
                                                                     </div>
                                                                     <h5 className='mb-0 text-center'>{(is_complete ? `Completed: ${getDisplayTimeFromMoment(interview_end_time)}` : `Created at: ${getDisplayTimeFromMoment(created_at)}`)}</h5>

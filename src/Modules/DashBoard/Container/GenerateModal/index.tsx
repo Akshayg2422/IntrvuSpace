@@ -1,10 +1,25 @@
-import React, { useRef, useState, useEffect } from "react";
-import { Modal as RsModal } from "reactstrap";
-import { GenerateModalProps } from './interfaces'
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { videos } from '@Assets';
+import { useEffect } from "react";
+import { Modal as RsModal } from "reactstrap";
+import { GenerateModalProps } from './interfaces';
 
 function GenerateModal({ isOpen, onClose, children, title, ...rest }: GenerateModalProps) {
+
+
+    useEffect(() => {
+        // Add and remove the "overflow-hidden" class to the body based on modal's open state
+        if (isOpen) {
+            document.body.classList.add('overflow-hidden');
+        } else {
+            document.body.classList.remove('overflow-hidden');
+        }
+
+        // Cleanup the class when the component unmounts
+        return () => {
+            document.body.classList.remove('overflow-hidden');
+        };
+    }, [isOpen]);
+
 
     return (
         <RsModal
