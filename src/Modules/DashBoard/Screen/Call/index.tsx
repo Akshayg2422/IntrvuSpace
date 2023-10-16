@@ -805,7 +805,6 @@ function Call() {
 
               initiateSocket();
 
-              console.log(socketRef.current.readyState + '====socketRef.current.readyState===');
               proceedOpenCallView.current = true
 
               if (intervalIdRef.current) {
