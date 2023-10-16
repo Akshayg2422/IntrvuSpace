@@ -451,7 +451,7 @@ function AdminSchedules() {
                                                         {name.charAt(0).toUpperCase() + name.slice(1)}
                                                     </span> : <></>
                                                     }
-                                                    <Clipboard id={id} linkToCopy={copyInterviewLink} />
+                                                    {/* <Clipboard id={id} linkToCopy={copyInterviewLink} /> */}
 
                                                     {interview_duration &&
                                                         <div className='col'>
@@ -632,7 +632,7 @@ function AdminSchedules() {
 
             <Modal title={'Create Interview'} isOpen={createJdModal} onClose={() => { dispatch(hideCreateJdModal()) }}>
                 <div className={'row'}>
-                    <div className={'col-6'}>
+                    <div className={'col-sm-6'}>
                         <Input
                             isMandatory
                             heading={'Sector'}
@@ -640,7 +640,7 @@ function AdminSchedules() {
                             value={sector.value}
                             onChange={sector.onChange} />
                     </div>
-                    <div className={'col-6'}>
+                    <div className={'col-sm-6'}>
                         <Input
                             isMandatory
                             heading={'Role'}
@@ -651,7 +651,7 @@ function AdminSchedules() {
                 </div>
 
                 <div className={'row'}>
-                    <div className={'col-6'}>
+                    <div className={'col-sm-6'}>
                         {fresherChecked ? (
                             <div className='ml-2'>
                                 <Input
@@ -683,7 +683,7 @@ function AdminSchedules() {
                     </div>
 
 
-                    <div className={'col-6 mt-1'}>
+                    <div className={'col-sm-6 mt-1'}>
                         <InputHeading Class={'mb-0'} heading={'Interview Duration'} isMandatory />
                         <Radio
                             selected={selectedDuration}
@@ -787,7 +787,7 @@ function AdminSchedules() {
 
             <Modal title={'Create Interview for Others'} isOpen={createForOthersJdModal} onClose={() => { dispatch(hideCreateForOthersJdModal()) }}>
                 <div className={'row'}>
-                    <div className={'col-6'}>
+                    <div className={'col-sm-6'}>
                         <Input
                             isMandatory
                             heading={'First Name'}
@@ -795,7 +795,7 @@ function AdminSchedules() {
                             value={firstName.value}
                             onChange={firstName.onChange} />
                     </div>
-                    <div className={'col-6 mt-2'}>
+                    <div className={'col-sm-6 mt-2'}>
                         <Input
                             heading={'Last Name'}
                             placeHolder={'Last Name'}
@@ -805,7 +805,7 @@ function AdminSchedules() {
                 </div>
 
                 <div className={'row'}>
-                    <div className={'col-6'}>
+                    <div className={'col-sm-6'}>
                         <Input
                             heading={'Email'}
                             placeHolder={'Email Id'}
@@ -820,7 +820,7 @@ function AdminSchedules() {
                             }}
                         />
                     </div>
-                    <div className={'col-6'}>
+                    <div className={'col-sm-6'}>
                         <Input
                             heading={'Mobile Number'}
                             maxLength={10}
@@ -840,7 +840,7 @@ function AdminSchedules() {
 
 
                 <div className={'row'}>
-                    <div className={'col-6'}>
+                    <div className={'col-sm-6'}>
                         <Input
                             isMandatory
                             heading={'Sector'}
@@ -848,7 +848,7 @@ function AdminSchedules() {
                             value={sectorForOthers.value}
                             onChange={sectorForOthers.onChange} />
                     </div>
-                    <div className={'col-6'}>
+                    <div className={'col-sm-6'}>
                         <Input
                             isMandatory
                             heading={'Role'}
@@ -860,7 +860,7 @@ function AdminSchedules() {
                 </div>
 
                 <div className={'row'}>
-                    <div className={'col-6'}>
+                    <div className={'col-sm-6'}>
                         <Input
                             isMandatory
                             type={'number'}
@@ -870,7 +870,7 @@ function AdminSchedules() {
                             onChange={experienceForOthers.onChange} />
                     </div>
 
-                    <div className={'col-6 mt-1'}>
+                    <div className={'col-sm-6 mt-1'}>
                         <InputHeading Class={'mb-0'} heading={'Interview Duration'} isMandatory />
                         <Radio
                             selected={selectedDurationForOthers}
