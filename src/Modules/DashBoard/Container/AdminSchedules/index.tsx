@@ -26,8 +26,6 @@ const PLACE_HOLDER = {
 }
 
 
-
-
 function AdminSchedules() {
 
 
@@ -104,6 +102,8 @@ function AdminSchedules() {
         getKnowledgeGroupFromJdHandler();
 
         return () => {
+            console.log('useEffect return');
+
             stopInterval();
         };
 
@@ -148,6 +148,8 @@ function AdminSchedules() {
                 onSuccess: (res: any) => () => {
                     const { details } = res;
 
+                    console.log(JSON.stringify(res) + '===res');
+
 
                     if (details?.schedule_id) {
                         const canStartParams = { schedule_id: details?.schedule_id }
@@ -157,14 +159,17 @@ function AdminSchedules() {
                             dispatch(canStartInterview({
                                 params: canStartParams,
                                 onSuccess: (res: any) => () => {
+
+
+
                                     generateJdModal.hide();
                                     completedModal.show();
                                     getKnowledgeGroupFromJdHandler();
                                     resetValues();
                                     // showToast(res.status, 'success');
-                                    if (intervalIdRef.current) {
-                                        clearInterval(intervalIdRef.current);
-                                    }
+
+                                    stopInterval();
+
                                 },
                                 onError: (error: any) => () => {
                                     console.log(error);
@@ -443,10 +448,20 @@ function AdminSchedules() {
 
     const stopInterval = () => {
         if (intervalIdRef.current !== null) {
+            console.log('useEffect return stopInterval');
             clearInterval(intervalIdRef.current);
             intervalIdRef.current = null;
         }
     };
+
+    window.addEventListener('popstate', function (event) {
+
+        console.log('addEventListener');
+
+        // Custom logic to handle the back button
+        // You can implement your specific process here
+        stopInterval();
+    });
 
     return (
         <>
@@ -637,7 +652,7 @@ function AdminSchedules() {
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <Divider className={'row'} space={"3"} />
+                                                                {index !== schedules.length - 1 && <Divider className={'row'} space={"3"} />}
                                                             </div>
                                                         )
                                                     })

@@ -43,7 +43,6 @@ function DragAndReorder({
         let newArray = items.map((item: any, index) => {
             return { ...item, display_order: index + 1 }
         });
-        console.log("items==============>", newArray)
 
         setDragAndReorderData(newArray);
         setDndIdSequenceObj(newArrayElement as never)
@@ -81,7 +80,7 @@ function DragAndReorder({
                                                                     <p>
                                                                         {name}
                                                                     </p>
-                                                                    {dragAndReorderData.length > 0 && <Divider space="4"/>}
+                                                                    {dragAndReorderData.length > 0 && <Divider space="4" />}
                                                                 </div>
                                                             </div>
                                                         )}

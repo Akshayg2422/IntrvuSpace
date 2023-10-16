@@ -1,5 +1,5 @@
 import { icons, image } from '@Assets';
-import { Button, ButtonGroup, CommonTable, Divider, Image, Spinner } from '@Components';
+import { Back, Button, ButtonGroup, CommonTable, Divider, Image, Spinner } from '@Components';
 import { useDropDown, useLoader } from '@Hooks';
 import { fetchBasicReport } from '@Redux';
 import { color } from '@Themes';
@@ -96,7 +96,6 @@ function Report() {
                     console.log(traitPercentage, "communicationPercentage===");
 
                     const total = (communicationPercentage + skillMatrixPercentage + traitPercentage).toFixed(1);
-                    console.log("total0===================>", total)
 
                     setPercentage({
                         communication: communicationPercentage,
@@ -387,6 +386,8 @@ function Report() {
     return (
         <>
             <div className='h-100vh w-100 d-flex flex-column position-relative'>
+
+
                 <div className='row position-fixed bottom-0 right-0 m-3 p-3' style={{
                     zIndex: 1,
                 }}>
@@ -409,37 +410,27 @@ function Report() {
 
                 <div className='card flex-grow-1 m-3 rounded-0' ref={componentRef}>
                     <div className='card-header'>
-                        <div className={'col d-flex justify-content-end'} >
-
-                            {/* <div className="d-flex align-items-center mr-4" style={{
-                                borderWidth: "1px",
-                                borderBlockColor: color.primary
-                            }}>
-                                <div className={'d-flex-column'}>
-                                    <Image
-                                        className='bg-primary'
-                                        height={40}
-                                        src={icons.logoText}
-                                    />
-                                    <small style={{
-                                        fontSize: "12px"
-                                    }} className={'row text-decoration-underline-hover text-right'}>
-                                        <a href={'https://www.intrvu.space'} target="_blank" rel="noreferrer">
-                                            https://www.intrvu.space
-                                        </a>
-                                    </small>
-                                </div>
-                                <div className='ml-2'>
+                        <div className='row justify-content-between mx-2'>
+                            <div className='row align-items-center ml-lg-4 ml-md-4 ml-xl-4'>
+                                <Back />
+                                <h3 className='m-0 p-0 ml-3 mt-1'>{filter?.value?.title}</h3>
+                            </div>
+                            <div className='d-none d-lg-block d-md-block d-xl-block'>
+                                <a href={'https://www.intrvu.space'} target="_blank" rel="noreferrer">
                                     <Image
                                         className={'m-0 p-0'}
-                                        src={icons.logoIcon}
-                                        height={40}
-                                        width={40}
+                                        src={image.IntrvuSpace}
+                                        width={150}
+                                        style={{
+                                            objectFit: 'contain'
+                                        }}
                                     />
-                                </div>
-                            </div> */}
-
+                                </a>
+                            </div>
                         </div>
+                    </div>
+                    <div className='card-header'>
+
                         <div className='row pl-lg-5 pr-lg-5 pl-sm-0 pl-2 pb-0 pr-sm-0 pr-3 justify-content-between'>
                             <div className='h1 pt-1 font-weight-bolder text-black'>
                                 {basicReportData.name}
@@ -463,7 +454,7 @@ function Report() {
                             {/**for large screen */}
                             <div className='flex-column text-right d-none d-lg-block d-md-block d-xl-block' >
 
-                                <div className={'d-flex flex-column justify-content-end align-items-end'}  >
+                                {/* <div className={'d-flex flex-column justify-content-end align-items-end'}  >
                                     <div className='' >
                                         <a href={'https://www.intrvu.space'} target="_blank" rel="noreferrer">
                                             <Image
@@ -474,7 +465,7 @@ function Report() {
                                             />
                                         </a>
                                     </div>
-                                </div>
+                                </div> */}
 
                                 <h1 className='font-weight-bolder display-3 my-3'
                                     style={{
