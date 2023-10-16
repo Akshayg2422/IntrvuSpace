@@ -547,7 +547,8 @@ function Report() {
                         {basicReportLoader.loader &&
                             <div className='d-flex align-items-center justify-content-center h-50'>
                                 <Spinner size={'md'} />
-                            </div>}
+                            </div>
+                        }
                         {!basicReportLoader.loader && <>
                             {Object.keys(basicReportData).reverse()?.map((heading, index) => {
 

@@ -2,11 +2,13 @@ import { AnimatedImage, Back, Button, Modal, Spinner } from "@Components";
 import { useLoader, useModal, useNavigation } from "@Hooks";
 import { CallHeader, CallHeaderMobile, Guidelines, Report } from "@Modules";
 import {
-  getScheduleBasicInfo,
-  closeInterview,
   canStartInterview,
+  closeInterview,
+  getScheduleBasicInfo,
 } from "@Redux";
-import { capitalizeFirstLetter, getShortName, hasMicrophonePermission, getOperatingSystem, gotoPermissionSetting } from "@Utils";
+import { CALL_WEBSOCKET } from "@Services";
+import { color } from "@Themes";
+import { capitalizeFirstLetter, getOperatingSystem, getShortName, gotoPermissionSetting, hasMicrophonePermission } from "@Utils";
 import type { Harker } from "hark";
 import type { Encoder } from "lamejs";
 import moment from "moment";
@@ -14,10 +16,6 @@ import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { RecordRTCPromisesHandler, StereoAudioRecorder } from "recordrtc";
-import { useScreenRecorder } from "./useScreenRecorder";
-import { CALL_WEBSOCKET } from "@Services";
-import { color } from "@Themes";
-import { listeners } from "process";
 
 const compare_moment_format = "YYYY-MM-DDHH:mm:ss";
 
@@ -64,6 +62,8 @@ function Call() {
 
 
   const intervalIdRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const socketInterviewRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
 
 
 
@@ -116,6 +116,8 @@ function Call() {
   const [websocketError, setWebSocketError] = useState(false);
 
   const lastAiResponseTime = useRef<any>(undefined);
+  const canConnect = useRef<any>(true);
+
   const [networkBreakTime, setNetworkBreakTime] = useState(0);
 
   // microphone permission states
@@ -198,11 +200,13 @@ function Call() {
     (state: any) => state.DashboardReducer
   );
   const [processCallInprogress, setProcessCallInprogress] = useState(false);
+
   const responseDelayTimeOutRef = useRef<any>(undefined);
   const [isRecording, setIsRecording] = useState(false);
   const [buttonConditional, setButtonConditional] = useState<any>("start");
   const [errorType1, setErrorType1] = useState("");
 
+  const proceedOpenCallView = useRef<any>(false);
   const accumulatedBlobs = useRef<any>([]);
   const reconnectAttempts = useRef<any>(0);
   const maxReconnectAttempts = 3;
@@ -255,25 +259,67 @@ function Call() {
     }
   };
 
+
+  function initiateSocket() {
+
+    createWebSocket();
+    socketInterviewRef.current = setInterval(() => {
+      createWebSocket(true)
+      if (proceedOpenCallView.current && socketRef.current) {
+        openCallView()
+        proceedOpenCallView.current = false
+      }
+    }, 3000)
+
+  }
+
+  const stopIntervalSocket = () => {
+    if (socketInterviewRef.current !== null) {
+      clearInterval(socketInterviewRef.current);
+      socketInterviewRef.current = null;
+    }
+  };
+
+
+
+  useEffect(() => {
+
+
+    return () => {
+      stopIntervalSocket();
+
+      if (socketRef.current) {
+        try {
+          canConnect.current = false
+          socketRef.current.close();
+          socketRef.current = null;
+        } catch (e) {
+
+        }
+        clearInterval(reconnectInterval);
+
+      }
+    };
+
+  }, [])
+
   // Create the WebSocket connection only if it's not already established
 
   function createWebSocket(showError = true) {
-    // console.log("createWebSocket");
 
-    if (websocketStatus.current !== WEBSOCKET_PROCESSING) {
-      const socket = new WebSocket(CALL_WEBSOCKET);
-      // const socket = new WebSocket('wss://mockeazyprimary.leorainfotech.in/aaa');
+    if (!socketRef.current && canConnect.current) {
 
-      // const socket = new WebSocket('ws://192.168.105.204:8002/aaa');
 
+      socketRef.current = new WebSocket(CALL_WEBSOCKET);
       websocketStatus.current = WEBSOCKET_PROCESSING;
-      socketRef.current = socket; // Store the WebSocket instance in the ref
 
-      socket.addEventListener("open", () => {
+
+      socketRef.current.addEventListener("open", () => {
+
+        console.log('Web Socket Opened');
+
         websocketStatus.current = WEBSOCKET_IDLE;
-        // console.log(
-        //   "WebSocket connection established==========================="
-        // );
+
         setWebSocketError(false);
 
         // Clear the reconnect interval when the connection is open
@@ -281,48 +327,26 @@ function Call() {
         reconnectAttempts.current = 0; // Reset the reconnect attempts counter
       });
 
-      socket.addEventListener("close", () => {
-        websocketStatus.current = WEBSOCKET_IDLE;
-        if (showError) setWebSocketError(true);
+      socketRef.current.addEventListener("onerror", () => {
+        socketRef.current = undefined
+      })
 
-        if (reconnectAttempts.current < maxReconnectAttempts) {
-          setTimeout(() => {
-            createWebSocket();
-            reconnectAttempts.current++;
-          }, 3000);
-        } else {
-          clearInterval(reconnectInterval);
-          if (!showError) setWebSocketError(true);
-        }
+      socketRef.current.addEventListener("close", () => {
+        socketRef.current = undefined
       });
 
       // Listen for messages
-      socket.onmessage = (event) => {
-        // console.log("Received001");
+      socketRef.current.onmessage = (event) => {
         const response = JSON.parse(event.data);
         proceedHandleResponseV1(response);
-        // Handle the response data here
-        // console.log('Received002:', response);
       };
+
+
     }
+
   }
 
-  useEffect(() => {
-    // Create the WebSocket when the component mounts
-    if (!socketRef.current) {
-      createWebSocket();
-    }
 
-    // Clean up the WebSocket connection when the component unmounts
-    return () => {
-      if (socketRef.current) {
-        socketRef.current.close();
-        socketRef.current = null;
-        clearInterval(reconnectInterval);
-
-      }
-    };
-  }, []);
 
   const sendDataToSocket = async (
     blob: Blob,
@@ -430,7 +454,6 @@ function Call() {
         chunks.current = [];
       }
       if (encoder.current) {
-        encoder.current.flush();
         encoder.current = undefined;
       }
       if (recorderAudio.current) {
@@ -660,12 +683,12 @@ function Call() {
   };
 
   const onStartSpeaking = () => {
-    // console.log('start speaking')
+    console.log('start speaking')
     setSpeaking(true);
   };
 
   const onStopSpeaking = () => {
-    // console.log('stop speaking')
+    console.log('stop speaking')
     setSpeaking(false);
   };
 
@@ -746,6 +769,22 @@ function Call() {
   }
 
 
+  const openCallView = () => {
+
+    setNetworkError(false)
+
+    startInterviewLoader.hide();
+
+    startStreamTime.current = moment().add(1, "seconds");
+    transcriptionReferenceId.current = generateRandomID();
+    // proceedgetChatDetailsApiHandler({ message: "start" }, transcriptionReferenceId.current)
+    setProcessCallInprogress(false);
+    // console.log("resss0114")
+    resetLastMessage();
+    setInterviewStarted(true);
+    // setTimeout(() => {
+    validateProceedStartListening();
+  }
 
 
   async function startInterviewHandler() {
@@ -763,23 +802,14 @@ function Call() {
           canStartInterview({
             params: canStartParams,
             onSuccess: (res: any) => () => {
-              startInterviewLoader.hide();
 
-              startStreamTime.current = moment().add(1, "seconds");
-              transcriptionReferenceId.current = generateRandomID();
-              // proceedgetChatDetailsApiHandler({ message: "start" }, transcriptionReferenceId.current)
-              setProcessCallInprogress(false);
-              // console.log("resss0114")
-              resetLastMessage();
-              setInterviewStarted(true);
-              // setTimeout(() => {
-              validateProceedStartListening();
-              // }, 5000)
+              initiateSocket();
+
+              proceedOpenCallView.current = true
 
               if (intervalIdRef.current) {
                 clearInterval(intervalIdRef.current);
               }
-
 
             },
             onError: (error: any) => () => {
