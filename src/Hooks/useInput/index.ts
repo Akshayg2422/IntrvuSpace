@@ -10,8 +10,6 @@ const useInput = (initialValue: any) => {
     const type = event.target.type;
 
 
-    console.log(type);
-
     if (maxLength !== -1) {
       if (maxLength >= onChangeValue.length) {
         setValue(onChangeValue.slice(0, maxLength));
