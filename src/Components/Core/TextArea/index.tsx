@@ -5,9 +5,6 @@ import { InputHeading } from '@Components'
 
 function TextArea({ id, heading, value, onChange, className, placeholder, error, isMandatory, height = '300px' }: TextAreaProps) {
 
-    console.log(error + '====eror');
-
-
     return (
         <FormGroup>
             <InputHeading heading={heading} id={id} isMandatory={isMandatory} />

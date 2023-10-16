@@ -32,6 +32,7 @@ function Response() {
                     loader.hide();
                 },
                 onError: () => () => {
+
                     loader.hide();
                 },
             })
