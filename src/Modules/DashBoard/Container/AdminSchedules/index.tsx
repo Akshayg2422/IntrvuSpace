@@ -97,6 +97,8 @@ function AdminSchedules() {
      * Add another end
      */
 
+    const [copiedInterviewLink, setCopiedInterviewLink] = useState('')
+
 
     useEffect(() => {
         getKnowledgeGroupFromJdHandler();
@@ -140,6 +142,7 @@ function AdminSchedules() {
 
             dispatch(hideCreateJdModal())
             generateJdModal.show();
+
             dispatch(postJdVariant({
                 params,
                 onSuccess: (res: any) => () => {
@@ -234,7 +237,7 @@ function AdminSchedules() {
                             if (details?.schedule_id) {
                                 const canStartParams = { schedule_id: details?.schedule_id }
                                 setScheduleId(details?.schedule_id)
-                                const intervalId = setInterval(() => {
+                                intervalIdRef.current = setInterval(() => {
                                     dispatch(canStartInterview({
                                         params: canStartParams,
                                         onSuccess: (res: any) => () => {
@@ -242,7 +245,9 @@ function AdminSchedules() {
                                             completedModal.show();
                                             getKnowledgeGroupFromJdHandler();
                                             showToast(res.status, 'success');
-                                            clearInterval(intervalId);
+                                            if (intervalIdRef.current) {
+                                                clearInterval(intervalIdRef.current);
+                                            }
                                         },
                                         onError: (error: any) => () => {
                                             console.log(error);
@@ -253,7 +258,7 @@ function AdminSchedules() {
                         },
                         onError: () => () => {
                             generateJdModal.hide();
-                            addAnotherModal.hide();
+                            addAnotherModal.show();
                         },
                     }))
             } else {
@@ -282,22 +287,46 @@ function AdminSchedules() {
         const validation = validate(CREATE_FOR_OTHERS_RULES, params)
 
         if (ifObjectExist(validation)) {
-            createInterviewSuperAdminLoader.show();
+
+
+            generateJdModal.show();
+            dispatch(hideCreateForOthersJdModal())
+
+
             dispatch(createSchedulesSuperAdmin({
                 params,
                 onSuccess: (response: any) => () => {
-                    createForOthersResetValues()
-                    dispatch(hideCreateForOthersJdModal())
-                    getKnowledgeGroupFromJdHandler();
-                    createInterviewSuperAdminLoader.hide();
+                    const { details } = response;
+                    if (details?.schedule_id) {
+                        const canStartParams = { schedule_id: details?.schedule_id }
+                        setScheduleId(details?.schedule_id)
+                        intervalIdRef.current = setInterval(() => {
+                            dispatch(canStartInterview({
+                                params: canStartParams,
+                                onSuccess: (res: any) => () => {
+
+                                    generateJdModal.hide();
+                                    completedModal.show();
+                                    createForOthersResetValues();
+                                    getKnowledgeGroupFromJdHandler();
+
+                                    if (intervalIdRef.current) {
+                                        clearInterval(intervalIdRef.current);
+                                    }
+                                },
+                                onError: (error: any) => () => {
+                                    console.log(error);
+                                }
+                            }))
+                        }, INTERVAL_TIME);
+                    }
+
 
                 },
                 onError: (error) => () => {
                     generateJdModal.hide();
-                    dispatch(showCreateForOthersJdModal())
                     showToast(error.error_message, 'error')
-                    createInterviewSuperAdminLoader.hide();
-
+                    dispatch(showCreateForOthersJdModal())
                 },
             }))
         } else {
@@ -313,10 +342,9 @@ function AdminSchedules() {
         sectorForOthers.set('')
         positionForOthers.set('')
         experienceForOthers.set('')
-        jd.set('')
+        jdForOthers.set('')
         setNotifyInterview(false)
         setNotifyReport(false)
-
     }
 
     function proceedMenuClickHandler(selected: any, id: any) {
@@ -413,8 +441,6 @@ function AdminSchedules() {
         }
     }
 
-
-
     const stopInterval = () => {
         if (intervalIdRef.current !== null) {
             clearInterval(intervalIdRef.current);
@@ -439,7 +465,6 @@ function AdminSchedules() {
 
                                     const more = jdMore[index]?.more
 
-                                    const copyInterviewLink = schedules[0]?.custom_interview_link;
 
                                     return (
                                         <Card className="mt--3 " key={id}>
@@ -451,7 +476,6 @@ function AdminSchedules() {
                                                         {name.charAt(0).toUpperCase() + name.slice(1)}
                                                     </span> : <></>
                                                     }
-                                                    <Clipboard id={id} linkToCopy={copyInterviewLink} />
 
                                                     {interview_duration &&
                                                         <div className='col'>
@@ -538,7 +562,7 @@ function AdminSchedules() {
                                                     schedules &&
                                                     schedules.length > 0 &&
                                                     schedules.map((each: any, index: number) => {
-                                                        const { is_complete, is_report_complete, id, created_at, custom_interviewee_details, is_started, interview_end_time, note, q } = each;
+                                                        const { is_complete, is_report_complete, id, created_at, custom_interviewee_details, is_started, interview_end_time, note, q, custom_interview_link } = each;
 
                                                         const basic_info = custom_interviewee_details?.basic_info
 
@@ -564,6 +588,8 @@ function AdminSchedules() {
                                                         };
 
                                                         const questions = `(Q -  ${q ? q : 0})`
+
+
                                                         return (
                                                             <div>
                                                                 <div className='row align-items-center'>
@@ -572,6 +598,7 @@ function AdminSchedules() {
                                                                             <h5 className='m-0 p-0'>{demoDisplayName ? demoDisplayName.charAt(0).toUpperCase() + demoDisplayName.slice(1) : "Interview " + (index + 1)}</h5>
                                                                             <h5 className='m-0 p-0 ml-2'>{questions}</h5>
                                                                         </div>
+                                                                        {custom_interview_link ? <Clipboard id={id} copedText={copiedInterviewLink} linkToCopy={custom_interview_link} tooltipText={'Copy Interview Link'} onCopy={setCopiedInterviewLink} /> : null}
                                                                         {note ? <small className='text-muted'>{note}</small> : null}
                                                                     </div>
                                                                     <h5 className='mb-0 text-center'>{(is_complete ? `Completed: ${getDisplayTimeFromMoment(interview_end_time)}` : `Created at: ${getDisplayTimeFromMoment(created_at)}`)}</h5>
@@ -942,7 +969,7 @@ function AdminSchedules() {
                     notifyError ? <small className='text-red mt-2' >Please fill above email field to enable notification.</small> : null
                 }
                 <div className='mt-5'>
-                    <Button block loading={createInterviewSuperAdminLoader.loader} size='md' text={'Submit'} onClick={createForOthersApiHandler} />
+                    <Button block size='md' text={'Submit'} onClick={createForOthersApiHandler} />
                 </div>
 
             </Modal >
@@ -1043,7 +1070,7 @@ function AdminSchedules() {
                 }
 
                 <div className='mt-5'>
-                    <Button block loading={createInterviewSuperAdminLoader.loader} size='md' text={'Submit'} onClick={createNewJdScheduleApiHandler} />
+                    <Button block size='md' text={'Submit'} onClick={createNewJdScheduleApiHandler} />
                 </div>
 
             </Modal >
