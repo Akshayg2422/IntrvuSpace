@@ -578,7 +578,7 @@ function Report() {
 
                                                                         <div className='row justify-content-between  align-items-center'
                                                                         >
-                                                                            <div className='pt-4 '>
+                                                                            <div className='pt-4 pr-sm-0 pr-7'>
                                                                                 <h4 className='text-black'>
                                                                                     {el?.name}
                                                                                 </h4>
@@ -674,7 +674,7 @@ function Report() {
 
                                                                                 <div className='row justify-content-between align-items-center'
                                                                                 >
-                                                                                    <div className='pt-4 pr-sm-0 pr-9 bg-red'>
+                                                                                    <div className='pt-4 pr-sm-0 pr-9'>
                                                                                         <h4 className='text-black'>
                                                                                             {el?.metrics_name || el?.trait || el?.name}
                                                                                         </h4>
