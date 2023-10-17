@@ -49,16 +49,13 @@ const NETWORK_DESIGN = [
   },
 ];
 
-const GUIDELINES = [
-  "Kindly ensure the use of headphones to optimize audio quality.",
-  "Find a quiet and secluded space to minimize background noise and distractions.",
-  "Verify the stability of your internet connection to ensure uninterrupted communication.",
-  "Keep the video function enabled throughout the session for effective interaction.",
-  " We appreciate clear and succinct responses during the conversation.",
-];
+
 
 
 function Call() {
+
+
+  const SPEECH_VOICE_UP = 47
 
 
   const intervalIdRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -529,7 +526,7 @@ function Call() {
             voiceUpCount.current = 0;
             speakingShouldProcess.current = false;
             if (voiceUp === true) setVoiceUp(false);
-          } else if (valueP < 43) {
+          } else if (valueP < SPEECH_VOICE_UP) {
             isVoiceUpCurrentChunk.current = true;
 
             /**
