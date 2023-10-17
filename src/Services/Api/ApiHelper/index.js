@@ -6,7 +6,7 @@ export const BUILD_TYPE_STAGING = 3;
 export const BUILD_TYPE_LOCAL = 4;
 
 
-const LIVE_IP = "https://mockeazyprimary.leorainfotech.in/"
+const LIVE_IP = "https://mepp.leorainfotech.in/"
 const LOCAL_IP = "https://d404-103-118-189-15.ngrok-free.app/"
 
 
@@ -24,7 +24,7 @@ export const SERVER =
 
 
 
-export const CALL_WEBSOCKET = `wss://mockeazyprimary.leorainfotech.in/aaa`
+export const CALL_WEBSOCKET = `wss://mepp.leorainfotech.in/aaa`
 
 
 const axiosApi = axios.create({
