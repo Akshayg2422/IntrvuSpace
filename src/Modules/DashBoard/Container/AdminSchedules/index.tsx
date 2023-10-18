@@ -506,7 +506,6 @@ function AdminSchedules() {
                                                     }
                                                     <h5 className='mb-0 pointer'>{experience === 0 ? "Fresher" : "" + experience + (experience === 1 ? " year " : " years ") + "of experience"}</h5>
                                                 </div>
-
                                                 <div className='row'>
                                                     <div>
                                                         <Button
@@ -519,7 +518,6 @@ function AdminSchedules() {
                                                     </div>
                                                     <MenuBar menuData={JD_MENU} onClick={(action) => proceedJDMenuClickHandler(action, id)} />
                                                 </div>
-
                                             </div>
                                             <div className='col mt-3'>
                                                 <div className='row'>
@@ -607,7 +605,7 @@ function AdminSchedules() {
 
                                                         return (
                                                             <div>
-                                                                <div className='row align-items-center'>
+                                                                <div className='row align-items-center justify-content-between'>
                                                                     <div className='col m-0 p-0'>
                                                                         <div className='d-flex align-items-center'>
                                                                             <h5 className='m-0 p-0'>{demoDisplayName ? demoDisplayName.charAt(0).toUpperCase() + demoDisplayName.slice(1) : "Interview " + (index + 1)}</h5>
@@ -617,37 +615,39 @@ function AdminSchedules() {
                                                                         {note ? <small className='text-muted'>{note}</small> : null}
                                                                     </div>
                                                                     <h5 className='mb-0 text-center'>{(is_complete ? `Completed: ${getDisplayTimeFromMoment(interview_end_time)}` : `Created at: ${getDisplayTimeFromMoment(created_at)}`)}</h5>
-                                                                    <div className='col d-flex justify-content-end align-items-center'>
-                                                                        {
-                                                                            is_complete && is_report_complete &&
-                                                                            <div>
-                                                                                <Button
-                                                                                    text={'View Report'}
-                                                                                    onClick={() => {
-                                                                                        proceedReport(id);
-                                                                                    }}
-                                                                                />
-                                                                            </div>
-                                                                        }
-                                                                        {
-                                                                            is_complete && !is_report_complete &&
-                                                                            <div>
-                                                                                <span className="name mb-0 text-sm">Generating Report ...</span>
-                                                                            </div>
-                                                                        }
-                                                                        {
-                                                                            !is_complete && <div>
-                                                                                <Button
-                                                                                    loading={startInterviewLoader.loader}
-                                                                                    className={' border border-primary'}
-                                                                                    text={is_started ? "Resume Interview" : "Start Interview"}
-                                                                                    onClick={() => {
-                                                                                        proceedInterviewHandler(id);
-                                                                                    }}
-                                                                                />
-                                                                            </div>
-                                                                        }
-                                                                        <div className='d-flex align-items-center justify-content-center ml-3'>
+                                                                    <div className='col m-0 p-0 d-flex justify-content-end'>
+                                                                        <div className='row mr-3'>
+                                                                            {
+                                                                                is_complete && is_report_complete &&
+                                                                                <div>
+                                                                                    <Button
+                                                                                        text={'View Report'}
+                                                                                        onClick={() => {
+                                                                                            proceedReport(id);
+                                                                                        }}
+                                                                                    />
+                                                                                </div>
+                                                                            }
+                                                                            {
+                                                                                is_complete && !is_report_complete &&
+                                                                                <div>
+                                                                                    <span className="name mb-0 text-sm">Generating Report ...</span>
+                                                                                </div>
+                                                                            }
+
+                                                                            {
+                                                                                !is_complete && <div>
+                                                                                    <Button
+                                                                                        loading={startInterviewLoader.loader}
+                                                                                        className={' border border-primary'}
+                                                                                        text={is_started ? "Resume Interview" : "Start Interview"}
+                                                                                        onClick={() => {
+                                                                                            proceedInterviewHandler(id);
+                                                                                        }}
+                                                                                    />
+                                                                                </div>
+                                                                            }
+
                                                                             <MenuBar menuData={SCHEDULE_MENU} onClick={(action) => proceedMenuClickHandler(action, id)} />
                                                                         </div>
                                                                     </div>
@@ -718,7 +718,7 @@ function AdminSchedules() {
                             </div>
                         )}
                         <span className={'position-absolute left-9 pl-5 top-0'}>
-                            <Checkbox className={'text-primary'} text={'Fresher'} defaultChecked={fresherChecked} onCheckChange={(checked) => {
+                            <Checkbox id={'fresher'} className={'text-primary'} text={'Fresher'} defaultChecked={fresherChecked} onCheckChange={(checked) => {
                                 setFresherChecked(checked)
                             }} />
                         </span>
