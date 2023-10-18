@@ -516,6 +516,13 @@ function AdminSchedules() {
                                                             }}
                                                         />
                                                     </div>
+                                                    {/** For large screen */}
+                                                    <div className={'d-none d-lg-block d-md-block d-xl-block'}>
+                                                        <MenuBar menuData={JD_MENU} onClick={(action) => proceedJDMenuClickHandler(action, id)} />
+                                                    </div>
+                                                </div>
+                                                {/** For small screen */}
+                                                <div className={'d-block d-sm-none pl-3'}>
                                                     <MenuBar menuData={JD_MENU} onClick={(action) => proceedJDMenuClickHandler(action, id)} />
                                                 </div>
                                             </div>
@@ -546,8 +553,6 @@ function AdminSchedules() {
                                                                                     View Less
                                                                                 </span>
                                                                             </div>
-
-
                                                                         </div>
                                                                         :
                                                                         <div className='row'>
@@ -614,9 +619,9 @@ function AdminSchedules() {
                                                                         {custom_interview_link ? <Clipboard id={id} copedText={copiedInterviewLink} linkToCopy={custom_interview_link} tooltipText={'Copy Interview Link'} onCopy={setCopiedInterviewLink} /> : null}
                                                                         {note ? <small className='text-muted'>{note}</small> : null}
                                                                     </div>
-                                                                    <h5 className='mb-0 text-center'>{(is_complete ? `Completed: ${getDisplayTimeFromMoment(interview_end_time)}` : `Created at: ${getDisplayTimeFromMoment(created_at)}`)}</h5>
+                                                                    <h5 className='mb-0 text-center d-none d-lg-block d-md-block d-xl-block'>{(is_complete ? `Completed: ${getDisplayTimeFromMoment(interview_end_time)}` : `Created at: ${getDisplayTimeFromMoment(created_at)}`)}</h5>
                                                                     <div className='col m-0 p-0 d-flex justify-content-end'>
-                                                                        <div className='row mr-3'>
+                                                                        <div className='row mr-lg-3 mr-sm-0 mr-0'>
                                                                             {
                                                                                 is_complete && is_report_complete &&
                                                                                 <div>
@@ -647,10 +652,13 @@ function AdminSchedules() {
                                                                                     />
                                                                                 </div>
                                                                             }
-
-                                                                            <MenuBar menuData={SCHEDULE_MENU} onClick={(action) => proceedMenuClickHandler(action, id)} />
+                                                                            <div className={''}>
+                                                                                <MenuBar menuData={SCHEDULE_MENU} onClick={(action) => proceedMenuClickHandler(action, id)} />
+                                                                            </div>
                                                                         </div>
                                                                     </div>
+                                                                    {/** for small screen */}
+                                                                    <h5 className='mb-0 text-center d-block d-sm-none'>{(is_complete ? `Completed: ${getDisplayTimeFromMoment(interview_end_time)}` : `Created at: ${getDisplayTimeFromMoment(created_at)}`)}</h5>
                                                                 </div>
                                                                 {index !== schedules.length - 1 && <Divider className={'row'} space={"3"} />}
                                                             </div>
