@@ -10,7 +10,7 @@ const LIVE_IP = "https://mockeazyprimary.leorainfotech.in/"
 const LOCAL_IP = "http://192.168.128.126:8009"
 
 
-export const BUILD_TYPE = BUILD_TYPE_LOCAL;
+export const BUILD_TYPE = BUILD_TYPE_LIVE;
 export const SERVER =
   BUILD_TYPE === BUILD_TYPE_LIVE
     ? LIVE_IP
