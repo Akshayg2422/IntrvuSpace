@@ -31,10 +31,10 @@ function WebsiteHeader() {
       style={{ backgroundColor: "" }}
     >
       <Container>
-        <div className="mb-6">
+        <div className="mb-md-6 m-5">
           <Row>
             <Col lg="5">
-              <div className="mt-5 ml-lg-5">
+              <div className="">
                 <div>
                   <div>
                     <span
@@ -86,11 +86,10 @@ function WebsiteHeader() {
 
                 <Button
                   className={"mt-7 col-sm-10 ls-0"}
+                  style={{borderRadius: 4}}
                   block
                   text={"Start Now"}
                   size="lg"
-                  style={{ borderRadius: 4, letterSpacing:0 }}
-                  isTextLowercase
                 />
 
                 <div className="pt-3">
@@ -105,7 +104,7 @@ function WebsiteHeader() {
               </div>
             </Col>
             <Col lg="7" sm="12">
-              <div className="mt-5">
+              <div className="mt--4">
                 <img
                   src={image.MockEazy2}
                   width={"100%"}
