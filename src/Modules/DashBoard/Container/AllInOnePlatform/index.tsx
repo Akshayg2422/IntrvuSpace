@@ -103,14 +103,14 @@ function AllInOnePlatform() {
                   </div>
                 </div>
                 <Card
-                  className="text-left mt-6"
+                  className="text-left mt-6 mx-4"
                   style={{
                     borderWidth: 1.5,
                     borderColor: "#e8edff",
                     backgroundColor: "transparent",
                   }}
                 >
-                  <div className="row row-cols-1">
+                  <div className="row row-cols-lg-3">
                     <div className="col-md-4 d-flex flex-column justify-content-center">
                       {CREATE_JD_AND_ADD_CANDIDATE.map((item) => {
                         return (
@@ -134,76 +134,94 @@ function AllInOnePlatform() {
                         );
                       })}
                     </div>
-                    
 
-                    <div className="col-md-4 d-flex flex-column justify-content-center mt-5 mt-md-0">
-                    <div className="">
-                    <div
-                      style={{
-                        width: 1,
-                        height: 300,
-                        backgroundColor: "#e8edff",
-                      }}
-                    />
-                    </div>
-                      <div
-                        className="text-secondary boldText "
-                        style={{ fontSize: 21 }}
-                      >
-                        <div className="text-center">
-                          <span>{`Automated Interviews,`}</span>
+                    <div className="col-md-4 d-flex flex-column justify-content-center mt-5 mt-md-2">
+                      <div className="row">
+                        <div className="d-none d-lg-block d-md-block d-xl-block">
+                          <div
+                            style={{
+                              width: 1.3,
+                              height: 300,
+                              backgroundColor: "#e8edff",
+                            }}
+                          />
                         </div>
-                        <div className="allInOneMarginTop text-center">
-                          <span>Approvals & Reports</span>
+                        <div className="mx-md-5 mb-2 mx-3">
+                          <div
+                            className="text-secondary boldText "
+                            style={{ fontSize: 21 }}
+                          >
+                            <div className="text-center">
+                              <span>{`Automated Interviews,`}</span>
+                            </div>
+                            <div className="allInOneMarginTop text-center">
+                              <span>Approvals & Reports</span>
+                            </div>
+                          </div>
+                          <div className="mt-4 text-center">
+                            <span
+                              className="text-gray"
+                              style={{ fontSize: 13, fontFamily:"cursive" }}
+                            >
+                              <s>{`₹ 90.00`}</s>
+                            </span>
+                            <Badge
+                              className="text-primary ml-2"
+                              text={"SAVE 71%"}
+                              size="md"
+                              style={{
+                                borderRadius: 30,
+                                backgroundColor: "#ebe4ff",
+                                fontSize: 13,
+                                fontWeight: 800,
+                              }}
+                            />
+                          </div>
+                          <div className="text-center">
+                            <span
+                              className="text-secondary"
+                              style={{ fontSize: 18, fontWeight: 500, fontFamily:"cursive" }}
+                            >
+                              {"₹"}
+                            </span>
+                            <span className="text-secondary display-2 ml-1">
+                              50.00
+                            </span>
+                            <span
+                              className="text-secondary ml-1"
+                              style={{ fontSize: 18, fontWeight: 500 }}
+                            >
+                              /interview
+                            </span>
+                          </div>
+                          <div className="d-flex float-center ">
+                            <Button
+                              text={"Add to cart"}
+                              className={"mt-3 ls-0"}
+                              block
+                              style={{ borderRadius: 4 }}
+                            />
+                          </div>
+                          <div className="mt-3 text-center">
+                            <span className="text-gray" style={{fontFamily:"cursive", fontSize: 13}}>{"₹"}</span>
+                            <span
+                              className="text-gray"
+                              style={{ fontSize: 13 }}
+                            >
+                              {"40.00/interview for 1000+"}
+                            </span>
+                          </div>
                         </div>
-                      </div>
-                      <div className="mt-4 text-center">
-                        <span className="text-gray" style={{ fontSize: 13 }}>
-                          <s>{`\u20B9 90.00`}</s>
-                        </span>
-                        <Badge
-                          className="text-primary ml-2"
-                          text={"SAVE 71%"}
-                          size="md"
-                          style={{
-                            borderRadius: 30,
-                            backgroundColor: "#ebe4ff",
-                            fontSize: 13,
-                            fontWeight: 800,
-                          }}
-                        />
-                      </div>
-                      <div className="text-center">
-                        <span
-                          className="text-secondary"
-                          style={{ fontSize: 18, fontWeight: 500 }}
-                        >
-                          {"\u20B9"}
-                        </span>
-                        <span className="text-secondary display-2 ml-1">
-                          50.00
-                        </span>
-                        <span
-                          className="text-secondary ml-1"
-                          style={{ fontSize: 18, fontWeight: 500 }}
-                        >
-                          /interview
-                        </span>
-                      </div>
-                      <div className="d-flex float-center ">
-                        <Button
-                          text={"Add to cart"}
-                          className={"mt-3 col-sm-9 ls-0 ml-md-5"}
-                          block
-                          size="lg"
-                          style={{ borderRadius: 4, letterSpacing: 0 }}
-                          isTextLowercase
-                        />
-                      </div>
-                      <div className="mt-3 text-center">
-                        <span className="text-gray" style={{ fontSize: 13 }}>
-                          {"\u20B9 40.00/interview for 1000+"}
-                        </span>
+
+                        <div className="d-none d-lg-block">
+                          <div
+                            style={{
+                              width: 1.2,
+                              height: 300,
+                              backgroundColor: "#e8edff",
+                            }}
+                          />
+                        </div>
                       </div>
                     </div>
 
@@ -232,6 +250,10 @@ function AllInOnePlatform() {
                     </div>
                   </div>
                 </Card>
+
+                <div className="pt-6 pb-4">
+                  <span className="display-3 font-weight-bolder text-secondary">How it works ?</span>
+                </div>
               </Col>
             </Row>
           </div>

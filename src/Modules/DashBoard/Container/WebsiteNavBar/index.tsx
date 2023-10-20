@@ -71,13 +71,12 @@ function WebsiteNavBar() {
             <Button
               className="pointer text-bold mr-lg--3 text-primary py-2"
               style={{
-                borderRadius: 4,
                 borderColor: "#d8dade",
                 borderWidth: 1,
                 fontSize: 14,
                 paddingRight: 10,
                 paddingLeft: 10,
-                letterSpacing:0
+                borderRadius: 4
               }}
               onClick={() => {
                 goTo(ROUTES["auth-module"].login);
