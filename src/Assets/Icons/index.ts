@@ -1,5 +1,5 @@
 export const icons = {
-  logoText: require('./Logo/icon-text.png'),
+  logoText: require('./Logo/logo.png'),
   logoIcon: require('./Logo/icon.png'),
   google: require('./Google/icon.png'),
   minus: require('./Minus/icon.png'),
@@ -201,7 +201,14 @@ export const icons = {
   viewAsMember: require('./ViewAsMember/icon.png'),
   selected: require('./Selected/icon.png'),
   rejected: require('./Rejected/icon.png'),
-  navbarToggler: require('./NavbarToggler/icon.png'),
   link: require('./Link/icon.png'),
-  excel:require('./Excel/icon.png')
+  excel:require('./Excel/icon.png'),
+  navbarToggler:require('./NavbarToggler/icon.png'),
+  coverPic: require('./CoverPic/ivCover.png'),
+  effortlessInterviews: require('./EffortlessInterviews/effortless-interviews.png'),
+  instagram: require('./SocialMedia/instagram.png'),
+  twitter: require('./SocialMedia/twitter.png'),
+  shield: require('./PackageIcons/shield.png'),
+  globe: require('./PackageIcons/globe.png'),
+  headSet: require('./PackageIcons/headset.png')
 };

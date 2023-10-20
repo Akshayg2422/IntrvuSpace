@@ -4,7 +4,7 @@ import { ROUTES } from "@Routes";
 import { useNavigation } from "@Hooks";
 import { useSelector, useDispatch } from 'react-redux'
 import { icons } from "@Assets";
-import { Landing } from '@Modules'
+import { Landing, Website } from '@Modules'
 
 
 function Splash() {
@@ -57,7 +57,8 @@ function Splash() {
                 </div>
 
             </div>
-                : <Landing />
+                // : <Landing />
+                : <Website />
             }
         </div>
     );
