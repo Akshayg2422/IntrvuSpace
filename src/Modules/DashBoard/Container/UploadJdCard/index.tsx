@@ -20,8 +20,7 @@ function UploadJdCard() {
 
     return (
 
-        <div className={'bg-white'} style={{objectFit:'contain'}}>
-            <Container className={'bg-white'}>
+            <Container className={'bg-white mb-5'}>
                 <div className="">
                     <div className={'row text-center'}>
                         <div className={'col-12 display-3 text-secondary font-weight-bolder mb-0 ls-1'}>
@@ -82,18 +81,18 @@ function UploadJdCard() {
                             </div>
                         </Col>
 
-                        <Col className={'pt-6 d-none d-lg-block d-md-block d-xl-block'} lg="7" sm="12">
+                        <Col className={'pt-6'} lg="7" sm="12">
                             <div>
                                 <img
                                     src={image.CreateIntrvu}
-                                    width={"600px"}
+                                    width={"100%"}
                                     height={"100%"}
                                     style={{ borderRadius: "20px" }}
                                 />
                             </div>
                         </Col>
 
-                        <Col className={'pt-4 pb-4 d-block d-sm-none'} lg="7" sm="12">
+                        {/* <Col className={'pt-4 pb-4 d-block d-sm-none'} lg="7" sm="12">
                             <div>
                                 <img
                                     src={image.CreateIntrvu}
@@ -102,11 +101,10 @@ function UploadJdCard() {
                                     style={{ borderRadius: "20px" }}
                                 />
                             </div>
-                        </Col>
+                        </Col> */}
                     </Row>
                 </div>
             </Container >
-        </div>
     )
 }
 
