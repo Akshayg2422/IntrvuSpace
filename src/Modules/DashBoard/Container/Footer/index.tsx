@@ -22,13 +22,17 @@ function Footer() {
                                         alt="..."
                                         src={icons.logoIcon}
                                     />
-                                    <span className='h4 ml-2 text-black'>
-                                        intrvu SPACE
+                                    <span className='ml-2 text-black' style={{fontWeight: 100}}>
+                                        intrvu
+                                    </span>
+
+                                    <span className='h4 ml-1 text-black'>
+                                         SPACE
                                     </span>
                                 </NavbarBrand>
                             </div>
                         </div>
-                        <div className='ml-auto p-2'>
+                        <div className={`ml-auto p-2 mt--1`}>
                             <small className={'copyright h5 text-sm'}>
                                 Copyright © {new Date().getFullYear()}{" "} intrvu SPACE. All Rights Reserved.
                             </small>
