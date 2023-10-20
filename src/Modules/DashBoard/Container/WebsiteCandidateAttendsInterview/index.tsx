@@ -20,7 +20,6 @@ function WebsiteCandidateAttendsInterview() {
                                     <span className="display-3 text-secondary font-weight-bolder mb-0 ls-1">
                                         Candidate Attends the <br /> interview
                                     </span>
-
                                 </div>
 
                                 <div className="" style={{ paddingTop: 35 }}>
