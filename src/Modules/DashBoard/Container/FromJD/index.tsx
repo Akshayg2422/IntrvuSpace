@@ -268,38 +268,26 @@ function FromJD() {
                                         demoDisplayName = " - " + basicInfo?.first_name
 
                                     return (
-                                        <Card className="mt--3 ">
-                                            <div className={'d-flex justify-content-between'}>
+                                        <Card className="mt--3 border border-primary">
+                                            <div className={'d-flex justify-content-between'}  >
                                                 <div>
                                                     {name ? <span style={{
                                                         fontSize: "21px"
-                                                    }} className='mb-0 text-primary font-weight-bolder'>
+                                                    }} className='mb-0 text-secondary font-weight-bolder'>
                                                         {name.charAt(0).toUpperCase() + name.slice(1) + demoDisplayName}
                                                     </span> : <></>
-                                                    }
-
-                                                    {interview_duration &&
-                                                        <div className='col'>
-                                                            <div className='row d-flex align-items-center mb-1'>
-                                                                <Image src={icons.clock} height={17} width={17} style={{
-                                                                    objectFit: 'contain'
-                                                                }} />
-                                                                <h5 style={{
-                                                                    fontSize: "14px"
-                                                                }} className='mb-0 text-primary font-weight-bolder ml-2'>{`${interview_duration} mins`}</h5>
-                                                            </div>
-                                                        </div>
-                                                    }
-                                                    <h5 className='mb-0 pointer'>{experience === 0 ? "Fresher" : "" + experience + (experience === 1 ? " year " : " years ") + "of experience"}</h5>
+                                                    } 
+                                                    <small className={"text-secondary"}>{experience === 0 ? " Fresher" : " " + experience + (experience === 1 ? " year " : " years ") + "of experience"}</small>                                                
+                                                   
                                                 </div>
-
-
+                                                <div>
+                                                <div className='d-flex flex-column justify-content-center align-items-center'>
                                                 {
                                                     proceedInterview ?
                                                         <div>
                                                             <Button
                                                                 loading={startInterviewLoader.loader}
-                                                                className={'px-4 border border-primary'}
+                                                                className={'px-md-5 border border-primary rounded'}
                                                                 text={proceedInterview.is_started ? "Resume Interview" : "Start Interview"}
                                                                 onClick={() => {
                                                                     proceedInterviewHandler(proceedInterview?.id);
@@ -308,6 +296,7 @@ function FromJD() {
                                                         </div> :
                                                         <div>
                                                             <Button
+                                                                className={'px-md-5 border border-primary rounded'}
                                                                 text={'Try Another'}
                                                                 onClick={() => {
                                                                     createNewJdScheduleApiHandler(id);
@@ -315,7 +304,25 @@ function FromJD() {
                                                             />
                                                         </div>
                                                 }
+                                                {interview_duration &&
+                                                        <div>
+                                                            <div className='row d-flex align-items-center mt-1'>
+                                                                {/* <Image src={icons.clock} height={17} width={17} style={{
+                                                                    objectFit: 'contain'
+                                                                }} /> */}
+                                                                <h5 style={{
+                                                                    fontSize: "14px"
+                                                                }} className='mb-0 text-secondary font-weight-bolder ml-2'>{`${interview_duration} mins`}<span className= {"font-weight-normal"}> Duration</span></h5>
+                                                                
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                </div>
+                                                </div>
+                                              
+                                               
                                             </div>
+
                                             <div className='col mt-3'>
                                                 <div className='row'>
                                                     <div className='col ml-0'>
@@ -408,6 +415,10 @@ function FromJD() {
                                                                             is_report_complete &&
                                                                             <div className='row'>
                                                                                 <Button
+                                                                                className='btn btn-outline-primary rounded'
+                                                                                style={{
+                                                                                    borderColor:"#d8dade",
+                                                                                }}
                                                                                     text={'View Report'}
                                                                                     onClick={() => {
                                                                                         proceedReport(id);
