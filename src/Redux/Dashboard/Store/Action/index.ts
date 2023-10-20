@@ -148,6 +148,7 @@ export const getSectorsFailure = (error: any) => {
 
 
 export const setSelectedRole = (params) => {
+  console.log('1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111')
   return {
     type: ActionTypes.SET_SELECTED_ROLE,
     payload: params
@@ -1080,5 +1081,26 @@ export const deleteJd = (params: any) => {
   return {
     type: ActionTypes.DELETE_JD,
     payload: params,
+  }
+}
+
+// bulkUploadCandidatesCP
+
+export const bulkUploadCandidates = (params: any) => {
+  return {
+    type: ActionTypes.BULK_UPLOAD_CANDIDATES_CP,
+    payload: params,
+  }
+}
+export const bulkUploadCandidatesSuccess = (response: any) => {
+  return {
+    type: ActionTypes.BULK_UPLOAD_CANDIDATES_CP_SUCCESS,
+    payload: response,
+  }
+}
+export const bulkUploadCandidatesFailure = (error: any) => {
+  return {
+    type: ActionTypes.BULK_UPLOAD_CANDIDATES_CP_FAILURE,
+    payload: error,
   }
 }

@@ -203,4 +203,5 @@ export const icons = {
   rejected: require('./Rejected/icon.png'),
   navbarToggler: require('./NavbarToggler/icon.png'),
   link: require('./Link/icon.png'),
+  excel:require('./Excel/icon.png')
 };

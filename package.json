@@ -31,6 +31,7 @@
     "compressorjs": "^1.2.1",
     "d3": "^7.8.4",
     "date-fns": "^2.30.0",
+    "dropzone": "^6.0.0-beta.2",
     "eslint": "^8.24.0",
     "eslint-plugin-sonarjs": "^0.15.0",
     "file-saver": "^2.0.5",

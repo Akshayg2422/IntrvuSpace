@@ -767,8 +767,6 @@ function* deleteInterviewSaga(action) {
   }
 }
 
-
-
 /**
  * delete JD
  */
@@ -782,6 +780,26 @@ function* deleteJdSaga(action) {
       yield call(action.payload.onError(response));
     }
   } catch (error) {
+    yield call(action.payload.onError(error));
+  }
+}
+
+// bulkUploadCandidatesCP
+
+function* bulkUploadCandidatesCpSaga(action) {
+  try {
+    const response = yield call(Api.bulkUploadCandidatesCpApi, action.payload.params);
+    if (response.success) {
+
+      console.log(JSON.stringify(response));
+      yield put(Action.bulkUploadCandidatesSuccess(response?.details));
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield put(Action.bulkUploadCandidatesFailure(response.error_message));
+      yield call(action.payload.onError(response));
+    }
+  } catch (error) {
+    yield put(Action.bulkUploadCandidatesFailure(error));
     yield call(action.payload.onError(error));
   }
 }
@@ -830,6 +848,6 @@ function* DashboardSaga() {
   yield takeLatest(Action.RESET_INTERVIEW, resetInterviewSaga);
   yield takeLatest(Action.DELETE_INTERVIEW, deleteInterviewSaga);
   yield takeLatest(Action.DELETE_JD, deleteJdSaga);
-
+  yield takeLatest(Action.BULK_UPLOAD_CANDIDATES_CP, bulkUploadCandidatesCpSaga);
 }
 export default DashboardSaga;

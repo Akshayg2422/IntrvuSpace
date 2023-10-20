@@ -174,3 +174,7 @@ export const resetPasswordApi = payload => post(URL.URL_RESET_PASSWORD, payload,
 
 export const forgotPasswordApi = payload => post(URL.URL_FORGOT_PASSWORD, payload, {});
 
+// bulkUploadCandidatesCP
+
+export const bulkUploadCandidatesCpApi = payload => post(URL.URL_BULK_UPLOAD_CANDIDATE_CP, payload, {});
+
