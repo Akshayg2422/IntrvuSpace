@@ -28,7 +28,7 @@ function WebsiteCandidateAttendsInterview() {
                                         return (
                                             <>
                                                 <div className="pt-2 row">
-                                                    <span className={'col-1 ni ni-check-bold text-green pt-2'} />
+                                                    <span className={'text-default pt-2'} />
                                                     <span
                                                         className="col-11 text-default"
                                                     >
