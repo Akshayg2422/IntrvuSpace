@@ -1,4 +1,8 @@
 .boldText {
-    font-weight: 800;
-    font-size: small;
+    font-weight: 900;
 }
+
+.allInOneMarginTop {
+    margin-top: -11px;
+}
+

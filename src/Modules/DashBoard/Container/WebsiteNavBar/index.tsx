@@ -25,15 +25,15 @@ function WebsiteNavBar() {
 
   return (
     <Navbar
-      className="navbar-horizontal navbar-main navbar-dark fixed-top shadow"
+      className="navbar-horizontal navbar-main navbar-dark fixed-top"
       expand="lg"
       id="navbar-main"
-      style={{ backgroundColor: "#ffffff" }}
+      style={{ backgroundColor: "" }}
     >
       <Container>
         <NavbarBrand to="/" tag={Link}>
-          <div className={"ml--5"}>
-            <img alt="..." src={icons.logoText} style={{ height: 55 }} />
+          <div className={"ml--5"} >
+            <img alt="..." src={icons.logoText} style={{ height: 55, zIndex: 100 }} />
           </div>
         </NavbarBrand>
         <button
