@@ -1,69 +1,15 @@
-// import { Col, Container, Row } from "reactstrap";
-// // import "./style.scss";
-// import { videos, image } from "@Assets";
-// import { Image, Button } from "@Components";
-// import { useNavigation } from "@Hooks";
-// import { ROUTES } from "@Routes";
-
-// function WebsiteHeader() {
-//   const { goTo } = useNavigation();
-//   return (
-//     <>
-//       <div className="header pt-5" style={{ backgroundColor: "#ffffff" }}>
-//         {/* <video
-//             autoPlay
-//             loop
-//             muted
-//             style={{
-//                 width: '100%',
-//                 height: '100%',
-//                 objectFit: 'cover',
-//                 zIndex: -1,
-//                 borderRadius: 6,
-//                 marginBottom: -10
-//                 // opacity: 0.3, // Set the desired opacity value
-//                 // marginBottom: -10
-//             }}
-//         >
-//             <source src={videos.backgroundLanding} type="video/mp4" />
-//         </video> */}
-//         <Container>
-//           <div className="header-body">
-//             <Row className="align-items-center h-100vh">
-//               <Col lg="6">
-//                 <div className="mt--3">
-//                   <h2
-//                     className="display-1 custom-black font-weight-bolder mb-0"
-//                     style={{ fontSize: "60px" }}
-//                   >
-//                     Intrvu SPACE
-//                   </h2>
-//                 </div>
-//               </Col>
-//               <Col lg="6" className="pl-sm-5">
-//                 <iframe
-//                   width="560"
-//                   height="315"
-//                   src="https://www.youtube.com/embed/4ENWOevsXPk?si=7CztlsKRPdpDoy1k"
-//                   title="YouTube video player"
-//                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-//                 ></iframe>
-//                 <div className="mt-2">
-//                   <Button text={"Start Now"} size="lg" outline />
-//                 </div>
-//               </Col>
-//             </Row>
-//           </div>
-//         </Container>
-//       </div>
-//     </>
-//   );
-// }
-
-// export { WebsiteHeader };
-
+import { icons, image } from "@Assets";
+import { Button, Image } from "@Components";
 import { useDynamicHeight, useGrowingTitleLine } from "@Hooks";
 import { Col, Container, Row } from "reactstrap";
+
+const packageContent = [
+  { id: 1, description: "Automated Video Interviews" },
+  { id: 2, description: "Flexible Interview timings of candidate's choice" },
+  { id: 3, description: "Interview Video Recordings" },
+  { id: 4, description: "Detailed Insights & Reports" },
+  { id: 5, description: "Auto Approvals based on objective analytics" },
+];
 
 function WebsiteHeader() {
   let dynamicHeight: any = useDynamicHeight();
@@ -80,56 +26,87 @@ function WebsiteHeader() {
 
   return (
     <div
-      className="header pt-5"
+      className={`header pt-8`}
       ref={websiteHeaderRef}
-      style={{ backgroundColor: "#ffffff" }}
+      style={{ backgroundColor: "" }}
     >
       <Container>
-        <div className="header-body">
-          <Row className={screenHeight}>
-            <Col lg="6">
-              <div className="mt-sm-5">
-                <span
-                  className="text-primary mb-0 ls-2"
-                  style={{ fontSize: "96px", fontWeight: "300" }}
-                >
-                  {"intrvu"}
-                </span>
+        <div className="mb-6">
+          <Row>
+            <Col lg="5">
+              <div className="mt-5 ml-lg-5">
+                <div>
+                  <div>
+                    <span
+                      className=" mb-0 text-secondary"
+                      style={{ fontWeight: "800", fontSize: 18 }}
+                    >
+                      {" "}
+                      Streamlined Automated Interviews
+                    </span>
+                  </div>
+                  <div>
+                    <span className="display-3 text-secondary font-weight-bolder mb-0 ls-1">
+                      Where AI <br /> meets HR
+                    </span>
+                  </div>
+                </div>
+                <div className="pt-3">
+                  <span
+                    className="text-secondary"
+                    style={{ fontSize: 14, fontWeight: "500" }}
+                  >
+                    {"Create a job description and add the candidates,"} <br />
+                    {"Let us take care of the rest of you!"}
+                  </span>
+                </div>
 
-                <span
-                  className="display-1 text-primary font-weight-bolder mb-0 ls-1"
-                  style={{ fontSize: "70px" }}
-                >
-                  {" SPACE"}
-                </span>
-              </div>
-              <div
-                className="mt-1"
-                style={{
-                  height: 5,
-                  width: growingWidth,
-                  backgroundColor: "black",
-                }}
-              />
-              <div className="mt-6">
-                <span className="custom-black">
-                  {"Step into the Future of Interviews with intrvu SPACE."}
-                </span>
-              </div>
+                <div className="" style={{ paddingTop: 35 }}>
+                  {packageContent.map((item) => {
+                    return (
+                      <>
+                        <div className="pt-2">
+                          <Image src={icons.shield} height={17} />
+                          <span
+                            className="ml-2 text-secondary"
+                            style={{ fontSize: 12.5, fontWeight: 800 }}
+                          >
+                            {item.description}
+                          </span>
+                        </div>
+                      </>
+                    );
+                  })}
+                </div>
 
-              {/* <div className="mt-sm-2 align-items-center">
-                <Image src={icons.coverPic} height={250} width={500} />
-              </div> */}
+                <Button
+                  className={"mt-7 col-sm-10"}
+                  block
+                  text={"Start Now"}
+                  size="lg"
+                  style={{ borderRadius: 4 }}
+                  isTextLowercase
+                />
+
+                <div className="pt-3">
+                  <Image src={icons.headSet} height={17} />
+                  <span
+                    className="ml-2 text-secondary"
+                    style={{ fontSize: 14, fontWeight: 500 }}
+                  >
+                    {"24/7 Customer Support"}
+                  </span>
+                </div>
+              </div>
             </Col>
-            <Col lg="6" sm="12" className={`align-self-center pl-lg-2 ${!screenHeight ? "mt-5" : "" }`}>
-              <div className="video-container">
-                <iframe
-                  width={dynamicWidthCalculation + (!screenHeight ? 45 : 0)}
-                  height={(dynamicWidthCalculation * 9) / 16 + 60}
-                  src="https://www.youtube.com/embed/4ENWOevsXPk?si=7CztlsKRPdpDoy1k"
-                  title="YouTube video player"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                ></iframe>
+            <Col lg="7" sm="12">
+              <div className="pt-sm-5">
+                <img
+                  src={image.MockEazy2}
+                  width={"100%"}
+                  height={"100%"}
+                  style={{ borderRadius: "20px" }}
+                />
               </div>
             </Col>
           </Row>

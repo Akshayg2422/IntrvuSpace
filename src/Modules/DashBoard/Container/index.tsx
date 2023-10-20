@@ -44,6 +44,7 @@ export * from './WebsiteHeader'
 export * from './EffortlessInterviews'
 export * from './InsightsAndReports'
 export * from './AutoApprovalSystem'
+export * from './AllInOnePlatform'
 
 
 

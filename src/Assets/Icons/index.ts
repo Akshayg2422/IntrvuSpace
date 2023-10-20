@@ -1,5 +1,5 @@
 export const icons = {
-  logoText: require('./Logo/icon-text7.png'),
+  logoText: require('./Logo/logo.png'),
   logoIcon: require('./Logo/icon.png'),
   google: require('./Google/icon.png'),
   minus: require('./Minus/icon.png'),
@@ -206,4 +206,7 @@ export const icons = {
   effortlessInterviews: require('./EffortlessInterviews/effortless-interviews.png'),
   instagram: require('./SocialMedia/instagram.png'),
   twitter: require('./SocialMedia/twitter.png'),
+  shield: require('./PackageIcons/shield.png'),
+  globe: require('./PackageIcons/globe.png'),
+  headSet: require('./PackageIcons/headset.png')
 };

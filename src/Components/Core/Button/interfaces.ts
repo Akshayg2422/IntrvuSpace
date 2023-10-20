@@ -10,5 +10,5 @@ export interface ButtonProps extends RsButtonProps {
     icons?: any
     height?: number;
     width?: number;
-    isTextUppercase?: boolean;
+    isTextLowercase?: boolean;
 }

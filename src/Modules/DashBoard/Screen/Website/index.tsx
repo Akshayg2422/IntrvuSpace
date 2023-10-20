@@ -13,16 +13,19 @@ import {
   EffortlessInterviews,
   InsightsAndReports,
   AutoApprovalSystem,
+  AllInOnePlatform,
 } from "@Modules";
 
 function Website() {
   return (
-    <div>
-      <div className="main-content">
+    <div style={{backgroundColor: "#fafbff"}}>
+      <div className="main-content" >
         <WebsiteNavBar />
         <WebsiteHeader />
-        {/* <EffortlessInterviews />
-        <InsightsAndReports />
+        <AllInOnePlatform />
+        {/* <EffortlessInterviews /> */}
+
+        {/* <InsightsAndReports />
         <AutoApprovalSystem /> */}
         {/* <HowItWorks />
         <Reports />

@@ -15,7 +15,7 @@ function Button({
   icons,
   onEnter,
   onClick,
-  isTextUppercase = false,
+  isTextLowercase = false,
   ...rest
 }: ButtonProps) {
   return (
@@ -36,7 +36,7 @@ function Button({
                 </div>
               )}
               {!loading && (
-                <span className={`${!isTextUppercase ? "text-uppercase" : ""}`}>
+                <span className={`${!isTextLowercase ? "text-uppercase" : ""}`}>
                   {text}
                 </span>
               )}

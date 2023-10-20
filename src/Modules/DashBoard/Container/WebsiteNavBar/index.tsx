@@ -25,38 +25,38 @@ function WebsiteNavBar() {
 
   return (
     <Navbar
-      className="navbar-horizontal navbar-main navbar-dark fixed-top pl-lg-5 pr-lg-5 py--3 shadow"
+      className="navbar-horizontal navbar-main navbar-dark fixed-top shadow"
       expand="lg"
       id="navbar-main"
       style={{ backgroundColor: "#ffffff" }}
     >
-      {/* <Container> */}
-      <NavbarBrand to="/" tag={Link}>
-        <img className={"ml-lg--1"} alt="..." src={icons.logoIcon} />
-
-        <img className={"ml-2"} alt="..." src={icons.logoText} />
-      </NavbarBrand>
-      <button
-        aria-controls="navbar-collapse"
-        aria-expanded={false}
-        aria-label="Toggle navigation"
-        className="navbar-toggler"
-        data-target="#navbar-collapse"
-        data-toggle="collapse"
-        id="navbar-collapse"
-        type="button"
-      >
-        <div className={"pt-2"}>
-          <Image height={30} width={30} src={icons.navbarToggler} />
-        </div>
-      </button>
-      <UncontrolledCollapse
-        className="navbar-custom-collapse"
-        navbar
-        toggler="#navbar-collapse"
-      >
-        <Nav className="ml-auto" navbar>
-          <NavLink to="/admin/dashboard" tag={Link}>
+      <Container>
+        <NavbarBrand to="/" tag={Link}>
+          <div className={"ml--5"}>
+            <img alt="..." src={icons.logoText} style={{ height: 55 }} />
+          </div>
+        </NavbarBrand>
+        <button
+          aria-controls="navbar-collapse"
+          aria-expanded={false}
+          aria-label="Toggle navigation"
+          className="navbar-toggler"
+          data-target="#navbar-collapse"
+          data-toggle="collapse"
+          id="navbar-collapse"
+          type="button"
+        >
+          <div className={"pt-2"}>
+            <Image height={30} width={30} src={icons.navbarToggler} />
+          </div>
+        </button>
+        <UncontrolledCollapse
+          className="navbar-custom-collapse"
+          navbar
+          toggler="#navbar-collapse"
+        >
+          <Nav className="ml-auto" navbar>
+            {/* <NavLink to="/admin/dashboard" tag={Link}>
             <span className="text-primary tab-font-style">Home</span>
           </NavLink>
           <NavLink to="/auth/pricing" tag={Link}>
@@ -67,21 +67,29 @@ function WebsiteNavBar() {
           </NavLink>
           <NavLink tag={Link}>
             <span className="text-primary tab-font-style">Register</span>
-          </NavLink>
-          <Button
-            className="pointer text-bold mr-lg--1 my-1 text-primary"
-            style={{ borderRadius: 4, borderWidth: 2, fontSize:16, paddingRight:14, paddingLeft:14 }}
-            onClick={() => {
-              goTo(ROUTES["auth-module"].login);
-            }}
-            text={"Log in"}
-            size="sm"
-            outline
-            isTextUppercase
-          />
-        </Nav>
-      </UncontrolledCollapse>
-      {/* </Container> */}
+          </NavLink> */}
+            <Button
+              className="pointer text-bold mr-lg--3 text-primary py-2"
+              style={{
+                borderRadius: 4,
+                borderColor: "#d8dade",
+                borderWidth: 1,
+                fontSize: 14,
+                paddingRight: 10,
+                paddingLeft: 10,
+                letterSpacing:0
+              }}
+              onClick={() => {
+                goTo(ROUTES["auth-module"].login);
+              }}
+              text={"Log in"}
+              size="sm"
+              outline
+              isTextLowercase
+            />
+          </Nav>
+        </UncontrolledCollapse>
+      </Container>
     </Navbar>
   );
 }
