@@ -16,6 +16,18 @@ export const interviewDurations = [
     { id: '2', text: 'Medium', subText: '(15 mins)', value: 15 },
     { id: '3', text: 'Long', subText: '(30 mins)', value: 30 },
 ];
+export const durationButton = [
+    { id: '0', text: '5 mins'  },
+    { id: '1', text: '10 mins' },
+    { id: '2', text: '15 mins' },
+    { id: '3', text: '20 mins' },
+];
+export const experienceInNumber:any=[]
+for(let i=0;i<30;i++)
+{
+    experienceInNumber.push(i)
+}
+
 
 const PLACE_HOLDER = {
     "sector": "Software, Banking...",
@@ -442,80 +454,36 @@ function FromJD() {
                     <UploadJdCard />
             }
 
-
-            <Modal title={'Create Interview'} isOpen={createJdModal} onClose={() => { dispatch(hideCreateJdModal()) }}>
+    <div className='p-5'>
+            <Modal  title={'Create Interview'} isOpen={createJdModal} onClose={() => { dispatch(hideCreateJdModal()) }}>
                 <div className={'row'}>
-                    <div className={'col-6'}>
+                    <div className={'col-8 '}>
                         <Input
-                            isMandatory
-                            heading={'Sector'}
-                            placeHolder={PLACE_HOLDER.sector}
-                            value={sector.value}
-                            onChange={sector.onChange} />
+                        
+                           isMandatory
+                            heading={'Position'}
+                            textColor={"secondary"}
+                            />
                     </div>
-                    <div className={'col-6'}>
-                        <Input
-                            isMandatory
-                            heading={'Role'}
-                            placeHolder={PLACE_HOLDER.role}
-                            value={position.value}
-                            onChange={position.onChange} />
+                    <div className={'col-4'}>
+                    <Input
+                    textColor={"secondary"}
+                     isMandatory
+                     heading={'Years of experience'}
+                     type={'select'}
+                    placeHolder={'Experience'}
+                    value={experience.value}
+                    onChange={experience.onChange} >
+                       {experienceInNumber.map((data)=><option>{data}</option>)} 
+                    </Input>
                     </div>
                 </div>
 
-                <div className={'row'}>
-                    <div className={'col-6'}>
-                        {fresherChecked ? (
-                            <div className='ml-2'>
-                                <Input
-                                    isMandatory
-                                    heading={'Years of experience'}
-                                    type={'text'}
-                                    placeHolder={'Fresher'}
-                                    value={'Fresher'}
-                                    disabled
-                                />
-                            </div>
-                        ) : (
-                            <div>
-                                <Input
-                                    isMandatory
-                                    heading={'Years of experience'}
-                                    type={'number'}
-                                    placeHolder={'Experience'}
-                                    value={experience.value}
-                                    onChange={experience.onChange}
-                                />
-                            </div>
-                        )}
-                        <span className={'position-absolute left-9 pl-5 top-0'}>
-                            <Checkbox id={'Fresher'} className={'text-primary'} text={'Fresher'} defaultChecked={fresherChecked} onCheckChange={(checked) => {
-                                setFresherChecked(checked)
-                            }} />
-                        </span>
-                    </div>
-
-
-                    <div className={'col-6 mt-1'}>
-                        <InputHeading Class={'mb-0'} heading={'Interview Duration'} isMandatory />
-                        <Radio
-                            selected={selectedDuration}
-                            selectItem={selectedDuration}
-                            data={interviewDurations}
-                            onRadioChange={(selected) => {
-                                if (selected) {
-                                    setSelectedDuration(selected)
-                                }
-                            }}
-                        />
-                    </div>
-
-                </div>
 
                 <TextArea
                     isMandatory
                     error={jdDescriptionError}
-                    placeholder={PLACE_HOLDER.jd}
+                    placeholder={""}
                     heading='Job Description'
                     value={jd.value.slice(0, CHAR_LENGTH)}
                     onChange={(e) => {
@@ -527,13 +495,34 @@ function FromJD() {
                         }
                         jd.set(value)
                     }}
-                />
+                /> 
+               
+                    
+                <div>
+                  <InputHeading Class={''} heading={'Duration'}  />
+                  <div className='row'>
+                  {durationButton.map((data)=>  <div className='col-3 '> <Button text={data.text}  buttonOutline={"primary"} /></div>)}
+                  </div>
+                 </div>
+                    
+                <div>
+                <Input
+                     textColor={"secondary"}
+                     isMandatory
+                     heading={'Sector'}
+                     type={'Text'}
+                     value={sector.value}
+                     onChange={sector.onChange} />
+
+                </div>
 
                 <div className='text-center'>
-                    <Button block size='md' text={'Submit'} onClick={submitJdApiHandler} />
+                    <Button  size='md'  text={'Submit'} width={30} onClick={submitJdApiHandler} />
                 </div>
 
             </Modal >
+
+            </div>
 
             <GenerateModal title={'Preparing your Interview'} isOpen={generateJdModal.visible} onClose={generateJdModal.hide}>
                 <AnalyzingAnimation />

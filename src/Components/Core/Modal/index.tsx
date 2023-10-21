@@ -19,6 +19,7 @@ function Modal({ isOpen, children, title, size = "lg", style, onClose, ...rest }
   }, [isOpen]);
 
   return (
+   
     <RsModal
       fade={false}
       className={`modal-dialog-centered modal-${size}`}
@@ -56,6 +57,7 @@ function Modal({ isOpen, children, title, size = "lg", style, onClose, ...rest }
         </div>
       </div>
     </RsModal>
+ 
   );
 }
 
