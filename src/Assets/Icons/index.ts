@@ -210,5 +210,6 @@ export const icons = {
   twitter: require('./SocialMedia/twitter.png'),
   shield: require('./PackageIcons/shield.png'),
   globe: require('./PackageIcons/globe.png'),
-  headSet: require('./PackageIcons/headset.png')
+  headSet: require('./PackageIcons/headset.png'),
+  check: require("./Check/icon.png"),
 };

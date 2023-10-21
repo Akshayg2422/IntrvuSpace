@@ -8,7 +8,7 @@ function Button({
   text,
   color = "primary",
   variant = "default",
-  size = "md",
+  size = "lg",
   height = 15,
   width = 15,
   icon,
@@ -34,11 +34,7 @@ function Button({
                   <Spinner color="white" />
                 </div>
               )}
-              {!loading && (
-                <span>
-                  {text}
-                </span>
-              )}
+              {!loading && <span style={{ letterSpacing: 0 }}>{text}</span>}
             </div>
           </RSButton>
         </>

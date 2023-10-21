@@ -31,10 +31,10 @@ function WebsiteHeader() {
       style={{ backgroundColor: "" }}
     >
       <Container>
-        <div className="mb-6">
+        <div className="mb-md-6">
           <Row>
             <Col lg="5">
-              <div className="mt-5 ml-lg-5">
+              <div className="">
                 <div>
                   <div>
                     <span
@@ -47,7 +47,12 @@ function WebsiteHeader() {
                   </div>
                   <div>
                     <span className="display-3 text-secondary font-weight-bolder mb-0 ls-1">
-                      Where AI <br /> meets HR
+                      Where AI
+                    </span>
+                  </div>
+                  <div style={{marginTop: -11}}>
+                    <span className="display-3 text-secondary font-weight-bolder ls-1">
+                      meets HR
                     </span>
                   </div>
                 </div>
@@ -66,7 +71,7 @@ function WebsiteHeader() {
                     return (
                       <>
                         <div className="pt-2">
-                          <Image src={icons.shield} height={17} />
+                          <Image src={icons.check} height={20} />
                           <span
                             className="ml-2 text-secondary"
                             style={{ fontSize: 12.5, fontWeight: 800 }}
@@ -80,16 +85,15 @@ function WebsiteHeader() {
                 </div>
 
                 <Button
-                  className={"mt-7 col-sm-10"}
+                  className={"mt-7 col-sm-10 ls-0"}
+                  style={{borderRadius: 4}}
                   block
                   text={"Start Now"}
                   size="lg"
-                  style={{ borderRadius: 4 }}
-                  isTextLowercase
                 />
 
                 <div className="pt-3">
-                  <Image src={icons.headSet} height={17} />
+                  <Image src={icons.headSet} height={20} />
                   <span
                     className="ml-2 text-secondary"
                     style={{ fontSize: 14, fontWeight: 500 }}
@@ -100,12 +104,11 @@ function WebsiteHeader() {
               </div>
             </Col>
             <Col lg="7" sm="12">
-              <div className="pt-sm-5">
+              <div className="mt--4">
                 <img
-                  src={image.MockEazy2}
+                  src={image.CreateIntrvu}
                   width={"100%"}
-                  height={"100%"}
-                  style={{ borderRadius: "20px" }}
+                  height={"450px"}
                 />
               </div>
             </Col>

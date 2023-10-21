@@ -529,7 +529,7 @@ function FromJD() {
                             </div>
                         )}
                         <span className={'position-absolute left-9 pl-5 top-0'}>
-                            <Checkbox className={'text-primary'} text={'Fresher'} defaultChecked={fresherChecked} onCheckChange={(checked) => {
+                            <Checkbox id={'Fresher'} className={'text-primary'} text={'Fresher'} defaultChecked={fresherChecked} onCheckChange={(checked) => {
                                 setFresherChecked(checked)
                             }} />
                         </span>
