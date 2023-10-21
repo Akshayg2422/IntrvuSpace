@@ -853,9 +853,9 @@ $input-muted-bg: #f7fafe !default;
 $input-focus-muted-bg: lighten($input-muted-bg, 1%) !default;
 
 $input-color: $gray-600 !default;
-$input-border-color: $gray-300 !default;
-$input-border-width: $input-btn-border-width !default;
-$input-box-shadow: 0 3px 2px rgba($gray-200, 0.05) !default;
+$input-border-color: $gray-100 !default;
+$input-border-width: 0.1px !default;
+$input-box-shadow: 0 1px 1px rgba($gray-100, 0.02) !default;
 
 $input-focus-bg: $white !default;
 $input-focus-border-color: $primary !default;

@@ -340,7 +340,7 @@ function FromJD() {
                                         return !is_complete
                                     })
 
-                                    const copyInterviewLink =schedules[0].custom_interview_link;
+                                    const copyInterviewLink = schedules && schedules.length > 0 && schedules[0].custom_interview_link;
                                     console.log('copyInterviewLink',copyInterviewLink)
 
                                     const basic_info = proceedInterview?.custom_interviewee_details?.basic_info
