@@ -156,22 +156,43 @@ function Guidelines({ scheduleInfo = undefined, loading, heading, onClick }: Gui
 
             {
                 scheduleInfo.is_complete && !scheduleInfo.is_report_complete ? (
-                    <div className='h-100 container d-flex  justify-content-center align-items-center rounded-0 shadow-none'>
-                        <div className='d-flex justify-content-center align-items-center'>
-                            <div className='card mb-0 overflow-auto overflow-hide scroll-y'>
-                                <div className='card-body mb-0 shadow-none'>
-                                    <div className='col'>
-                                        <div className='display-3 text-primary font-weight-700'>{'Report Generation in Progress'}</div>
-                                        <p className='mt-0 mb-5'>Please revisit in a couple of minutes to access the completed report. We are currently in the process of generating your report.</p>
-                                        {
-                                            loginDetails?.isLoggedIn && <div>
-                                                <Button text={'Go to Dashboard'} onClick={() => { goBack(); }} />
-                                            </div>
-                                        }
+                    <div className='vh-100  d-flex justify-content-center align-items-center mx-auto'>
+
+                        <div className='col-6 border rounded px-5 py-3'>
+                            <div className='d-flex justify-content-end'>
+                                <span
+                                    className={'text-default'} aria-hidden={true}
+                                    style={{ fontSize: '220%', fontWeight: 100 }} onClick={() => { goBack(); }} >×</span>
+                            </div>
+
+                            <div className='text-secondary col-10'>
+                                <h2 className='m-0'>Wola! You have successfully completed your interview</h2>
+                                <small className='text-default'>React Native Developer | Fresher | 30 mins duration</small>
+                                <div className='pt-5 text-secondary pb-9'>
+                                    <div className='d-flex align-items-center pb-3'>
+                                        <img src={icons.check} height={22}
+                                        />
+                                        <h5 className='pl-2 m-0'>Your interview is complete</h5>
+                                    </div>
+                                    <div className='d-flex align-items-center pb-3'>
+                                        <img src={icons.check} height={22}
+                                        />
+                                        <h5 className='pl-2 m-0'>Report is being generated</h5>
+                                    </div><div className='d-flex align-items-center'>
+                                        <img src={icons.check} height={22}
+                                        />
+                                        <h5 className='pl-2 m-0'>Upon completion of report, you will be notified over email </h5>
                                     </div>
                                 </div>
+
                             </div>
+                            {
+                                loginDetails?.isLoggedIn && <div className=' d-flex justify-content-center mb-3' >
+                                    <Button className={'px-5 border border-primary rounded'} text={'Go to Dashboard'} onClick={() => { goBack(); }} />
+                                </div>
+                            }
                         </div>
+
                     </div>
                 ) : (
                     <></>

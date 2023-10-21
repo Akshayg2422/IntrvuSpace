@@ -8,7 +8,7 @@ function Button({
   text,
   color = "primary",
   variant = "default",
-  size = "lg",
+  size,
   height = 15,
   width = 15,
   icon,

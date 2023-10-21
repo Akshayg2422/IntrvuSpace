@@ -6,7 +6,7 @@ import { useInput, useLoader, useModal, useNavigation } from '@Hooks';
 import { AnalyzingAnimation, GenerateModal, UploadJdCard } from '@Modules';
 import { canStartInterview, createNewJdSchedule, getJdItemList, hideCreateJdModal, postJdVariant, selectedScheduleId, showCreateJddModal } from '@Redux';
 import { ROUTES } from '@Routes';
-import { FROM_JD_RULES, getValidateError, ifObjectExist, validate } from '@Utils';
+import { FROM_JD_RULES, formatDateTime, getValidateError, ifObjectExist, validate } from '@Utils';
 import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -279,38 +279,54 @@ function FromJD() {
                                         demoDisplayName = " - " + basicInfo?.first_name
 
                                     return (
-                                        <Card className="mt--3 ">
-                                            <div className={'d-flex justify-content-between'}>
-                                                <div>
+                                        <Card className="mt-5 rounded mx-6"
+                                        style={{
+                                            borderWidth: "1px",
+                                            borderColor: "#d3deff",
+                                            backgroundColor: "transparent"
+                                        }}>
+                                            <div className='px-md-4 py-md-3'>
+                                            <div className={'d-flex justify-content-between'}  >
+                                                <div className='mt-2'>
                                                     {name ? <span style={{
                                                         fontSize: "21px"
-                                                    }} className='mb-0 text-primary font-weight-bolder'>
+                                                    }} className='mb-0 text-secondary font-weight-bolder'>
                                                         {name.charAt(0).toUpperCase() + name.slice(1) + demoDisplayName}
                                                     </span> : <></>
-                                                    }
-
-                                                    {interview_duration &&
-                                                        <div className='col'>
-                                                            <div className='row d-flex align-items-center mb-1'>
-                                                                <Image src={icons.clock} height={17} width={17} style={{
+                                                    } 
+                                                    <small className={"text-secondary"}>{experience === 0 ? " Fresher" : " " + experience + (experience === 1 ? " year " : " years ") + "of experience"}</small>                                                
+                                                   {
+                                                     modifiedSchedules &&
+                                                     modifiedSchedules.length > 0 &&
+                                                     modifiedSchedules.slice().reverse().map((each: any, index: number) => {
+                                                         
+                                                         const { is_complete, is_report_complete, id, created_at, custom_interviewee_details } = each;
+                                                       console.log(is_complete,'com',created_at );
+                                                       
+ 
+                                                         return (
+                                                            <>  { index ===0 && <div className=' d-flex align-items-center'>
+                                                                <img src={icons.check} height={20} width={20} style={{
                                                                     objectFit: 'contain'
                                                                 }} />
-                                                                <h5 style={{
-                                                                    fontSize: "14px"
-                                                                }} className='mb-0 text-primary font-weight-bolder ml-2'>{`${interview_duration} mins`}</h5>
-                                                            </div>
-                                                        </div>
-                                                    }
-                                                    <h5 className='mb-0 pointer'>{experience === 0 ? "Fresher" : "" + experience + (experience === 1 ? " year " : " years ") + "of experience"}</h5>
+                                                                <h5 className='col mb-0 font-weight-normal p-0 font-weight-bolder text-secondary'>{(is_complete ? "Completed " : "Created at ")} <span className='font-weight-normal text-secondary'>{("on ") + formatDateTime(created_at)} </span></h5>
+                                                               </div>
+                                                                   }
+                                                            </>
+                                                           
+                                                         )
+                                                     })
+                                                   }
                                                 </div>
-
-
+                                                <div>
+                                                <div className='d-flex flex-column justify-content-center align-items-center'>
                                                 {
                                                     proceedInterview ?
                                                         <div>
-                                                            <Button
+                                                            <Button style={{fontSize:"15px"}}
+                                                            size='md'
                                                                 loading={startInterviewLoader.loader}
-                                                                className={'px-4 border border-primary'}
+                                                                className={'px-md-5 border border-primary rounded'}
                                                                 text={proceedInterview.is_started ? "Resume Interview" : "Start Interview"}
                                                                 onClick={() => {
                                                                     proceedInterviewHandler(proceedInterview?.id);
@@ -318,7 +334,9 @@ function FromJD() {
                                                             />
                                                         </div> :
                                                         <div>
-                                                            <Button
+                                                            <Button style={{fontSize:"15px"}}
+                                                            size='md'
+                                                                className={'px-md-5 border border-primary rounded'}
                                                                 text={'Try Another'}
                                                                 onClick={() => {
                                                                     createNewJdScheduleApiHandler(id);
@@ -326,20 +344,38 @@ function FromJD() {
                                                             />
                                                         </div>
                                                 }
+                                                {interview_duration &&
+                                                        <div>
+                                                            <div className='row d-flex align-items-center mt-1'>
+                                                                {/* <Image src={icons.clock} height={17} width={17} style={{
+                                                                    objectFit: 'contain'
+                                                                }} /> */}
+                                                                <h5 style={{
+                                                                    fontSize: "14px"
+                                                                }} className='mb-0 text-secondary font-weight-bolder ml-2'>{`${interview_duration} mins`}<span className= {"font-weight-normal"}> Duration</span></h5>
+                                                                
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                </div>
+                                                </div>
+                                              
+                                               
                                             </div>
+
                                             <div className='col mt-3'>
                                                 <div className='row'>
-                                                    <div className='col ml-0'>
+                                                    <div className='col ml-0' style={{fontSize: "14px"}}>
                                                         {
                                                             details.length < VIEW_MORE_LENGTH ?
                                                                 <div className='row'>
-                                                                    <div className='text-details text-black'>{`${details}`}</div>
+                                                                    <div className='text-details text-default'>{`${details}`}</div>
                                                                 </div>
                                                                 :
                                                                 <>
                                                                     {more ?
                                                                         <div className='row'>
-                                                                            <div className='text-details text-black'>
+                                                                            <div className='text-details text-default'>
                                                                                 {details.split('\n\n').map((paragraph, index) => (
                                                                                     <React.Fragment key={index}>
                                                                                         {index > 0 && <br />} {/* Add <br /> between paragraphs except for the first one */}
@@ -359,7 +395,7 @@ function FromJD() {
                                                                         </div>
                                                                         :
                                                                         <div className='row'>
-                                                                            <div className='text-details text-black'>{details.slice(0, VIEW_MORE_LENGTH) + " ..."}
+                                                                            <div className='text-details text-default'>{details.slice(0, VIEW_MORE_LENGTH) + " ..."}
                                                                                 <span className='h4 text-primary ml-1 pointer'
                                                                                     onClick={() => {
                                                                                         const updatedData: any = [...jdMore]
@@ -377,12 +413,15 @@ function FromJD() {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div className='col mt-3'>
-                                                {modifiedSchedules && modifiedSchedules.length > 0 && <Divider className={'row'} space={"3"} />}
+                                            {modifiedSchedules && modifiedSchedules.length > 0 &&
+                                            <div className='mt-3 px-md-4 pt-md-5' style={{backgroundColor:"#fafbfb"}}>
+                                                {/* {modifiedSchedules && modifiedSchedules.length > 0 && <Divider className={'row'} space={"3"} />} */}
                                                 {
                                                     modifiedSchedules &&
                                                     modifiedSchedules.length > 0 &&
                                                     modifiedSchedules.slice().reverse().map((each: any, index: number) => {
+                                                       
+                                                        
                                                         const { is_complete, is_report_complete, id, created_at, custom_interviewee_details } = each;
 
                                                         const basic_info = custom_interviewee_details?.basic_info
@@ -410,15 +449,43 @@ function FromJD() {
                                                         };
 
                                                         return (
-                                                            <div>
-                                                                <div className='row align-items-center'>
-                                                                    <h5 className='col m-0 p-0'>{"Interview " + (index + 1) + demoDisplayName}</h5>
-                                                                    <h5 className='col mb-0 text-center'>{(is_complete ? "Completed: " : "Created at: ") + getDisplayTimeFromMoment(created_at)}</h5>
-                                                                    <div className='col d-flex justify-content-end'>
+                                                            <div className='d-flex flex-column'>
+                                                                 {
+                                                                        index===0 && <div className='d-flex '>
+                                                                            <div className='col-3'></div>
+                                                                            <div className='col-7 d-flex justify-content-around mb-3'>
+                                                                                <h4 className='ml-4'>Skill matrix</h4>
+                                                                                <h4>Communication</h4>
+                                                                                <h4 className='mr-5'>Aptitude</h4>
+                                                                            </div>
+                                                                            <div className='col-2'></div>
+                                                                        </div>
+                                                                    }
+                                                                <div className='d-flex col-12'>
+                                                                   
+                                                                    <div className='col-3'>
+                                                                    <h5 className='col m-0 p-0 text-secondary'>{"Interview " + (index + 1) + demoDisplayName}</h5>
+                                                                    <h5 className='col mb-0 pl-1 font-weight-normal text-default'>{(is_complete ? "Completed " : "Created at ") + getDisplayTimeFromMoment(created_at)}</h5>
+                                                                    </div>
+                                                                    <div className='col-9'>
+                                                                        <div className='d-flex'>
+                                                                    <div className='col-9 d-flex justify-content-around align-items-center'>
+                                                                        <h5>-</h5>
+                                                                        <h5>-</h5>
+                                                                        <h5>-</h5>
+                                                                    </div>
+                                                                  
+                                                                    <div className='col-3 d-flex justify-content-center'>
                                                                         {
                                                                             is_report_complete &&
-                                                                            <div className='row'>
+                                                                            <div >
                                                                                 <Button
+                                                                                size='md'
+                                                                                className='btn btn-outline-primary rounded'
+                                                                                style={{
+                                                                                    borderColor:"#d8dade",
+                                                                                    fontSize: "15px"
+                                                                                }}
                                                                                     text={'View Report'}
                                                                                     onClick={() => {
                                                                                         proceedReport(id);
@@ -433,13 +500,20 @@ function FromJD() {
                                                                             </div>
                                                                         }
                                                                     </div>
+                                                                    </div>
+                                                                    <Divider className={"col-11 mx--3 text-"} space={"3"} />
+
+                                                                    </div>
                                                                 </div>
-                                                                <Divider className={'row'} space={"3"} />
+                                                               
                                                             </div>
                                                         )
                                                     })
                                                 }
                                             </div>
+                                }
+                                            </div>
+                                            
                                         </Card>
                                     )
                                 })

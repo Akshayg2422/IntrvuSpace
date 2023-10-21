@@ -264,3 +264,22 @@ export function gotoPermissionSetting() {
   }
 }
 
+// to convert server date and time  2023-10-05T19:10:15.604190+05:30 into  05 OCT 7:10 PM 
+
+export function formatDateTime(dateTimeString: any) {
+  const options: any = {
+    day: '2-digit',
+    month: 'short',
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true,
+  };
+
+  const date = new Date(dateTimeString);
+  const formattedDate = date.toLocaleString('en-US', options);
+
+  return formattedDate;
+}
+
+
+
