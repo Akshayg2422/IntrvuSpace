@@ -14,16 +14,16 @@ function WebsiteAutoApprovalForCandidatesPerformance() {
         <Container>
             <div className={'pb-5'}>
                 <Row>
-                    <Col lg="5">
+                    <Col lg="6">
                         <div className="mt-5">
                             <div>
-                                <span className="display-3 text-secondary font-weight-bolder mb-0">
-                                    Auto Approval based on <br /> Candidate's Performance
+                                <span style={{ lineHeight: '35px' }} className="display-3 text-secondary font-weight-bolder mb-0">
+                                    Auto Approval based on Candidate's Performance
                                 </span>
 
                             </div>
 
-                            <div className="" style={{ paddingTop: 35 }}>
+                            <div style={{ paddingTop: 35 }}>
                                 {packageContent.map((item) => {
                                     return (
                                         <>
@@ -34,7 +34,7 @@ function WebsiteAutoApprovalForCandidatesPerformance() {
                                                 <span
                                                     className="col-11 text-default"
                                                 >
-                                                    <p>{item.description}</p>
+                                                    <p style={{fontSize:'15px',fontWeight:400}}>{item.description}</p>
                                                 </span>
                                             </div>
                                         </>
@@ -43,13 +43,12 @@ function WebsiteAutoApprovalForCandidatesPerformance() {
                             </div>
                         </div>
                     </Col>
-                    <Col className={'pt-md-6'} lg="7" sm="12">
+                    <Col className={'pt-md-2'} lg="6" sm="12">
                         <div>
                             <img
-                                src={image.CreateIntrvu}
+                                src={image.AutoApproval}
                                 width={"100%"}
                                 height={"100%"}
-                                style={{ borderRadius: "20px" }}
                             />
                         </div>
                     </Col>
