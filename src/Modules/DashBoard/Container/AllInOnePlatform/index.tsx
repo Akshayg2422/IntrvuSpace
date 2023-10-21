@@ -10,8 +10,8 @@ const CREATE_JD_AND_ADD_CANDIDATE = [
   { id: 2, mainText: "Notification", subText: " over Email & Phone" },
   {
     id: 3,
-    mainText: "Candidate",
-    subText: " can attend at their convinient time",
+    mainText: "Candidate's",
+    subText: " preferred timing",
   },
   { id: 4, mainText: "Deadlines", subText: " for interviews" },
   { id: 5, mainText: "Unlimited Candidates", subText: " for single JD" },
