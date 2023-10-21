@@ -380,7 +380,7 @@ function FromJD() {
                                                 </div>
                                             </div>
                                             {modifiedSchedules && modifiedSchedules.length > 0 &&
-                                            <div className='mt-5'>
+                                            <div className='mt-3 p-md-5' style={{backgroundColor:"#d3deff"}}>
                                                 {/* {modifiedSchedules && modifiedSchedules.length > 0 && <Divider className={'row'} space={"3"} />} */}
                                                 {
                                                     modifiedSchedules &&
@@ -413,14 +413,30 @@ function FromJD() {
                                                         };
 
                                                         return (
-                                                            <div  style={{backgroundColor:"#fafbff"}}>
-                                                                <div className='row align-items-center'>
-                                                                    <div>
+                                                            <div className='d-flex flex-column'>
+                                                                 {
+                                                                        index===0 && <div>
+                                                                            <div className='col-6 mx-auto d-flex justify-content-around mb-3'>
+                                                                                <h4>Skill matrix</h4>
+                                                                                <h4>Communication</h4>
+                                                                                <h4>Aptitude</h4>
+                                                                            </div>
+                                                                        </div>
+                                                                    }
+                                                                <div className='row'>
+                                                                   
+                                                                    <div className='col-3'>
                                                                     <h5 className='col m-0 p-0 text-secondary'>{"Interview " + (index + 1) + demoDisplayName}</h5>
                                                                     <h5 className='col mb-0 text-center pl-1 font-weight-normal'>{(is_complete ? "Completed " : "Created at ") + getDisplayTimeFromMoment(created_at)}</h5>
                                                                     </div>
+
+                                                                    <div className='col-6 d-flex justify-content-around align-items-center'>
+                                                                        <h5>34</h5>
+                                                                        <h5>34</h5>
+                                                                        <h5>34</h5>
+                                                                    </div>
                                                                   
-                                                                    <div className='col d-flex justify-content-end'>
+                                                                    <div className='col-3'>
                                                                         {
                                                                             is_report_complete &&
                                                                             <div className='row'>
