@@ -1,6 +1,6 @@
 import { icons, image } from '@Assets';
 import { Col, Container, Row } from 'reactstrap';
-import {Image} from '@Components'
+import { Image } from '@Components'
 const packageContent = [
     { id: 1, description: "Input job details, specifying qualifications and requirements" },
     { id: 2, description: "Select Interview duration for how long the interview needs to be conducted" },
@@ -14,13 +14,12 @@ function WebsiteCreateJdAndAddCandidates() {
             <Container>
                 <div className="mb-6">
                     <Row>
-                        <Col lg="5">
+                        <Col lg="6">
                             <div className="mt-5">
                                 <div>
-                                    <span className="display-3 text-secondary font-weight-bolder mb-0 ls-1">
-                                        Create Jd & <br /> Add Candidates
+                                    <span style={{lineHeight:'35px'}} className="display-3 text-secondary font-weight-bolder mb-0 ls-1">
+                                        Create Jd & <br></br>Add Candidates
                                     </span>
-
                                 </div>
 
                                 <div className="" style={{ paddingTop: 35 }}>
@@ -34,7 +33,7 @@ function WebsiteCreateJdAndAddCandidates() {
                                                     <span
                                                         className="col-11 text-default"
                                                     >
-                                                        <p style={{fontSize:'15px',fontWeight:400}}>{item.description}</p>
+                                                        <p style={{ fontSize: '15px', fontWeight: 400 }}>{item.description}</p>
                                                     </span>
                                                 </div>
                                             </>
@@ -43,13 +42,13 @@ function WebsiteCreateJdAndAddCandidates() {
                                 </div>
                             </div>
                         </Col>
-                        <Col className={''} lg="7" sm="12">
+                        <Col lg="6" sm="12">
                             <div>
                                 <img
+                                    className={'ml-md-7 ml-sm-0 ml-4'}
                                     src={image.CreateJdAddCandidates}
                                     width={"80%"}
                                     height={"80%"}
-                                    style={{ borderRadius: "20px" }}
                                 />
                             </div>
                         </Col>

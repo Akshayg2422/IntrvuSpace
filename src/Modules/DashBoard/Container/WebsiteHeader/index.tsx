@@ -33,7 +33,7 @@ function WebsiteHeader() {
       <Container>
         <div className="mb-md-6">
           <Row>
-            <Col lg="6">
+            <Col lg="5">
               <div className="">
                 <div>
                   <div>
@@ -92,7 +92,7 @@ function WebsiteHeader() {
                   size="lg"
                 />
 
-                <div className="pt-3">
+                <div className="pt-3 pb-sm-0 pb-3 ">
                   <Image src={icons.headSet} height={20} />
                   <span
                     className="ml-2 text-secondary"
@@ -103,12 +103,12 @@ function WebsiteHeader() {
                 </div>
               </div>
             </Col>
-            <Col lg="6" sm="12">
-              <div className="mt--4">
+            <Col lg="7" sm="12">
+              <div className="">
                 <img
                   src={image.CandidatesAttendInterview}
                   width={"100%"}
-                  height={"450px"}
+                  height={"100%"}
                 />
               </div>
             </Col>

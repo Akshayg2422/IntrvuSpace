@@ -14,23 +14,21 @@ function WebsiteReportsAndInsights() {
         <Container>
             <div className="mb-md-6">
                 <Row>
-                    <Col className={'pt-md-5'} lg="7" sm="12">
+                    <Col className={'pt-md-5'} lg="6" sm="12">
                         <div>
                             <img
                                 src={image.AccessReportsAndInsights}
                                 width={"100%"}
                                 height={"100%"}
-                                style={{ borderRadius: "20px" }}
                             />
                         </div>
                     </Col>
-                    <Col lg="5">
-                        <div className="mt-5 ml-lg-5">
+                    <Col lg="6">
+                        <div className="mt-5 ml-md-7">
                             <div>
-                                <span className="display-3 text-secondary font-weight-bolder mb-0 ls-1">
-                                    Access on Interview<br />Reports & Insights
+                                <span style={{ lineHeight: '35px' }} className="display-3 text-secondary font-weight-bolder mb-0 ls-1">
+                                    Access on Interview <br></br>Reports & Insights
                                 </span>
-
                             </div>
 
                             <div className="" style={{ paddingTop: 35 }}>
@@ -44,7 +42,7 @@ function WebsiteReportsAndInsights() {
                                                 <span
                                                     className="col-11 text-default"
                                                 >
-                                                    <p style={{fontSize:'15px',fontWeight:400}}>{item.description}</p>
+                                                    <p style={{ fontSize: '15px', fontWeight: 400 }}>{item.description}</p>
                                                 </span>
                                             </div>
                                         </>
