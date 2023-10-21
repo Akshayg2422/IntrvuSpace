@@ -69,10 +69,12 @@ function WebsiteNavBar() {
             <span className="text-primary tab-font-style">Register</span>
           </NavLink> */}
             <Button
-              className="pointer text-bold mr-lg--3 text-primary py-2"
+              className="pointer text-bold mr-lg--3"
               style={{
                 borderColor: "#d8dade",
-                borderWidth: 1,
+                // borderWidth: 1,
+                paddingTop:10,
+                paddingBottom:10,
                 fontSize: 14,
                 paddingRight: 10,
                 paddingLeft: 10,
