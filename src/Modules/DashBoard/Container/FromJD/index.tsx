@@ -10,23 +10,14 @@ import { FROM_JD_RULES, getValidateError, ifObjectExist, validate } from '@Utils
 import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-export const interviewDurations = [
-    { id: '0', text: 'Quick', subText: '(5 mins)', value: 5 },
-    { id: '1', text: 'Short', subText: '(10 mins)', value: 10 },
-    { id: '2', text: 'Medium', subText: '(15 mins)', value: 15 },
-    { id: '3', text: 'Long', subText: '(30 mins)', value: 30 },
+export const interviewDurations: any = [
+    { id: '0', text: 'Quick', subText: '5 mins', value: 5 },
+    { id: '1', text: 'Short', subText: '10 mins', value: 10 },
+    { id: '2', text: 'Medium', subText: '15 mins', value: 15 },
+    { id: '3', text: 'Long', subText: '30 mins', value: 30 },
 ];
-export const durationButton = [
-    { id: '0', text: '5 mins'  },
-    { id: '1', text: '10 mins' },
-    { id: '2', text: '15 mins' },
-    { id: '3', text: '20 mins' },
-];
-export const experienceInNumber:any=[]
-for(let i=0;i<30;i++)
-{
-    experienceInNumber.push(i)
-}
+
+const experienceInNumber: number[] = Array.from({ length: 31 }, (_, index) => index);
 
 
 const PLACE_HOLDER = {
@@ -66,6 +57,10 @@ function FromJD() {
     const [selectedDuration, setSelectedDuration] = useState(interviewDurations[0]);
     const startInterviewLoader = useLoader(false);
 
+    const handleDurationClick = (interviewDurations) => {
+        setSelectedDuration(interviewDurations);
+    };
+
 
     useEffect(() => {
         getKnowledgeGroupFromJdHandler();
@@ -94,12 +89,14 @@ function FromJD() {
         );
     };
 
+    
+    
     function submitJdApiHandler() {
         const params = {
             sector_name: sector.value,
             position: position.value,
             interview_duration: selectedDuration.value,
-            experience: fresherChecked ? '0' : experience.value,
+            experience: experience.value,
             jd: jd.value
         }
 
@@ -156,7 +153,7 @@ function FromJD() {
         jd.set('')
         sector.set('')
     }
-
+    console.log('1111111111111',selectedDuration.value);
 
     function createNewJdScheduleApiHandler(id: string) {
         const params = {
@@ -454,73 +451,87 @@ function FromJD() {
                     <UploadJdCard />
             }
 
-    <div className='p-5'>
-            <Modal  title={'Create Interview'} isOpen={createJdModal} onClose={() => { dispatch(hideCreateJdModal()) }}>
-                <div className={'row'}>
-                    <div className={'col-8 '}>
-                        <Input
-                        
-                           isMandatory
-                            heading={'Position'}
-                            textColor={"secondary"}
+            <div className='p-5'>
+                <Modal size={'lg'} isOpen={createJdModal} onClose={() => { dispatch(hideCreateJdModal()) }}>
+                    <div style={{ margin: '40px' }}>
+                        <div className='display-4 text-secondary font-weight-bolder mt--6 mb-5'>{'Create Interview'}
+                            <p className={'text-default'} style={{ fontSize: '15px', fontWeight: 400 }}>{'Input job details, specifying qualifications, requirements, interview duration'}</p>
+                        </div>
+
+                        <div className={'row'}>
+                            <div className={'col-8'}>
+                                <Input
+                                    isMandatory
+                                    heading={'Position'}
+                                    textColor={"secondary"}
+                                />
+                            </div>
+                            <div className={'col-4'}>
+
+                            </div>
+                        </div>
+
+
+                        <TextArea
+                            isMandatory
+                            error={jdDescriptionError}
+                            placeholder={""}
+                            heading='Job Description'
+                            value={jd.value.slice(0, CHAR_LENGTH)}
+                            onChange={(e) => {
+                                let value = e.target.value
+                                if (value.length > CHAR_LENGTH) {
+                                    setJdDescriptionError(ERROR_MESSAGE)
+                                } else {
+                                    setJdDescriptionError(undefined)
+                                }
+                                jd.set(value)
+                            }}
+                        />
+                        {/* <div className={'mb-3'}>
+                            <InputHeading Class={'mb-0'} heading={'Interview Duration'} isMandatory />
+                            <Radio
+                                selected={selectedDuration}
+                                selectItem={selectedDuration}
+                                data={interviewDurations}
+                                onRadioChange={(selected) => {
+                                    if (selected) {
+                                        setSelectedDuration(selected)
+                                    }
+                                }}
                             />
+                        </div> */}
+                        <div className={'mb-3 row'}>
+                            <div className={'d-flex'} >
+                                {interviewDurations.map((duration) => (
+                                    <div className={'px-4'} key={duration.id}>
+                                        <Button
+                                            className={`rounded ${selectedDuration === duration.id ? 'btn-outline-primary' : 'btn-outline-default'}`}
+                                            text={duration.subText}
+                                            onClick={() => handleDurationClick(duration.id)}
+                                        />
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+
+                        <div className={'mb-7'}>
+                            <Input
+                                textColor={"secondary"}
+                                isMandatory
+                                heading={'Sector'}
+                                type={'Text'}
+                                value={sector.value}
+                                onChange={sector.onChange} />
+                        </div>
+
+                        <div className='text-center'>
+                            <Button siz className={'rounded px-5'} size='md' text={'Start Inteview'} width={30} onClick={submitJdApiHandler} />
+                        </div>
                     </div>
-                    <div className={'col-4'}>
-                    <Input
-                    textColor={"secondary"}
-                     isMandatory
-                     heading={'Years of experience'}
-                     type={'select'}
-                    placeHolder={'Experience'}
-                    value={experience.value}
-                    onChange={experience.onChange} >
-                       {experienceInNumber.map((data)=><option>{data}</option>)} 
-                    </Input>
-                    </div>
-                </div>
 
-
-                <TextArea
-                    isMandatory
-                    error={jdDescriptionError}
-                    placeholder={""}
-                    heading='Job Description'
-                    value={jd.value.slice(0, CHAR_LENGTH)}
-                    onChange={(e) => {
-                        let value = e.target.value
-                        if (value.length > CHAR_LENGTH) {
-                            setJdDescriptionError(ERROR_MESSAGE)
-                        } else {
-                            setJdDescriptionError(undefined)
-                        }
-                        jd.set(value)
-                    }}
-                /> 
-               
-                    
-                <div>
-                  <InputHeading Class={''} heading={'Duration'}  />
-                  <div className='row'>
-                  {durationButton.map((data)=>  <div className='col-3 '> <Button text={data.text}  buttonOutline={"primary"} /></div>)}
-                  </div>
-                 </div>
-                    
-                <div>
-                <Input
-                     textColor={"secondary"}
-                     isMandatory
-                     heading={'Sector'}
-                     type={'Text'}
-                     value={sector.value}
-                     onChange={sector.onChange} />
-
-                </div>
-
-                <div className='text-center'>
-                    <Button  size='md'  text={'Submit'} width={30} onClick={submitJdApiHandler} />
-                </div>
-
-            </Modal >
+                </Modal >
 
             </div>
 
