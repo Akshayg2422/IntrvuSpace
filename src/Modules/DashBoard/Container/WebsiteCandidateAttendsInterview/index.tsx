@@ -13,7 +13,7 @@ function WebsiteCandidateAttendsInterview() {
     return (
 
         <Container>
-            <div className="mb-6 m-md-5">
+            <div className="mb-6">
                 <Row>
                     <Col lg="5">
                         <div className="mt-5">

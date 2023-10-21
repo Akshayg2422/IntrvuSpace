@@ -13,12 +13,12 @@ function WebsiteScheduleAndNotification() {
     return (
        
             <Container>
-                <div className="mb-md-6 m-md-5">
+                <div className="mb-md-6">
                     <Row>
                         <Col className={'pt-md-7'} lg="7" sm="12">
                             <div>
                                 <img
-                                    src={image.CreateIntrvu}
+                                    src={image.ScheduleAndNotification}
                                     width={"100%"}
                                     height={"100%"}
                                     style={{ borderRadius: "20px" }}

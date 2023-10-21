@@ -12,12 +12,12 @@ function WebsiteReportsAndInsights() {
     return (
 
         <Container>
-            <div className="mb-md-6 m-md-0">
+            <div className="mb-md-6">
                 <Row>
                     <Col className={'pt-md-5'} lg="7" sm="12">
                         <div>
                             <img
-                                src={image.CreateIntrvu}
+                                src={image.AccessReportsAndInsights}
                                 width={"100%"}
                                 height={"100%"}
                                 style={{ borderRadius: "20px" }}

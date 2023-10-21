@@ -28,12 +28,12 @@ function WebsiteNavBar() {
       className="navbar-horizontal navbar-main navbar-dark fixed-top"
       expand="lg"
       id="navbar-main"
-      style={{ backgroundColor: "" }}
+      style={{ backgroundColor: "#fafbff" }}
     >
       <Container>
         <NavbarBrand to="/" tag={Link}>
           <div className={"ml--5"} >
-            <img alt="..." src={icons.logoText} style={{ height: 55, zIndex: 100 }} />
+            <img alt="..." src={icons.logoText} style={{ height: 55, }} />
           </div>
         </NavbarBrand>
         <button

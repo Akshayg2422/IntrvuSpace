@@ -55,5 +55,7 @@ export const image = {
     TraitReport:require('./theme/TraitReport.jpg'),
     Guideline:require('./theme/guideline.jpg'),
     IntrvuSpace:require('./theme/intrvuSpace.jpg'),
-    CreateIntrvu:require('./theme/createIntrvu.png')
+    CreateIntrvu:require('./theme/createIntrvu.png'),
+    AccessReportsAndInsights:require('./theme/AccessReportsAndInsights.png'),
+    ScheduleAndNotification:require('./theme/ScheduleAndNotification.png')
 }

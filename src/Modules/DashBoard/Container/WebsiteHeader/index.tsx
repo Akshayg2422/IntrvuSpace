@@ -31,7 +31,7 @@ function WebsiteHeader() {
       style={{ backgroundColor: "" }}
     >
       <Container>
-        <div className="mb-md-6 m-5">
+        <div className="mb-md-6">
           <Row>
             <Col lg="5">
               <div className="">
@@ -106,9 +106,9 @@ function WebsiteHeader() {
             <Col lg="7" sm="12">
               <div className="mt--4">
                 <img
-                  src={image.MockEazy2}
+                  src={image.CreateIntrvu}
                   width={"100%"}
-                  height={"100%"}
+                  height={"450px"}
                 />
               </div>
             </Col>
