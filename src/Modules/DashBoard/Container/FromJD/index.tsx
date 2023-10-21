@@ -414,7 +414,7 @@ function FromJD() {
                                                 </div>
                                             </div>
                                             {modifiedSchedules && modifiedSchedules.length > 0 &&
-                                            <div className='mt-3 px-md-4 pt-md-5' style={{backgroundColor:"#fafbfb"}}>
+                                            <div className='mt-3 px-md-4 pt-md-5' style={{backgroundColor:"#fafbff"}}>
                                                 {/* {modifiedSchedules && modifiedSchedules.length > 0 && <Divider className={'row'} space={"3"} />} */}
                                                 {
                                                     modifiedSchedules &&
