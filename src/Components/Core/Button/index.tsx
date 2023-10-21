@@ -8,13 +8,14 @@ function Button({
   text,
   color = "primary",
   variant = "default",
-  size = "lg",
+  size,
   height = 15,
   width = 15,
   icon,
   icons,
   onEnter,
   onClick,
+  buttonOutline,
   ...rest
 }: ButtonProps) {
   return (
@@ -22,7 +23,7 @@ function Button({
       {variant === "default" && (
         <>
           <RSButton
-            className="btn btn-primary"
+            className={buttonOutline?"btn btn-outline-primary":"btn-btn-primary"}
             size={size}
             color={color}
             {...rest}

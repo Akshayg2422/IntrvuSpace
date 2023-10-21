@@ -18,8 +18,8 @@ function WebsiteCandidateAttendsInterview() {
                     <Col lg="5">
                         <div className="mt-5">
                             <div>
-                                <span className="display-3 text-secondary font-weight-bolder mb-0 ls-1">
-                                    Candidate Attends the <br /> interview
+                                <span style={{lineHeight:'35px'}} className="display-3 text-secondary font-weight-bolder mb-0 ls-1">
+                                    Candidate Attends the interview
                                 </span>
                             </div>
 
@@ -34,7 +34,7 @@ function WebsiteCandidateAttendsInterview() {
                                                 <span
                                                     className="col-11 text-default"
                                                 >
-                                                    <p>{item.description}</p>
+                                                    <p style={{ fontSize: '15px', fontWeight: 400 }}>{item.description}</p>
                                                 </span>
                                             </div>
                                         </>
@@ -43,13 +43,13 @@ function WebsiteCandidateAttendsInterview() {
                             </div>
                         </div>
                     </Col>
-                    <Col className={'pt-md-7'} lg="7" sm="12">
+                    <Col className={'pt-md-5'} lg="7" sm="12">
                         <div>
                             <img
-                                src={image.CreateIntrvu}
-                                width={"100%"}
-                                height={"100%"}
-                                style={{ borderRadius: "20px" }}
+                                className={'ml-md-8 ml-sm-0 ml-4'}
+                                src={image.CandidatesAttendInterview}
+                                width={"80%"}
+                                height={"80%"}
                             />
                         </div>
                     </Col>

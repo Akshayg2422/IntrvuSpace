@@ -3,4 +3,5 @@ export interface InputHeadingProps {
     id?: string
     Class?: any
     isMandatory?: boolean
+    textColor?:string
 }
