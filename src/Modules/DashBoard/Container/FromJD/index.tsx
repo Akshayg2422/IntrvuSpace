@@ -268,7 +268,13 @@ function FromJD() {
                                         demoDisplayName = " - " + basicInfo?.first_name
 
                                     return (
-                                        <Card className="mt--3 border border-primary">
+                                        <Card className="mt-5 rounded"
+                                        style={{
+                                            borderWidth: "1px",
+                                            borderColor: "#d3deff",
+                                            backgroundColor: "transparent"
+                                        }}>
+                                            <div className='px-md-4 py-md-3'>
                                             <div className={'d-flex justify-content-between'}  >
                                                 <div>
                                                     {name ? <span style={{
@@ -373,8 +379,9 @@ function FromJD() {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div className='col mt-3'>
-                                                {modifiedSchedules && modifiedSchedules.length > 0 && <Divider className={'row'} space={"3"} />}
+                                            {modifiedSchedules && modifiedSchedules.length > 0 &&
+                                            <div className='mt-5'>
+                                                {/* {modifiedSchedules && modifiedSchedules.length > 0 && <Divider className={'row'} space={"3"} />} */}
                                                 {
                                                     modifiedSchedules &&
                                                     modifiedSchedules.length > 0 &&
@@ -406,10 +413,13 @@ function FromJD() {
                                                         };
 
                                                         return (
-                                                            <div>
+                                                            <div  style={{backgroundColor:"#fafbff"}}>
                                                                 <div className='row align-items-center'>
-                                                                    <h5 className='col m-0 p-0'>{"Interview " + (index + 1) + demoDisplayName}</h5>
-                                                                    <h5 className='col mb-0 text-center'>{(is_complete ? "Completed: " : "Created at: ") + getDisplayTimeFromMoment(created_at)}</h5>
+                                                                    <div>
+                                                                    <h5 className='col m-0 p-0 text-secondary'>{"Interview " + (index + 1) + demoDisplayName}</h5>
+                                                                    <h5 className='col mb-0 text-center pl-1 font-weight-normal'>{(is_complete ? "Completed " : "Created at ") + getDisplayTimeFromMoment(created_at)}</h5>
+                                                                    </div>
+                                                                  
                                                                     <div className='col d-flex justify-content-end'>
                                                                         {
                                                                             is_report_complete &&
@@ -440,6 +450,9 @@ function FromJD() {
                                                     })
                                                 }
                                             </div>
+                                }
+                                            </div>
+                                            
                                         </Card>
                                     )
                                 })
