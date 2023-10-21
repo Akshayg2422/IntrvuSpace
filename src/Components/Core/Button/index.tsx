@@ -8,14 +8,13 @@ function Button({
   text,
   color = "primary",
   variant = "default",
-  size = "md",
+  size = "lg",
   height = 15,
   width = 15,
   icon,
   icons,
   onEnter,
   onClick,
-  isTextLowercase = false,
   ...rest
 }: ButtonProps) {
   return (
@@ -35,11 +34,7 @@ function Button({
                   <Spinner color="white" />
                 </div>
               )}
-              {!loading && (
-                <span className={`${!isTextLowercase ? "text-uppercase" : ""}`}>
-                  {text}
-                </span>
-              )}
+              {!loading && <span style={{ letterSpacing: 0 }}>{text}</span>}
             </div>
           </RSButton>
         </>

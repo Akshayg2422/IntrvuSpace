@@ -1,5 +1,6 @@
-import { image } from '@Assets';
+import { icons, image } from '@Assets';
 import { Col, Container, Row } from 'reactstrap';
+import {Image} from '@Components'
 
 const packageContent = [
     { id: 1, description: "Interview invite link will be sent over email and text message to the candidate" },
@@ -10,14 +11,14 @@ const packageContent = [
 
 function WebsiteScheduleAndNotification() {
     return (
-        <div className={`pt-sm-6`}>
+       
             <Container>
-                <div className="mb-6">
+                <div className="mb-md-6">
                     <Row>
-                        <Col lg="7" sm="12">
+                        <Col className={'pt-md-7'} lg="7" sm="12">
                             <div>
                                 <img
-                                    src={image.MockEazy2}
+                                    src={image.ScheduleAndNotification}
                                     width={"100%"}
                                     height={"100%"}
                                     style={{ borderRadius: "20px" }}
@@ -37,8 +38,10 @@ function WebsiteScheduleAndNotification() {
                                     {packageContent.map((item) => {
                                         return (
                                             <>
-                                                <div className="pt-2 row">
-                                                    <span className={'col-1 ni ni-check-bold text-green pt-2'} />
+                                                <div className="row ml-md-1 ml-sm-0 ml-1">
+                                                    <div>
+                                                        <Image src={icons.check} height={20} />
+                                                    </div>
                                                     <span
                                                         className="col-11 text-default"
                                                     >
@@ -54,7 +57,7 @@ function WebsiteScheduleAndNotification() {
                     </Row>
                 </div>
             </Container>
-        </div>
+       
     )
 }
 

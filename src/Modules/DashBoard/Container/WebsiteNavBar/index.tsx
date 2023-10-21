@@ -25,15 +25,15 @@ function WebsiteNavBar() {
 
   return (
     <Navbar
-      className="navbar-horizontal navbar-main navbar-dark fixed-top shadow"
+      className="navbar-horizontal navbar-main navbar-dark fixed-top"
       expand="lg"
       id="navbar-main"
-      style={{ backgroundColor: "#ffffff" }}
+      style={{ backgroundColor: "#fafbff" }}
     >
       <Container>
         <NavbarBrand to="/" tag={Link}>
-          <div className={"ml--5"}>
-            <img alt="..." src={icons.logoText} style={{ height: 55 }} />
+          <div className={"ml--5"} >
+            <img alt="..." src={icons.logoText} style={{ height: 55, }} />
           </div>
         </NavbarBrand>
         <button
@@ -69,15 +69,16 @@ function WebsiteNavBar() {
             <span className="text-primary tab-font-style">Register</span>
           </NavLink> */}
             <Button
-              className="pointer text-bold mr-lg--3 text-primary py-2"
+              className="pointer text-bold mr-lg--3"
               style={{
-                borderRadius: 4,
                 borderColor: "#d8dade",
-                borderWidth: 1,
+                // borderWidth: 1,
+                paddingTop:10,
+                paddingBottom:10,
                 fontSize: 14,
                 paddingRight: 10,
                 paddingLeft: 10,
-                letterSpacing:0
+                borderRadius: 4
               }}
               onClick={() => {
                 goTo(ROUTES["auth-module"].login);

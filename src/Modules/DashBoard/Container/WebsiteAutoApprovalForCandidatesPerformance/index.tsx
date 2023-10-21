@@ -1,5 +1,6 @@
-import { image } from '@Assets';
+import { icons, image } from '@Assets';
 import { Col, Container, Row } from 'reactstrap';
+import { Image } from '@Components'
 
 const packageContent = [
     { id: 1, description: "Based on the provided JD and the extracted information the system suggests the best fit candidates in order" },
@@ -9,51 +10,52 @@ const packageContent = [
 
 function WebsiteAutoApprovalForCandidatesPerformance() {
     return (
-        <div className={`pt-sm-6`}>
-            <Container>
-                <div className="mb-6">
-                    <Row>
-                        <Col lg="5">
-                            <div className="mt-5 ml-lg-12">
-                                <div>
-                                    <span className="display-3 text-secondary font-weight-bolder mb-0">
-                                        Auto Approval based on <br /> Candidate's Performance
-                                    </span>
 
-                                </div>
-
-                                <div className="" style={{ paddingTop: 35 }}>
-                                    {packageContent.map((item) => {
-                                        return (
-                                            <>
-                                                <div className="pt-2 row">
-                                                    <span className={'col-1 ni ni-check-bold text-green pt-2'} />
-                                                    <span
-                                                        className="col-11 text-default"
-                                                    >
-                                                        <p>{item.description}</p>
-                                                    </span>
-                                                </div>
-                                            </>
-                                        );
-                                    })}
-                                </div>
-                            </div>
-                        </Col>
-                        <Col lg="7" sm="12">
+        <Container>
+            <div className={'pb-5'}>
+                <Row>
+                    <Col lg="5">
+                        <div className="mt-5">
                             <div>
-                                <img
-                                    src={image.MockEazy2}
-                                    width={"100%"}
-                                    height={"100%"}
-                                    style={{ borderRadius: "20px" }}
-                                />
+                                <span className="display-3 text-secondary font-weight-bolder mb-0">
+                                    Auto Approval based on <br /> Candidate's Performance
+                                </span>
+
                             </div>
-                        </Col>
-                    </Row>
-                </div>
-            </Container>
-        </div>
+
+                            <div className="" style={{ paddingTop: 35 }}>
+                                {packageContent.map((item) => {
+                                    return (
+                                        <>
+                                            <div className="row ml-md-1 ml-sm-0 ml-1">
+                                                <div>
+                                                    <Image src={icons.check} height={20} />
+                                                </div>
+                                                <span
+                                                    className="col-11 text-default"
+                                                >
+                                                    <p>{item.description}</p>
+                                                </span>
+                                            </div>
+                                        </>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    </Col>
+                    <Col className={'pt-md-6'} lg="7" sm="12">
+                        <div>
+                            <img
+                                src={image.CreateIntrvu}
+                                width={"100%"}
+                                height={"100%"}
+                                style={{ borderRadius: "20px" }}
+                            />
+                        </div>
+                    </Col>
+                </Row>
+            </div>
+        </Container>
     )
 }
 
