@@ -33,7 +33,7 @@ function WebsiteHeader() {
       <Container>
         <div className="mb-md-6">
           <Row>
-            <Col lg="5">
+            <Col lg="6">
               <div className="">
                 <div>
                   <div>
@@ -103,10 +103,10 @@ function WebsiteHeader() {
                 </div>
               </div>
             </Col>
-            <Col lg="7" sm="12">
+            <Col lg="6" sm="12">
               <div className="mt--4">
                 <img
-                  src={image.CreateIntrvu}
+                  src={image.CandidatesAttendInterview}
                   width={"100%"}
                   height={"450px"}
                 />

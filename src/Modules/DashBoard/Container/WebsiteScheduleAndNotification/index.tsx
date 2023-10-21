@@ -45,7 +45,7 @@ function WebsiteScheduleAndNotification() {
                                                     <span
                                                         className="col-11 text-default"
                                                     >
-                                                        <p>{item.description}</p>
+                                                        <p style={{fontSize:'15px',fontWeight:400}}>{item.description}</p>
                                                     </span>
                                                 </div>
                                             </>

@@ -56,6 +56,9 @@ export const image = {
     Guideline:require('./theme/guideline.jpg'),
     IntrvuSpace:require('./theme/intrvuSpace.jpg'),
     CreateIntrvu:require('./theme/createIntrvu.png'),
-    AccessReportsAndInsights:require('./theme/AccessReportsAndInsights.png'),
-    ScheduleAndNotification:require('./theme/ScheduleAndNotification.png')
+    AccessReportsAndInsights:require('./theme/accessReportsAndInsights.png'),
+    ScheduleAndNotification:require('./theme/scheduleAndNotification.png'),
+    CandidatesAttendInterview:require('./theme/candidatesAttendInterview.png'),
+    CreateJdAddCandidates:require('./theme/createJdAddCandidates.png'),
+    AutoApproval:require('./theme/autoApproval.png')
 }

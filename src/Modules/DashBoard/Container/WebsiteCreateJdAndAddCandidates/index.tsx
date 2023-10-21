@@ -34,7 +34,7 @@ function WebsiteCreateJdAndAddCandidates() {
                                                     <span
                                                         className="col-11 text-default"
                                                     >
-                                                        <p>{item.description}</p>
+                                                        <p style={{fontSize:'15px',fontWeight:400}}>{item.description}</p>
                                                     </span>
                                                 </div>
                                             </>
@@ -43,12 +43,12 @@ function WebsiteCreateJdAndAddCandidates() {
                                 </div>
                             </div>
                         </Col>
-                        <Col className={'pt-md-5'} lg="7" sm="12">
+                        <Col className={''} lg="7" sm="12">
                             <div>
                                 <img
-                                    src={image.CreateIntrvu}
-                                    width={"100%"}
-                                    height={"100%"}
+                                    src={image.CreateJdAddCandidates}
+                                    width={"80%"}
+                                    height={"80%"}
                                     style={{ borderRadius: "20px" }}
                                 />
                             </div>

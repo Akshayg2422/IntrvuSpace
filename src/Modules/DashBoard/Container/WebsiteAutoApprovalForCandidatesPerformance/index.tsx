@@ -34,7 +34,7 @@ function WebsiteAutoApprovalForCandidatesPerformance() {
                                                 <span
                                                     className="col-11 text-default"
                                                 >
-                                                    <p>{item.description}</p>
+                                                    <p style={{fontSize:'15px',fontWeight:400}}>{item.description}</p>
                                                 </span>
                                             </div>
                                         </>
@@ -46,7 +46,7 @@ function WebsiteAutoApprovalForCandidatesPerformance() {
                     <Col className={'pt-md-6'} lg="7" sm="12">
                         <div>
                             <img
-                                src={image.CreateIntrvu}
+                                src={image.AutoApproval}
                                 width={"100%"}
                                 height={"100%"}
                                 style={{ borderRadius: "20px" }}
