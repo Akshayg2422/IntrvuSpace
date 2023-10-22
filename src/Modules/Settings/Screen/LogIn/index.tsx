@@ -129,7 +129,8 @@ function Login() {
                       borderTopRightRadius: 0,
                       borderBottomRightRadius: 0,
                       borderRight: 0,
-                      borderRadius: 0,
+                      borderRadius: '4px 0 0 4px',
+                      borderColor: toggleInput ? "#673de6" : "black",
                     }}
                     value={password.value}
                     type={showPassword ? "text" : "password"}
@@ -152,8 +153,8 @@ function Login() {
                       borderTopLeftRadius: 0,
                       borderBottomLeftRadius: 0,
                       borderLeft: 0,
-                      borderRadius: 0,
-                      borderColor: toggleInput ? "#68d75c" : "black",
+                      borderRadius: '0 4px 4px 0',
+                      borderColor: toggleInput ? "#673de6" : "black",
                     }}
                     onClick={() => {
                       setShowPassword(!showPassword);
@@ -181,12 +182,12 @@ function Login() {
               </div>
               <div className="pt-2">
                 <Button
-                  className={"text-white font-weight-bold py-3 bg-primary"}
+                  className={"text-white font-weight-bold py-3 bg-primary rounded-sm"}
                   loading={loginLoader.loader}
                   block
                   size="md"
                   text={"Log in"}
-                  style={{ borderRadius: 4, fontSize: 15 }}
+
                   onClick={() => onSubmit()}
                 />
               </div>
