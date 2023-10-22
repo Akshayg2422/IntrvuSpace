@@ -3695,7 +3695,7 @@ pre code {
   color: #8898aa;
   background-color: #fff;
   background-clip: padding-box;
-  border: 1px solid #dee2e6;
+  border: 1px solid #d7d9dd;
   border-radius: 0;
   transition: all 0.15s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
@@ -3715,7 +3715,7 @@ pre code {
 .form-control:focus {
   color: #8898aa;
   background-color: #fff;
-  border-color: #673de6;
+  border-color: #e6863d;
   outline: 0;
   box-shadow: 0 3px 9px rgba(50, 50, 9, 0), 3px 4px 8px rgba(103, 61, 230, 0.1);
 }
@@ -4533,7 +4533,7 @@ fieldset:disabled a.btn {
 }
 
 .btn-outline-secondary {
-  color: #2f1c6a;
+  /* color: #2f1c6a; */
   background-color: transparent;
   background-image: none;
   border-color: #2f1c6a;
@@ -17072,7 +17072,7 @@ a.btn-icon-only {
 
 .form-control {
   font-size: 1.063rem;
-  border-color: black;
+  border-color: #d7d9dd;
   transition: all 0.15s ease-in-out;
   height: calc(1.5em + 1.35rem + 5px);
 }

@@ -72,7 +72,7 @@ function UploadJdCard() {
                                 </div>
                                 <div className='pt-4'></div>
                                 <Button
-                                    className={'px-md-6 rounded'}
+                                    className={'px-md-6 px-sm-0 px-7 rounded'}
                                     isTextLowercase={false}
                                     text={'Create Interview'}
                                     onClick={() => {
@@ -81,7 +81,7 @@ function UploadJdCard() {
                             </div>
                         </Col>
 
-                        <Col className={'pt-6'} lg="7" sm="12">
+                        <Col className={'pt-md-6 pt-sm-0 pt-5'} lg="7" sm="12">
                             <div>
                                 <img
                                     src={image.CreateIntrvu}
@@ -91,17 +91,6 @@ function UploadJdCard() {
                                 />
                             </div>
                         </Col>
-
-                        {/* <Col className={'pt-4 pb-4 d-block d-sm-none'} lg="7" sm="12">
-                            <div>
-                                <img
-                                    src={image.CreateIntrvu}
-                                    width={"330px"}
-                                    height={"100%"}
-                                    style={{ borderRadius: "20px" }}
-                                />
-                            </div>
-                        </Col> */}
                     </Row>
                 </div>
             </Container >
