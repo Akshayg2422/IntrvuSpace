@@ -8,7 +8,7 @@ const initialState: AuthProps = {
     registerDetails: undefined,
     loginUser: undefined,
     OTP: undefined,
-    memberUsingLoginOtp: undefined
+    memberUsingLoginOtp: undefined,
 };
 
 
@@ -64,7 +64,6 @@ const AuthReducer = (state = initialState, action: any) => {
         case ActionTypes.FETCH_MEMBER_USING_LOGIN_OTP_FAILURE:
             state = { ...state, memberUsingLoginOtp: undefined };
             break;
-
 
         default:
             state = state;

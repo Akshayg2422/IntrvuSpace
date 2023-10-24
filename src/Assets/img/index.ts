@@ -54,5 +54,11 @@ export const image = {
     CommunicationReport:require('./theme/communicationReport.jpg'),
     TraitReport:require('./theme/TraitReport.jpg'),
     Guideline:require('./theme/guideline.jpg'),
-    IntrvuSpace:require('./theme/intrvuSpace.jpg')
+    IntrvuSpace:require('./theme/intrvuSpace.jpg'),
+    CreateIntrvu:require('./theme/createIntrvu.png'),
+    AccessReportsAndInsights:require('./theme/accessReportsAndInsights.png'),
+    ScheduleAndNotification:require('./theme/scheduleAndNotification.png'),
+    CandidatesAttendInterview:require('./theme/candidatesAttendInterview.png'),
+    CreateJdAddCandidates:require('./theme/createJdAddCandidates.png'),
+    AutoApproval:require('./theme/autoApproval.png')
 }

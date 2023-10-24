@@ -3,27 +3,30 @@ import { NoDataFound, Button, MenuBar, Image } from '@Components';
 import { icons } from '@Assets';
 import { Card, CardBody, CardFooter } from 'reactstrap';
 import { useEffect, useState } from 'react';
+import { useNavigation } from '@Hooks';
+import { ROUTES } from '@Routes';
 
-function DesignationItem({ item, onAdd, onEdit, onView, }: DesignationItemProps) {
-    
+function DesignationItem({ item, onAdd, onEdit, onView, onClick }: DesignationItemProps) {
+
     const MENU = [{ id: 0, name: 'Edit', icon: icons.edit }];
-    const [formattedDate, setFormattedDate] = useState(''); 
+    const [formattedDate, setFormattedDate] = useState('');
+    const { goTo, goBack } = useNavigation()
 
-    useEffect(()=>{
+    useEffect(() => {
         const dateObj = new Date(item.starts_from);
         const option: any = {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric',
-          hour: '2-digit',
-          minute: '2-digit',
-          second: '2-digit'
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
         };
-    
+
         const formattedDate = dateObj.toLocaleDateString('en-US', option);
-    
+
         setFormattedDate(formattedDate);
-    },[])
+    }, [])
 
     return (
         <>
@@ -40,7 +43,13 @@ function DesignationItem({ item, onAdd, onEdit, onView, }: DesignationItemProps)
                     />
                 )}
             </div> */}
-            <Card className=''>
+            <Card onClick={(e) => {
+                if (onView) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    onView(item);
+                }
+            }}>
                 <CardBody className='pt-1 pb-1 px-0'>
                     {/* <div>
                         {knowledge_group_variant && knowledge_group_variant.length > 0 ? (
@@ -133,52 +142,44 @@ function DesignationItem({ item, onAdd, onEdit, onView, }: DesignationItemProps)
                                 <NoDataFound />
                             </div>
                         )}
-                    </div> */}
-
-
+                    </div>  */}
                     <div>
                         {item ? (
-                                    <div
-                                        key={item.id}
-                                        className= "mx-1"
-                                    >
-                                        <div className='d-flex align-items-center mb-3'>
-                                            <h1
-                                                className='text-black pointer col'
-                                                onClick={(e) => {
-                                                    if (onView) {
-                                                        e.preventDefault();
-                                                        e.stopPropagation();
-                                                        onView(item);
-                                                    }
-                                                }}
-                                            >{item.job_description.position}</h1>
+                            <div
+                                key={item.id}
+                                className="mx-1"
+                            >
+                                <div className='d-flex align-items-center mb-3'>
+                                    <h1
+                                        className='text-black pointer col'
 
-                                            <div className='d-flex justify-content-between col-sm-5'>
-                                                <div className='d-flex align-items-center no-border' title='Total Candidates'>
-                                                    <Image src={icons.profile} height={21} width={20} />
-                                                    <span className={'pl-1'}>{item.candidate_details.total_candidates}</span>
-                                                </div>
-                                                <div className='d-flex align-items-center' title='Attended Candidates'>
-                                                    <Image src={icons.videoConference} height={20} width={20} />
-                                                    <span className={'pl-1'}>{item.candidate_details.attended_candidates}</span>
-                                                </div>
-                                                <div className='d-flex align-items-center' title='Yet to Attend'>
-                                                    <Image src={icons.timeline} height={18} width={18} />
-                                                    <span className={'pl-1'}>{item.candidate_details.yet_to_attend_candidates}</span>
-                                                </div>
-                                                <div className='d-flex align-items-center' title='Selected'>
-                                                    <Image src={icons.selected} height={20} width={20} />
-                                                    <span className={'pl-1'}>{item.candidate_details.selected_candidates}</span>
-                                                </div>
-                                                <div className='d-flex align-items-center' title='Rejected'>
-                                                    <Image src={icons.rejected} height={20} width={20} />
-                                                    <span className={'pl-1'}>{item.candidate_details.rejected_candidates}</span>
-                                                </div>
-                                            </div>
+                                    >{item.job_description.position}</h1>
+
+                                    <div className='d-flex justify-content-between col-sm-5'>
+                                        <div className='d-flex align-items-center no-border' title='Total Candidates'>
+                                            <Image src={icons.profile} height={21} width={20} />
+                                            <span className={'pl-1'}>{item.candidate_details.total_candidates}</span>
+                                        </div>
+                                        <div className='d-flex align-items-center' title='Attended Candidates'>
+                                            <Image src={icons.videoConference} height={20} width={20} />
+                                            <span className={'pl-1'}>{item.candidate_details.attended_candidates}</span>
+                                        </div>
+                                        <div className='d-flex align-items-center' title='Yet to Attend'>
+                                            <Image src={icons.timeline} height={18} width={18} />
+                                            <span className={'pl-1'}>{item.candidate_details.yet_to_attend_candidates}</span>
+                                        </div>
+                                        <div className='d-flex align-items-center' title='Selected'>
+                                            <Image src={icons.selected} height={20} width={20} />
+                                            <span className={'pl-1'}>{item.candidate_details.selected_candidates}</span>
+                                        </div>
+                                        <div className='d-flex align-items-center' title='Rejected'>
+                                            <Image src={icons.rejected} height={20} width={20} />
+                                            <span className={'pl-1'}>{item.candidate_details.rejected_candidates}</span>
+                                        </div>
+                                    </div>
 
 
-                                            {/* {onEdit && (
+                                    {/* {onEdit && (
                                                 <div className=''>
                                                     <MenuBar
                                                         menuData={MENU}
@@ -199,21 +200,21 @@ function DesignationItem({ item, onAdd, onEdit, onView, }: DesignationItemProps)
                                                         }} />
                                                 </div>
                                             )} */}
+                                </div>
+                                <div className="px-3 pointer">
+                                    <h5 className="mb-0 pointer mt--3" style={{ marginTop: -10 }}>{item.job_description.experience}</h5>
+                                    <div className="row pt-2 h5" style={{ marginTop: -10 }}>
+                                        <div className="col-2 mb-0 pointer text-muted" style={{ maxWidth: '8rem', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
+                                            {item.department}
                                         </div>
-                                        <div className="px-3">
-                                            <h5 className="mb-0 pointer mt--3" style={{ marginTop: -10 }}>{item.job_description.experience}</h5>
-                                            <div className="row pt-2 h5" style={{ marginTop: -10 }}>
-                                                <div className="col-2 mb-0 pointer text-muted" style={{ maxWidth: '8rem', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
-                                                    {item.department}
-                                                </div>
-                                                <span>/</span>
-                                                <div className="col-2 mb-0 pointer text-muted" style={{ maxWidth: '8rem', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
-                                                    {item.sector}
-                                                </div>
-                                            </div>
-                                            <div style={{ fontSize: '14px' }} className={'text-black'}>{item.job_description.details}</div>
+                                        <span>/</span>
+                                        <div className="col-2 mb-0 pointer text-muted" style={{ maxWidth: '8rem', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
+                                            {item.sector}
                                         </div>
                                     </div>
+                                    <div style={{ fontSize: '14px' }} className={'text-black'}>{item.job_description.details}</div>
+                                </div>
+                            </div>
                         ) : (
                             <div className='d-flex align-items-center justify-content-center h-100'>
                                 <NoDataFound />
@@ -229,17 +230,17 @@ function DesignationItem({ item, onAdd, onEdit, onView, }: DesignationItemProps)
                     </CardFooter>
                 )} */}
 
-                 {
+                {
                     item && (
                         <CardFooter>
-                        <h6 className={'d-flex justify-content-center m-0 p-0 my--1 text-black'}>
-                            {`Created at : ${formattedDate}`}
-                        </h6>
-                    </CardFooter>
+                            <h6 className={'d-flex justify-content-center m-0 p-0 my--1 text-black'}>
+                                {`Created at : ${formattedDate}`}
+                            </h6>
+                        </CardFooter>
                     )
-                 }
-                   
-            
+                }
+
+
             </Card>
         </>
     );

@@ -4,27 +4,31 @@ export const BUILD_TYPE_LIVE = 1;
 export const BUILD_TYPE_LIVE_DEMO = 2;
 export const BUILD_TYPE_STAGING = 3;
 export const BUILD_TYPE_LOCAL = 4;
+export const BUILD_TYPE_PRE_PROD_IP = 5;
 
 
-const LIVE_IP = "https://mockeazyprimary.leorainfotech.in/"
-const LOCAL_IP = "http://192.168.128.126:8009"
+const LIVE_IP = "https://mepp.leorainfotech.in/"
+const PRE_PROD_IP = "https://mepp.leorainfotech.in/"
+const LOCAL_IP = "http://192.168.99.126:8009"
 
 
-export const BUILD_TYPE = BUILD_TYPE_LIVE;
+export const BUILD_TYPE = BUILD_TYPE_PRE_PROD_IP;
 export const SERVER =
   BUILD_TYPE === BUILD_TYPE_LIVE
     ? LIVE_IP
-    : BUILD_TYPE === BUILD_TYPE_LIVE_DEMO
-      ? 'https://8471-103-118-191-250.ngrok-free.app/'
-      : BUILD_TYPE === BUILD_TYPE_LOCAL
-        ? LOCAL_IP
-        : BUILD_TYPE === BUILD_TYPE_STAGING
-          ? 'http://103.118.188.135:8005'
-          : 'http://localhost:8000'
+    : BUILD_TYPE === BUILD_TYPE_PRE_PROD_IP
+      ? PRE_PROD_IP
+      : BUILD_TYPE === BUILD_TYPE_LIVE_DEMO
+        ? 'https://8471-103-118-191-250.ngrok-free.app/'
+        : BUILD_TYPE === BUILD_TYPE_LOCAL
+          ? LOCAL_IP
+          : BUILD_TYPE === BUILD_TYPE_STAGING
+            ? 'http://103.118.188.135:8005'
+            : 'http://localhost:8000'
 
 
 
-export const CALL_WEBSOCKET = `wss://mockeazyprimary.leorainfotech.in/aaa`
+export const CALL_WEBSOCKET = `wss://mepp.leorainfotech.in/aaa`
 
 
 const axiosApi = axios.create({

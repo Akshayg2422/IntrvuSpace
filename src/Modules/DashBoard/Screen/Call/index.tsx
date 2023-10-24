@@ -2,11 +2,13 @@ import { AnimatedImage, Back, Button, Modal, Spinner } from "@Components";
 import { useLoader, useModal, useNavigation } from "@Hooks";
 import { CallHeader, CallHeaderMobile, Guidelines, Report } from '@Modules';
 import {
-  getScheduleBasicInfo,
-  closeInterview,
   canStartInterview,
+  closeInterview,
+  getScheduleBasicInfo,
 } from "@Redux";
-import { capitalizeFirstLetter, getShortName, hasMicrophonePermission, getOperatingSystem, gotoPermissionSetting } from "@Utils";
+import { CALL_WEBSOCKET } from "@Services";
+import { color } from "@Themes";
+import { capitalizeFirstLetter, getOperatingSystem, getShortName, gotoPermissionSetting, hasMicrophonePermission } from "@Utils";
 import type { Harker } from "hark";
 import type { Encoder } from "lamejs";
 import moment from "moment";
@@ -14,9 +16,6 @@ import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { RecordRTCPromisesHandler, StereoAudioRecorder } from "recordrtc";
-import { useScreenRecorder } from "./useScreenRecorder";
-import { CALL_WEBSOCKET } from "@Services";
-import { color } from "@Themes";
 
 const compare_moment_format = "YYYY-MM-DDHH:mm:ss";
 
@@ -50,17 +49,16 @@ const NETWORK_DESIGN = [
   },
 ];
 
-const GUIDELINES = [
-  "Kindly ensure the use of headphones to optimize audio quality.",
-  "Find a quiet and secluded space to minimize background noise and distractions.",
-  "Verify the stability of your internet connection to ensure uninterrupted communication.",
-  "Keep the video function enabled throughout the session for effective interaction.",
-  " We appreciate clear and succinct responses during the conversation.",
-];
-
-
 function Call() {
-  const { startScreenRecording } = useScreenRecorder();
+
+  const SPEECH_VOICE_UP = 47
+
+
+  const intervalIdRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const socketInterviewRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+
+
 
   const speakingShouldProcess = useRef<any>(false);
 
@@ -111,6 +109,8 @@ function Call() {
   const [websocketError, setWebSocketError] = useState(false);
 
   const lastAiResponseTime = useRef<any>(undefined);
+  const canConnect = useRef<any>(true);
+
   const [networkBreakTime, setNetworkBreakTime] = useState(0);
 
   // microphone permission states
@@ -193,11 +193,13 @@ function Call() {
     (state: any) => state.DashboardReducer
   );
   const [processCallInprogress, setProcessCallInprogress] = useState(false);
+
   const responseDelayTimeOutRef = useRef<any>(undefined);
   const [isRecording, setIsRecording] = useState(false);
   const [buttonConditional, setButtonConditional] = useState<any>("start");
   const [errorType1, setErrorType1] = useState("");
 
+  const proceedOpenCallView = useRef<any>(false);
   const accumulatedBlobs = useRef<any>([]);
   const reconnectAttempts = useRef<any>(0);
   const maxReconnectAttempts = 3;
@@ -250,25 +252,67 @@ function Call() {
     }
   };
 
+
+  function initiateSocket() {
+
+    createWebSocket();
+    socketInterviewRef.current = setInterval(() => {
+      createWebSocket(true)
+      if (proceedOpenCallView.current && socketRef.current) {
+        openCallView()
+        proceedOpenCallView.current = false
+      }
+    }, 3000)
+
+  }
+
+  const stopIntervalSocket = () => {
+    if (socketInterviewRef.current !== null) {
+      clearInterval(socketInterviewRef.current);
+      socketInterviewRef.current = null;
+    }
+  };
+
+
+
+  useEffect(() => {
+
+
+    return () => {
+      stopIntervalSocket();
+
+      if (socketRef.current) {
+        try {
+          canConnect.current = false
+          socketRef.current.close();
+          socketRef.current = null;
+        } catch (e) {
+
+        }
+        clearInterval(reconnectInterval);
+
+      }
+    };
+
+  }, [])
+
   // Create the WebSocket connection only if it's not already established
 
   function createWebSocket(showError = true) {
-    // console.log("createWebSocket");
 
-    if (websocketStatus.current !== WEBSOCKET_PROCESSING) {
-      const socket = new WebSocket(CALL_WEBSOCKET);
-      // const socket = new WebSocket('wss://mockeazyprimary.leorainfotech.in/aaa');
+    if (!socketRef.current && canConnect.current) {
 
-      // const socket = new WebSocket('ws://192.168.105.204:8002/aaa');
 
+      socketRef.current = new WebSocket(CALL_WEBSOCKET);
       websocketStatus.current = WEBSOCKET_PROCESSING;
-      socketRef.current = socket; // Store the WebSocket instance in the ref
 
-      socket.addEventListener("open", () => {
+
+      socketRef.current.addEventListener("open", () => {
+
+        console.log('Web Socket Opened');
+
         websocketStatus.current = WEBSOCKET_IDLE;
-        // console.log(
-        //   "WebSocket connection established==========================="
-        // );
+
         setWebSocketError(false);
 
         // Clear the reconnect interval when the connection is open
@@ -276,47 +320,26 @@ function Call() {
         reconnectAttempts.current = 0; // Reset the reconnect attempts counter
       });
 
-      socket.addEventListener("close", () => {
-        websocketStatus.current = WEBSOCKET_IDLE;
-        if (showError) setWebSocketError(true);
+      socketRef.current.addEventListener("onerror", () => {
+        socketRef.current = undefined
+      })
 
-        if (reconnectAttempts.current < maxReconnectAttempts) {
-          setTimeout(() => {
-            createWebSocket();
-            reconnectAttempts.current++;
-          }, 3000);
-        } else {
-          clearInterval(reconnectInterval);
-          if (!showError) setWebSocketError(true);
-        }
+      socketRef.current.addEventListener("close", () => {
+        socketRef.current = undefined
       });
 
       // Listen for messages
-      socket.onmessage = (event) => {
-        // console.log("Received001");
+      socketRef.current.onmessage = (event) => {
         const response = JSON.parse(event.data);
         proceedHandleResponseV1(response);
-        // Handle the response data here
-        // console.log('Received002:', response);
       };
+
+
     }
+
   }
 
-  useEffect(() => {
-    // Create the WebSocket when the component mounts
-    if (!socketRef.current) {
-      createWebSocket();
-    }
 
-    // Clean up the WebSocket connection when the component unmounts
-    return () => {
-      if (socketRef.current) {
-        socketRef.current.close();
-        socketRef.current = null;
-        clearInterval(reconnectInterval);
-      }
-    };
-  }, []);
 
   const sendDataToSocket = async (
     blob: Blob,
@@ -417,11 +440,13 @@ function Call() {
 
   useEffect(() => {
     return () => {
+
+      stopInterval();
+
       if (chunks.current) {
         chunks.current = [];
       }
       if (encoder.current) {
-        encoder.current.flush();
         encoder.current = undefined;
       }
       if (recorderAudio.current) {
@@ -433,8 +458,8 @@ function Call() {
         listener.current.off("speaking", onStartSpeaking);
         // @ts-ignore
         listener.current.off("stopped_speaking", onStopSpeaking);
-        listener.current = undefined
-
+        listener.current.off("volume_change");
+        listener.current = null;
 
       }
       if (stream.current) {
@@ -497,7 +522,7 @@ function Call() {
             voiceUpCount.current = 0;
             speakingShouldProcess.current = false;
             if (voiceUp === true) setVoiceUp(false);
-          } else if (valueP < 46) {
+          } else if (valueP < SPEECH_VOICE_UP) {
             isVoiceUpCurrentChunk.current = true;
 
             /**
@@ -651,12 +676,12 @@ function Call() {
   };
 
   const onStartSpeaking = () => {
-    // console.log('start speaking')
+    console.log('start speaking')
     setSpeaking(true);
   };
 
   const onStopSpeaking = () => {
-    // console.log('stop speaking')
+    console.log('stop speaking')
     setSpeaking(false);
   };
 
@@ -737,6 +762,22 @@ function Call() {
   }
 
 
+  const openCallView = () => {
+
+    setNetworkError(false)
+
+    startInterviewLoader.hide();
+
+    startStreamTime.current = moment().add(1, "seconds");
+    transcriptionReferenceId.current = generateRandomID();
+    // proceedgetChatDetailsApiHandler({ message: "start" }, transcriptionReferenceId.current)
+    setProcessCallInprogress(false);
+    // console.log("resss0114")
+    resetLastMessage();
+    setInterviewStarted(true);
+    // setTimeout(() => {
+    validateProceedStartListening();
+  }
 
 
   async function startInterviewHandler() {
@@ -749,24 +790,20 @@ function Call() {
 
       startInterviewLoader.show();
 
-      const intervalId = setInterval(() => {
+      intervalIdRef.current = setInterval(() => {
         dispatch(
           canStartInterview({
             params: canStartParams,
             onSuccess: (res: any) => () => {
-              startInterviewLoader.hide();
 
-              startStreamTime.current = moment().add(1, "seconds");
-              transcriptionReferenceId.current = generateRandomID();
-              // proceedgetChatDetailsApiHandler({ message: "start" }, transcriptionReferenceId.current)
-              setProcessCallInprogress(false);
-              // console.log("resss0114")
-              resetLastMessage();
-              setInterviewStarted(true);
-              // setTimeout(() => {
-              validateProceedStartListening();
-              // }, 5000)
-              clearInterval(intervalId);
+              initiateSocket();
+
+              proceedOpenCallView.current = true
+
+              if (intervalIdRef.current) {
+                clearInterval(intervalIdRef.current);
+              }
+
             },
             onError: (error: any) => () => {
               // console.log(error);
@@ -805,6 +842,13 @@ function Call() {
     window.location.reload();
   }
 
+  const stopInterval = () => {
+    if (intervalIdRef.current !== null) {
+      clearInterval(intervalIdRef.current);
+      intervalIdRef.current = null;
+    }
+  };
+
   function renderNetworkRange() {
     return NETWORK_DESIGN.map((each, index) => {
       const { id, height, network } = each;
@@ -835,7 +879,7 @@ function Call() {
   const IE_IDLE = 2;
 
   // const interviewee_state = voiceUp && !mute ? IE_SPEAKING : IE_IDLE
-  const interviewee_state = isVoiceUpCurrentChunk.current
+  const interviewee_state = isVoiceUpCurrentChunk.current && !mute
     ? IE_SPEAKING
     : IE_IDLE;
 
@@ -924,24 +968,23 @@ function Call() {
 
                 }
 
-                <div className="d-block d-md-none d-lg-none d-xl-none">
-
-                  <div className="d-flex flex-column h-100vh">
+                <div className="d-block d-md-none d-lg-none d-xl-none h-100vh">
+                  <div className="d-flex flex-column" >
                     <div style={{
-                      height: '90%'
+                      position: 'fixed',
+                      width: '100%',
+                      height: '90%',
                     }}>
-
-
                       <div className="h-100">
                         <div className="position-absolute" >
                           <div className="col">
-                            <div className="d-flex m-3 align-items-center">
+                            <div className="d-flex m-2 align-items-center">
                               <Back variant={'override'} onClick={endInterviewHandler} />
                               <h4 className="mb-0 font-weight-bolder text-primary ml-3">{`Interview for the role of ${scheduleInfo?.interviewee_expected_role}`}</h4>
                             </div>
                           </div>
                         </div>
-                        <div className="d-flex  align-items-center justify-content-center h-100">
+                        <div className="d-flex align-items-center justify-content-center h-100">
                           <div>
                             <AnimatedImage
                               show={false}
@@ -958,7 +1001,7 @@ function Call() {
                         </div>
                         <div>
                           <div className="position-absolute" style={{
-                            bottom: "12%",
+                            bottom: "3%",
                             right: "5%"
                           }}>
                             <div>
@@ -973,11 +1016,14 @@ function Call() {
                           </div>
 
                         </div>
-
                       </div>
+
                     </div>
 
                     <div style={{
+                      position: 'fixed',
+                      bottom: 0,
+                      width: '100%',
                       height: '10%',
                       backgroundColor: color.callFooter,
                     }}>

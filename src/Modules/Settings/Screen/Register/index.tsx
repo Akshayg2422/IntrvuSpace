@@ -115,13 +115,13 @@ function Register() {
                   className="overflow-auto overflow-hide"
                   style={{
                     height: "60vh",
-                    
+
                   }}
                 >
                   <div className="py-4">
                     <div className="input-group">
                       <input
-                        className="form-control"
+                        className="form-control rounded-sm"
                         placeholder="Full Name"
                         onChange={firstName.onChange}
                       />
@@ -131,7 +131,7 @@ function Register() {
                   <div>
                     <div className="input-group mb-4">
                       <input
-                        className="form-control"
+                        className="form-control rounded-sm"
                         placeholder="Email"
                         onChange={email.onChange}
                       />
@@ -142,7 +142,7 @@ function Register() {
                     <div className="input-group mb-4">
                       <input
                         type="number"
-                        className="form-control"
+                        className="form-control rounded-sm"
                         placeholder="Phone"
                         onChange={mobileNumber.onChange}
                         maxLength={10}
@@ -155,10 +155,11 @@ function Register() {
                     <div className="input-group mb-4">
                       <input
                         style={{
-                          borderTopRightRadius: "0px",
-                          borderBottomRightRadius: "0px",
-                          borderRight: "0px",
-                          borderRadius: 0,
+                          borderTopRightRadius: 0,
+                          borderBottomRightRadius: 0,
+                          borderRight: 0,
+                          borderRadius: '4px 0 0 4px',
+                          borderColor: toggleInput === 3 ? "#673de6" : "black",
                         }}
                         type={showPassword ? "text" : "password"}
                         className="form-control"
@@ -177,11 +178,11 @@ function Register() {
                         className="input-group-text"
                         id="basic-addon2"
                         style={{
-                          borderTopLeftRadius: "0px",
-                          borderBottomLeftRadius: "0px",
-                          borderLeft: "0px",
-                          borderRadius: 0,
-                          borderColor: toggleInput === 3 ? "#68d75c" : "black",
+                          borderTopLeftRadius: 0,
+                          borderBottomLeftRadius: 0,
+                          borderLeft: 0,
+                          borderRadius: '0 4px 4px 0',
+                          borderColor: toggleInput === 3 ? "#673de6" : "black",
                         }}
                         onClick={() => {
                           setShowPassword(!showPassword);
@@ -211,10 +212,11 @@ function Register() {
                     <div className="input-group">
                       <input
                         style={{
-                          borderTopRightRadius: "0px",
-                          borderBottomRightRadius: "0px",
-                          borderRight: "0px",
-                          borderRadius: 0,
+                          borderTopRightRadius: 0,
+                          borderBottomRightRadius: 0,
+                          borderRight: 0,
+                          borderRadius: '4px 0 0 4px',
+                          borderColor: toggleInput === 4 ? "#673de6" : "black",
                         }}
                         type={showConfirmPassword ? "text" : "password"}
                         className="form-control"
@@ -233,11 +235,11 @@ function Register() {
                         className="input-group-text"
                         id="basic-addon2"
                         style={{
-                          borderTopLeftRadius: "0px",
-                          borderBottomLeftRadius: "0px",
-                          borderLeft: "0px",
-                          borderRadius: 0,
-                          borderColor: toggleInput === 4 ? "#68d75c" : "black",
+                          borderTopLeftRadius: 0,
+                          borderBottomLeftRadius: 0,
+                          borderLeft: 0,
+                          borderRadius: '0 4px 4px 0',
+                          borderColor: toggleInput === 4 ? "#673de6" : "black",
                         }}
                         onClick={() => {
                           setShowConfirmPassword(!showConfirmPassword);

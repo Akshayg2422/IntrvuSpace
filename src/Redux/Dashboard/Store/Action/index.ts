@@ -148,6 +148,7 @@ export const getSectorsFailure = (error: any) => {
 
 
 export const setSelectedRole = (params) => {
+  console.log('1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111')
   return {
     type: ActionTypes.SET_SELECTED_ROLE,
     payload: params
@@ -1042,6 +1043,64 @@ export const forgotPasswordSuccess = (response: any) => {
 export const forgotPasswordFailure = (error: any) => {
   return {
     type: ActionTypes.FORGOT_PASSWORD_FAILURE,
+    payload: error,
+  }
+}
+
+
+
+/**
+ *  reset interview
+ */
+
+export const resetInterview = (params: any) => {
+  return {
+    type: ActionTypes.RESET_INTERVIEW,
+    payload: params,
+  }
+}
+
+/**
+ *  reset interview
+ */
+
+export const deleteInterview = (params: any) => {
+  return {
+    type: ActionTypes.DELETE_INTERVIEW,
+    payload: params,
+  }
+}
+
+
+
+/**
+ *  delete JD
+ */
+
+export const deleteJd = (params: any) => {
+  return {
+    type: ActionTypes.DELETE_JD,
+    payload: params,
+  }
+}
+
+// bulkUploadCandidatesCP
+
+export const bulkUploadCandidates = (params: any) => {
+  return {
+    type: ActionTypes.BULK_UPLOAD_CANDIDATES_CP,
+    payload: params,
+  }
+}
+export const bulkUploadCandidatesSuccess = (response: any) => {
+  return {
+    type: ActionTypes.BULK_UPLOAD_CANDIDATES_CP_SUCCESS,
+    payload: response,
+  }
+}
+export const bulkUploadCandidatesFailure = (error: any) => {
+  return {
+    type: ActionTypes.BULK_UPLOAD_CANDIDATES_CP_FAILURE,
     payload: error,
   }
 }

@@ -74,7 +74,6 @@ function Report() {
 
 
                     const total = (communicationPercentage + skillMatrixPercentage + traitPercentage).toFixed(1);
-                    console.log("total0===================>", total)
 
                     setPercentage({
                         communication: communicationPercentage,

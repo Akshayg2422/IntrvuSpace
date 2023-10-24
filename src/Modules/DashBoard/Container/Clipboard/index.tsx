@@ -1,42 +1,48 @@
-import React, { useEffect, useRef } from 'react';
-import ClipboardJS from 'clipboard';
+import { useEffect, useState } from 'react';
+import { CopyToClipboard } from "react-copy-to-clipboard";
+import { UncontrolledTooltip } from "reactstrap";
 import { ClipboardProps } from './interfaces';
 
 
+const Clipboard = ({ id, linkToCopy, tooltipText = 'Copy To Clipboard', copedText, onCopy }: ClipboardProps) => {
 
-const Clipboard = ({ id, linkToCopy }: ClipboardProps) => {
-    const copyButtonRef = useRef<any>(null);
+    const [copiedText, setCopiedText] = useState('')
 
     useEffect(() => {
-        const clipboard: any = new ClipboardJS(copyButtonRef.current);
+        if (copedText) {
+            setCopiedText(copedText)
+        }
+    }, [copedText])
 
-        // clipboard.on('success', (e) => {
-        //     alert('Link copied to clipboard: ' + e.text);
-        //     e.clearSelection();
-        // });
-
-        // clipboard.on('error', () => {
-        //     alert('Failed to copy link to clipboard.');
-        // });
-
-        return () => {
-            clipboard.destroy();
-        };
-    }, []);
 
 
     return (
 
-        <span
-            className={'text-primary font-weight-bolder pointer pl-3'}
-            ref={copyButtonRef}
-            data-clipboard-text={linkToCopy}
-            style={{ fontSize: '15px', color: 'blue' }}
-        >
-            Copy Interview Link
-        </span>
+        <div>
+            <CopyToClipboard
+                text={linkToCopy}
+                onCopy={() => {
+                    if (onCopy) {
+                        onCopy(linkToCopy)
+                    }
+                    setCopiedText(linkToCopy)
+                }}>
+                <span className='pointer mb-0 text-primary font-weight-bolder' id={`tooltip${id}`}>
+                    {tooltipText}
+                </span>
+            </CopyToClipboard >
+            <UncontrolledTooltip
+                delay={0}
+                trigger="hover focus"
+                target={`tooltip${id}`}
+            >
+                {copiedText === linkToCopy
+                    ? "Link copied"
+                    : tooltipText}
+            </UncontrolledTooltip>
 
+        </div>
     );
 };
 
-export { Clipboard }
+export { Clipboard };

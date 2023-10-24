@@ -1,7 +1,7 @@
 
 
 import { ROUTES } from '@Routes'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Input, } from 'reactstrap'
 import { LoginSideContent } from '../../Container'
 import { useInput, useKeyPress, useLoader, useNavigation } from '@Hooks'
@@ -17,8 +17,13 @@ function CreateNewPassword() {
     const confirmPassword = useInput('')
     const enterPress = useKeyPress('Enter')
     const loginLoader = useLoader(false);
-    const { } = useSelector((state: any) => state.DashboardReducer);
+    const [showNewPassword, setShowNewPassword] = useState(false)
+    const [toggleNewPassword, setToggleNewPassword] = useState(false)
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+    const [toggleConfirmPassword, setToggleConfirmPassword] = useState(false)
+    const { retrieveEmail } = useSelector((state: any) => state.DashboardReducer);
 
+    console.log('retrieveEmail----->', retrieveEmail)
     useEffect(() => {
         if (enterPress) {
             createNewPasswordHandler()
@@ -57,7 +62,10 @@ function CreateNewPassword() {
             return;
         }
 
+        const { email } = retrieveEmail
+
         const params = {
+            email: email,
             otp: otpValue,
             password: newPasswordValue,
         };
@@ -111,25 +119,106 @@ function CreateNewPassword() {
                                 maxLength={4}
                             />
                         </div>
-                        <div className={'mb-3'}>
-                            <label className="h3 font-weight-bolder text-black">New Password</label>
-                            <Input
-                                className='rounded-0'
-                                type={'text'}
-                                value={newPassword.value}
-                                placeholder='New Password'
-                                onChange={newPassword.onChange}
-                            />
+                        <div>
+                            <label className="h2 text-black">New Password</label>
+                            <div className="input-group mb-3">
+                                <input
+                                    style={{
+                                        borderTopRightRadius: 0,
+                                        borderBottomRightRadius: 0,
+                                        borderRight: 0,
+                                        borderRadius: 0
+                                    }}
+                                    value={newPassword.value}
+                                    type={showNewPassword ? 'text' : 'password'}
+                                    className="form-control"
+                                    placeholder='Enter your password'
+                                    aria-label="Recipient's username"
+                                    aria-describedby="basic-addon2"
+                                    onFocus={() => {
+                                        setToggleNewPassword(true)
+                                    }}
+                                    onBlur={() => {
+                                        setToggleNewPassword(false)
+                                    }}
+                                    onChange={newPassword.onChange}
+                                />
+                                <span className="input-group-text" id="basic-addon2"
+                                    style={{
+                                        borderTopLeftRadius: 0,
+                                        borderBottomLeftRadius: 0,
+                                        borderLeft: 0,
+                                        borderRadius: 0,
+                                        borderColor: toggleNewPassword ? '#000000' : 'black',
+                                    }}
+                                    onClick={() => {
+                                        setShowNewPassword(!showNewPassword)
+                                    }}
+                                >
+                                    {showNewPassword ? <i className="bi bi-eye-fill mt--1"
+                                        style={{
+                                            fontSize: '20px',
+                                            marginBottom: '-5px'
+                                        }}
+                                    ></i> : <i className="bi bi-eye-slash-fill mt--1 pb-0"
+                                        style={{
+                                            fontSize: '20px',
+                                            marginBottom: '-5px'
+                                        }}
+                                    ></i>}
+                                </span>
+                            </div>
                         </div>
-                        <div className={'mb-3'}>
-                            <label className="h3 font-weight-bolder text-black">Confirm Password</label>
-                            <Input
-                                className='rounded-0'
-                                type={'text'}
-                                value={confirmPassword.value}
-                                placeholder='Confirm Password'
-                                onChange={confirmPassword.onChange}
-                            />
+
+                        <div>
+                            <label className="h2 text-black">Confirm Password</label>
+                            <div className="input-group mb-3">
+                                <input
+                                    style={{
+                                        borderTopRightRadius: 0,
+                                        borderBottomRightRadius: 0,
+                                        borderRight: 0,
+                                        borderRadius: 0
+                                    }}
+                                    value={confirmPassword.value}
+                                    type={showConfirmPassword ? 'text' : 'password'}
+                                    className="form-control"
+                                    placeholder='Enter your password'
+                                    aria-label="Recipient's username"
+                                    aria-describedby="basic-addon2"
+                                    onFocus={() => {
+                                        setToggleConfirmPassword(true)
+                                    }}
+                                    onBlur={() => {
+                                        setToggleConfirmPassword(false)
+                                    }}
+                                    onChange={confirmPassword.onChange}
+                                />
+                                <span className="input-group-text" id="basic-addon2"
+                                    style={{
+                                        borderTopLeftRadius: 0,
+                                        borderBottomLeftRadius: 0,
+                                        borderLeft: 0,
+                                        borderRadius: 0,
+                                        borderColor: toggleConfirmPassword ? '#000000' : 'black',
+                                    }}
+                                    onClick={() => {
+                                        setShowConfirmPassword(!showConfirmPassword)
+                                    }}
+                                >
+                                    {showConfirmPassword ? <i className="bi bi-eye-fill mt--1"
+                                        style={{
+                                            fontSize: '20px',
+                                            marginBottom: '-5px'
+                                        }}
+                                    ></i> : <i className="bi bi-eye-slash-fill mt--1 pb-0"
+                                        style={{
+                                            fontSize: '20px',
+                                            marginBottom: '-5px'
+                                        }}
+                                    ></i>}
+                                </span>
+                            </div>
                         </div>
 
                         <div className="pb-3 pt-2 ">

@@ -18,7 +18,7 @@ function Designation() {
 
     const { sectors } = useSelector((state: any) => state.DashboardReducer)
     const { sectorsCorporate, departmentCorporate } = useSelector((state: any) => state.DashboardReducer)
-    
+
     // console.log('departmentCorporate---------->', JSON.stringify(departmentCorporate));
 
 
@@ -33,7 +33,7 @@ function Designation() {
     const [selectedDesignation, setSelectedDesignation] = useState<any>({})
     const [selectedVariant, setSelectedVariant] = useState<any>({})
 
-console.log(selectSector,"card selectSectorselectSectorselectSector------>");
+    console.log(selectSector, "card selectSectorselectSectorselectSector------>");
 
 
     const addDesignationModal = useModal(false);
@@ -66,7 +66,7 @@ console.log(selectSector,"card selectSectorselectSectorselectSector------>");
             getSectorCorporate({
                 params,
                 onSuccess: (response: any) => () => {
-                   
+
                 },
                 onError: () => () => {
                 },
@@ -76,13 +76,13 @@ console.log(selectSector,"card selectSectorselectSectorselectSector------>");
 
     const addSectorCorporateApiHandler = (value) => {
         console.log(value, "apiCheck");
-        const params = {name: value, description: null }
+        const params = { name: value, description: null }
         dispatch(
             addSectorCorporate({
                 params,
                 onSuccess: (response) => () => {
                     console.log(response, "addSectorCorporateApiHandler");
-                    
+
                     getSectorsCorporateApiHandler();
                 },
                 onError: (error) => () => {
@@ -97,7 +97,7 @@ console.log(selectSector,"card selectSectorselectSectorselectSector------>");
             getDepartmentCorporate({
                 params,
                 onSuccess: (response: any) => () => {
-                   console.log('getDepartmentCorporate-------->',JSON.stringify(response))
+                    console.log('getDepartmentCorporate-------->', JSON.stringify(response))
                 },
                 onError: () => () => {
                 },
@@ -107,14 +107,14 @@ console.log(selectSector,"card selectSectorselectSectorselectSector------>");
 
     const addDepartmentApiHandler = (value) => {
         console.log(value, "apiCheck");
-        
-  const params = {name: value}
+
+        const params = { name: value }
         dispatch(
             addDepartmentCorporate({
                 params,
                 onSuccess: (response) => () => {
                     console.log(response, 'addDepartapiHandler');
-                    
+
                     getDepartmentCorporateApiHandler();
                 },
                 onError: (error) => () => {
@@ -122,118 +122,6 @@ console.log(selectSector,"card selectSectorselectSectorselectSector------>");
             })
         )
     }
-
-
-    // const getSectorsApiHandler = () => {
-    //     const params = {}
-    //     dispatch(
-    //         getSectors({
-    //             params,
-    //             onSuccess: (response: any) => () => {
-    //                 setNavList(response?.details?.knowledege_groups)
-    //                 fetchKnowledgeData(response?.details?.knowledege_groups[0]?.id)
-    //             },
-    //             onError: () => () => {
-    //             },
-    //         })
-    //     );
-    // };
-
-    // const fetchKnowledgeData = (id) => {
-    //     console.log('1111111111111111111111111111', id)
-    //     const params = {
-    //         sector_id: id
-    //     }
-    //     dispatch(getKnowledgeGroups({
-    //         params,
-    //         onSuccess: (response: any) => () => {
-    //             setCardData(response.details.knowledege_groups)
-    //         },
-    //         onError: (error) => () => {
-
-    //         },
-    //     }))
-    // }
-
-    // const createKnowledgeGroupApiHandler = () => {
-
-    //     const params = {
-    //         name: title?.value,
-    //         description: description?.value,
-    //         sector_id: sector.value?.id
-    //     };
-
-    //     const validation = validate(ADD_DESIGNATION_RULES, params)
-
-    //     if (ifObjectExist(validation)) {
-    //         loader.show()
-    //         dispatch(
-    //             createKnowledgeGroup({
-    //                 params,
-    //                 onSuccess: (response) => () => {
-    //                     loader.hide()
-    //                     addDesignationModal.hide()
-    //                     fetchKnowledgeData(navList[navIndex]?.id)
-    //                     resetValue();
-    //                     showToast(response.message, 'success');
-    //                 },
-    //                 onError: (error) => () => {
-    //                     showToast(error.error_message, 'error');
-    //                     loader.hide()
-    //                 },
-    //             })
-    //         )
-    //     } else {
-    //         showToast(getValidateError(validation))
-    //     }
-    // };
-
-    // function resetValue() {
-    //     title.set('')
-    //     description.set('')
-    //     sector.set({})
-
-    // }
-
-    // const createKnowledgeGroupVariantApiHandler = () => {
-
-    //     if (selectedDesignation) {
-    //         const params = {
-    //             knowledge_group_id: selectedDesignation?.id,
-    //             position: position?.value,
-    //             // sector:sectorInput.value,
-    //             experience: experience.value,
-    //             reference_link: portalUrl.value,
-    //             jd: jd.value,
-    //             // id: selectedRole?.id
-    //         };
-    //         const validation = validate(CREATE_KNOWLEDGE_GROUP_VARIANT_RULES, params)
-
-    //         if (ifObjectExist(validation)) {
-    //             loader.show()
-    //             dispatch(
-    //                 createKnowledgeGroupVariant({
-    //                     params,
-    //                     onSuccess: (response: any) => () => {
-    //                         loader.hide();
-    //                         addRoleModal.hide();
-    //                         resetValue();
-    //                         fetchKnowledgeData(navList[navIndex]?.id)
-    //                         showToast(response.message, 'success')
-    //                     },
-    //                     onError: (error: any) => () => {
-    //                         showToast(error.error_message, 'error')
-    //                         loader.hide()
-    //                     },
-    //                 })
-    //             )
-    //         } else {
-    //             showToast(getValidateError(validation))
-    //         }
-    //     }
-    // };
-
-
 
     const createCorporateScheduleApiHandler = () => {
 
@@ -299,78 +187,24 @@ console.log(selectSector,"card selectSectorselectSectorselectSector------>");
         <>
             <div className='container-fluid pt-4'>
                 <h1 className={'text-black mb-0 pb-3'}>{'Schedules'}</h1>
-                {/* <div className='row justify-content-end'>
-                    <Button
-                        className={'text-white shadow-none'}
-                        size={'sm'}
-                        text={"Add Designation"}
-                        onClick={() => {
-                            addDesignationModal.show()
-                            title.set("")
-                        }}
-                    />
-
-                    <Button
-                        className={'text-white shadow-none'}
-                        size={'sm'}
-                        text={"Sector"}
-                        onClick={() => {
-                            goTo(ROUTES['designation-module']['sector']);
-                        }}
-                    />
-                </div> */}
-                {/* <div className='d-flex pt-3 overflow-auto overflow-hide mx--4'>
-                    {navList && removeEmptyData(navList).map((el: any, index: number) => {
-                        return (
-                            <div className='col-sm-3 px-2'>
-                                <Nav
-                                    className="nav-fill flex-column flex-sm-row pointer"
-                                    id="tabs-text"
-                                    pills
-                                    role="tablist"
-                                >
-                                    <NavItem>
-                                        <NavLink
-                                            aria-selected={index === navIndex}
-                                            className={classnames(`mb-sm-3 mb-md-0 shadow-none rounded-0 ${index !== navIndex ? 'text-black font-weight-normal' : 'font-weight-bold'}`, {
-                                                active: index === navIndex
-                                            })}
-                                            onClick={() => {
-                                                setNavIndex(index)
-                                                fetchKnowledgeData(el.id)
-                                            }}
-                                            role="tab"
-                                        >
-                                            {el.name}
-                                        </NavLink>
-                                    </NavItem>
-                                </Nav>
-                            </div>
-                        )
-                    })
-
-                    }
-                </div> */}
 
                 <div className='text-right mb-3'>
-                         <Button
+                    <Button
                         text={'Create Schedule'}
-                         block
-                         onClick={()=>{
-                         addRoleModal.show();
-                         } 
-                     }
+                        block
+                        onClick={() => {
+                            addRoleModal.show();
+                        }
+                        }
                     />
-                 </div>
+                </div>
 
                 <div className='row pt-3'>
-               
-
                     {cardData && cardData.length > 0 ?
                         cardData.map((el: any, index: number) => {
                             return (
-                                <div className='col-sm-12 col-lg-12 p-0 m-0 mb-3'>
-                                    
+                                <div className='col-sm-12 col-lg-12 mb-3'>
+
                                     <DesignationItem
                                         item={el}
                                         // onAdd={(selected) => {
@@ -379,7 +213,7 @@ console.log(selectSector,"card selectSectorselectSectorselectSector------>");
                                         // }}
 
                                         onEdit={(designation, role) => {
-                                            // console.log("desss-->", designation, "riolee==?>", role)
+                                            console.log("desss-->", designation, "riolee==?>", role)
                                             setSelectedDesignation(designation)
                                             dispatch(setSelectedRole(role))
                                             const { name, description } = role
@@ -412,39 +246,6 @@ console.log(selectSector,"card selectSectorselectSectorselectSector------>");
                         </div>
                     }
                 </div>
-                {/* < Modal size={'lg'} title={"Add Designation"} isOpen={addDesignationModal.visible} onClose={() => {
-                    addDesignationModal.hide()
-                    title.set("")
-                    description.set("")
-                    sector.set({})
-                }} >
-                    <div className='col-7'>
-                        <Input
-                            heading={"Name"}
-                            value={title.value}
-                            onChange={title.onChange}
-                        />
-                        <Input
-                            heading={"Description"}
-                            value={description.value}
-                            onChange={description.onChange}
-                        />
-                        {sectors && sectors.length > 0 &&
-                            <DropDown
-                                heading={'Sectors'}
-                                data={getDropDownCompanyDisplayData(sectors)}
-                                selected={sector.value}
-                                onChange={sector.onChange} />
-                        }
-                    </div>
-
-                    <div className="col text-right">
-                        <Button size={'md'}
-                            loading={loader.loader}
-                            text={"Submit"}
-                            onClick={createKnowledgeGroupApiHandler} />
-                    </div>
-                </Modal > */}
 
                 <Modal size={'lg'} title={"Create Schedule"} isOpen={addRoleModal.visible} onClose={() => {
                     addRoleModal.hide()
@@ -453,52 +254,6 @@ console.log(selectSector,"card selectSectorselectSectorselectSector------>");
                     jd.set("")
                     role1.set('')
                 }}>
-                    {/* <div className={'col-6'}>
-                        <ReactAutoComplete
-                        isMandatory
-                        heading={"Sector"}
-                        
-                        />
-                         <ReactAutoComplete 
-                         isMandatory
-                         heading={"Department"}
-                        
-                         />
-                        <Input
-                            heading={"Position"}
-                            placeHolder={'Position'}
-                            value={position.value}
-                            onChange={position.onChange}
-                        />
-                        <Input
-                            isMandatory
-                            heading={'Sector'}
-                            placeHolder={PLACE_HOLDER.sector}
-                            value={sectorInput.value}
-                            onChange={sector.onChange} />
-
-                        <Input
-                        heading = {'Role'}
-                        type = {"text"}
-                        placeHolder = {"Role"}
-                        onchange={role.onChange}
-                       
-
-                        />
-
-                        <Input
-                            heading={'Years of experience'}
-                            type={'number'}
-                            placeHolder={"Experience"}
-                            value={experience.value}
-                            onChange={experience.onChange} />
-
-                        <TextArea
-                            heading='Job Description'
-                            value={jd.value}
-                            className = {"float-end"}
-                            onChange={jd.onChange} />
-                    </div> */}
 
                     <div className={'col-12'}>
                         <div className='row'>
@@ -507,7 +262,7 @@ console.log(selectSector,"card selectSectorselectSectorselectSector------>");
                                     isMandatory
                                     data={sectorsCorporate}
                                     heading={"Sector"}
-                                    onAdd = {(value )=>{
+                                    onAdd={(value) => {
                                         addSectorCorporateApiHandler(value)
                                     }}
                                     state={setSelectedSector}
@@ -518,7 +273,7 @@ console.log(selectSector,"card selectSectorselectSectorselectSector------>");
                                     isMandatory
                                     data={departmentCorporate}
                                     heading={"Department"}
-                                    onAdd = {(value )=>{
+                                    onAdd={(value) => {
                                         addDepartmentApiHandler(value)
                                     }}
                                     state={setSelectedDepartment}
@@ -528,7 +283,7 @@ console.log(selectSector,"card selectSectorselectSectorselectSector------>");
 
                         <div className='row'>
                             <div className='col'>
-                                 <Input
+                                <Input
                                     isMandatory
                                     heading={'Role'}
                                     type={'text'}

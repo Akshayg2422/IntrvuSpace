@@ -14,6 +14,11 @@ import {
   InsightsAndReports,
   AutoApprovalSystem,
   AllInOnePlatform,
+  WebsiteCreateJdAndAddCandidates,
+  WebsiteScheduleAndNotification,
+  WebsiteReportsAndInsights,
+  WebsiteAutoApprovalForCandidatesPerformance,
+  WebsiteCandidateAttendsInterview
 } from "@Modules";
 
 function Website() {
@@ -23,6 +28,12 @@ function Website() {
         <WebsiteNavBar />
         <WebsiteHeader />
         <AllInOnePlatform />
+        <WebsiteCreateJdAndAddCandidates/>
+        <WebsiteScheduleAndNotification/>
+        <WebsiteCandidateAttendsInterview/>
+        <WebsiteReportsAndInsights/>
+        <WebsiteAutoApprovalForCandidatesPerformance/>
+
         {/* <EffortlessInterviews /> */}
 
         {/* <InsightsAndReports />

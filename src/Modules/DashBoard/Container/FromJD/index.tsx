@@ -3,20 +3,23 @@
 import { icons } from '@Assets';
 import { Button, Card, Checkbox, Divider, Image, Input, InputHeading, Modal, Radio, Spinner, TextArea, showToast } from '@Components';
 import { useInput, useLoader, useModal, useNavigation } from '@Hooks';
-import { AnalyzingAnimation, GenerateModal, UploadJdCard,Clipboard } from '@Modules';
-import { canStartInterview, createNewJdSchedule, createSchedulesSuperAdmin, getJdItemList, hideCreateForOthersJdModal, hideCreateJdModal, postJdVariant, selectedScheduleId, showCreateForOthersJdModal, showCreateJddModal } from '@Redux';
+import { AnalyzingAnimation, GenerateModal, UploadJdCard } from '@Modules';
+import { canStartInterview, createNewJdSchedule, getJdItemList, hideCreateJdModal, postJdVariant, selectedScheduleId, showCreateJddModal } from '@Redux';
 import { ROUTES } from '@Routes';
-import { CREATE_FOR_OTHERS_RULES, FROM_JD_RULES, getValidateError, ifObjectExist, validate } from '@Utils';
-import React, { useEffect, useState } from 'react';
-import { useRef } from 'react';
+import { FROM_JD_RULES, formatDateTime, getValidateError, ifObjectExist, validate } from '@Utils';
+import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import ClipboardJS from 'clipboard';
+import './index.css'
 
-export const interviewDurations = [
-    { id: '1', text: 'Short', subText: '(5 mins)', value: 5 },
-    { id: '2', text: 'Medium', subText: '(15 mins)', value: 15 },
-    { id: '3', text: 'Long', subText: '(30 mins)', value: 30 },
+export const interviewDurations: any = [
+    { id: '0', text: 'Quick', subText: '5 mins', value: 5 },
+    { id: '1', text: 'Short', subText: '10 mins', value: 10 },
+    { id: '2', text: 'Medium', subText: '15 mins', value: 15 },
+    { id: '3', text: 'Long', subText: '30 mins', value: 30 },
 ];
+
+const experienceInNumber: number[] = Array.from({ length: 31 }, (_, index) => index);
+
 
 const PLACE_HOLDER = {
     "sector": "Software, Banking...",
@@ -31,18 +34,16 @@ const INTERVAL_TIME = 5000
 function FromJD() {
     const CHAR_LENGTH = 5000
     const VIEW_MORE_LENGTH = 300
+    const intervalIdRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
 
 
     const ERROR_MESSAGE = "In beta version, you can upload only max of " + CHAR_LENGTH + " characters."
-    const { loginDetails } = useSelector((state: any) => state.AppReducer);
-
-
-    const { createJdModal, jdItem, createForOthersJdModal } = useSelector((state: any) => state.DashboardReducer);
-    console.log('jdItem---------->', JSON.stringify(jdItem))
+    const { createJdModal, jdItem } = useSelector((state: any) => state.DashboardReducer);
 
     const { goTo } = useNavigation();
     const position = useInput('');
-    const experience = useInput('');
+    const [experience, setExperience] = useState('0')
     const jd = useInput('');
     const sector = useInput('');
     const generateJdModal = useModal(false);
@@ -52,27 +53,23 @@ function FromJD() {
     const [loading, setLoading] = useState(true);
     const [jdMore, setJdMore] = useState<any>([])
     const [fresherChecked, setFresherChecked] = useState(false)
-    const [notifyInterview, setNotifyInterview] = useState(false)
-    const [notifyReport, setNotifyReport] = useState(false)
+
     const [jdDescriptionError, setJdDescriptionError] = useState<any>(undefined)
     const [selectedDuration, setSelectedDuration] = useState(interviewDurations[0]);
-    const [selectedDurationForOthers, setSelectedDurationForOthers] = useState(interviewDurations[0]);
-    const firstName = useInput('')
-    const lastName = useInput('')
-    const email = useInput('')
-    const mobileNumber = useInput('')
-    const sectorForOthers = useInput('')
-    const experienceForOthers = useInput('')
-    const positionForOthers = useInput('')
-    const jdForOthers = useInput('')
-
-
     const startInterviewLoader = useLoader(false);
-    const createInterviewSuperAdminLoader = useLoader(false);
+
+    const handleDurationClick = (interviewDurations) => {
+        setSelectedDuration(interviewDurations);
+    };
 
 
     useEffect(() => {
         getKnowledgeGroupFromJdHandler();
+
+        return () => {
+            stopInterval();
+        };
+
     }, [])
 
 
@@ -93,12 +90,14 @@ function FromJD() {
         );
     };
 
+
+
     function submitJdApiHandler() {
         const params = {
             sector_name: sector.value,
             position: position.value,
             interview_duration: selectedDuration.value,
-            experience: fresherChecked ? '0' : experience.value,
+            experience: experience,
             jd: jd.value
         }
 
@@ -117,7 +116,7 @@ function FromJD() {
                     if (details?.schedule_id) {
                         const canStartParams = { schedule_id: details?.schedule_id }
                         setScheduleId(details?.schedule_id)
-                        const intervalId = setInterval(() => {
+                        intervalIdRef.current = setInterval(() => {
                             dispatch(canStartInterview({
                                 params: canStartParams,
                                 onSuccess: (res: any) => () => {
@@ -126,7 +125,9 @@ function FromJD() {
                                     getKnowledgeGroupFromJdHandler();
                                     resetValues();
                                     // showToast(res.status, 'success');
-                                    clearInterval(intervalId);
+                                    if (intervalIdRef.current) {
+                                        clearInterval(intervalIdRef.current);
+                                    }
                                 },
                                 onError: (error: any) => () => {
                                     console.log(error);
@@ -149,11 +150,11 @@ function FromJD() {
 
     function resetValues() {
         position.set('')
-        experience.set('')
+        setExperience('')
         jd.set('')
         sector.set('')
     }
-
+    console.log('1111111111111', selectedDuration.value);
 
     function createNewJdScheduleApiHandler(id: string) {
         const params = {
@@ -196,60 +197,6 @@ function FromJD() {
             }))
     }
 
-    function createForOthersApiHandler() {
-        const params = {
-            custom_first_name: firstName.value,
-            custom_last_name: lastName.value,
-            custom_email: email.value,
-            custom_mobile_number: mobileNumber.value,
-            sector_name: sectorForOthers.value,
-            position: positionForOthers.value,
-            is_notify_interview: notifyInterview,
-            is_notify_report: notifyReport,
-            experience: experienceForOthers.value,
-            interview_duration: selectedDurationForOthers.value,
-            jd: jdForOthers.value
-        }
-
-        const validation = validate(CREATE_FOR_OTHERS_RULES, params)
-
-        if (ifObjectExist(validation)) {
-            createInterviewSuperAdminLoader.show();
-            dispatch(createSchedulesSuperAdmin({
-                params,
-                onSuccess: (response: any) => () => {
-                    createForOthersResetValues()
-                    dispatch(hideCreateForOthersJdModal())
-                    getKnowledgeGroupFromJdHandler();
-                    createInterviewSuperAdminLoader.hide();
-
-                },
-                onError: (error) => () => {
-                    generateJdModal.hide();
-                    dispatch(showCreateForOthersJdModal())
-                    showToast(error.error_message, 'error')
-                    createInterviewSuperAdminLoader.hide();
-
-                },
-            }))
-        } else {
-            showToast(getValidateError(validation))
-        }
-    }
-
-    function createForOthersResetValues() {
-        firstName.set('')
-        lastName.set('')
-        email.set('')
-        mobileNumber.set('')
-        sectorForOthers.set('')
-        positionForOthers.set('')
-        experienceForOthers.set('')
-        jd.set('')
-        setNotifyInterview(false)
-        setNotifyReport(false)
-
-    }
 
 
     function proceedInterviewHandler(id: string) {
@@ -289,32 +236,15 @@ function FromJD() {
         }
     }
 
-    function proceedResponse(id: string) {
-        if (id) {
-            goTo(ROUTES['designation-module'].response + "/" + id)
+
+
+    const stopInterval = () => {
+        if (intervalIdRef.current !== null) {
+            clearInterval(intervalIdRef.current);
+            intervalIdRef.current = null;
         }
-    }
-
-    // const copyInterviewLink = () => {
-    //     if (jdItem && jdItem.length > 0) {
-    //         jdItem.forEach((item) => {
-    //             const {
-    //                 job_description: { },
-    //                 schedules,
-    //             } = item;
-
-    //             const copyInterviewLink = schedules.find((schedule) => {
-    //                 const { custom_interview_link } = schedule;
-    //                 return custom_interview_link;
-    //             });
-
-    //             if (copyInterviewLink) {
-    //                 const { custom_interview_link } = copyInterviewLink;
-    //                 console.log(`Copying interview link: ${custom_interview_link}`);
-    //             }
-    //         });
-    //     }
-    // };
+    };
+    console.log('1111111111111111', experience);
 
 
     return (
@@ -341,7 +271,7 @@ function FromJD() {
                                     })
 
                                     const copyInterviewLink = schedules && schedules.length > 0 && schedules[0].custom_interview_link;
-                                    console.log('copyInterviewLink',copyInterviewLink)
+                                    console.log('copyInterviewLink', copyInterviewLink)
 
                                     const basic_info = proceedInterview?.custom_interviewee_details?.basic_info
 
@@ -351,182 +281,241 @@ function FromJD() {
                                         demoDisplayName = " - " + basicInfo?.first_name
 
                                     return (
-                                        <Card className="mt--3 ">
-                                            <div className={'d-flex justify-content-between'}>
-                                                <div>
-                                                    {name ? <span style={{
-                                                        fontSize: "21px"
-                                                    }} className='mb-0 text-primary font-weight-bolder'>
-                                                        {name.charAt(0).toUpperCase() + name.slice(1) + demoDisplayName}
-                                                    </span> : <></>
-                                                    }
-                                                    <Clipboard linkToCopy={copyInterviewLink}/>
-
-                                                    {interview_duration &&
-                                                        <div className='col'>
-                                                            <div className='row d-flex align-items-center mb-1'>
-                                                                <Image src={icons.clock} height={17} width={17} style={{
-                                                                    objectFit: 'contain'
-                                                                }} />
-                                                                <h5 style={{
-                                                                    fontSize: "14px"
-                                                                }} className='mb-0 text-primary font-weight-bolder ml-2'>{`${interview_duration} mins`}</h5>
-                                                            </div>
-                                                        </div>
-                                                    }
-                                                    <h5 className='mb-0 pointer'>{experience === 0 ? "Fresher" : "" + experience + (experience === 1 ? " year " : " years ") + "of experience"}</h5>
-                                                </div>
-
-
-                                                {
-                                                    proceedInterview ?
-                                                        <div>
-                                                            {loginDetails?.is_super_admin ? <Button
-                                                                text={'View Response'}
-                                                                onClick={() => {
-                                                                    proceedResponse(proceedInterview?.id);
-                                                                }}
-                                                            /> : null
-                                                            }
-                                                            <Button
-                                                                loading={startInterviewLoader.loader}
-                                                                className={'px-4 border border-primary'}
-                                                                text={proceedInterview.is_started ? "Resume Interview" : "Start Interview"}
-                                                                onClick={() => {
-                                                                    proceedInterviewHandler(proceedInterview?.id);
-                                                                }}
-                                                            />
-                                                        </div> :
-                                                        <div>
-                                                            <Button
-                                                                text={'Try Another'}
-                                                                onClick={() => {
-                                                                    createNewJdScheduleApiHandler(id);
-                                                                }}
-                                                            />
-                                                        </div>
-                                                }
-                                            </div>
-                                            <div className='col mt-3'>
-                                                <div className='row'>
-                                                    <div className='col ml-0'>
+                                        <Card className="mt-5 rounded mx-6"
+                                            style={{
+                                                borderWidth: "1px",
+                                                borderColor: "#d3deff",
+                                                backgroundColor: "transparent"
+                                            }}>
+                                            <div className='px-md-4 py-md-3'>
+                                                <div className={'d-flex justify-content-between'}  >
+                                                    <div className='mt-2'>
+                                                        {name ? <span style={{
+                                                            fontSize: "21px"
+                                                        }} className='mb-0 text-secondary font-weight-bolder'>
+                                                            {name.charAt(0).toUpperCase() + name.slice(1) + demoDisplayName}
+                                                        </span> : <></>
+                                                        }
+                                                        <small className={"text-secondary"}>{experience === 0 ? " Fresher" : " " + experience + (experience === 1 ? " year " : " years ") + "of experience"}</small>
                                                         {
-                                                            details.length < VIEW_MORE_LENGTH ?
-                                                                <div className='row'>
-                                                                    <div className='text-details text-black'>{`${details}`}</div>
-                                                                </div>
-                                                                :
-                                                                <>
-                                                                    {more ?
-                                                                        <div className='row'>
-                                                                            <div className='text-details text-black'>
-                                                                                {details.split('\n\n').map((paragraph, index) => (
-                                                                                    <React.Fragment key={index}>
-                                                                                        {index > 0 && <br />} {/* Add <br /> between paragraphs except for the first one */}
-                                                                                        {paragraph}
-                                                                                    </React.Fragment>
-                                                                                ))}
-                                                                                <span className='h4 text-primary ml-3 pointer' onClick={() => {
-                                                                                    const updatedData: any = [...jdMore];
-                                                                                    updatedData[index] = { ...updatedData[index], more: false };
-                                                                                    setJdMore(updatedData);
-                                                                                }}>
-                                                                                    View Less
-                                                                                </span>
-                                                                            </div>
+                                                            modifiedSchedules &&
+                                                            modifiedSchedules.length > 0 &&
+                                                            modifiedSchedules.slice().reverse().map((each: any, index: number) => {
+
+                                                                const { is_complete, is_report_complete, id, created_at, custom_interviewee_details } = each;
+                                                                console.log(is_complete, 'com', created_at);
 
 
-                                                                        </div>
-                                                                        :
-                                                                        <div className='row'>
-                                                                            <div className='text-details text-black'>{details.slice(0, VIEW_MORE_LENGTH) + " ..."}
-                                                                                <span className='h4 text-primary ml-1 pointer'
-                                                                                    onClick={() => {
-                                                                                        const updatedData: any = [...jdMore]
-                                                                                        updatedData[index] = { ...updatedData[index], more: true }
-                                                                                        setJdMore(updatedData)
-                                                                                    }}
-                                                                                >
-                                                                                    View More
-                                                                                </span>
-                                                                            </div>
-                                                                        </div>
+                                                                return (
+                                                                    <>  {index === 0 && <div className=' d-flex align-items-center'>
+                                                                        <img src={icons.check} height={20} width={20} style={{
+                                                                            objectFit: 'contain'
+                                                                        }} />
+                                                                        <h5 className='col mb-0 font-weight-normal p-0 font-weight-bolder text-secondary'>{(is_complete ? "Completed " : "Created at ")} <span className='font-weight-normal text-secondary'>{("on ") + formatDateTime(created_at)} </span></h5>
+                                                                    </div>
                                                                     }
-                                                                </>
+                                                                    </>
+
+                                                                )
+                                                            })
                                                         }
                                                     </div>
-                                                </div>
-                                            </div>
-                                            <div className='col mt-3'>
-                                                {modifiedSchedules && modifiedSchedules.length > 0 && <Divider className={'row'} space={"3"} />}
-                                                {
-                                                    modifiedSchedules &&
-                                                    modifiedSchedules.length > 0 &&
-                                                    modifiedSchedules.slice().reverse().map((each: any, index: number) => {
-                                                        const { is_complete, is_report_complete, id, created_at, custom_interviewee_details } = each;
-
-                                                        const basic_info = custom_interviewee_details?.basic_info
-
-
-                                                        const basicInfo = basic_info && basic_info.first_name ? basic_info : null;
-                                                        let demoDisplayName: any = ''
-                                                        if (basicInfo)
-                                                            demoDisplayName = " - " + basicInfo?.first_name
-
-                                                        const getDisplayTimeFromMoment = (timestamp: any) => {
-                                                            const currentTime = new Date().getTime();
-                                                            const createdAt = new Date(timestamp).getTime();
-                                                            const timeDifference = Math.floor((currentTime - createdAt) / (1000 * 60));
-
-                                                            if (timeDifference < 60) {
-                                                                return `${timeDifference} mins ago`;
-                                                            } else if (timeDifference < 1440) {
-                                                                const hours = Math.floor(timeDifference / 60);
-                                                                return `${hours} ${hours === 1 ? 'hour' : 'hours'} ago`;
-                                                            } else {
-                                                                const days = Math.floor(timeDifference / 1440);
-                                                                return `${days} ${days === 1 ? 'day' : 'days'} ago`;
+                                                    <div>
+                                                        <div className='d-flex flex-column justify-content-center align-items-center'>
+                                                            {
+                                                                proceedInterview ?
+                                                                    <div>
+                                                                        <Button style={{ fontSize: "15px" }}
+                                                                            size='md'
+                                                                            loading={startInterviewLoader.loader}
+                                                                            className={'px-md-5 border border-primary rounded'}
+                                                                            text={proceedInterview.is_started ? "Resume Interview" : "Start Interview"}
+                                                                            onClick={() => {
+                                                                                proceedInterviewHandler(proceedInterview?.id);
+                                                                            }}
+                                                                        />
+                                                                    </div> :
+                                                                    <div>
+                                                                        <Button style={{ fontSize: "15px" }}
+                                                                            size='md'
+                                                                            className={'px-md-5 border border-primary rounded'}
+                                                                            text={'Try Another'}
+                                                                            onClick={() => {
+                                                                                createNewJdScheduleApiHandler(id);
+                                                                            }}
+                                                                        />
+                                                                    </div>
                                                             }
-                                                        };
+                                                            {interview_duration &&
+                                                                <div>
+                                                                    <div className='row d-flex align-items-center mt-1'>
+                                                                        {/* <Image src={icons.clock} height={17} width={17} style={{
+                                                                    objectFit: 'contain'
+                                                                }} /> */}
+                                                                        <h5 style={{
+                                                                            fontSize: "14px"
+                                                                        }} className='mb-0 text-secondary font-weight-bolder ml-2'>{`${interview_duration} mins`}<span className={"font-weight-normal"}> Duration</span></h5>
 
-                                                        return (
-                                                            <div>
-                                                                <div className='row align-items-center'>
-                                                                    <h5 className='col m-0 p-0'>{"Interview " + (index + 1) + demoDisplayName}</h5>
-                                                                    <h5 className='col mb-0 text-center'>{(is_complete ? "Completed: " : "Created at: ") + getDisplayTimeFromMoment(created_at)}</h5>
-                                                                    <div className='col d-flex justify-content-end'>
-                                                                        {
-                                                                            is_report_complete &&
-                                                                            <div className='row'>
-                                                                                {loginDetails?.is_super_admin ? <Button
-                                                                                    text={'View Response'}
-                                                                                    onClick={() => {
-                                                                                        proceedResponse(id);
-                                                                                    }}
-                                                                                /> : null
-                                                                                }
-                                                                                <Button
-                                                                                    text={'View Report'}
-                                                                                    onClick={() => {
-                                                                                        proceedReport(id);
-                                                                                    }}
-                                                                                />
-                                                                            </div>
-                                                                        }
-                                                                        {
-                                                                            is_complete && !is_report_complete &&
-                                                                            <div>
-                                                                                <span className="name mb-0 text-sm">Generating Report ...</span>
-                                                                            </div>
-                                                                        }
                                                                     </div>
                                                                 </div>
-                                                                <Divider className={'row'} space={"3"} />
-                                                            </div>
-                                                        )
-                                                    })
+                                                            }
+                                                        </div>
+                                                    </div>
+
+
+                                                </div>
+
+                                                <div className='col mt-3'>
+                                                    <div className='row'>
+                                                        <div className='col ml-0' style={{ fontSize: "14px" }}>
+                                                            {
+                                                                details.length < VIEW_MORE_LENGTH ?
+                                                                    <div className='row'>
+                                                                        <div className='text-details text-default'>{`${details}`}</div>
+                                                                    </div>
+                                                                    :
+                                                                    <>
+                                                                        {more ?
+                                                                            <div className='row'>
+                                                                                <div className='text-details text-default'>
+                                                                                    {details.split('\n\n').map((paragraph, index) => (
+                                                                                        <React.Fragment key={index}>
+                                                                                            {index > 0 && <br />} {/* Add <br /> between paragraphs except for the first one */}
+                                                                                            {paragraph}
+                                                                                        </React.Fragment>
+                                                                                    ))}
+                                                                                    <span className='h4 text-primary ml-3 pointer' onClick={() => {
+                                                                                        const updatedData: any = [...jdMore];
+                                                                                        updatedData[index] = { ...updatedData[index], more: false };
+                                                                                        setJdMore(updatedData);
+                                                                                    }}>
+                                                                                        View Less
+                                                                                    </span>
+                                                                                </div>
+
+
+                                                                            </div>
+                                                                            :
+                                                                            <div className='row'>
+                                                                                <div className='text-details text-default'>{details.slice(0, VIEW_MORE_LENGTH) + " ..."}
+                                                                                    <span className='h4 text-primary ml-1 pointer'
+                                                                                        onClick={() => {
+                                                                                            const updatedData: any = [...jdMore]
+                                                                                            updatedData[index] = { ...updatedData[index], more: true }
+                                                                                            setJdMore(updatedData)
+                                                                                        }}
+                                                                                    >
+                                                                                        View More
+                                                                                    </span>
+                                                                                </div>
+                                                                            </div>
+                                                                        }
+                                                                    </>
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                {modifiedSchedules && modifiedSchedules.length > 0 &&
+                                                    <div className='mt-3 px-md-4 pt-md-5' style={{ backgroundColor: "#fafbff" }}>
+                                                        {/* {modifiedSchedules && modifiedSchedules.length > 0 && <Divider className={'row'} space={"3"} />} */}
+                                                        {
+                                                            modifiedSchedules &&
+                                                            modifiedSchedules.length > 0 &&
+                                                            modifiedSchedules.slice().reverse().map((each: any, index: number) => {
+
+
+                                                                const { is_complete, is_report_complete, id, created_at, custom_interviewee_details } = each;
+
+                                                                const basic_info = custom_interviewee_details?.basic_info
+
+
+                                                                const basicInfo = basic_info && basic_info.first_name ? basic_info : null;
+                                                                let demoDisplayName: any = ''
+                                                                if (basicInfo)
+                                                                    demoDisplayName = " - " + basicInfo?.first_name
+
+                                                                const getDisplayTimeFromMoment = (timestamp: any) => {
+                                                                    const currentTime = new Date().getTime();
+                                                                    const createdAt = new Date(timestamp).getTime();
+                                                                    const timeDifference = Math.floor((currentTime - createdAt) / (1000 * 60));
+
+                                                                    if (timeDifference < 60) {
+                                                                        return `${timeDifference} mins ago`;
+                                                                    } else if (timeDifference < 1440) {
+                                                                        const hours = Math.floor(timeDifference / 60);
+                                                                        return `${hours} ${hours === 1 ? 'hour' : 'hours'} ago`;
+                                                                    } else {
+                                                                        const days = Math.floor(timeDifference / 1440);
+                                                                        return `${days} ${days === 1 ? 'day' : 'days'} ago`;
+                                                                    }
+                                                                };
+
+                                                                return (
+                                                                    <div className='d-flex flex-column'>
+                                                                        {
+                                                                            index === 0 && <div className='d-flex '>
+                                                                                <div className='col-3'></div>
+                                                                                <div className='col-7 d-flex justify-content-around mb-3'>
+                                                                                    <h4 className='ml-4'>Skill matrix</h4>
+                                                                                    <h4>Communication</h4>
+                                                                                    <h4 className='mr-5'>Aptitude</h4>
+                                                                                </div>
+                                                                                <div className='col-2'></div>
+                                                                            </div>
+                                                                        }
+                                                                        <div className='d-flex col-12'>
+
+                                                                            <div className='col-3'>
+                                                                                <h5 className='col m-0 p-0 text-secondary'>{"Interview " + (index + 1) + demoDisplayName}</h5>
+                                                                                <h5 className='col mb-0 pl-1 font-weight-normal text-default'>{(is_complete ? "Completed " : "Created at ") + getDisplayTimeFromMoment(created_at)}</h5>
+                                                                            </div>
+                                                                            <div className='col-9'>
+                                                                                <div className='d-flex'>
+                                                                                    <div className='col-9 d-flex justify-content-around align-items-center'>
+                                                                                        <h5>-</h5>
+                                                                                        <h5>-</h5>
+                                                                                        <h5>-</h5>
+                                                                                    </div>
+
+                                                                                    <div className='col-3 d-flex justify-content-center'>
+                                                                                        {
+                                                                                            is_report_complete &&
+                                                                                            <div >
+                                                                                                <Button
+                                                                                                    size='md'
+                                                                                                    className='btn btn-outline-primary rounded'
+                                                                                                    style={{
+                                                                                                        borderColor: "#d8dade",
+                                                                                                        fontSize: "15px"
+                                                                                                    }}
+                                                                                                    text={'View Report'}
+                                                                                                    onClick={() => {
+                                                                                                        proceedReport(id);
+                                                                                                    }}
+                                                                                                />
+                                                                                            </div>
+                                                                                        }
+                                                                                        {
+                                                                                            is_complete && !is_report_complete &&
+                                                                                            <div>
+                                                                                                <span className="name mb-0 text-sm">Generating Report ...</span>
+                                                                                            </div>
+                                                                                        }
+                                                                                    </div>
+                                                                                </div>
+                                                                                <Divider className={"col-11 mx--3 text-"} space={"3"} />
+
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+                                                                )
+                                                            })
+                                                        }
+                                                    </div>
                                                 }
                                             </div>
+
                                         </Card>
                                     )
                                 })
@@ -540,126 +529,111 @@ function FromJD() {
                     <UploadJdCard />
             }
 
+            <div className='p-5'>
+                <Modal size={'lg'} isOpen={createJdModal} onClose={() => { dispatch(hideCreateJdModal()) }}>
+                    <div className={'m-md-5 mt-sm-0 mt-5'}>
+                        <div className='display-4 text-secondary font-weight-bolder mt--6 mb-md-5'>{'Create Interview'}
+                            <p className={'text-default'} style={{ fontSize: '15px', fontWeight: 400 }}>{'Input job details, specifying qualifications, requirements, interview duration'}</p>
+                        </div>
 
-            <Modal title={'Create Interview'} isOpen={createJdModal} onClose={() => { dispatch(hideCreateJdModal()) }}>
-                <div className={'row'}>
-                    <div className={'col-6'}>
-                        <Input
-                            isMandatory
-                            heading={'Sector'}
-                            placeHolder={PLACE_HOLDER.sector}
-                            value={sector.value}
-                            onChange={sector.onChange} />
-                    </div>
-                    <div className={'col-6'}>
-                        <Input
-                            isMandatory
-                            heading={'Role'}
-                            placeHolder={PLACE_HOLDER.role}
-                            value={position.value}
-                            onChange={position.onChange} />
-                    </div>
-                </div>
-
-                <div className={'row'}>
-                    <div className={'col-6'}>
-                        {fresherChecked ? (
-                            <div className='ml-2'>
+                        <div className={'row'}>
+                            <div className={'col-md-8 col-sm-0 col-12'}>
                                 <Input
-                                    isMandatory
-                                    heading={'Years of experience'}
-                                    type={'text'}
-                                    placeHolder={'Fresher'}
-                                    value={'Fresher'}
-                                    disabled
-                                />
+                                    heading={'Position'}
+                                    placeHolder={PLACE_HOLDER.role}
+                                    value={position.value}
+                                    onChange={position.onChange} />
                             </div>
-                        ) : (
-                            <div>
-                                <Input
-                                    isMandatory
-                                    heading={'Years of experience'}
-                                    type={'number'}
-                                    placeHolder={'Experience'}
-                                    value={experience.value}
-                                    onChange={experience.onChange}
-                                />
+
+                            <div className={'col-md-4 col-sm-0 col-12 mb-sm-0 mb-4'}>
+                                <InputHeading heading={'Experience'} />
+                                <select
+                                    id="experience"
+                                    value={experience}
+                                    onChange={(e) => setExperience(e.target.value)}
+                                    className={`form-control ${experience.length === 0 ? 'text-primary' : 'text-black'} rounded-sm`}
+                                >
+                                    {Array.from({ length: 31 }, (_, index) => (
+                                        <option key={index} value={index.toString()}>
+                                            {index === 0 ? 'Fresher' : index}
+                                        </option>
+                                    ))}
+                                </select>
                             </div>
-                        )}
-                        <span className={'position-absolute left-9 pl-5 top-0'}>
-                            <Checkbox className={'text-primary'} text={'Fresher'} defaultChecked={fresherChecked} onCheckChange={(checked) => {
-                                setFresherChecked(checked)
-                            }} />
-                        </span>
-                    </div>
+                        </div>
 
-
-                    <div className={'col-6 mt-1'}>
-                        <InputHeading Class={'mb-0'} heading={'Interview Duration'} isMandatory />
-                        <Radio
-                            selected={selectedDuration}
-                            selectItem={selectedDuration}
-                            data={interviewDurations}
-                            onRadioChange={(selected) => {
-                                if (selected) {
-                                    setSelectedDuration(selected)
+                        <TextArea
+                            error={jdDescriptionError}
+                            placeholder={PLACE_HOLDER.jd}
+                            heading='Job Description'
+                            value={jd.value.slice(0, CHAR_LENGTH)}
+                            onChange={(e) => {
+                                let value = e.target.value
+                                if (value.length > CHAR_LENGTH) {
+                                    setJdDescriptionError(ERROR_MESSAGE)
+                                } else {
+                                    setJdDescriptionError(undefined)
                                 }
+                                jd.set(value)
                             }}
                         />
+
+                        <div className={'col m-0 p-0 mt-1'}>
+                            <InputHeading Class={'mb-0'} heading={'Interview Duration'} />
+                            <Radio
+                                selected={selectedDuration}
+                                selectItem={selectedDuration}
+                                data={interviewDurations}
+                                onRadioChange={(selected) => {
+                                    if (selected) {
+                                        setSelectedDuration(selected)
+                                    }
+                                }}
+                            />
+                        </div>
+
+                        <div className={'col m-0 p-0'}>
+                            <Input
+                                heading={'Sector'}
+                                placeHolder={PLACE_HOLDER.sector}
+                                value={sector.value}
+                                onChange={sector.onChange} />
+                        </div>
+
+                        <div className='text-center mt-md-6'>
+                            <Button className={'rounded-sm px-md-5 px-sm-0 px-6'} size='md' text={'Start Inteview'} width={30} onClick={submitJdApiHandler} />
+                        </div>
                     </div>
 
-                </div>
+                </Modal >
 
-                <TextArea
-                    isMandatory
-                    error={jdDescriptionError}
-                    placeholder={PLACE_HOLDER.jd}
-                    heading='Job Description'
-                    value={jd.value.slice(0, CHAR_LENGTH)}
-                    onChange={(e) => {
-                        let value = e.target.value
-                        if (value.length > CHAR_LENGTH) {
-                            setJdDescriptionError(ERROR_MESSAGE)
-                        } else {
-                            setJdDescriptionError(undefined)
-                        }
-                        jd.set(value)
-                    }}
-                />
-
-                <div className='text-center'>
-                    <Button block size='md' text={'Submit'} onClick={submitJdApiHandler} />
-                </div>
-
-            </Modal >
+            </div>
 
             <GenerateModal title={'Preparing your Interview'} isOpen={generateJdModal.visible} onClose={generateJdModal.hide}>
                 <AnalyzingAnimation />
             </GenerateModal>
 
             <Modal isOpen={completedModal.visible} onClose={completedModal.hide}>
-                <div className='mt--5 pb-4'>
-                    <div className='text-center '>
-                        <div className='display-1 text-black'>
-                            Your Interview is Ready!
-                        </div>
+                <div className='text-center '>
+                    <div className='display-1 text-black'>
+                        Your Interview is Ready!
                     </div>
-                    <div className='text-center py-3'>
-                        <small className='text-black'>Click Below to Start Interview</small>
-                        <div className='row justify-content-center pt-1'>
-                            <div className='col-4'>
-                                <Button
-                                    loading={startInterviewLoader.loader}
-                                    block
-                                    size='md'
-                                    text={'Start Now'}
-                                    onClick={() => {
-                                        if (scheduleId) {
-                                            proceedInterviewHandler(scheduleId)
-                                        }
-                                    }}
-                                />
-                            </div>
+                </div>
+                <div className='text-center mb-5 mt-3'>
+                    <small className='text-black'>Click Below to Start Interview</small>
+                    <div className='row justify-content-center pt-1'>
+                        <div className='col-4'>
+                            <Button
+                                loading={startInterviewLoader.loader}
+                                block
+                                size='md'
+                                text={'Start Now'}
+                                onClick={() => {
+                                    if (scheduleId) {
+                                        proceedInterviewHandler(scheduleId)
+                                    }
+                                }}
+                            />
                         </div>
                     </div>
                 </div>
@@ -696,136 +670,6 @@ function FromJD() {
                 </div>
             </Modal>
 
-            <Modal title={'Create Interview for Others'} isOpen={createForOthersJdModal} onClose={() => { dispatch(hideCreateForOthersJdModal()) }}>
-                <div className={'row'}>
-                    <div className={'col-6'}>
-                        <Input
-                            isMandatory
-                            heading={'First Name'}
-                            placeHolder={' First Name'}
-                            value={firstName.value}
-                            onChange={firstName.onChange} />
-                    </div>
-                    <div className={'col-6 mt-2'}>
-                        <Input
-                            heading={'Last Name'}
-                            placeHolder={'Last Name'}
-                            value={lastName.value}
-                            onChange={lastName.onChange} />
-                    </div>
-                </div>
-
-                <div className={'row'}>
-                    <div className={'col-6'}>
-                        <Input
-                            heading={'Email'}
-                            placeHolder={'Email Id'}
-                            value={email.value}
-                            onChange={email.onChange} />
-                    </div>
-                    <div className={'col-6'}>
-                        <Input
-                            heading={'Mobile Number'}
-                            maxLength={10}
-                            type={'number'}
-                            placeHolder={'Mobile Number'}
-                            value={mobileNumber.value}
-                            onChange={mobileNumber.onChange} />
-                    </div>
-                </div>
-
-                <div className={'row'}>
-                    <div className={'col-6'}>
-                        <Input
-                            isMandatory
-                            heading={'Sector'}
-                            placeHolder={'Sector'}
-                            value={sectorForOthers.value}
-                            onChange={sectorForOthers.onChange} />
-                    </div>
-                    <div className={'col-6'}>
-                        <Input
-                            isMandatory
-                            heading={'Role'}
-                            placeHolder={'Role'}
-                            value={positionForOthers.value}
-                            onChange={positionForOthers.onChange} />
-                    </div>
-
-                </div>
-
-                <div className={'row'}>
-                    <div className={'col-6'}>
-                        <Input
-                            isMandatory
-                            type={'number'}
-                            heading={'Experience'}
-                            placeHolder={'Experience'}
-                            value={experienceForOthers.value}
-                            onChange={experienceForOthers.onChange} />
-                    </div>
-
-                    <div className={'col-6 mt-1'}>
-                        <InputHeading Class={'mb-0'} heading={'Interview Duration'} isMandatory />
-                        <Radio
-                            selected={selectedDurationForOthers}
-                            selectItem={selectedDurationForOthers}
-                            data={interviewDurations}
-                            onRadioChange={(selected) => {
-                                if (selected) {
-                                    setSelectedDurationForOthers(selected)
-                                }
-                            }}
-                        />
-                    </div>
-
-                </div>
-
-                <TextArea
-                    isMandatory
-                    error={jdDescriptionError}
-                    placeholder={PLACE_HOLDER.jd}
-                    heading='JD Details'
-                    value={jdForOthers.value.slice(0, CHAR_LENGTH)}
-                    onChange={(e) => {
-                        let value = e.target.value
-                        if (value.length > CHAR_LENGTH) {
-                            setJdDescriptionError(ERROR_MESSAGE)
-                        } else {
-                            setJdDescriptionError(undefined)
-                        }
-                        jdForOthers.set(value)
-                    }}
-                />
-
-
-
-                <div className={'d-flex'}>
-                    <Checkbox
-                        className={'text-primary flex-row'}
-                        text={'Notify interview'}
-                        id={'notifyInterview'}
-                        defaultChecked={notifyInterview}
-                        onCheckChange={(checked) => {
-                            setNotifyInterview(checked)
-                        }}
-                    />
-                    <div className='ml-4'></div>
-                    <Checkbox
-                        className={'text-primary'}
-                        text={'Notify Report'}
-                        id={'notifyReport'}
-                        defaultChecked={notifyReport}
-                        onCheckChange={(checked) => {
-                            setNotifyReport(checked)
-                        }} />
-                </div>
-                <div>
-                    <Button block loading={createInterviewSuperAdminLoader.loader} size='md' text={'Submit'} onClick={createForOthersApiHandler} />
-                </div>
-
-
-            </Modal >
         </>
     )
 }

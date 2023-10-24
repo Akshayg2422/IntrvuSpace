@@ -717,6 +717,8 @@ function* forgotPasswordSaga(action) {
   try {
     const response = yield call(Api.forgotPasswordApi, action.payload.params);
     if (response.success) {
+
+      console.log(JSON.stringify(response));
       yield put(Action.forgotPasswordSuccess(response?.details));
       yield call(action.payload.onSuccess(response));
     } else {
@@ -728,6 +730,80 @@ function* forgotPasswordSaga(action) {
     yield call(action.payload.onError(error));
   }
 }
+
+
+/**
+ * reset Interview
+ */
+
+function* resetInterviewSaga(action) {
+  try {
+    const response = yield call(Api.resetInterviewApi, action.payload.params);
+    if (response.success) {
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield call(action.payload.onError(response));
+    }
+  } catch (error) {
+    yield call(action.payload.onError(error));
+  }
+}
+
+
+/**
+ * delete Interview
+ */
+
+function* deleteInterviewSaga(action) {
+  try {
+    const response = yield call(Api.deleteInterviewApi, action.payload.params);
+    if (response.success) {
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield call(action.payload.onError(response));
+    }
+  } catch (error) {
+    yield call(action.payload.onError(error));
+  }
+}
+
+/**
+ * delete JD
+ */
+
+function* deleteJdSaga(action) {
+  try {
+    const response = yield call(Api.deleteJdApi, action.payload.params);
+    if (response.success) {
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield call(action.payload.onError(response));
+    }
+  } catch (error) {
+    yield call(action.payload.onError(error));
+  }
+}
+
+// bulkUploadCandidatesCP
+
+function* bulkUploadCandidatesCpSaga(action) {
+  try {
+    const response = yield call(Api.bulkUploadCandidatesCpApi, action.payload.params);
+    if (response.success) {
+
+      console.log(JSON.stringify(response));
+      yield put(Action.bulkUploadCandidatesSuccess(response?.details));
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield put(Action.bulkUploadCandidatesFailure(response.error_message));
+      yield call(action.payload.onError(response));
+    }
+  } catch (error) {
+    yield put(Action.bulkUploadCandidatesFailure(error));
+    yield call(action.payload.onError(error));
+  }
+}
+
 
 function* DashboardSaga() {
   yield takeLatest(Action.GET_START_CHAT, getChatSaga);
@@ -769,5 +845,9 @@ function* DashboardSaga() {
   yield takeLatest(Action.GET_INTERVIEW_SCHEDULE_DETAILS, getInterviewScheduleDetailsSaga);
   yield takeLatest(Action.RESET_PASSWORD, resetPasswordSaga);
   yield takeLatest(Action.FORGOT_PASSWORD, forgotPasswordSaga);
+  yield takeLatest(Action.RESET_INTERVIEW, resetInterviewSaga);
+  yield takeLatest(Action.DELETE_INTERVIEW, deleteInterviewSaga);
+  yield takeLatest(Action.DELETE_JD, deleteJdSaga);
+  yield takeLatest(Action.BULK_UPLOAD_CANDIDATES_CP, bulkUploadCandidatesCpSaga);
 }
 export default DashboardSaga;

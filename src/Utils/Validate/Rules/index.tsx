@@ -129,8 +129,8 @@ export const FROM_JD_RULES = {
   //   length: { minimum: 3, message: "Sector name minimum 3 chars" },
   // },
   position: {
-    presence: { message: "Role name cannot be empty" },
-    length: { minimum: 3, message: "Role minimum 3 chars" },
+    presence: { message: "Position name cannot be empty" },
+    length: { minimum: 3, message: "Position minimum 3 chars" },
   },
   experience: {
     presence: { allowEmpty: false, message: "Experience cannot be empty" },
@@ -239,15 +239,23 @@ export const CREATE_FOR_OTHERS_RULES = {
   // },
 };
 
+
+export const CREATE_FOR_ADD_ANOTHER_RULES = {
+  custom_first_name: {
+    presence: { message: "First name cannot be empty" },
+    length: { minimum: 3, message: "First name should be at least 3 characters" },
+  },
+};
+
 export const CREATE_NEW_PASSWORD_RULES = {
   otp: {
     presence: { message: "OTP cannot be empty" },
     length: { minimum: 4, message: "Enter the 4 digit OTP" },
   },
   new_password: {
-    email: {allowEmpty: false, message: "New Password cannot be empty" },
+    email: { allowEmpty: false, message: "New Password cannot be empty" },
   },
   confirm_password: {
-    presence: {allowEmpty: false, message: "Confirm password cannot be empty" }
+    presence: { allowEmpty: false, message: "Confirm password cannot be empty" }
   }
 }

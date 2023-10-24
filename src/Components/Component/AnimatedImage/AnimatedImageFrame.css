@@ -31,7 +31,7 @@
 
 @media (max-width: 768px) {
   .animated-image {
-    padding: 110px;
+    padding: 100px;
     display: flex;
     justify-content: center;
     align-items: center;

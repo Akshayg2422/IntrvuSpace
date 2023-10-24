@@ -48,6 +48,7 @@ const initialState: DashboardProp = {
   corporateSchedules: undefined,
   createForOthersJdModal: false,
   interviewScheduleDetails: undefined,
+  retrieveEmail: undefined,
 };
 
 const DashboardReducer = (state = initialState, action: any) => {
@@ -116,6 +117,7 @@ const DashboardReducer = (state = initialState, action: any) => {
     //selected Group Id
 
     case ActionTypes.SET_SELECTED_ROLE:
+      console.log('2222222222222222222222222222222222222222222222222222222222222222222222222',action.payload)
       state = { ...state, selectedRole: action.payload };
       break;
 
@@ -338,10 +340,9 @@ const DashboardReducer = (state = initialState, action: any) => {
      * get jd item list
      */
     case ActionTypes.GET_JD_ITEM_LIST:
-      state = { ...state, jdItem: undefined };
+      state = { ...state };
       break;
     case ActionTypes.GET_JD_ITEM_LIST_SUCCESS:
-      console.log("==========>", action.payload.details);
       state = { ...state, jdItem: action.payload.details?.jd_items };
       break;
     case ActionTypes.GET_JD_ITEM_LIST_FAILURE:
@@ -557,14 +558,28 @@ const DashboardReducer = (state = initialState, action: any) => {
     // forgotPassword
 
     case ActionTypes.FORGOT_PASSWORD:
-      state = { ...state };
+      state = { ...state, retrieveEmail: undefined };
       break;
     case ActionTypes.FORGOT_PASSWORD_SUCCESS:
-      state = { ...state };
+      console.log(JSON.stringify(action.payload));
+      state = { ...state, retrieveEmail: action.payload };
       break;
     case ActionTypes.FORGOT_PASSWORD_FAILURE:
+      state = { ...state, retrieveEmail: action.payload };
+      break;
+
+    // bulkUploadCandidatesCP
+
+    case ActionTypes.BULK_UPLOAD_CANDIDATES_CP:
       state = { ...state };
       break;
+    case ActionTypes.BULK_UPLOAD_CANDIDATES_CP_SUCCESS:
+      state = { ...state };
+      break;
+    case ActionTypes.BULK_UPLOAD_CANDIDATES_CP_FAILURE:
+      state = { ...state };
+      break;
+
 
     default:
       state = state;

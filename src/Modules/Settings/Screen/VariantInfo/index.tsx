@@ -1,17 +1,18 @@
 import { icons } from '@Assets'
-import { Back, Breadcrumbs, Button, Card, CommonTable, DateTimePicker, Divider, Input, Modal, NoDataFound, showToast } from '@Components'
+import { Back, Breadcrumbs, Button, Card, CommonTable, DateTimePicker, Divider, Input, Modal, NoDataFound, showToast, Image, DropzoneFilePicker, Spinner } from '@Components'
 import { useInput, useLoader, useModal, useNavigation, useWindowDimensions } from '@Hooks'
 import { AnalyzingAnimation, GenerateModal } from '@Modules'
-import { createSchedule, generateForm, getCorporateScheduleDetails, selectedScheduleId } from '@Redux'
+import { bulkUploadCandidates, createSchedule, generateForm, getCorporateScheduleDetails, selectedScheduleId } from '@Redux'
 import { ROUTES } from '@Routes'
 import { VALIDATE_ADD_NEW_CANDIDATES_RULES, capitalizeFirstLetter, filteredName, getDisplayTimeDateMonthYearTime, getMomentObjFromServer, getValidateError, ifObjectExist, showMore, validate } from '@Utils'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { saveAs } from 'file-saver'
 
 function VariantInfo() {
     const { selectedRole, corporateScheduleDetails } = useSelector((state: any) => state.DashboardReducer)
-    console.log(corporateScheduleDetails,"corporateScheduleDetails-------->");
-    
+    console.log(JSON.stringify(corporateScheduleDetails), "corporateScheduleDetails-------->");
+
     const { goTo } = useNavigation()
     const addNewCandidateModal = useModal(false)
     const firstName = useInput('')
@@ -19,14 +20,17 @@ function VariantInfo() {
     const email = useInput('')
     const mobileNumber = useInput('')
     const loader = useLoader(false)
+    const bulkUploadLoader = useLoader(false)
     const dispatch = useDispatch()
     const [status, setStatus] = useState('12-02-2021')
     const generateVariantModal = useModal(false);
     const [showFullContent, setShowFullContent] = useState(false);
+    const bulkUploadModal = useModal(false)
+    const [candidateBulkUploadData, setCandidateBulkUploadData] = useState('')
 
 
     useEffect(() => {
-        getKnowledgeGroupVariantDetailsHandler();
+        getCorporateScheduleDetailsHandler();
     }, [])
 
     const Refresh = () => {
@@ -37,12 +41,12 @@ function VariantInfo() {
         )
     }
 
-    const getKnowledgeGroupVariantDetailsHandler = () => {
+    const getCorporateScheduleDetailsHandler = () => {
         const params = { corporate_openings_details_id: selectedRole?.id }
         dispatch(
             getCorporateScheduleDetails({
                 params,
-                onSuccess: (response: any) => (response: any) => {
+                onSuccess: (response: any) => () => {
                 },
                 onError: (error: any) => () => { },
             })
@@ -74,7 +78,7 @@ function VariantInfo() {
                         showToast('Candidate added successfully', 'success')
                         loader.hide()
                         generateVariantModal.hide()
-                        getKnowledgeGroupVariantDetailsHandler()
+                        getCorporateScheduleDetailsHandler()
 
                     },
                     onError: (error: any) => () => {
@@ -98,8 +102,10 @@ function VariantInfo() {
 
     const { id, position, experience, details } = corporateScheduleDetails?.job_description || {}
 
-    console.log(corporateScheduleDetails?.job_description,45);
-    
+    const { schedules } = corporateScheduleDetails || {}
+
+    console.log(JSON.stringify(schedules), 'schedulessssssssssss');
+
 
     const normalizedTableData = (data: any) => {
         if (data && data?.schedules?.length > 0)
@@ -113,10 +119,10 @@ function VariantInfo() {
                             </div>
                         </div>,
 
-                    // 'phone':
-                    //     <div className={''}>
-                    //         {el?.interviewee_mobile_number}
-                    //     </div>,
+                    'phone':
+                        <div className={''}>
+                            {el?.interviewee_mobile_number}
+                        </div>,
 
                     "Email":
                         <div className="m-0">
@@ -146,10 +152,39 @@ function VariantInfo() {
                         goTo(ROUTES['designation-module'].report + "/" + id)
                     }}
                 />
-
             )
         }
     }
+
+    function bulkUploadCandidatesHandler() {
+        const params = {
+            corporate_openings_details_id: corporateScheduleDetails?.id,
+            csv_file: candidateBulkUploadData
+        }
+        bulkUploadLoader.show()
+        bulkUploadModal.hide()
+        dispatch(
+            bulkUploadCandidates({
+                params,
+                onSuccess: (response: any) => () => {
+                    showToast(response.success, 'success')
+                    bulkUploadLoader.hide()
+                    getCorporateScheduleDetailsHandler()
+                    console.log(response, '1111111111111111111111111111111111111')
+                },
+                onError: (error: any) => () => {
+                    showToast(error.error_message, 'error')
+                    bulkUploadLoader.hide()
+                },
+            })
+        );
+    }
+
+    const downloadCSVTemplate = () => {
+        const csvContent = "Name,Email,Phone\nJohn Doe,johndoe@example.com,123-456-7890";
+        const blob = new Blob([csvContent], { type: 'text/csv' });
+        saveAs(blob, 'candidate_template.csv');
+    };
 
     return (
 
@@ -157,6 +192,76 @@ function VariantInfo() {
             <Breadcrumbs />
             <div>
                 <div className={'m-3'}>
+                    {
+                        schedules && schedules.length > 0 ?
+
+                            < Card className={'mt--3 vh-100 mb-3 overflow-auto overflow-hide'} >
+                                <>
+                                    <div className="d-flex justify-content-between align-items-center">
+                                        <div className={'h3 text-dark'}>
+                                            {'Candidates'}
+                                        </div>
+                                        <div className={'row align-items-center'}>
+
+                                            <div className={'mr-3'}>
+                                                <DropzoneFilePicker
+                                                    size={'md'}
+                                                    title={'Upload Candidates'}
+                                                    onSelect={(data) => {
+                                                        let eventPickers = [data]?.toString().replace(/^data:(.*,)?/, "");
+                                                        console.log('eventPickers=======>..', eventPickers);
+                                                        setCandidateBulkUploadData(eventPickers);
+                                                    }}
+                                                    onSubmitClick={() => {
+                                                        bulkUploadCandidatesHandler();
+                                                    }}
+                                                    onTemplateClick={downloadCSVTemplate}
+                                                />
+                                            </div>
+
+                                            <Button text={'Add New'} onClick={addNewCandidateModal.show} />
+                                        </div>
+                                    </div>
+                                    {corporateScheduleDetails && corporateScheduleDetails?.schedules.length > 0
+                                        ? (
+                                            <div className={'row px-0 mx--4'}>
+                                                <div className={'col-sm-12 px-0'} >
+                                                    <CommonTable
+                                                        tableDataSet={corporateScheduleDetails}
+                                                        displayDataSet={normalizedTableData(corporateScheduleDetails)}
+                                                    />
+
+                                                </div>
+                                            </div>
+                                        ) :
+                                        <div className={'d-flex justify-content-center align-items-center'} style={{ height: '90vh' }}>
+                                            <NoDataFound text={"No Data Found"} />
+                                        </div>
+                                    }
+                                </>
+                            </Card>
+
+                            : <div className={'m-2 row d-flex justify-content-between'}>
+                                <div className={'mt-3  text-right col-9'}>
+                                    <DropzoneFilePicker
+                                        size={'md'}
+                                        title={'Upload Candidates'}
+                                        onSelect={(data) => {
+                                            let eventPickers = [data]?.toString().replace(/^data:(.*,)?/, "");
+                                            console.log('eventPickers=======>..', eventPickers);
+                                            setCandidateBulkUploadData(eventPickers);
+                                        }}
+                                        onSubmitClick={() => {
+                                            bulkUploadCandidatesHandler();
+                                        }}
+                                        onTemplateClick={downloadCSVTemplate}
+                                    />
+                                </div>
+                                <div className={''}>
+                                    <Button block text={'Add Candidates'} onClick={addNewCandidateModal.show} />
+                                </div>
+                            </div>
+                    }
                     <Card className={'col-sm-12 col-lg-12 col-md-12'} >
                         <div className={'row justify-content-between mb-3 mx--4'}>
                             <div className={'ml-2 h3 text-dark'}>{capitalizeFirstLetter(position)}</div>
@@ -187,48 +292,11 @@ function VariantInfo() {
                                         {showFullContent ? <span className={'h5 text-primary'}> View Less</span> : <span className={'h5 text-primary'}> View More</span>}
                                     </span>
                                 )}
-
                             </div>
-                            {/* <div className={'row pb-1 text-black'}>
-                                <span style={{ maxWidth: '100vw' }}>
-                                    <i className="pr-2">
-                                        <img src={icons.information} alt="Comment Icon" height={'20'} width={'20'} />
-                                    </i>
-                                    {filteredName(details, 487)}
-                                </span>
-                            </div> */}
                         </div>
                     </Card>
-                    <Card className={'mt--3 vh-100 mb-3'} >
-                        <>
-                            <div className="d-flex justify-content-between ">
-                                <div className={'h3 text-dark'}>
-                                    {'Candidates'}
-                                </div>
-                                <div><Button text={'Add New'} onClick={addNewCandidateModal.show} /></div>
-                            </div>
-
-                            {corporateScheduleDetails && corporateScheduleDetails?.schedules.length > 0
-                                ? (
-                                    <div className={'row px-0 mx--4'} style={{ overflowY: 'auto' }}>
-                                        <div className={'col-sm-12 px-0'} >
-                                            <CommonTable
-                                                tableDataSet={corporateScheduleDetails}
-                                                displayDataSet={normalizedTableData(corporateScheduleDetails)}
-                                            />
-
-                                        </div>
-                                    </div>
-                                ) :
-                                <div className={'d-flex justify-content-center align-items-center'} style={{ height: '90vh' }}>
-                                    <NoDataFound text={"No Data Found"} />
-                                </div>
-                            }
-                        </>
-
-                    </Card>
                 </div>
-            </div>
+            </div >
             <Modal title={'Add Candidate'} isOpen={addNewCandidateModal.visible} onClose={addNewCandidateModal.hide}>
                 <div className='col-xl-6'>
                     <Input heading={'First Name'} value={firstName.value} onChange={firstName.onChange} />

@@ -1,10 +1,25 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { ModalProps } from "./interfaces";
 import { Modal as RsModal } from "reactstrap";
 
 function Modal({ isOpen, children, title, size = "lg", style, onClose, ...rest }: ModalProps) {
 
+  useEffect(() => {
+    // Add and remove the "overflow-hidden" class to the body based on modal's open state
+    if (isOpen) {
+      document.body.classList.add('overflow-hidden');
+    } else {
+      document.body.classList.remove('overflow-hidden');
+    }
+
+    // Cleanup the class when the component unmounts
+    return () => {
+      document.body.classList.remove('overflow-hidden');
+    };
+  }, [isOpen]);
+
   return (
+
     <RsModal
       fade={false}
       className={`modal-dialog-centered modal-${size}`}
@@ -19,7 +34,7 @@ function Modal({ isOpen, children, title, size = "lg", style, onClose, ...rest }
           paddingBottom: '0px'
         }}>
 
-          {title && <div className='display-3 text-primary font-weight-700'>
+          {title && <div className='display-3 text-secondary font-weight-700'>
             {title}
           </div>}
           <button
@@ -34,7 +49,10 @@ function Modal({ isOpen, children, title, size = "lg", style, onClose, ...rest }
               }
             }}
           >
-            <span aria-hidden={true}>×</span>
+            <span
+              className={'text-default'} aria-hidden={true}
+              style={{ fontSize: '220%', fontWeight: 100 }}>×</span>
+
           </button>
         </div>
         <div className="modal-body scroll-hidden" style={{ ...style, marginTop: "0px" }}>
@@ -42,6 +60,7 @@ function Modal({ isOpen, children, title, size = "lg", style, onClose, ...rest }
         </div>
       </div>
     </RsModal>
+
   );
 }
 
