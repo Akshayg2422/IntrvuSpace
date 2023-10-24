@@ -32,7 +32,7 @@ function WebsiteNavBar() {
     >
       <Container>
         <NavbarBrand to="/" tag={Link}>
-          <div className={"ml--5"} >
+          <div className={"ml-sm--5 ml--4"} >
             <img alt="..." src={icons.logoText} style={{ height: 55, zIndex: 100 }} />
           </div>
         </NavbarBrand>

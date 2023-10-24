@@ -37,12 +37,6 @@ const PERFORMANCE_CONTENT = [
   },
 ];
 
-const NOTE = [
-  { id: 1, icon: "success", text: "Completely Covered" },
-  { id: 2, icon: "primary", text: "Partially Covered" },
-  { id: 3, icon: "warning", text: "Covered by invalid" },
-];
-
 function Report() {
   const FILTER = [
     { id: 1, title: "Basic Report" },
@@ -544,9 +538,9 @@ function Report() {
           </div>
 
           {filter?.value.title === "Basic Report" ? (
-            <div className="mt-md-6 pr-md-5">
-              <div className="mx-lg-4 pb-0 mb--2 pt-5 pb-md-5">
-                <div className="row">
+            <div className="mt-6 pr-5">
+              <div className="mx-lg-4 pb-0 mb--2 pt-5 pb-5">
+                <div className="d-flex">
                   {basicReportData &&
                     Object.keys(basicReportData)
                       .reverse()
@@ -554,14 +548,14 @@ function Report() {
                         return dataId.map((el) => {
                           if (heading === el) {
                             return (
-                              <div className="col-sm-4 mx-3 mx-md-0 mb-md-4">
+                              <>
                                 <Card
                                   style={{
                                     borderWidth: 1.5,
                                     borderColor: "#e8edff",
                                     backgroundColor: "transparent",
                                   }}
-                                  className=" px-1 text-center"
+                                  className="col-sm-4 px-1 text-center mr-lg-4"
                                 >
                                   <div className="progress-wrapper col py-0 m-0 ">
                                     <div className="h4 mb-0 pb-0 pt-2">
@@ -602,7 +596,7 @@ function Report() {
                                     </div>
                                   </div>
                                 </Card>
-                              </div>
+                              </>
                             );
                           }
                           console.log("879868768768");
@@ -621,7 +615,7 @@ function Report() {
                   backgroundColor: "transparent",
                 }}
               >
-                <div className="row">
+                <div className="d-flex">
                   {basicReportData &&
                     Object.keys(basicReportData)
                       .reverse()
@@ -631,7 +625,7 @@ function Report() {
                             return (
                               <>
                                 <div className="col-sm-4 px-1 text-center">
-                                  <div className="progress-wrapper col py-md-0 py-3 m-0">
+                                  <div className="progress-wrapper col py-0 m-0 ">
                                     <div className="">
                                       <span
                                         className="text-secondary font-weight-bold"
@@ -688,7 +682,7 @@ function Report() {
             </div>
           )}
 
-          <div className="mt-6 px-md-5 px-3">
+          <div className="mt-6 px-5">
             <div>
               <span
                 className="font-weight-bolder text-secondary "
@@ -746,136 +740,8 @@ function Report() {
             {filter?.value.title === "Detailed Report" && (
               <>
                 <div className="pt-5 text-secondary d-flex justify-content-between font-weight-bolder">
-                  <span style={{ fontSize: 26 }}>{"Skill Matrix Report"}</span>
-                  <span
-                    style={{ fontSize: 36 }}
-                  >{`${basicReportData?.skill_matrix?.overal_percent}%`}</span>
-                </div>
-
-                <div className="d-flex justify-content-end mt-4">
-                  <div>
-                    <div>
-                      <span className="font-weight-bolder">{"Note"}</span>
-                    </div>
-                    <div className="">
-                      {NOTE.map((item) => {
-                        return (
-                          <>
-                            <div>
-                              <Image src={icons.check} height={20} />
-                              <span
-                                style={{ fontSize: 14 }}
-                                className="text-default ml-2"
-                              >
-                                {item.text}
-                              </span>
-                            </div>
-                          </>
-                        );
-                      })}
-                    </div>
-                  </div>
-                </div>
-
-                <div className="">
-                  {basicReportData &&
-                    basicReportData?.skill_matrix &&
-                    basicReportData.skill_matrix?.sections.length > 0 &&
-                    basicReportData.skill_matrix.sections.map((skill: any) => {
-                      return (
-                        <div className="mt-5">
-                          <Card
-                            className="p-3"
-                            style={{
-                              borderWidth: 1.5,
-                              borderColor: "#e8edff",
-                              backgroundColor: "transparent",
-                            }}
-                          >
-                            <>
-                              <div className="d-flex justify-content-between">
-                                <div>
-                                  <div>
-                                    <span
-                                      className="text-secondary font-weight-bolder"
-                                      style={{ fontSize: 16 }}
-                                    >
-                                      {skill.name}
-                                    </span>
-                                  </div>
-                                </div>
-                                <span
-                                  className="text-secondary font-weight-bolder"
-                                  style={{ fontSize: 16 }}
-                                >
-                                  {skill.rating}
-                                </span>
-                              </div>
-
-                              <div>
-                                {skill?.questions &&
-                                  skill?.questions.length > 0 &&
-                                  skill?.questions.map((que) => {
-                                    return (
-                                      <>
-                                        <div className="mt-3">
-                                          <span
-                                            className="text-secondary"
-                                            style={{ fontSize: 16 }}
-                                          >
-                                            {que.question}
-                                          </span>
-                                        </div>
-
-                                        <div className="mt-3">
-                                          {que?.expected_answer_key_points &&
-                                          que.expected_answer_key_points
-                                            ?.points &&
-                                          que.expected_answer_key_points?.points
-                                            .length > 0 ? (
-                                            que.expected_answer_key_points?.points.map(
-                                              (ans: any) => {
-                                                let index = ans.indexOf("-");
-                                                if (index < 0) {
-                                                  ans = ans;
-                                                } else {
-                                                  ans = ans.slice(2);
-                                                }
-                                                return (
-                                                  <div>
-                                                    <Image
-                                                      src={icons.check}
-                                                      height={20}
-                                                    />
-                                                    <span className="text-default ml-1">
-                                                      {ans}
-                                                    </span>
-                                                  </div>
-                                                );
-                                              }
-                                            )
-                                          ) : (
-                                            <div>
-                                              <span className="text-default">
-                                                {"Not Answered"}
-                                              </span>
-                                            </div>
-                                          )}
-                                        </div>
-                                      </>
-                                    );
-                                  })}
-                              </div>
-                            </>
-                          </Card>
-                        </div>
-                      );
-                    })}
-                </div>
-
-                <div className="pt-5 text-secondary d-flex justify-content-between font-weight-bolder">
                   <span style={{ fontSize: 26 }}>{"Communication"}</span>
-                  <span style={{ fontSize: 36 }}>{"26%"}</span>
+                  <span style={{ fontSize: 36 }}>{"26"}</span>
                 </div>
 
                 <div>
@@ -936,7 +802,7 @@ function Report() {
 
                 <div className="pt-5 text-secondary d-flex justify-content-between font-weight-bolder">
                   <span style={{ fontSize: 26 }}>{"Personality Trait"}</span>
-                  <span style={{ fontSize: 36 }}>{"36%"}</span>
+                  <span style={{ fontSize: 36 }}>{"36"}</span>
                 </div>
 
                 <div>
@@ -969,12 +835,7 @@ function Report() {
                                               {el.trait}
                                             </span>
                                           </div>
-                                          <span
-                                            className="text-default"
-                                            style={{ fontSize: 14 }}
-                                          >
-                                            {el.reason}
-                                          </span>
+                                          <span className="text-default" style={{ fontSize: 14 }}>{el.reason}</span>
                                         </div>
                                         <span
                                           className="text-secondary font-weight-bolder"
