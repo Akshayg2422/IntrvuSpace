@@ -3,7 +3,7 @@
 import { icons } from '@Assets';
 import { Button, Card, Checkbox, Divider, Image, Input, InputHeading, Modal, Radio, Spinner, TextArea, showToast } from '@Components';
 import { useInput, useLoader, useModal, useNavigation } from '@Hooks';
-import { AnalyzingAnimation, GenerateModal, UploadJdCard } from '@Modules';
+import { AnalyzingAnimation, GenerateModal, PreparingYourInterview, UploadJdCard } from '@Modules';
 import { canStartInterview, createNewJdSchedule, getJdItemList, hideCreateJdModal, postJdVariant, selectedScheduleId, showCreateJddModal } from '@Redux';
 import { ROUTES } from '@Routes';
 import { FROM_JD_RULES, formatDateTime, getValidateError, ifObjectExist, validate } from '@Utils';
@@ -609,9 +609,9 @@ function FromJD() {
 
             </div>
 
-            <GenerateModal title={'Preparing your Interview'} isOpen={generateJdModal.visible} onClose={generateJdModal.hide}>
-                <AnalyzingAnimation />
-            </GenerateModal>
+            <Modal isOpen={generateJdModal.visible} onClose={generateJdModal.hide}>
+                <PreparingYourInterview />
+            </Modal>
 
             <Modal isOpen={completedModal.visible} onClose={completedModal.hide}>
                 <div className='text-center '>
