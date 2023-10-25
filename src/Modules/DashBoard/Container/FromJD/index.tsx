@@ -3,19 +3,23 @@
 import { icons } from '@Assets';
 import { Button, Card, Checkbox, Divider, Image, Input, InputHeading, Modal, Radio, Spinner, TextArea, showToast } from '@Components';
 import { useInput, useLoader, useModal, useNavigation } from '@Hooks';
-import { AnalyzingAnimation, GenerateModal, UploadJdCard } from '@Modules';
+import { AnalyzingAnimation, GenerateModal, PreparingYourInterview, UploadJdCard } from '@Modules';
 import { canStartInterview, createNewJdSchedule, getJdItemList, hideCreateJdModal, postJdVariant, selectedScheduleId, showCreateJddModal } from '@Redux';
 import { ROUTES } from '@Routes';
 import { FROM_JD_RULES, formatDateTime, getValidateError, ifObjectExist, validate } from '@Utils';
 import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import './index.css'
 
-export const interviewDurations = [
-    { id: '0', text: 'Quick', subText: '(5 mins)', value: 5 },
-    { id: '1', text: 'Short', subText: '(10 mins)', value: 10 },
-    { id: '2', text: 'Medium', subText: '(15 mins)', value: 15 },
-    { id: '3', text: 'Long', subText: '(30 mins)', value: 30 },
+export const interviewDurations: any = [
+    { id: '0', text: 'Quick', subText: '5 mins', value: 5 },
+    { id: '1', text: 'Short', subText: '10 mins', value: 10 },
+    { id: '2', text: 'Medium', subText: '15 mins', value: 15 },
+    { id: '3', text: 'Long', subText: '30 mins', value: 30 },
 ];
+
+const experienceInNumber: number[] = Array.from({ length: 31 }, (_, index) => index);
+
 
 const PLACE_HOLDER = {
     "sector": "Software, Banking...",
@@ -39,7 +43,7 @@ function FromJD() {
 
     const { goTo } = useNavigation();
     const position = useInput('');
-    const experience = useInput('');
+    const [experience, setExperience] = useState('0')
     const jd = useInput('');
     const sector = useInput('');
     const generateJdModal = useModal(false);
@@ -53,6 +57,10 @@ function FromJD() {
     const [jdDescriptionError, setJdDescriptionError] = useState<any>(undefined)
     const [selectedDuration, setSelectedDuration] = useState(interviewDurations[0]);
     const startInterviewLoader = useLoader(false);
+
+    const handleDurationClick = (interviewDurations) => {
+        setSelectedDuration(interviewDurations);
+    };
 
 
     useEffect(() => {
@@ -82,12 +90,14 @@ function FromJD() {
         );
     };
 
+
+
     function submitJdApiHandler() {
         const params = {
             sector_name: sector.value,
             position: position.value,
             interview_duration: selectedDuration.value,
-            experience: fresherChecked ? '0' : experience.value,
+            experience: experience,
             jd: jd.value
         }
 
@@ -140,11 +150,11 @@ function FromJD() {
 
     function resetValues() {
         position.set('')
-        experience.set('')
+        setExperience('')
         jd.set('')
         sector.set('')
     }
-
+    console.log('1111111111111', selectedDuration.value);
 
     function createNewJdScheduleApiHandler(id: string) {
         const params = {
@@ -234,6 +244,7 @@ function FromJD() {
             intervalIdRef.current = null;
         }
     };
+    console.log('1111111111111111', experience);
 
 
     return (
@@ -259,6 +270,8 @@ function FromJD() {
                                         return !is_complete
                                     })
 
+                                    const copyInterviewLink = schedules && schedules.length > 0 && schedules[0].custom_interview_link;
+                                    console.log('copyInterviewLink', copyInterviewLink)
 
                                     const basic_info = proceedInterview?.custom_interviewee_details?.basic_info
 
@@ -275,235 +288,234 @@ function FromJD() {
                                             backgroundColor: "transparent"
                                         }}>
                                             <div className='px-md-4 py-md-3'>
-                                            <div className={'d-flex justify-content-between'}  >
-                                                <div className='mt-2'>
-                                                    {name ? <span style={{
-                                                        fontSize: "21px"
-                                                    }} className='mb-0 text-secondary font-weight-bolder'>
-                                                        {name.charAt(0).toUpperCase() + name.slice(1) + demoDisplayName}
-                                                    </span> : <></>
-                                                    } 
-                                                    <small className={"text-secondary"}>{experience === 0 ? " Fresher" : " " + experience + (experience === 1 ? " year " : " years ") + "of experience"}</small>                                                
-                                                   {
-                                                     modifiedSchedules &&
-                                                     modifiedSchedules.length > 0 &&
-                                                     modifiedSchedules.slice().reverse().map((each: any, index: number) => {
-                                                         
-                                                         const { is_complete, is_report_complete, id, created_at, custom_interviewee_details } = each;
-                                                       console.log(is_complete,'com',created_at );
-                                                       
- 
-                                                         return (
-                                                            <>  { index ===0 && <div className=' d-flex align-items-center'>
-                                                                <img src={icons.check} height={20} width={20} style={{
-                                                                    objectFit: 'contain'
-                                                                }} />
-                                                                <h5 className='col mb-0 font-weight-normal p-0 font-weight-bolder text-secondary'>{(is_complete ? "Completed " : "Created at ")} <span className='font-weight-normal text-secondary'>{("on ") + formatDateTime(created_at)} </span></h5>
-                                                               </div>
-                                                                   }
-                                                            </>
-                                                           
-                                                         )
-                                                     })
-                                                   }
-                                                </div>
-                                                <div>
-                                                <div className='d-flex flex-column justify-content-center align-items-center'>
-                                                {
-                                                    proceedInterview ?
-                                                        <div>
-                                                            <Button style={{fontSize:"15px"}}
-                                                            size='md'
-                                                                loading={startInterviewLoader.loader}
-                                                                className={'px-md-5 border border-primary rounded'}
-                                                                text={proceedInterview.is_started ? "Resume Interview" : "Start Interview"}
-                                                                onClick={() => {
-                                                                    proceedInterviewHandler(proceedInterview?.id);
-                                                                }}
-                                                            />
-                                                        </div> :
-                                                        <div>
-                                                            <Button style={{fontSize:"15px"}}
-                                                            size='md'
-                                                                className={'px-md-5 border border-primary rounded'}
-                                                                text={'Try Another'}
-                                                                onClick={() => {
-                                                                    createNewJdScheduleApiHandler(id);
-                                                                }}
-                                                            />
-                                                        </div>
-                                                }
-                                                {interview_duration &&
-                                                        <div>
-                                                            <div className='row d-flex align-items-center mt-1'>
-                                                                {/* <Image src={icons.clock} height={17} width={17} style={{
-                                                                    objectFit: 'contain'
-                                                                }} /> */}
-                                                                <h5 style={{
-                                                                    fontSize: "14px"
-                                                                }} className='mb-0 text-secondary font-weight-bolder ml-2'>{`${interview_duration} mins`}<span className= {"font-weight-normal"}> Duration</span></h5>
-                                                                
-                                                            </div>
-                                                        </div>
-                                                    }
-                                                </div>
-                                                </div>
-                                              
-                                               
-                                            </div>
-
-                                            <div className='col mt-3'>
-                                                <div className='row'>
-                                                    <div className='col ml-0' style={{fontSize: "14px"}}>
+                                                <div className={'d-flex justify-content-between'}  >
+                                                    <div className='mt-2'>
+                                                        {name ? <span style={{
+                                                            fontSize: "21px"
+                                                        }} className='mb-0 text-secondary font-weight-bolder'>
+                                                            {name.charAt(0).toUpperCase() + name.slice(1) + demoDisplayName}
+                                                        </span> : <></>
+                                                        }
+                                                        <small className={"text-secondary"}>{experience === 0 ? " Fresher" : " " + experience + (experience === 1 ? " year " : " years ") + "of experience"}</small>
                                                         {
-                                                            details.length < VIEW_MORE_LENGTH ?
-                                                                <div className='row'>
-                                                                    <div className='text-details text-default'>{`${details}`}</div>
-                                                                </div>
-                                                                :
-                                                                <>
-                                                                    {more ?
-                                                                        <div className='row'>
-                                                                            <div className='text-details text-default'>
-                                                                                {details.split('\n\n').map((paragraph, index) => (
-                                                                                    <React.Fragment key={index}>
-                                                                                        {index > 0 && <br />} {/* Add <br /> between paragraphs except for the first one */}
-                                                                                        {paragraph}
-                                                                                    </React.Fragment>
-                                                                                ))}
-                                                                                <span className='h4 text-primary ml-3 pointer' onClick={() => {
-                                                                                    const updatedData: any = [...jdMore];
-                                                                                    updatedData[index] = { ...updatedData[index], more: false };
-                                                                                    setJdMore(updatedData);
-                                                                                }}>
-                                                                                    View Less
-                                                                                </span>
-                                                                            </div>
+                                                            modifiedSchedules &&
+                                                            modifiedSchedules.length > 0 &&
+                                                            modifiedSchedules.slice().reverse().map((each: any, index: number) => {
+
+                                                                const { is_complete, is_report_complete, id, created_at, custom_interviewee_details } = each;
+                                                                console.log(is_complete, 'com', created_at);
 
 
-                                                                        </div>
-                                                                        :
-                                                                        <div className='row'>
-                                                                            <div className='text-details text-default'>{details.slice(0, VIEW_MORE_LENGTH) + " ..."}
-                                                                                <span className='h4 text-primary ml-1 pointer'
-                                                                                    onClick={() => {
-                                                                                        const updatedData: any = [...jdMore]
-                                                                                        updatedData[index] = { ...updatedData[index], more: true }
-                                                                                        setJdMore(updatedData)
-                                                                                    }}
-                                                                                >
-                                                                                    View More
-                                                                                </span>
-                                                                            </div>
-                                                                        </div>
+                                                                return (
+                                                                    <>  {index === 0 && <div className=' d-flex align-items-center'>
+                                                                        <img src={icons.check} height={20} width={20} style={{
+                                                                            objectFit: 'contain'
+                                                                        }} />
+                                                                        <h5 className='col mb-0 font-weight-normal p-0 font-weight-bolder text-secondary'>{(is_complete ? "Completed " : "Created at ")} <span className='font-weight-normal text-secondary'>{("on ") + formatDateTime(created_at)} </span></h5>
+                                                                    </div>
                                                                     }
-                                                                </>
+                                                                    </>
+
+                                                                )
+                                                            })
                                                         }
                                                     </div>
-                                                </div>
-                                            </div>
-                                            {modifiedSchedules && modifiedSchedules.length > 0 &&
-                                            <div className='mt-3 px-md-4 pt-md-5' style={{backgroundColor:"#fafbfb"}}>
-                                                {/* {modifiedSchedules && modifiedSchedules.length > 0 && <Divider className={'row'} space={"3"} />} */}
-                                                {
-                                                    modifiedSchedules &&
-                                                    modifiedSchedules.length > 0 &&
-                                                    modifiedSchedules.slice().reverse().map((each: any, index: number) => {
-                                                       
-                                                        
-                                                        const { is_complete, is_report_complete, id, created_at, custom_interviewee_details } = each;
-
-                                                        const basic_info = custom_interviewee_details?.basic_info
-
-
-                                                        const basicInfo = basic_info && basic_info.first_name ? basic_info : null;
-                                                        let demoDisplayName: any = ''
-                                                        if (basicInfo)
-                                                            demoDisplayName = " - " + basicInfo?.first_name
-
-                                                        const getDisplayTimeFromMoment = (timestamp: any) => {
-                                                            const currentTime = new Date().getTime();
-                                                            const createdAt = new Date(timestamp).getTime();
-                                                            const timeDifference = Math.floor((currentTime - createdAt) / (1000 * 60));
-
-                                                            if (timeDifference < 60) {
-                                                                return `${timeDifference} mins ago`;
-                                                            } else if (timeDifference < 1440) {
-                                                                const hours = Math.floor(timeDifference / 60);
-                                                                return `${hours} ${hours === 1 ? 'hour' : 'hours'} ago`;
-                                                            } else {
-                                                                const days = Math.floor(timeDifference / 1440);
-                                                                return `${days} ${days === 1 ? 'day' : 'days'} ago`;
+                                                    <div>
+                                                        <div className='d-flex flex-column justify-content-center align-items-center'>
+                                                            {
+                                                                proceedInterview ?
+                                                                    <div>
+                                                                        <Button style={{ fontSize: "15px" }}
+                                                                            size='md'
+                                                                            loading={startInterviewLoader.loader}
+                                                                            className={'px-md-5 border border-primary rounded'}
+                                                                            text={proceedInterview.is_started ? "Resume Interview" : "Start Interview"}
+                                                                            onClick={() => {
+                                                                                proceedInterviewHandler(proceedInterview?.id);
+                                                                            }}
+                                                                        />
+                                                                    </div> :
+                                                                    <div>
+                                                                        <Button style={{ fontSize: "15px" }}
+                                                                            size='md'
+                                                                            className={'px-md-5 border border-primary rounded'}
+                                                                            text={'Try Another'}
+                                                                            onClick={() => {
+                                                                                createNewJdScheduleApiHandler(id);
+                                                                            }}
+                                                                        />
+                                                                    </div>
                                                             }
-                                                        };
-
-                                                        return (
-                                                            <div className='d-flex flex-column'>
-                                                                 {
-                                                                        index===0 && <div className='d-flex '>
-                                                                            <div className='col-3'></div>
-                                                                            <div className='col-7 d-flex justify-content-around mb-3'>
-                                                                                <h4 className='ml-4'>Skill matrix</h4>
-                                                                                <h4>Communication</h4>
-                                                                                <h4 className='mr-5'>Aptitude</h4>
-                                                                            </div>
-                                                                            <div className='col-2'></div>
-                                                                        </div>
-                                                                    }
-                                                                <div className='d-flex'>
-                                                                   
-                                                                    <div className='col-3'>
-                                                                    <h5 className='col m-0 p-0 text-secondary'>{"Interview " + (index + 1) + demoDisplayName}</h5>
-                                                                    <small className='col mb-0 pl-md-1 font-weight-normal text-default'>{(is_complete ? "Completed " : "Created at ") + getDisplayTimeFromMoment(created_at)}</small>
-                                                                    </div>
-                                                                    <div className='col-9'>
-                                                                        <div className='d-flex'>
-                                                                    <div className='col-9 d-flex justify-content-around align-items-center'>
-                                                                        <h5>-</h5>
-                                                                        <h5>-</h5>
-                                                                        <h5>-</h5>
-                                                                    </div>
-                                                                  
-                                                                    <div className='col-3 d-flex justify-content-center'>
-                                                                        {
-                                                                            is_report_complete &&
-                                                                            <div >
-                                                                                <Button
-                                                                                size='md'
-                                                                                className={'btn btn-outline-primary rounded'}
-                                                                                style={{
-                                                                                    borderColor:"#d8dade",
-                                                                                    fontSize: "15px"
-                                                                                }}
-                                                                                    text={'View Report'}
-                                                                                    onClick={() => {
-                                                                                        proceedReport(id);
-                                                                                    }}
-                                                                                />
-                                                                            </div>
-                                                                        }
-                                                                        {
-                                                                            is_complete && !is_report_complete &&
-                                                                            <div>
-                                                                                <span className="name mb-0 text-sm">Generating Report ...</span>
-                                                                            </div>
-                                                                        }
-                                                                    </div>
-                                                                    </div>
-                                                                    
-                                                                    <Divider className={"col-11 mx--3 text-"} space={"3"} />
+                                                            {interview_duration &&
+                                                                <div>
+                                                                    <div className='row d-flex align-items-center mt-1'>
+                                                                        {/* <Image src={icons.clock} height={17} width={17} style={{
+                                                                    objectFit: 'contain'
+                                                                }} /> */}
+                                                                        <h5 style={{
+                                                                            fontSize: "14px"
+                                                                        }} className='mb-0 text-secondary font-weight-bolder ml-2'>{`${interview_duration} mins`}<span className={"font-weight-normal"}> Duration</span></h5>
 
                                                                     </div>
                                                                 </div>
-                                                               
-                                                            </div>
-                                                        )
-                                                    })
+                                                            }
+                                                        </div>
+                                                    </div>
+
+
+                                                </div>
+
+                                                <div className='col mt-3'>
+                                                    <div className='row'>
+                                                        <div className='col ml-0' style={{ fontSize: "14px" }}>
+                                                            {
+                                                                details.length < VIEW_MORE_LENGTH ?
+                                                                    <div className='row'>
+                                                                        <div className='text-details text-default'>{`${details}`}</div>
+                                                                    </div>
+                                                                    :
+                                                                    <>
+                                                                        {more ?
+                                                                            <div className='row'>
+                                                                                <div className='text-details text-default'>
+                                                                                    {details.split('\n\n').map((paragraph, index) => (
+                                                                                        <React.Fragment key={index}>
+                                                                                            {index > 0 && <br />} {/* Add <br /> between paragraphs except for the first one */}
+                                                                                            {paragraph}
+                                                                                        </React.Fragment>
+                                                                                    ))}
+                                                                                    <span className='h4 text-primary ml-3 pointer' onClick={() => {
+                                                                                        const updatedData: any = [...jdMore];
+                                                                                        updatedData[index] = { ...updatedData[index], more: false };
+                                                                                        setJdMore(updatedData);
+                                                                                    }}>
+                                                                                        View Less
+                                                                                    </span>
+                                                                                </div>
+
+
+                                                                            </div>
+                                                                            :
+                                                                            <div className='row'>
+                                                                                <div className='text-details text-default'>{details.slice(0, VIEW_MORE_LENGTH) + " ..."}
+                                                                                    <span className='h4 text-primary ml-1 pointer'
+                                                                                        onClick={() => {
+                                                                                            const updatedData: any = [...jdMore]
+                                                                                            updatedData[index] = { ...updatedData[index], more: true }
+                                                                                            setJdMore(updatedData)
+                                                                                        }}
+                                                                                    >
+                                                                                        View More
+                                                                                    </span>
+                                                                                </div>
+                                                                            </div>
+                                                                        }
+                                                                    </>
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                {modifiedSchedules && modifiedSchedules.length > 0 &&
+                                                    <div className='mt-3 px-md-4 pt-md-5' style={{ backgroundColor: "#fafbff" }}>
+                                                        {/* {modifiedSchedules && modifiedSchedules.length > 0 && <Divider className={'row'} space={"3"} />} */}
+                                                        {
+                                                            modifiedSchedules &&
+                                                            modifiedSchedules.length > 0 &&
+                                                            modifiedSchedules.slice().reverse().map((each: any, index: number) => {
+
+
+                                                                const { is_complete, is_report_complete, id, created_at, custom_interviewee_details } = each;
+
+                                                                const basic_info = custom_interviewee_details?.basic_info
+
+
+                                                                const basicInfo = basic_info && basic_info.first_name ? basic_info : null;
+                                                                let demoDisplayName: any = ''
+                                                                if (basicInfo)
+                                                                    demoDisplayName = " - " + basicInfo?.first_name
+
+                                                                const getDisplayTimeFromMoment = (timestamp: any) => {
+                                                                    const currentTime = new Date().getTime();
+                                                                    const createdAt = new Date(timestamp).getTime();
+                                                                    const timeDifference = Math.floor((currentTime - createdAt) / (1000 * 60));
+
+                                                                    if (timeDifference < 60) {
+                                                                        return `${timeDifference} mins ago`;
+                                                                    } else if (timeDifference < 1440) {
+                                                                        const hours = Math.floor(timeDifference / 60);
+                                                                        return `${hours} ${hours === 1 ? 'hour' : 'hours'} ago`;
+                                                                    } else {
+                                                                        const days = Math.floor(timeDifference / 1440);
+                                                                        return `${days} ${days === 1 ? 'day' : 'days'} ago`;
+                                                                    }
+                                                                };
+
+                                                                return (
+                                                                    <div className='d-flex flex-column'>
+                                                                        {
+                                                                            index === 0 && <div className='d-flex '>
+                                                                                <div className='col-3'></div>
+                                                                                <div className='col-7 d-flex justify-content-around mb-3'>
+                                                                                    <h4 className='ml-4'>Skill matrix</h4>
+                                                                                    <h4>Communication</h4>
+                                                                                    <h4 className='mr-5'>Aptitude</h4>
+                                                                                </div>
+                                                                                <div className='col-2'></div>
+                                                                            </div>
+                                                                        }
+                                                                        <div className='d-flex col-12'>
+
+                                                                            <div className='col-3'>
+                                                                                <h5 className='col m-0 p-0 text-secondary'>{"Interview " + (index + 1) + demoDisplayName}</h5>
+                                                                                <h5 className='col mb-0 pl-1 font-weight-normal text-default'>{(is_complete ? "Completed " : "Created at ") + getDisplayTimeFromMoment(created_at)}</h5>
+                                                                            </div>
+                                                                            <div className='col-9'>
+                                                                                <div className='d-flex'>
+                                                                                    <div className='col-9 d-flex justify-content-around align-items-center'>
+                                                                                        <h5>-</h5>
+                                                                                        <h5>-</h5>
+                                                                                        <h5>-</h5>
+                                                                                    </div>
+
+                                                                                    <div className='col-3 d-flex justify-content-center'>
+                                                                                        {
+                                                                                            is_report_complete &&
+                                                                                            <div >
+                                                                                                <Button
+                                                                                                    size='md'
+                                                                                                    className='btn btn-outline-primary rounded'
+                                                                                                    style={{
+                                                                                                        borderColor: "#d8dade",
+                                                                                                        fontSize: "15px"
+                                                                                                    }}
+                                                                                                    text={'View Report'}
+                                                                                                    onClick={() => {
+                                                                                                        proceedReport(id);
+                                                                                                    }}
+                                                                                                />
+                                                                                            </div>
+                                                                                        }
+                                                                                        {
+                                                                                            is_complete && !is_report_complete &&
+                                                                                            <div>
+                                                                                                <span className="name mb-0 text-sm">Generating Report ...</span>
+                                                                                            </div>
+                                                                                        }
+                                                                                    </div>
+                                                                                </div>
+                                                                                <Divider className={"col-11 mx--3 text-"} space={"3"} />
+
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+                                                                )
+                                                            })
+                                                        }
+                                                    </div>
                                                 }
                                             </div>
-                                }
-                                            </div>
-                                            
+
                                         </Card>
                                     )
                                 })
@@ -517,102 +529,89 @@ function FromJD() {
                     <UploadJdCard />
             }
 
+            <div className='p-5'>
+                <Modal size={'lg'} isOpen={createJdModal} onClose={() => { dispatch(hideCreateJdModal()) }}>
+                    <div className={'m-md-5 mt-sm-0 mt-5'}>
+                        <div className='display-4 text-secondary font-weight-bolder mt--6 mb-md-5'>{'Create Interview'}
+                            <p className={'text-default'} style={{ fontSize: '15px', fontWeight: 400 }}>{'Input job details, specifying qualifications, requirements, interview duration'}</p>
+                        </div>
 
-            <Modal title={'Create Interview'} isOpen={createJdModal} onClose={() => { dispatch(hideCreateJdModal()) }}>
-                <div className={'row'}>
-                    <div className={'col-6'}>
-                        <Input
-                            isMandatory
-                            heading={'Sector'}
-                            placeHolder={PLACE_HOLDER.sector}
-                            value={sector.value}
-                            onChange={sector.onChange} />
-                    </div>
-                    <div className={'col-6'}>
-                        <Input
-                            isMandatory
-                            heading={'Role'}
-                            placeHolder={PLACE_HOLDER.role}
-                            value={position.value}
-                            onChange={position.onChange} />
-                    </div>
-                </div>
-
-                <div className={'row'}>
-                    <div className={'col-6'}>
-                        {fresherChecked ? (
-                            <div className='ml-2'>
+                        <div className={'row'}>
+                            <div className={'col-md-8 col-sm-0 col-12'}>
                                 <Input
-                                    isMandatory
-                                    heading={'Years of experience'}
-                                    type={'text'}
-                                    placeHolder={'Fresher'}
-                                    value={'Fresher'}
-                                    disabled
-                                />
+                                    heading={'Position'}
+                                    placeHolder={PLACE_HOLDER.role}
+                                    value={position.value}
+                                    onChange={position.onChange} />
                             </div>
-                        ) : (
-                            <div>
-                                <Input
-                                    isMandatory
-                                    heading={'Years of experience'}
-                                    type={'number'}
-                                    placeHolder={'Experience'}
-                                    value={experience.value}
-                                    onChange={experience.onChange}
-                                />
+
+                            <div className={'col-md-4 col-sm-0 col-12 mb-sm-0 mb-4'}>
+                                <InputHeading heading={'Experience'} />
+                                <select
+                                    id="experience"
+                                    value={experience}
+                                    onChange={(e) => setExperience(e.target.value)}
+                                    className={`form-control ${experience.length === 0 ? 'text-primary' : 'text-black'} rounded-sm`}
+                                >
+                                    {Array.from({ length: 31 }, (_, index) => (
+                                        <option key={index} value={index.toString()}>
+                                            {index === 0 ? 'Fresher' : index}
+                                        </option>
+                                    ))}
+                                </select>
                             </div>
-                        )}
-                        <span className={'position-absolute left-9 pl-5 top-0'}>
-                            <Checkbox id={'Fresher'} className={'text-primary'} text={'Fresher'} defaultChecked={fresherChecked} onCheckChange={(checked) => {
-                                setFresherChecked(checked)
-                            }} />
-                        </span>
-                    </div>
+                        </div>
 
-
-                    <div className={'col-6 mt-1'}>
-                        <InputHeading Class={'mb-0'} heading={'Interview Duration'} isMandatory />
-                        <Radio
-                            selected={selectedDuration}
-                            selectItem={selectedDuration}
-                            data={interviewDurations}
-                            onRadioChange={(selected) => {
-                                if (selected) {
-                                    setSelectedDuration(selected)
+                        <TextArea
+                            error={jdDescriptionError}
+                            placeholder={PLACE_HOLDER.jd}
+                            heading='Job Description'
+                            value={jd.value.slice(0, CHAR_LENGTH)}
+                            onChange={(e) => {
+                                let value = e.target.value
+                                if (value.length > CHAR_LENGTH) {
+                                    setJdDescriptionError(ERROR_MESSAGE)
+                                } else {
+                                    setJdDescriptionError(undefined)
                                 }
+                                jd.set(value)
                             }}
                         />
+
+                        <div className={'col m-0 p-0 mt-1'}>
+                            <InputHeading Class={'mb-0'} heading={'Interview Duration'} />
+                            <Radio
+                                selected={selectedDuration}
+                                selectItem={selectedDuration}
+                                data={interviewDurations}
+                                onRadioChange={(selected) => {
+                                    if (selected) {
+                                        setSelectedDuration(selected)
+                                    }
+                                }}
+                            />
+                        </div>
+
+                        <div className={'col m-0 p-0'}>
+                            <Input
+                                heading={'Sector'}
+                                placeHolder={PLACE_HOLDER.sector}
+                                value={sector.value}
+                                onChange={sector.onChange} />
+                        </div>
+
+                        <div className='text-center mt-md-6'>
+                            <Button className={'rounded-sm px-md-5 px-sm-0 px-6'} size='md' text={'Start Inteview'} width={30} onClick={submitJdApiHandler} />
+                        </div>
                     </div>
 
-                </div>
+                </Modal >
 
-                <TextArea
-                    isMandatory
-                    error={jdDescriptionError}
-                    placeholder={PLACE_HOLDER.jd}
-                    heading='Job Description'
-                    value={jd.value.slice(0, CHAR_LENGTH)}
-                    onChange={(e) => {
-                        let value = e.target.value
-                        if (value.length > CHAR_LENGTH) {
-                            setJdDescriptionError(ERROR_MESSAGE)
-                        } else {
-                            setJdDescriptionError(undefined)
-                        }
-                        jd.set(value)
-                    }}
-                />
+            </div>
 
-                <div className='text-center'>
-                    <Button block size='md' text={'Submit'} onClick={submitJdApiHandler} />
-                </div>
-
-            </Modal >
-
-            <GenerateModal title={'Preparing your Interview'} isOpen={generateJdModal.visible} onClose={generateJdModal.hide}>
-                <AnalyzingAnimation />
-            </GenerateModal>
+            <Modal isOpen={generateJdModal.visible} onClose={generateJdModal.hide}>
+                <PreparingYourInterview />
+            </Modal>
 
             <Modal isOpen={completedModal.visible} onClose={completedModal.hide}>
                 <div className='text-center '>

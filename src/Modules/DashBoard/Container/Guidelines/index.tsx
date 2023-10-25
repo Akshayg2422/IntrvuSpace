@@ -14,11 +14,11 @@ import { useSelector } from 'react-redux'
 //     { title: "We appreciate clear and succinct responses during the conversation.", icon: icons.voice }
 // ];
 const GUIDELINES = [
-    { title: "Use of headphones for better quality", icon: icons.headPhone },
-    { title: "Attend from an quiet and secluded space", icon: icons.room },
-    { title: "Verify the stability of your internet connection", icon: icons.internet },
-    { title: "Keep the video function enabled throughout the session", icon: icons.video },
-    { title: "After completing the interview, check back in a couple of minutes to view the report", icon: icons.reports },
+    { title: "Use of headphones for better quality" },
+    { title: "Attend from an quiet and secluded space" },
+    { title: "Verify the stability of your internet connection" },
+    { title: "Keep the video function enabled throughout the session" },
+    { title: "After completing the interview, check back in a couple of minutes to view the report" },
 
 ];
 
@@ -36,34 +36,29 @@ function Guidelines({ scheduleInfo = undefined, loading, heading, onClick }: Gui
 
                 <div className='h-100vh'>
                     <div className='container d-none d-md-block d-lg-block d-xl-block'>
-                        <div className="d-flex flex-column justify-content-between h-100vh py-3 py-md-5 py-sm-5">
-                            <div className='col-md-auto'>
-                                <div className='d-flex align-items-center ml--5'>
-                                    <Back h={22} w={22} />
-                                    <h2 className="mx-4  display-2 mb-0 font-weight-bolder text-primary mb-0">{`Interview for the role of ${heading}`}</h2>
+                        <div className={'col-8'}>
+                        <div className="d-flex flex-column h-100vh py-3 py-md-5 py-sm-5">
+                            <div className=''>
+                                <div className=''>
+                                    <div className="mx-4 h2 display-2 mb-0 font-weight-bolder text-primary mb-0">{`Interview for the role of ${heading}`}<span>{scheduleInfo?.interviewee_experience === 0 ? "Fresher" : "" + scheduleInfo?.interviewee_experience + (scheduleInfo?.interviewee_experience === 1 ? " year " : " years ") + "of experience"}</span></div>
                                 </div>
                                 {scheduleInfo?.interview_duration &&
                                     <div className='col row align-items-center mb-1'>
-                                        <Image src={icons.clock} height={18} width={18} style={{
-                                            objectFit: 'contain'
-                                        }} />
                                         <h5 style={{
                                             fontSize: "16px"
                                         }} className='mb-0 text-primary font-weight-bolder ml-2'>{`${scheduleInfo?.interview_duration} mins`}</h5>
                                     </div>
                                 }
-                                <h3 className="mb-0 pointer">{scheduleInfo?.interviewee_experience === 0 ? "Fresher" : "" + scheduleInfo?.interviewee_experience + (scheduleInfo?.interviewee_experience === 1 ? " year " : " years ") + "of experience"}</h3>
                             </div>
                             <div className='col my-5'>
                                 <div className='mb-0'>
-                                    <h3 className="mb-0 ">Guidelines</h3>
                                     {
                                         GUIDELINES && GUIDELINES.length > 0 && GUIDELINES.map(each => {
 
-                                            const { title, icon } = each
+                                            const { title, } = each
                                             return (
                                                 <div className="col row mt-4 align-items-center">
-                                                    <Image src={icon} height={28} width={28} />
+                                                    <Image src={icons.check} height={20} />
                                                     <div className="col-auto">
                                                         <span className="text-details text-black">{title}</span>
                                                     </div>
@@ -74,11 +69,11 @@ function Guidelines({ scheduleInfo = undefined, loading, heading, onClick }: Gui
                                 </div>
                             </div>
 
-                            <div className='col-auto'>
+                            <div className='text-center'>
                                 <Button
+                                className={'rounded px-6'}
                                     loading={loading}
-                                    block
-                                    text={!scheduleInfo.is_started ? 'Start Now' : 'Resume Interview'}
+                                    text={!scheduleInfo.is_started ? 'Start Interview' : 'Resume Interview'}
                                     onClick={() => {
                                         if (onClick) {
                                             onClick()
@@ -86,6 +81,7 @@ function Guidelines({ scheduleInfo = undefined, loading, heading, onClick }: Gui
                                     }}
                                 />
                             </div>
+                        </div>
                         </div>
                     </div>
 
@@ -126,10 +122,10 @@ function Guidelines({ scheduleInfo = undefined, loading, heading, onClick }: Gui
                                         {
                                             GUIDELINES && GUIDELINES.length > 0 && GUIDELINES.map(each => {
 
-                                                const { title, icon } = each
+                                                const { title } = each
                                                 return (
                                                     <div style={{ marginBottom: 10, display: 'flex', alignItems: 'flex-start' }}>
-                                                        <Image src={icon} height={22} width={22} style={{ flexShrink: 0, alignSelf: 'flex-start' }} />
+                                                        <Image src={icons.check} height={20} style={{ flexShrink: 0, alignSelf: 'flex-start' }} />
                                                         <h4 style={{ color: '#000', marginLeft: 10, whiteSpace: 'normal', overflow: 'hidden' }}>{title}</h4>
                                                     </div>
                                                 )
