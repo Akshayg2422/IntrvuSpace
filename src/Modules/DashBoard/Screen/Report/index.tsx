@@ -5,6 +5,7 @@ import {
   ButtonGroup,
   CommonTable,
   Divider,
+  DropDownIcon,
   Image,
   Spinner,
 } from "@Components";
@@ -43,6 +44,11 @@ const NOTE = [
   { id: 3, icon: "warning", text: "Covered by invalid" },
 ];
 
+const REPORT_TYPE = [
+  { id: "1", name: "Basic Report", value: "Basic Report" },
+  { id: "2", name: "Detailed Report", value: "Detailed Report" },
+];
+
 function Report() {
   const FILTER = [
     { id: 1, title: "Basic Report" },
@@ -69,6 +75,9 @@ function Report() {
   const [cardHeight, setCardHeight] = useState<any>(null);
   const [percentage, setPercentage] = useState<any>({});
   const [fileName, setFileName] = useState("");
+  const [reportType, setReportType] = useState(REPORT_TYPE[0].id);
+
+  console.log("reportType", reportType);
 
   useEffect(() => {
     getBasicReportData("");
@@ -496,6 +505,16 @@ function Report() {
           </div>
         </div>
 
+        <div className="col-sm-3">
+          <DropDownIcon
+            data={REPORT_TYPE}
+            value={reportType}
+            onChange={(e) => {
+              setReportType(e.target.value);
+            }}
+          />
+        </div>
+
         <div className="" ref={componentRef}>
           <div>
             <div className="mt-5">
@@ -545,7 +564,7 @@ function Report() {
 
           {filter?.value.title === "Basic Report" ? (
             <div className="mt-md-6 pr-md-5">
-              <div className="mx-lg-4 pb-0 mb--2 pt-5 pb-md-5">
+              <div className="mx-md-4 mx-0 pb-0 mb--2 pt-5 pb-md-5">
                 <div className="row">
                   {basicReportData &&
                     Object.keys(basicReportData)
@@ -554,14 +573,14 @@ function Report() {
                         return dataId.map((el) => {
                           if (heading === el) {
                             return (
-                              <div className="col-sm-4 mx-3 mx-md-0 mb-md-4">
+                              <div className="col-sm-4 mx-3 mx-md-0 mb-md-4 mb-0">
                                 <Card
                                   style={{
                                     borderWidth: 1.5,
                                     borderColor: "#e8edff",
                                     backgroundColor: "transparent",
                                   }}
-                                  className=" px-1 text-center"
+                                  className="p-2 text-center text-sm-left"
                                 >
                                   <div className="progress-wrapper col py-0 m-0 ">
                                     <div className="h4 mb-0 pb-0 pt-2">
@@ -579,7 +598,7 @@ function Report() {
                                       </span>
                                     </div>
 
-                                    <div className="">
+                                    <div className="mt--2">
                                       <span
                                         className={`${
                                           heading === "skill_matrix"

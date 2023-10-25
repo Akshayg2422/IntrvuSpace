@@ -1,6 +1,6 @@
 import { AnimatedImage, Back, Button, Modal, Spinner } from "@Components";
 import { useLoader, useModal, useNavigation } from "@Hooks";
-import { CallHeader, CallHeaderMobile, Guidelines, Report } from '@Modules';
+import { CallHeader, CallHeaderMobile, Guidelines, Report } from "@Modules";
 import {
   canStartInterview,
   closeInterview,
