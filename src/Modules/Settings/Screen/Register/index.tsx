@@ -93,7 +93,7 @@ function Register() {
           <Image src={icons.logoText} height={60} />
         </div>
         <div className="col-xl-12 d-flex justify-content-center align-items-center">
-          <div className="col-12 col-md-6 col-lg-4  text-center align-items-center">
+          <div className="col-12 col-md-6 col-lg-4 text-center align-items-center">
             <div className="">
               <h1
                 className="text-secondary"
@@ -111,13 +111,7 @@ function Register() {
               }}
             >
               <div>
-                <div
-                  className="overflow-auto overflow-hide"
-                  style={{
-                    height: "60vh",
-
-                  }}
-                >
+                
                   <div className="py-4">
                     <div className="input-group">
                       <input
@@ -265,7 +259,6 @@ function Register() {
                       </span>
                     </div>
                   </div>
-                </div>
               </div>
               <div className="pt-4 mb-sm-0 mb-2">
                 <Button

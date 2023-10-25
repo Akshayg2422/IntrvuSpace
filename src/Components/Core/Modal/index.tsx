@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import { ModalProps } from "./interfaces";
 import { Modal as RsModal } from "reactstrap";
+import {Image} from '@Components'
+import { icons } from "@Assets";
 
 function Modal({ isOpen, children, title, size = "lg", style, onClose, ...rest }: ModalProps) {
 
@@ -49,9 +51,7 @@ function Modal({ isOpen, children, title, size = "lg", style, onClose, ...rest }
               }
             }}
           >
-            <span
-              className={'text-default'} aria-hidden={true}
-              style={{ fontSize: '220%', fontWeight: 100 }}>×</span>
+            <Image src={icons.close} height={20} width={20}/>
 
           </button>
         </div>
