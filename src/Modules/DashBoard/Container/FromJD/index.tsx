@@ -268,7 +268,7 @@ function FromJD() {
                                         demoDisplayName = " - " + basicInfo?.first_name
 
                                     return (
-                                        <Card className="mt-5 rounded mx-6"
+                                        <Card className="mt-5 rounded mx-md-6"
                                         style={{
                                             borderWidth: "1px",
                                             borderColor: "#d3deff",
@@ -450,11 +450,11 @@ function FromJD() {
                                                                             <div className='col-2'></div>
                                                                         </div>
                                                                     }
-                                                                <div className='d-flex col-12'>
+                                                                <div className='d-flex'>
                                                                    
                                                                     <div className='col-3'>
                                                                     <h5 className='col m-0 p-0 text-secondary'>{"Interview " + (index + 1) + demoDisplayName}</h5>
-                                                                    <h5 className='col mb-0 pl-1 font-weight-normal text-default'>{(is_complete ? "Completed " : "Created at ") + getDisplayTimeFromMoment(created_at)}</h5>
+                                                                    <small className='col mb-0 pl-md-1 font-weight-normal text-default'>{(is_complete ? "Completed " : "Created at ") + getDisplayTimeFromMoment(created_at)}</small>
                                                                     </div>
                                                                     <div className='col-9'>
                                                                         <div className='d-flex'>
@@ -470,7 +470,7 @@ function FromJD() {
                                                                             <div >
                                                                                 <Button
                                                                                 size='md'
-                                                                                className='btn btn-outline-primary rounded'
+                                                                                className={'btn btn-outline-primary rounded'}
                                                                                 style={{
                                                                                     borderColor:"#d8dade",
                                                                                     fontSize: "15px"
@@ -490,6 +490,7 @@ function FromJD() {
                                                                         }
                                                                     </div>
                                                                     </div>
+                                                                    
                                                                     <Divider className={"col-11 mx--3 text-"} space={"3"} />
 
                                                                     </div>
