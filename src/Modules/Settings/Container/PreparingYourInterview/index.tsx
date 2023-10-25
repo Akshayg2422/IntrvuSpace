@@ -5,7 +5,6 @@ import { Button, Modal } from '@Components';
 import { useSelector } from 'react-redux';
 
 function PreparingYourInterview() {
-    const { goBack } = useNavigation();
     const { loginDetails } = useSelector((state: any) => state.AppReducer);
 
     const steps = [
@@ -29,7 +28,6 @@ function PreparingYourInterview() {
     }, []);
 
     return (
-
         <div className="col-md-12 rounded-sm px-md-4">
             <div className="text-secondary col-11">
                 <div className="m-0 h2 font-weight-800 pb-2">Preparing your Interview...</div>
@@ -55,7 +53,6 @@ function PreparingYourInterview() {
                 </div>
             )}
         </div>
-
     );
 }
 
