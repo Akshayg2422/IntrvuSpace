@@ -43,13 +43,13 @@ function DesignationItem({ item, onAdd, onEdit, onView, onClick }: DesignationIt
                     />
                 )}
             </div> */}
-            <Card onClick={(e) => {
-                if (onView) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    onView(item);
-                }
-            }}>
+            <Card className='rounded px-md-5 py-md-3 '
+                style={{
+                    borderWidth: "1px",
+                    borderColor: "#d3deff",
+                    backgroundColor: "transparent"
+                }}
+            >
                 <CardBody className='pt-1 pb-1 px-0'>
                     {/* <div>
                         {knowledge_group_variant && knowledge_group_variant.length > 0 ? (
@@ -143,19 +143,44 @@ function DesignationItem({ item, onAdd, onEdit, onView, onClick }: DesignationIt
                             </div>
                         )}
                     </div>  */}
-                    <div>
+                    <div className='text-secondary'>
                         {item ? (
                             <div
                                 key={item.id}
                                 className="mx-1"
                             >
-                                <div className='d-flex align-items-center mb-3'>
-                                    <h1
-                                        className='text-black pointer col'
+                                <div className='d-flex align-items-center mb-3 justify-content-between'>
+                                    <div>
+                                        <h1 className=' pointer col p-0 m-0'
 
-                                    >{item.job_description.position}</h1>
+                                        >{item.job_description.position}</h1>
+                                        <h5 className="m-0 font-weight-500">{item.job_description.experience}</h5>
+                                    </div>
+                                    <div>
+                                        <Button style={{ fontSize: "15px" }}
+                                            outline
+                                            size='md'
+                                            className={'px-md-5 border border-primary rounded'}
+                                            text={'View Details'}
+                                            onClick={(e) => {
+                                                if (onView) {
+                                                    e.preventDefault();
+                                                    e.stopPropagation();
+                                                    onView(item);
+                                                }
+                                            }}
+                                        />
+                                        <div className=' d-flex align-items-center justify-content-center mt-1'>
+                                            <img src={icons.check} height={20} width={20} style={{
+                                                objectFit: 'contain'
+                                            }} />
+                                            <h5 className='p-0 font-weight-800 m-0'>Active</h5>
+                                        </div>
+                                    </div>
 
-                                    <div className='d-flex justify-content-between col-sm-5'>
+
+
+                                    {/* <div className='d-flex justify-content-between col-sm-5'>
                                         <div className='d-flex align-items-center no-border' title='Total Candidates'>
                                             <Image src={icons.profile} height={21} width={20} />
                                             <span className={'pl-1'}>{item.candidate_details.total_candidates}</span>
@@ -176,7 +201,7 @@ function DesignationItem({ item, onAdd, onEdit, onView, onClick }: DesignationIt
                                             <Image src={icons.rejected} height={20} width={20} />
                                             <span className={'pl-1'}>{item.candidate_details.rejected_candidates}</span>
                                         </div>
-                                    </div>
+                                    </div> */}
 
 
                                     {/* {onEdit && (
@@ -202,7 +227,7 @@ function DesignationItem({ item, onAdd, onEdit, onView, onClick }: DesignationIt
                                             )} */}
                                 </div>
                                 <div className="px-3 pointer">
-                                    <h5 className="mb-0 pointer mt--3" style={{ marginTop: -10 }}>{item.job_description.experience}</h5>
+
                                     <div className="row pt-2 h5" style={{ marginTop: -10 }}>
                                         <div className="col-2 mb-0 pointer text-muted" style={{ maxWidth: '8rem', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
                                             {item.department}

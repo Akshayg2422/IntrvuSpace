@@ -3,7 +3,7 @@ import React from 'react';
 import { FormGroup, Input as RsInput } from 'reactstrap';
 import { InputProps } from './interfaces';
 
-const Input = React.forwardRef(({ id, className, heading, variant = 'default', isMandatory,textColor, ...rest }: InputProps, ref: any) => {
+const Input = React.forwardRef(({ id, className, heading, variant = 'default', isMandatory, textColor, ...rest }: InputProps, ref: any) => {
     return (
         <FormGroup>
             <InputHeading heading={heading} id={id} isMandatory={isMandatory} />

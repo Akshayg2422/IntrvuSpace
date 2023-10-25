@@ -1,5 +1,5 @@
 
-import { Button, DropDown, DesignationItem, Input, Modal, NoDataFound, Breadcrumbs, showToast, TextArea, ReactAutoComplete, Heading, InputHeading } from '@Components';
+import { Button, DropDown, DesignationItem, Input, Modal, NoDataFound, Breadcrumbs, showToast, TextArea, ReactAutoComplete, Heading } from '@Components';
 import { useDropDown, useInput, useLoader, useModal, useNavigation } from '@Hooks';
 import { CREATE_KNOWLEDGE_GROUP_VARIANT_FAILURE, breadCrumbs, clearBreadCrumbs, createCorporateSchedules, createKnowledgeGroup, createKnowledgeGroupVariant, getDepartmentCorporate, getCorporateSchedules, getKnowledgeGroups, getSectorCorporate, getSectors, setSelectedRole, addSectorCorporate, addDepartmentCorporate } from '@Redux';
 import { ROUTES } from '@Routes';
@@ -43,22 +43,12 @@ function Designation() {
     const position = useInput('')
     const description = useInput("");
     const sector = useDropDown({});
-    // const experience = useInput('')
-    const [experience, setExperience] = useState("")
+    const experience = useInput('')
     const jd = useInput('');
     const portalUrl = useInput('');
     const role1 = useInput('');
     const sectorInput = useInput('');
     const loader = useLoader(false);
-    const interviewDurations: any = [
-        { id: 1, text: 'Quick', subText: '5 mins', value: 5, isActive: false },
-        { id: 2, text: 'Short', subText: '10 mins', value: 10, isActive: false },
-        { id: 3, text: 'Medium', subText: '15 mins', value: 15, isActive: false },
-        { id: 4, text: 'Long', subText: '30 mins', value: 30, isActive: false },
-    ];
-
-    const [changeColorButton, setChangeColorButton] = useState<any>(interviewDurations)
-    
 
     // console.log("position===>", position.value)
     // console.log(sectorsCorporate, 564554);
@@ -140,7 +130,7 @@ function Designation() {
             sector_id: selectSector.id,
             department_id: selectDepartment.id,
             role: role1.value,
-            experience: experience,
+            experience: experience.value,
             jd: jd.value
         }
         const validation = validate(CREATE_CORPORATE_SCHEDULE_RULES, params)
@@ -155,7 +145,6 @@ function Designation() {
                         getCorporateScheduleApiHandler()
                         loader.hide()
                         showToast(response.message, 'success');
-                        addRoleModal.hide()
                     },
                     onError: (error) => () => {
                         showToast(error.error_message, 'error');
@@ -195,25 +184,14 @@ function Designation() {
         }).filter(Boolean);
     }
 
-    const handleItemClick = (index) => {
-        const updatedButtons = changeColorButton.map((item, i) => {
-          if (i === index) {
-            return { ...item, isActive: true };
-          } else {
-            return { ...item, isActive: false };
-          }
-        });
-        setChangeColorButton(updatedButtons);
-      };
-
     return (
         <>
-            <div className='pt-4 mx-7'>
-                {/* <h1 className={'text-black mb-0 pb-3'}>{'Schedules'}</h1> */}
+            <div className='container-fluid pt-4'>
+                <h1 className={'text-black mb-0 pb-3'}>{'Schedules'}</h1>
 
                 <div className='text-right mb-3'>
                     <Button
-                        text={'Create Opening'}
+                        text={'Create Schedule'}
                         block
                         onClick={() => {
                             addRoleModal.show();
@@ -222,47 +200,7 @@ function Designation() {
                     />
                 </div>
 
-                <div className='row pt-6'>
-                    <div className='col'>
-                        <Input
-                            heading={'Position'}
-                            type={'text'}
-                            placeHolder={"HR Executive, QA Manager..."}
-                            value={role1.value}
-                            onChange={role1.onChange}
-
-                        />
-                    </div>
-                    <div className='col'>
-                        <Input
-                            heading={'Status'}
-                            type={'text'}
-                            placeHolder={"All"}
-                            value={''}
-                            onChange={''} />
-                    </div>
-                    <div className='col'>
-                        <ReactAutoComplete
-                            data={departmentCorporate}
-                            heading={"Department"}
-                            placeholder='Developer,Accounts..'
-                        />
-                    </div>
-                    <div className='col'>
-                        <ReactAutoComplete
-                            data={sectorsCorporate}
-                            heading={"Sector"}
-                            placeholder='Healthcare, Real Estate...'
-                        />
-                    </div>
-                    <div>
-
-                    </div>
-
-
-                </div>
-
-                <div className='row pt-5 '>
+                <div className='row pt-3'>
                     {cardData && cardData.length > 0 ?
                         cardData.map((el: any, index: number) => {
                             return (
@@ -313,114 +251,81 @@ function Designation() {
                 <Modal size={'lg'} isOpen={addRoleModal.visible} onClose={() => {
                     addRoleModal.hide()
                     position.set("")
-                    setExperience("")
+                    experience.set("")
                     jd.set("")
                     role1.set('')
-                }} style={{ padding: 0 }}>
-                    <div className='px-md-6 px-3 '>
-                        <Heading heading={'Create Opening'} style={{ fontSize: '26px', fontWeight: 800, margin: 0 }} />
-                        <div className='text-default pt-1 font-weight-500'>Input job details, specifying qualifications, requirements, interview duration</div>
-
-                        <div className={'col-12 pt-5 px-0'}>
-                            <div className='row'>
-                                <div className='col-5'>
-                                    <Input
-
-                                        heading={'Position'}
-                                        type={'text'}
-                                        placeHolder={"HR Executive, QA Manager..."}
-                                        value={role1.value}
-                                        onChange={role1.onChange} />
-                                </div>
-
-                                <div className='col-4'>
-                                    <InputHeading heading={'Experience'} />
-                                    <select
-                                        id="experience"
-                                        value={experience}
-                                        placeholder='Select'
-                                        onChange={(e) => setExperience(e.target.value)}
-                                        className={`form-control ${experience.length === 0 ? 'text-default' : 'text-black'} rounded-sm `}
-                                    >
-                                        {Array.from({ length: 31 }, (_, index) => (
-                                            <option key={index} value={index.toString()}>
-                                                {index === 0 ? 'Fresher' : index}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
-                                <div className='col-3'>
-                                    <Input
-
-                                        heading={'Vacancies'}
-                                        type={'number'}
-                                        placeHolder={"0"}
-                                        value={''}
-                                        onChange={''} />
-                                </div>
+                }} style={{padding: 0}}>
+                    <div className='px-6'>
+                    <Heading heading={'Create Opening'} style={{fontSize: '26px', fontWeight: 800, margin: 0}}/>
+                    <div className='text-default pt-1 font-weight-500'>Input job details, specifying qualifications, requirements, interview duration</div>
+                    
+                    <div className={'col-12 pt-6 px-0'}>
+                        <div className='row'>
+                            <div className='col'>
+                                <ReactAutoComplete
+                                    isMandatory
+                                    data={sectorsCorporate}
+                                    heading={"Sector"}
+                                    onAdd={(value) => {
+                                        addSectorCorporateApiHandler(value)
+                                    }}
+                                    state={setSelectedSector}
+                                />
                             </div>
-
-                            <div className='pt-2 '>
-                                <TextArea
-                                    heading='Job Description'
-                                    value={jd.value}
-                                    placeholder={'Role : \n...............................................................................................................................................\n...............................................................................................................................................\n...............................................................................................................................................\n.......................................................................................\nResponsibilities :\n1. ............................................................................................................................................\n2. ...........................................................................................................................................\n3. ...........................................................................................................................................'}
-                                    className={"float-end p-4"}
-                                    onChange={jd.onChange} />
+                            <div className='col'>
+                                <ReactAutoComplete
+                                    isMandatory
+                                    data={departmentCorporate}
+                                    heading={"Department"}
+                                    onAdd={(value) => {
+                                        addDepartmentApiHandler(value)
+                                    }}
+                                    state={setSelectedDepartment}
+                                />
                             </div>
-                            <div className='mb-4'>
-                                <InputHeading heading={'Duration'} />
-                                <div className='d-flex justify-content-between'>
-                                    {
-                                        changeColorButton.map((item, index) => {
-                                            return <div className=''>
-                                                <Button text={item.subText} className={`${item.isActive ? "btn-outline-primary" : "btn-outline-default"} rounded-sm px-5`} onClick={() => {
-                                                    console.log(item.value);
-                                                    
-                                                    handleItemClick(index)}} />
-                                                
-                                            </div>
-                                        })
-                                    }
-                                </div>
-
-
-                            </div>
-                            <div className='row'>
-                                <div className='col'>
-                                    <ReactAutoComplete
-
-                                        data={sectorsCorporate}
-                                        heading={"Sector"}
-                                        onAdd={(value) => {
-                                            addSectorCorporateApiHandler(value)
-                                        }}
-                                        state={setSelectedSector}
-                                    />
-                                </div>
-                                <div className='col'>
-                                    <ReactAutoComplete
-
-                                        data={departmentCorporate}
-                                        heading={"Department"}
-                                        onAdd={(value) => {
-                                            addDepartmentApiHandler(value)
-                                        }}
-                                        state={setSelectedDepartment}
-                                    />
-                                </div>
-                            </div>
-
                         </div>
 
-                        <div className="col d-flex justify-content-center py-5">
-                            <Button size={'md'}
-                                loading={loader.loader}
-                                text={"Create Opening"}
-                                className={'rounded px-5'}
-                                onClick={createCorporateScheduleApiHandler}
-                            />
+                        <div className='row'>
+                            <div className='col'>
+                                <Input
+                                    isMandatory
+                                    heading={'Role'}
+                                    type={'text'}
+                                    placeHolder={"Role"}
+                                    value={role1.value}
+                                    onChange={role1.onChange} />
+                            </div>
+
+                            <div className='col'>
+                                <Input
+                                    isMandatory
+                                    heading={'Experience'}
+                                    type={'number'}
+                                    placeHolder={"Experience"}
+                                    value={experience.value}
+                                    onChange={experience.onChange} />
+                            </div>
                         </div>
+
+
+                        <div>
+                            <TextArea
+                                isMandatory
+                                heading='Job Description'
+                                value={jd.value}
+                                className={"float-end"}
+                                onChange={jd.onChange} />
+                        </div>
+
+                    </div>
+
+                    <div className="col text-right">
+                        <Button size={'md'}
+                            loading={loader.loader}
+                            text={"Submit"}
+                            onClick={createCorporateScheduleApiHandler}
+                        />
+                    </div>
                     </div>
 
                 </Modal >
