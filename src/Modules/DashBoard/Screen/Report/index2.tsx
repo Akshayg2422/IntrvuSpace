@@ -457,7 +457,7 @@ function Report() {
                                 </h1>
                             </div>
                         </div>
-                        <div className='row   mx-lg-4 pb-0 mb--2'>
+                        <div className='row mx-lg-4 pb-0 mb--2'>
 
                             {basicReportData && Object.keys(basicReportData).reverse()?.map((heading) => {
 
