@@ -146,14 +146,32 @@ function TopNavbar() {
                             {loginDetails?.is_super_admin && <NavItem>
                                 <NavLink to="/home" tag={Link}>
                                     {/* <span className={`nav-link-inner--text  ${'/home' !== pathName ? "text-black h4" : 'text-primary h4'}`}>Create Interview</span> */}
-                                    <span style={{ fontSize: '15px' }} className={'text-primary font-weight-bolder'} onClick={handleCreateForOthersInterviewClick}>Create For Others</span>
+                                    <Button
+                                        size='md'
+                                        className='btn btn-outline-primary rounded-sm'
+                                        style={{
+                                            borderColor: "#d8dade",
+                                            fontSize: "15px"
+                                        }}
+                                        text={'Create For Others'}
+                                        onClick={handleCreateForOthersInterviewClick}
+                                    />
                                 </NavLink>
                             </NavItem>
                             }
                             <NavItem>
                                 <NavLink to="/home" tag={Link}>
                                     {/* <span className={`nav-link-inner--text  ${'/home' !== pathName ? "text-black h4" : 'text-primary h4'}`}>Create Interview</span> */}
-                                    <span style={{ fontSize: '15px' }} className={'text-primary font-weight-bolder'} onClick={handleCreateInterviewClick}>Create Interview</span>
+                                    <Button
+                                        size='md'
+                                        className='btn btn-outline-primary rounded-sm mr--3'
+                                        style={{
+                                            borderColor: "#d8dade",
+                                            fontSize: "15px"
+                                        }}
+                                        text={'Create Interview'}
+                                        onClick={handleCreateInterviewClick}
+                                    />
                                 </NavLink>
                             </NavItem>
 
@@ -166,16 +184,16 @@ function TopNavbar() {
                                         <UncontrolledDropdown nav>
                                             <DropdownToggle className="nav-link pr-0" color="" tag="a">
                                                 <Media className="align-items-center">
-                                                    <Image
+                                                    {/* <Image
                                                         size={'sm'}
                                                         variant={'avatar'}
                                                         src={icons.logoIcon}
                                                         style={{
                                                             objectFit: "contain"
                                                         }}
-                                                    />
-                                                    <Media className="ml-2 d-none d-lg-block">
-                                                        <div className='media-body text-black d-none d-lg-block dropdown-toggle'> </div>
+                                                    /> */}
+                                                    <Media className="d-none d-lg-block ml--2 mr-2 pointer">
+                                                        <div className='media-body text-black d-none d-lg-block ni ni-bold-down'> </div>
                                                     </Media>
                                                 </Media>
                                             </DropdownToggle>

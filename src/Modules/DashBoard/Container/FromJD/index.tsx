@@ -281,7 +281,7 @@ function FromJD() {
                                         demoDisplayName = " - " + basicInfo?.first_name
 
                                     return (
-                                        <Card className="mt-5 rounded mx-md-6"
+                                        <Card className="mt-5 rounded-sm mx-md-6"
                                         style={{
                                             borderWidth: "1px",
                                             borderColor: "#d3deff",
@@ -328,7 +328,7 @@ function FromJD() {
                                                                         <Button style={{ fontSize: "15px" }}
                                                                             size='md'
                                                                             loading={startInterviewLoader.loader}
-                                                                            className={'px-md-5 border border-primary rounded'}
+                                                                            className={'px-md-5 border border-primary rounded-sm'}
                                                                             text={proceedInterview.is_started ? "Resume Interview" : "Start Interview"}
                                                                             onClick={() => {
                                                                                 proceedInterviewHandler(proceedInterview?.id);
@@ -338,7 +338,7 @@ function FromJD() {
                                                                     <div>
                                                                         <Button style={{ fontSize: "15px" }}
                                                                             size='md'
-                                                                            className={'px-md-5 border border-primary rounded'}
+                                                                            className={'px-md-5 border border-primary rounded-sm'}
                                                                             text={'Try Another'}
                                                                             onClick={() => {
                                                                                 createNewJdScheduleApiHandler(id);
@@ -483,7 +483,7 @@ function FromJD() {
                                                                                             <div >
                                                                                                 <Button
                                                                                                     size='md'
-                                                                                                    className='btn btn-outline-primary rounded'
+                                                                                                    className='btn btn-outline-primary rounded-sm'
                                                                                                     style={{
                                                                                                         borderColor: "#d8dade",
                                                                                                         fontSize: "15px"
