@@ -126,11 +126,9 @@ function Login() {
                 <div className="input-group mb-3">
                   <input
                     style={{
-                      borderTopRightRadius: 0,
-                      borderBottomRightRadius: 0,
                       borderRight: 0,
                       borderRadius: '4px 0 0 4px',
-                      borderColor: toggleInput ? "#673de6" : "black",
+                      borderColor: toggleInput ? "#673de6" : "#d0d0d0"
                     }}
                     value={password.value}
                     type={showPassword ? "text" : "password"}
@@ -154,7 +152,7 @@ function Login() {
                       borderBottomLeftRadius: 0,
                       borderLeft: 0,
                       borderRadius: '0 4px 4px 0',
-                      borderColor: toggleInput ? "#673de6" : "black",
+                      borderColor: toggleInput ? "#673de6" : "#d0d0d0",
                     }}
                     onClick={() => {
                       setShowPassword(!showPassword);
