@@ -45,15 +45,15 @@ const NOTE = [
 ];
 
 const REPORT_TYPE = [
-  { id: "1", name: "Basic Report", value: "Basic Report" },
-  { id: "2", name: "Detailed Report", value: "Detailed Report" },
+  { id: "Basic Report", name: "Basic Report", value: "Basic Report" },
+  { id: "Detailed Report", name: "Detailed Report", value: "Detailed Report" },
 ];
 
 function Report() {
-  const FILTER = [
-    { id: 1, title: "Basic Report" },
-    { id: 2, title: "Detailed Report" },
-  ];
+  // const FILTER = [
+  //   { id: 1, title: "Basic Report" },
+  //   { id: 2, title: "Detailed Report" },
+  // ];
 
   const { schedule_id } = useParams();
 
@@ -66,7 +66,7 @@ function Report() {
   ]);
 
   const [basicReportData, setBasicReportData] = useState<any>([]);
-  const filter = useDropDown(FILTER[0]);
+  // const filter = useDropDown(FILTER[0]);
 
   const componentRef = useRef(null);
   let basicReportLoader = useLoader(false);
@@ -137,7 +137,8 @@ function Report() {
             name,
             sub_text,
           } = success.details;
-          setFileName(name + "_" + sub_text + "_" + filter?.value.title);
+          // setFileName(name + "_" + sub_text + "_" + filter?.value.title);
+          setFileName(name + "_" + sub_text + "_" + reportType)
 
           console.log(communication, "communication data");
           console.log(skill_matrix, "skill_matrix data");
@@ -466,7 +467,7 @@ function Report() {
       getBasicReportData("");
     }
 
-    filter.onChange(selectedOption);
+    // filter.onChange(selectedOption);
   };
 
   let array = 0;
@@ -482,12 +483,12 @@ function Report() {
             zIndex: 1,
           }}
         >
-          <ButtonGroup
+          {/* <ButtonGroup
             size={"btn-sm"}
             sortData={FILTER}
             selected={filter.value}
             onClick={handleButtonClick}
-          />
+          /> */}
           <div className="ml-3">
             {fileName && (
               <ReactToPrint
@@ -505,7 +506,7 @@ function Report() {
           </div>
         </div>
 
-        <div className="col-sm-3">
+        <div className="col-sm-3 position-absolute top-5 left-2">
           <DropDownIcon
             data={REPORT_TYPE}
             value={reportType}
@@ -562,7 +563,7 @@ function Report() {
             </div>
           </div>
 
-          {filter?.value.title === "Basic Report" ? (
+          {reportType === "Basic Report" ? (
             <div className="mt-md-6 pr-md-5">
               <div className="mx-md-4 mx-0 pb-0 mb--2 pt-5 pb-md-5">
                 <div className="row">
@@ -762,7 +763,7 @@ function Report() {
               </div>
             </div>
 
-            {filter?.value.title === "Detailed Report" && (
+            {reportType === "Detailed Report" && (
               <>
                 <div className="pt-5 text-secondary d-flex justify-content-between font-weight-bolder">
                   <span style={{ fontSize: 26 }}>{"Skill Matrix Report"}</span>
