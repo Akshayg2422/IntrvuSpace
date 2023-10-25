@@ -281,12 +281,12 @@ function FromJD() {
                                         demoDisplayName = " - " + basicInfo?.first_name
 
                                     return (
-                                        <Card className="mt-5 rounded mx-6"
-                                            style={{
-                                                borderWidth: "1px",
-                                                borderColor: "#d3deff",
-                                                backgroundColor: "transparent"
-                                            }}>
+                                        <Card className="mt-5 rounded mx-md-6"
+                                        style={{
+                                            borderWidth: "1px",
+                                            borderColor: "#d3deff",
+                                            backgroundColor: "transparent"
+                                        }}>
                                             <div className='px-md-4 py-md-3'>
                                                 <div className={'d-flex justify-content-between'}  >
                                                     <div className='mt-2'>

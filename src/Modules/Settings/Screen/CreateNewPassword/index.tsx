@@ -111,7 +111,7 @@ function CreateNewPassword() {
                         <div className={'mb-3'}>
                             <label className="h3 font-weight-bolder text-black">Enter the OTP</label>
                             <Input
-                                className='rounded-0'
+                                className='rounded-sm'
                                 type={'number'}
                                 value={otp.value}
                                 placeholder='Enter the OTP'
@@ -124,14 +124,13 @@ function CreateNewPassword() {
                             <div className="input-group mb-3">
                                 <input
                                     style={{
-                                        borderTopRightRadius: 0,
-                                        borderBottomRightRadius: 0,
                                         borderRight: 0,
-                                        borderRadius: 0
+                                        borderRadius: '4px 0 0 4px',
+                                        borderColor: toggleNewPassword ? '#673de6' : '#707070',
                                     }}
                                     value={newPassword.value}
                                     type={showNewPassword ? 'text' : 'password'}
-                                    className="form-control"
+                                    className="form-control rounded-sm"
                                     placeholder='Enter your password'
                                     aria-label="Recipient's username"
                                     aria-describedby="basic-addon2"
@@ -148,8 +147,8 @@ function CreateNewPassword() {
                                         borderTopLeftRadius: 0,
                                         borderBottomLeftRadius: 0,
                                         borderLeft: 0,
-                                        borderRadius: 0,
-                                        borderColor: toggleNewPassword ? '#000000' : 'black',
+                                        borderRadius: '0 4px 4px 0',
+                                        borderColor: toggleNewPassword ? '#673de6' : '#707070',
                                     }}
                                     onClick={() => {
                                         setShowNewPassword(!showNewPassword)
@@ -175,14 +174,13 @@ function CreateNewPassword() {
                             <div className="input-group mb-3">
                                 <input
                                     style={{
-                                        borderTopRightRadius: 0,
-                                        borderBottomRightRadius: 0,
                                         borderRight: 0,
-                                        borderRadius: 0
+                                        borderRadius: '4px 0 0 4px',
+                                        borderColor: toggleConfirmPassword ? '#673de6' : '#707070',
                                     }}
                                     value={confirmPassword.value}
                                     type={showConfirmPassword ? 'text' : 'password'}
-                                    className="form-control"
+                                    className="form-control rounded-sm"
                                     placeholder='Enter your password'
                                     aria-label="Recipient's username"
                                     aria-describedby="basic-addon2"
@@ -199,8 +197,8 @@ function CreateNewPassword() {
                                         borderTopLeftRadius: 0,
                                         borderBottomLeftRadius: 0,
                                         borderLeft: 0,
-                                        borderRadius: 0,
-                                        borderColor: toggleConfirmPassword ? '#000000' : 'black',
+                                        borderRadius: '0 4px 4px 0',
+                                        borderColor: toggleConfirmPassword ? '#673de6' : '#707070',
                                     }}
                                     onClick={() => {
                                         setShowConfirmPassword(!showConfirmPassword)
