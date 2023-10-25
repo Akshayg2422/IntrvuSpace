@@ -11,12 +11,15 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import './index.css'
 
-export const interviewDurations: any = [
-    { id: '0', text: 'Quick', subText: '5 mins', value: 5 },
-    { id: '1', text: 'Short', subText: '10 mins', value: 10 },
-    { id: '2', text: 'Medium', subText: '15 mins', value: 15 },
-    { id: '3', text: 'Long', subText: '30 mins', value: 30 },
+const interviewDurations: any = [
+    { id: 1, text: 'Quick', subText: '5 mins', value: 5, isActive: false },
+    { id: 2, text: 'Short', subText: '10 mins', value: 10, isActive: false },
+    { id: 3, text: 'Medium', subText: '15 mins', value: 15, isActive: false },
+    { id: 4, text: 'Long', subText: '30 mins', value: 30, isActive: false },
 ];
+
+
+
 
 const experienceInNumber: number[] = Array.from({ length: 31 }, (_, index) => index);
 
@@ -55,12 +58,13 @@ function FromJD() {
     const [fresherChecked, setFresherChecked] = useState(false)
 
     const [jdDescriptionError, setJdDescriptionError] = useState<any>(undefined)
-    const [selectedDuration, setSelectedDuration] = useState(interviewDurations[0]);
+    const [selectedDuration, setSelectedDuration] = useState('');
     const startInterviewLoader = useLoader(false);
 
     const handleDurationClick = (interviewDurations) => {
         setSelectedDuration(interviewDurations);
     };
+    const [changeColorButton, setChangeColorButton] = useState<any>(interviewDurations)
 
 
     useEffect(() => {
@@ -96,7 +100,7 @@ function FromJD() {
         const params = {
             sector_name: sector.value,
             position: position.value,
-            interview_duration: selectedDuration.value,
+            interview_duration: selectedDuration,
             experience: experience,
             jd: jd.value
         }
@@ -153,8 +157,9 @@ function FromJD() {
         setExperience('')
         jd.set('')
         sector.set('')
+        setSelectedDuration('')
     }
-    console.log('1111111111111', selectedDuration.value);
+    console.log('1111111111111', selectedDuration);
 
     function createNewJdScheduleApiHandler(id: string) {
         const params = {
@@ -246,6 +251,17 @@ function FromJD() {
     };
     console.log('1111111111111111', experience);
 
+    const handleItemClick = (index) => {
+        const updatedButtons = changeColorButton.map((item, i) => {
+          if (i === index) {
+            return { ...item, isActive: true };
+          } else {
+            return { ...item, isActive: false };
+          }
+        });
+        setChangeColorButton(updatedButtons);
+      };
+
 
     return (
         <>
@@ -281,7 +297,7 @@ function FromJD() {
                                         demoDisplayName = " - " + basicInfo?.first_name
 
                                     return (
-                                        <Card className="mt-5 rounded mx-md-6"
+                                        <Card className="mt-5 rounded-sm mx-md-6"
                                         style={{
                                             borderWidth: "1px",
                                             borderColor: "#d3deff",
@@ -328,7 +344,7 @@ function FromJD() {
                                                                         <Button style={{ fontSize: "15px" }}
                                                                             size='md'
                                                                             loading={startInterviewLoader.loader}
-                                                                            className={'px-md-5 border border-primary rounded'}
+                                                                            className={'px-md-5 border border-primary rounded-sm'}
                                                                             text={proceedInterview.is_started ? "Resume Interview" : "Start Interview"}
                                                                             onClick={() => {
                                                                                 proceedInterviewHandler(proceedInterview?.id);
@@ -338,7 +354,7 @@ function FromJD() {
                                                                     <div>
                                                                         <Button style={{ fontSize: "15px" }}
                                                                             size='md'
-                                                                            className={'px-md-5 border border-primary rounded'}
+                                                                            className={'px-md-5 border border-primary rounded-sm'}
                                                                             text={'Try Another'}
                                                                             onClick={() => {
                                                                                 createNewJdScheduleApiHandler(id);
@@ -463,7 +479,7 @@ function FromJD() {
                                                                                 <div className='col-2'></div>
                                                                             </div>
                                                                         }
-                                                                        <div className='d-flex col-12'>
+                                                                        <div className='d-flex'>
 
                                                                             <div className='col-3'>
                                                                                 <h5 className='col m-0 p-0 text-secondary'>{"Interview " + (index + 1) + demoDisplayName}</h5>
@@ -483,7 +499,7 @@ function FromJD() {
                                                                                             <div >
                                                                                                 <Button
                                                                                                     size='md'
-                                                                                                    className='btn btn-outline-primary rounded'
+                                                                                                    className='btn btn-outline-primary rounded-sm'
                                                                                                     style={{
                                                                                                         borderColor: "#d8dade",
                                                                                                         fontSize: "15px"
@@ -578,18 +594,21 @@ function FromJD() {
                             }}
                         />
 
-                        <div className={'col m-0 p-0 mt-1'}>
+                        <div className={'col m-0 p-0 mt-1 mb-3'}>
                             <InputHeading Class={'mb-0'} heading={'Interview Duration'} />
-                            <Radio
-                                selected={selectedDuration}
-                                selectItem={selectedDuration}
-                                data={interviewDurations}
-                                onRadioChange={(selected) => {
-                                    if (selected) {
-                                        setSelectedDuration(selected)
+                            <div className='d-flex justify-content-between'>
+                                    {
+                                        changeColorButton.map((item, index) => {
+                                            return <div className=''>
+                                                <Button text={item.subText} className={`${item.isActive ? "btn-outline-primary" : "btn-outline-default"} rounded-sm px-5`} onClick={() => {
+                                                    setSelectedDuration(item.value)
+                                                    
+                                                    handleItemClick(index)}} />
+                                                
+                                            </div>
+                                        })
                                     }
-                                }}
-                            />
+                                </div>
                         </div>
 
                         <div className={'col m-0 p-0'}>

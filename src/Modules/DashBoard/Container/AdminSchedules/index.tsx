@@ -4,7 +4,7 @@
 import { icons } from '@Assets';
 import { Button, Card, Checkbox, Divider, Image, Input, InputHeading, MenuBar, Modal, Radio, Spinner, TextArea, showToast } from '@Components';
 import { useInput, useLoader, useModal, useNavigation } from '@Hooks';
-import { AnalyzingAnimation, GenerateModal, UploadJdCard, Clipboard } from '@Modules';
+import { GenerateModal, UploadJdCard, Clipboard, PreparingYourInterview } from '@Modules';
 import { canStartInterview, createNewJdSchedule, createSchedulesSuperAdmin, deleteInterview, getJdItemList, hideCreateForOthersJdModal, hideCreateJdModal, postJdVariant, resetInterview, selectedScheduleId, showCreateForOthersJdModal, showCreateJddModal, deleteJd } from '@Redux';
 import { ROUTES } from '@Routes';
 import { CREATE_FOR_OTHERS_RULES, FROM_JD_RULES, getValidateError, ifObjectExist, validate, CREATE_FOR_ADD_ANOTHER_RULES } from '@Utils';
@@ -772,9 +772,9 @@ function AdminSchedules() {
 
             </Modal >
 
-            <GenerateModal title={'Preparing your Interview'} isOpen={generateJdModal.visible} onClose={generateJdModal.hide}>
-                <AnalyzingAnimation />
-            </GenerateModal>
+            <Modal isOpen={generateJdModal.visible} onClose={generateJdModal.hide}>
+                <PreparingYourInterview />
+            </Modal>
 
             <Modal isOpen={completedModal.visible} onClose={completedModal.hide}>
 
