@@ -1104,3 +1104,18 @@ export const bulkUploadCandidatesFailure = (error: any) => {
     payload: error,
   }
 }
+
+// showCreateOpeningsModal
+
+export const showCreateOpeningsModal = () => {
+  return {
+    type: ActionTypes.SHOW_CREATE_OPENINGS_MODAL,
+  };
+};
+
+
+export const hideCreateOpeningsModal = () => {
+  return {
+    type: ActionTypes.HIDE_CREATE_OPENINGS_MODAL,
+  };
+};

@@ -12,51 +12,47 @@ import {
     Nav,
     Row,
     Col,
-    DropdownItem, DropdownMenu, DropdownToggle, Media
-    , UncontrolledDropdown,
-    Container
+    DropdownItem, DropdownMenu, DropdownToggle, Media, UncontrolledDropdown,
 } from "reactstrap";
 import { icons } from '@Assets'
 import { Image, Modal, Button } from '@Components'
-import { Profile } from '@Modules'
-import { getPhoto, } from '@Utils'
 import { useModal, useNavigation } from '@Hooks';
 import { ROUTES } from '@Routes';
-import { useLocation } from 'react-router-dom'
-import { showCreateForOthersJdModal, showCreateJddModal, userLogout } from "@Redux";
+import { showCreateOpeningsModal, userLogout } from "@Redux";
 import { useDispatch, useSelector } from "react-redux";
 
-function TopNavbar() {
-
-    const HEADER_MENU = [
-        { id: '1', name: 'Setting', value: 'ST', icon: 'ni ni-badge' },
-        { id: '2', name: 'Logout', value: 'LG', icon: 'ni ni-button-power' },
-    ]
+function TopNavbarCorporateFlow() {
 
     const logoutModal = useModal(false);
     const { goTo } = useNavigation()
     const { loginDetails } = useSelector((state: any) => state.AppReducer);
-
-
-    console.log(JSON.stringify(loginDetails) + '=====loginDetails');
-
-
-    const location = useLocation()
     const dispatch = useDispatch();
 
-    const pathName = location.pathname
-
-
-    console.log(pathName);
+    const HEADER_MENU = [
+        { id: '1', name: 'Schedule', value: 'SC', icon: 'ni ni-badge' },
+        { id: '2', name: 'Setting', value: 'ST', icon: 'ni ni-settings-gear-65' },
+        { id: '3', name: 'View as member', value: 'VAM', icon: 'ni ni-single-02', },
+        { id: '4', name: 'Logout', value: 'LG', icon: 'ni ni-button-power' },
+    ]
 
 
     const dropdownHandler = (item: any) => {
-        if (item.value === 'ST') {
+        if (loginDetails?.is_admin) {
+            if (item.value === 'SC') {
+                goTo(ROUTES['designation-module'].schedule);
+            }
+            if (item.value === 'ST') {
+                goTo(ROUTES['designation-module'].settings);
+            }
+            if (item.value === 'VAM') {
+                goTo(ROUTES['designation-module'].client);
+            }
         }
-        else if (item.value === 'LG') {
+        if (item.value === 'LG') {
             logoutModal.show()
         }
     };
+
 
     function proceedLogout() {
         try {
@@ -75,12 +71,8 @@ function TopNavbar() {
         }
     }
 
-    const handleCreateInterviewClick = () => {
-        dispatch(showCreateJddModal());
-    };
-
-    const handleCreateForOthersInterviewClick = () => {
-        dispatch(showCreateForOthersJdModal());
+    const handleCreateOpeningsClick = () => {
+        dispatch(showCreateOpeningsModal());
     };
 
     return (
@@ -141,8 +133,7 @@ function TopNavbar() {
 
                         <Nav className="align-items-lg-center ml-lg-auto mr--4 justify-content-end" navbar>
                             {loginDetails?.is_super_admin && <NavItem>
-                                <NavLink to="/home" tag={Link}>
-                                    {/* <span className={`nav-link-inner--text  ${'/home' !== pathName ? "text-black h4" : 'text-primary h4'}`}>Create Interview</span> */}
+                                <NavLink to="/schedule" tag={Link}>
                                     <Button
                                         size='md'
                                         className='btn btn-outline-primary rounded-sm'
@@ -150,28 +141,12 @@ function TopNavbar() {
                                             borderColor: "#d8dade",
                                             fontSize: "15px"
                                         }}
-                                        text={'Create For Others'}
-                                        onClick={handleCreateForOthersInterviewClick}
+                                        text={'Create Openings'}
+                                        onClick={handleCreateOpeningsClick}
                                     />
                                 </NavLink>
                             </NavItem>
                             }
-                            <NavItem>
-                                <NavLink to="/home" tag={Link}>
-                                    {/* <span className={`nav-link-inner--text  ${'/home' !== pathName ? "text-black h4" : 'text-primary h4'}`}>Create Interview</span> */}
-                                    <Button
-                                        size='md'
-                                        className='btn btn-outline-primary rounded-sm mr--3'
-                                        style={{
-                                            borderColor: "#d8dade",
-                                            fontSize: "15px"
-                                        }}
-                                        text={'Create Interview'}
-                                        onClick={handleCreateInterviewClick}
-                                    />
-                                </NavLink>
-                            </NavItem>
-
                             <NavItem className="d-none d-lg-block ml-lg-4">
                                 <div className='row align-items-center m-auto'>
                                     <span className='mb-0 text-primary font-weight-bolder'>
@@ -215,8 +190,8 @@ function TopNavbar() {
                                                     dropdownHandler(item);
                                                 }}
                                             >
-                                                {/* <i className={item.icon}></i> */}
                                                 <span className={`nav-link-inner--text text-black`}>{item.name}</span>
+
                                             </NavLink>
                                         </NavItem>
                                     );
@@ -249,4 +224,4 @@ function TopNavbar() {
     );
 }
 
-export { TopNavbar };
+export { TopNavbarCorporateFlow };

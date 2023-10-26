@@ -49,6 +49,7 @@ const initialState: DashboardProp = {
   createForOthersJdModal: false,
   interviewScheduleDetails: undefined,
   retrieveEmail: undefined,
+  createOpening: false,
 };
 
 const DashboardReducer = (state = initialState, action: any) => {
@@ -117,7 +118,7 @@ const DashboardReducer = (state = initialState, action: any) => {
     //selected Group Id
 
     case ActionTypes.SET_SELECTED_ROLE:
-      console.log('2222222222222222222222222222222222222222222222222222222222222222222222222',action.payload)
+      console.log('2222222222222222222222222222222222222222222222222222222222222222222222222', action.payload)
       state = { ...state, selectedRole: action.payload };
       break;
 
@@ -578,6 +579,16 @@ const DashboardReducer = (state = initialState, action: any) => {
       break;
     case ActionTypes.BULK_UPLOAD_CANDIDATES_CP_FAILURE:
       state = { ...state };
+      break;
+
+    // showCreateOpeningsModal
+
+    case ActionTypes.SHOW_CREATE_OPENINGS_MODAL:
+      state = { ...state, createOpening: true };
+      break;
+
+    case ActionTypes.HIDE_CREATE_OPENINGS_MODAL:
+      state = { ...state, createOpening: false };
       break;
 
 

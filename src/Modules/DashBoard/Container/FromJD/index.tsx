@@ -297,7 +297,7 @@ function FromJD() {
                                         demoDisplayName = " - " + basicInfo?.first_name
 
                                     return (
-                                        <Card className="mt-5 rounded-sm mx-md-6"
+                                        <Card className="mt-5 rounded-sm mx-md-5"
                                         style={{
                                             borderWidth: "1px",
                                             borderColor: "#d3deff",

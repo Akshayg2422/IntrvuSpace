@@ -1,7 +1,7 @@
 
-import { Button, DropDown, DesignationItem, Input, Modal, NoDataFound, Breadcrumbs, showToast, TextArea, ReactAutoComplete, Heading, InputHeading } from '@Components';
+import { Button, DropDown, DesignationItem, Input, Modal, NoDataFound, Breadcrumbs, showToast, TextArea, ReactAutoComplete, Heading, InputHeading, TopNavbarCorporateFlow } from '@Components';
 import { useDropDown, useInput, useLoader, useModal, useNavigation } from '@Hooks';
-import { CREATE_KNOWLEDGE_GROUP_VARIANT_FAILURE, breadCrumbs, clearBreadCrumbs, createCorporateSchedules, createKnowledgeGroup, createKnowledgeGroupVariant, getDepartmentCorporate, getCorporateSchedules, getKnowledgeGroups, getSectorCorporate, getSectors, setSelectedRole, addSectorCorporate, addDepartmentCorporate } from '@Redux';
+import { CREATE_KNOWLEDGE_GROUP_VARIANT_FAILURE, breadCrumbs, clearBreadCrumbs, createCorporateSchedules, createKnowledgeGroup, createKnowledgeGroupVariant, getDepartmentCorporate, getCorporateSchedules, getKnowledgeGroups, getSectorCorporate, getSectors, setSelectedRole, addSectorCorporate, addDepartmentCorporate, showCreateOpeningsModal, hideCreateOpeningsModal } from '@Redux';
 import { ROUTES } from '@Routes';
 import { ADD_DESIGNATION_RULES, CREATE_CORPORATE_SCHEDULE_RULES, CREATE_KNOWLEDGE_GROUP_VARIANT_RULES, getDropDownCompanyDisplayData, getValidateError, ifObjectExist, validate } from '@Utils';
 import { useEffect, useState } from 'react';
@@ -18,7 +18,8 @@ const PLACE_HOLDER = {
 function Designation() {
 
     const { sectors } = useSelector((state: any) => state.DashboardReducer)
-    const { sectorsCorporate, departmentCorporate } = useSelector((state: any) => state.DashboardReducer)
+    const { sectorsCorporate, departmentCorporate, createOpening } = useSelector((state: any) => state.DashboardReducer)
+
 
     // console.log('departmentCorporate---------->', JSON.stringify(departmentCorporate));
 
@@ -58,7 +59,7 @@ function Designation() {
     ];
 
     const [changeColorButton, setChangeColorButton] = useState<any>(interviewDurations)
-    
+
 
     // console.log("position===>", position.value)
     // console.log(sectorsCorporate, 564554);
@@ -147,6 +148,7 @@ function Designation() {
 
         if (ifObjectExist(validation)) {
             loader.show()
+            dispatch(hideCreateOpeningsModal())
             dispatch(
                 createCorporateSchedules({
                     params,
@@ -197,17 +199,18 @@ function Designation() {
 
     const handleItemClick = (index) => {
         const updatedButtons = changeColorButton.map((item, i) => {
-          if (i === index) {
-            return { ...item, isActive: true };
-          } else {
-            return { ...item, isActive: false };
-          }
+            if (i === index) {
+                return { ...item, isActive: true };
+            } else {
+                return { ...item, isActive: false };
+            }
         });
         setChangeColorButton(updatedButtons);
-      };
+    };
 
     return (
         <>
+            <TopNavbarCorporateFlow />
             <div className='pt-4 mx-sm-7'>
                 {/* <h1 className={'text-black mb-0 pb-3'}>{'Schedules'}</h1> */}
 
@@ -310,12 +313,13 @@ function Designation() {
                     }
                 </div>
 
-                <Modal size={'lg'} isOpen={addRoleModal.visible} onClose={() => {
+                <Modal size={'lg'} isOpen={createOpening} onClose={() => {
                     addRoleModal.hide()
                     position.set("")
                     setExperience("")
                     jd.set("")
                     role1.set('')
+                    dispatch(hideCreateOpeningsModal())
                 }} style={{ padding: 0 }}>
                     <div className='px-md-6 px-3 '>
                         <Heading heading={'Create Opening'} style={{ fontSize: '26px', fontWeight: 800, margin: 0 }} />
@@ -374,11 +378,12 @@ function Designation() {
                                     {
                                         changeColorButton.map((item, index) => {
                                             return <div className=''>
-                                                <Button text={item.subText} className={`${item.isActive ? "btn-outline-primary" : "btn-outline-default"} rounded-sm px-sm-4`} style={{width: "140px"}} onClick={() => {
+                                                <Button text={item.subText} className={`${item.isActive ? "btn-outline-primary" : "btn-outline-default"} rounded-sm px-sm-4`} style={{ width: "140px" }} onClick={() => {
                                                     console.log(item.value);
-                                                    
-                                                    handleItemClick(index)}} />
-                                                
+
+                                                    handleItemClick(index)
+                                                }} />
+
                                             </div>
                                         })
                                     }
