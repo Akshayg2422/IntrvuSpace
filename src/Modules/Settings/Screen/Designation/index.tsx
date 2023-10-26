@@ -152,7 +152,6 @@ function Designation() {
 
         if (ifObjectExist(validation)) {
             loader.show()
-            dispatch(hideCreateOpeningsModal())
             dispatch(
                 createCorporateSchedules({
                     params,
@@ -162,6 +161,8 @@ function Designation() {
                         loader.hide()
                         showToast(response.message, 'success');
                         addRoleModal.hide()
+                        resetValues()
+                        dispatch(hideCreateOpeningsModal())
                     },
                     onError: (error) => () => {
                         showToast(error.error_message, 'error');
@@ -173,6 +174,16 @@ function Designation() {
             showToast(getValidateError(validation))
         }
     };
+
+    function resetValues() {
+        addRoleModal.hide()
+        position.set("")
+        setExperience("")
+        jd.set("")
+        role1.set('')
+        setVacancies('')
+        setInterviewDuration('')
+    }
 
     const getCorporateScheduleApiHandler = () => {
         console.log('getCorporateScheduleApiHandler----------->', getCorporateScheduleApiHandler)
@@ -318,13 +329,10 @@ function Designation() {
                 </div>
 
                 <Modal size={'lg'} isOpen={createOpening} onClose={() => {
-                    addRoleModal.hide()
-                    position.set("")
-                    setExperience("")
-                    jd.set("")
-                    role1.set('')
+                    resetValues()
                     dispatch(hideCreateOpeningsModal())
-                }} style={{ padding: 0 }}>
+                }}
+                    style={{ padding: 0 }}>
                     <div className='px-md-6 px-3 '>
                         <Heading heading={'Create Opening'} style={{ fontSize: '26px', fontWeight: 800, margin: 0 }} />
                         <div className='text-default pt-1 font-weight-500'>Input job details, specifying qualifications, requirements, interview duration</div>
@@ -393,8 +401,6 @@ function Designation() {
                                         })
                                     }
                                 </div>
-
-
                             </div>
                             <div className='row'>
                                 <div className='col'>

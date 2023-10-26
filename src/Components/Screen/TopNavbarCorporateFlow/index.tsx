@@ -136,7 +136,7 @@ function TopNavbarCorporateFlow() {
                                 <NavLink to="/schedule" tag={Link}>
                                     <Button
                                         size='md'
-                                        className='btn btn-outline-primary rounded-sm'
+                                        className='btn btn-outline-primary rounded-sm mr--3'
                                         style={{
                                             borderColor: "#d8dade",
                                             fontSize: "15px"
@@ -149,7 +149,7 @@ function TopNavbarCorporateFlow() {
                             }
                             <NavItem className="d-none d-lg-block ml-lg-4">
                                 <div className='row align-items-center m-auto'>
-                                    <span className='mb-0 text-primary font-weight-bolder'>
+                                    <span className='mb-0 text-secondary font-weight-400'>
                                         {loginDetails?.user}
                                     </span>
                                     <Nav navbar>

@@ -144,11 +144,11 @@ function TopNavbar() {
                                 <NavLink to="/home" tag={Link}>
                                     {/* <span className={`nav-link-inner--text  ${'/home' !== pathName ? "text-black h4" : 'text-primary h4'}`}>Create Interview</span> */}
                                     <Button
-                                        size='md'
-                                        className='btn btn-outline-primary rounded-sm'
+                                        className='btn btn-outline-primary rounded-sm px-0'
                                         style={{
                                             borderColor: "#d8dade",
-                                            fontSize: "15px"
+                                            fontSize: "15px",
+                                            width:'150px'
                                         }}
                                         text={'Create For Others'}
                                         onClick={handleCreateForOthersInterviewClick}
@@ -161,10 +161,11 @@ function TopNavbar() {
                                     {/* <span className={`nav-link-inner--text  ${'/home' !== pathName ? "text-black h4" : 'text-primary h4'}`}>Create Interview</span> */}
                                     <Button
                                         size='md'
-                                        className='btn btn-outline-primary rounded-sm mr--3'
+                                        className={'btn btn-outline-primary rounded-sm mr--3 px-0 '}
                                         style={{
                                             borderColor: "#d8dade",
-                                            fontSize: "15px"
+                                            fontSize: "15px",
+                                            width:'150px'
                                         }}
                                         text={'Create Interview'}
                                         onClick={handleCreateInterviewClick}
@@ -174,7 +175,7 @@ function TopNavbar() {
 
                             <NavItem className="d-none d-lg-block ml-lg-4">
                                 <div className='row align-items-center m-auto'>
-                                    <span className='mb-0 text-primary font-weight-bolder'>
+                                    <span className='mb-0 text-black font-weight-400'>
                                         {loginDetails?.user}
                                     </span>
                                     <Nav navbar>
