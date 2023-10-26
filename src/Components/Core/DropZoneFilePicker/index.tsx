@@ -14,9 +14,12 @@ interface UploadProps {
     isUploadModalOpen?: boolean;
     isDownloadTemplate?: boolean;
     onTemplateClick?: () => void;
+    bulkButtonSize?: 'sm' | 'md' | 'lg';
+    bulkButtonStyle?: any;
+    outline?: any;
 }
 
-function DropzoneFilePicker({ onSelect, isOpen, size, title, onSubmitClick, isUploadModalOpen = false, isDownloadTemplate = false, onTemplateClick }: UploadProps) {
+function DropzoneFilePicker({ onSelect, isOpen, size, title, onSubmitClick, isUploadModalOpen = false, isDownloadTemplate = false, onTemplateClick, bulkButtonSize="lg", bulkButtonStyle, outline }: UploadProps) {
 
     const [isOpenModal, setIsOpenModal] = useState(isOpen)
     const [fileName, setFileName] = useState('')
@@ -63,7 +66,15 @@ function DropzoneFilePicker({ onSelect, isOpen, size, title, onSubmitClick, isUp
 
     return (
         <div>
-            <span className=" ni ni-cloud-upload-96 text-primary mt-1 mr-2 ni-lg pointer" onClick={() => { setIsOpenModal(!isOpenModal) }}></span>
+            <Button
+                className=""
+                text={"Bulk Import"}
+                size={bulkButtonSize}
+                style={{ borderRadius: 4, paddingLeft: 78, paddingRight: 78, borderColor:"#d8dade", ...bulkButtonStyle }}
+                onClick={() => { setIsOpenModal(!isOpenModal) }}
+                outline={outline}
+              />
+            {/* <span className=" ni ni-cloud-upload-96 text-primary mt-1 mr-2 ni-lg pointer" onClick={() => { setIsOpenModal(!isOpenModal) }}></span> */}
 
             <Modal
                 isOpen={isOpenModal}
@@ -71,7 +82,7 @@ function DropzoneFilePicker({ onSelect, isOpen, size, title, onSubmitClick, isUp
                 onClose={() => setIsOpenModal(!isOpenModal)}
                 title={title}
             >
-                <div className="mt--4 font-weight-light h5 text-primary" >
+                <div className="mt--4 font-weight-light h4 text-primary" >
                     <a role={'button'} onClick={onTemplateClick} >{'Download templete'}</a>
                 </div>
                 <div
