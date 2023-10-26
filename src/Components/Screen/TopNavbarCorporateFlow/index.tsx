@@ -26,6 +26,7 @@ function TopNavbarCorporateFlow() {
     const logoutModal = useModal(false);
     const { goTo } = useNavigation()
     const { loginDetails } = useSelector((state: any) => state.AppReducer);
+    const { corporateSchedules } = useSelector((state: any) => state.DashboardReducer)
     const dispatch = useDispatch();
 
     const HEADER_MENU = [
@@ -132,7 +133,7 @@ function TopNavbarCorporateFlow() {
                         {/* <hr className="d-lg-none" /> */}
 
                         <Nav className="align-items-lg-center ml-lg-auto mr--4 justify-content-end" navbar>
-                            {loginDetails?.is_super_admin && <NavItem>
+                            {corporateSchedules?.details?.corporate_jd_items.length > 0 && <NavItem>
                                 <NavLink to="/schedule" tag={Link}>
                                     <Button
                                         size='md'

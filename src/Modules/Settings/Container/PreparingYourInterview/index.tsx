@@ -22,8 +22,13 @@ function PreparingYourInterview() {
             setCurrentStep((prevStep) => (prevStep < steps.length - 1 ? prevStep + 1 : prevStep));
         }, 5000);
 
+        const initialStepTimer = setTimeout(() => {
+            setCurrentStep(0);
+        }, 1000);
+
         return () => {
             clearInterval(timer);
+            clearTimeout(initialStepTimer);
         };
     }, []);
 
