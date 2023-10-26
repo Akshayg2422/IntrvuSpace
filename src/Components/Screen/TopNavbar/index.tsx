@@ -92,10 +92,7 @@ function TopNavbar() {
             >
                 <div className="container-fluid mx-sm-0 mx-2">
                     <NavbarBrand tag={Link}>
-                        <Image src={icons.logoText} width={'65%'} style={{
-                            objectFit: 'contain'
-                        }} />
-
+                        <img src={icons.logoText} alt="Logo" style={{ height: '20%', width: '20%' }} />
                     </NavbarBrand>
                     <button
                         aria-controls="navbar-collapse"
@@ -184,16 +181,8 @@ function TopNavbar() {
                                         <UncontrolledDropdown nav>
                                             <DropdownToggle className="nav-link pr-0" color="" tag="a">
                                                 <Media className="align-items-center">
-                                                    {/* <Image
-                                                        size={'sm'}
-                                                        variant={'avatar'}
-                                                        src={icons.logoIcon}
-                                                        style={{
-                                                            objectFit: "contain"
-                                                        }}
-                                                    /> */}
                                                     <Media className="d-none d-lg-block ml--2 mr-2 pointer">
-                                                        <div className='media-body text-black d-none d-lg-block ni ni-bold-down'> </div>
+                                                        <Image height={12} width={12} src={icons.downArrowBlack} />
                                                     </Media>
                                                 </Media>
                                             </DropdownToggle>
