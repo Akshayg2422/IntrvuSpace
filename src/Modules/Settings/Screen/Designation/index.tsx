@@ -208,7 +208,7 @@ function Designation() {
 
     return (
         <>
-            <div className='pt-4 mx-7'>
+            <div className='pt-4 mx-sm-7'>
                 {/* <h1 className={'text-black mb-0 pb-3'}>{'Schedules'}</h1> */}
 
                 <div className='text-right mb-3'>
@@ -321,9 +321,9 @@ function Designation() {
                         <Heading heading={'Create Opening'} style={{ fontSize: '26px', fontWeight: 800, margin: 0 }} />
                         <div className='text-default pt-1 font-weight-500'>Input job details, specifying qualifications, requirements, interview duration</div>
 
-                        <div className={'col-12 pt-5 px-0'}>
+                        <div className={'pt-5 px-0'}>
                             <div className='row'>
-                                <div className='col-5'>
+                                <div className='col-sm-5'>
                                     <Input
 
                                         heading={'Position'}
@@ -333,7 +333,7 @@ function Designation() {
                                         onChange={role1.onChange} />
                                 </div>
 
-                                <div className='col-4'>
+                                <div className='col-sm-4'>
                                     <InputHeading heading={'Experience'} />
                                     <select
                                         id="experience"
@@ -349,7 +349,7 @@ function Designation() {
                                         ))}
                                     </select>
                                 </div>
-                                <div className='col-3'>
+                                <div className='col-sm-3 mt-4 mt-sm-0'>
                                     <Input
 
                                         heading={'Vacancies'}
@@ -370,11 +370,11 @@ function Designation() {
                             </div>
                             <div className='mb-4'>
                                 <InputHeading heading={'Duration'} />
-                                <div className='d-flex justify-content-between'>
+                                <div className='d-sm-flex justify-content-between'>
                                     {
                                         changeColorButton.map((item, index) => {
                                             return <div className=''>
-                                                <Button text={item.subText} className={`${item.isActive ? "btn-outline-primary" : "btn-outline-default"} rounded-sm px-5`} onClick={() => {
+                                                <Button text={item.subText} className={`${item.isActive ? "btn-outline-primary" : "btn-outline-default"} rounded-sm px-sm-4`} style={{width: "140px"}} onClick={() => {
                                                     console.log(item.value);
                                                     
                                                     handleItemClick(index)}} />
