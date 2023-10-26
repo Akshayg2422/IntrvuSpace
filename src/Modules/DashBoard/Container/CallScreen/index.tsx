@@ -103,7 +103,7 @@ const CallScreen = ({ basicInfo, onMicControl, onMic = false, loading = false, c
                             <span className="btn-inner--icon">
                                 <i className="fas fa-circle mr-2 text-red" />
                             </span>
-                            <span className="nav-link-inner--text ml-1 text-lg " style={{ color: '#2f1c6a' }}>{conditionalButton ? formattedTime : '00:00'}</span>
+                            <span className="nav-link-inner--text ml-1 text-lg " style={{ color: '#c4c4c4' }}>{conditionalButton ? formattedTime : '00:00'}</span>
                         </div>
                     </Button>
                     <Button
@@ -117,7 +117,7 @@ const CallScreen = ({ basicInfo, onMicControl, onMic = false, loading = false, c
                     >
                         <div className=''>
                             <span className="btn-inner--icon">
-                                {isMute ? <i className="fas fa-microphone text-lg px-2" style={{ color: '#2f1c6a' }}></i> : <i className="fas fa-microphone-slash text-lg " style={{ color: '#2f1c6a' }}></i>}
+                                {isMute ? <i className="fas fa-microphone text-lg px-2" style={{ color: '#c4c4c4' }}></i> : <i className="fas fa-microphone-slash text-lg " style={{ color: '#c4c4c4' }}></i>}
                             </span>
                         </div>
                     </Button>
@@ -128,7 +128,7 @@ const CallScreen = ({ basicInfo, onMicControl, onMic = false, loading = false, c
                     >
                         <div className=''>
                             <span className="btn-inner--icon">
-                                {video ? <i className="fas fa-video text-lg " style={{ color: '#2f1c6a' }}></i> : <i className="fas fa-video-slash text-lg " style={{ color: '#2f1c6a' }}></i>}
+                                {video ? <i className="fas fa-video text-lg " style={{ color: '#c4c4c4' }}></i> : <i className="fas fa-video-slash text-lg " style={{ color: '#c4c4c4' }}></i>}
                             </span>
                         </div>
                     </Button>}
@@ -138,7 +138,7 @@ const CallScreen = ({ basicInfo, onMicControl, onMic = false, loading = false, c
                         onClick={onCallEnd}
                     >
                         <div className=''>
-                            <span className="nav-link-inner--text mx-6 text-lg text-white " style={{ color: '#fc5185' }}>{'End Call'}</span>
+                            <span className="nav-link-inner--text mx-6 text-lg text-white " style={{ color: '#f5f5f5' }}>{'End Call'}</span>
                         </div>
                     </Button>
                     {!isSmallScreen && <Button
@@ -148,7 +148,7 @@ const CallScreen = ({ basicInfo, onMicControl, onMic = false, loading = false, c
                     >
                         <div className=''>
                             <span className="btn-inner--icon">
-                                {video ? <i className="fas fa-video text-lg " style={{ color: '#2f1c6a' }}></i> : <i className="fas fa-video-slash text-lg " style={{ color: '#2f1c6a' }}></i>}
+                                {video ? <i className="fas fa-video text-lg " style={{ color: '#c4c4c4' }}></i> : <i className="fas fa-video-slash text-lg " style={{ color: '#c4c4c4' }}></i>}
                             </span>
                         </div>
                     </Button>}
@@ -159,7 +159,7 @@ const CallScreen = ({ basicInfo, onMicControl, onMic = false, loading = false, c
                 >
                     <div className=''>
                         <span className="btn-inner--icon">
-                            {speaker ? <i className="fas fa-volume-up text-lg " style={{ color: '#2f1c6a' }}></i> : <i className="fas fa-volume-xmark text-lg " style={{ color: '#2f1c6a' }}></i>}
+                            {speaker ? <i className="fas fa-volume-up text-lg " style={{ color: '#c4c4c4' }}></i> : <i className="fas fa-volume-xmark text-lg " style={{ color: '#c4c4c4' }}></i>}
                         </span>
                     </div>
                 </Button> */}

@@ -1,7 +1,7 @@
 
-import { Button, DropDown, DesignationItem, Input, Modal, NoDataFound, Breadcrumbs, showToast, TextArea, ReactAutoComplete, Heading, InputHeading } from '@Components';
+import { Button, DropDown, DesignationItem, Input, Modal, NoDataFound, Breadcrumbs, showToast, TextArea, ReactAutoComplete, Heading, InputHeading, TopNavbarCorporateFlow } from '@Components';
 import { useDropDown, useInput, useLoader, useModal, useNavigation } from '@Hooks';
-import { CREATE_KNOWLEDGE_GROUP_VARIANT_FAILURE, breadCrumbs, clearBreadCrumbs, createCorporateSchedules, createKnowledgeGroup, createKnowledgeGroupVariant, getDepartmentCorporate, getCorporateSchedules, getKnowledgeGroups, getSectorCorporate, getSectors, setSelectedRole, addSectorCorporate, addDepartmentCorporate } from '@Redux';
+import { CREATE_KNOWLEDGE_GROUP_VARIANT_FAILURE, breadCrumbs, clearBreadCrumbs, createCorporateSchedules, createKnowledgeGroup, createKnowledgeGroupVariant, getDepartmentCorporate, getCorporateSchedules, getKnowledgeGroups, getSectorCorporate, getSectors, setSelectedRole, addSectorCorporate, addDepartmentCorporate, showCreateOpeningsModal, hideCreateOpeningsModal } from '@Redux';
 import { ROUTES } from '@Routes';
 import { ADD_DESIGNATION_RULES, CREATE_CORPORATE_SCHEDULE_RULES, CREATE_KNOWLEDGE_GROUP_VARIANT_RULES, getDropDownCompanyDisplayData, getValidateError, ifObjectExist, validate } from '@Utils';
 import { useEffect, useState } from 'react';
@@ -18,7 +18,8 @@ const PLACE_HOLDER = {
 function Designation() {
 
     const { sectors } = useSelector((state: any) => state.DashboardReducer)
-    const { sectorsCorporate, departmentCorporate } = useSelector((state: any) => state.DashboardReducer)
+    const { sectorsCorporate, departmentCorporate, createOpening } = useSelector((state: any) => state.DashboardReducer)
+
 
     // console.log('departmentCorporate---------->', JSON.stringify(departmentCorporate));
 
@@ -58,7 +59,9 @@ function Designation() {
     ];
 
     const [changeColorButton, setChangeColorButton] = useState<any>(interviewDurations)
-    
+    const [vacancies, setVacancies] = useState<any>('')
+    const [interviewDuration, setInterviewDuration] = useState<any>('')
+
 
     // console.log("position===>", position.value)
     // console.log(sectorsCorporate, 564554);
@@ -141,7 +144,9 @@ function Designation() {
             department_id: selectDepartment.id,
             role: role1.value,
             experience: experience,
-            jd: jd.value
+            jd: jd.value,
+            vacancies: vacancies,
+            interview_duration: interviewDuration,
         }
         const validation = validate(CREATE_CORPORATE_SCHEDULE_RULES, params)
 
@@ -156,6 +161,8 @@ function Designation() {
                         loader.hide()
                         showToast(response.message, 'success');
                         addRoleModal.hide()
+                        resetValues()
+                        dispatch(hideCreateOpeningsModal())
                     },
                     onError: (error) => () => {
                         showToast(error.error_message, 'error');
@@ -167,6 +174,16 @@ function Designation() {
             showToast(getValidateError(validation))
         }
     };
+
+    function resetValues() {
+        addRoleModal.hide()
+        position.set("")
+        setExperience("")
+        jd.set("")
+        role1.set('')
+        setVacancies('')
+        setInterviewDuration('')
+    }
 
     const getCorporateScheduleApiHandler = () => {
         console.log('getCorporateScheduleApiHandler----------->', getCorporateScheduleApiHandler)
@@ -197,18 +214,19 @@ function Designation() {
 
     const handleItemClick = (index) => {
         const updatedButtons = changeColorButton.map((item, i) => {
-          if (i === index) {
-            return { ...item, isActive: true };
-          } else {
-            return { ...item, isActive: false };
-          }
+            if (i === index) {
+                return { ...item, isActive: true };
+            } else {
+                return { ...item, isActive: false };
+            }
         });
         setChangeColorButton(updatedButtons);
-      };
+    };
 
     return (
         <>
-            <div className='pt-4 mx-7'>
+            <TopNavbarCorporateFlow />
+            <div className='pt-4 mx-sm-7'>
                 {/* <h1 className={'text-black mb-0 pb-3'}>{'Schedules'}</h1> */}
 
                 <div className='text-right mb-3'>
@@ -310,20 +328,18 @@ function Designation() {
                     }
                 </div>
 
-                <Modal size={'lg'} isOpen={addRoleModal.visible} onClose={() => {
-                    addRoleModal.hide()
-                    position.set("")
-                    setExperience("")
-                    jd.set("")
-                    role1.set('')
-                }} style={{ padding: 0 }}>
+                <Modal size={'lg'} isOpen={createOpening} onClose={() => {
+                    resetValues()
+                    dispatch(hideCreateOpeningsModal())
+                }}
+                    style={{ padding: 0 }}>
                     <div className='px-md-6 px-3 '>
                         <Heading heading={'Create Opening'} style={{ fontSize: '26px', fontWeight: 800, margin: 0 }} />
                         <div className='text-default pt-1 font-weight-500'>Input job details, specifying qualifications, requirements, interview duration</div>
 
-                        <div className={'col-12 pt-5 px-0'}>
+                        <div className={'pt-5 px-0'}>
                             <div className='row'>
-                                <div className='col-5'>
+                                <div className='col-sm-5'>
                                     <Input
 
                                         heading={'Position'}
@@ -333,7 +349,7 @@ function Designation() {
                                         onChange={role1.onChange} />
                                 </div>
 
-                                <div className='col-4'>
+                                <div className='col-sm-4'>
                                     <InputHeading heading={'Experience'} />
                                     <select
                                         id="experience"
@@ -349,14 +365,14 @@ function Designation() {
                                         ))}
                                     </select>
                                 </div>
-                                <div className='col-3'>
+                                <div className='col-sm-3 mt-4 mt-sm-0'>
                                     <Input
 
                                         heading={'Vacancies'}
                                         type={'number'}
                                         placeHolder={"0"}
-                                        value={''}
-                                        onChange={''} />
+                                        value={vacancies}
+                                        onChange={(e) => setVacancies(e.target.value)} />
                                 </div>
                             </div>
 
@@ -370,21 +386,21 @@ function Designation() {
                             </div>
                             <div className='mb-4'>
                                 <InputHeading heading={'Duration'} />
-                                <div className='d-flex justify-content-between'>
+                                <div className='d-sm-flex justify-content-between'>
                                     {
                                         changeColorButton.map((item, index) => {
                                             return <div className=''>
-                                                <Button text={item.subText} className={`${item.isActive ? "btn-outline-primary" : "btn-outline-default"} rounded-sm px-5`} onClick={() => {
+                                                <Button text={item.subText} className={`${item.isActive ? "btn-outline-primary" : "btn-outline-default"} rounded-sm px-sm-4`} style={{ width: "140px" }} onClick={() => {
                                                     console.log(item.value);
-                                                    
-                                                    handleItemClick(index)}} />
-                                                
+                                                    setInterviewDuration(item.value)
+
+                                                    handleItemClick(index)
+                                                }} />
+
                                             </div>
                                         })
                                     }
                                 </div>
-
-
                             </div>
                             <div className='row'>
                                 <div className='col'>
