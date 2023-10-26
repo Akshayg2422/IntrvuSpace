@@ -51,6 +51,7 @@ export * from './WebsiteScheduleAndNotification'
 export * from './WebsiteCandidateAttendsInterview'
 export * from './WebsiteReportsAndInsights'
 export * from './WebsiteAutoApprovalForCandidatesPerformance'
+export * from './UploadCorporateOpeningsCard'
 
 
 
