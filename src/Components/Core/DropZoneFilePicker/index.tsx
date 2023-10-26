@@ -70,7 +70,7 @@ function DropzoneFilePicker({ onSelect, isOpen, size, title, onSubmitClick, isUp
                 className=""
                 text={"Bulk Import"}
                 size={bulkButtonSize}
-                style={{ borderRadius: 4, paddingLeft: 78, paddingRight: 78, ...bulkButtonStyle }}
+                style={{ borderRadius: 4, paddingLeft: 78, paddingRight: 78, borderColor:"#d8dade", ...bulkButtonStyle }}
                 onClick={() => { setIsOpenModal(!isOpenModal) }}
                 outline={outline}
               />

@@ -169,15 +169,12 @@ function VariantInfo() {
             <div className="pt-4">
               <Button
                 text={"Report"}
-                outline
-                size="lg"
+                size="md"
+                className={"btn btn-outline-primary rounded-sm mr--3 px-0 "}
                 style={{
-                  borderRadius: 4,
-                  paddingLeft: 25,
-                  paddingRight: 25,
-                  marginBottom: 30,
-                  paddingTop: 10,
-                  paddingBottom: 10,
+                  borderColor: "#d8dade",
+                  fontSize: "15px",
+                  width: "110px",
                 }}
               />
             </div>
