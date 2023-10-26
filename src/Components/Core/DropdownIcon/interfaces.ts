@@ -10,5 +10,7 @@ export interface DropDownProp {
     title?: string
     value?: string;
     id?: string | number;
-    disabled?: boolean
+    disabled?: boolean;
+    style?: any;
+    className?: any;
 }
