@@ -157,7 +157,16 @@ function DesignationItem({ item, onAdd, onEdit, onView, onClick }: DesignationIt
                                             <h1 className='col p-0 m-0'
                                             >{capitalizeFirstLetter(item.job_description.position)}</h1>
                                             {/* <div className={'ml-3 px-3'} style={{backgroundColor:'#ebe4ff', borderRadius:"50px", height:"30px"}}> <h4 className=' text-primary font-weight-900 pt-1 px-1'>{item.candidate_details.selected_candidates} Selected</h4></div> */}
-                                            <Badge pill={"pill"} text={"Selected"}/>
+                                            <Badge
+                                                className="text-primary text-lowercase mt-1 ml-3"
+                                                style={{
+                                                    backgroundColor: "#ebe4ff",
+                                                    borderRadius: 30,
+                                                    fontSize: 12,
+                                                    borderWidth: 0,
+                                                }}
+                                                text={`${item.candidate_details.selected_candidates} Selected`}
+                                            />
                                         </div>
                                         <h5 className="m-0 font-weight-500">{item.job_description.experience}</h5>
                                     </div>
@@ -176,10 +185,13 @@ function DesignationItem({ item, onAdd, onEdit, onView, onClick }: DesignationIt
                                             }}
                                         />
                                         <div className=' d-flex align-items-center justify-content-center mt-1'>
-                                            <img src={icons.check} height={20} width={20} style={{
-                                                objectFit: 'contain'
-                                            }} />
-                                            <h5 className='p-0 font-weight-800 m-0'>Active</h5>
+                                            {
+                                                item.is_active ? <> <img src={icons.check} height={20} width={20} style={{
+                                                    objectFit: 'contain'
+                                                }} />
+                                                <h5 className='p-0 font-weight-800 m-0'>Active</h5></> :  <h5 className='p-0 font-weight-800 m-0 text-default'>Closed</h5>
+                                            }
+                                            
                                         </div>
                                     </div>
 
@@ -235,14 +247,14 @@ function DesignationItem({ item, onAdd, onEdit, onView, onClick }: DesignationIt
 
                                     <div className="d-flex pt-2 h5" style={{ marginTop: -10 }}>
                                         <div className="mb-0 p-0 mr-4" >
-                                        <b>{item.candidate_details.total_candidates}</b><span className='pl-1 font-weight-500'>Vacancies</span>
+                                            <b>{item.vacancies}</b><span className='pl-1 font-weight-500'>Vacancies</span>
                                         </div>
-                                        
+
                                         <div className=" mb-0 p-0 mr-4">
-                                        <b>{item.candidate_details.total_candidates}</b><span className='pl-1 font-weight-500'>Candidates added</span>
+                                            <b>{item.candidate_details.total_candidates}</b><span className='pl-1 font-weight-500'>Candidates added</span>
                                         </div>
                                         <div className="mb-0 p-0">
-                                        <b>30 min</b><span className='pl-1 font-weight-500'>Duration</span> 
+                                            <b>{item.interview_duration} min</b><span className='pl-1 font-weight-500'>Duration</span>
                                         </div>
                                     </div>
                                     <div className='mt-3 mb-2' style={{ fontSize: '14px' }} >{item.job_description.details}</div>
