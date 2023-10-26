@@ -16,6 +16,7 @@ import {
   Spinner,
   Badge,
   MenuBar,
+  NoRecordsFound,
 } from "@Components";
 import {
   useInput,
@@ -90,17 +91,15 @@ function VariantInfo() {
   //   }, []);
 
   useEffect(() => {
-    if (enterPress) {
-      getCorporateScheduleDetailsHandler();
-    }
+    getCorporateScheduleDetailsHandler();
   }, [enterPress]);
+
 
   const Refresh = () => {
     const refresh = () => window.location.reload();
 
     return <button onClick={refresh}>Refresh</button>;
   };
-  console.log("searchCandidate", searchCandidate);
 
   const getCorporateScheduleDetailsHandler = () => {
     const params = {
@@ -176,7 +175,8 @@ function VariantInfo() {
               {el?.interviewee_name}
             </div>
           ),
-          //   phone: <div className={"text-secondary tableText"}>{el?.interviewee_mobile_number}</div>,
+
+          Mobile: <div>{el?.interviewee_mobile_number}</div>,
 
           Email: (
             <div className="m-0 text-secondary tableText">
@@ -326,7 +326,7 @@ function VariantInfo() {
             </div>
           </div>
 
-          {schedules && schedules.length === 0 ? (
+          {(schedules && schedules.length === 0) && searchCandidate ? (
             <div className="mt-5 text-center">
               <div>
                 <span className="titleText text-secondary">
@@ -570,22 +570,31 @@ function VariantInfo() {
                     </div>
 
                     {corporateScheduleDetails &&
-                      corporateScheduleDetails?.schedules.length > 0 && (
-                        <div className={"row px-0 mx--4"}>
-                          <div
-                            className={
-                              "col-sm-12 px-0 overflow-auto scroll-hidden"
-                            }
-                          >
-                            <CommonTable
-                              tableDataSet={corporateScheduleDetails}
-                              displayDataSet={normalizedTableData(
-                                corporateScheduleDetails
-                              )}
-                            />
-                          </div>
+                    corporateScheduleDetails?.schedules.length > 0 ? (
+                      <div className={"row px-0 mx--4"}>
+                        <div
+                          className={
+                            "col-sm-12 px-0 overflow-auto scroll-hidden"
+                          }
+                        >
+                          <CommonTable
+                            tableDataSet={corporateScheduleDetails}
+                            displayDataSet={normalizedTableData(
+                              corporateScheduleDetails
+                            )}
+                          />
                         </div>
-                      )}
+                      </div>
+                    ) : (
+                      <div
+                        className={
+                          "d-flex  justify-content-center align-items-center mx-auto my-9 "
+                        }
+                      >
+                        {" "}
+                        <NoRecordsFound />
+                      </div>
+                    )}
                   </div>
                 </Card>
               </div>
