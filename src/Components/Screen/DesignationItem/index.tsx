@@ -171,10 +171,10 @@ function DesignationItem({ item, onAdd, onEdit, onView, onClick }: DesignationIt
                                         <h5 className="m-0 font-weight-500">{item.job_description.experience}</h5>
                                     </div>
                                     <div>
-                                        <Button style={{ fontSize: "15px" }}
+                                        <Button style={{ fontSize: "15px", borderColor:"#d8dade",borderRadius:4 }}
                                             outline
                                             size='md'
-                                            className={'px-md-5 border border-primary rounded'}
+                                            className={'px-md-5'}
                                             text={'View Details'}
                                             onClick={(e) => {
                                                 if (onView) {

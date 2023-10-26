@@ -39,9 +39,9 @@ const PERFORMANCE_CONTENT = [
 ];
 
 const NOTE = [
-  { id: 1, icon: "success", text: "Completely Covered" },
-  { id: 2, icon: "primary", text: "Partially Covered" },
-  { id: 3, icon: "warning", text: "Covered by invalid" },
+  { id: 1, icon: icons.check, text: "Completely Covered" },
+  { id: 2, icon: icons.checkBlack, text: "Partially Covered" },
+  { id: 3, icon: icons.frame, text: "Covered by invalid" },
 ];
 
 const REPORT_TYPE = [
@@ -476,20 +476,19 @@ function Report() {
 
   return (
     <>
-      <div className="d-flex flex-column position-relative bg-white">
-        <div
+        {/* <div
           className="row position-fixed bottom-0 right-0 m-3 p-3"
           style={{
             zIndex: 1,
           }}
-        >
+        > */}
           {/* <ButtonGroup
             size={"btn-sm"}
             sortData={FILTER}
             selected={filter.value}
             onClick={handleButtonClick}
           /> */}
-          <div className="ml-3">
+          {/* <div className="ml-3">
             {fileName && (
               <ReactToPrint
                 documentTitle={fileName}
@@ -504,20 +503,24 @@ function Report() {
               />
             )}
           </div>
-        </div>
+        </div> */}
 
-        <div className="col-sm-3 position-absolute top-5 left-2">
+        
+
+        <div className="d-flex flex-column px-sm-6 px-2 py-3" ref={componentRef}>
+          <div className="position-relative">
+          <div className="col-sm-3 position-absolute top-4 left-0 p-0">
           <DropDownIcon
             data={REPORT_TYPE}
             value={reportType}
             onChange={(e) => {
               setReportType(e.target.value);
             }}
+          style={{height: "44px",borderColor: "#727586"}}
+          className={'rounded-sm pb-2 pr-3 text-default '}
           />
         </div>
-
-        <div className="" ref={componentRef}>
-          <div>
+          <div className="position-relative mt-7 mt-sm-0">
             <div className="mt-5">
               <div className="text-center">
                 <div className="">
@@ -530,8 +533,8 @@ function Report() {
                 </div>
                 <div className="mt--2">
                   <span
-                    className="font-weight-bolder text-secondary"
-                    style={{ fontSize: 16 }}
+                    className="font-weight-bolder text-secondary font-weight-600"
+                    style={{ fontSize: 12 }}
                   >
                     {"Senior Vue JS Developer -  2 years"}
                   </span>
@@ -550,8 +553,7 @@ function Report() {
                 </div>
               </div>
             </div>
-
-            <div className="position-absolute right-5 top-5">
+            <div className="position-absolute right-0 top-2 p-0">
               <h1
                 className="font-weight-bolder text-right display-2"
                 style={{
@@ -562,26 +564,31 @@ function Report() {
               </h1>
             </div>
           </div>
+          </div>
+         
 
           {reportType === "Basic Report" ? (
-            <div className="mt-md-6 pr-md-5">
-              <div className="mx-md-4 mx-0 pb-0 mb--2 pt-5 pb-md-5">
+            <div className="mt-md-6 p-0">
+              <div className="mx-0 pb-0 mb--2 pt-5 pb-md-5">
                 <div className="row">
                   {basicReportData &&
                     Object.keys(basicReportData)
                       .reverse()
                       ?.map((heading) => {
+                        console.log(heading,'heading');
+                        
                         return dataId.map((el) => {
                           if (heading === el) {
+                            
                             return (
-                              <div className="col-sm-4 mx-3 mx-md-0 mb-md-4 mb-0">
+                              <div className="col-sm-3 ">
                                 <Card
                                   style={{
                                     borderWidth: 1.5,
                                     borderColor: "#e8edff",
                                     backgroundColor: "transparent",
                                   }}
-                                  className="p-2 text-center text-sm-left"
+                                  className="p-3 text-center text-sm-left rounded-sm"
                                 >
                                   <div className="progress-wrapper col py-0 m-0 ">
                                     <div className="h4 mb-0 pb-0 pt-2">
@@ -625,16 +632,48 @@ function Report() {
                               </div>
                             );
                           }
-                          console.log("879868768768");
+                        
                         });
                       })}
+                       <div className="col-sm-3">
+                                <Card
+                                  style={{
+                                    borderWidth: 1.5,
+                                    borderColor: "#e8edff",
+                                    backgroundColor: "transparent",
+                                  }}
+                                  className="p-3 text-center text-sm-left rounded-sm"
+                                >
+                                  <div className="progress-wrapper col py-0 m-0 ">
+                                    <div className="h4 mb-0 pb-0 pt-2">
+                                      <span
+                                        className="font-weight-bolder text-secondary"
+                                        style={{ fontSize: 16 }}
+                                      >
+                                       {'Aptitude'}
+                                      </span>
+                                    </div>
+
+                                    <div className="mt--2">
+                                      <span
+                                        className={`font-weight-bold`}
+                                        style={{
+                                          fontSize: "36px",
+                                        }}
+                                      >
+                                     30 %
+                                      </span>
+                                    </div>
+                                  </div>
+                                </Card>
+                              </div>
                 </div>
               </div>
             </div>
           ) : (
-            <div className="mt-6 px-5">
+            <div className="mt-6 px-0">
               <Card
-                className="mx-lg-4 pb-0 mb--2 pt-5 pb-5"
+                className="mx-lg-4 mb-7 p-5 rounded-sm"
                 style={{
                   borderWidth: 1.5,
                   borderColor: "#e8edff",
@@ -650,11 +689,11 @@ function Report() {
                           if (heading === el) {
                             return (
                               <>
-                                <div className="col-sm-4 px-1 text-center">
+                                <div className="col-sm-3 px-1 text-center">
                                   <div className="progress-wrapper col py-md-0 py-3 m-0">
                                     <div className="">
                                       <span
-                                        className="text-secondary font-weight-bold"
+                                        className="text-secondary font-weight-bolder"
                                         style={{
                                           fontSize: "36px",
                                         }}
@@ -672,7 +711,7 @@ function Report() {
                                     <div className="h4 mb-0 pb-0 pt-2">
                                       <span
                                         className="font-weight-bolder text-secondary"
-                                        style={{ fontSize: 16 }}
+                                        style={{ fontSize: 18 }}
                                       >
                                         {heading === "skill_matrix"
                                           ? "Skill Matrix"
@@ -689,7 +728,7 @@ function Report() {
                                           return (
                                             <span
                                               className="text-default"
-                                              style={{ fontSize: 16 }}
+                                              style={{ fontSize: 12 }}
                                             >
                                               {content.subText}
                                             </span>
@@ -703,12 +742,46 @@ function Report() {
                           }
                         });
                       })}
+                      <div className="col-sm-3 px-1 text-center">
+                                  <div className="progress-wrapper col py-md-0 py-3 m-0">
+                                    <div className="">
+                                      <span
+                                        className="text-secondary font-weight-bolder"
+                                        style={{
+                                          fontSize: "36px",
+                                        }}
+                                      >
+                                       
+                                       60 %
+                                      </span>
+                                    </div>
+                                    <div className="h4 mb-0 pb-0 pt-2">
+                                      <span
+                                        className="font-weight-bolder text-secondary"
+                                        style={{ fontSize: 18 }}
+                                      >
+                                       Aptitude
+                                      </span>
+                                    </div>
+                                    <div className="pt-2">
+                                          
+                                            <span
+                                              className="text-default"
+                                              style={{ fontSize: 12 }}
+                                            >
+                                              Candidate's cognitive abilitiesand problem-solving skills
+                                            </span>
+                                        
+                                      
+                                    </div>
+                                  </div>
+                                </div>
                 </div>
               </Card>
             </div>
           )}
 
-          <div className="mt-6 px-md-5 px-3">
+          <div className="mt-3 px-0">
             <div>
               <span
                 className="font-weight-bolder text-secondary "
@@ -731,7 +804,7 @@ function Report() {
                               (skill) => {
                                 return (
                                   <Card
-                                    className="pt-3 pb-3 px-3 font-weight-bolder text-secondary"
+                                    className="py-4 px-4 font-weight-bolder text-secondary rounded-sm"
                                     style={{
                                       borderWidth: 1.5,
                                       borderColor: "#e8edff",
@@ -765,7 +838,7 @@ function Report() {
 
             {reportType === "Detailed Report" && (
               <>
-                <div className="pt-5 text-secondary d-flex justify-content-between font-weight-bolder">
+                <div className="pt-5 text-secondary d-flex justify-content-between align-items-center font-weight-bolder">
                   <span style={{ fontSize: 26 }}>{"Skill Matrix Report"}</span>
                   <span
                     style={{ fontSize: 36 }}
@@ -782,7 +855,7 @@ function Report() {
                         return (
                           <>
                             <div>
-                              <Image src={icons.check} height={20} />
+                              <Image src={item.icon} height={20} />
                               <span
                                 style={{ fontSize: 14 }}
                                 className="text-default ml-2"
@@ -805,7 +878,7 @@ function Report() {
                       return (
                         <div className="mt-5">
                           <Card
-                            className="p-3"
+                            className="p-4"
                             style={{
                               borderWidth: 1.5,
                               borderColor: "#e8edff",
@@ -893,7 +966,7 @@ function Report() {
                     })}
                 </div>
 
-                <div className="pt-5 text-secondary d-flex justify-content-between font-weight-bolder">
+                <div className="pt-5 text-secondary d-flex justify-content-between align-items-center font-weight-bolder">
                   <span style={{ fontSize: 26 }}>{"Communication"}</span>
                   <span style={{ fontSize: 36 }}>{"26%"}</span>
                 </div>
@@ -912,14 +985,14 @@ function Report() {
                                   (com: any) => {
                                     return (
                                       <Card
-                                        className="pt-3 pb-3 px-3"
+                                        className="p-4"
                                         style={{
                                           borderWidth: 1.5,
                                           borderColor: "#e8edff",
                                           backgroundColor: "transparent",
                                         }}
                                       >
-                                        <div className="d-flex justify-content-between">
+                                        <div className="d-flex justify-content-between align-items-start">
                                           <div>
                                             <div>
                                               <span
@@ -936,12 +1009,14 @@ function Report() {
                                               {com.description}
                                             </span>
                                           </div>
+                                          <div>
                                           <span
                                             className="text-secondary font-weight-bolder"
                                             style={{ fontSize: 16 }}
                                           >
                                             {com.rating}
                                           </span>
+                                          </div>
                                         </div>
                                       </Card>
                                     );
@@ -954,7 +1029,7 @@ function Report() {
                   </div>
                 </div>
 
-                <div className="pt-5 text-secondary d-flex justify-content-between font-weight-bolder">
+                <div className="pt-5 text-secondary d-flex justify-content-between align-items-center font-weight-bolder">    
                   <span style={{ fontSize: 26 }}>{"Personality Trait"}</span>
                   <span style={{ fontSize: 36 }}>{"36%"}</span>
                 </div>
@@ -972,14 +1047,14 @@ function Report() {
                                 basicReportData?.trait.map((el: any) => {
                                   return (
                                     <Card
-                                      className="pt-3 pb-3 px-3"
+                                      className="p-4"
                                       style={{
                                         borderWidth: 1.5,
                                         borderColor: "#e8edff",
                                         backgroundColor: "transparent",
                                       }}
                                     >
-                                      <div className="d-flex justify-content-between">
+                                      <div className="d-flex justify-content-between align-items-start">
                                         <div>
                                           <div>
                                             <span
@@ -996,12 +1071,14 @@ function Report() {
                                             {el.reason}
                                           </span>
                                         </div>
+                                        <div>
                                         <span
                                           className="text-secondary font-weight-bolder"
                                           style={{ fontSize: 16 }}
                                         >
                                           {el.percent}
                                         </span>
+                                        </div>
                                       </div>
                                     </Card>
                                   );
@@ -1015,11 +1092,11 @@ function Report() {
               </>
             )}
           </div>
-          <div className="row justify-content-end mt-5 mr-4 mb-6">
+          <div className="d-flex justify-content-end mt-5 mb-6">
             <Image src={icons.poweredBy} height={40} />
           </div>
         </div>
-      </div>
+      
     </>
   );
 }
