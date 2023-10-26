@@ -1,5 +1,5 @@
 import { DesignationItemProps } from './interfaces';
-import { NoDataFound, Button, MenuBar, Image } from '@Components';
+import { NoDataFound, Button, MenuBar, Image, Badge } from '@Components';
 import { icons } from '@Assets';
 import { Card, CardBody, CardFooter } from 'reactstrap';
 import { useEffect, useState } from 'react';
@@ -44,7 +44,7 @@ function DesignationItem({ item, onAdd, onEdit, onView, onClick }: DesignationIt
                     />
                 )}
             </div> */}
-            <Card className='rounded px-sm-5 py-sm-4 '
+            <Card className='rounded px-sm-5 py-sm-4 p-3'
                 style={{
                     borderWidth: "1px",
                     borderColor: "#d3deff",
@@ -156,7 +156,8 @@ function DesignationItem({ item, onAdd, onEdit, onView, onClick }: DesignationIt
                                         <div className='d-flex align-items-center'>
                                             <h1 className='col p-0 m-0'
                                             >{capitalizeFirstLetter(item.job_description.position)}</h1>
-                                            <div className={'ml-3 px-3'} style={{backgroundColor:'#ebe4ff', borderRadius:"50px", height:"30px"}}> <h4 className=' text-primary font-weight-900 pt-1 px-1'>{item.candidate_details.selected_candidates} Selected</h4></div>
+                                            {/* <div className={'ml-3 px-3'} style={{backgroundColor:'#ebe4ff', borderRadius:"50px", height:"30px"}}> <h4 className=' text-primary font-weight-900 pt-1 px-1'>{item.candidate_details.selected_candidates} Selected</h4></div> */}
+                                            <Badge pill={"pill"} text={"Selected"}/>
                                         </div>
                                         <h5 className="m-0 font-weight-500">{item.job_description.experience}</h5>
                                     </div>

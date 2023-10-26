@@ -58,6 +58,8 @@ function Designation() {
     ];
 
     const [changeColorButton, setChangeColorButton] = useState<any>(interviewDurations)
+    const [vacancies, setVacancies] = useState<any>('')
+    const [interviewDuration, setInterviewDuration] = useState<any>('')
     
 
     // console.log("position===>", position.value)
@@ -141,7 +143,9 @@ function Designation() {
             department_id: selectDepartment.id,
             role: role1.value,
             experience: experience,
-            jd: jd.value
+            jd: jd.value,
+            vacancies: vacancies,
+            interview_duration: interviewDuration,
         }
         const validation = validate(CREATE_CORPORATE_SCHEDULE_RULES, params)
 
@@ -355,8 +359,8 @@ function Designation() {
                                         heading={'Vacancies'}
                                         type={'number'}
                                         placeHolder={"0"}
-                                        value={''}
-                                        onChange={''} />
+                                        value={vacancies}
+                                        onChange={(e)=>setVacancies(e.target.value)} />
                                 </div>
                             </div>
 
@@ -376,6 +380,7 @@ function Designation() {
                                             return <div className=''>
                                                 <Button text={item.subText} className={`${item.isActive ? "btn-outline-primary" : "btn-outline-default"} rounded-sm px-sm-4`} style={{width: "140px"}} onClick={() => {
                                                     console.log(item.value);
+                                                    setInterviewDuration(item.value)
                                                     
                                                     handleItemClick(index)}} />
                                                 
