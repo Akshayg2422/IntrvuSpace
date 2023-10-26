@@ -1,3 +1,4 @@
+import { SERVER } from "@Services";
 import {
   getPhoto,
 } from "@Utils";
@@ -279,6 +280,38 @@ export function formatDateTime(dateTimeString: any) {
   const formattedDate = date.toLocaleString('en-US', options);
 
   return formattedDate;
+}
+
+export function displayFormatDate(inputDate: any) {
+  const date = new Date(inputDate);
+  const options: any = {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true,
+  };
+  return date.toLocaleString('en-US', options).replace(',', '');;
+}
+
+// bulk upload
+
+export const downloadFile = (response) => {
+  const fileUrl = response;
+  fetch(SERVER + fileUrl)
+    .then(response => response.blob())
+    .then(blob => {
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `bulk_upload.csv`;
+      link.click();
+      URL.revokeObjectURL(url);
+    })
+    .catch(error => {
+      console.error('Error downloading file:', error);
+    })
 }
 
 
