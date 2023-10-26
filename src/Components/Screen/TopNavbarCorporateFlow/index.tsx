@@ -137,7 +137,8 @@ function TopNavbarCorporateFlow() {
                                 <NavLink to="/schedule" tag={Link}>
                                     <Button
                                         size='md'
-                                        className='btn btn-outline-primary rounded-sm mr--3'
+                                        
+                                        className='btn btn-primary rounded-sm mr--3'
                                         style={{
                                             borderColor: "#d8dade",
                                             fontSize: "15px"
