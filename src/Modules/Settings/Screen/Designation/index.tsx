@@ -229,17 +229,6 @@ function Designation() {
             <div className='pt-4 mx-sm-7'>
                 {/* <h1 className={'text-black mb-0 pb-3'}>{'Schedules'}</h1> */}
 
-                <div className='text-right mb-3'>
-                    <Button
-                        text={'Create Opening'}
-                        block
-                        onClick={() => {
-                            addRoleModal.show();
-                        }
-                        }
-                    />
-                </div>
-
                 <div className='row pt-6'>
                     <div className='col'>
                         <Input
