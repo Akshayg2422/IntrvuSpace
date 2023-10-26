@@ -121,6 +121,8 @@ export const URL_GET_CORPORATE_SCHEDULE_DETAILS = ASSISTANT + 'getCorporateSched
 export const STUDENT_CODE_SUBMISSION_URL = 'submissions?base64_encoded=true&wait=true'
 export const URL_CLOSE_INTERVIEW = ASSISTANT + 'endInterviewCall'
 export const URL_CAN_START_INTERVIEW = ASSISTANT + 'canStartInterview'
+export const POST_MANUAL_APPROVALS_ON_CANDIDATE = ASSISTANT + 'manualApprovalsOnCandidate'
+
 
 
 // getSectorsCorporate

@@ -36,6 +36,7 @@ function TopNavbar() {
     const logoutModal = useModal(false);
     const { goTo } = useNavigation()
     const { loginDetails } = useSelector((state: any) => state.AppReducer);
+    const { jdItem } = useSelector((state: any) => state.DashboardReducer);
 
 
     console.log(JSON.stringify(loginDetails) + '=====loginDetails');
@@ -142,13 +143,12 @@ function TopNavbar() {
                         <Nav className="align-items-lg-center ml-lg-auto mr--4 justify-content-end" navbar>
                             {loginDetails?.is_super_admin && <NavItem>
                                 <NavLink to="/home" tag={Link}>
-                                    {/* <span className={`nav-link-inner--text  ${'/home' !== pathName ? "text-black h4" : 'text-primary h4'}`}>Create Interview</span> */}
                                     <Button
                                         className='btn btn-outline-primary rounded-sm px-0'
                                         style={{
                                             borderColor: "#d8dade",
                                             fontSize: "15px",
-                                            width:'150px'
+                                            width: '150px'
                                         }}
                                         text={'Create For Others'}
                                         onClick={handleCreateForOthersInterviewClick}
@@ -156,22 +156,23 @@ function TopNavbar() {
                                 </NavLink>
                             </NavItem>
                             }
-                            <NavItem>
-                                <NavLink to="/home" tag={Link}>
-                                    {/* <span className={`nav-link-inner--text  ${'/home' !== pathName ? "text-black h4" : 'text-primary h4'}`}>Create Interview</span> */}
-                                    <Button
-                                        size='md'
-                                        className={'btn btn-outline-primary rounded-sm mr--3 px-0 '}
-                                        style={{
-                                            borderColor: "#d8dade",
-                                            fontSize: "15px",
-                                            width:'150px'
-                                        }}
-                                        text={'Create Interview'}
-                                        onClick={handleCreateInterviewClick}
-                                    />
-                                </NavLink>
-                            </NavItem>
+                            {jdItem && jdItem.length > 0 &&
+                                <NavItem>
+                                    <NavLink to="/home" tag={Link}>
+                                        <Button
+                                            size='md'
+                                            className={'btn btn-outline-primary rounded-sm mr--3 px-0 '}
+                                            style={{
+                                                borderColor: "#d8dade",
+                                                fontSize: "15px",
+                                                width: '150px'
+                                            }}
+                                            text={'Create Interview'}
+                                            onClick={handleCreateInterviewClick}
+                                        />
+                                    </NavLink>
+                                </NavItem>
+                            }
 
                             <NavItem className="d-none d-lg-block ml-lg-4">
                                 <div className='row align-items-center m-auto'>
