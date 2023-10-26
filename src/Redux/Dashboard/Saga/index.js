@@ -804,6 +804,25 @@ function* bulkUploadCandidatesCpSaga(action) {
   }
 }
 
+// postManualApprovalOnCandidateSaga
+
+function* postManualApprovalOnCandidateSaga(action) {
+  try {
+    const response = yield call(Api.postManualApprovalOnCandidateApi, action.payload.params);
+    if (response.success) {
+      console.log(JSON.stringify(response));
+      yield put(Action.postManualApprovalOnCandidateSuccess(response?.details));
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield put(Action.postManualApprovalOnCandidateFailure(response.error_message));
+      yield call(action.payload.onError(response));
+    }
+  } catch (error) {
+    yield put(Action.postManualApprovalOnCandidateFailure(error));
+    yield call(action.payload.onError(error));
+  }
+}
+
 
 function* DashboardSaga() {
   yield takeLatest(Action.GET_START_CHAT, getChatSaga);
@@ -849,5 +868,7 @@ function* DashboardSaga() {
   yield takeLatest(Action.DELETE_INTERVIEW, deleteInterviewSaga);
   yield takeLatest(Action.DELETE_JD, deleteJdSaga);
   yield takeLatest(Action.BULK_UPLOAD_CANDIDATES_CP, bulkUploadCandidatesCpSaga);
+  yield takeLatest(Action.POST_MANUAL_APPROVALS_ON_CANDIDATE, postManualApprovalOnCandidateSaga);
+
 }
 export default DashboardSaga;
