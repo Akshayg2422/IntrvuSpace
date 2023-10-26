@@ -10,7 +10,7 @@ function Button({
   variant = "default",
   size,
   height = 15,
-  width = 15,
+  width,
   icon,
   icons,
   onEnter,
