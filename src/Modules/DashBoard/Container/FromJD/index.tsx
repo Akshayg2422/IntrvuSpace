@@ -312,7 +312,7 @@ function FromJD() {
                                                             {name.charAt(0).toUpperCase() + name.slice(1) + demoDisplayName}
                                                         </span> : <></>
                                                         }
-                                                        <small className={"text-secondary"}>{experience === 0 ? " Fresher" : " " + experience + (experience === 1 ? " year " : " years ") + "of experience"}</small>
+                                                        <small className={"text-secondary ml-1"}>{experience}</small>
                                                         {
                                                             modifiedSchedules &&
                                                             modifiedSchedules.length > 0 &&
