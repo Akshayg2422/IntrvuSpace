@@ -49,6 +49,8 @@ const initialState: DashboardProp = {
   interviewScheduleDetails: undefined,
   retrieveEmail: undefined,
   createOpening: false,
+  corporateScheduleNumOfPages: undefined,
+  corporateScheduleCurrentPages: 1,
 };
 
 const DashboardReducer = (state = initialState, action: any) => {
@@ -506,10 +508,24 @@ const DashboardReducer = (state = initialState, action: any) => {
     /**getCorporateSchedulesD */
 
     case ActionTypes.GET_CORPORATE_SCHEDULES:
-      state = { ...state, corporateSchedules: undefined };
+      state = {
+        ...state,
+        corporateSchedules: undefined,
+        corporateScheduleNumOfPages: 0,
+        corporateScheduleCurrentPages: 1,
+      };
       break;
     case ActionTypes.GET_CORPORATE_SCHEDULES_SUCCESS:
-      state = { ...state, corporateSchedules: action.payload };
+
+      state = {
+        ...state,
+        corporateSchedules: action.payload,
+        corporateScheduleNumOfPages: action.payload?.details.corporate_jd_items.num_pages,
+        corporateScheduleCurrentPages:
+          action.payload?.details.corporate_jd_items.next_page === -1
+            ? action.payload?.details.corporate_jd_items.num_pages
+            : action.payload?.details.corporate_jd_items.next_page - 1
+      };
       break;
     case ActionTypes.GET_CORPORATE_SCHEDULES_FAILURE:
       state = { ...state, corporateSchedules: undefined };
