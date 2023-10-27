@@ -10,6 +10,8 @@ export const BUILD_TYPE_PRE_PROD_IP = 5;
 const LIVE_IP = "https://mepp.leorainfotech.in/"
 const PRE_PROD_IP = "https://mepp.leorainfotech.in/"
 const LOCAL_IP = "https://1b33-103-118-190-6.ngrok-free.app/"
+// const LOCAL_IP = "http://192.168.12.126:8005/"
+
 
 
 export const BUILD_TYPE = BUILD_TYPE_PRE_PROD_IP;
