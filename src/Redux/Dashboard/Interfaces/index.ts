@@ -38,7 +38,8 @@ export interface DashboardProp {
   createForOthersJdModal: boolean,
   interviewScheduleDetails: any,
   retrieveEmail: any,
-  createOpening?: boolean;
   corporateScheduleNumOfPages: any,
   corporateScheduleCurrentPages: number,
+  createOpening?:boolean;
+  candidatesList?: boolean;
 }

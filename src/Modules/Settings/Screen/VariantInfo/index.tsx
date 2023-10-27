@@ -30,6 +30,7 @@ import { AnalyzingAnimation, GenerateModal } from "@Modules";
 import {
   bulkUploadCandidates,
   createSchedule,
+  fetchCandidatesCorporate,
   generateForm,
   getCorporateScheduleDetails,
   postManualApprovalOnCandidate,
@@ -65,9 +66,8 @@ const OPTIONS = [
 function VariantInfo() {
   const { goBack } = useNavigation();
   const enterPress = useKeyPress("Enter");
-  const { selectedRole, corporateScheduleDetails } = useSelector(
-    (state: any) => state.DashboardReducer
-  );
+  const { selectedRole, corporateScheduleDetails, candidatesList } =
+    useSelector((state: any) => state.DashboardReducer);
   console.log(corporateScheduleDetails, "corporateScheduleDetails-------->");
 
   const { goTo } = useNavigation();
@@ -85,15 +85,18 @@ function VariantInfo() {
   const bulkUploadModal = useModal(false);
   const [candidateBulkUploadData, setCandidateBulkUploadData] = useState("");
   const [searchCandidate, setSearchCandidate] = useState("");
-
-  //   useEffect(() => {
-  //     getCorporateScheduleDetailsHandler();
-  //   }, []);
+  const [isCandidatesExist, setIsCandidatesExist] = useState<boolean>(false);
 
   useEffect(() => {
     getCorporateScheduleDetailsHandler();
-  }, [enterPress]);
+    getCandidatesCorporate();
+  }, []);
 
+  useEffect(() => {
+    if (isCandidatesExist) {
+      getCandidatesCorporate();
+    }
+  }, [enterPress]);
 
   const Refresh = () => {
     const refresh = () => window.location.reload();
@@ -104,12 +107,27 @@ function VariantInfo() {
   const getCorporateScheduleDetailsHandler = () => {
     const params = {
       corporate_openings_details_id: selectedRole?.id,
-      ...(searchCandidate && { q: searchCandidate }),
     };
     dispatch(
       getCorporateScheduleDetails({
         params,
         onSuccess: (response: any) => () => {},
+        onError: (error: any) => () => {},
+      })
+    );
+  };
+
+  const getCandidatesCorporate = () => {
+    const params = {
+      corporate_openings_details_id: selectedRole?.id,
+      ...(searchCandidate && { q: searchCandidate }),
+    };
+    dispatch(
+      fetchCandidatesCorporate({
+        params,
+        onSuccess: (response: any) => () => {
+          // console.log("response candidtae===>", response);
+        },
         onError: (error: any) => () => {},
       })
     );
@@ -164,30 +182,65 @@ function VariantInfo() {
 
   const { schedules } = corporateScheduleDetails || {};
 
-  console.log(schedules, "schedulessssssssssss");
+  // console.log(schedules, "schedulessssssssssss");
+
+  const getIconColor = (iconType: any) => {
+    switch (iconType) {
+      case 1:
+        return icons.check;
+
+      case 2:
+        return icons.frame;
+
+      case 3:
+        return icons.checkBlack;
+
+      default:
+        return "";
+    }
+
+  };
 
   const normalizedTableData = (data: any) => {
-    if (data && data?.schedules?.length > 0)
-      return data?.schedules?.map((el: any) => {
+    console.log("candddiii==>", data);
+    if (data && data?.corporate_candidate_details.length > 0)
+      return data?.corporate_candidate_details?.map((el: any) => {
         return {
+          "   ": <Image src={getIconColor(el?.status_icon_type)} height={20} />,
+          "": (
+            <div
+              className={`font-weight-800 text-secondary`}
+              style={{ fontSize: 26 }}
+            >
+              {el?.candidate_score}
+            </div>
+          ),
           name: (
             <div className="text-secondary tableText font-weight-800">
               {el?.interviewee_name}
             </div>
           ),
 
-          Mobile: <div>{el?.interviewee_mobile_number}</div>,
+          Mobile: (
+            <div className="text-secondary font-weight-500">
+              {el?.interviewee_mobile_number}
+            </div>
+          ),
 
           Email: (
-            <div className="m-0 text-secondary tableText">
+            <div className="m-0 text-secondary font-weight-500">
               {el?.interviewee_email}
             </div>
           ),
 
-          "status Note": <div className="">{el?.status}</div>,
-          //   "": <div className={"text-right"}>{handleNextStep(el)}</div>,
+          "status Note": (
+            <div className={`text-${el?.status_note_colour} font-weight-400`}>
+              {el?.status_note}
+            </div>
+          ),
+          "    ": <div className={""}>{handleNextStep(el)}</div>,
           " ": (
-            <div className="pt-4">
+            <div className="">
               <Button
                 text={"Report"}
                 size="md"
@@ -220,8 +273,14 @@ function VariantInfo() {
     if (is_complete === true) {
       return (
         <Button
-          text={"View Report"}
-          size="sm"
+          text={"Report"}
+          size="md"
+          className={"btn btn-outline-primary rounded-sm mr--3 px-0 "}
+          style={{
+            borderColor: "#d8dade",
+            fontSize: "15px",
+            width: "110px",
+          }}
           onClick={() => {
             goTo(ROUTES["designation-module"].report + "/" + id);
           }}
@@ -272,7 +331,7 @@ function VariantInfo() {
         params,
         onSuccess: (response: any) => () => {
           showToast(response.message, "success");
-          getCorporateScheduleDetailsHandler();
+          getCandidatesCorporate();
         },
         onError: (error: any) => () => {
           showToast(error.error_message, "error");
@@ -293,7 +352,7 @@ function VariantInfo() {
                     onClick={() => goBack()}
                     style={{ cursor: "pointer" }}
                     src={icons.back}
-                    height={10}
+                    height={15}
                   />
                 </div>
                 <div className="pl-3">
@@ -313,10 +372,10 @@ function VariantInfo() {
             <div className="d-flex align-items-center">
               <div className="pl-3 pl-sm-0">
                 <span className="headingText text-secondary">
-                  {`${corporateScheduleDetails?.vacancies} ${
+                  {`${corporateScheduleDetails?.vacancies ?? ""} ${
                     corporateScheduleDetails?.vacancies > 1
                       ? "Vacancies"
-                      : "Vacancy"
+                      : "0 Vacancy"
                   }`}
                 </span>
               </div>
@@ -326,7 +385,10 @@ function VariantInfo() {
             </div>
           </div>
 
-          {(schedules && schedules.length === 0) && searchCandidate ? (
+          {candidatesList &&
+          candidatesList?.corporate_candidate_details &&
+          candidatesList?.corporate_candidate_details.length === 0 &&
+          !isCandidatesExist ? (
             <div className="mt-5 text-center">
               <div>
                 <span className="titleText text-secondary">
@@ -417,10 +479,12 @@ function VariantInfo() {
                               ?.selected_candidates
                           }
                         </span>
-                        <span className="selectionText text-secondary">
-                          {"/"}
-                          {corporateScheduleDetails?.vacancies}
-                        </span>
+                        {corporateScheduleDetails?.vacancies && (
+                          <span className="selectionText text-secondary">
+                            {"/"}
+                            {corporateScheduleDetails?.vacancies}
+                          </span>
+                        )}
                       </div>
                     </div>
                   </Card>
@@ -490,26 +554,30 @@ function VariantInfo() {
                   }}
                 >
                   <div>
-                    <div className="p-3">
-                      <div className="row">
+                    <div className="p-sm-3 p-0">
+                      <div className="d-flex flex-sm-row flex-column">
                         <div className="">
                           <span className="headingText text-secondary">
                             {"Candidates"}
                           </span>
                         </div>
-                        <Badge
-                          className="text-primary text-lowercase mt-1 font-weight-800 ml-4"
-                          style={{
-                            backgroundColor: "#ebe4ff",
-                            borderRadius: 40,
-                            fontSize: 16,
-                            borderWidth: 0,
-                          }}
-                          text={`${
-                            corporateScheduleDetails?.candidate_details
-                              ?.selected_candidates || 0
-                          } selected`}
-                        />
+                        <div>
+                          <Badge
+                            className="text-primary text-lowercase mt-1 font-weight-800 ml-sm-4"
+                            style={{
+                              backgroundColor: "#ebe4ff",
+                              borderRadius: 40,
+                              fontSize: 16,
+                              borderWidth: 0,
+                            }}
+                            text={
+                              corporateScheduleDetails?.candidate_details
+                                ?.selected_candidates
+                                ? `${corporateScheduleDetails?.candidate_details?.selected_candidates} selected`
+                                : ""
+                            }
+                          />
+                        </div>
                       </div>
                       <div
                         className="px-2 row justify-content-between"
@@ -522,6 +590,12 @@ function VariantInfo() {
                               setSearchCandidate(e.target.value);
                             }}
                             value={searchCandidate}
+                            onFocus={() => {
+                              setIsCandidatesExist(true);
+                            }}
+                            onBlur={() => {
+                              setIsCandidatesExist(false);
+                            }}
                           />
                         </div>
 
@@ -569,8 +643,8 @@ function VariantInfo() {
                       </div>
                     </div>
 
-                    {corporateScheduleDetails &&
-                    corporateScheduleDetails?.schedules.length > 0 ? (
+                    {candidatesList?.corporate_candidate_details &&
+                    candidatesList?.corporate_candidate_details.length > 0 ? (
                       <div className={"row px-0 mx--4"}>
                         <div
                           className={
@@ -578,10 +652,10 @@ function VariantInfo() {
                           }
                         >
                           <CommonTable
-                            tableDataSet={corporateScheduleDetails}
-                            displayDataSet={normalizedTableData(
-                              corporateScheduleDetails
-                            )}
+                            tableDataSet={
+                              candidatesList?.corporate_candidate_details
+                            }
+                            displayDataSet={normalizedTableData(candidatesList)}
                           />
                         </div>
                       </div>
@@ -706,121 +780,6 @@ function VariantInfo() {
               </Card>
             </div>
           </div>
-
-          {/* {schedules && schedules.length > 0 ? (
-            <Card className={"mt--3 vh-100 mb-3 overflow-auto overflow-hide"}>
-              <>
-                <div className="d-flex justify-content-between align-items-center">
-                  <div className={"h3 text-dark"}>{"Candidates"}</div>
-                  <div className={"row align-items-center"}>
-                    <div className={"mr-3"}>
-                      <DropzoneFilePicker
-                        size={"md"}
-                        title={"Upload Candidates"}
-                        onSelect={(data) => {
-                          let eventPickers = [data]
-                            ?.toString()
-                            .replace(/^data:(.*,)?/, "");
-                          console.log("eventPickers=======>..", eventPickers);
-                          setCandidateBulkUploadData(eventPickers);
-                        }}
-                        onSubmitClick={() => {
-                          bulkUploadCandidatesHandler();
-                        }}
-                        onTemplateClick={downloadCSVTemplate}
-                      />
-                    </div>
-
-                    <Button
-                      text={"Add New"}
-                      onClick={addNewCandidateModal.show}
-                    />
-                  </div>
-                </div>
-                {corporateScheduleDetails &&
-                corporateScheduleDetails?.schedules.length > 0 ? (
-                  <div className={"row px-0 mx--4"}>
-                    <div className={"col-sm-12 px-0"}>
-                      <CommonTable
-                        tableDataSet={corporateScheduleDetails}
-                        displayDataSet={normalizedTableData(
-                          corporateScheduleDetails
-                        )}
-                      />
-                    </div>
-                  </div>
-                ) : (
-                  <div
-                    className={
-                      "d-flex justify-content-center align-items-center"
-                    }
-                    style={{ height: "90vh" }}
-                  >
-                    <NoDataFound text={"No Data Found"} />
-                  </div>
-                )}
-              </>
-            </Card>
-          ) : (
-            <div className={"m-2 row d-flex justify-content-between"}>
-              <div className={"mt-3  text-right col-9"}>
-                <DropzoneFilePicker
-                  size={"md"}
-                  title={"Upload Candidates"}
-                  onSelect={(data) => {
-                    let eventPickers = [data]
-                      ?.toString()
-                      .replace(/^data:(.*,)?/, "");
-                    console.log("eventPickers=======>..", eventPickers);
-                    setCandidateBulkUploadData(eventPickers);
-                  }}
-                  onSubmitClick={() => {
-                    bulkUploadCandidatesHandler();
-                  }}
-                  onTemplateClick={downloadCSVTemplate}
-                />
-              </div>
-              <div className={""}>
-                <Button
-                  block
-                  text={"Add Candidates"}
-                  onClick={addNewCandidateModal.show}
-                />
-              </div>
-            </div>
-          )} */}
-          {/* <Card className={'col-sm-12 col-lg-12 col-md-12'} >
-                        <div className={'row justify-content-between mb-3 mx--4'}>
-                            <div className={'ml-2 h3 text-dark'}>{capitalizeFirstLetter(position)}</div>
-                            <div className={'mb-2 mr-2'}><h3 className={'text-primary pointer'} onClick={() => { goTo(ROUTES['designation-module']['questions']) }} >{'View Questions'}</h3></div>
-                        </div>
-                        <div className={'d-flex flex-column mt--3'}>
-                            <div className={'row pb-2'}>
-                                <span className={"text-black text-sm"}>
-                                    <i className="pr-2">
-                                        <img src={icons.briefCaseBlack} alt="Comment Icon" height={'20'} width={'20'} />
-                                    </i>
-                                    Experience with {experience}
-                                </span>
-                            </div>
-                            <div className={'row pb-1 text-sm text-black font-weight-500'}>
-                                <span style={{ maxWidth: '100vw' }}>
-                                    <i className="pr-2">
-                                        <img src={icons.information} alt="Comment Icon" height={'20'} width={'20'} />
-                                    </i>
-                                    {showFullContent ? details : filteredName(details, 480)}
-                                </span>
-                                {details && details.length > 480 && (
-                                    <span
-                                        className="text-primary pointer"
-                                        onClick={() => setShowFullContent(!showFullContent)}
-                                    >
-                                        {showFullContent ? <span className={'h5 text-primary'}> View Less</span> : <span className={'h5 text-primary'}> View More</span>}
-                                    </span>
-                                )}
-                            </div>
-                        </div>
-                    </Card>  */}
         </div>
       </div>
       <Modal
@@ -830,33 +789,34 @@ function VariantInfo() {
       >
         <div className="col-xl-6">
           <Input
-            heading={"First Name"}
+            placeholder={"First Name"}
             value={firstName.value}
             onChange={firstName.onChange}
           />
           <Input
-            heading={"Last Name "}
+            placeholder={"Last Name "}
             value={lastName.value}
             onChange={lastName.onChange}
           />
           <Input
-            heading={"Mobile Number"}
+            placeholder={"Mobile Number"}
             maxLength={10}
             type={"number"}
             value={mobileNumber.value}
             onChange={mobileNumber.onChange}
           />
           <Input
-            heading={"Email"}
+            placeholder={"Email"}
             value={email.value}
             onChange={email.onChange}
           />
         </div>
-        <div className={"text-right"}>
+        <div className={"text-center pt-3"}>
           <Button
             size={"md"}
             text={"Submit"}
             onClick={generateNewCandidateHandler}
+            style={{ borderRadius: 4, paddingLeft: 70, paddingRight: 70 }}
           />
         </div>
       </Modal>
