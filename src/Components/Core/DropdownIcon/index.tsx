@@ -10,7 +10,9 @@ const DropDownIcon = ({
   value,
   title,
   id,
+  className,
   disabled = false,
+  style,
   ...props
 }: DropDownProp) => {
   const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -25,11 +27,12 @@ const DropDownIcon = ({
       {heading && <label className="form-control-label">{heading}</label>}
       <select
         value={value}
-        className="form-control form-select"
+        className={`form-control form-select ${className}`}
         {...props}
         onChange={handleSelectChange}
         name={name}
         disabled={disabled}
+        style={{...style}}
       >
         {placeholder && <option>{placeholder}</option>}
         {data && data.length > 0 ? (
@@ -49,6 +52,8 @@ const DropDownIcon = ({
       </select>
       {error && <code className="text-danger">{error}</code>}
     </div>
+
+    
   );
 };
 

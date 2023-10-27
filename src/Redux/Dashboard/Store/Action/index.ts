@@ -1119,3 +1119,24 @@ export const hideCreateOpeningsModal = () => {
     type: ActionTypes.HIDE_CREATE_OPENINGS_MODAL,
   };
 };
+
+// POST_MANUAL_APPROVALS_ON_CANDIDATE
+
+export const postManualApprovalOnCandidate = (params: any) => {
+  return {
+    type: ActionTypes.POST_MANUAL_APPROVALS_ON_CANDIDATE,
+    payload: params,
+  }
+}
+export const postManualApprovalOnCandidateSuccess = (response: any) => {
+  return {
+    type: ActionTypes.POST_MANUAL_APPROVALS_ON_CANDIDATE_SUCCESS,
+    payload: response,
+  }
+}
+export const postManualApprovalOnCandidateFailure = (error: any) => {
+  return {
+    type: ActionTypes.POST_MANUAL_APPROVALS_ON_CANDIDATE_FAILURE,
+    payload: error,
+  }
+}

@@ -354,6 +354,7 @@ function FromJD() {
                                                                     <div>
                                                                         <Button style={{ fontSize: "15px" }}
                                                                             size='md'
+                                                                            outline
                                                                             className={'px-md-5 border border-primary rounded-sm'}
                                                                             text={'Try Another'}
                                                                             onClick={() => {

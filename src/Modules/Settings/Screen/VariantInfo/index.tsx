@@ -15,9 +15,12 @@ import {
   DropzoneFilePicker,
   Spinner,
   Badge,
+  MenuBar,
+  NoRecordsFound,
 } from "@Components";
 import {
   useInput,
+  useKeyPress,
   useLoader,
   useModal,
   useNavigation,
@@ -29,6 +32,7 @@ import {
   createSchedule,
   generateForm,
   getCorporateScheduleDetails,
+  postManualApprovalOnCandidate,
   selectedScheduleId,
 } from "@Redux";
 import { ROUTES } from "@Routes";
@@ -52,8 +56,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { saveAs } from "file-saver";
 import "./index.css";
 
+const OPTIONS = [
+  { id: 1, name: "Approve Manually" },
+  { id: 2, name: "Reject manually" },
+  //   { id: 3, name: "Watch Interview" },
+];
+
 function VariantInfo() {
   const { goBack } = useNavigation();
+  const enterPress = useKeyPress("Enter");
   const { selectedRole, corporateScheduleDetails } = useSelector(
     (state: any) => state.DashboardReducer
   );
@@ -73,10 +84,16 @@ function VariantInfo() {
   const [showFullContent, setShowFullContent] = useState(false);
   const bulkUploadModal = useModal(false);
   const [candidateBulkUploadData, setCandidateBulkUploadData] = useState("");
+  const [searchCandidate, setSearchCandidate] = useState("");
+
+  //   useEffect(() => {
+  //     getCorporateScheduleDetailsHandler();
+  //   }, []);
 
   useEffect(() => {
     getCorporateScheduleDetailsHandler();
-  }, []);
+  }, [enterPress]);
+
 
   const Refresh = () => {
     const refresh = () => window.location.reload();
@@ -85,7 +102,10 @@ function VariantInfo() {
   };
 
   const getCorporateScheduleDetailsHandler = () => {
-    const params = { corporate_openings_details_id: selectedRole?.id };
+    const params = {
+      corporate_openings_details_id: selectedRole?.id,
+      ...(searchCandidate && { q: searchCandidate }),
+    };
     dispatch(
       getCorporateScheduleDetails({
         params,
@@ -155,7 +175,8 @@ function VariantInfo() {
               {el?.interviewee_name}
             </div>
           ),
-          //   phone: <div className={"text-secondary tableText"}>{el?.interviewee_mobile_number}</div>,
+
+          Mobile: <div>{el?.interviewee_mobile_number}</div>,
 
           Email: (
             <div className="m-0 text-secondary tableText">
@@ -181,10 +202,12 @@ function VariantInfo() {
           ),
           "  ": (
             <div>
-              <Image
-                src={icons.more}
-                height={20}
-                style={{ cursor: "pointer" }}
+              <MenuBar
+                menuData={OPTIONS}
+                onClick={(action) => {
+                  manualApprovalsOnCandidate(action, el);
+                }}
+                toggleIcon={icons.more}
               />
             </div>
           ),
@@ -230,8 +253,32 @@ function VariantInfo() {
     );
   }
 
+  // download csv file
   const downloadCSVTemplate = () => {
     downloadFile(corporateScheduleDetails?.bulk_upload_template);
+  };
+
+  // manual approval on candidate
+
+  const manualApprovalsOnCandidate = (action: any, el: any) => {
+    const params = {
+      corporate_schedule_id: el?.id,
+      ...(action.id === 1 && { is_manually_approved: true }),
+      ...(action.id === 2 && { is_manually_rejected: true }),
+    };
+
+    dispatch(
+      postManualApprovalOnCandidate({
+        params,
+        onSuccess: (response: any) => () => {
+          showToast(response.message, "success");
+          getCorporateScheduleDetailsHandler();
+        },
+        onError: (error: any) => () => {
+          showToast(error.error_message, "error");
+        },
+      })
+    );
   };
 
   return (
@@ -279,7 +326,7 @@ function VariantInfo() {
             </div>
           </div>
 
-          {schedules && schedules.length === 0 ? (
+          {(schedules && schedules.length === 0) && searchCandidate ? (
             <div className="mt-5 text-center">
               <div>
                 <span className="titleText text-secondary">
@@ -469,7 +516,13 @@ function VariantInfo() {
                         style={{ marginTop: 35 }}
                       >
                         <div className="col-sm-5">
-                          <Input placeHolder={"Name, Email Phone..."} />
+                          <Input
+                            placeHolder={"Name, Email Phone..."}
+                            onChange={(e) => {
+                              setSearchCandidate(e.target.value);
+                            }}
+                            value={searchCandidate}
+                          />
                         </div>
 
                         <div className="row pr-md-5 pr-0 pl-sm-0 pl-4">
@@ -517,22 +570,31 @@ function VariantInfo() {
                     </div>
 
                     {corporateScheduleDetails &&
-                      corporateScheduleDetails?.schedules.length > 0 && (
-                        <div className={"row px-0 mx--4"}>
-                          <div
-                            className={
-                              "col-sm-12 px-0 overflow-auto scroll-hidden"
-                            }
-                          >
-                            <CommonTable
-                              tableDataSet={corporateScheduleDetails}
-                              displayDataSet={normalizedTableData(
-                                corporateScheduleDetails
-                              )}
-                            />
-                          </div>
+                    corporateScheduleDetails?.schedules.length > 0 ? (
+                      <div className={"row px-0 mx--4"}>
+                        <div
+                          className={
+                            "col-sm-12 px-0 overflow-auto scroll-hidden"
+                          }
+                        >
+                          <CommonTable
+                            tableDataSet={corporateScheduleDetails}
+                            displayDataSet={normalizedTableData(
+                              corporateScheduleDetails
+                            )}
+                          />
                         </div>
-                      )}
+                      </div>
+                    ) : (
+                      <div
+                        className={
+                          "d-flex  justify-content-center align-items-center mx-auto my-9 "
+                        }
+                      >
+                        {" "}
+                        <NoRecordsFound />
+                      </div>
+                    )}
                   </div>
                 </Card>
               </div>
