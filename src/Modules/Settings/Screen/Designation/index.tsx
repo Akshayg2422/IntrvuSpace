@@ -1,4 +1,3 @@
-
 import { Button, DropDown, DesignationItem, Input, Modal, NoDataFound, Breadcrumbs, showToast, TextArea, ReactAutoComplete, Heading, InputHeading, TopNavbarCorporateFlow, Spinner } from '@Components';
 import { useDropDown, useInput, useKeyPress, useLoader, useModal, useNavigation } from '@Hooks';
 import { CREATE_KNOWLEDGE_GROUP_VARIANT_FAILURE, breadCrumbs, clearBreadCrumbs, createCorporateSchedules, createKnowledgeGroup, createKnowledgeGroupVariant, getDepartmentCorporate, getCorporateSchedules, getKnowledgeGroups, getSectorCorporate, getSectors, setSelectedRole, addSectorCorporate, addDepartmentCorporate, showCreateOpeningsModal, hideCreateOpeningsModal } from '@Redux';
@@ -194,8 +193,7 @@ function Designation() {
         console.log('getCorporateScheduleApiHandler----------->', getCorporateScheduleApiHandler)
         const params = {
             position: positionSearch,
-            is_active: status.value === 'ACV' && true 
-            // is_closed: status.value === 'CSD' && true 
+            // is_active: status.value === 'ACV' && true 
             // sector_id: '',
             // department_id: '' //ena type pandromo adhae anupanum
         }
@@ -441,4 +439,3 @@ function Designation() {
 }
 
 export { Designation };
-

@@ -12,7 +12,7 @@ const PRE_PROD_IP = "https://mepp.leorainfotech.in/"
 const LOCAL_IP = "https://1b33-103-118-190-6.ngrok-free.app/"
 
 
-export const BUILD_TYPE = BUILD_TYPE_LOCAL;
+export const BUILD_TYPE = BUILD_TYPE_PRE_PROD_IP;
 export const SERVER =
   BUILD_TYPE === BUILD_TYPE_LIVE
     ? LIVE_IP
