@@ -133,7 +133,7 @@ function TopNavbarCorporateFlow() {
                         {/* <hr className="d-lg-none" /> */}
 
                         <Nav className="align-items-lg-center ml-lg-auto mr--4 justify-content-end" navbar>
-                            {corporateSchedules?.details?.corporate_jd_items.length > 0 && <NavItem>
+                            {corporateSchedules?.details?.corporate_jd_items.data.length > 0 && <NavItem>
                                 <NavLink to="/schedule" tag={Link}>
                                     <Button
                                         size='md'
@@ -204,24 +204,6 @@ function TopNavbarCorporateFlow() {
                                     return null;
                                 })}
                             </div>
-
-                            {/* <div className="d-xl-none d-lg-none">
-                                {HEADER_MENU.map((item) => {
-                                    return (
-                                        <NavItem>
-                                            <NavLink
-                                                onClick={(e) => {
-                                                    e.preventDefault()
-                                                    dropdownHandler(item);
-                                                }}
-                                            >
-                                                <span className={`nav-link-inner--text text-black`}>{item.name}</span>
-
-                                            </NavLink>
-                                        </NavItem>
-                                    );
-                                })}
-                            </div> */}
                         </Nav>
                     </UncontrolledCollapse>
                 </div>
