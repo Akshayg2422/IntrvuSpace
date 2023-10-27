@@ -315,10 +315,10 @@ function VariantInfo() {
             <div className="d-flex align-items-center">
               <div className="pl-3 pl-sm-0">
                 <span className="headingText text-secondary">
-                  {`${corporateScheduleDetails?.vacancies} ${
+                  {`${corporateScheduleDetails?.vacancies ?? ""} ${
                     corporateScheduleDetails?.vacancies > 1
                       ? "Vacancies"
-                      : "Vacancy"
+                      : "0 Vacancy"
                   }`}
                 </span>
               </div>
@@ -419,10 +419,10 @@ function VariantInfo() {
                               ?.selected_candidates
                           }
                         </span>
-                        <span className="selectionText text-secondary">
+                        {corporateScheduleDetails?.vacancies && <span className="selectionText text-secondary">
                           {"/"}
                           {corporateScheduleDetails?.vacancies}
-                        </span>
+                        </span>}
                       </div>
                     </div>
                   </Card>
