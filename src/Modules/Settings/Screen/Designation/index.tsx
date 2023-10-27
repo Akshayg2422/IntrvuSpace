@@ -69,6 +69,7 @@ function Designation() {
 
     useEffect(() => {
         getCorporateScheduleApiHandler();
+        setLoading(true)
     }, [enterPress]);
 
 
@@ -101,7 +102,6 @@ function Designation() {
                 params,
                 onSuccess: (response) => () => {
                     console.log(response, "addSectorCorporateApiHandler");
-
                     getSectorsCorporateApiHandler();
                 },
                 onError: (error) => () => {
@@ -194,8 +194,7 @@ function Designation() {
         console.log('getCorporateScheduleApiHandler----------->', getCorporateScheduleApiHandler)
         const params = {
             position: positionSearch,
-            is_active: status.value === 'ACV' && true 
-            // is_closed: status.value === 'CSD' && true 
+            // is_active: status.value === 'ACV' && true 
             // sector_id: '',
             // department_id: '' //ena type pandromo adhae anupanum
         }
