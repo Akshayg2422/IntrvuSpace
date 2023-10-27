@@ -3,7 +3,7 @@ import { Button, DropDown, DesignationItem, Input, Modal, NoDataFound, Breadcrum
 import { useDropDown, useInput, useLoader, useModal, useNavigation } from '@Hooks';
 import { CREATE_KNOWLEDGE_GROUP_VARIANT_FAILURE, breadCrumbs, clearBreadCrumbs, createCorporateSchedules, createKnowledgeGroup, createKnowledgeGroupVariant, getDepartmentCorporate, getCorporateSchedules, getKnowledgeGroups, getSectorCorporate, getSectors, setSelectedRole, addSectorCorporate, addDepartmentCorporate, showCreateOpeningsModal, hideCreateOpeningsModal } from '@Redux';
 import { ROUTES } from '@Routes';
-import { ADD_DESIGNATION_RULES, CREATE_CORPORATE_SCHEDULE_RULES, CREATE_KNOWLEDGE_GROUP_VARIANT_RULES, getDropDownCompanyDisplayData, getValidateError, ifObjectExist, validate } from '@Utils';
+import { ADD_DESIGNATION_RULES, CREATE_CORPORATE_SCHEDULE_RULES, CREATE_KNOWLEDGE_GROUP_VARIANT_RULES, STATUS_LIST, getDropDownCompanyDisplayData, getValidateError, ifObjectExist, validate } from '@Utils';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Nav, NavItem, NavLink } from 'reactstrap';
@@ -63,6 +63,7 @@ function Designation() {
     const [vacancies, setVacancies] = useState<any>('')
     const [interviewDuration, setInterviewDuration] = useState<any>('')
     const [loading, setLoading] = useState(true);
+    const status = useDropDown({})
 
 
     // console.log("position===>", position.value)
@@ -191,8 +192,8 @@ function Designation() {
         console.log('getCorporateScheduleApiHandler----------->', getCorporateScheduleApiHandler)
         const params = {
             // position: '',
-            // is_active: true,
-            // is_closed: true,
+            // is_active: status.value,
+            // is_closed: status.value,
             // sector_id: '',
             // department_id: '' //ena type pandromo adhae anupanum
         }
@@ -221,6 +222,8 @@ function Designation() {
         setChangeColorButton(updatedButtons);
     };
 
+    console.log('status.onChangestatus.onChange----------------',status.value)
+
     return (
         <>
             <TopNavbarCorporateFlow />
@@ -238,13 +241,14 @@ function Designation() {
 
                                 />
                             </div>
-                            <div className='col'>
-                                <Input
+                            <div className="col-lg-3 col-md-3 col-sm-12 ">
+                                <DropDown
+                                    className="form-control-md rounded-sm"
                                     heading={'Status'}
-                                    type={'text'}
-                                    placeHolder={"All"}
-                                    value={''}
-                                    onChange={''} />
+                                    data={STATUS_LIST}
+                                    selected={status.value}
+                                    onChange={status.onChange}
+                                />
                             </div>
                             <div className='col'>
                                 <ReactAutoComplete
