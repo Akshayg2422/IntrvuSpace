@@ -49,6 +49,7 @@ const initialState: DashboardProp = {
   interviewScheduleDetails: undefined,
   retrieveEmail: undefined,
   createOpening: false,
+  candidatesList: undefined
 };
 
 const DashboardReducer = (state = initialState, action: any) => {
@@ -605,6 +606,18 @@ const DashboardReducer = (state = initialState, action: any) => {
       state = { ...state };
       break;
     case ActionTypes.POST_MANUAL_APPROVALS_ON_CANDIDATE_FAILURE:
+      state = { ...state };
+      break;
+
+    // getCandidatesCorporate
+
+    case ActionTypes.FETCH_CANDIDATES_CORPORATE:
+      state = { ...state };
+      break;
+    case ActionTypes.FETCH_CANDIDATES_CORPORATE_SUCCESS:
+      state = { ...state, candidatesList: action.payload };
+      break;
+    case ActionTypes.FETCH_CANDIDATES_CORPORATE_FAILURE:
       state = { ...state };
       break;
 

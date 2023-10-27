@@ -179,3 +179,8 @@ export const URL_DELETE_JD = ASSISTANT + 'deleteJd'
 // bulkUploadCandidatesCP
 
 export const URL_BULK_UPLOAD_CANDIDATE_CP = ASSISTANT + 'bulkUploadCandidatesCP'
+
+// getCandidatesCorporate
+
+export const FETCH_CANDIDATES_CORPORATE = ASSISTANT + 'getCandidatesCorporate'
+
