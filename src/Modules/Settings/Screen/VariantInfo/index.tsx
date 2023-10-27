@@ -85,15 +85,17 @@ function VariantInfo() {
   const bulkUploadModal = useModal(false);
   const [candidateBulkUploadData, setCandidateBulkUploadData] = useState("");
   const [searchCandidate, setSearchCandidate] = useState("");
-
-  //   useEffect(() => {
-  //     getCorporateScheduleDetailsHandler();
-  //   }, []);
+  const [isCandidatesExist, setIsCandidatesExist] = useState<boolean>(false);
 
   useEffect(() => {
     getCorporateScheduleDetailsHandler();
-  }, [enterPress]);
+  }, []);
 
+  useEffect(() => {
+    if (isCandidatesExist) {
+      getCorporateScheduleDetailsHandler();
+    }
+  }, [enterPress]);
 
   const Refresh = () => {
     const refresh = () => window.location.reload();
@@ -187,7 +189,7 @@ function VariantInfo() {
           "status Note": <div className="">{el?.status}</div>,
           //   "": <div className={"text-right"}>{handleNextStep(el)}</div>,
           " ": (
-            <div className="pt-4">
+            <div className="">
               <Button
                 text={"Report"}
                 size="md"
@@ -293,7 +295,7 @@ function VariantInfo() {
                     onClick={() => goBack()}
                     style={{ cursor: "pointer" }}
                     src={icons.back}
-                    height={10}
+                    height={15}
                   />
                 </div>
                 <div className="pl-3">
@@ -326,7 +328,7 @@ function VariantInfo() {
             </div>
           </div>
 
-          {(schedules && schedules.length === 0) && searchCandidate ? (
+          {schedules && schedules.length === 0 && !isCandidatesExist ? (
             <div className="mt-5 text-center">
               <div>
                 <span className="titleText text-secondary">
@@ -490,26 +492,28 @@ function VariantInfo() {
                   }}
                 >
                   <div>
-                    <div className="p-3">
-                      <div className="row">
+                    <div className="p-sm-3 p-0">
+                      <div className="d-flex flex-sm-row flex-column">
                         <div className="">
                           <span className="headingText text-secondary">
                             {"Candidates"}
                           </span>
                         </div>
-                        <Badge
-                          className="text-primary text-lowercase mt-1 font-weight-800 ml-4"
-                          style={{
-                            backgroundColor: "#ebe4ff",
-                            borderRadius: 40,
-                            fontSize: 16,
-                            borderWidth: 0,
-                          }}
-                          text={`${
-                            corporateScheduleDetails?.candidate_details
-                              ?.selected_candidates || 0
-                          } selected`}
-                        />
+                        <div>
+                          <Badge
+                            className="text-primary text-lowercase mt-1 font-weight-800 ml-sm-4"
+                            style={{
+                              backgroundColor: "#ebe4ff",
+                              borderRadius: 40,
+                              fontSize: 16,
+                              borderWidth: 0,
+                            }}
+                            text={`${
+                              corporateScheduleDetails?.candidate_details
+                                ?.selected_candidates || 0
+                            } selected`}
+                          />
+                        </div>
                       </div>
                       <div
                         className="px-2 row justify-content-between"
@@ -522,6 +526,12 @@ function VariantInfo() {
                               setSearchCandidate(e.target.value);
                             }}
                             value={searchCandidate}
+                            onFocus={() => {
+                              setIsCandidatesExist(true);
+                            }}
+                            onBlur={() => {
+                              setIsCandidatesExist(false);
+                            }}
                           />
                         </div>
 
@@ -830,33 +840,34 @@ function VariantInfo() {
       >
         <div className="col-xl-6">
           <Input
-            heading={"First Name"}
+            placeholder={"First Name"}
             value={firstName.value}
             onChange={firstName.onChange}
           />
           <Input
-            heading={"Last Name "}
+            placeholder={"Last Name "}
             value={lastName.value}
             onChange={lastName.onChange}
           />
           <Input
-            heading={"Mobile Number"}
+            placeholder={"Mobile Number"}
             maxLength={10}
             type={"number"}
             value={mobileNumber.value}
             onChange={mobileNumber.onChange}
           />
           <Input
-            heading={"Email"}
+            placeholder={"Email"}
             value={email.value}
             onChange={email.onChange}
           />
         </div>
-        <div className={"text-right"}>
+        <div className={"text-center pt-3"}>
           <Button
             size={"md"}
             text={"Submit"}
             onClick={generateNewCandidateHandler}
+            style={{ borderRadius: 4, paddingLeft: 70, paddingRight: 70 }}
           />
         </div>
       </Modal>

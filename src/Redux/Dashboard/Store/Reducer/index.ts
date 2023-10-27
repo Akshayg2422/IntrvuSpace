@@ -396,7 +396,7 @@ const DashboardReducer = (state = initialState, action: any) => {
       state = {
         ...state,
         corporateScheduleDetails:
-          action.payload.details.corporate_schedule_details,
+          action?.payload?.details?.corporate_schedule_details,
       };
       break;
     case ActionTypes.GET_CORPORATE_SCHEDULE_DETAILS_FAILURE:

@@ -53,7 +53,7 @@ function UploadJdCard() {
                                                 <span
                                                     className="col-11 text-secondary"
                                                 >
-                                                    <p style={{ lineHeight: '16px' }} className={'font-weight-700'}>{item.description}<small className={'pl-1 font-weight-600'}>{item.description2}</small></p>
+                                                    <p style={{ lineHeight: '16px' }} className={'font-weight-700'}>{item.description}<small style={{fontSize:'15px'}}  className={'pl-1 font-weight-500'}>{item.description2}</small></p>
                                                 </span>
                                             </div>
                                         </>
@@ -74,7 +74,7 @@ function UploadJdCard() {
                     <div className={'pt-md-4 pt-sm-0 pt-4 col-lg-5 col-sm-12 ml-md-6'}>
                         <div>
                             <img
-                                src={image.AccessReportsAndInsights}
+                                src={image.InsightsAndReports}
                                 width={"100%"}
                                 height={"100%"}
                             />

@@ -1,9 +1,8 @@
-
 import { Button, DropDown, DesignationItem, Input, Modal, NoDataFound, Breadcrumbs, showToast, TextArea, ReactAutoComplete, Heading, InputHeading, TopNavbarCorporateFlow, Spinner } from '@Components';
-import { useDropDown, useInput, useLoader, useModal, useNavigation } from '@Hooks';
+import { useDropDown, useInput, useKeyPress, useLoader, useModal, useNavigation } from '@Hooks';
 import { CREATE_KNOWLEDGE_GROUP_VARIANT_FAILURE, breadCrumbs, clearBreadCrumbs, createCorporateSchedules, createKnowledgeGroup, createKnowledgeGroupVariant, getDepartmentCorporate, getCorporateSchedules, getKnowledgeGroups, getSectorCorporate, getSectors, setSelectedRole, addSectorCorporate, addDepartmentCorporate, showCreateOpeningsModal, hideCreateOpeningsModal } from '@Redux';
 import { ROUTES } from '@Routes';
-import { ADD_DESIGNATION_RULES, CREATE_CORPORATE_SCHEDULE_RULES, CREATE_KNOWLEDGE_GROUP_VARIANT_RULES, getDropDownCompanyDisplayData, getValidateError, ifObjectExist, validate } from '@Utils';
+import { ADD_DESIGNATION_RULES, CREATE_CORPORATE_SCHEDULE_RULES, CREATE_KNOWLEDGE_GROUP_VARIANT_RULES, STATUS_LIST, getDropDownCompanyDisplayData, getValidateError, ifObjectExist, validate } from '@Utils';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Nav, NavItem, NavLink } from 'reactstrap';
@@ -42,14 +41,14 @@ function Designation() {
     const addDesignationModal = useModal(false);
     const addRoleModal = useModal(false);
     const title = useInput("");
-    const position = useInput('')
+    const [positionSearch, setPositionSearch] = useState("")
     const description = useInput("");
     const sector = useDropDown({});
     // const experience = useInput('')
     const [experience, setExperience] = useState("")
     const jd = useInput('');
     const portalUrl = useInput('');
-    const role1 = useInput('');
+    const position = useInput('');
     const sectorInput = useInput('');
     const loader = useLoader(false);
     const interviewDurations: any = [
@@ -63,17 +62,20 @@ function Designation() {
     const [vacancies, setVacancies] = useState<any>('')
     const [interviewDuration, setInterviewDuration] = useState<any>('')
     const [loading, setLoading] = useState(true);
+    const status = useDropDown({})
+    const enterPress = useKeyPress("Enter");
 
 
-    // console.log("position===>", position.value)
-    // console.log(sectorsCorporate, 564554);
+    useEffect(() => {
+        getCorporateScheduleApiHandler();
+    }, [enterPress]);
+
 
     useEffect(() => {
         dispatch(clearBreadCrumbs([]))
         // getSectorsApiHandler();
         getSectorsCorporateApiHandler();
         getDepartmentCorporateApiHandler();
-        getCorporateScheduleApiHandler()
     }, [])
 
     const getSectorsCorporateApiHandler = () => {
@@ -144,7 +146,7 @@ function Designation() {
         const params = {
             sector_id: selectSector.id,
             department_id: selectDepartment.id,
-            role: role1.value,
+            role: position.value,
             experience: experience,
             jd: jd.value,
             vacancies: vacancies,
@@ -182,7 +184,7 @@ function Designation() {
         position.set("")
         setExperience("")
         jd.set("")
-        role1.set('')
+        position.set('')
         setVacancies('')
         setInterviewDuration('')
     }
@@ -190,9 +192,8 @@ function Designation() {
     const getCorporateScheduleApiHandler = () => {
         console.log('getCorporateScheduleApiHandler----------->', getCorporateScheduleApiHandler)
         const params = {
-            // position: '',
-            // is_active: true,
-            // is_closed: true,
+            position: positionSearch,
+            // is_active: status.value === 'ACV' && true 
             // sector_id: '',
             // department_id: '' //ena type pandromo adhae anupanum
         }
@@ -221,6 +222,8 @@ function Designation() {
         setChangeColorButton(updatedButtons);
     };
 
+    console.log('status.onChangestatus.onChange----------------', status.value)
+
     return (
         <>
             <TopNavbarCorporateFlow />
@@ -233,18 +236,21 @@ function Designation() {
                                     heading={'Position'}
                                     type={'text'}
                                     placeHolder={"HR Executive, QA Manager..."}
-                                    value={role1.value}
-                                    onChange={role1.onChange}
-
+                                    value={positionSearch}
+                                    onChange={(e: any) => {
+                                        setPositionSearch(e.target.value)
+                                    }}
                                 />
+
                             </div>
-                            <div className='col'>
-                                <Input
+                            <div className="col-lg-3 col-md-3 col-sm-12 ">
+                                <DropDown
+                                    className="form-control-md rounded-sm"
                                     heading={'Status'}
-                                    type={'text'}
-                                    placeHolder={"All"}
-                                    value={''}
-                                    onChange={''} />
+                                    data={STATUS_LIST}
+                                    selected={status.value}
+                                    onChange={status.onChange}
+                                />
                             </div>
                             <div className='col'>
                                 <ReactAutoComplete
@@ -330,12 +336,11 @@ function Designation() {
                         <div className='row'>
                             <div className='col-sm-5'>
                                 <Input
-
                                     heading={'Position'}
                                     type={'text'}
                                     placeHolder={"HR Executive, QA Manager..."}
-                                    value={role1.value}
-                                    onChange={role1.onChange} />
+                                    value={position.value}
+                                    onChange={position.onChange} />
                             </div>
 
                             <div className='col-sm-4'>
@@ -434,4 +439,3 @@ function Designation() {
 }
 
 export { Designation };
-
