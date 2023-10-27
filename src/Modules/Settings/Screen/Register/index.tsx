@@ -153,7 +153,7 @@ function Register() {
                           borderBottomRightRadius: 0,
                           borderRight: 0,
                           borderRadius: '4px 0 0 4px',
-                          borderColor: toggleInput === 3 ? "#673de6" : "black",
+                          borderColor: toggleInput === 3 ? "#6747c7" : "#dee0e3",
                         }}
                         type={showPassword ? "text" : "password"}
                         className="form-control"
@@ -176,7 +176,7 @@ function Register() {
                           borderBottomLeftRadius: 0,
                           borderLeft: 0,
                           borderRadius: '0 4px 4px 0',
-                          borderColor: toggleInput === 3 ? "#673de6" : "black",
+                          borderColor: toggleInput === 3 ? "#6747c7" : "#dee0e3",
                         }}
                         onClick={() => {
                           setShowPassword(!showPassword);
@@ -210,7 +210,7 @@ function Register() {
                           borderBottomRightRadius: 0,
                           borderRight: 0,
                           borderRadius: '4px 0 0 4px',
-                          borderColor: toggleInput === 4 ? "#673de6" : "black",
+                          borderColor: toggleInput === 4 ? "#6747c7" : "#dee0e3",
                         }}
                         type={showConfirmPassword ? "text" : "password"}
                         className="form-control"
@@ -233,7 +233,7 @@ function Register() {
                           borderBottomLeftRadius: 0,
                           borderLeft: 0,
                           borderRadius: '0 4px 4px 0',
-                          borderColor: toggleInput === 4 ? "#673de6" : "black",
+                          borderColor: toggleInput === 4 ? "#6747c7" : "#dee0e3",
                         }}
                         onClick={() => {
                           setShowConfirmPassword(!showConfirmPassword);

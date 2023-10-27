@@ -534,8 +534,8 @@ export const interviewDurations = [
 ];
 
 export const STATUS_LIST = [
-  { id: 'ALL', text: 'All', value: '' },
-  { id: 'ACV', text: 'Active', value: 'true' },
-  { id: 'CSD', text: 'Closed', value: 'true' },
+  { id: 'ALL', text: 'All' },
+  { id: 'ACV', text: 'Active' },
+  { id: 'CSD', text: 'Closed' },
 ]
 

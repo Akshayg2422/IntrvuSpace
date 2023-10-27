@@ -51,7 +51,9 @@ const initialState: DashboardProp = {
   createOpening: false,
   corporateScheduleNumOfPages: undefined,
   corporateScheduleCurrentPages: 1,
-  candidatesList: undefined
+  candidatesList: undefined,
+  candidatesListNumOfPages: undefined,
+  candidatesListCurrentPages: 1,
 };
 
 const DashboardReducer = (state = initialState, action: any) => {
@@ -628,13 +630,26 @@ const DashboardReducer = (state = initialState, action: any) => {
     // getCandidatesCorporate
 
     case ActionTypes.FETCH_CANDIDATES_CORPORATE:
-      state = { ...state };
+      state = {
+        ...state,
+        candidatesList: undefined,
+        candidatesListNumOfPages: 0,
+        candidatesListCurrentPages: 1,
+      };
       break;
     case ActionTypes.FETCH_CANDIDATES_CORPORATE_SUCCESS:
-      state = { ...state, candidatesList: action.payload };
+      state = {
+        ...state,
+        candidatesList: action.payload,
+        candidatesListNumOfPages: action.payload?.corporate_candidate_details.num_pages,
+        candidatesListCurrentPages:
+          action.payload?.details.corporate_candidate_details.next_page === -1
+            ? action.payload?.details.corporate_candidate_details.num_pages
+            : action.payload?.details.corporate_candidate_details.next_page - 1
+      };
       break;
     case ActionTypes.FETCH_CANDIDATES_CORPORATE_FAILURE:
-      state = { ...state };
+      state = { ...state, candidatesList: undefined };
       break;
 
     default:
