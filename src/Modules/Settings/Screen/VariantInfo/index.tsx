@@ -87,16 +87,14 @@ function VariantInfo() {
   const [searchCandidate, setSearchCandidate] = useState("");
   const [isCandidatesExist, setIsCandidatesExist] = useState<boolean>(false);
 
-  //   useEffect(() => {
-  //     if (corporateScheduleDetails?.schedules.length > 0) {
-  //       setIsCandidatesExist(true);
-  //     }
-  //   }, []);
-
-  console.log("isCandi===>", isCandidatesExist);
-
   useEffect(() => {
     getCorporateScheduleDetailsHandler();
+  }, []);
+
+  useEffect(() => {
+    if (isCandidatesExist) {
+      getCorporateScheduleDetailsHandler();
+    }
   }, [enterPress]);
 
   const Refresh = () => {
@@ -495,7 +493,6 @@ function VariantInfo() {
                 >
                   <div>
                     <div className="p-sm-3 p-0">
-
                       <div className="d-flex flex-sm-row flex-column">
                         <div className="">
                           <span className="headingText text-secondary">
@@ -517,7 +514,6 @@ function VariantInfo() {
                             } selected`}
                           />
                         </div>
-
                       </div>
                       <div
                         className="px-2 row justify-content-between"
