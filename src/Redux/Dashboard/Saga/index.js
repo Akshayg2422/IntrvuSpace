@@ -823,6 +823,25 @@ function* postManualApprovalOnCandidateSaga(action) {
   }
 }
 
+// fetchCandidatesCorporateSaga
+
+function* fetchCandidatesCorporateSaga(action) {
+  try {
+    const response = yield call(Api.fetchCandidatesCorporateApi, action.payload.params);
+    if (response.success) {
+      console.log(JSON.stringify(response));
+      yield put(Action.fetchCandidatesCorporateSuccess(response?.details));
+      yield call(action.payload.onSuccess(response?.details));
+    } else {
+      yield put(Action.fetchCandidatesCorporateFailure(response.error_message));
+      yield call(action.payload.onError(response));
+    }
+  } catch (error) {
+    yield put(Action.fetchCandidatesCorporateFailure(error));
+    yield call(action.payload.onError(error));
+  }
+}
+
 
 function* DashboardSaga() {
   yield takeLatest(Action.GET_START_CHAT, getChatSaga);
@@ -869,6 +888,8 @@ function* DashboardSaga() {
   yield takeLatest(Action.DELETE_JD, deleteJdSaga);
   yield takeLatest(Action.BULK_UPLOAD_CANDIDATES_CP, bulkUploadCandidatesCpSaga);
   yield takeLatest(Action.POST_MANUAL_APPROVALS_ON_CANDIDATE, postManualApprovalOnCandidateSaga);
+  yield takeLatest(Action.FETCH_CANDIDATES_CORPORATE, fetchCandidatesCorporateSaga);
+
 
 }
 export default DashboardSaga;

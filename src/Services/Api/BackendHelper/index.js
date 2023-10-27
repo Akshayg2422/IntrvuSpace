@@ -182,4 +182,8 @@ export const bulkUploadCandidatesCpApi = payload => post(URL.URL_BULK_UPLOAD_CAN
 
 export const postManualApprovalOnCandidateApi = payload => post(URL.POST_MANUAL_APPROVALS_ON_CANDIDATE, payload, {});
 
+// getCandidatesCorporate
+export const fetchCandidatesCorporateApi = payload => post(URL.FETCH_CANDIDATES_CORPORATE, payload, {});
+
+
 

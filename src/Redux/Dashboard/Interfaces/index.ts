@@ -39,4 +39,5 @@ export interface DashboardProp {
   interviewScheduleDetails: any,
   retrieveEmail: any,
   createOpening?:boolean;
+  candidatesList?: boolean;
 }
