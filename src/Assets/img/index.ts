@@ -60,5 +60,7 @@ export const image = {
     ScheduleAndNotification:require('./theme/scheduleAndNotification.png'),
     CandidatesAttendInterview:require('./theme/candidatesAttendInterview.png'),
     CreateJdAddCandidates:require('./theme/createJdAddCandidates.png'),
-    AutoApproval:require('./theme/autoApproval.png')
+    AutoApproval:require('./theme/autoApproval.png'),
+    InsightsAndReports:require('./theme/InsightsAndReports.png'),
+    StreamlinedInterviewAndInsights:require('./theme/StreamlinedInterviewAndInsights.png')
 }
