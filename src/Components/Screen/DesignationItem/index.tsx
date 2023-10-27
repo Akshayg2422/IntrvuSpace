@@ -148,17 +148,18 @@ function DesignationItem({ item, onAdd, onEdit, onView, onClick }: DesignationIt
                         {item ? (
                             <div
                                 key={item.id}
-                                className="mx-1"
+                                className="mx-0"
                             >
                                 <div className='d-flex align-items-center mb-3 justify-content-between'>
                                     <div>
 
-                                        <div className='d-flex align-items-center'>
-                                            <h1 className='col p-0 m-0'
-                                            >{capitalizeFirstLetter(item.job_description.position)}</h1>
+                                        <div className='d-flex flex-sm-row flex-column align-items-sm-center'>
+                                            <span className='col p-0 m-0 font-weight-800' style={{fontSize: 26}}
+                                            >{capitalizeFirstLetter(item.job_description.position)}</span>
                                             {/* <div className={'ml-3 px-3'} style={{backgroundColor:'#ebe4ff', borderRadius:"50px", height:"30px"}}> <h4 className=' text-primary font-weight-900 pt-1 px-1'>{item.candidate_details.selected_candidates} Selected</h4></div> */}
+                                            <div className='mt-sm-1 pl-sm-3 pl-sm-1'>
                                             <Badge
-                                                className="text-primary text-lowercase mt-1 ml-3"
+                                                className="text-primary text-lowercase"
                                                 style={{
                                                     backgroundColor: "#ebe4ff",
                                                     borderRadius: 30,
@@ -167,14 +168,15 @@ function DesignationItem({ item, onAdd, onEdit, onView, onClick }: DesignationIt
                                                 }}
                                                 text={`${item.candidate_details.selected_candidates} Selected`}
                                             />
+                                            </div>
                                         </div>
                                         <h5 className="m-0 font-weight-500">{item.job_description.experience}</h5>
                                     </div>
-                                    <div>
+                                    <div className='ml-sm-0'>
                                         <Button style={{ fontSize: "15px", borderColor:"#d8dade",borderRadius:4 }}
                                             outline
-                                            size='md'
-                                            className={'px-md-5'}
+                                            size='lg'
+                                            className={'px-md-5 m-0'}
                                             text={'View Details'}
                                             onClick={(e) => {
                                                 if (onView) {
@@ -245,15 +247,15 @@ function DesignationItem({ item, onAdd, onEdit, onView, onClick }: DesignationIt
                                 </div>
                                 <div className="text-default">
 
-                                    <div className="d-flex pt-2 h5" style={{ marginTop: -10 }}>
+                                    <div className=" d-flex flex-wrap pt-2 h5" style={{ marginTop: -10 }}>
                                         <div className="mb-0 p-0 mr-4" >
                                             <b>{item.vacancies}</b><span className='pl-1 font-weight-500'>Vacancies</span>
                                         </div>
 
-                                        <div className=" mb-0 p-0 mr-4">
+                                        <div className="mb-0 p-0 mr-4">
                                             <b>{item.candidate_details.total_candidates}</b><span className='pl-1 font-weight-500'>Candidates added</span>
                                         </div>
-                                        <div className="mb-0 p-0">
+                                        <div className=" mb-0 p-0">
                                             <b>{item.interview_duration} min</b><span className='pl-1 font-weight-500'>Duration</span>
                                         </div>
                                     </div>

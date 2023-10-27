@@ -373,12 +373,12 @@ function Designation() {
                                 className={"float-end p-4"}
                                 onChange={jd.onChange} />
                         </div>
-                        <div className='mb-4'>
+                        <div className='mb-sm-4'>
                             <InputHeading heading={'Duration'} />
-                            <div className='d-sm-flex justify-content-between'>
+                            <div className='d-flex flex-wrap justify-content-between'>
                                 {
                                     changeColorButton.map((item, index) => {
-                                        return <div className=''>
+                                        return <div className='mb-4 mb-sm-0'>
                                             <Button text={item.subText} className={`${item.isActive ? "btn-outline-primary" : "btn-outline-default"} rounded-sm px-sm-4`} style={{ width: "140px" }} onClick={() => {
                                                 console.log(item.value);
                                                 setInterviewDuration(item.value)
