@@ -137,7 +137,7 @@ function TopNavbarCorporateFlow() {
                                 <NavLink to="/schedule" tag={Link}>
                                     <Button
                                         size='md'
-                                        
+
                                         className='btn btn-primary rounded-sm mr--3'
                                         style={{
                                             borderColor: "#d8dade",
@@ -165,17 +165,20 @@ function TopNavbarCorporateFlow() {
                                             </DropdownToggle>
                                             <DropdownMenu right >
                                                 {HEADER_MENU.map((item) => {
-                                                    return (
-                                                        <DropdownItem
-                                                            onClick={(e) => {
-                                                                e.preventDefault()
-                                                                dropdownHandler(item);
-                                                            }}
-                                                        >
-                                                            <i className={item.icon}></i>
-                                                            <span>{item.name}</span>
-                                                        </DropdownItem>
-                                                    );
+                                                    if (loginDetails?.is_admin || item.value === 'LG') {
+                                                        return (
+                                                            <DropdownItem
+                                                                onClick={(e) => {
+                                                                    e.preventDefault()
+                                                                    dropdownHandler(item);
+                                                                }}
+                                                            >
+                                                                <i className={item.icon}></i>
+                                                                <span>{item.name}</span>
+                                                            </DropdownItem>
+                                                        )
+                                                    }
+                                                    return null;
                                                 })}
                                             </DropdownMenu>
                                         </UncontrolledDropdown>
@@ -183,6 +186,26 @@ function TopNavbarCorporateFlow() {
                                 </div>
                             </NavItem>
                             <div className="d-xl-none d-lg-none">
+                                {HEADER_MENU.map((item) => {
+                                    if (loginDetails?.is_admin || item.value === 'LG') {
+                                        return (
+                                            <NavItem key={item.id}>
+                                                <NavLink
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        dropdownHandler(item);
+                                                    }}
+                                                >
+                                                    <span className={`nav-link-inner--text text-black`}>{item.name}</span>
+                                                </NavLink>
+                                            </NavItem>
+                                        );
+                                    }
+                                    return null;
+                                })}
+                            </div>
+
+                            {/* <div className="d-xl-none d-lg-none">
                                 {HEADER_MENU.map((item) => {
                                     return (
                                         <NavItem>
@@ -198,7 +221,7 @@ function TopNavbarCorporateFlow() {
                                         </NavItem>
                                     );
                                 })}
-                            </div>
+                            </div> */}
                         </Nav>
                     </UncontrolledCollapse>
                 </div>
