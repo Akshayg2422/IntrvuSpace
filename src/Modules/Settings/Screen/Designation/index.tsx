@@ -68,6 +68,7 @@ function Designation() {
 
     useEffect(() => {
         getCorporateScheduleApiHandler();
+        setLoading(true)
     }, [enterPress]);
 
 
@@ -100,7 +101,6 @@ function Designation() {
                 params,
                 onSuccess: (response) => () => {
                     console.log(response, "addSectorCorporateApiHandler");
-
                     getSectorsCorporateApiHandler();
                 },
                 onError: (error) => () => {
