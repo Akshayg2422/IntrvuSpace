@@ -52,7 +52,7 @@ function PreparingYourInterview() {
                     ))}
                 </div>
             </div>
-            {loginDetails?.isLoggedIn && (
+            {currentStep === steps.length - 1 && loginDetails?.isLoggedIn && (
                 <div className="d-flex justify-content-center pr-sm-0 pr-5">
                     <Button className={'px-5 border border-primary rounded-sm'} text={'Start Interview'} onClick={() => { }} />
                 </div>

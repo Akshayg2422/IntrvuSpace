@@ -124,14 +124,16 @@ function CreateNewPassword() {
                             <div className="input-group mb-3">
                                 <input
                                     style={{
+                                        borderTopRightRadius: 0,
+                                        borderBottomRightRadius: 0,
                                         borderRight: 0,
                                         borderRadius: '4px 0 0 4px',
-                                        borderColor: toggleNewPassword ? '#673de6' : '#707070',
+                                        borderColor: toggleNewPassword ? "#6747c7" : "#dee0e3",
                                     }}
                                     value={newPassword.value}
-                                    type={showNewPassword ? 'text' : 'password'}
-                                    className="form-control rounded-sm"
-                                    placeholder='Enter your password'
+                                    type={showNewPassword ? "text" : "password"}
+                                    className="form-control"
+                                    placeholder="Enter your password'"
                                     aria-label="Recipient's username"
                                     aria-describedby="basic-addon2"
                                     onFocus={() => {
@@ -142,29 +144,37 @@ function CreateNewPassword() {
                                     }}
                                     onChange={newPassword.onChange}
                                 />
-                                <span className="input-group-text" id="basic-addon2"
+                                <span
+                                    className="input-group-text"
+                                    id="basic-addon2"
                                     style={{
                                         borderTopLeftRadius: 0,
                                         borderBottomLeftRadius: 0,
                                         borderLeft: 0,
                                         borderRadius: '0 4px 4px 0',
-                                        borderColor: toggleNewPassword ? '#673de6' : '#707070',
+                                        borderColor: toggleNewPassword ? "#6747c7" : "#dee0e3",
                                     }}
                                     onClick={() => {
-                                        setShowNewPassword(!showNewPassword)
+                                        setShowNewPassword(!showNewPassword);
                                     }}
                                 >
-                                    {showNewPassword ? <i className="bi bi-eye-fill mt--1"
-                                        style={{
-                                            fontSize: '20px',
-                                            marginBottom: '-5px'
-                                        }}
-                                    ></i> : <i className="bi bi-eye-slash-fill mt--1 pb-0"
-                                        style={{
-                                            fontSize: '20px',
-                                            marginBottom: '-5px'
-                                        }}
-                                    ></i>}
+                                    {showNewPassword ? (
+                                        <i
+                                            className="bi bi-eye-fill mt--1 text-default"
+                                            style={{
+                                                fontSize: "20px",
+                                                marginBottom: "-5px",
+                                            }}
+                                        ></i>
+                                    ) : (
+                                        <i
+                                            className="bi bi-eye-slash-fill mt--1 pb-0 text-default"
+                                            style={{
+                                                fontSize: "20px",
+                                                marginBottom: "-5px",
+                                            }}
+                                        ></i>
+                                    )}
                                 </span>
                             </div>
                         </div>
@@ -174,14 +184,16 @@ function CreateNewPassword() {
                             <div className="input-group mb-3">
                                 <input
                                     style={{
+                                        borderTopRightRadius: 0,
+                                        borderBottomRightRadius: 0,
                                         borderRight: 0,
                                         borderRadius: '4px 0 0 4px',
-                                        borderColor: toggleConfirmPassword ? '#673de6' : '#707070',
+                                        borderColor: toggleConfirmPassword ? "#6747c7" : "#dee0e3",
                                     }}
                                     value={confirmPassword.value}
-                                    type={showConfirmPassword ? 'text' : 'password'}
-                                    className="form-control rounded-sm"
-                                    placeholder='Enter your password'
+                                    type={showConfirmPassword ? "text" : "password"}
+                                    className="form-control"
+                                    placeholder="Confirm Password"
                                     aria-label="Recipient's username"
                                     aria-describedby="basic-addon2"
                                     onFocus={() => {
@@ -192,36 +204,44 @@ function CreateNewPassword() {
                                     }}
                                     onChange={confirmPassword.onChange}
                                 />
-                                <span className="input-group-text" id="basic-addon2"
+                                <span
+                                    className="input-group-text"
+                                    id="basic-addon2"
                                     style={{
                                         borderTopLeftRadius: 0,
                                         borderBottomLeftRadius: 0,
                                         borderLeft: 0,
                                         borderRadius: '0 4px 4px 0',
-                                        borderColor: toggleConfirmPassword ? '#673de6' : '#707070',
+                                        borderColor: toggleConfirmPassword ? "#6747c7" : "#dee0e3",
                                     }}
                                     onClick={() => {
-                                        setShowConfirmPassword(!showConfirmPassword)
+                                        setShowConfirmPassword(!showConfirmPassword);
                                     }}
                                 >
-                                    {showConfirmPassword ? <i className="bi bi-eye-fill mt--1"
-                                        style={{
-                                            fontSize: '20px',
-                                            marginBottom: '-5px'
-                                        }}
-                                    ></i> : <i className="bi bi-eye-slash-fill mt--1 pb-0"
-                                        style={{
-                                            fontSize: '20px',
-                                            marginBottom: '-5px'
-                                        }}
-                                    ></i>}
+                                    {showConfirmPassword ? (
+                                        <i
+                                            className="bi bi-eye-fill mt--1 text-default"
+                                            style={{
+                                                fontSize: "20px",
+                                                marginBottom: "-5px",
+                                            }}
+                                        ></i>
+                                    ) : (
+                                        <i
+                                            className="bi bi-eye-slash-fill mt--1 pb-0 text-default"
+                                            style={{
+                                                fontSize: "20px",
+                                                marginBottom: "-5px",
+                                            }}
+                                        ></i>
+                                    )}
                                 </span>
                             </div>
                         </div>
 
                         <div className="pb-3 pt-2 ">
                             <Button
-                                className={'text-white font-weight-normal text-lg py-2 bg-primary'}
+                                className={'text-white font-weight-normal text-lg py-2 bg-primary rounded-sm'}
                                 loading={loginLoader.loader}
                                 block
                                 size="lg"

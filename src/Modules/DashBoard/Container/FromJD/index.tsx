@@ -568,7 +568,7 @@ function FromJD() {
                                     id="experience"
                                     value={experience}
                                     onChange={(e) => setExperience(e.target.value)}
-                                    className={`form-control ${experience.length === 0 ? 'text-primary' : 'text-black'} rounded-sm`}
+                                    className={`form-control ${experience.length === 0 ? 'text-gray' : 'text-black'} rounded-sm`}
                                 >
                                     {Array.from({ length: 31 }, (_, index) => (
                                         <option key={index} value={index.toString()}>
@@ -595,13 +595,13 @@ function FromJD() {
                             }}
                         />
 
-                        <div className={'col m-0 p-0 mt-1 mb-3'}>
-                            <InputHeading Class={'mb-0'} heading={'Interview Duration'} />
-                            <div className='d-flex justify-content-between'>
+                        <div className={'mb-sm-4'}>
+                            <InputHeading heading={'Interview Duration'} />
+                            <div className='d-flex flex-wrap justify-content-between'>
                                     {
                                         changeColorButton.map((item, index) => {
-                                            return <div className=''>
-                                                <Button text={item.subText} className={`${item.isActive ? "btn-outline-primary" : "btn-outline-default"} rounded-sm px-5`} onClick={() => {
+                                            return <div className='mb-4 mb-sm-0'>
+                                                <Button text={item.subText} className={`${item.isActive ? "btn-outline-primary" : "btn-outline-light-gray text-default"} rounded-sm px-sm-4`} style={{ width: "140px" }} onClick={() => {
                                                     setSelectedDuration(item.value)
                                                     
                                                     handleItemClick(index)}} />
