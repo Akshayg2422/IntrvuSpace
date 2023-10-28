@@ -198,7 +198,6 @@ function VariantInfo() {
       default:
         return "";
     }
-
   };
 
   const normalizedTableData = (data: any) => {
@@ -332,6 +331,7 @@ function VariantInfo() {
         onSuccess: (response: any) => () => {
           showToast(response.message, "success");
           getCandidatesCorporate();
+          getCorporateScheduleDetailsHandler();
         },
         onError: (error: any) => () => {
           showToast(error.error_message, "error");
