@@ -844,6 +844,25 @@ function* fetchCandidatesCorporateSaga(action) {
 }
 
 
+
+/**
+ * delete JD
+ */
+
+function* syncVideoSaga(action) {
+  try {
+    const response = yield call(Api.syncVideoApi, action.payload.params);
+    if (response.success) {
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield call(action.payload.onError(response));
+    }
+  } catch (error) {
+    yield call(action.payload.onError(error));
+  }
+}
+
+
 function* DashboardSaga() {
   yield takeLatest(Action.GET_START_CHAT, getChatSaga);
   yield takeLatest(Action.CREATE_KNOWLEDGE_GROUP_VARIANT, createKnowledgeGroupVariantSaga);
@@ -890,6 +909,8 @@ function* DashboardSaga() {
   yield takeLatest(Action.BULK_UPLOAD_CANDIDATES_CP, bulkUploadCandidatesCpSaga);
   yield takeLatest(Action.POST_MANUAL_APPROVALS_ON_CANDIDATE, postManualApprovalOnCandidateSaga);
   yield takeLatest(Action.FETCH_CANDIDATES_CORPORATE, fetchCandidatesCorporateSaga);
+  yield takeLatest(Action.SYNC_VIDEO, syncVideoSaga);
+
 
 
 }

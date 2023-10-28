@@ -39,7 +39,6 @@ export * from './ContentRenderer'
 export * from './CallHeaderMobile'
 export * from './Clipboard'
 export * from './AdminSchedules'
-
 export * from './WebsiteNavBar'
 export * from './WebsiteHeader'
 export * from './EffortlessInterviews'
@@ -52,6 +51,7 @@ export * from './WebsiteCandidateAttendsInterview'
 export * from './WebsiteReportsAndInsights'
 export * from './WebsiteAutoApprovalForCandidatesPerformance'
 export * from './UploadCorporateOpeningsCard'
+export * from './VideoStream'
 
 
 
