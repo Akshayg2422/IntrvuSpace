@@ -666,7 +666,7 @@ function Report() {
                           fontSize: "36px",
                         }}
                       >
-                        {`${basicReportData.skill_matrix_overal_percent} %`}
+                        {`${basicReportData?.skill_matrix_overal_percent} %`}
                       </span>
                     </div>
                     <div className="h4 mb-0 pb-0 pt-2">
@@ -677,21 +677,10 @@ function Report() {
                         {"Skill Matrix"}
                       </span>
                     </div>
-                    {/* <div className="pt-2">
-                                          
-                                            <span
-                                              className="text-default"
-                                              style={{ fontSize: 12 }}
-                                            >
-                                              Candidate's cognitive abilitiesand problem-solving skills
-                                            </span>
-                                        
-                                      
-                                    </div> */}
                   </div>
                 </div>
-                {basicReportData.report_other_analytics &&
-                  Object.keys(basicReportData.report_other_analytics.hlv_r)?.map(
+                {basicReportData && basicReportData?.report_other_analytics && basicReportData?.report_other_analytics?.hlv_r &&
+                  Object.keys(basicReportData?.report_other_analytics?.hlv_r)?.map(
                     (heading) => {
                       return (
                         <>
@@ -715,19 +704,6 @@ function Report() {
                                   {capitalizeFirstLetter(heading)}
                                 </span>
                               </div>
-                              {/* <div className="pt-2">
-                                      {PERFORMANCE_CONTENT.map((content) => {
-                                        if (content.topic === heading)
-                                          return (
-                                            <span
-                                              className="text-default"
-                                              style={{ fontSize: 12 }}
-                                            >
-                                              {content.subText}
-                                            </span>
-                                          );
-                                      })}
-                                    </div> */}
                             </div>
                           </div>
                         </>
