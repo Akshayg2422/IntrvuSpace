@@ -703,7 +703,7 @@ function VariantInfo() {
                       <div className={"row px-0 mx--4"}>
                         <div
                           className={
-                            "col-sm-12 px-0 overflow-auto scroll-hide"
+                            "col-sm-12 px-0 overflow-auto overflow-hide"
                           }
                         >
                           <CommonTable
