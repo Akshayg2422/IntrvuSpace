@@ -121,6 +121,8 @@ export const URL_GET_CORPORATE_SCHEDULE_DETAILS = ASSISTANT + 'getCorporateSched
 export const STUDENT_CODE_SUBMISSION_URL = 'submissions?base64_encoded=true&wait=true'
 export const URL_CLOSE_INTERVIEW = ASSISTANT + 'endInterviewCall'
 export const URL_CAN_START_INTERVIEW = ASSISTANT + 'canStartInterview'
+export const POST_MANUAL_APPROVALS_ON_CANDIDATE = ASSISTANT + 'manualApprovalsOnCandidate'
+
 
 
 // getSectorsCorporate
@@ -177,3 +179,16 @@ export const URL_DELETE_JD = ASSISTANT + 'deleteJd'
 // bulkUploadCandidatesCP
 
 export const URL_BULK_UPLOAD_CANDIDATE_CP = ASSISTANT + 'bulkUploadCandidatesCP'
+
+// getCandidatesCorporate
+
+export const FETCH_CANDIDATES_CORPORATE = ASSISTANT + 'getCandidatesCorporate'
+
+
+/**
+ *  video sync
+ */
+
+export const URL_SYNC_VIDEO = ASSISTANT + 'syncVideo'
+
+

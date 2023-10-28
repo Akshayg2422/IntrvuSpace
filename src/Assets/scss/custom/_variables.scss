@@ -24,7 +24,7 @@ $enable-shadows: false !default;
 $white: #fff !default;
 $gray-100: #f6f9fc !default;
 $gray-200: #e9ecef !default;
-$gray-300: #dee2e6 !default;
+$gray-300: #dee0e3 !default;
 $gray-400: #ced4da !default;
 $gray-500: #adb5bd !default;
 $gray-600: #8898aa !default; // Line footer color
@@ -32,21 +32,21 @@ $gray-700: #525f7f !default; // Line p color
 $gray-800: #32325d !default; // Line heading color
 $gray-900: #212529 !default;
 $black: #000 !default;
+$light-blue: #d3deff !default;
 
-$grays: () !default;
-$grays: map-merge(
-  (
-    "100": $gray-100,
-    "200": $gray-200,
-    "300": $gray-300,
-    "400": $gray-400,
-    "500": $gray-500,
-    "600": $gray-600,
-    "700": $gray-700,
-    "800": $gray-800,
-    "900": $gray-900,
-  ),
-  $grays
+$grays: (
+  ) !default;
+$grays: map-merge(("100": $gray-100,
+      "200": $gray-200,
+      "300": $gray-300,
+      "400": $gray-400,
+      "500": $gray-500,
+      "600": $gray-600,
+      "700": $gray-700,
+      "800": $gray-800,
+      "900": $gray-900,
+    ),
+    $grays
 );
 
 $blue: #5e72e4 !default;
@@ -60,33 +60,32 @@ $green: #2dce89 !default;
 $teal: #11cdef !default;
 $cyan: #2bffc6 !default;
 
-$colors: () !default;
-$colors: map-merge(
-  (
-    "blue": $blue,
-    "indigo": $indigo,
-    "purple": $purple,
-    "pink": $pink,
-    "red": $red,
-    "orange": $orange,
-    "yellow": $yellow,
-    "green": $green,
-    "teal": $teal,
-    "cyan": $cyan,
-    "white": $white,
-    "gray": $gray-600,
-    "light": $gray-400,
-    "lighter": $gray-200,
-    "gray-dark": $gray-800,
-  ),
-  $colors
+$colors: (
+  ) !default;
+$colors: map-merge(("blue": $blue,
+      "indigo": $indigo,
+      "purple": $purple,
+      "pink": $pink,
+      "red": $red,
+      "orange": $orange,
+      "yellow": $yellow,
+      "green": $green,
+      "teal": $teal,
+      "cyan": $cyan,
+      "white": $white,
+      "gray": $gray-600,
+      "light": $gray-400,
+      "lighter": $gray-200,
+      "gray-dark": $gray-800,
+      "light-gray":$gray-300 ),
+    $colors
 );
 
 $default: #727586 !default;
 $primary: #673de6 !default;
 // $secondary: #f6e7e0 !default;
 $secondary: #2f1c6a !default;
-
+$light-gray: #dee0e3 !default;
 $success: $green !default;
 $info: $teal !default;
 $warning: $orange !default;
@@ -116,112 +115,106 @@ $dribbble: #ea4c89 !default;
 $github: #222222 !default;
 $vimeo: #04a0f0 !default;
 
-$theme-colors: () !default;
-$theme-colors: map-merge(
-  (
-    "default": $default,
-    "primary": $primary,
-    "secondary": $secondary,
-    "success": $success,
-    "info": $info,
-    "warning": $warning,
-    "danger": $danger,
-    "white": $white,
-    "neutral": $white,
-    "dark": $dark,
-    "black": $black,
-    "darker": $darker,
-  ),
-  $theme-colors
+$theme-colors: (
+  ) !default;
+$theme-colors: map-merge(("default": $default,
+      "primary": $primary,
+      "secondary": $secondary,
+      "success": $success,
+      "info": $info,
+      "warning": $warning,
+      "danger": $danger,
+      "white": $white,
+      "neutral": $white,
+      "dark": $dark,
+      "black": $black,
+      "darker": $darker,
+      "light-gray":$light-gray,
+    ),
+    $theme-colors
 );
 
-$brand-colors: () !default;
-$brand-colors: map-merge(
-  (
-    "facebook": $facebook,
-    "twitter": $twitter,
-    "google-plus": $google-plus,
-    "instagram": $instagram,
-    "pinterest": $pinterest,
-    "youtube": $youtube,
-    "slack": $slack,
-    "dribbble": $dribbble,
-    "github": $github,
-    "vimeo": $vimeo,
-  ),
-  $brand-colors
+$brand-colors: (
+  ) !default;
+$brand-colors: map-merge(("facebook": $facebook,
+      "twitter": $twitter,
+      "google-plus": $google-plus,
+      "instagram": $instagram,
+      "pinterest": $pinterest,
+      "youtube": $youtube,
+      "slack": $slack,
+      "dribbble": $dribbble,
+      "github": $github,
+      "vimeo": $vimeo,
+    ),
+    $brand-colors
 );
 
-$shape-colors: () !default;
-$shape-colors: map-merge(
-  (
-    "default": #32325d,
-    "primary": #5533ff,
-    "secondary": #24b47e,
-    "neutral": #e9ecef,
-    "blue-gray": #b2cbe1,
-  ),
-  $shape-colors
+$shape-colors: (
+  ) !default;
+$shape-colors: map-merge(("default": #32325d,
+      "primary": #5533ff,
+      "secondary": #24b47e,
+      "neutral": #e9ecef,
+      "blue-gray": #b2cbe1,
+    ),
+    $shape-colors
 );
 
-$shapes-primary-colors: () !default;
-$shapes-primary-colors: map-merge(
-  (
-    "step-1-gradient-bg": #281483,
-    "step-2-gradient-bg": #8f6ed5,
-    "step-3-gradient-bg": #d782d9,
-    "span-1-bg": #53f,
-    "span-2-bg": #4553ff,
-    "span-3-bg": #4f40ff,
-    "span-4-bg": #25ddf5,
-    "span-5-bg": #1fa2ff,
-  ),
-  $shapes-primary-colors
+$shapes-primary-colors: (
+  ) !default;
+$shapes-primary-colors: map-merge(("step-1-gradient-bg": #281483,
+      "step-2-gradient-bg": #8f6ed5,
+      "step-3-gradient-bg": #d782d9,
+      "span-1-bg": #53f,
+      "span-2-bg": #4553ff,
+      "span-3-bg": #4f40ff,
+      "span-4-bg": #25ddf5,
+      "span-5-bg": #1fa2ff,
+    ),
+    $shapes-primary-colors
 );
 
-$shapes-default-colors: () !default;
-$shapes-default-colors: map-merge(
-  (
-    "step-1-gradient-bg": #7795f8,
-    "step-2-gradient-bg": #6772e5,
-    "step-3-gradient-bg": #555abf,
-    "span-1-bg": #7795f8,
-    "span-2-bg": #7b9aff,
-    "span-3-bg": #6f8ff8,
-    "span-4-bg": #76eea7,
-    "span-5-bg": #6adaff,
-  ),
-  $shapes-default-colors
+$shapes-default-colors: (
+  ) !default;
+$shapes-default-colors: map-merge(("step-1-gradient-bg": #7795f8,
+      "step-2-gradient-bg": #6772e5,
+      "step-3-gradient-bg": #555abf,
+      "span-1-bg": #7795f8,
+      "span-2-bg": #7b9aff,
+      "span-3-bg": #6f8ff8,
+      "span-4-bg": #76eea7,
+      "span-5-bg": #6adaff,
+    ),
+    $shapes-default-colors
 );
 
-$shapes-light-colors: () !default;
-$shapes-light-colors: map-merge(
-  (
-    "step-1-gradient-bg": #b2cbe1,
-    "step-2-gradient-bg": #f6f9fc,
-    "step-3-gradient-bg": #f6f9fc,
-    "span-1-bg": #b4cce1,
-    "span-2-bg": #c5dbef,
-    "span-3-bg": #b9d5ed,
-    "span-4-bg": #74e4a2,
-    "span-5-bg": #008169,
-  ),
-  $shapes-light-colors
+$shapes-light-colors: (
+  ) !default;
+$shapes-light-colors: map-merge(("step-1-gradient-bg": #b2cbe1,
+      "step-2-gradient-bg": #f6f9fc,
+      "step-3-gradient-bg": #f6f9fc,
+      "span-1-bg": #b4cce1,
+      "span-2-bg": #c5dbef,
+      "span-3-bg": #b9d5ed,
+      "span-4-bg": #74e4a2,
+      "span-5-bg": #008169,
+    ),
+    $shapes-light-colors
 );
 
-$shapes-dark-colors: () !default;
-$shapes-dark-colors: map-merge(
-  (
-    "step-1-gradient-bg": #32325d,
-    "step-2-gradient-bg": #32325d,
-    "step-3-gradient-bg": #32325d,
-    "span-1-bg": #2e2e57,
-    "span-2-bg": #2b2b58,
-    "span-3-bg": #25254d,
-    "span-4-bg": #d782d9,
-    "span-5-bg": #008169,
-  ),
-  $shapes-dark-colors
+$shapes-dark-colors: (
+  ) !default;
+$shapes-dark-colors: map-merge(("step-1-gradient-bg": #32325d,
+      "step-2-gradient-bg": #32325d,
+      "step-3-gradient-bg": #32325d,
+      "span-1-bg": #2e2e57,
+      "span-2-bg": #2b2b58,
+      "span-3-bg": #25254d,
+      "span-4-bg": #d782d9,
+      "span-5-bg": #008169,
+    ),
+    $shapes-dark-colors
 );
 
 // Translucent color variations
@@ -250,19 +243,19 @@ $love-color: $red !default;
 
 $body-bg: #f8f9fe !default;
 $body-color: $gray-700 !default;
+$body-border: $light-gray !default;
 
 // Sections
 
-$section-colors: () !default;
-$section-colors: map-merge(
-  (
-    "primary": $body-bg,
-    "secondary": $secondary,
-    "light": $gray-400,
-    "dark": $dark,
-    "darker": $darker,
-  ),
-  $section-colors
+$section-colors: (
+  ) !default;
+$section-colors: map-merge(("primary": $body-bg,
+      "secondary": $secondary,
+      "light": $gray-400,
+      "dark": $dark,
+      "darker": $darker,
+    ),
+    $section-colors
 );
 
 // Links
@@ -288,43 +281,40 @@ $grid-breakpoints: (
 // Spacing
 
 $spacer: 1rem !default;
-$spacers: () !default;
-$spacers: map-merge(
-  (
-    -9: -($spacer * 10),
-    -8: -($spacer * 8),
-    -7: -($spacer * 6),
-    -6: -($spacer * 4.5),
-    -5: -($spacer * 3),
-    -4: -($spacer * 1.5),
-    -3: -$spacer,
-    -2: -($spacer * 0.5),
-    -1: -($spacer * 0.25),
-    0: 0,
-    1: ($spacer * 0.25),
-    2: ($spacer * 0.5),
-    3: $spacer,
-    4: ($spacer * 1.5),
-    5: ($spacer * 3),
-    6: ($spacer * 4.5),
-    7: ($spacer * 6),
-    8: ($spacer * 8),
-    9: ($spacer * 10)
-  ),
-  $spacers
+$spacers: (
+  ) !default;
+$spacers: map-merge((-9: -($spacer * 10),
+      -8: -($spacer * 8),
+      -7: -($spacer * 6),
+      -6: -($spacer * 4.5),
+      -5: -($spacer * 3),
+      -4: -($spacer * 1.5),
+      -3: -$spacer,
+      -2: -($spacer * 0.5),
+      -1: -($spacer * 0.25),
+      0: 0,
+      1: ($spacer * 0.25),
+      2: ($spacer * 0.5),
+      3: $spacer,
+      4: ($spacer * 1.5),
+      5: ($spacer * 3),
+      6: ($spacer * 4.5),
+      7: ($spacer * 6),
+      8: ($spacer * 8),
+      9: ($spacer * 10)),
+    $spacers
 );
 
 // This variable affects the `.h-*` and `.w-*` classes.
 
-$sizes: () !default;
-$sizes: map-merge(
-  (
-    25: 25%,
-    50: 50%,
-    75: 75%,
-    100: 100%,
-  ),
-  $sizes
+$sizes: (
+  ) !default;
+$sizes: map-merge((25: 25%,
+      50: 50%,
+      75: 75%,
+      100: 100%,
+    ),
+    $sizes
 );
 
 //
@@ -342,7 +332,7 @@ $border-color: $gray-200 !default;
 
 $border-radius: 0.375rem !default;
 $border-radius-xl: 0.5rem !default;
-$border-radius-lg: 0.4375rem !default;
+$border-radius-lg: 0.3rem !default;
 $border-radius-sm: 0.25rem !default;
 
 $box-shadow-sm: 0 0 0.5rem rgba($gray-600, 0.075) !default;
@@ -369,8 +359,7 @@ $transition-base-time: 0.15s;
 $transition-base: all $transition-base-time ease !default;
 $transition-fade: opacity $transition-base-time linear !default;
 $transition-collapse: height $transition-base-time * 2 ease !default;
-$transition-cubic-bezier: all $transition-base-time
-  cubic-bezier(0.68, -0.55, 0.265, 1.55) !default;
+$transition-cubic-bezier: all $transition-base-time cubic-bezier(0.68, -0.55, 0.265, 1.55) !default;
 $transition-bg: background-color $transition-base-time * 2 linear !default;
 $transition-ease-in-out: all $transition-base-time ease-in-out !default;
 
@@ -394,11 +383,21 @@ $font-family: "DM Sans", sans-serif !default;
 $font-family-base: $font-family !default;
 
 $font-size-base: 1rem !default; // Assumes the browser default, typically `16px`
-$font-size-xl: ($font-size-base * 1.5);
-$font-size-lg: ($font-size-base * 1.25);
-$font-size-sm: ($font-size-base * 0.875);
-$font-size-xs: ($font-size-base * 0.75);
-$font-size-xxs: ($font-size-base * 0.45);
+$font-size-xl: (
+  $font-size-base * 1.5
+);
+$font-size-lg: (
+  $font-size-base * 1.25
+);
+$font-size-sm: (
+  $font-size-base * 0.875
+);
+$font-size-xs: (
+  $font-size-base * 0.75
+);
+$font-size-xxs: (
+  $font-size-base * 0.45
+);
 
 $font-weight-light: 300 !default;
 $font-weight-normal: 400 !default;
@@ -416,7 +415,9 @@ $h4-font-size: $font-size-base * 0.9375 !default;
 $h5-font-size: $font-size-base * 0.8125 !default;
 $h6-font-size: $font-size-base * 0.625 !default;
 
-$headings-margin-bottom: ($spacer / 2);
+$headings-margin-bottom: (
+  $spacer / 2
+);
 $headings-font-family: inherit !default;
 $headings-font-weight: $font-weight-bold !default;
 $headings-line-height: 1.5 !default;
@@ -452,7 +453,8 @@ $paragraph-font-size: 1rem !default;
 $paragraph-font-weight: 300 !default;
 $paragraph-line-height: 1.7 !default;
 
-$lead-font-size: ($paragraph-font-size * 1.25) !default;
+$lead-font-size: (
+  $paragraph-font-size * 1.25) !default;
 $lead-font-weight: 300 !default;
 
 $small-font-size: 80% !default;
@@ -460,9 +462,11 @@ $small-font-size: 80% !default;
 $text-muted: $gray-600 !default;
 
 $blockquote-small-color: $gray-600 !default;
-$blockquote-font-size: ($font-size-base * 1.25) !default;
+$blockquote-font-size: (
+  $font-size-base * 1.25) !default;
 
-$hr-border-color: rgba($black, 0.1);
+$hr-border-color: rgba($black, 0.1
+);
 $hr-border-width: $border-width !default;
 
 $mark-padding: 0.2em !default;
@@ -852,10 +856,10 @@ $input-disabled-bg: $gray-200 !default;
 $input-muted-bg: #f7fafe !default;
 $input-focus-muted-bg: lighten($input-muted-bg, 1%) !default;
 
-$input-color: $gray-600 !default;
-$input-border-color: $gray-300 !default;
-$input-border-width: $input-btn-border-width !default;
-$input-box-shadow: 0 3px 2px rgba($gray-200, 0.05) !default;
+$input-color: $black !default;
+$input-border-color: $gray-100 !default;
+$input-border-width: 1px !default;
+$input-box-shadow: 0 1px 1px rgba($gray-100, 0.02) !default;
 
 $input-focus-bg: $white !default;
 $input-focus-border-color: $primary !default;
@@ -923,10 +927,8 @@ $custom-control-indicator-checked-color: $component-active-color !default;
 $custom-control-indicator-checked-bg: $component-active-bg !default;
 $custom-control-indicator-checked-border-color: $component-active-border-color !default;
 $custom-control-indicator-checked-box-shadow: $custom-control-indicator-box-shadow !default;
-$custom-control-indicator-checked-disabled-bg: rgba(
-  theme-color("primary"),
-  0.5
-) !default;
+$custom-control-indicator-checked-disabled-bg: rgba(theme-color("primary"),
+    0.5) !default;
 
 $custom-control-indicator-disabled-bg: $gray-200 !default;
 $custom-control-label-disabled-color: $gray-600 !default;
@@ -1217,9 +1219,7 @@ $card-spacer-x: 1.5rem !default;
 $card-border-width: $border-width !default;
 $card-border-radius: $border-radius !default;
 $card-border-color: rgba($black, 0.05) !default;
-$card-inner-border-radius: calc(
-  #{$card-border-radius} - #{$card-border-width}
-) !default;
+$card-inner-border-radius: calc(#{$card-border-radius} - #{$card-border-width}) !default;
 $card-cap-bg: $white !default;
 $card-bg: $white !default;
 $card-box-shadow: $box-shadow !default;
@@ -1246,7 +1246,7 @@ $modal-title-font-size: $h3-font-size !default;
 $modal-title-line-height: 1.1 !default;
 
 $modal-content-bg: $white !default;
-$modal-content-border-color: rgba($black, 0.2) !default;
+$modal-content-border-color: rgba($light-blue, 0.2) !default;
 $modal-content-border-width: 0 !default;
 $modal-content-border-radius: $border-radius-lg !default;
 $modal-content-box-shadow-xs: 0 15px 35px rgba(50, 50, 93, 0.2),
@@ -1296,10 +1296,8 @@ $datepicker-active-background: theme-color("primary") !default;
 $datepicker-active-box-shadow: none !default;
 
 $datepicker-range-background: theme-color("primary") !default;
-$datepicker-range-cell-focused-background: darken(
-  $datepicker-range-background,
-  5%
-);
+$datepicker-range-cell-focused-background: darken($datepicker-range-background,
+    5%);
 $datepicker-range-color: $white !default;
 $datepicker-range-highlighted-bg: $gray-200 !default;
 
@@ -1366,8 +1364,7 @@ $chart-height-sm: 230px !default;
 $chart-legend-margin-top: 2.5rem !default;
 $chart-legend-font-size: $font-size-sm !default;
 $chart-legend-color: $text-muted !default;
-$chart-legend-height: $chart-legend-margin-top + $chart-legend-font-size *
-  $line-height-base !default;
+$chart-legend-height: $chart-legend-margin-top + $chart-legend-font-size * $line-height-base !default;
 
 // Sweet alert
 
@@ -1388,8 +1385,7 @@ $tag-close-color: color-yiq(theme-color("default"));
 $tag-box-shadow: 0 1px 2px rgba(68, 68, 68, 0.25);
 
 .image-Color {
-  filter: invert(53%) sepia(58%) saturate(793%) hue-rotate(68deg)
-    brightness(112%) contrast(85%);
+  filter: invert(53%) sepia(58%) saturate(793%) hue-rotate(68deg) brightness(112%) contrast(85%);
 }
 
 .hoverColor {

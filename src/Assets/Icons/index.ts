@@ -202,8 +202,8 @@ export const icons = {
   selected: require('./Selected/icon.png'),
   rejected: require('./Rejected/icon.png'),
   link: require('./Link/icon.png'),
-  excel:require('./Excel/icon.png'),
-  navbarToggler:require('./NavbarToggler/icon.png'),
+  excel: require('./Excel/icon.png'),
+  navbarToggler: require('./NavbarToggler/icon.png'),
   coverPic: require('./CoverPic/ivCover.png'),
   effortlessInterviews: require('./EffortlessInterviews/effortless-interviews.png'),
   instagram: require('./SocialMedia/instagram.png'),
@@ -212,4 +212,8 @@ export const icons = {
   globe: require('./PackageIcons/globe.png'),
   headSet: require('./PackageIcons/headset.png'),
   check: require("./Check/icon.png"),
+  poweredBy: require('./PoweredBy/icon.png'),
+  more: require('./More/icon.png'),
+  frame: require('./Frame/icon.png'),
+  checkBlack: require('./CheckBlack/icon.png')
 };

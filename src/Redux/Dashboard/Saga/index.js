@@ -804,6 +804,64 @@ function* bulkUploadCandidatesCpSaga(action) {
   }
 }
 
+// postManualApprovalOnCandidateSaga
+
+function* postManualApprovalOnCandidateSaga(action) {
+  try {
+    const response = yield call(Api.postManualApprovalOnCandidateApi, action.payload.params);
+    if (response.success) {
+      console.log(JSON.stringify(response));
+      yield put(Action.postManualApprovalOnCandidateSuccess(response?.details));
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield put(Action.postManualApprovalOnCandidateFailure(response.error_message));
+      yield call(action.payload.onError(response));
+    }
+  } catch (error) {
+    yield put(Action.postManualApprovalOnCandidateFailure(error));
+    yield call(action.payload.onError(error));
+  }
+}
+
+// fetchCandidatesCorporateSaga
+
+function* fetchCandidatesCorporateSaga(action) {
+  try {
+    const response = yield call(Api.fetchCandidatesCorporateApi, action.payload.params);
+    console.log("responseeee candidateee===>", response)
+    if (response.success) {
+      console.log(JSON.stringify(response));
+      yield put(Action.fetchCandidatesCorporateSuccess(response));
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield put(Action.fetchCandidatesCorporateFailure(response.error_message));
+      yield call(action.payload.onError(response));
+    }
+  } catch (error) {
+    yield put(Action.fetchCandidatesCorporateFailure(error));
+    yield call(action.payload.onError(error));
+  }
+}
+
+
+
+/**
+ * delete JD
+ */
+
+function* syncVideoSaga(action) {
+  try {
+    const response = yield call(Api.syncVideoApi, action.payload.params);
+    if (response.success) {
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield call(action.payload.onError(response));
+    }
+  } catch (error) {
+    yield call(action.payload.onError(error));
+  }
+}
+
 
 function* DashboardSaga() {
   yield takeLatest(Action.GET_START_CHAT, getChatSaga);
@@ -849,5 +907,11 @@ function* DashboardSaga() {
   yield takeLatest(Action.DELETE_INTERVIEW, deleteInterviewSaga);
   yield takeLatest(Action.DELETE_JD, deleteJdSaga);
   yield takeLatest(Action.BULK_UPLOAD_CANDIDATES_CP, bulkUploadCandidatesCpSaga);
+  yield takeLatest(Action.POST_MANUAL_APPROVALS_ON_CANDIDATE, postManualApprovalOnCandidateSaga);
+  yield takeLatest(Action.FETCH_CANDIDATES_CORPORATE, fetchCandidatesCorporateSaga);
+  yield takeLatest(Action.SYNC_VIDEO, syncVideoSaga);
+
+
+
 }
 export default DashboardSaga;

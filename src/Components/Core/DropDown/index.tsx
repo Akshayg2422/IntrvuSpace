@@ -28,7 +28,7 @@ function DropDown({ id, heading, disabled, placeHolder, selected, data, onChange
         <FormGroup>
             <InputHeading heading={heading} Class={Class} id={id} />
             <Select2
-                // style={{   height: 10, width: 10, borderRadius: 5, margin: "5px", background:'green'}}
+                style={{   height: 10, width: 10, borderRadius: 5, margin: "5px", background:'green'}}
                 className={className}
                 data-minimum-results-for-search={'Infinity'}
                 data={data}

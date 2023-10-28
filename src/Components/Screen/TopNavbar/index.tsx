@@ -36,6 +36,7 @@ function TopNavbar() {
     const logoutModal = useModal(false);
     const { goTo } = useNavigation()
     const { loginDetails } = useSelector((state: any) => state.AppReducer);
+    const { jdItem } = useSelector((state: any) => state.DashboardReducer);
 
 
     console.log(JSON.stringify(loginDetails) + '=====loginDetails');
@@ -90,12 +91,9 @@ function TopNavbar() {
                 expand="lg"
                 id="navbar-main"
             >
-                <div className="container-fluid mx-sm-0 mx-2">
+                <div className="container-fluid mx-md-3 mx-sm-0 mx-2">
                     <NavbarBrand tag={Link}>
-                        <Image src={icons.logoText} width={'65%'} style={{
-                            objectFit: 'contain'
-                        }} />
-
+                        <img src={icons.logoText} alt="Logo" style={{ height: '20%', width: '20%' }} />
                     </NavbarBrand>
                     <button
                         aria-controls="navbar-collapse"
@@ -145,37 +143,48 @@ function TopNavbar() {
                         <Nav className="align-items-lg-center ml-lg-auto mr--4 justify-content-end" navbar>
                             {loginDetails?.is_super_admin && <NavItem>
                                 <NavLink to="/home" tag={Link}>
-                                    {/* <span className={`nav-link-inner--text  ${'/home' !== pathName ? "text-black h4" : 'text-primary h4'}`}>Create Interview</span> */}
-                                    <span style={{ fontSize: '15px' }} className={'text-primary font-weight-bolder'} onClick={handleCreateForOthersInterviewClick}>Create For Others</span>
+                                    <Button
+                                        className='btn btn-outline-primary rounded-sm px-0'
+                                        style={{
+                                            borderColor: "#d8dade",
+                                            fontSize: "15px",
+                                            width: '150px'
+                                        }}
+                                        text={'Create For Others'}
+                                        onClick={handleCreateForOthersInterviewClick}
+                                    />
                                 </NavLink>
                             </NavItem>
                             }
-                            <NavItem>
-                                <NavLink to="/home" tag={Link}>
-                                    {/* <span className={`nav-link-inner--text  ${'/home' !== pathName ? "text-black h4" : 'text-primary h4'}`}>Create Interview</span> */}
-                                    <span style={{ fontSize: '15px' }} className={'text-primary font-weight-bolder'} onClick={handleCreateInterviewClick}>Create Interview</span>
-                                </NavLink>
-                            </NavItem>
+                            {jdItem && jdItem.length > 0 &&
+                                <NavItem>
+                                    <NavLink to="/home" tag={Link}>
+                                        <Button
+                                            size='md'
+                                            className={'btn btn-outline-primary rounded-sm mr--3 px-0 '}
+                                            style={{
+                                                borderColor: "#d8dade",
+                                                fontSize: "15px",
+                                                width: '150px'
+                                            }}
+                                            text={'Create Interview'}
+                                            onClick={handleCreateInterviewClick}
+                                        />
+                                    </NavLink>
+                                </NavItem>
+                            }
 
                             <NavItem className="d-none d-lg-block ml-lg-4">
                                 <div className='row align-items-center m-auto'>
-                                    <span className='mb-0 text-primary font-weight-bolder'>
+                                    <span className='mb-0 text-black font-weight-400'>
                                         {loginDetails?.user}
                                     </span>
                                     <Nav navbar>
                                         <UncontrolledDropdown nav>
                                             <DropdownToggle className="nav-link pr-0" color="" tag="a">
                                                 <Media className="align-items-center">
-                                                    <Image
-                                                        size={'sm'}
-                                                        variant={'avatar'}
-                                                        src={icons.logoIcon}
-                                                        style={{
-                                                            objectFit: "contain"
-                                                        }}
-                                                    />
-                                                    <Media className="ml-2 d-none d-lg-block">
-                                                        <div className='media-body text-black d-none d-lg-block dropdown-toggle'> </div>
+                                                    <Media className="d-none d-lg-block ml--2 mr-2 pointer">
+                                                        <Image height={12} width={12} src={icons.downArrowBlack} />
                                                     </Media>
                                                 </Media>
                                             </DropdownToggle>

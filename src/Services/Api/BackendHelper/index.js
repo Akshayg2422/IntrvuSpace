@@ -178,3 +178,18 @@ export const forgotPasswordApi = payload => post(URL.URL_FORGOT_PASSWORD, payloa
 
 export const bulkUploadCandidatesCpApi = payload => post(URL.URL_BULK_UPLOAD_CANDIDATE_CP, payload, {});
 
+// POST_MANUAL_APPROVALS_ON_CANDIDATE
+
+export const postManualApprovalOnCandidateApi = payload => post(URL.POST_MANUAL_APPROVALS_ON_CANDIDATE, payload, {});
+
+// getCandidatesCorporate
+export const fetchCandidatesCorporateApi = payload => post(URL.FETCH_CANDIDATES_CORPORATE, payload, {});
+
+/**
+ * video sync api
+ */
+
+
+export const syncVideoApi = payload => post(URL.URL_SYNC_VIDEO, payload, {});
+
+

@@ -1,13 +1,14 @@
 
-import { Button, DropDown, DesignationItem, Input, Modal, NoDataFound, Breadcrumbs, showToast, TextArea, ReactAutoComplete } from '@Components';
-import { useDropDown, useInput, useLoader, useModal, useNavigation } from '@Hooks';
-import { CREATE_KNOWLEDGE_GROUP_VARIANT_FAILURE, breadCrumbs, clearBreadCrumbs, createCorporateSchedules, createKnowledgeGroup, createKnowledgeGroupVariant, getDepartmentCorporate, getCorporateSchedules, getKnowledgeGroups, getSectorCorporate, getSectors, setSelectedRole, addSectorCorporate, addDepartmentCorporate } from '@Redux';
+import { Button, DropDown, DesignationItem, Input, Modal, NoDataFound, Breadcrumbs, showToast, TextArea, ReactAutoComplete, Heading, InputHeading, TopNavbarCorporateFlow, Spinner, PageNation } from '@Components';
+import { useDropDown, useInput, useKeyPress, useLoader, useModal, useNavigation } from '@Hooks';
+import { CREATE_KNOWLEDGE_GROUP_VARIANT_FAILURE, breadCrumbs, clearBreadCrumbs, createCorporateSchedules, createKnowledgeGroup, createKnowledgeGroupVariant, getDepartmentCorporate, getCorporateSchedules, getKnowledgeGroups, getSectorCorporate, getSectors, setSelectedRole, addSectorCorporate, addDepartmentCorporate, showCreateOpeningsModal, hideCreateOpeningsModal, fetchCandidatesCorporateSuccess } from '@Redux';
 import { ROUTES } from '@Routes';
-import { ADD_DESIGNATION_RULES, CREATE_CORPORATE_SCHEDULE_RULES, CREATE_KNOWLEDGE_GROUP_VARIANT_RULES, getDropDownCompanyDisplayData, getValidateError, ifObjectExist, validate } from '@Utils';
+import { ADD_DESIGNATION_RULES, CREATE_CORPORATE_SCHEDULE_RULES, CREATE_KNOWLEDGE_GROUP_VARIANT_RULES, STATUS_LIST, getDropDownCompanyDisplayData, getValidateError, ifObjectExist, paginationHandler, validate } from '@Utils';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Nav, NavItem, NavLink } from 'reactstrap';
 import classnames from 'classnames'
+import { UploadCorporateOpeningsCard } from '@Modules';
+
 
 const PLACE_HOLDER = {
     "sector": "Software, Banking...",
@@ -17,9 +18,12 @@ const PLACE_HOLDER = {
 function Designation() {
 
     const { sectors } = useSelector((state: any) => state.DashboardReducer)
-    const { sectorsCorporate, departmentCorporate } = useSelector((state: any) => state.DashboardReducer)
+    const { sectorsCorporate, departmentCorporate, createOpening, corporateSchedules, corporateScheduleNumOfPages, corporateScheduleCurrentPages } = useSelector((state: any) => state.DashboardReducer)
+    console.log('action.payload?.details.corporate_jd_items.num_pages', corporateScheduleNumOfPages);
+    console.log('action.payload?.details.corporate_jd_items.next_page', corporateScheduleCurrentPages);
 
-    // console.log('departmentCorporate---------->', JSON.stringify(departmentCorporate));
+
+    console.log('corporateSchedules---------->', JSON.stringify(corporateSchedules));
 
 
     const { goTo, goBack } = useNavigation()
@@ -39,25 +43,53 @@ function Designation() {
     const addDesignationModal = useModal(false);
     const addRoleModal = useModal(false);
     const title = useInput("");
-    const position = useInput('')
+    const [positionSearch, setPositionSearch] = useState("")
     const description = useInput("");
     const sector = useDropDown({});
-    const experience = useInput('')
+    // const experience = useInput('')
+    const [experience, setExperience] = useState("")
     const jd = useInput('');
     const portalUrl = useInput('');
-    const role1 = useInput('');
+    const position = useInput('');
     const sectorInput = useInput('');
     const loader = useLoader(false);
+    const interviewDurations: any = [
+        { id: 1, text: 'Quick', subText: '5 mins', value: 5, isActive: false },
+        { id: 2, text: 'Short', subText: '10 mins', value: 10, isActive: false },
+        { id: 3, text: 'Medium', subText: '15 mins', value: 15, isActive: false },
+        { id: 4, text: 'Long', subText: '30 mins', value: 30, isActive: false },
+    ];
 
-    // console.log("position===>", position.value)
-    // console.log(sectorsCorporate, 564554);
+    const [changeColorButton, setChangeColorButton] = useState<any>(interviewDurations)
+    const [vacancies, setVacancies] = useState<any>('')
+    const [interviewDuration, setInterviewDuration] = useState<any>('')
+    const [loading, setLoading] = useState(true);
+    const status = useDropDown(STATUS_LIST[1]);
+    const enterPress = useKeyPress("Enter");
+    const [isPositionExist, setIsPositionExist] = useState<boolean>(false)
+
+
+    useEffect(() => {
+        getCorporateScheduleApiHandler(corporateScheduleCurrentPages);
+    }, []);
+
+
+    useEffect(() => {
+        if (isPositionExist) {
+            getCorporateScheduleApiHandler(corporateScheduleCurrentPages);
+        }
+    }, [enterPress]);
+
+
+
+
 
     useEffect(() => {
         dispatch(clearBreadCrumbs([]))
         // getSectorsApiHandler();
         getSectorsCorporateApiHandler();
         getDepartmentCorporateApiHandler();
-        getCorporateScheduleApiHandler()
+        // dispatch(fetchCandidatesCorporateSuccess(undefined))
     }, [])
 
     const getSectorsCorporateApiHandler = () => {
@@ -82,7 +114,6 @@ function Designation() {
                 params,
                 onSuccess: (response) => () => {
                     console.log(response, "addSectorCorporateApiHandler");
-
                     getSectorsCorporateApiHandler();
                 },
                 onError: (error) => () => {
@@ -128,9 +159,11 @@ function Designation() {
         const params = {
             sector_id: selectSector.id,
             department_id: selectDepartment.id,
-            role: role1.value,
-            experience: experience.value,
-            jd: jd.value
+            role: position.value,
+            experience: experience,
+            jd: jd.value,
+            vacancies: vacancies,
+            interview_duration: interviewDuration,
         }
         const validation = validate(CREATE_CORPORATE_SCHEDULE_RULES, params)
 
@@ -141,9 +174,12 @@ function Designation() {
                     params,
                     onSuccess: (response) => () => {
                         console.log(response, "submit");
-                        getCorporateScheduleApiHandler()
+                        getCorporateScheduleApiHandler(corporateScheduleCurrentPages)
                         loader.hide()
                         showToast(response.message, 'success');
+                        addRoleModal.hide()
+                        resetValues()
+                        dispatch(hideCreateOpeningsModal())
                     },
                     onError: (error) => () => {
                         showToast(error.error_message, 'error');
@@ -156,14 +192,39 @@ function Designation() {
         }
     };
 
-    const getCorporateScheduleApiHandler = () => {
+    function resetValues() {
+        addRoleModal.hide()
+        position.set("")
+        setExperience("")
+        jd.set("")
+        position.set('')
+        setVacancies('')
+        setInterviewDuration('')
+    }
+
+    const getCorporateScheduleApiHandler = (page_number: number) => {
         console.log('getCorporateScheduleApiHandler----------->', getCorporateScheduleApiHandler)
-        const params = {}
+
+        let is_active = '';
+
+        if (status.value === 'ACV') {
+            is_active = 'true';
+        } else if (status.value === 'CSD') {
+            is_active = 'false';
+        }
+        const params = {
+            position: positionSearch,
+            page_number,
+            is_active
+            // sector_id: '',
+            // department_id: ''
+        }
         dispatch(getCorporateSchedules({
             params,
             onSuccess: (response: any) => () => {
-                setCardData(response.details.corporate_jd_items)
+                setCardData(response.details.corporate_jd_items.data)
                 console.log('getCorporateScheduleApiHandler---->', response)
+                setLoading(false)
             },
             onError: (error) => () => {
 
@@ -172,94 +233,211 @@ function Designation() {
     }
 
 
-
-    function removeEmptyData(navList: any) {
-        return navList.map((el: any) => {
-            if (el.id && el.name) {
-                return el;
+    const handleItemClick = (index) => {
+        const updatedButtons = changeColorButton.map((item, i) => {
+            if (i === index) {
+                return { ...item, isActive: true };
             } else {
-                return null;
+                return { ...item, isActive: false };
             }
-        }).filter(Boolean);
-    }
+        });
+        setChangeColorButton(updatedButtons);
+    };
+
+    console.log('status.onChangestatus.onChange----------------', status.value)
+    console.log("isPositionExist===>", isPositionExist)
 
     return (
         <>
-            <div className='container-fluid pt-4'>
-                <h1 className={'text-black mb-0 pb-3'}>{'Schedules'}</h1>
+            <TopNavbarCorporateFlow />
+            {
+                loading ? (
+                    <div className={'vh-100 d-flex justify-content-center align-items-center'}>
+                        <Spinner />
+                    </div>
+                ) : corporateSchedules?.details?.corporate_jd_items?.data.length === 0 && !isPositionExist ? (
+                    <UploadCorporateOpeningsCard />
+                ) : (<div className='pt-4 mx-sm-7'>
+                    <div className='row pt-6'>
+                        <div className='col'>
+                            <Input
+                                heading={'Position'}
+                                type={'text'}
+                                placeHolder={"HR Executive, QA Manager..."}
+                                value={positionSearch}
+                                onChange={(e: any) => {
+                                    setPositionSearch(e.target.value)
+                                }}
+                                onFocus={() => setIsPositionExist(true)}
+                                onBlur={() => setIsPositionExist(false)}
+                            />
+                        </div>
+                        <div className="col-lg-3 col-md-3 col-sm-12 ">
+                            <DropDown
+                                className="form-control-md rounded-sm"
+                                heading={'Status'}
+                                data={STATUS_LIST}
+                                selected={status.value}
+                                onChange={status.onChange}
+                            />
+                        </div>
+                        <div className='col'>
+                            <DropDown
+                                className="form-control-md rounded-sm"
+                                heading={'Department'}
+                            // data={}
+                            // selected={}
+                            // onChange={}
+                            />
+                        </div>
+                        <div className='col'>
+                            <DropDown
+                                className="form-control-md rounded-sm"
+                                heading={'Sector'}
+                            // data={}
+                            // selected={}
+                            // onChange={}
+                            />
+                        </div>
+                        <div>
+                        </div>
+                    </div>
 
-                <div className='text-right mb-3'>
-                    <Button
-                        text={'Create Schedule'}
-                        block
-                        onClick={() => {
-                            addRoleModal.show();
+                    <div className='row pt-4 '>
+                        {cardData && cardData.length > 0 ? (
+                            cardData.map((el: any, index: number) => {
+                                return (
+                                    <div className='col-sm-12 col-lg-12 mb-3' key={index}>
+                                        <DesignationItem
+                                            item={el}
+                                            onEdit={(designation, role) => {
+                                                setSelectedDesignation(designation);
+                                                dispatch(setSelectedRole(role));
+                                                const { name, description } = role;
+                                                title.set(name);
+                                                position.set(name);
+                                                if (description) {
+                                                    description.set(description);
+                                                }
+                                                addRoleModal.show();
+                                            }}
+                                            onView={(role) => {
+                                                dispatch(setSelectedRole(role));
+                                                dispatch(breadCrumbs({ name: role?.name, title: el?.name, path: window.location.pathname }));
+                                                goTo(ROUTES['designation-module']['variant-info']);
+                                            }}
+                                        />
+                                    </div>
+                                );
+                            })
+
+                        ) : (
+                            <div
+                                className={'d-flex justify-content-center align-items-center mx-auto my-auto'}
+                                style={{
+                                    height: '60vh'
+                                }}
+                            >
+                                <NoDataFound />
+                            </div>
+                        )}
+                    </div>
+                    <PageNation
+                        currentPage={corporateScheduleCurrentPages}
+                        noOfPage={corporateScheduleNumOfPages}
+                        isPagination={true}
+                        paginationNumberClick={(currentPage) => {
+                            getCorporateScheduleApiHandler(paginationHandler("current", currentPage));
+                        }}
+                        previousClick={() => {
+                            getCorporateScheduleApiHandler(paginationHandler("prev", corporateScheduleCurrentPages))
                         }
                         }
+                        nextClick={() => {
+                            getCorporateScheduleApiHandler(paginationHandler("next", corporateScheduleCurrentPages));
+                        }}
                     />
                 </div>
+                )
+            }
 
-                <div className='row pt-3'>
-                    {cardData && cardData.length > 0 ?
-                        cardData.map((el: any, index: number) => {
-                            return (
-                                <div className='col-sm-12 col-lg-12 mb-3'>
+            <Modal size={'lg'} isOpen={createOpening} onClose={() => {
+                resetValues()
+                dispatch(hideCreateOpeningsModal())
+            }}
+                style={{ padding: 0 }}>
+                <div className='px-md-6 px-3 '>
+                    <Heading heading={'Create Opening'} style={{ fontSize: '26px', fontWeight: 800, margin: 0 }} />
+                    <div className='text-default pt-1 font-weight-500'>Input job details, specifying qualifications, requirements, interview duration</div>
 
-                                    <DesignationItem
-                                        item={el}
-                                        // onAdd={(selected) => {
-                                        //     addRoleModal.show();
-                                        //     setSelectedDesignation(selected);
-                                        // }}
+                    <div className={'pt-5 px-0'}>
+                        <div className='row'>
+                            <div className='col-sm-5'>
+                                <Input
+                                    heading={'Position'}
+                                    type={'text'}
+                                    placeHolder={"HR Executive, QA Manager..."}
+                                    value={position.value}
+                                    onChange={position.onChange} />
+                            </div>
 
-                                        onEdit={(designation, role) => {
-                                            console.log("desss-->", designation, "riolee==?>", role)
-                                            setSelectedDesignation(designation)
-                                            dispatch(setSelectedRole(role))
-                                            const { name, description } = role
-                                            title.set(name)
-                                            position.set(name)
-                                            // jd.set(designation)
-                                            if (description) {
-                                                description.set(description)
-                                            }
-                                            addRoleModal.show();
-                                        }}
-                                        onView={(role) => {
-                                            console.log('role-------------->', role)
-                                            dispatch(setSelectedRole(role))
-                                            dispatch(breadCrumbs({ name: role?.name, title: el?.name, path: window.location.pathname }))
-                                            goTo(ROUTES['designation-module']['variant-info'])
-                                        }
-                                        }
-                                    />
-                                </div>
-                            )
-                        })
-                        :
-                        <div className={'d-flex  justify-content-center align-items-center mx-auto my-auto '}
-                            style={{
-                                height: '60vh'
-                            }}
-                        >
-                            <NoDataFound />
+                            <div className='col-sm-4'>
+                                <InputHeading heading={'Experience'} />
+                                <select
+                                    id="experience"
+                                    value={experience}
+                                    placeholder='Select'
+                                    onChange={(e) => setExperience(e.target.value)}
+                                    className={`form-control ${experience.length === 0 ? 'text-default' : 'text-black'} rounded-sm `}
+                                >
+                                    {Array.from({ length: 31 }, (_, index) => (
+                                        <option key={index} value={index.toString()}>
+                                            {index === 0 ? 'Fresher' : index}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div className='col-sm-3 mt-4 mt-sm-0'>
+                                <Input
+
+                                    heading={'Vacancies'}
+                                    type={'number'}
+                                    placeHolder={"0"}
+                                    value={vacancies}
+                                    onChange={(e) => setVacancies(e.target.value)} />
+                            </div>
                         </div>
-                    }
-                </div>
 
-                <Modal size={'lg'} title={"Create Schedule"} isOpen={addRoleModal.visible} onClose={() => {
-                    addRoleModal.hide()
-                    position.set("")
-                    experience.set("")
-                    jd.set("")
-                    role1.set('')
-                }}>
+                        <div className='pt-2 '>
+                            <TextArea
+                                heading='Job Description'
+                                value={jd.value}
+                                placeholder={'Role : \n...............................................................................................................................................\n...............................................................................................................................................\n...............................................................................................................................................\n.......................................................................................\nResponsibilities :\n1. ............................................................................................................................................\n2. ...........................................................................................................................................\n3. ...........................................................................................................................................'}
+                                className={"float-end p-4"}
+                                onChange={jd.onChange} />
+                        </div>
+                        <div className='mb-sm-4'>
+                            <InputHeading heading={'Duration'} />
+                            <div className='d-flex flex-wrap justify-content-between'>
+                                {
+                                    changeColorButton.map((item, index) => {
+                                        return <div className='mb-4 mb-sm-0'>
+                                            <Button text={item.subText} className={`${item.isActive ? "btn-outline-primary" : "btn-outline-light-gray text-default"} rounded-sm px-sm-4`} style={{ width: "140px" }} onClick={() => {
+                                                console.log(item.value);
+                                                setInterviewDuration(item.value)
 
-                    <div className={'col-12'}>
+                                                handleItemClick(index)
+                                            }} />
+
+                                        </div>
+                                    })
+                                }
+                            </div>
+                        </div>
                         <div className='row'>
                             <div className='col'>
                                 <ReactAutoComplete
-                                    isMandatory
+
                                     data={sectorsCorporate}
                                     heading={"Sector"}
                                     onAdd={(value) => {
@@ -270,7 +448,7 @@ function Designation() {
                             </div>
                             <div className='col'>
                                 <ReactAutoComplete
-                                    isMandatory
+
                                     data={departmentCorporate}
                                     heading={"Department"}
                                     onAdd={(value) => {
@@ -281,54 +459,21 @@ function Designation() {
                             </div>
                         </div>
 
-                        <div className='row'>
-                            <div className='col'>
-                                <Input
-                                    isMandatory
-                                    heading={'Role'}
-                                    type={'text'}
-                                    placeHolder={"Role"}
-                                    value={role1.value}
-                                    onChange={role1.onChange} />
-                            </div>
-
-                            <div className='col'>
-                                <Input
-                                    isMandatory
-                                    heading={'Experience'}
-                                    type={'number'}
-                                    placeHolder={"Experience"}
-                                    value={experience.value}
-                                    onChange={experience.onChange} />
-                            </div>
-                        </div>
-
-
-                        <div>
-                            <TextArea
-                                isMandatory
-                                heading='Job Description'
-                                value={jd.value}
-                                className={"float-end"}
-                                onChange={jd.onChange} />
-                        </div>
-
                     </div>
 
-                    <div className="col text-right">
+                    <div className="col d-flex justify-content-center py-5">
                         <Button size={'md'}
                             loading={loader.loader}
-                            text={"Submit"}
+                            text={"Create Opening"}
+                            className={'rounded px-5'}
                             onClick={createCorporateScheduleApiHandler}
                         />
                     </div>
+                </div>
 
-                </Modal >
-            </div>
-
+            </Modal >
         </>
     )
 }
 
 export { Designation };
-

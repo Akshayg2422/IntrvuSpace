@@ -10,8 +10,8 @@ const CREATE_JD_AND_ADD_CANDIDATE = [
   { id: 2, mainText: "Notification", subText: " over Email & Phone" },
   {
     id: 3,
-    mainText: "Candidate's",
-    subText: " preferred timing",
+    mainText: "Candidate",
+    subText: " can attend at their convinient time",
   },
   { id: 4, mainText: "Deadlines", subText: " for interviews" },
   { id: 5, mainText: "Unlimited Candidates", subText: " for single JD" },
@@ -110,7 +110,7 @@ function AllInOnePlatform() {
                     backgroundColor: "transparent",
                   }}
                 >
-                  <div className="row row-cols-lg-3">
+                  <div className="row">
                     <div className="col-md-4 d-flex flex-column justify-content-center">
                       {CREATE_JD_AND_ADD_CANDIDATE.map((item) => {
                         return (
@@ -137,7 +137,7 @@ function AllInOnePlatform() {
 
                     <div className="col-md-4 d-flex flex-column justify-content-center mt-5 mt-md-2">
                       <div className="row">
-                        <div className="d-none d-lg-block d-md-block d-xl-block">
+                        <div className="d-none d-lg-block">
                           <div
                             style={{
                               width: 1.3,
@@ -146,7 +146,7 @@ function AllInOnePlatform() {
                             }}
                           />
                         </div>
-                        <div className="mx-md-5 mb-2 mx-3">
+                        <div className="mx-lg-5 mb-2 mx-md-0 mx-3">
                           <div
                             className="text-secondary boldText "
                             style={{ fontSize: 21 }}
@@ -161,7 +161,7 @@ function AllInOnePlatform() {
                           <div className="mt-4 text-center">
                             <span
                               className="text-gray"
-                              style={{ fontSize: 13, fontFamily:"cursive" }}
+                              style={{ fontSize: 13, fontFamily: "cursive" }}
                             >
                               <s>{`₹ 90.00`}</s>
                             </span>
@@ -180,7 +180,11 @@ function AllInOnePlatform() {
                           <div className="text-center">
                             <span
                               className="text-secondary"
-                              style={{ fontSize: 18, fontWeight: 500, fontFamily:"cursive" }}
+                              style={{
+                                fontSize: 18,
+                                fontWeight: 500,
+                                fontFamily: "cursive",
+                              }}
                             >
                               {"₹"}
                             </span>
@@ -203,7 +207,12 @@ function AllInOnePlatform() {
                             />
                           </div>
                           <div className="mt-3 text-center">
-                            <span className="text-gray" style={{fontFamily:"cursive", fontSize: 13}}>{"₹"}</span>
+                            <span
+                              className="text-gray"
+                              style={{ fontFamily: "cursive", fontSize: 13 }}
+                            >
+                              {"₹"}
+                            </span>
                             <span
                               className="text-gray"
                               style={{ fontSize: 13 }}
@@ -251,8 +260,10 @@ function AllInOnePlatform() {
                   </div>
                 </Card>
 
-                <div className="pt-6 pb-4">
-                  <span className="display-3 font-weight-bolder text-secondary">How it works ?</span>
+                <div className="pt-6">
+                  <span className="display-3 font-weight-bolder text-secondary">
+                    How it works ?
+                  </span>
                 </div>
               </Col>
             </Row>

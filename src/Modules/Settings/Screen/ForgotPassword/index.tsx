@@ -88,7 +88,7 @@ function ForgotPassword() {
                         <div>
                             <label className="h3 font-weight-bolder text-black">Email ID</label>
                             <Input
-                                className='rounded-0'
+                                className='rounded-sm'
                                 type={'text'}
                                 value={email.value}
                                 placeholder='Enter your Mail ID'
@@ -102,7 +102,7 @@ function ForgotPassword() {
 
                         <div className="pb-3 pt-2 ">
                             <Button
-                                className={'text-white font-weight-normal text-lg py-2 bg-primary'}
+                                className={'text-white font-weight-normal rounded-sm text-lg py-2 bg-primary'}
                                 loading={loginLoader.loader}
                                 block
                                 size="lg"

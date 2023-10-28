@@ -1,5 +1,5 @@
 import { icons } from '@Assets'
-import { Designation, WeightageCountForm, CreateQuestionForm, Clients, Sector, Questions, Call, Report, QuestionSections, AnalyzingAnimation, Schedules, Login, Otp, Splash, Register, LoginWithOtp, AdminLogin, VariantInfo, PrivacyPolicy, TermsAndConditions, ReturnAndRefund, Reports, HowItWorks, Introduction, Settings, Response, CreateNewPassword, ForgotPassword } from '@Modules';
+import { Designation, WeightageCountForm, CreateQuestionForm, Clients, Sector, Questions, Call, Report, QuestionSections, AnalyzingAnimation, Schedules, Login, Otp, Splash, Register, LoginWithOtp, AdminLogin, VariantInfo, PrivacyPolicy, TermsAndConditions, ReturnAndRefund, Reports, HowItWorks, Introduction, Settings, Response, CreateNewPassword, ForgotPassword, PreparingYourInterview, UploadCorporateOpeningsCard } from '@Modules';
 
 
 
@@ -36,7 +36,8 @@ export const ROUTES = {
     schedules: '/schedules',
     'variant-info': '/variant-info',
     settings: '/settings',
-    'response': '/response'
+    'response': '/response',
+    'preparing-your-interview':'/preparing-your-interview'
   }
 }
 
@@ -166,6 +167,11 @@ export const DASHBOARD_ROUTES = [
     id: 10,
     path: ROUTES['designation-module'].response + '/:schedule_id',
     component: <Response />
+  },
+  {
+    id: 11,
+    path: ROUTES['designation-module']['preparing-your-interview'],
+    component: <PreparingYourInterview/>
   },
 ]
 

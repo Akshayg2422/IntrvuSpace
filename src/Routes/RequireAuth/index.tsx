@@ -54,16 +54,18 @@ export const RequireAuth = ({ children }: RequireAuthProps) => {
 
     return (
         <>
-            {loginDetails?.is_admin && !removeSideNav && <Sidebar
-                routes={HOME_ROUTES}
-                toggleSideNav={toggleSideNav}
-                sideNavOpen={sideNavOpen}
-                logo={{
-                    innerLink: "/",
-                    imgSrc: icons.logoIcon,
-                    imgAlt: "...",
-                }}
-            />}
+            {loginDetails?.is_admin && !removeSideNav && ''
+        //     <Sidebar
+        //     routes={HOME_ROUTES}
+        //     toggleSideNav={toggleSideNav}
+        //     sideNavOpen={sideNavOpen}
+        //     logo={{
+        //         innerLink: "/",
+        //         imgSrc: icons.logoIcon,
+        //         imgAlt: "...",
+        //     }}
+        // />
+            }
             <div className='main-content' ref={mainContentRef}>
                 {/* <PushNotification /> */}
                 {children}
