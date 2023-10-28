@@ -151,7 +151,7 @@ function DesignationItem({ item, onAdd, onEdit, onView, onClick }: DesignationIt
                                 className="mx-0"
                             >
                                 <div className='d-flex align-items-center mb-3 justify-content-between'>
-                                    <div>
+                                    <div className=''>
 
                                         <div className='d-flex flex-sm-row flex-column align-items-sm-center'>
                                             <span className='col p-0 m-0 font-weight-800' style={{fontSize: 26}}
@@ -166,7 +166,7 @@ function DesignationItem({ item, onAdd, onEdit, onView, onClick }: DesignationIt
                                                     fontSize: 12,
                                                     borderWidth: 0,
                                                 }}
-                                                text={`${item.candidate_details.selected_candidates} Selected`}
+                                                text={item.candidate_details.selected_candidates ? `${item.candidate_details.selected_candidates} Selected` : ""}
                                             />
                                             </div>
                                         </div>

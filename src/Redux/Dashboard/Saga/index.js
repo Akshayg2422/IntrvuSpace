@@ -828,10 +828,11 @@ function* postManualApprovalOnCandidateSaga(action) {
 function* fetchCandidatesCorporateSaga(action) {
   try {
     const response = yield call(Api.fetchCandidatesCorporateApi, action.payload.params);
+    console.log("responseeee candidateee===>", response)
     if (response.success) {
       console.log(JSON.stringify(response));
-      yield put(Action.fetchCandidatesCorporateSuccess(response?.details));
-      yield call(action.payload.onSuccess(response?.details));
+      yield put(Action.fetchCandidatesCorporateSuccess(response));
+      yield call(action.payload.onSuccess(response));
     } else {
       yield put(Action.fetchCandidatesCorporateFailure(response.error_message));
       yield call(action.payload.onError(response));

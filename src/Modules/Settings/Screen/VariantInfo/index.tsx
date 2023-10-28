@@ -100,6 +100,8 @@ function VariantInfo() {
     }
   }, [enterPress]);
 
+  console.log("candidatesListCurrentPages===>", candidatesListCurrentPages)
+
   const Refresh = () => {
     const refresh = () => window.location.reload();
 
@@ -201,7 +203,6 @@ function VariantInfo() {
       default:
         return "";
     }
-
   };
 
   const normalizedTableData = (data: any) => {
@@ -306,6 +307,7 @@ function VariantInfo() {
           showToast(response.message, "success");
           bulkUploadLoader.hide();
           getCorporateScheduleDetailsHandler();
+          getCandidatesCorporate(candidatesListCurrentPages);
         },
         onError: (error: any) => () => {
           showToast(error.error_message, "error");
@@ -335,6 +337,7 @@ function VariantInfo() {
         onSuccess: (response: any) => () => {
           showToast(response.message, "success");
           getCandidatesCorporate(candidatesListCurrentPages);
+          getCorporateScheduleDetailsHandler();
         },
         onError: (error: any) => () => {
           showToast(error.error_message, "error");
@@ -342,6 +345,9 @@ function VariantInfo() {
       })
     );
   };
+
+  console.log("candidatte list--->", candidatesList);
+  
 
   return (
     <>

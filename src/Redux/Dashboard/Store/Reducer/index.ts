@@ -640,8 +640,8 @@ const DashboardReducer = (state = initialState, action: any) => {
     case ActionTypes.FETCH_CANDIDATES_CORPORATE_SUCCESS:
       state = {
         ...state,
-        candidatesList: action.payload,
-        candidatesListNumOfPages: action.payload?.corporate_candidate_details.num_pages,
+        candidatesList: action.payload?.details,
+        candidatesListNumOfPages: action.payload?.details?.corporate_candidate_details.num_pages,
         candidatesListCurrentPages:
           action.payload?.details.corporate_candidate_details.next_page === -1
             ? action.payload?.details.corporate_candidate_details.num_pages
