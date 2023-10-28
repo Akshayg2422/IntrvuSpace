@@ -380,6 +380,7 @@ function VariantInfo() {
   }
 
   console.log("jdmoree===>", jdMore);
+  console.log("candidatesList==>",candidatesList)
 
   return (
     <>
@@ -707,7 +708,7 @@ function VariantInfo() {
                           }
                         >
                           <CommonTable
-                            isPagination
+                            isPagination = {candidatesListNumOfPages > 1}
                             tableDataSet={
                               candidatesList?.corporate_candidate_details
                             }

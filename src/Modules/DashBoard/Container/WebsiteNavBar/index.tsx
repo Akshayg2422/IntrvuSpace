@@ -76,8 +76,8 @@ function WebsiteNavBar() {
                 paddingTop:10,
                 paddingBottom:10,
                 fontSize: 14,
-                paddingRight: 10,
-                paddingLeft: 10,
+                paddingRight: 15,
+                paddingLeft: 15,
                 borderRadius: 4
               }}
               onClick={() => {

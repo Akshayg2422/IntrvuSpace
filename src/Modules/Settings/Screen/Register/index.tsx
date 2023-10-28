@@ -89,10 +89,10 @@ function Register() {
   return (
     <>
       <div className="row m-0 p-0 bg-white h-100vh">
-        <div className="mt-3 ml-lg-7">
-          <Image src={icons.logoText} height={60} />
+        <div className="mt-3 ml-lg-7 ml-3">
+          <Image src={icons.logoText} height={22} />
         </div>
-        <div className="col-xl-12 d-flex justify-content-center align-items-center">
+        <div className="col-xl-12 d-flex justify-content-center align-items-center ">
           <div className="col-12 col-md-6 col-lg-4 text-center align-items-center">
             <div className="">
               <h1
