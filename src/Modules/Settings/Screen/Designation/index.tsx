@@ -345,7 +345,7 @@ function Designation() {
                     <PageNation
                         currentPage={corporateScheduleCurrentPages}
                         noOfPage={corporateScheduleNumOfPages}
-                        isPagination={true}
+                        isPagination={corporateScheduleNumOfPages > 1}
                         paginationNumberClick={(currentPage) => {
                             getCorporateScheduleApiHandler(paginationHandler("current", currentPage));
                         }}
