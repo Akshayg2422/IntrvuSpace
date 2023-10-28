@@ -110,6 +110,8 @@ function Call() {
 
   const lastAiResponseTime = useRef<any>(undefined);
   const canConnect = useRef<any>(true);
+  const isSpeakingRef = useRef<any>(false);
+  const voiceUpSaturation = useRef<any>(1);
 
   const [networkBreakTime, setNetworkBreakTime] = useState(0);
 
@@ -354,7 +356,7 @@ function Call() {
       map_id: intitalRequestSent.current === false ? "1" : mapIdRef.current,
       ie_interaction_chunk_ref_id: activeResponseTextId.current,
       waiting_start_time: intitalRequestSent.current === false ? true : false,
-      is_voiceup_current_chunk_state: is_voiceup_current_chunk_state,
+      is_voiceup_current_chunk_state: is_voiceup_current_chunk_state && isSpeakingRef.current,
       proceed_refresh: !intitalRequestSent.current,
       blob_data: "",
     };
@@ -438,6 +440,9 @@ function Call() {
     );
   };
 
+
+
+
   useEffect(() => {
     return () => {
 
@@ -497,7 +502,6 @@ function Call() {
       }
       stream.current = await navigator.mediaDevices.getUserMedia({
         audio: true,
-        video: true,
       });
 
       if (!listener.current) {
@@ -523,7 +527,12 @@ function Call() {
             speakingShouldProcess.current = false;
             if (voiceUp === true) setVoiceUp(false);
           } else if (valueP < SPEECH_VOICE_UP) {
-            isVoiceUpCurrentChunk.current = true;
+            if (voiceUpSaturation.current === 1)
+              isVoiceUpCurrentChunk.current = true;
+            else {
+              voiceUpSaturation.current = voiceUpSaturation.current + 1
+            }
+
 
             /**
              * extend waiting time if decibile is of talking size
@@ -677,12 +686,14 @@ function Call() {
 
   const onStartSpeaking = () => {
     console.log('start speaking')
+    isSpeakingRef.current = true
     setSpeaking(true);
   };
 
   const onStopSpeaking = () => {
     console.log('stop speaking')
     setSpeaking(false);
+    isSpeakingRef.current = false
   };
 
   /**
@@ -714,6 +725,7 @@ function Call() {
 
     sendDataToSocket(blob, isVoiceUpCurrentChunk.current);
     isVoiceUpCurrentChunk.current = false;
+    voiceUpSaturation.current = 0
     // console.log("calledTTF Data Rec", ttsRef.current, speakingShouldProcess.current)
 
     // if (!ttsRef.current && speakingShouldProcess.current === true) {
@@ -879,7 +891,7 @@ function Call() {
   const IE_IDLE = 2;
 
   // const interviewee_state = voiceUp && !mute ? IE_SPEAKING : IE_IDLE
-  const interviewee_state = isVoiceUpCurrentChunk.current && !mute
+  const interviewee_state = isVoiceUpCurrentChunk.current && !mute && isSpeakingRef.current
     ? IE_SPEAKING
     : IE_IDLE;
 

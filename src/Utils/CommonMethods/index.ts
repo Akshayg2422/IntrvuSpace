@@ -188,13 +188,17 @@ export async function checkMicrophoneState() {
 
 
 export function getShortName(fullName: string) {
+  fullName = fullName.trim()
   const names = fullName.split(' ');
 
   if (names.length === 1) {
     return names[0].substring(0, 2).toUpperCase();
   }
 
+  console.log("namesnames", names)
+
   const firstNameInitial = names[0][0].toUpperCase();
+
   const lastNameInitial = names[names.length - 1][0].toUpperCase();
   return `${firstNameInitial}${lastNameInitial}`;
 }
