@@ -185,5 +185,11 @@ export const postManualApprovalOnCandidateApi = payload => post(URL.POST_MANUAL_
 // getCandidatesCorporate
 export const fetchCandidatesCorporateApi = payload => post(URL.FETCH_CANDIDATES_CORPORATE, payload, {});
 
+/**
+ * video sync api
+ */
+
+
+export const syncVideoApi = payload => post(URL.URL_SYNC_VIDEO, payload, {});
 
 
