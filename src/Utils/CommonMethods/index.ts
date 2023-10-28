@@ -66,6 +66,8 @@ export function paginationHandler(type: 'next' | 'prev' | 'current', position: n
   return page;
 }
 
+
+
 export function getArrayFromArrayOfObject(data: Array<any>, key: string) {
   let modifiedArr: any = [];
   if (data && data.length > 0) {

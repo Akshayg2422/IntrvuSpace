@@ -26,7 +26,7 @@ import {
   useNavigation,
   useWindowDimensions,
 } from "@Hooks";
-import { AnalyzingAnimation, GenerateModal } from "@Modules";
+import { AnalyzingAnimation, GenerateModal, PreparingYourInterview } from "@Modules";
 import {
   bulkUploadCandidates,
   createSchedule,
@@ -49,6 +49,7 @@ import {
   getMomentObjFromServer,
   getValidateError,
   ifObjectExist,
+  paginationHandler,
   showMore,
   validate,
 } from "@Utils";
@@ -66,9 +67,10 @@ const OPTIONS = [
 function VariantInfo() {
   const { goBack } = useNavigation();
   const enterPress = useKeyPress("Enter");
-  const { selectedRole, corporateScheduleDetails, candidatesList } =
+  const { selectedRole, corporateScheduleDetails, candidatesList, candidatesListNumOfPages, candidatesListCurrentPages } =
     useSelector((state: any) => state.DashboardReducer);
   console.log(corporateScheduleDetails, "corporateScheduleDetails-------->");
+
 
   const { goTo } = useNavigation();
   const addNewCandidateModal = useModal(false);
@@ -80,23 +82,25 @@ function VariantInfo() {
   const bulkUploadLoader = useLoader(false);
   const dispatch = useDispatch();
   const [status, setStatus] = useState("12-02-2021");
-  const generateVariantModal = useModal(false);
   const [showFullContent, setShowFullContent] = useState(false);
   const bulkUploadModal = useModal(false);
   const [candidateBulkUploadData, setCandidateBulkUploadData] = useState("");
   const [searchCandidate, setSearchCandidate] = useState("");
   const [isCandidatesExist, setIsCandidatesExist] = useState<boolean>(false);
+  const preparingInterviewModal = useModal(false);
 
   useEffect(() => {
     getCorporateScheduleDetailsHandler();
-    getCandidatesCorporate();
+    getCandidatesCorporate(candidatesListCurrentPages);
   }, []);
 
   useEffect(() => {
     if (isCandidatesExist) {
-      getCandidatesCorporate();
+      getCandidatesCorporate(candidatesListCurrentPages);
     }
   }, [enterPress]);
+
+  console.log("candidatesListCurrentPages===>", candidatesListCurrentPages)
 
   const Refresh = () => {
     const refresh = () => window.location.reload();
@@ -111,16 +115,17 @@ function VariantInfo() {
     dispatch(
       getCorporateScheduleDetails({
         params,
-        onSuccess: (response: any) => () => {},
-        onError: (error: any) => () => {},
+        onSuccess: (response: any) => () => { },
+        onError: (error: any) => () => { },
       })
     );
   };
 
-  const getCandidatesCorporate = () => {
+  const getCandidatesCorporate = (page_number: number) => {
     const params = {
       corporate_openings_details_id: selectedRole?.id,
       ...(searchCandidate && { q: searchCandidate }),
+      page_number
     };
     dispatch(
       fetchCandidatesCorporate({
@@ -128,7 +133,7 @@ function VariantInfo() {
         onSuccess: (response: any) => () => {
           // console.log("response candidtae===>", response);
         },
-        onError: (error: any) => () => {},
+        onError: (error: any) => () => { },
       })
     );
   };
@@ -145,8 +150,8 @@ function VariantInfo() {
     const validation = validate(VALIDATE_ADD_NEW_CANDIDATES_RULES, params);
 
     if (ifObjectExist(validation)) {
+      preparingInterviewModal.show();
       addNewCandidateModal.hide();
-      generateVariantModal.show();
       loader.show();
       dispatch(
         createSchedule({
@@ -155,12 +160,12 @@ function VariantInfo() {
             resetValues();
             showToast("Candidate added successfully", "success");
             loader.hide();
-            generateVariantModal.hide();
+            preparingInterviewModal.hide();
             getCorporateScheduleDetailsHandler();
           },
           onError: (error: any) => () => {
             showToast(error.error_message, "error");
-            generateVariantModal.hide();
+            preparingInterviewModal.hide();
             loader.hide();
           },
         })
@@ -202,8 +207,8 @@ function VariantInfo() {
 
   const normalizedTableData = (data: any) => {
     console.log("candddiii==>", data);
-    if (data && data?.corporate_candidate_details.length > 0)
-      return data?.corporate_candidate_details?.map((el: any) => {
+    if (data && data?.corporate_candidate_details?.data.length > 0)
+      return data?.corporate_candidate_details?.data.map((el: any) => {
         return {
           "   ": <Image src={getIconColor(el?.status_icon_type)} height={20} />,
           "": (
@@ -302,6 +307,7 @@ function VariantInfo() {
           showToast(response.message, "success");
           bulkUploadLoader.hide();
           getCorporateScheduleDetailsHandler();
+          getCandidatesCorporate(candidatesListCurrentPages);
         },
         onError: (error: any) => () => {
           showToast(error.error_message, "error");
@@ -330,7 +336,7 @@ function VariantInfo() {
         params,
         onSuccess: (response: any) => () => {
           showToast(response.message, "success");
-          getCandidatesCorporate();
+          getCandidatesCorporate(candidatesListCurrentPages);
           getCorporateScheduleDetailsHandler();
         },
         onError: (error: any) => () => {
@@ -339,6 +345,9 @@ function VariantInfo() {
       })
     );
   };
+
+  console.log("candidatte list--->", candidatesList);
+  
 
   return (
     <>
@@ -372,11 +381,10 @@ function VariantInfo() {
             <div className="d-flex align-items-center">
               <div className="pl-3 pl-sm-0">
                 <span className="headingText text-secondary">
-                  {`${corporateScheduleDetails?.vacancies ?? ""} ${
-                    corporateScheduleDetails?.vacancies > 1
-                      ? "Vacancies"
-                      : "0 Vacancy"
-                  }`}
+                  {`${corporateScheduleDetails?.vacancies ?? ""} ${corporateScheduleDetails?.vacancies > 1
+                    ? "Vacancies"
+                    : "0 Vacancy"
+                    }`}
                 </span>
               </div>
               <div className="pl-3">
@@ -386,9 +394,9 @@ function VariantInfo() {
           </div>
 
           {candidatesList &&
-          candidatesList?.corporate_candidate_details &&
-          candidatesList?.corporate_candidate_details.length === 0 &&
-          !isCandidatesExist ? (
+            candidatesList?.corporate_candidate_details &&
+            candidatesList?.corporate_candidate_details?.data.length === 0 &&
+            !isCandidatesExist ? (
             <div className="mt-5 text-center">
               <div>
                 <span className="titleText text-secondary">
@@ -644,7 +652,7 @@ function VariantInfo() {
                     </div>
 
                     {candidatesList?.corporate_candidate_details &&
-                    candidatesList?.corporate_candidate_details.length > 0 ? (
+                      candidatesList?.corporate_candidate_details?.data.length > 0 ? (
                       <div className={"row px-0 mx--4"}>
                         <div
                           className={
@@ -652,10 +660,14 @@ function VariantInfo() {
                           }
                         >
                           <CommonTable
-                            tableDataSet={
-                              candidatesList?.corporate_candidate_details
-                            }
+                            isPagination
+                            tableDataSet={candidatesList?.corporate_candidate_details}
                             displayDataSet={normalizedTableData(candidatesList)}
+                            noOfPage={candidatesListNumOfPages}
+                            currentPage={candidatesListCurrentPages}
+                            paginationNumberClick={(currentPage) => { getCandidatesCorporate(paginationHandler("current", currentPage)) }}
+                            previousClick={() => { getCandidatesCorporate(paginationHandler("prev", candidatesListCurrentPages)) }}
+                            nextClick={() => { getCandidatesCorporate(paginationHandler("next", candidatesListCurrentPages)) }}
                           />
                         </div>
                       </div>
@@ -724,9 +736,8 @@ function VariantInfo() {
                         className="font-weight-bolder"
                         style={{ fontSize: 18 }}
                       >
-                        {`${
-                          corporateScheduleDetails?.interview_duration || 0
-                        } minutes`}
+                        {`${corporateScheduleDetails?.interview_duration || 0
+                          } minutes`}
                       </span>
                     </div>
                   </div>
@@ -820,13 +831,10 @@ function VariantInfo() {
           />
         </div>
       </Modal>
-      <GenerateModal
-        title={"Scheduling Interview"}
-        isOpen={generateVariantModal.visible}
-        onClose={generateVariantModal.hide}
-      >
-        <AnalyzingAnimation />
-      </GenerateModal>
+
+      <Modal isOpen={preparingInterviewModal.visible} onClose={preparingInterviewModal.hide}>
+        <PreparingYourInterview />
+      </Modal>
     </>
   );
 }

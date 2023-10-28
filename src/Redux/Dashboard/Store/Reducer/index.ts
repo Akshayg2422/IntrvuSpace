@@ -49,7 +49,11 @@ const initialState: DashboardProp = {
   interviewScheduleDetails: undefined,
   retrieveEmail: undefined,
   createOpening: false,
-  candidatesList: undefined
+  corporateScheduleNumOfPages: undefined,
+  corporateScheduleCurrentPages: 1,
+  candidatesList: undefined,
+  candidatesListNumOfPages: undefined,
+  candidatesListCurrentPages: 1,
 };
 
 const DashboardReducer = (state = initialState, action: any) => {
@@ -507,10 +511,24 @@ const DashboardReducer = (state = initialState, action: any) => {
     /**getCorporateSchedulesD */
 
     case ActionTypes.GET_CORPORATE_SCHEDULES:
-      state = { ...state, corporateSchedules: undefined };
+      state = {
+        ...state,
+        corporateSchedules: undefined,
+        corporateScheduleNumOfPages: 0,
+        corporateScheduleCurrentPages: 1,
+      };
       break;
     case ActionTypes.GET_CORPORATE_SCHEDULES_SUCCESS:
-      state = { ...state, corporateSchedules: action.payload };
+
+      state = {
+        ...state,
+        corporateSchedules: action.payload,
+        corporateScheduleNumOfPages: action.payload?.details.corporate_jd_items.num_pages,
+        corporateScheduleCurrentPages:
+          action.payload?.details.corporate_jd_items.next_page === -1
+            ? action.payload?.details.corporate_jd_items.num_pages
+            : action.payload?.details.corporate_jd_items.next_page - 1
+      };
       break;
     case ActionTypes.GET_CORPORATE_SCHEDULES_FAILURE:
       state = { ...state, corporateSchedules: undefined };
@@ -612,13 +630,26 @@ const DashboardReducer = (state = initialState, action: any) => {
     // getCandidatesCorporate
 
     case ActionTypes.FETCH_CANDIDATES_CORPORATE:
-      state = { ...state };
+      state = {
+        ...state,
+        candidatesList: undefined,
+        candidatesListNumOfPages: 0,
+        candidatesListCurrentPages: 1,
+      };
       break;
     case ActionTypes.FETCH_CANDIDATES_CORPORATE_SUCCESS:
-      state = { ...state, candidatesList: action.payload };
+      state = {
+        ...state,
+        candidatesList: action.payload?.details,
+        candidatesListNumOfPages: action.payload?.details?.corporate_candidate_details.num_pages,
+        candidatesListCurrentPages:
+          action.payload?.details.corporate_candidate_details.next_page === -1
+            ? action.payload?.details.corporate_candidate_details.num_pages
+            : action.payload?.details.corporate_candidate_details.next_page - 1
+      };
       break;
     case ActionTypes.FETCH_CANDIDATES_CORPORATE_FAILURE:
-      state = { ...state };
+      state = { ...state, candidatesList: undefined };
       break;
 
     default:
