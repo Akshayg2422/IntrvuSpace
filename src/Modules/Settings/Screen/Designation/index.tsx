@@ -465,7 +465,7 @@ function Designation() {
                         <Button size={'md'}
                             loading={loader.loader}
                             text={"Create Opening"}
-                            className={'rounded px-5'}
+                            className={'rounded-sm px-5'}
                             onClick={createCorporateScheduleApiHandler}
                         />
                     </div>

@@ -655,7 +655,7 @@ function VariantInfo() {
                         >
                           <CommonTable
                             isPagination
-                            tableDataSet={candidatesList?.corporate_candidate_details}
+                            tableDataSet={candidatesList?.corporate_candidate_details?.data}
                             displayDataSet={normalizedTableData(candidatesList)}
                             noOfPage={candidatesListNumOfPages}
                             currentPage={candidatesListCurrentPages}
