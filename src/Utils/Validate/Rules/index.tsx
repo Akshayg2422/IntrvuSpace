@@ -199,6 +199,12 @@ export const CREATE_CORPORATE_SCHEDULE_RULES = {
   jd: {
     presence: { allowEmpty: false, message: "Job Description cannot be empty" },
   },
+  department_id: {
+    presence: { allowEmpty: false, message: "Department cannot be empty" },
+  },
+  sector_id: {
+    presence: { allowEmpty: false, message: "Sector cannot be empty" },
+  }
 }
 
 export const CREATE_FOR_OTHERS_RULES = {

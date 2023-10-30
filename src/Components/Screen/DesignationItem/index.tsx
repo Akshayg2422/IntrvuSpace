@@ -132,7 +132,7 @@ function DesignationItem({
                     </div>
                   </div>
                   {item.job_description.details.length < VIEW_MORE_LENGTH ||
-                  updatedJdDetails.isActive ? (
+                    updatedJdDetails.isActive ? (
                     <div className="mt-3 mb-2" style={{ fontSize: "14px" }}>
                       <span> {item.job_description.details} </span>
                       {updatedJdDetails.isActive && <span
