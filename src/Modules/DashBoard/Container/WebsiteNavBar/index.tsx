@@ -46,6 +46,21 @@ function WebsiteNavBar() {
           navbar
           toggler="#navbar-collapse"
         >
+          <div className="d-flex justify-content-end">
+          <button
+            aria-controls="navbar-collapse"
+            aria-expanded={false}
+            aria-label="Toggle navigation"
+            className="navbar-toggler d-flex justify-content-end"
+            data-target="#navbar-collapse"
+            data-toggle="collapse"
+            id="navbar-collapse"
+            type="button"
+          >
+            <span />
+            <span />
+          </button>
+          </div>
           <Nav className="ml-auto" navbar>
             {/* <NavLink to="/admin/dashboard" tag={Link}>
             <span className="text-primary tab-font-style">Home</span>

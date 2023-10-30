@@ -24,7 +24,7 @@ function UploadCorporateOpeningsCard() {
 
         <div className={'container-fluid mt-md-7 mt-sm-0 mt-8'}>
 
-            <div className={'row mx-md-5 '}>
+            <div className={'row '}>
                 <div className={'col-lg-5 col-sm-12'}>
                     <div className="mt-2 ml-md-5">
                         <div className={'mb-md-3 mb-sm-0 mb-4'}>
@@ -62,7 +62,7 @@ function UploadCorporateOpeningsCard() {
                     </div>
                 </div>
 
-                <div className={'pt-md-5 pt-sm-0 pt-4 col-lg-5 col-sm-12 ml-md-8'}>
+                <div className={'pt-sm-0 pt-4 col-lg-6 col-sm-12'}>
                     <div>
                         <Image
                             src={image.StreamlinedInterviewAndInsights}
