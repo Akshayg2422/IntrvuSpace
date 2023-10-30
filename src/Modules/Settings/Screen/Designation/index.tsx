@@ -207,9 +207,9 @@ function Designation() {
 
         let is_active = '';
 
-        if (status.value === 'ACV') {
+        if (status.value.id === 'ACV') {
             is_active = 'true';
-        } else if (status.value === 'CSD') {
+        } else if (status.value.id === 'CSD') {
             is_active = 'false';
         }
         const params = {
@@ -279,6 +279,7 @@ function Designation() {
                                 data={STATUS_LIST}
                                 selected={status.value}
                                 onChange={status.onChange}
+                            
                             />
                         </div>
                         <div className='col'>

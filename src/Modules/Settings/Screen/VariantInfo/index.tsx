@@ -64,6 +64,7 @@ import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { saveAs } from "file-saver";
 import "./index.css";
+import { log } from "console";
 
 const OPTIONS = [
   { id: 1, name: "Approve Manually" },
@@ -94,6 +95,8 @@ function VariantInfo() {
     candidatesListNumOfPages,
     candidatesListCurrentPages,
   } = useSelector((state: any) => state.DashboardReducer);
+  console.log(candidatesList,"candidatesList");
+  
 
   const VIEW_MORE_LENGTH = 300;
 
@@ -435,7 +438,7 @@ function VariantInfo() {
 
           {candidatesList &&
           candidatesList?.corporate_candidate_details &&
-          candidatesList?.corporate_candidate_details?.data.length === 0 &&
+          candidatesList?.corporate_candidate_details?.data && candidatesList?.corporate_candidate_details?.data.length === 0 &&
           !isCandidatesExist ? (
             <div className="mt-5 text-center">
               <div>
@@ -698,8 +701,8 @@ function VariantInfo() {
                       </div>
                     </div>
 
-                    {candidatesList?.corporate_candidate_details &&
-                    candidatesList?.corporate_candidate_details?.data.length >
+                    {candidatesList && candidatesList?.corporate_candidate_details &&
+                    candidatesList?.corporate_candidate_details?.data && candidatesList?.corporate_candidate_details?.data.length >
                       0 ? (
                       <div className={"row px-0 mx--4"}>
                         <div
