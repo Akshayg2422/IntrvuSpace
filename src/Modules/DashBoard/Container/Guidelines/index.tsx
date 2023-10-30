@@ -1,9 +1,8 @@
-import React from 'react'
-import { GuidelinesProps } from './interfaces'
-import { Back, Button, Image, Modal } from '@Components'
-import { useModal, useNavigation } from '@Hooks'
 import { icons } from '@Assets'
+import { Button, Modal } from '@Components'
+import { useModal, useNavigation } from '@Hooks'
 import { useSelector } from 'react-redux'
+import { GuidelinesProps } from './interfaces'
 
 const START_INTERVIEW_GUIDELINES = [
     { icon: icons.check, title: "Use of headphones for better quality" },
@@ -100,4 +99,5 @@ function Guidelines({ scheduleInfo = undefined, loading, heading, onClick }: Gui
     );
 }
 
-export { Guidelines };
+export { Guidelines }
+

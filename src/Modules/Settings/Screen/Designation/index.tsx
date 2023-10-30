@@ -228,7 +228,7 @@ function Designation() {
                     </div>
                 ) : corporateSchedules?.details?.corporate_jd_items?.data.length === 0 && !isPositionExist ? (
                     <UploadCorporateOpeningsCard />
-                ) : (<div className='pt-4 mx-sm-7'>
+                ) : (<div className='pt-4 mx-sm-0 mx-3 mx-md-7'>
                     <div className='row pt-6'>
                         <div className='col'>
                             <Input
@@ -250,6 +250,7 @@ function Designation() {
                                 data={STATUS_LIST}
                                 selected={status.value}
                                 onChange={status.onChange}
+
                             />
                         </div>
                         {departmentCorporate && departmentCorporate.length > 0 && <div className='col'>
@@ -290,6 +291,8 @@ function Designation() {
                                             }
                                             }
                                             item={el}
+                                            data={cardData}
+                                            index={index}
                                             onEdit={(designation, role) => {
                                                 setSelectedDesignation(designation);
                                                 dispatch(setSelectedRole(role));
