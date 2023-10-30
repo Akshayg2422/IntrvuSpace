@@ -1,24 +1,24 @@
 /* eslint-disable jsx-a11y/alt-text */
-import React, { useState, useRef, useEffect } from 'react'
+import { Input, InputHeading } from '@Components';
+import { useEffect, useState } from 'react';
 import Autosuggest from 'react-autosuggest';
-import { Input, InputHeading } from '@Components'
-import { ReactAutoCompleteProp } from './interfaces'
-import './custom.css'
+import './custom.css';
+import { ReactAutoCompleteProp } from './interfaces';
 
-// const data = [
-//     { id: 1, title: 'Dummy one', value: 'Dummy Value 1' },
-//     { id: 2, title: 'Dummy onee', value: 'Dummy Value 2' },
-//     { id: 3, title: 'Dummy oneee', value: 'Dummy Value 3' },
-//     { id: 4, title: 'Dummy oneeee', value: 'Dummy Value 4' },
-//     { id: 5, title: 'Dummy oneeeee', value: 'Dummy Value 5' },
-//     { id: 6, title: 'Dummy oneeeeee', value: 'Dummy Value 6' },
-// ];
 
-function ReactAutoComplete({ isMandatory, heading, placeholder, data, state, onAdd, ...rest }: ReactAutoCompleteProp) {
+
+function ReactAutoComplete({ selected, isMandatory, heading, placeholder, data, onSelected, onAdd, ...rest }: ReactAutoCompleteProp) {
+
+
     const [value, setValue] = useState('')
     const [suggestions, setSuggestions] = useState<any>([])
     const [addValue, setAddValue] = useState<any>('')
 
+
+    useEffect(() => {
+        if (selected)
+            setValue(selected);
+    }, [selected])
 
 
     const escapeRegexCharacters = str => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -53,8 +53,7 @@ function ReactAutoComplete({ isMandatory, heading, placeholder, data, state, onA
     };
 
     const onChange = (event, { newValue, method }) => {
-        console.log(newValue + '===newValue');
-
+        onSelected(undefined)
         setValue(newValue)
     };
 
@@ -83,14 +82,17 @@ function ReactAutoComplete({ isMandatory, heading, placeholder, data, state, onA
         return (
             <div className='ml--2'>
                 {
-                    isExist && <span className='h5'>{suggestion.name}</span>
+                    isExist && <span className='h5'>{suggestion.name.charAt(0).toUpperCase() + suggestion.name.slice(1)}</span>
                 }
                 {
-                    !isExist && <h3 className='text-primary align-items-center mb-0' onClick={() => {
-                        console.log(addValue, "check2");
-
-                        onAdd(addValue)
-                    }}>{"ADD NEW"}</h3>
+                    !isExist &&
+                    <h3
+                        className='text-primary align-items-center mb-0'
+                        onClick={() => {
+                            onAdd(addValue)
+                        }}>
+                        {"ADD NEW"}
+                    </h3>
                 }
             </div>
         )
@@ -98,22 +100,16 @@ function ReactAutoComplete({ isMandatory, heading, placeholder, data, state, onA
     };
 
     const onSuggestionSelected = (event, { suggestion }) => {
-
         if (suggestion.isAddNew) {
-            console.log('Add new:', value);
-            state(value)
+            onSelected(undefined)
         }
         else {
-            state(suggestion)
+            onSelected(suggestion)
         }
     };
 
     const getSuggestionValue = (suggestion: any) => {
-        console.log(suggestion);
-
-
         if (suggestion.isAddNew) {
-
             return value;
         }
         return suggestion.name;
@@ -136,4 +132,4 @@ function ReactAutoComplete({ isMandatory, heading, placeholder, data, state, onA
     )
 }
 
-export { ReactAutoComplete }
+export { ReactAutoComplete };

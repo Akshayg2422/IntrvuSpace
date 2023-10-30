@@ -1115,3 +1115,24 @@ export const syncVideo = (params: any) => {
     payload: params,
   };
 };
+
+// corporateScheduleActions
+
+export const postCorporateScheduleActions = (params: any) => {
+  return {
+    type: ActionTypes.POST_CORPORATE_SCHEUDULE_ACTIONS,
+    payload: params,
+  };
+};
+export const postCorporateScheduleActionsSuccess = (response: any) => {
+  return {
+    type: ActionTypes.POST_CORPORATE_SCHEUDULE_ACTIONS_SUCCESS,
+    payload: response,
+  };
+};
+export const postCorporateScheduleActionsFailure = (error: any) => {
+  return {
+    type: ActionTypes.POST_CORPORATE_SCHEUDULE_ACTIONS_FAILURE,
+    payload: error,
+  };
+};

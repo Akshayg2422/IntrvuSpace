@@ -1,4 +1,5 @@
-import { AnimatedImage, Back, Button, Modal, Spinner } from "@Components";
+import { icons } from "@Assets";
+import { AnimatedImage, Back, Button, Image, Modal, Spinner } from "@Components";
 import { useLoader, useModal, useNavigation } from "@Hooks";
 import { CallHeader, CallHeaderMobile, Guidelines, Report } from "@Modules";
 import {
@@ -964,9 +965,15 @@ function Call() {
                       </div>
                     </div>
 
-                    <div className="position-absolute bottom-0 right-0 mr-3 mb-2 align-items-center">
+                    <div className="position-absolute bottom-4 right-0 mr-3 mb-2 align-items-center">
                       <div className="row align-items-end">
                         {renderNetworkRange()}
+                      </div>
+                    </div>
+
+                    <div className="position-absolute bottom-0 right-0 mr-4 mb-2 align-items-center">
+                      <div className="row align-items-end">
+                        <Image src={icons.logoText} height={16}/>
                       </div>
                     </div>
                   </div>
