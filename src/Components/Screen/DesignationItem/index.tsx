@@ -19,8 +19,13 @@ function DesignationItem({
   const { goTo, goBack } = useNavigation();
   const VIEW_MORE_LENGTH = 300;
   const [jdMore, setJdMore] = useState<any>([]);
+  const [updatedJdDetails, setUpdatedJdDetails] = useState<any>({});
 
-  console.log("itemmm==>", item)
+
+  useEffect(() => {
+    setUpdatedJdDetails({ ...item.job_description, isActive: false });
+  }, []);
+
 
   useEffect(() => {
     const dateObj = new Date(item.starts_from);
@@ -145,14 +150,42 @@ function DesignationItem({
                       <span className="pl-1 font-weight-500">Duration</span>
                     </div>
                   </div>
-                  {item.job_description.details.length < VIEW_MORE_LENGTH ? (
+                  {item.job_description.details.length < VIEW_MORE_LENGTH ||
+                  updatedJdDetails.isActive ? (
                     <div className="mt-3 mb-2" style={{ fontSize: "14px" }}>
-                      {item.job_description.details}
+                      <span> {item.job_description.details} </span>
+                      {updatedJdDetails.isActive && <span
+                        className="text-primary font-weight-800 pointer"
+                        onClick={() => {
+                          setUpdatedJdDetails({
+                            ...updatedJdDetails,
+                            isActive: false,
+                          });
+                        }}
+                      >
+                        {"View Less"}
+                      </span>}
                     </div>
                   ) : (
                     <div className="mt-3 mb-2" style={{ fontSize: "14px" }}>
-                      <span className="">{item.job_description.details.slice(0,VIEW_MORE_LENGTH)}... </span>
-                      <span className="text-primary font-weight-800">{"View More"}</span>
+                      <span className="">
+                        {item.job_description.details.slice(
+                          0,
+                          VIEW_MORE_LENGTH
+                        )}
+                        ...{" "}
+                      </span>
+                      <span
+                        className="text-primary font-weight-800 pointer"
+                        onClick={() => {
+                          setUpdatedJdDetails({
+                            ...updatedJdDetails,
+                            isActive: true,
+                          });
+                        }}
+                      >
+                        {"View More"}
+                      </span>
                     </div>
                   )}
                 </div>

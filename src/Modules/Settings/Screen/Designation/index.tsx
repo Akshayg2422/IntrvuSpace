@@ -245,7 +245,7 @@ function Designation() {
     };
 
     console.log('status.onChangestatus.onChange----------------', status.value)
-    console.log("isPositionExist===>", isPositionExist)
+    
 
     return (
         <>
