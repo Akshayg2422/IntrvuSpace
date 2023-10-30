@@ -275,6 +275,7 @@ function Designation() {
                                 data={STATUS_LIST}
                                 selected={status.value}
                                 onChange={status.onChange}
+                            
                             />
                         </div>
                         {departmentCorporate && departmentCorporate.length > 0 && <div className='col'>
