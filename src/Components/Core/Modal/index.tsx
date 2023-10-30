@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { ModalProps } from "./interfaces";
 import { Modal as RsModal } from "reactstrap";
-import {Image} from '@Components'
+import { Image } from '@Components'
 import { icons } from "@Assets";
 
 function Modal({ isOpen, children, title, size = "lg", style, onClose, ...rest }: ModalProps) {
@@ -39,21 +39,21 @@ function Modal({ isOpen, children, title, size = "lg", style, onClose, ...rest }
           {title && <div className='display-3 text-secondary font-weight-700'>
             {title}
           </div>}
-          <button
-
-            aria-label={"Close"}
-            className={"close"}
-            data-dismiss={"modal"}
-            type={"button"}
-            onClick={() => {
-              if (onClose) {
-                onClose();
-              }
-            }}
-          >
-            <Image src={icons.close} height={20} width={20}/>
-
-          </button>
+          {onClose &&
+            <button
+              aria-label={"Close"}
+              className={"close"}
+              data-dismiss={"modal"}
+              type={"button"}
+              onClick={() => {
+                if (onClose) {
+                  onClose();
+                }
+              }}
+            >
+              <Image src={icons.close} height={20} width={20} />
+            </button>
+          }
         </div>
         <div className="modal-body scroll-hidden" style={{ ...style, marginTop: "0px" }}>
           {children}

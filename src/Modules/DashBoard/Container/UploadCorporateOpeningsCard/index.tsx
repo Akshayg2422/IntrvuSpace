@@ -33,7 +33,7 @@ function UploadCorporateOpeningsCard() {
                                 Interviews & Insights
                             </span>
                         </div>
-                        <div style={{maxWidth:'75%'}}  className={'text-default font-weight-500 mb-md-3 mb-sm-0 mb-4'}>
+                        <div style={{ maxWidth: '75%' }} className={'text-default font-weight-500 mb-md-3 mb-sm-0 mb-4'}>
                             Get access to interview video recordings and detailed curated reports on Candidates for wach interview
                         </div>
 
@@ -48,7 +48,7 @@ function UploadCorporateOpeningsCard() {
                                             <span
                                                 className="col-11 text-secondary m-0 p-0"
                                             >
-                                                <p style={{ lineHeight: '18px' }}  className={'font-weight-700'}>{item.description}<small style={{ fontSize: '15px' }} className={'pl-1 font-weight-500'}>{item.description2}</small></p>
+                                                <p style={{ lineHeight: '18px' }} className={'font-weight-700'}>{item.description}<small style={{ fontSize: '15px' }} className={'pl-1 font-weight-500'}>{item.description2}</small></p>
                                             </span>
                                         </div>
                                     </>
