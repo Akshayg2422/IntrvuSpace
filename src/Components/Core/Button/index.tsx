@@ -23,7 +23,7 @@ function Button({
       {variant === "default" && (
         <>
           <RSButton
-            className={buttonOutline?"btn btn-outline-primary":"btn-btn-primary"}
+            className={buttonOutline ? "btn btn-outline-primary" : "btn-btn-primary"}
             size={size}
             color={color}
             {...rest}
