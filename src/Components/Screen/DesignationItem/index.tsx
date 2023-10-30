@@ -20,7 +20,6 @@ function DesignationItem({
   const VIEW_MORE_LENGTH = 300;
   const [jdMore, setJdMore] = useState<any>([]);
 
-  console.log("itemmm==>", item)
 
   useEffect(() => {
     const dateObj = new Date(item.starts_from);
@@ -151,7 +150,7 @@ function DesignationItem({
                     </div>
                   ) : (
                     <div className="mt-3 mb-2" style={{ fontSize: "14px" }}>
-                      <span className="">{item.job_description.details.slice(0,VIEW_MORE_LENGTH)}... </span>
+                      <span className="">{item.job_description.details.slice(0, VIEW_MORE_LENGTH)}... </span>
                       <span className="text-primary font-weight-800">{"View More"}</span>
                     </div>
                   )}

@@ -19,11 +19,8 @@ function Designation() {
 
     const { sectors } = useSelector((state: any) => state.DashboardReducer)
     const { sectorsCorporate, departmentCorporate, createOpening, corporateSchedules, corporateScheduleNumOfPages, corporateScheduleCurrentPages } = useSelector((state: any) => state.DashboardReducer)
-    console.log('action.payload?.details.corporate_jd_items.num_pages', corporateScheduleNumOfPages);
-    console.log('action.payload?.details.corporate_jd_items.next_page', corporateScheduleCurrentPages);
 
 
-    console.log('corporateSchedules---------->', JSON.stringify(corporateSchedules));
 
 
     const { goTo, goBack } = useNavigation()
@@ -113,7 +110,8 @@ function Designation() {
             addSectorCorporate({
                 params,
                 onSuccess: (response) => () => {
-                    console.log(response, "addSectorCorporateApiHandler");
+                    const { details } = response
+                    setSelectedSector(details);
                     getSectorsCorporateApiHandler();
                 },
                 onError: (error) => () => {
@@ -128,7 +126,6 @@ function Designation() {
             getDepartmentCorporate({
                 params,
                 onSuccess: (response: any) => () => {
-                    console.log('getDepartmentCorporate-------->', JSON.stringify(response))
                 },
                 onError: () => () => {
                 },
@@ -137,15 +134,13 @@ function Designation() {
     }
 
     const addDepartmentApiHandler = (value) => {
-        console.log(value, "apiCheck");
-
         const params = { name: value }
         dispatch(
             addDepartmentCorporate({
                 params,
-                onSuccess: (response) => () => {
-                    console.log(response, 'addDepartapiHandler');
-
+                onSuccess: (response: any) => () => {
+                    const { details } = response
+                    setSelectedDepartment(details);
                     getDepartmentCorporateApiHandler();
                 },
                 onError: (error) => () => {
@@ -157,14 +152,16 @@ function Designation() {
     const createCorporateScheduleApiHandler = () => {
 
         const params = {
-            sector_id: selectSector.id,
-            department_id: selectDepartment.id,
+            ...(selectSector ? { sector_id: selectSector.id } : {}),
+            ...(selectDepartment ? { department_id: selectDepartment?.id } : {}),
             role: position.value,
             experience: experience,
             jd: jd.value,
             vacancies: vacancies,
             interview_duration: interviewDuration,
         }
+
+
         const validation = validate(CREATE_CORPORATE_SCHEDULE_RULES, params)
 
         if (ifObjectExist(validation)) {
@@ -203,7 +200,6 @@ function Designation() {
     }
 
     const getCorporateScheduleApiHandler = (page_number: number) => {
-        console.log('getCorporateScheduleApiHandler----------->', getCorporateScheduleApiHandler)
 
         let is_active = '';
 
@@ -244,8 +240,6 @@ function Designation() {
         setChangeColorButton(updatedButtons);
     };
 
-    console.log('status.onChangestatus.onChange----------------', status.value)
-    console.log("isPositionExist===>", isPositionExist)
 
     return (
         <>
@@ -437,24 +431,24 @@ function Designation() {
                         <div className='row'>
                             <div className='col'>
                                 <ReactAutoComplete
-
+                                    selected={selectSector?.name}
                                     data={sectorsCorporate}
                                     heading={"Sector"}
                                     onAdd={(value) => {
                                         addSectorCorporateApiHandler(value)
                                     }}
-                                    state={setSelectedSector}
+                                    onSelected={setSelectedSector}
                                 />
                             </div>
                             <div className='col'>
                                 <ReactAutoComplete
-
+                                    selected={selectDepartment?.name}
                                     data={departmentCorporate}
                                     heading={"Department"}
-                                    onAdd={(value) => {
+                                    onAdd={(value: string) => {
                                         addDepartmentApiHandler(value)
                                     }}
-                                    state={setSelectedDepartment}
+                                    onSelected={setSelectedDepartment}
                                 />
                             </div>
                         </div>
