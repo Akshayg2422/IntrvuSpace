@@ -1,7 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { Divider, Button, showToast, Image } from "@Components";
+import { Divider, Button, showToast, Image, Input } from "@Components";
 import React, { useEffect, useState } from "react";
-import { Input } from "reactstrap";
 import { LoginSideContent } from "../../Container";
 import { useInput, useKeyPress, useLoader, useNavigation } from "@Hooks";
 import { ROUTES } from "@Routes";
@@ -133,14 +132,14 @@ function Register() {
                   </div>
 
                   <div>
-                    <div className="input-group mb-4">
-                      <input
+                    <div className="">
+                      <Input
                         type="number"
                         className="form-control rounded-sm"
                         placeholder="Phone"
                         onChange={mobileNumber.onChange}
+                        value = {mobileNumber.value}
                         maxLength={10}
-                        max={10}
                       />
                     </div>
                   </div>
