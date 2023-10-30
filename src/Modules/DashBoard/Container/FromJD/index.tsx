@@ -1,15 +1,15 @@
 /* eslint-disable no-empty-pattern */
 /* eslint-disable react-hooks/rules-of-hooks */
 import { icons } from '@Assets';
-import { Button, Card, Checkbox, Divider, Image, Input, InputHeading, Modal, Radio, Spinner, TextArea, showToast } from '@Components';
-import { useInput, useLoader, useModal, useNavigation } from '@Hooks';
-import { AnalyzingAnimation, GenerateModal, PreparingYourInterview, UploadJdCard } from '@Modules';
+import { Button, Card, Divider, DropDown, Input, InputHeading, Modal, Spinner, TextArea, showToast } from '@Components';
+import { useDropDown, useInput, useLoader, useModal, useNavigation } from '@Hooks';
+import { PreparingYourInterview, UploadJdCard } from '@Modules';
 import { canStartInterview, createNewJdSchedule, getJdItemList, hideCreateJdModal, postJdVariant, selectedScheduleId, showCreateJddModal } from '@Redux';
 import { ROUTES } from '@Routes';
-import { FROM_JD_RULES, formatDateTime, getValidateError, ifObjectExist, validate } from '@Utils';
-import React, { useEffect, useState, useRef } from 'react';
+import { EXPERIENCE_LIST, FROM_JD_RULES, formatDateTime, getValidateError, ifObjectExist, validate } from '@Utils';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import './index.css'
+import './index.css';
 
 const interviewDurations: any = [
     { id: 1, text: 'Quick', subText: '5 mins', value: 5, isActive: false },
@@ -17,11 +17,6 @@ const interviewDurations: any = [
     { id: 3, text: 'Medium', subText: '15 mins', value: 15, isActive: false },
     { id: 4, text: 'Long', subText: '30 mins', value: 30, isActive: false },
 ];
-
-
-
-
-const experienceInNumber: number[] = Array.from({ length: 31 }, (_, index) => index);
 
 
 const PLACE_HOLDER = {
@@ -46,7 +41,7 @@ function FromJD() {
 
     const { goTo } = useNavigation();
     const position = useInput('');
-    const [experience, setExperience] = useState('0')
+    const experience = useDropDown(EXPERIENCE_LIST[0])
     const jd = useInput('');
     const sector = useInput('');
     const generateJdModal = useModal(false);
@@ -101,7 +96,7 @@ function FromJD() {
             sector_name: sector.value,
             position: position.value,
             interview_duration: selectedDuration,
-            experience: experience,
+            experience: experience?.value?.id,
             jd: jd.value
         }
 
@@ -154,7 +149,7 @@ function FromJD() {
 
     function resetValues() {
         position.set('')
-        setExperience('')
+        experience.set({})
         jd.set('')
         sector.set('')
         setSelectedDuration('')
@@ -249,18 +244,17 @@ function FromJD() {
             intervalIdRef.current = null;
         }
     };
-    console.log('1111111111111111', experience);
 
     const handleItemClick = (index) => {
         const updatedButtons = changeColorButton.map((item, i) => {
-          if (i === index) {
-            return { ...item, isActive: true };
-          } else {
-            return { ...item, isActive: false };
-          }
+            if (i === index) {
+                return { ...item, isActive: true };
+            } else {
+                return { ...item, isActive: false };
+            }
         });
         setChangeColorButton(updatedButtons);
-      };
+    };
 
 
     return (
@@ -298,11 +292,11 @@ function FromJD() {
 
                                     return (
                                         <Card className="mt-5 rounded-sm mx-md-5"
-                                        style={{
-                                            borderWidth: "1px",
-                                            borderColor: "#d3deff",
-                                            backgroundColor: "transparent"
-                                        }}>
+                                            style={{
+                                                borderWidth: "1px",
+                                                borderColor: "#d3deff",
+                                                backgroundColor: "transparent"
+                                            }}>
                                             <div className='px-md-4 py-md-3'>
                                                 <div className={'d-flex justify-content-between'}  >
                                                     <div className='mt-2'>
@@ -563,19 +557,17 @@ function FromJD() {
                             </div>
 
                             <div className={'col-md-4 col-sm-0 col-12 mb-sm-0 mb-4'}>
-                                <InputHeading heading={'Experience'} />
-                                <select
-                                    id="experience"
-                                    value={experience}
-                                    onChange={(e) => setExperience(e.target.value)}
-                                    className={`form-control ${experience.length === 0 ? 'text-muted' : 'text-black'} rounded-sm`}
-                                >
-                                    {Array.from({ length: 31 }, (_, index) => (
-                                        <option key={index} value={index.toString()}>
-                                            {index === 0 ? 'Fresher' : index}
-                                        </option>
-                                    ))}
-                                </select>
+                                <div className='col-sm-4' style={{
+                                    zIndex: 1
+                                }}>
+                                    <DropDown
+                                        heading={'Experience'}
+                                        id={'experience'}
+                                        data={EXPERIENCE_LIST}
+                                        selected={experience?.value}
+                                        onChange={experience.onChange}
+                                    />
+                                </div>
                             </div>
                         </div>
 
@@ -598,18 +590,19 @@ function FromJD() {
                         <div className={'mb-sm-4'}>
                             <InputHeading heading={'Interview Duration'} />
                             <div className='d-flex flex-wrap justify-content-between'>
-                                    {
-                                        changeColorButton.map((item, index) => {
-                                            return <div className='mb-4 mb-sm-0'>
-                                                <Button text={item.subText} className={`${item.isActive ? "btn-outline-primary" : "btn-outline-light-gray text-default"} rounded-sm px-sm-4`} style={{ width: "140px" }} onClick={() => {
-                                                    setSelectedDuration(item.value)
-                                                    
-                                                    handleItemClick(index)}} />
-                                                
-                                            </div>
-                                        })
-                                    }
-                                </div>
+                                {
+                                    changeColorButton.map((item, index) => {
+                                        return <div className='mb-4 mb-sm-0'>
+                                            <Button text={item.subText} className={`${item.isActive ? "btn-outline-primary" : "btn-outline-light-gray text-default"} rounded-sm px-sm-4`} style={{ width: "140px" }} onClick={() => {
+                                                setSelectedDuration(item.value)
+
+                                                handleItemClick(index)
+                                            }} />
+
+                                        </div>
+                                    })
+                                }
+                            </div>
                         </div>
 
                         <div className={'col m-0 p-0'}>
