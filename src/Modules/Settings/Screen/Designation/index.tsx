@@ -89,7 +89,7 @@ function Designation() {
         // getSectorsApiHandler();
         getSectorsCorporateApiHandler();
         getDepartmentCorporateApiHandler();
-        dispatch(fetchCandidatesCorporateSuccess(undefined))
+        // dispatch(fetchCandidatesCorporateSuccess(undefined))
     }, [])
 
     const getSectorsCorporateApiHandler = () => {
@@ -303,7 +303,7 @@ function Designation() {
                         </div>
                     </div>
 
-                    <div className='row pt-5 '>
+                    <div className='row pt-4 '>
                         {cardData && cardData.length > 0 ? (
                             cardData.map((el: any, index: number) => {
                                 return (
@@ -345,7 +345,7 @@ function Designation() {
                     <PageNation
                         currentPage={corporateScheduleCurrentPages}
                         noOfPage={corporateScheduleNumOfPages}
-                        isPagination={true}
+                        isPagination={corporateScheduleNumOfPages > 1}
                         paginationNumberClick={(currentPage) => {
                             getCorporateScheduleApiHandler(paginationHandler("current", currentPage));
                         }}

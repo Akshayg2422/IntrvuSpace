@@ -1102,3 +1102,16 @@ export const fetchCandidatesCorporateFailure = (error: any) => {
     payload: error,
   };
 };
+
+
+
+/**
+ *  reset interview
+ */
+
+export const syncVideo = (params: any) => {
+  return {
+    type: ActionTypes.SYNC_VIDEO,
+    payload: params,
+  };
+};
