@@ -196,6 +196,9 @@ function Designation() {
         position.set('')
         vacancies.set('')
         setInterviewDuration('')
+        setChangeColorButton(interviewDurations)
+        setSelectedSector("")
+        setSelectedDepartment("")
     }
 
     const getCorporateScheduleApiHandler = (page_number: number) => {
@@ -306,6 +309,8 @@ function Designation() {
                                     <div className='col-sm-12 col-lg-12 mb-3' key={index}>
                                         <DesignationItem
                                             item={el}
+                                            data = {cardData}
+                                            index = {index}
                                             onEdit={(designation, role) => {
                                                 setSelectedDesignation(designation);
                                                 dispatch(setSelectedRole(role));
