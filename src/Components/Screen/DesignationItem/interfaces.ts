@@ -6,4 +6,5 @@ export interface DesignationItemProps {
     onClick?: () => void;
     data?: any;
     index?: number
+    onViewMore?: (status) => void
 }
