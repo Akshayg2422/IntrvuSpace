@@ -5,6 +5,7 @@ import {
   ButtonGroup,
   CommonTable,
   Divider,
+  DropDown,
   DropDownIcon,
   Heading,
   Image,
@@ -47,15 +48,11 @@ const NOTE = [
 ];
 
 const REPORT_TYPE = [
-  { id: "Basic Report", name: "Basic Report", value: "Basic Report" },
-  { id: "Detailed Report", name: "Detailed Report", value: "Detailed Report" },
+  { id: "BR", text: "Basic Report"},
+  { id: "DR", text: "Detailed Report"},
 ];
 
 function Report() {
-  // const FILTER = [
-  //   { id: 1, title: "Basic Report" },
-  //   { id: 2, title: "Detailed Report" },
-  // ];
 
   const { schedule_id } = useParams();
 
@@ -77,13 +74,12 @@ function Report() {
   const [cardHeight, setCardHeight] = useState<any>(null);
   const [percentage, setPercentage] = useState<any>({});
   const [fileName, setFileName] = useState("");
-  const [reportType, setReportType] = useState(REPORT_TYPE[0].id);
-
-  console.log("reportType", reportType);
+  // const [reportType, setReportType] = useState(REPORT_TYPE[0].id);
+  const reportType = useDropDown(REPORT_TYPE[0]);
 
   useEffect(() => {
     getBasicReportData();
-  }, [reportType]);
+  }, [reportType.value.id]);
 
   useEffect(() => {
     if (basicReportData) {
@@ -120,7 +116,7 @@ function Report() {
     basicReportLoader.show();
     const params = {
       schedule_id: schedule_id,
-      ...(reportType === "Detailed Report" && { is_detailed: true }),
+      ...(reportType.value.id === "DR" && { is_detailed: true }),
     };
 
     dispatch(
@@ -128,7 +124,7 @@ function Report() {
         params,
         onSuccess: (success) => () => {
           basicReportLoader.hide();
-          console.log("success===>", success.details);
+          // console.log("success===>", success.details);
           setBasicReportData(success.details);
 
           // const {
@@ -251,7 +247,6 @@ function Report() {
     setCardHeight(heightRef?.current?.offsetHeight);
   }, []);
 
-  console.log("cardheight", cardHeight);
 
   function removeDuplicates() {
     let count = 0;
@@ -426,7 +421,6 @@ function Report() {
                             {el?.suggestions?.covered_not_valid?.length > 0 &&
                               el?.suggestions?.covered_not_valid?.map(
                                 (items) => {
-                                  console.log("9090909e333333333333", items);
                                   return (
                                     <>
                                       <li>{items}</li>
@@ -510,14 +504,18 @@ function Report() {
       <div className="d-flex flex-column px-sm-6 px-2 py-3" ref={componentRef}>
         <div className="position-relative">
           <div className="col-sm-3 position-absolute top-4 left-0 p-0">
-            <DropDownIcon
+            <DropDown
+              // data={REPORT_TYPE}
+              // value={reportType}
+              // onChange={(e) => {
+              //   setReportType(e.target.value);
+              // }}
+              // style={{ height: "44px", borderColor: "#727586" }}
+              id={"status"}
+              // heading={"Status"}
               data={REPORT_TYPE}
-              value={reportType}
-              onChange={(e) => {
-                setReportType(e.target.value);
-              }}
-              style={{ height: "44px", borderColor: "#727586" }}
-              className={"rounded-sm pb-2 pr-3 text-default "}
+              selected={reportType.value}
+              onChange={reportType.onChange}
             />
           </div>
           <div className="position-relative mt-7 mt-sm-0">
@@ -572,7 +570,7 @@ function Report() {
           </div>
         </div>
 
-        {reportType === "Basic Report" ? (
+        {reportType.value.id === "BR" ? (
           <div className="mt-md-6 p-0">
             <div className="mx-0 pb-0 mb--2 pt-5 pb-md-5">
               <div className="row">
@@ -611,8 +609,6 @@ function Report() {
                 {basicReportData.report_other_analytics &&
                   Object.keys(basicReportData.report_other_analytics)?.map(
                     (heading) => {
-                      console.log(heading, "heading");
-
                       return (
                         <div className="col-sm-3 ">
                           <Card
@@ -781,7 +777,7 @@ function Report() {
             </div>
           </div>
 
-          {reportType === "Detailed Report" && (
+          {reportType.value.id === "DR" && (
             <>
               <div className="pt-5 text-secondary d-flex justify-content-between align-items-center font-weight-bolder">
                 <span style={{ fontSize: 26 }}>{"Skill Matrix Report"}</span>
