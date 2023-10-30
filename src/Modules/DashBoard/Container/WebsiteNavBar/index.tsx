@@ -24,24 +24,23 @@ function WebsiteNavBar() {
     >
       <Container>
         <NavbarBrand to="/" tag={Link}>
-          <div className={""} >
-            {/* <img src={icons.logoText} alt="Logo" style={{ height: '20%', width: '20%' }} /> */}
+          <div className="d-flex justify-content-between">
+            <img className={'d-none d-lg-block d-md-block d-xl-block'} src={icons.logoText} alt="Logo" style={{ height: '20%', width: '20%' }} />
+            <img className={'d-block d-md-none d-lg-none d-xl-none'} src={icons.logoText} alt="Logo" style={{ height: '30%', width: '30%' }} />
+            <button
+              aria-controls="navbar-collapse"
+              aria-expanded={false}
+              aria-label="Toggle navigation"
+              className="navbar-toggler mr--4"
+              data-target="#navbar-collapse"
+              data-toggle="collapse"
+              id="navbar-collapse"
+              type="button"
+            >
+              <Image height={30} width={30} src={icons.navbarToggler} />
+            </button>
           </div>
         </NavbarBrand>
-        <button
-          aria-controls="navbar-collapse"
-          aria-expanded={false}
-          aria-label="Toggle navigation"
-          className="navbar-toggler"
-          data-target="#navbar-collapse"
-          data-toggle="collapse"
-          id="navbar-collapse"
-          type="button"
-        >
-          <div className={"pt-md-2"}>
-            <Image height={30} width={30} src={icons.navbarToggler} />
-          </div>
-        </button>
         <UncontrolledCollapse
           className="navbar-custom-collapse"
           navbar

@@ -282,6 +282,7 @@ function VariantInfo() {
                   fontSize: "15px",
                   width: "110px",
                 }}
+                onClick={()=>handleNextStep(el)}
               />
             </div>
           ),
