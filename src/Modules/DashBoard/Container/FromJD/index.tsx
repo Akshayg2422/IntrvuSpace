@@ -568,7 +568,7 @@ function FromJD() {
                                     id="experience"
                                     value={experience}
                                     onChange={(e) => setExperience(e.target.value)}
-                                    className={`form-control ${experience.length === 0 ? 'text-gray' : 'text-black'} rounded-sm`}
+                                    className={`form-control ${experience.length === 0 ? 'text-muted' : 'text-black'} rounded-sm`}
                                 >
                                     {Array.from({ length: 31 }, (_, index) => (
                                         <option key={index} value={index.toString()}>
