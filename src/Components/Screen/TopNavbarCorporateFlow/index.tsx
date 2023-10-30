@@ -85,20 +85,23 @@ function TopNavbarCorporateFlow() {
             >
                 <div className="container-fluid mx-md-3 mx-sm-0 mx-2">
                     <NavbarBrand tag={Link}>
-                        <img src={icons.logoText} alt="Logo" style={{ height: '20%', width: '20%' }} />
+                        <div className="d-flex justify-content-between">
+                            <img className={'d-none d-lg-block d-md-block d-xl-block'} src={icons.logoText} alt="Logo" style={{ height: '20%', width: '20%' }} />
+                            <img className={'d-block d-md-none d-lg-none d-xl-none'} src={icons.logoText} alt="Logo" style={{ height: '30%', width: '30%' }} />
+                            <button
+                                aria-controls="navbar-collapse"
+                                aria-expanded={false}
+                                aria-label="Toggle navigation"
+                                className="navbar-toggler mr--4"
+                                data-target="#navbar-collapse"
+                                data-toggle="collapse"
+                                id="navbar-collapse"
+                                type="button"
+                            >
+                                <Image height={30} width={30} src={icons.navbarToggler} />
+                            </button>
+                        </div>
                     </NavbarBrand>
-                    <button
-                        aria-controls="navbar-collapse"
-                        aria-expanded={false}
-                        aria-label="Toggle navigation"
-                        className="navbar-toggler bg-primary"
-                        data-target="#navbar-collapse"
-                        data-toggle="collapse"
-                        id="navbar-collapse"
-                        type="button"
-                    >
-                        <span className="navbar-toggler-icon navbar-dark" />
-                    </button>
                     <UncontrolledCollapse
                         className="navbar-custom-collapse"
                         navbar
