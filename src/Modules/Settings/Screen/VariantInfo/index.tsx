@@ -79,11 +79,11 @@ const MODIFY_OPTION = [
 ];
 
 export const CANDIDATE_STATUS = [
-  { id: 'ALL', text: 'All' },
-  { id: 'RJT', text: 'Rejected' },
-  { id: 'SEL', text: 'Selected' },
-  { id: 'NA', text: 'Not Attended' },
-]
+  { id: "ALL", text: "All" },
+  { id: "RJT", text: "Rejected" },
+  { id: "SEL", text: "Selected" },
+  { id: "NA", text: "Not Attended" },
+];
 
 function VariantInfo() {
   const { goBack } = useNavigation();
@@ -273,7 +273,7 @@ function VariantInfo() {
               {el?.status_note}
             </div>
           ),
-          "    ": <div className={""}>{handleNextStep(el)}</div>,
+
           " ": (
             <div className="">
               <Button
@@ -285,6 +285,7 @@ function VariantInfo() {
                   fontSize: "15px",
                   width: "110px",
                 }}
+                onClick={()=> handleNextStep(el)}
               />
             </div>
           ),
@@ -378,12 +379,11 @@ function VariantInfo() {
   };
 
   const modifyOptionsHandler = (option: any) => {
-    console.log("optionnnsss==>", option)
-
-  }
+    console.log("optionnnsss==>", option);
+  };
 
   console.log("jdmoree===>", jdMore);
-  console.log("candidatesList==>",candidatesList)
+  console.log("candidatesList==>", candidatesList);
 
   return (
     <>
@@ -425,13 +425,13 @@ function VariantInfo() {
                 </span>
               </div>
               <div className="pl-3">
-              <MenuBar
-                menuData={MODIFY_OPTION}
-                onClick={(action) => {
-                  modifyOptionsHandler(action);
-                }}
-                toggleIcon={icons.more}
-              />
+                <MenuBar
+                  menuData={MODIFY_OPTION}
+                  onClick={(action) => {
+                    modifyOptionsHandler(action);
+                  }}
+                  toggleIcon={icons.more}
+                />
               </div>
             </div>
           </div>
@@ -701,8 +701,10 @@ function VariantInfo() {
                       </div>
                     </div>
 
-                    {candidatesList && candidatesList?.corporate_candidate_details &&
-                    candidatesList?.corporate_candidate_details?.data && candidatesList?.corporate_candidate_details?.data.length >
+                    {candidatesList &&
+                    candidatesList?.corporate_candidate_details &&
+                    candidatesList?.corporate_candidate_details?.data &&
+                    candidatesList?.corporate_candidate_details?.data.length >
                       0 ? (
                       <div className={"row px-0 mx--4"}>
                         <div
@@ -711,7 +713,7 @@ function VariantInfo() {
                           }
                         >
                           <CommonTable
-                            isPagination = {candidatesListNumOfPages > 1}
+                            isPagination={candidatesListNumOfPages > 1}
                             tableDataSet={
                               candidatesList?.corporate_candidate_details
                             }
@@ -899,50 +901,52 @@ function VariantInfo() {
         onClose={addNewCandidateModal.hide}
       >
         <div className="row  m-0 p-0">
-        <div className="col-xl-12 d-flex bg-white align-items-center justify-content-center  my-sm-0 my-4">
-          <div className="col-12 col-md-8 col-lg-6">
-          <Heading heading={'Add Candidate'} style={{fontSize: '26px', fontWeight: 800, margin: 0}}/>
-          <div className="text-center mt-4">
-            <Input
-              placeholder={"First Name"}
-              value={firstName.value}
-              onChange={firstName.onChange}
-            />
+          <div className="col-xl-12 d-flex bg-white align-items-center justify-content-center  my-sm-0 my-4">
+            <div className="col-12 col-md-8 col-lg-6">
+              <Heading
+                heading={"Add Candidate"}
+                style={{ fontSize: "26px", fontWeight: 800, margin: 0 }}
+              />
+              <div className="text-center mt-4">
+                <Input
+                  placeholder={"First Name"}
+                  value={firstName.value}
+                  onChange={firstName.onChange}
+                />
+              </div>
+              <div className="">
+                <Input
+                  placeholder={"Last Name "}
+                  value={lastName.value}
+                  onChange={lastName.onChange}
+                />
+              </div>
+              <div>
+                <Input
+                  placeholder={"Mobile Number"}
+                  maxLength={10}
+                  type={"number"}
+                  value={mobileNumber.value}
+                  onChange={mobileNumber.onChange}
+                />
+              </div>
+              <div>
+                <Input
+                  placeholder={"Email"}
+                  value={email.value}
+                  onChange={email.onChange}
+                />
+              </div>
+              <div className={"text-center pt-3"}>
+                <Button
+                  size={"md"}
+                  text={"Submit"}
+                  onClick={generateNewCandidateHandler}
+                  style={{ borderRadius: 4, paddingLeft: 70, paddingRight: 70 }}
+                />
+              </div>
+            </div>
           </div>
-          <div className="">
-            <Input
-              placeholder={"Last Name "}
-              value={lastName.value}
-              onChange={lastName.onChange}
-            />
-          </div>
-          <div>
-            <Input
-              placeholder={"Mobile Number"}
-              maxLength={10}
-              type={"number"}
-              value={mobileNumber.value}
-              onChange={mobileNumber.onChange}
-            />
-          </div>
-          <div>
-            <Input
-              placeholder={"Email"}
-              value={email.value}
-              onChange={email.onChange}
-            />
-          </div>
-          <div className={"text-center pt-3"}>
-          <Button
-            size={"md"}
-            text={"Submit"}
-            onClick={generateNewCandidateHandler}
-            style={{ borderRadius: 4, paddingLeft: 70, paddingRight: 70 }}
-          />
-        </div>
-        </div>
-        
-        </div>
         </div>
       </Modal>
 
