@@ -47,19 +47,19 @@ function Guidelines({ scheduleInfo = undefined, loading, heading, onClick }: Gui
                                     <small className="pl-2 m-0 font-weight-500 text-secondary">{step.title}</small>
                                 </div>
                             ))}
-                            {loginDetails?.isLoggedIn && (
-                                <div className="d-flex justify-content-center pr-sm-0 pr-5 mt-md-5 mt-sm-0 mt-2">
-                                    <Button className={'px-5 border border-primary rounded-sm'}
-                                        loading={loading}
-                                        text={!scheduleInfo.is_started ? 'Start Interview' : 'Resume Interview'}
-                                        onClick={() => {
-                                            if (onClick) {
-                                                onClick()
-                                            }
-                                        }}
-                                    />
-                                </div>
-                            )}
+
+                            <div className="d-flex justify-content-center pr-sm-0 pr-5 mt-md-5 mt-sm-0 mt-2">
+                                <Button className={'px-5 border border-primary rounded-sm'}
+                                    loading={loading}
+                                    text={!scheduleInfo.is_started ? 'Start Interview' : 'Resume Interview'}
+                                    onClick={() => {
+                                        if (onClick) {
+                                            onClick()
+                                        }
+                                    }}
+                                />
+                            </div>
+
                         </div>
                     </div>
                 </Modal>

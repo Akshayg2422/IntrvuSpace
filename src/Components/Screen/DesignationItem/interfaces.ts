@@ -4,4 +4,5 @@ export interface DesignationItemProps {
     onEdit?: (parent: any, item: any) => void
     onView?: (item: any) => void
     onClick?: () => void
+    onViewMore?: (status) => void
 }
