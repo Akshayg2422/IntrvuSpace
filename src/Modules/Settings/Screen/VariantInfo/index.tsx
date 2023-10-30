@@ -1,24 +1,18 @@
 import { icons } from "@Assets";
 import {
-  Back,
-  Breadcrumbs,
+  Badge,
   Button,
   Card,
   CommonTable,
-  DateTimePicker,
-  Divider,
-  Input,
-  Modal,
-  NoDataFound,
-  showToast,
-  Image,
-  DropzoneFilePicker,
-  Spinner,
-  Badge,
-  MenuBar,
-  NoRecordsFound,
-  Heading,
   DropDown,
+  DropzoneFilePicker,
+  Heading,
+  Image,
+  Input,
+  MenuBar,
+  Modal,
+  NoRecordsFound,
+  showToast
 } from "@Components";
 import {
   useDropDown,
@@ -26,45 +20,32 @@ import {
   useKeyPress,
   useLoader,
   useModal,
-  useNavigation,
-  useWindowDimensions,
+  useNavigation
 } from "@Hooks";
 import {
-  AnalyzingAnimation,
-  GenerateModal,
-  PreparingYourInterview,
+  PreparingYourInterview
 } from "@Modules";
 import {
   bulkUploadCandidates,
   createSchedule,
   fetchCandidatesCorporate,
-  generateForm,
   getCorporateScheduleDetails,
-  postManualApprovalOnCandidate,
-  selectedScheduleId,
+  postManualApprovalOnCandidate
 } from "@Redux";
 import { ROUTES } from "@Routes";
 import {
   VALIDATE_ADD_NEW_CANDIDATES_RULES,
-  capitalizeFirstLetter,
   convertToUpperCase,
   displayFormatDate,
   downloadFile,
-  filteredName,
-  formatDateTime,
-  getDisplayTimeDateMonthYearTime,
-  getMomentObjFromServer,
   getValidateError,
   ifObjectExist,
   paginationHandler,
-  showMore,
-  validate,
+  validate
 } from "@Utils";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { saveAs } from "file-saver";
 import "./index.css";
-import { log } from "console";
 
 const OPTIONS = [
   { id: 1, name: "Approve Manually" },
@@ -121,11 +102,28 @@ function VariantInfo() {
 
   const preparingInterviewModal = useModal(false);
   const [jdMore, setJdMore] = useState<any>(false);
+  const statusList = [
+    { id: 'ALL', text: 'All' },
+    { id: 'SLD', text: 'Selected' },
+    { id: 'RJD', text: 'Rejected' },
+    { id: 'YTS', text: 'Yet to Start' }
+  ]
+  
+  const statusNote = useDropDown(statusList[0]);
+
+console.log("candidatesListCurrentPages", candidatesListCurrentPages);
+console.log(statusNote, "statusnote");
+
+
 
   useEffect(() => {
     getCorporateScheduleDetailsHandler();
     getCandidatesCorporate(candidatesListCurrentPages);
   }, []);
+  
+  useEffect(() => {
+    getCandidatesCorporate(candidatesListCurrentPages);
+  }, [statusNote.value]);
 
   useEffect(() => {
     if (isCandidatesExist) {
@@ -153,15 +151,25 @@ function VariantInfo() {
   };
 
   const getCandidatesCorporate = (page_number: number) => {
+    // let selectStatusNote = ''
+    // if(statusNote.value.text === 'Selected'){
+    //   selectStatusNote = ''
+    // }
+
+
     const params = {
       corporate_openings_details_id: selectedRole?.id,
       ...(searchCandidate && { q: searchCandidate }),
-      page_number,
+      ...(statusNote.value.text === 'Selected' && {is_approved: true}),
+      ...(statusNote.value.text === 'Rejected' && {is_rejected: true}),
+      ...(statusNote.value.text === 'Yet to Start' && {is_not_attended: true}),
+      page_number, 
     };
     dispatch(
       fetchCandidatesCorporate({
         params,
         onSuccess: (response: any) => () => {
+          setIsCandidatesExist(true)
           // console.log("response candidtae===>", response);
         },
         onError: (error: any) => () => {},
@@ -381,6 +389,8 @@ function VariantInfo() {
   const modifyOptionsHandler = (option: any) => {
     console.log("optionnnsss==>", option);
   };
+
+
 
   console.log("jdmoree===>", jdMore);
   console.log("candidatesList==>", candidatesList);
@@ -638,10 +648,10 @@ function VariantInfo() {
                         </div>
                       </div>
                       <div
-                        className="px-2 row justify-content-between"
+                        className="px-2 d-flex flex-wrap justify-content-between align-items-center"
                         style={{ marginTop: 35 }}
                       >
-                        <div className="col-sm-5">
+                        <div className="col-sm-4">
                           <Input
                             placeHolder={"Name, Email Phone..."}
                             onChange={(e) => {
@@ -655,6 +665,16 @@ function VariantInfo() {
                               setIsCandidatesExist(false);
                             }}
                           />
+                        </div>
+                        <div className="col-sm-3 col mr-3">
+                        <DropDown
+                                className="form-control-md rounded-sm"
+                                // heading={'Status'} 
+                                data={statusList}
+                                selected={statusNote.value}
+                                onChange={statusNote.onChange}
+                            
+                            />
                         </div>
 
                         <div className="row pr-md-5 pr-0 pl-sm-0 pl-4">
@@ -961,3 +981,4 @@ function VariantInfo() {
 }
 
 export { VariantInfo };
+
