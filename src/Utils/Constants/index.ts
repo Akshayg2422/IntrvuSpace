@@ -539,3 +539,11 @@ export const STATUS_LIST = [
   { id: 'CSD', text: 'Closed' },
 ]
 
+
+
+export const EXPERIENCE_LIST = Array.from({ length: 31 }, (_, index) => ({
+  id: index === 0 ? 'Fresher' : index + "",
+  text: (index === 0 ? 'Fresher' : index).toString()
+}));
+
+
