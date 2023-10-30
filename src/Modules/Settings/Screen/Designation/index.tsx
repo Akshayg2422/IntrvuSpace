@@ -1,27 +1,18 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 
-import { Button, DropDown, DesignationItem, Input, Modal, NoDataFound, Breadcrumbs, showToast, TextArea, ReactAutoComplete, Heading, InputHeading, TopNavbarCorporateFlow, Spinner, PageNation } from '@Components';
+import { Button, DesignationItem, DropDown, Heading, Input, InputHeading, Modal, NoDataFound, PageNation, ReactAutoComplete, Spinner, TextArea, TopNavbarCorporateFlow, showToast } from '@Components';
 import { useDropDown, useInput, useKeyPress, useLoader, useModal, useNavigation } from '@Hooks';
-import { CREATE_KNOWLEDGE_GROUP_VARIANT_FAILURE, breadCrumbs, clearBreadCrumbs, createCorporateSchedules, createKnowledgeGroup, createKnowledgeGroupVariant, getDepartmentCorporate, getCorporateSchedules, getKnowledgeGroups, getSectorCorporate, getSectors, setSelectedRole, addSectorCorporate, addDepartmentCorporate, showCreateOpeningsModal, hideCreateOpeningsModal, fetchCandidatesCorporateSuccess } from '@Redux';
+import { UploadCorporateOpeningsCard } from '@Modules';
+import { addDepartmentCorporate, addSectorCorporate, breadCrumbs, clearBreadCrumbs, createCorporateSchedules, getCorporateSchedules, getDepartmentCorporate, getSectorCorporate, hideCreateOpeningsModal, setSelectedRole } from '@Redux';
 import { ROUTES } from '@Routes';
-import { ADD_DESIGNATION_RULES, CREATE_CORPORATE_SCHEDULE_RULES, CREATE_KNOWLEDGE_GROUP_VARIANT_RULES, STATUS_LIST, getDropDownCompanyDisplayData, getValidateError, ifObjectExist, paginationHandler, validate } from '@Utils';
+import { CREATE_CORPORATE_SCHEDULE_RULES, STATUS_LIST, getValidateError, ifObjectExist, paginationHandler, validate, getDropDownCompanyDisplayData, EXPERIENCE_LIST } from '@Utils';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import classnames from 'classnames'
-import { UploadCorporateOpeningsCard } from '@Modules';
-
-
-const PLACE_HOLDER = {
-    "sector": "Software, Banking...",
-}
 
 
 function Designation() {
 
-    const { sectors } = useSelector((state: any) => state.DashboardReducer)
     const { sectorsCorporate, departmentCorporate, createOpening, corporateSchedules, corporateScheduleNumOfPages, corporateScheduleCurrentPages } = useSelector((state: any) => state.DashboardReducer)
-
-
-
 
     const { goTo, goBack } = useNavigation()
     const dispatch = useDispatch()
@@ -44,12 +35,22 @@ function Designation() {
     const description = useInput("");
     const sector = useDropDown({});
     // const experience = useInput('')
-    const [experience, setExperience] = useState("")
+    const experience = useDropDown(EXPERIENCE_LIST[0])
     const jd = useInput('');
     const portalUrl = useInput('');
     const position = useInput('');
     const sectorInput = useInput('');
     const loader = useLoader(false);
+
+    const DEFAULT_VALUE = { id: '-1', text: "All" }
+
+
+    const filterDepartment = useDropDown(DEFAULT_VALUE);
+    const filterSector = useDropDown(DEFAULT_VALUE);
+
+
+
+
     const interviewDurations: any = [
         { id: 1, text: 'Quick', subText: '5 mins', value: 5, isActive: false },
         { id: 2, text: 'Short', subText: '10 mins', value: 10, isActive: false },
@@ -58,7 +59,7 @@ function Designation() {
     ];
 
     const [changeColorButton, setChangeColorButton] = useState<any>(interviewDurations)
-    const [vacancies, setVacancies] = useState<any>('')
+    const vacancies = useInput('1')
     const [interviewDuration, setInterviewDuration] = useState<any>('')
     const [loading, setLoading] = useState(true);
     const status = useDropDown(STATUS_LIST[1]);
@@ -68,7 +69,7 @@ function Designation() {
 
     useEffect(() => {
         getCorporateScheduleApiHandler(corporateScheduleCurrentPages);
-    }, []);
+    }, [filterSector.value, filterDepartment.value, status.value]);
 
 
     useEffect(() => {
@@ -79,14 +80,10 @@ function Designation() {
 
 
 
-
-
     useEffect(() => {
         dispatch(clearBreadCrumbs([]))
-        // getSectorsApiHandler();
         getSectorsCorporateApiHandler();
         getDepartmentCorporateApiHandler();
-        // dispatch(fetchCandidatesCorporateSuccess(undefined))
     }, [])
 
     const getSectorsCorporateApiHandler = () => {
@@ -155,11 +152,13 @@ function Designation() {
             ...(selectSector ? { sector_id: selectSector.id } : {}),
             ...(selectDepartment ? { department_id: selectDepartment?.id } : {}),
             role: position.value,
-            experience: experience,
+            experience: experience.value?.id,
             jd: jd.value,
-            vacancies: vacancies,
+            vacancies: vacancies?.value,
             interview_duration: interviewDuration,
         }
+
+        console.log(JSON.stringify(params));
 
 
         const validation = validate(CREATE_CORPORATE_SCHEDULE_RULES, params)
@@ -192,38 +191,36 @@ function Designation() {
     function resetValues() {
         addRoleModal.hide()
         position.set("")
-        setExperience("")
+        experience.set({})
         jd.set("")
         position.set('')
-        setVacancies('')
+        vacancies.set('')
         setInterviewDuration('')
     }
 
     const getCorporateScheduleApiHandler = (page_number: number) => {
 
-        let is_active = '';
+        let filterStatus: any = undefined;
 
-        if (status.value === 'ACV') {
-            is_active = 'true';
-        } else if (status.value === 'CSD') {
-            is_active = 'false';
+        if (status.value?.id === 'ACV') {
+            filterStatus = { is_Active: true }
+        } else if (status.value?.id === 'CSD') {
+            filterStatus = { is_Active: false };
         }
         const params = {
             position: positionSearch,
             page_number,
-            is_active
-            // sector_id: '',
-            // department_id: ''
+            ...(filterStatus ? filterStatus : {}),
+            ...((filterSector && filterSector.value.id !== '-1') && { sector_id: filterSector?.value?.id }),
+            ...((filterDepartment && filterDepartment.value.id !== '-1') && { sector_id: filterDepartment?.value?.id })
         }
         dispatch(getCorporateSchedules({
             params,
             onSuccess: (response: any) => () => {
                 setCardData(response.details.corporate_jd_items.data)
-                console.log('getCorporateScheduleApiHandler---->', response)
                 setLoading(false)
             },
-            onError: (error) => () => {
-
+            onError: () => () => {
             },
         }))
     }
@@ -240,6 +237,8 @@ function Designation() {
         setChangeColorButton(updatedButtons);
     };
 
+    console.log('rendered');
+
 
     return (
         <>
@@ -251,7 +250,7 @@ function Designation() {
                     </div>
                 ) : corporateSchedules?.details?.corporate_jd_items?.data.length === 0 && !isPositionExist ? (
                     <UploadCorporateOpeningsCard />
-                ) : (<div className='pt-4 mx-sm-7'>
+                ) : (<div className='pt-4 mx-sm-0 mx-3 mx-md-7'>
                     <div className='row pt-6'>
                         <div className='col'>
                             <Input
@@ -275,26 +274,27 @@ function Designation() {
                                 onChange={status.onChange}
                             />
                         </div>
-                        <div className='col'>
+                        {departmentCorporate && departmentCorporate.length > 0 && <div className='col'>
                             <DropDown
                                 id={'department'}
-                                className="form-control-md rounded-sm"
                                 heading={'Department'}
-                            // data={}
-                            // selected={}
-                            // onChange={}
+                                data={[DEFAULT_VALUE, ...getDropDownCompanyDisplayData(departmentCorporate)]}
+                                selected={filterDepartment.value}
+                                onChange={filterDepartment.onChange}
                             />
                         </div>
-                        <div className='col'>
-                            <DropDown
-                                id={'sector'}
-                                className="form-control-md rounded-sm"
-                                heading={'Sector'}
-                            // data={}
-                            // selected={}
-                            // onChange={}
-                            />
-                        </div>
+                        }
+                        {sectorsCorporate && sectorsCorporate.length > 0 &&
+                            <div className='col'>
+                                <DropDown
+                                    id={'sector'}
+                                    heading={'Sector'}
+                                    data={[DEFAULT_VALUE, getDropDownCompanyDisplayData(sectorsCorporate)]}
+                                    selected={filterSector.value}
+                                    onChange={filterSector.onChange}
+                                />
+                            </div>
+                        }
                         <div>
                         </div>
                     </div>
@@ -338,6 +338,7 @@ function Designation() {
                             </div>
                         )}
                     </div>
+
                     <PageNation
                         currentPage={corporateScheduleCurrentPages}
                         noOfPage={corporateScheduleNumOfPages}
@@ -377,30 +378,25 @@ function Designation() {
                                     onChange={position.onChange} />
                             </div>
 
-                            <div className='col-sm-4'>
-                                <InputHeading heading={'Experience'} />
-                                <select
-                                    id="experience"
-                                    value={experience}
-                                    placeholder='Select'
-                                    onChange={(e) => setExperience(e.target.value)}
-                                    className={`form-control ${experience.length === 0 ? 'text-default' : 'text-black'} rounded-sm `}
-                                >
-                                    {Array.from({ length: 31 }, (_, index) => (
-                                        <option key={index} value={index.toString()}>
-                                            {index === 0 ? 'Fresher' : index}
-                                        </option>
-                                    ))}
-                                </select>
+                            <div className='col-sm-4' style={{
+                                zIndex: 1
+                            }}>
+                                <DropDown
+                                    heading={'Experience'}
+                                    id={'experience'}
+                                    data={EXPERIENCE_LIST}
+                                    selected={experience?.value}
+                                    onChange={experience.onChange}
+                                />
                             </div>
                             <div className='col-sm-3 mt-4 mt-sm-0'>
                                 <Input
-
                                     heading={'Vacancies'}
                                     type={'number'}
                                     placeHolder={"0"}
-                                    value={vacancies}
-                                    onChange={(e) => setVacancies(e.target.value)} />
+                                    value={vacancies.value}
+                                    onChange={vacancies.onChange}
+                                />
                             </div>
                         </div>
 

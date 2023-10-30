@@ -141,7 +141,7 @@ export function getDropDownCompanyDisplayData(data: any, key: 'name' | 'title' =
   return data && data?.map((item: any) => {
     return {
       ...item,
-      text: item[key]
+      text: item[key].charAt(0).toUpperCase() + item[key].slice(1)
     }
   })
 }

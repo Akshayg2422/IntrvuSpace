@@ -973,7 +973,7 @@ function Call() {
 
                     <div className="position-absolute bottom-0 right-0 mr-4 mb-2 align-items-center">
                       <div className="row align-items-end">
-                        <Image src={icons.logoText} height={16}/>
+                        <Image src={icons.logoText} height={16} />
                       </div>
                     </div>
                   </div>
