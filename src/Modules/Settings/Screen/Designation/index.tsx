@@ -268,7 +268,7 @@ function Designation() {
                         </div>
                         <div className="col-lg-3 col-md-3 col-sm-12 ">
                             <DropDown
-                                className="form-control-md rounded-sm"
+                                id={'status'}
                                 heading={'Status'}
                                 data={STATUS_LIST}
                                 selected={status.value}
@@ -277,6 +277,7 @@ function Designation() {
                         </div>
                         <div className='col'>
                             <DropDown
+                                id={'department'}
                                 className="form-control-md rounded-sm"
                                 heading={'Department'}
                             // data={}
@@ -286,6 +287,7 @@ function Designation() {
                         </div>
                         <div className='col'>
                             <DropDown
+                                id={'sector'}
                                 className="form-control-md rounded-sm"
                                 heading={'Sector'}
                             // data={}
