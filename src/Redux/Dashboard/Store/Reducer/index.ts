@@ -519,15 +519,15 @@ const DashboardReducer = (state = initialState, action: any) => {
       };
       break;
     case ActionTypes.GET_CORPORATE_SCHEDULES_SUCCESS:
-
       state = {
         ...state,
         corporateSchedules: action.payload,
-        corporateScheduleNumOfPages: action.payload?.details.corporate_jd_items.num_pages,
+        corporateScheduleNumOfPages:
+          action.payload?.details.corporate_jd_items.num_pages,
         corporateScheduleCurrentPages:
           action.payload?.details.corporate_jd_items.next_page === -1
             ? action.payload?.details.corporate_jd_items.num_pages
-            : action.payload?.details.corporate_jd_items.next_page - 1
+            : action.payload?.details.corporate_jd_items.next_page - 1,
       };
       break;
     case ActionTypes.GET_CORPORATE_SCHEDULES_FAILURE:
@@ -641,15 +641,28 @@ const DashboardReducer = (state = initialState, action: any) => {
       state = {
         ...state,
         candidatesList: action.payload?.details,
-        candidatesListNumOfPages: action.payload?.details?.corporate_candidate_details.num_pages,
+        candidatesListNumOfPages:
+          action.payload?.details?.corporate_candidate_details.num_pages,
         candidatesListCurrentPages:
           action.payload?.details.corporate_candidate_details.next_page === -1
             ? action.payload?.details.corporate_candidate_details.num_pages
-            : action.payload?.details.corporate_candidate_details.next_page - 1
+            : action.payload?.details.corporate_candidate_details.next_page - 1,
       };
       break;
     case ActionTypes.FETCH_CANDIDATES_CORPORATE_FAILURE:
       state = { ...state, candidatesList: undefined };
+      break;
+
+    // corporateScheduleActions
+
+    case ActionTypes.POST_CORPORATE_SCHEUDULE_ACTIONS:
+      state = { ...state };
+      break;
+    case ActionTypes.POST_CORPORATE_SCHEUDULE_ACTIONS_SUCCESS:
+      state = { ...state };
+      break;
+    case ActionTypes.POST_CORPORATE_SCHEUDULE_ACTIONS_FAILURE:
+      state = { ...state };
       break;
 
     default:

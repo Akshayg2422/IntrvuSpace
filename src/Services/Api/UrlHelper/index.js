@@ -191,4 +191,8 @@ export const FETCH_CANDIDATES_CORPORATE = ASSISTANT + 'getCandidatesCorporate'
 
 export const URL_SYNC_VIDEO = ASSISTANT + 'syncVideo'
 
+// corporateScheduleActions
+
+export const POST_CORPORATE_SCHEUDULE_ACTIONS = ASSISTANT + 'corporateScheduleActions'
+
 

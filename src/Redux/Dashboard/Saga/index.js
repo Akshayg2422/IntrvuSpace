@@ -861,6 +861,28 @@ function* syncVideoSaga(action) {
   }
 }
 
+// postCorporateScheduleActionsSaga
+
+
+function* postCorporateScheduleActionsSaga(action) {
+  try {
+    const response = yield call(Api.postCorporateScheduleActionsApi, action.payload.params);
+    console.log("responseeee coirpao===>", response)
+    if (response.success) {
+      console.log(JSON.stringify(response));
+      yield put(Action.postCorporateScheduleActionsSuccess(response));
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield put(Action.postCorporateScheduleActionsFailure(response.error_message));
+      yield call(action.payload.onError(response));
+    }
+  } catch (error) {
+    yield put(Action.postCorporateScheduleActionsFailure(error));
+    yield call(action.payload.onError(error));
+  }
+}
+
+
 
 function* DashboardSaga() {
   yield takeLatest(Action.GET_START_CHAT, getChatSaga);
@@ -909,6 +931,8 @@ function* DashboardSaga() {
   yield takeLatest(Action.POST_MANUAL_APPROVALS_ON_CANDIDATE, postManualApprovalOnCandidateSaga);
   yield takeLatest(Action.FETCH_CANDIDATES_CORPORATE, fetchCandidatesCorporateSaga);
   yield takeLatest(Action.SYNC_VIDEO, syncVideoSaga);
+  yield takeLatest(Action.POST_CORPORATE_SCHEUDULE_ACTIONS, postCorporateScheduleActionsSaga);
+
 
 
 
