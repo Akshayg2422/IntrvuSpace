@@ -15,32 +15,13 @@ function DesignationItem({
   onClick,
 }: DesignationItemProps) {
   const MENU = [{ id: 0, name: "Edit", icon: icons.edit }];
-  const [formattedDate, setFormattedDate] = useState("");
   const { goTo, goBack } = useNavigation();
   const VIEW_MORE_LENGTH = 300;
-  const [jdMore, setJdMore] = useState<any>([]);
   const [updatedJdDetails, setUpdatedJdDetails] = useState<any>({});
 
 
   useEffect(() => {
     setUpdatedJdDetails({ ...item.job_description, isActive: false });
-  }, []);
-
-
-  useEffect(() => {
-    const dateObj = new Date(item.starts_from);
-    const option: any = {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-    };
-
-    const formattedDate = dateObj.toLocaleDateString("en-US", option);
-
-    setFormattedDate(formattedDate);
   }, []);
 
   return (
