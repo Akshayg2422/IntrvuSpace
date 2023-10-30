@@ -64,7 +64,7 @@ function Designation() {
     const [vacancies, setVacancies] = useState<any>('')
     const [interviewDuration, setInterviewDuration] = useState<any>('')
     const [loading, setLoading] = useState(true);
-    const status = useDropDown({})
+    const status = useDropDown(STATUS_LIST[1]);
     const enterPress = useKeyPress("Enter");
     const [isPositionExist, setIsPositionExist] = useState<boolean>(false)
 
@@ -89,7 +89,7 @@ function Designation() {
         // getSectorsApiHandler();
         getSectorsCorporateApiHandler();
         getDepartmentCorporateApiHandler();
-        dispatch(fetchCandidatesCorporateSuccess(undefined))
+        // dispatch(fetchCandidatesCorporateSuccess(undefined))
     }, [])
 
     const getSectorsCorporateApiHandler = () => {
@@ -204,10 +204,18 @@ function Designation() {
 
     const getCorporateScheduleApiHandler = (page_number: number) => {
         console.log('getCorporateScheduleApiHandler----------->', getCorporateScheduleApiHandler)
+
+        let is_active = '';
+
+        if (status.value === 'ACV') {
+            is_active = 'true';
+        } else if (status.value === 'CSD') {
+            is_active = 'false';
+        }
         const params = {
             position: positionSearch,
             page_number,
-            // is_active: '',
+            is_active
             // sector_id: '',
             // department_id: ''
         }
@@ -277,25 +285,25 @@ function Designation() {
                             <DropDown
                                 className="form-control-md rounded-sm"
                                 heading={'Department'}
-                                // data={}
-                                // selected={}
-                                // onChange={}
+                            // data={}
+                            // selected={}
+                            // onChange={}
                             />
                         </div>
                         <div className='col'>
                             <DropDown
                                 className="form-control-md rounded-sm"
                                 heading={'Sector'}
-                                 // data={}
-                                // selected={}
-                                // onChange={}
+                            // data={}
+                            // selected={}
+                            // onChange={}
                             />
                         </div>
                         <div>
                         </div>
                     </div>
 
-                    <div className='row pt-5 '>
+                    <div className='row pt-4 '>
                         {cardData && cardData.length > 0 ? (
                             cardData.map((el: any, index: number) => {
                                 return (
@@ -337,7 +345,7 @@ function Designation() {
                     <PageNation
                         currentPage={corporateScheduleCurrentPages}
                         noOfPage={corporateScheduleNumOfPages}
-                        isPagination={true}
+                        isPagination={corporateScheduleNumOfPages > 1}
                         paginationNumberClick={(currentPage) => {
                             getCorporateScheduleApiHandler(paginationHandler("current", currentPage));
                         }}
@@ -414,7 +422,7 @@ function Designation() {
                                 {
                                     changeColorButton.map((item, index) => {
                                         return <div className='mb-4 mb-sm-0'>
-                                            <Button text={item.subText} className={`${item.isActive ? "btn-outline-primary" : "btn-outline-default"} rounded-sm px-sm-4`} style={{ width: "140px" }} onClick={() => {
+                                            <Button text={item.subText} className={`${item.isActive ? "btn-outline-primary" : "btn-outline-light-gray text-default"} rounded-sm px-sm-4`} style={{ width: "140px" }} onClick={() => {
                                                 console.log(item.value);
                                                 setInterviewDuration(item.value)
 

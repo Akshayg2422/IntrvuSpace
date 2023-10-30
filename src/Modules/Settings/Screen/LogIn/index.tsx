@@ -97,9 +97,9 @@ function Login() {
           <div className="col-12 col-md-6 col-lg-4  text-center align-items-center">
             <div className="mb--2">
               <div className="">
-                <Image src={icons.logoText} height={60} />
+                <Image src={icons.logoText} height={22} />
               </div>
-              <div className="pt-2">
+              <div className="pt-4">
                 <span
                   className="text-secondary"
                   style={{ fontSize: 22, fontWeight: 800 }}

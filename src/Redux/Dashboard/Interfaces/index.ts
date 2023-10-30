@@ -42,4 +42,6 @@ export interface DashboardProp {
   corporateScheduleCurrentPages: number,
   createOpening?:boolean;
   candidatesList?: boolean;
+  candidatesListNumOfPages: any,
+  candidatesListCurrentPages: number,
 }

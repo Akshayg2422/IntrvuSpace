@@ -17,8 +17,11 @@ import {
   Badge,
   MenuBar,
   NoRecordsFound,
+  Heading,
+  DropDown,
 } from "@Components";
 import {
+  useDropDown,
   useInput,
   useKeyPress,
   useLoader,
@@ -26,7 +29,11 @@ import {
   useNavigation,
   useWindowDimensions,
 } from "@Hooks";
-import { AnalyzingAnimation, GenerateModal } from "@Modules";
+import {
+  AnalyzingAnimation,
+  GenerateModal,
+  PreparingYourInterview,
+} from "@Modules";
 import {
   bulkUploadCandidates,
   createSchedule,
@@ -49,6 +56,7 @@ import {
   getMomentObjFromServer,
   getValidateError,
   ifObjectExist,
+  paginationHandler,
   showMore,
   validate,
 } from "@Utils";
@@ -60,14 +68,35 @@ import "./index.css";
 const OPTIONS = [
   { id: 1, name: "Approve Manually" },
   { id: 2, name: "Reject manually" },
-  //   { id: 3, name: "Watch Interview" },
+  // { id: 3, name: "Watch Interview" },
+  // {id: 4, name: "Remove Candidate"}
 ];
+
+const MODIFY_OPTION = [
+  { id: 1, name: "Close JD" },
+  { id: 2, name: "Modify Deadlines" },
+];
+
+export const CANDIDATE_STATUS = [
+  { id: 'ALL', text: 'All' },
+  { id: 'RJT', text: 'Rejected' },
+  { id: 'SEL', text: 'Selected' },
+  { id: 'NA', text: 'Not Attended' },
+]
 
 function VariantInfo() {
   const { goBack } = useNavigation();
   const enterPress = useKeyPress("Enter");
-  const { selectedRole, corporateScheduleDetails, candidatesList } =
-    useSelector((state: any) => state.DashboardReducer);
+  const {
+    selectedRole,
+    corporateScheduleDetails,
+    candidatesList,
+    candidatesListNumOfPages,
+    candidatesListCurrentPages,
+  } = useSelector((state: any) => state.DashboardReducer);
+
+  const VIEW_MORE_LENGTH = 300;
+
   console.log(corporateScheduleDetails, "corporateScheduleDetails-------->");
 
   const { goTo } = useNavigation();
@@ -80,21 +109,24 @@ function VariantInfo() {
   const bulkUploadLoader = useLoader(false);
   const dispatch = useDispatch();
   const [status, setStatus] = useState("12-02-2021");
-  const generateVariantModal = useModal(false);
   const [showFullContent, setShowFullContent] = useState(false);
   const bulkUploadModal = useModal(false);
   const [candidateBulkUploadData, setCandidateBulkUploadData] = useState("");
   const [searchCandidate, setSearchCandidate] = useState("");
   const [isCandidatesExist, setIsCandidatesExist] = useState<boolean>(false);
+  const candidateStatus = useDropDown(CANDIDATE_STATUS[0]);
+
+  const preparingInterviewModal = useModal(false);
+  const [jdMore, setJdMore] = useState<any>(false);
 
   useEffect(() => {
     getCorporateScheduleDetailsHandler();
-    getCandidatesCorporate();
+    getCandidatesCorporate(candidatesListCurrentPages);
   }, []);
 
   useEffect(() => {
     if (isCandidatesExist) {
-      getCandidatesCorporate();
+      getCandidatesCorporate(candidatesListCurrentPages);
     }
   }, [enterPress]);
 
@@ -117,10 +149,11 @@ function VariantInfo() {
     );
   };
 
-  const getCandidatesCorporate = () => {
+  const getCandidatesCorporate = (page_number: number) => {
     const params = {
       corporate_openings_details_id: selectedRole?.id,
       ...(searchCandidate && { q: searchCandidate }),
+      page_number,
     };
     dispatch(
       fetchCandidatesCorporate({
@@ -145,8 +178,8 @@ function VariantInfo() {
     const validation = validate(VALIDATE_ADD_NEW_CANDIDATES_RULES, params);
 
     if (ifObjectExist(validation)) {
+      preparingInterviewModal.show();
       addNewCandidateModal.hide();
-      generateVariantModal.show();
       loader.show();
       dispatch(
         createSchedule({
@@ -155,12 +188,13 @@ function VariantInfo() {
             resetValues();
             showToast("Candidate added successfully", "success");
             loader.hide();
-            generateVariantModal.hide();
+            preparingInterviewModal.hide();
             getCorporateScheduleDetailsHandler();
+            getCandidatesCorporate(candidatesListCurrentPages);
           },
           onError: (error: any) => () => {
             showToast(error.error_message, "error");
-            generateVariantModal.hide();
+            preparingInterviewModal.hide();
             loader.hide();
           },
         })
@@ -198,13 +232,11 @@ function VariantInfo() {
       default:
         return "";
     }
-
   };
 
   const normalizedTableData = (data: any) => {
-    console.log("candddiii==>", data);
-    if (data && data?.corporate_candidate_details.length > 0)
-      return data?.corporate_candidate_details?.map((el: any) => {
+    if (data && data?.corporate_candidate_details?.data.length > 0)
+      return data?.corporate_candidate_details?.data.map((el: any) => {
         return {
           "   ": <Image src={getIconColor(el?.status_icon_type)} height={20} />,
           "": (
@@ -303,6 +335,7 @@ function VariantInfo() {
           showToast(response.message, "success");
           bulkUploadLoader.hide();
           getCorporateScheduleDetailsHandler();
+          getCandidatesCorporate(candidatesListCurrentPages);
         },
         onError: (error: any) => () => {
           showToast(error.error_message, "error");
@@ -331,7 +364,8 @@ function VariantInfo() {
         params,
         onSuccess: (response: any) => () => {
           showToast(response.message, "success");
-          getCandidatesCorporate();
+          getCandidatesCorporate(candidatesListCurrentPages);
+          getCorporateScheduleDetailsHandler();
         },
         onError: (error: any) => () => {
           showToast(error.error_message, "error");
@@ -339,6 +373,14 @@ function VariantInfo() {
       })
     );
   };
+
+  const modifyOptionsHandler = (option: any) => {
+    console.log("optionnnsss==>", option)
+
+  }
+
+  console.log("jdmoree===>", jdMore);
+  console.log("candidatesList==>",candidatesList)
 
   return (
     <>
@@ -380,14 +422,20 @@ function VariantInfo() {
                 </span>
               </div>
               <div className="pl-3">
-                <Image src={icons.more} height={22} />
+              <MenuBar
+                menuData={MODIFY_OPTION}
+                onClick={(action) => {
+                  modifyOptionsHandler(action);
+                }}
+                toggleIcon={icons.more}
+              />
               </div>
             </div>
           </div>
 
           {candidatesList &&
           candidatesList?.corporate_candidate_details &&
-          candidatesList?.corporate_candidate_details.length === 0 &&
+          candidatesList?.corporate_candidate_details?.data.length === 0 &&
           !isCandidatesExist ? (
             <div className="mt-5 text-center">
               <div>
@@ -473,7 +521,14 @@ function VariantInfo() {
                       </div>
 
                       <div>
-                        <span className="titleText text-primary">
+                        <span
+                          className={`${
+                            corporateScheduleDetails?.candidate_details
+                              ?.selected_candidates
+                              ? "text-primary"
+                              : "text-secondary"
+                          } titleText`}
+                        >
                           {
                             corporateScheduleDetails?.candidate_details
                               ?.selected_candidates
@@ -644,18 +699,43 @@ function VariantInfo() {
                     </div>
 
                     {candidatesList?.corporate_candidate_details &&
-                    candidatesList?.corporate_candidate_details.length > 0 ? (
+                    candidatesList?.corporate_candidate_details?.data.length >
+                      0 ? (
                       <div className={"row px-0 mx--4"}>
                         <div
                           className={
-                            "col-sm-12 px-0 overflow-auto scroll-hidden"
+                            "col-sm-12 px-0 overflow-auto overflow-hide"
                           }
                         >
                           <CommonTable
+                            isPagination = {candidatesListNumOfPages > 1}
                             tableDataSet={
                               candidatesList?.corporate_candidate_details
                             }
                             displayDataSet={normalizedTableData(candidatesList)}
+                            noOfPage={candidatesListNumOfPages}
+                            currentPage={candidatesListCurrentPages}
+                            paginationNumberClick={(currentPage) => {
+                              getCandidatesCorporate(
+                                paginationHandler("current", currentPage)
+                              );
+                            }}
+                            previousClick={() => {
+                              getCandidatesCorporate(
+                                paginationHandler(
+                                  "prev",
+                                  candidatesListCurrentPages
+                                )
+                              );
+                            }}
+                            nextClick={() => {
+                              getCandidatesCorporate(
+                                paginationHandler(
+                                  "next",
+                                  candidatesListCurrentPages
+                                )
+                              );
+                            }}
                           />
                         </div>
                       </div>
@@ -681,9 +761,38 @@ function VariantInfo() {
                 {"Job Details"}
               </span>
             </div>
-            <div className="pt-3">
-              <span>{corporateScheduleDetails?.job_description?.details}</span>
-            </div>
+            {corporateScheduleDetails?.job_description?.details.length <
+              VIEW_MORE_LENGTH || jdMore ? (
+              <div className="pt-3">
+                <span>
+                  {corporateScheduleDetails?.job_description?.details}
+                </span>
+
+                {jdMore && (
+                  <span
+                    className="text-primary font-weight-800 pointer"
+                    onClick={() => setJdMore(false)}
+                  >
+                    {"  View Less"}
+                  </span>
+                )}
+              </div>
+            ) : (
+              <div>
+                <span>
+                  {corporateScheduleDetails?.job_description?.details.slice(
+                    0,
+                    VIEW_MORE_LENGTH
+                  ) + " ... "}
+                </span>
+                <span
+                  className="text-primary font-weight-800 pointer"
+                  onClick={() => setJdMore(true)}
+                >
+                  View More
+                </span>
+              </div>
+            )}
           </div>
 
           <div className="mt-6">
@@ -783,35 +892,44 @@ function VariantInfo() {
         </div>
       </div>
       <Modal
-        title={"Add Candidate"}
         isOpen={addNewCandidateModal.visible}
         onClose={addNewCandidateModal.hide}
       >
-        <div className="col-xl-6">
-          <Input
-            placeholder={"First Name"}
-            value={firstName.value}
-            onChange={firstName.onChange}
-          />
-          <Input
-            placeholder={"Last Name "}
-            value={lastName.value}
-            onChange={lastName.onChange}
-          />
-          <Input
-            placeholder={"Mobile Number"}
-            maxLength={10}
-            type={"number"}
-            value={mobileNumber.value}
-            onChange={mobileNumber.onChange}
-          />
-          <Input
-            placeholder={"Email"}
-            value={email.value}
-            onChange={email.onChange}
-          />
-        </div>
-        <div className={"text-center pt-3"}>
+        <div className="row  m-0 p-0">
+        <div className="col-xl-12 d-flex bg-white align-items-center justify-content-center  my-sm-0 my-4">
+          <div className="col-12 col-md-8 col-lg-6">
+          <Heading heading={'Add Candidate'} style={{fontSize: '26px', fontWeight: 800, margin: 0}}/>
+          <div className="text-center mt-4">
+            <Input
+              placeholder={"First Name"}
+              value={firstName.value}
+              onChange={firstName.onChange}
+            />
+          </div>
+          <div className="">
+            <Input
+              placeholder={"Last Name "}
+              value={lastName.value}
+              onChange={lastName.onChange}
+            />
+          </div>
+          <div>
+            <Input
+              placeholder={"Mobile Number"}
+              maxLength={10}
+              type={"number"}
+              value={mobileNumber.value}
+              onChange={mobileNumber.onChange}
+            />
+          </div>
+          <div>
+            <Input
+              placeholder={"Email"}
+              value={email.value}
+              onChange={email.onChange}
+            />
+          </div>
+          <div className={"text-center pt-3"}>
           <Button
             size={"md"}
             text={"Submit"}
@@ -819,14 +937,18 @@ function VariantInfo() {
             style={{ borderRadius: 4, paddingLeft: 70, paddingRight: 70 }}
           />
         </div>
+        </div>
+        
+        </div>
+        </div>
       </Modal>
-      <GenerateModal
-        title={"Scheduling Interview"}
-        isOpen={generateVariantModal.visible}
-        onClose={generateVariantModal.hide}
+
+      <Modal
+        isOpen={preparingInterviewModal.visible}
+        onClose={preparingInterviewModal.hide}
       >
-        <AnalyzingAnimation />
-      </GenerateModal>
+        <PreparingYourInterview />
+      </Modal>
     </>
   );
 }
