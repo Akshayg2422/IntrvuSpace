@@ -30,7 +30,7 @@ interface Props {
   timeInSec?: any;
 }
 
-const CodeEditor = React.forwardRef(
+const CodeEditor = (
   ({
     ref,
     onSubmit,
