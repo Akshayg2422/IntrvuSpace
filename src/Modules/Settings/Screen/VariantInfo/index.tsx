@@ -179,8 +179,8 @@ function VariantInfo() {
       fetchCandidatesCorporate({
         params,
         onSuccess: (response: any) => () => {
-          if(statusNote.value.text === 'Selected' || statusNote.value.text === 'Rejected' || statusNote.value.text === 'Yet to Start' )
-          setIsCandidatesExist(true)
+          if (statusNote.value.text === 'Selected' || statusNote.value.text === 'Rejected' || statusNote.value.text === 'Yet to Start')
+            setIsCandidatesExist(true)
           // console.log("response candidtae===>", response);
         },
         onError: (error: any) => () => { },
@@ -273,7 +273,7 @@ function VariantInfo() {
           ),
           name: (
             <div className="text-secondary tableText font-weight-800">
-              { capitalizeFirstLetter(el?.interviewee_name)}
+              {capitalizeFirstLetter(el?.interviewee_name)}
             </div>
           ),
 
@@ -311,18 +311,18 @@ function VariantInfo() {
             </div>}</>
           ,
           "  ": <>
-          {!corporateScheduleDetails?.is_closed &&
-            <div>
-              <MenuBar
-                menuData={OPTIONS}
-                onClick={(action) => {
-                  manualApprovalsOnCandidate(action, el);
-                }}
-                toggleIcon={icons.more}
-              />
-            </div>
+            {!corporateScheduleDetails?.is_closed &&
+              <div>
+                <MenuBar
+                  menuData={OPTIONS}
+                  onClick={(action) => {
+                    manualApprovalsOnCandidate(action, el);
+                  }}
+                  toggleIcon={icons.more}
+                />
+              </div>
             }
-            </>,
+          </>,
         };
       });
   };
@@ -431,7 +431,7 @@ function VariantInfo() {
 
 
   console.log("jdmoree===>", jdMore);
-  console.log("candidatesexist==>",isCandidatesExist);
+  console.log("candidatesexist==>", isCandidatesExist);
 
   return (
     <>
@@ -1039,38 +1039,38 @@ function VariantInfo() {
           modifyDeadlineModal.hide()
           resetValues()
         }}>
-          <div className="px-md-5 px-3 "> 
-        <div className='mt-4'>
-          <DateTimePicker
-            disableFuture={true}
-            heading={"Schedule Date"}
-            placeholder={"Schedule Date"}
-            value={scheduleDate}
-            onChange={(e) => { setScheduleDate(e) }}
-          />
-        </div>
-        <div className=''>
-          <InputHeading
-            id={"End Time"}
-            heading={"End Time"}
-          />
-          <Input
-            id="End Time"
-            type="time"
-            value={endTime}
-            onChange={
-              (e) => { setEndTime((e.target.value)) }
-            }
-          />
-        </div>
-        <div className="d-flex justify-content-center">
-          <Button
-            size={"md"}
-            text={"Submit"}
-            onClick={() => corporateScheduleActionsHandler(selectedModifyOption.name)}
-            style={{ borderRadius: 4, paddingLeft: 70, paddingRight: 70 }}
-          />
-        </div>
+        <div className="px-md-5 px-3 ">
+          <div className='mt-4'>
+            <DateTimePicker
+              disableFuture={true}
+              heading={"Schedule Date"}
+              placeholder={"Schedule Date"}
+              value={scheduleDate}
+              onChange={(e) => { setScheduleDate(e) }}
+            />
+          </div>
+          <div className=''>
+            <InputHeading
+              id={"End Time"}
+              heading={"End Time"}
+            />
+            <Input
+              id="End Time"
+              type="time"
+              value={endTime}
+              onChange={
+                (e) => { setEndTime((e.target.value)) }
+              }
+            />
+          </div>
+          <div className="d-flex justify-content-center">
+            <Button
+              size={"md"}
+              text={"Submit"}
+              onClick={() => corporateScheduleActionsHandler(selectedModifyOption.name)}
+              style={{ borderRadius: 4, paddingLeft: 70, paddingRight: 70 }}
+            />
+          </div>
         </div>
       </Modal>
 

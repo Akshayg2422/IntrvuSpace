@@ -3,9 +3,9 @@ import { icons } from '@Assets';
 import { useModal, useNavigation } from '@Hooks';
 import { Button, Modal } from '@Components';
 import { useSelector } from 'react-redux';
+import { PreparingYourInterviewProps } from './interfaces'
 
-function PreparingYourInterview() {
-    const { loginDetails } = useSelector((state: any) => state.AppReducer);
+function PreparingYourInterview({ showStart, onClick }: PreparingYourInterviewProps) {
 
     const steps = [
         { icon: icons.check, text: 'Analyzing your JD' },
@@ -52,9 +52,9 @@ function PreparingYourInterview() {
                     ))}
                 </div>
             </div>
-            {currentStep === steps.length - 1 && loginDetails?.isLoggedIn && (
+            {showStart && (
                 <div className="d-flex justify-content-center pr-sm-0 pr-5">
-                    <Button className={'px-5 border border-primary rounded-sm'} text={'Start Interview'} onClick={() => { }} />
+                    <Button className={'px-5 border border-primary rounded-sm'} text={'Start Interview'} onClick={onClick} />
                 </div>
             )}
         </div>
