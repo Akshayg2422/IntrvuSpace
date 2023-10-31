@@ -36,19 +36,37 @@ function Register() {
     }
   }, [enterPress]);
 
+  function validatePassword(password) {
+    if (password.length < 8) {
+      return 'Password must be at least 8 characters long';
+    }
+    return null;
+  }
+
+  const isValidEmail = (email) => {
+    const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+    return emailRegex.test(email);
+  };
+
   const onSubmit = () => {
     if (firstName.value === "") {
       showToast("First Name Cannot be empty", "error");
+    } else if (firstName.value.length < 3) {
+      showToast("First Name minimum 3 characters", "error");
     } else if (email.value.length === 0) {
       showToast("Email ID  Cannot be empty", "error");
+    } else if (!isValidEmail(email.value)) {
+      showToast('Please enter a valid email address', 'error');
+    } else if (mobileNumber.value.length === 0) {
+      showToast("Mobile Number Cannot be empty", "error");
     } else if (password.value.length === 0) {
       showToast("Password Cannot be empty", "error");
+    } else if (password.value.length < 8) {
+      showToast("Password must be at least 8 characters long", "error");
     } else if (confirmPassword.value.length === 0) {
       showToast("Confirm Password Cannot be empty", "error");
     } else if (password.value !== confirmPassword.value) {
-      showToast("Confirm Password Does not Match", "error");
-    } else if (mobileNumber.value.length === 0) {
-      showToast("Mobile Number Cannot be empty", "error");
+      showToast("Passwords do not match", "error");
     } else {
       registerAsMemberHandler();
     }
@@ -56,6 +74,7 @@ function Register() {
 
   const registerAsMemberHandler = () => {
     loginLoader.show();
+
     const params = {
       first_name: firstName.value,
       last_name: lastName.value,
@@ -110,154 +129,154 @@ function Register() {
               }}
             >
               <div>
-                
-                  <div className="py-4">
-                    <div className="input-group">
-                      <input
-                        className="form-control rounded-sm"
-                        placeholder="Full Name"
-                        onChange={firstName.onChange}
-                      />
-                    </div>
-                  </div>
 
-                  <div>
-                    <div className="input-group mb-4">
-                      <input
-                        className="form-control rounded-sm"
-                        placeholder="Email"
-                        onChange={email.onChange}
-                      />
-                    </div>
+                <div className="py-4">
+                  <div className="input-group">
+                    <input
+                      className="form-control rounded-sm"
+                      placeholder="Full Name"
+                      onChange={firstName.onChange}
+                    />
                   </div>
+                </div>
 
-                  <div>
-                    <div className="">
-                      <Input
-                        type="number"
-                        className="form-control rounded-sm"
-                        placeholder="Phone"
-                        onChange={mobileNumber.onChange}
-                        value = {mobileNumber.value}
-                        maxLength={10}
-                      />
-                    </div>
+                <div>
+                  <div className="input-group mb-4">
+                    <input
+                      className="form-control rounded-sm"
+                      placeholder="Email"
+                      onChange={email.onChange}
+                    />
                   </div>
+                </div>
 
-                  <div>
-                    <div className="input-group mb-4">
-                      <input
-                        style={{
-                          borderTopRightRadius: 0,
-                          borderBottomRightRadius: 0,
-                          borderRight: 0,
-                          borderRadius: '4px 0 0 4px',
-                          borderColor: toggleInput === 3 ? "#6747c7" : "#dee0e3",
-                        }}
-                        type={showPassword ? "text" : "password"}
-                        className="form-control"
-                        placeholder="Password"
-                        aria-label="Recipient's username"
-                        aria-describedby="basic-addon2"
-                        onFocus={() => {
-                          setToggleInput(3);
-                        }}
-                        onBlur={() => {
-                          setToggleInput(0);
-                        }}
-                        onChange={password.onChange}
-                      />
-                      <span
-                        className="input-group-text"
-                        id="basic-addon2"
-                        style={{
-                          borderTopLeftRadius: 0,
-                          borderBottomLeftRadius: 0,
-                          borderLeft: 0,
-                          borderRadius: '0 4px 4px 0',
-                          borderColor: toggleInput === 3 ? "#6747c7" : "#dee0e3",
-                        }}
-                        onClick={() => {
-                          setShowPassword(!showPassword);
-                        }}
-                      >
-                        {showPassword ? (
-                          <i
-                            className="bi bi-eye-fill mt--1 text-default"
-                            style={{
-                              fontSize: "20px",
-                              marginBottom: "-5px",
-                            }}
-                          ></i>
-                        ) : (
-                          <i
-                            className="bi bi-eye-slash-fill mt--1 pb-0 text-default"
-                            style={{
-                              fontSize: "20px",
-                              marginBottom: "-5px",
-                            }}
-                          ></i>
-                        )}
-                      </span>
-                    </div>
+                <div>
+                  <div className="">
+                    <Input
+                      type="number"
+                      className="form-control rounded-sm"
+                      placeholder="Phone"
+                      onChange={mobileNumber.onChange}
+                      value={mobileNumber.value}
+                      maxLength={10}
+                    />
                   </div>
-                  <div>
-                    <div className="input-group">
-                      <input
-                        style={{
-                          borderTopRightRadius: 0,
-                          borderBottomRightRadius: 0,
-                          borderRight: 0,
-                          borderRadius: '4px 0 0 4px',
-                          borderColor: toggleInput === 4 ? "#6747c7" : "#dee0e3",
-                        }}
-                        type={showConfirmPassword ? "text" : "password"}
-                        className="form-control"
-                        placeholder="Confirm Password"
-                        aria-label="Recipient's username"
-                        aria-describedby="basic-addon2"
-                        onFocus={() => {
-                          setToggleInput(4);
-                        }}
-                        onBlur={() => {
-                          setToggleInput(0);
-                        }}
-                        onChange={confirmPassword.onChange}
-                      />
-                      <span
-                        className="input-group-text"
-                        id="basic-addon2"
-                        style={{
-                          borderTopLeftRadius: 0,
-                          borderBottomLeftRadius: 0,
-                          borderLeft: 0,
-                          borderRadius: '0 4px 4px 0',
-                          borderColor: toggleInput === 4 ? "#6747c7" : "#dee0e3",
-                        }}
-                        onClick={() => {
-                          setShowConfirmPassword(!showConfirmPassword);
-                        }}
-                      >
-                        {showConfirmPassword ? (
-                          <i
-                            className="bi bi-eye-fill mt--1 text-default"
-                            style={{
-                              fontSize: "20px",
-                              marginBottom: "-5px",
-                            }}
-                          ></i>
-                        ) : (
-                          <i
-                            className="bi bi-eye-slash-fill mt--1 pb-0 text-default"
-                            style={{
-                              fontSize: "20px",
-                              marginBottom: "-5px",
-                            }}
-                          ></i>
-                        )}
-                      </span>
-                    </div>
+                </div>
+
+                <div>
+                  <div className="input-group mb-4">
+                    <input
+                      style={{
+                        borderTopRightRadius: 0,
+                        borderBottomRightRadius: 0,
+                        borderRight: 0,
+                        borderRadius: '4px 0 0 4px',
+                        borderColor: toggleInput === 3 ? "#6747c7" : "#dee0e3",
+                      }}
+                      type={showPassword ? "text" : "password"}
+                      className="form-control"
+                      placeholder="Password"
+                      aria-label="Recipient's username"
+                      aria-describedby="basic-addon2"
+                      onFocus={() => {
+                        setToggleInput(3);
+                      }}
+                      onBlur={() => {
+                        setToggleInput(0);
+                      }}
+                      onChange={password.onChange}
+                    />
+                    <span
+                      className="input-group-text"
+                      id="basic-addon2"
+                      style={{
+                        borderTopLeftRadius: 0,
+                        borderBottomLeftRadius: 0,
+                        borderLeft: 0,
+                        borderRadius: '0 4px 4px 0',
+                        borderColor: toggleInput === 3 ? "#6747c7" : "#dee0e3",
+                      }}
+                      onClick={() => {
+                        setShowPassword(!showPassword);
+                      }}
+                    >
+                      {showPassword ? (
+                        <i
+                          className="bi bi-eye-fill mt--1 text-default"
+                          style={{
+                            fontSize: "20px",
+                            marginBottom: "-5px",
+                          }}
+                        ></i>
+                      ) : (
+                        <i
+                          className="bi bi-eye-slash-fill mt--1 pb-0 text-default"
+                          style={{
+                            fontSize: "20px",
+                            marginBottom: "-5px",
+                          }}
+                        ></i>
+                      )}
+                    </span>
                   </div>
+                </div>
+                <div>
+                  <div className="input-group">
+                    <input
+                      style={{
+                        borderTopRightRadius: 0,
+                        borderBottomRightRadius: 0,
+                        borderRight: 0,
+                        borderRadius: '4px 0 0 4px',
+                        borderColor: toggleInput === 4 ? "#6747c7" : "#dee0e3",
+                      }}
+                      type={showConfirmPassword ? "text" : "password"}
+                      className="form-control"
+                      placeholder="Confirm Password"
+                      aria-label="Recipient's username"
+                      aria-describedby="basic-addon2"
+                      onFocus={() => {
+                        setToggleInput(4);
+                      }}
+                      onBlur={() => {
+                        setToggleInput(0);
+                      }}
+                      onChange={confirmPassword.onChange}
+                    />
+                    <span
+                      className="input-group-text"
+                      id="basic-addon2"
+                      style={{
+                        borderTopLeftRadius: 0,
+                        borderBottomLeftRadius: 0,
+                        borderLeft: 0,
+                        borderRadius: '0 4px 4px 0',
+                        borderColor: toggleInput === 4 ? "#6747c7" : "#dee0e3",
+                      }}
+                      onClick={() => {
+                        setShowConfirmPassword(!showConfirmPassword);
+                      }}
+                    >
+                      {showConfirmPassword ? (
+                        <i
+                          className="bi bi-eye-fill mt--1 text-default"
+                          style={{
+                            fontSize: "20px",
+                            marginBottom: "-5px",
+                          }}
+                        ></i>
+                      ) : (
+                        <i
+                          className="bi bi-eye-slash-fill mt--1 pb-0 text-default"
+                          style={{
+                            fontSize: "20px",
+                            marginBottom: "-5px",
+                          }}
+                        ></i>
+                      )}
+                    </span>
+                  </div>
+                </div>
               </div>
               <div className="pt-4 mb-sm-0 mb-2">
                 <Button
