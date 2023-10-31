@@ -346,7 +346,9 @@ function Designation() {
             }
 
             <Modal size={'lg'} isOpen={createOpening} onClose={() => {
-                resetValues()
+              addRoleModal.hide()
+              jd.set("")
+              position.set('')
                 dispatch(hideCreateOpeningsModal())
             }}
                 style={{ padding: 0 }}>
