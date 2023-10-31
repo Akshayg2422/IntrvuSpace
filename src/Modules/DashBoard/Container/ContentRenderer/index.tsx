@@ -149,7 +149,7 @@ function ContentRenderer({ filterContent, questions }: ContentRendererProps) {
                 <Button
                   className="btn btn-primary"
                   text={"Submit"}
-                  onClick={() => console.log(selectedChoices)}
+                  onClick={() => { }}
                 />
               </div>
             </div>
@@ -185,7 +185,7 @@ function ContentRenderer({ filterContent, questions }: ContentRendererProps) {
                 <Button
                   className="btn btn-primary"
                   text={"Submit"}
-                  onClick={() => console.log(selectedMultiChoices)}
+                  onClick={() => { }}
                 />
               </div>
             </div>

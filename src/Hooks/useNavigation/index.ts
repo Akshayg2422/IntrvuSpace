@@ -14,9 +14,6 @@ const useNavigation = () => {
   const goBack = (action: number = -1) => {
     const doesAnyHistoryEntryExist = location.key !== "default";
 
-    console.log(doesAnyHistoryEntryExist + '========doesAnyHistoryEntryExist');
-
-
     if (doesAnyHistoryEntryExist) {
       navigation(action)
     } else {

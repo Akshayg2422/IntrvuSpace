@@ -97,12 +97,11 @@ const PushNotification = () => {
 
             new Notification(title, options).addEventListener('click', function () {
                 routingHandler(payload)
-                console.log("foreground message--------------->", payload);
                 this.close()
             });
 
         })
-        .catch((err: any) => console.log('failed: ', err));
+        .catch((err: any) => { });
 
     return (
         <>
