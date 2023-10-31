@@ -25,12 +25,14 @@ function Modal({ isOpen, children, title, size = "lg", style, onClose, ...rest }
     <RsModal
       fade={false}
       className={`modal-dialog-centered modal-${size}`}
-      style={{ border: "1px solid #D5DFFF", borderRadius: "4px", overflow: 'hidden' }}
+
       isOpen={isOpen}
       {...rest}
     >
-      <div className="modal-content" >
-        <div className={"modal-header mb-0"} >
+      <div className="modal-content" style={{ border: "1px solid #D5DFFF", borderRadius: "4px", overflow: 'hidden' }} >
+        <div className={"modal-header mb-0"} style={{
+          overflow: 'hidden'
+        }} >
           {title && <div className='display-3 text-secondary font-weight-700'>
             {title}
           </div>}
