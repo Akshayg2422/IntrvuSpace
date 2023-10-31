@@ -7538,6 +7538,7 @@ a.close.disabled {
   background-color: #fff;
   background-clip: padding-box;
   border: 0 solid rgba(211, 222, 255, 0.2);
+  outline: 0;
 }
 
 .modal-backdrop {

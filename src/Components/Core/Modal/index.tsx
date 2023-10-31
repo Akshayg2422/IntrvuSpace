@@ -25,17 +25,12 @@ function Modal({ isOpen, children, title, size = "lg", style, onClose, ...rest }
     <RsModal
       fade={false}
       className={`modal-dialog-centered modal-${size}`}
-      style={{
-        borderRadius: "4px"
-      }}
+      style={{ border: "1px solid #D5DFFF", borderRadius: "4px", overflow: 'hidden' }}
       isOpen={isOpen}
       {...rest}
     >
-      <div className="modal-content  shadow-0 ">
-        <div className={"modal-header mb-0"} style={{
-          paddingBottom: '0px'
-        }}>
-
+      <div className="modal-content" >
+        <div className={"modal-header mb-0"} >
           {title && <div className='display-3 text-secondary font-weight-700'>
             {title}
           </div>}
@@ -55,7 +50,7 @@ function Modal({ isOpen, children, title, size = "lg", style, onClose, ...rest }
             </button>
           }
         </div>
-        <div className="modal-body scroll-hidden" style={{ ...style, marginTop: "0px" }}>
+        <div className="modal-body scroll-hidden" style={{ ...style, marginTop: "0px", overflow: 'hidden' }}>
           {children}
         </div>
       </div>
