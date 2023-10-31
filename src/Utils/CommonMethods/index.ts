@@ -162,7 +162,6 @@ export const combineBase64Strings = (stringsArray) => {
     }
   });
 
-  console.log('Decoded Array:', decodedArray); // Log the decoded arrays to check
 
   const validDecodedArray = decodedArray.filter((item) => item !== null);
 
@@ -195,7 +194,6 @@ export function getShortName(fullName: string) {
     return names[0].substring(0, 2).toUpperCase();
   }
 
-  console.log("namesnames", names)
 
   const firstNameInitial = names[0][0].toUpperCase();
 
@@ -319,6 +317,28 @@ export const downloadFile = (response) => {
       console.error('Error downloading file:', error);
     })
 }
+
+// get display time from server date-time response
+
+export const getDisplayTime = (dateString: any) => {
+  const inputDate = new Date(dateString);
+  const hours = inputDate.getHours().toString().padStart(2, '0');
+  const minutes = inputDate.getMinutes().toString().padStart(2, '0');
+  return `${hours}:${minutes}`;
+}
+
+// get date from server date-time response
+
+export const getDateFromServer = (dateString: any) => {
+  const inputDate = new Date(dateString);
+  const year = inputDate.getFullYear();
+  const month = (inputDate.getMonth() + 1).toString().padStart(2, '0');
+  const day = inputDate.getDate().toString().padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+
+
 
 
 

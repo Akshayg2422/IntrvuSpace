@@ -4,9 +4,9 @@ import {Image} from '@Components'
 
 const packageContent = [
     { id: 1, description: "Interview invite link will be sent over email and text message to the candidate" },
-    { id: 2, description: "Each added candidate will face the distincr questions but completely aligning to the JD expectations" },
-    { id: 3, description: "Candidates can complete their interview at their conveninet time before the deadline" },
-    { id: 4, description: "Candidate can join with the provided lnk without authenticating or registering the system" },
+    { id: 2, description: "Each added candidate will face the distinct questions but completely aligning to the JD expectations" },
+    { id: 3, description: "Candidates can complete their interview at their convenient time before the deadline" },
+    { id: 4, description: "Candidate can join with the provided lnk without authenticating or registering to the system" },
 ];
 
 function WebsiteScheduleAndNotification() {

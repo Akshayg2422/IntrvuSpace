@@ -14,7 +14,7 @@ import {
   MenuBar,
   Modal,
   NoRecordsFound,
-  showToast
+  showToast,
 } from "@Components";
 import {
   useDropDown,
@@ -22,18 +22,16 @@ import {
   useKeyPress,
   useLoader,
   useModal,
-  useNavigation
+  useNavigation,
 } from "@Hooks";
-import {
-  PreparingYourInterview
-} from "@Modules";
+import { PreparingYourInterview } from "@Modules";
 import {
   bulkUploadCandidates,
   createSchedule,
   fetchCandidatesCorporate,
   getCorporateScheduleDetails,
   postCorporateScheduleActions,
-  postManualApprovalOnCandidate
+  postManualApprovalOnCandidate,
 } from "@Redux";
 import { ROUTES } from "@Routes";
 import {
@@ -42,10 +40,14 @@ import {
   convertToUpperCase,
   displayFormatDate,
   downloadFile,
+  getDateFromServer,
+  getDisplayDateFromMoment,
+  getDisplayTime,
+  getServerTimeFromMoment,
   getValidateError,
   ifObjectExist,
   paginationHandler,
-  validate
+  validate,
 } from "@Utils";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -55,8 +57,9 @@ import moment from "moment";
 const OPTIONS = [
   { id: 1, name: "Approve Manually" },
   { id: 2, name: "Reject Manually" },
-  // { id: 3, name: "Watch Interview" },
-  { id: 3, name: "Remove Candidate" }
+  { id: 3, name: "Remove Candidate" },
+  { id: 4, name: "Close Candidate" },
+  // { id: 5, name: "Watch Interview" },
 ];
 
 const MODIFY_OPTION = [
@@ -81,12 +84,10 @@ function VariantInfo() {
     candidatesListNumOfPages,
     candidatesListCurrentPages,
   } = useSelector((state: any) => state.DashboardReducer);
-  console.log(candidatesList, "candidatesList");
 
 
   const VIEW_MORE_LENGTH = 300;
 
-  console.log(corporateScheduleDetails, "corporateScheduleDetails-------->");
 
   const { goTo } = useNavigation();
   const addNewCandidateModal = useModal(false);
@@ -106,25 +107,25 @@ function VariantInfo() {
   const candidateStatus = useDropDown(CANDIDATE_STATUS[0]);
   const modifyDeadlineModal = useModal(false);
 
-
   const preparingInterviewModal = useModal(false);
   const [jdMore, setJdMore] = useState<any>(false);
   const statusList = [
-    { id: 'ALL', text: 'All' },
-    { id: 'SLD', text: 'Selected' },
-    { id: 'RJD', text: 'Rejected' },
-    { id: 'YTS', text: 'Yet to Start' }
-  ]
+    { id: "ALL", text: "All" },
+    { id: "SLD", text: "Selected" },
+    { id: "RJD", text: "Rejected" },
+    { id: "YTS", text: "Yet to Start" },
+  ];
 
   const statusNote = useDropDown(statusList[0]);
-  const [selectedModifyOption, setSelectedModifyOption] = useState<any>('');
-  const [scheduleDate, setScheduleDate] = useState<any>('');
-  const [endTime, setEndTime] = useState<any>('')
+  const [selectedModifyOption, setSelectedModifyOption] = useState<any>("");
+  const [scheduleDate, setScheduleDate] = useState<any>("");
+  const [endTime, setEndTime] = useState<any>("");
+  const removeCandidateModal = useModal(false);
+  const [removeCandidateData, setRemoveCandidateData] = useState<any>();
 
-  console.log("candidatesListCurrentPages", candidatesListCurrentPages);
-  console.log(statusNote, "statusnote");
-
-
+  const closeCandidateModal = useModal(false);
+  const [closeCandidateData, setCloseCandidateData] = useState<any>();
+  const [jdDetails, setJdDetails] = useState<any>();
 
   useEffect(() => {
     getCorporateScheduleDetailsHandler();
@@ -160,33 +161,38 @@ function VariantInfo() {
     );
   };
 
+  // getCandidateCorporate Api
+
   const getCandidatesCorporate = (page_number: number) => {
-    // let selectStatusNote = ''
-    // if(statusNote.value.text === 'Selected'){
-    //   selectStatusNote = ''
-    // }
-
-
     const params = {
       corporate_openings_details_id: selectedRole?.id,
       ...(searchCandidate && { q: searchCandidate }),
-      ...(statusNote.value.text === 'Selected' && { is_approved: true }),
-      ...(statusNote.value.text === 'Rejected' && { is_rejected: true }),
-      ...(statusNote.value.text === 'Yet to Start' && { is_not_attended: true }),
+      ...(statusNote.value.text === "Selected" && { is_approved: true }),
+      ...(statusNote.value.text === "Rejected" && { is_rejected: true }),
+      ...(statusNote.value.text === "Yet to Start" && {
+        is_not_attended: true,
+      }),
       page_number,
     };
     dispatch(
       fetchCandidatesCorporate({
         params,
         onSuccess: (response: any) => () => {
-          if(statusNote.value.text === 'Selected' || statusNote.value.text === 'Rejected' || statusNote.value.text === 'Yet to Start' )
-          setIsCandidatesExist(true)
+          if (
+            statusNote.value.text === "Selected" ||
+            statusNote.value.text === "Rejected" ||
+            statusNote.value.text === "Yet to Start" ||
+            searchCandidate
+          )
+            setIsCandidatesExist(true);
           // console.log("response candidtae===>", response);
         },
         onError: (error: any) => () => { },
       })
     );
   };
+
+  //createSchedule Api
 
   function generateNewCandidateHandler() {
     const params = {
@@ -213,10 +219,12 @@ function VariantInfo() {
             preparingInterviewModal.hide();
             getCorporateScheduleDetailsHandler();
             getCandidatesCorporate(candidatesListCurrentPages);
+            setIsCandidatesExist(true);
           },
           onError: (error: any) => () => {
             showToast(error.error_message, "error");
             preparingInterviewModal.hide();
+            addNewCandidateModal.show();
             loader.hide();
           },
         })
@@ -226,13 +234,15 @@ function VariantInfo() {
     }
   }
 
+  // reset values
+
   function resetValues() {
     firstName.set("");
     lastName.set("");
     email.set("");
     mobileNumber.set("");
-    setScheduleDate("")
-    setEndTime("")
+    setScheduleDate("");
+    setEndTime("");
   }
 
   const { id, position, experience, details } =
@@ -258,95 +268,109 @@ function VariantInfo() {
     }
   };
 
+  //candidates table data and their statuses
+
   const normalizedTableData = (data: any) => {
     if (data && data?.corporate_candidate_details?.data.length > 0)
       return data?.corporate_candidate_details?.data.map((el: any) => {
+        const {
+          candidate_score,
+          interviewee_name,
+          interviewee_mobile_number,
+          interviewee_email,
+          status_note,
+          status_note_colour,
+          status_icon_type,
+          is_report_completed,
+        } = el;
         return {
-          "   ": <Image src={getIconColor(el?.status_icon_type)} height={20} />,
+          "   ": <Image src={getIconColor(status_icon_type)} height={20} />,
           "": (
             <div
               className={`font-weight-800 text-secondary`}
               style={{ fontSize: 26 }}
             >
-              {el?.candidate_score}
+              {candidate_score}
             </div>
           ),
           name: (
             <div className="text-secondary tableText font-weight-800">
-              { capitalizeFirstLetter(el?.interviewee_name)}
+              {capitalizeFirstLetter(interviewee_name)}
             </div>
           ),
 
           Mobile: (
             <div className="text-secondary font-weight-500">
-              {el?.interviewee_mobile_number}
+              {interviewee_mobile_number}
             </div>
           ),
 
           Email: (
             <div className="m-0 text-secondary font-weight-500">
-              {el?.interviewee_email}
+              {interviewee_email}
             </div>
           ),
 
           "status Note": (
-            <div className={`text-${el?.status_note_colour} font-weight-400`}>
-              {el?.status_note}
+            <div className={`text-${status_note_colour} font-weight-400`}>
+              {status_note}
             </div>
           ),
 
-          " ": <>
-            {el?.is_report_completed && <div className="">
-              <Button
-                text={"Report"}
-                size="md"
-                className={"btn btn-outline-primary rounded-sm mr--3 px-0 "}
-                style={{
-                  borderColor: "#d8dade",
-                  fontSize: "15px",
-                  width: "110px",
-                }}
-                onClick={() => handleNextStep(el)}
-              />
-            </div>}</>
-          ,
-          "  ": <>
-          {!corporateScheduleDetails?.is_closed &&
-            <div>
-              <MenuBar
-                menuData={OPTIONS}
-                onClick={(action) => {
-                  manualApprovalsOnCandidate(action, el);
-                }}
-                toggleIcon={icons.more}
-              />
-            </div>
-            }
-            </>,
+          " ": (
+            <>
+              {is_report_completed && (
+                <div className="">
+                  <Button
+                    text={"Report"}
+                    size="md"
+                    className={"btn btn-outline-primary rounded-sm mr--3 px-0 "}
+                    style={{
+                      borderColor: "#d8dade",
+                      fontSize: "15px",
+                      width: "110px",
+                    }}
+                    onClick={() => handleNextStep(el)}
+                  />
+                </div>
+              )}
+            </>
+          ),
+          "  ": (
+            <>
+              {!corporateScheduleDetails?.is_closed && (
+                <div>
+                  <MenuBar
+                    menuData={OPTIONS}
+                    onClick={(action) => {
+                      if (action.id === 3) {
+                        removeCandidateModal.show();
+                        setRemoveCandidateData({ action, el });
+                      } else if (action.id === 4) {
+                        closeCandidateModal.show();
+                        setCloseCandidateData({ action, el });
+                      } else {
+                        manualApprovalsOnCandidate(action, el);
+                      }
+                    }}
+                    toggleIcon={icons.more}
+                  />
+                </div>
+              )}
+            </>
+          ),
         };
       });
   };
 
+  // report screen navigation
+
   const handleNextStep = (item: any) => {
-    const { id, is_report_completed, is_started } = item;
-    if (is_report_completed === true) {
-      return (
-        <Button
-          text={"Report"}
-          size="md"
-          className={"btn btn-outline-primary rounded-sm mr--3 px-0 "}
-          style={{
-            borderColor: "#d8dade",
-            fontSize: "15px",
-            width: "110px",
-          }}
-          onClick={() => {
-            goTo(ROUTES["designation-module"].report + "/" + id);
-          }}
-        />
-      );
-    }
+    const { schedule_id } = item;
+    goTo(ROUTES["designation-module"].report + "/" + schedule_id);
   };
+
+  // bulk upload candidates
 
   function bulkUploadCandidatesHandler() {
     const params = {
@@ -363,6 +387,7 @@ function VariantInfo() {
           bulkUploadLoader.hide();
           getCorporateScheduleDetailsHandler();
           getCandidatesCorporate(candidatesListCurrentPages);
+          setIsCandidatesExist(true);
         },
         onError: (error: any) => () => {
           showToast(error.error_message, "error");
@@ -384,6 +409,8 @@ function VariantInfo() {
       corporate_schedule_id: el?.id,
       ...(action.id === 1 && { is_manually_approved: true }),
       ...(action.id === 2 && { is_manually_rejected: true }),
+      ...(action.id === 3 && { is_removed: true }),
+      ...(action.id === 4 && { is_closed: true }),
     };
 
     dispatch(
@@ -393,6 +420,8 @@ function VariantInfo() {
           showToast(response.message, "success");
           getCandidatesCorporate(candidatesListCurrentPages);
           getCorporateScheduleDetailsHandler();
+          removeCandidateModal.hide();
+          closeCandidateModal.hide();
         },
         onError: (error: any) => () => {
           showToast(error.error_message, "error");
@@ -401,42 +430,55 @@ function VariantInfo() {
     );
   };
 
+  // validation for deadline fields
+
+  const validateDeadlineField = (action) => {
+    if (!scheduleDate) {
+      showToast("Please select Schedule date", "info");
+      return;
+    } else if (!endTime) {
+      showToast("Please select end time", "info");
+      return;
+    } else {
+      corporateScheduleActionsHandler(action);
+    }
+  };
+
+
+  // corporateScheduleActions Api
 
   const corporateScheduleActionsHandler = (action) => {
-
     const params = {
       corporate_openings_details_id: corporateScheduleDetails?.id,
       ...(action === "Close JD" && { is_closed: true }),
-      ...(selectedModifyOption.name === "Modify Deadlines" && { deadline: moment(scheduleDate + "T" + endTime).format('YYYY-MM-DDTHH:mm:ss') })
-
+      ...(action === "Modify Deadlines" && {
+        deadline: moment(scheduleDate + "T" + endTime).format(
+          "YYYY-MM-DDTHH:mm:ss"
+        ),
+      }),
     };
 
     dispatch(
       postCorporateScheduleActions({
         params,
         onSuccess: (response: any) => () => {
-          console.log(response, "response close");
-          getCorporateScheduleDetailsHandler()
-          showToast(response.message, "success")
-          getCandidatesCorporate(candidatesListCurrentPages)
-          modifyDeadlineModal.hide()
+          getCorporateScheduleDetailsHandler();
+          showToast(response.message, "success");
+          getCandidatesCorporate(candidatesListCurrentPages);
+          modifyDeadlineModal.hide();
+          resetValues();
         },
         onError: (error: any) => () => {
-          showToast(error.error_message, "error")
+          showToast(error.error_message, "error");
         },
       })
     );
   };
 
-
-
-  console.log("jdmoree===>", jdMore);
-  console.log("candidatesexist==>",isCandidatesExist);
-
   return (
     <>
       <div>
-        <div className={"mx-lg-6 mx-4 mt-5"}>
+        <div className={"mx-lg-6 mx-4 mt-4"}>
           <div className="row justify-content-between">
             <div>
               <div className="d-flex align-items-center">
@@ -467,35 +509,47 @@ function VariantInfo() {
                 <span className="headingText text-secondary">
                   {`${corporateScheduleDetails?.vacancies ?? ""} ${corporateScheduleDetails?.vacancies > 1
                     ? "Vacancies"
-                    : "0 Vacancy"
+                    : "Vacancy"
                     }`}
                 </span>
               </div>
-              {!corporateScheduleDetails?.is_closed &&
+              {!corporateScheduleDetails?.is_closed && (
                 <div className="pl-3">
                   <MenuBar
                     menuData={MODIFY_OPTION}
                     onClick={(action) => {
-                      setSelectedModifyOption(action)
-                      if (action.name === 'Modify Deadlines') {
-                        modifyDeadlineModal.show()
-                      } else if (action.name === 'Close JD') {
-                        corporateScheduleActionsHandler(action.name)
+                      setSelectedModifyOption(action);
+                      if (action.name === "Modify Deadlines") {
+                        modifyDeadlineModal.show();
+                        setScheduleDate(
+                          getDateFromServer(
+                            corporateScheduleDetails?.candidate_deadline
+                          )
+                        );
+                        setEndTime(
+                          getDisplayTime(
+                            corporateScheduleDetails?.candidate_deadline
+                          )
+                        );
+                      } else if (action.name === "Close JD") {
+                        corporateScheduleActionsHandler(action.name);
                       }
-
                     }}
                     toggleIcon={icons.more}
                   />
                 </div>
-              }
-
+              )}
             </div>
           </div>
 
           {candidatesList &&
             candidatesList?.corporate_candidate_details &&
-            candidatesList?.corporate_candidate_details?.data && candidatesList?.corporate_candidate_details?.data.length === 0 &&
-            !corporateScheduleDetails?.is_closed && !isCandidatesExist ? (
+            candidatesList?.corporate_candidate_details?.data &&
+            candidatesList?.corporate_candidate_details?.data.length === 0 &&
+            !corporateScheduleDetails?.is_closed &&
+            // !statusNote.value.text &&
+            !isCandidatesExist &&
+            !searchCandidate ? (
             <div className="mt-5 text-center">
               <div>
                 <span className="titleText text-secondary">
@@ -536,7 +590,7 @@ function VariantInfo() {
             </div>
           ) : (
             <>
-              {!corporateScheduleDetails?.is_closed &&
+              {!corporateScheduleDetails?.is_closed && (
                 <div className="mt-6 row">
                   <div className="col-md-6 col-xl-3">
                     <Card
@@ -658,13 +712,14 @@ function VariantInfo() {
                     </Card>
                   </div>
                 </div>
-              }
+              )}
 
-              {candidatesList &&
+              {(candidatesList &&
                 candidatesList?.corporate_candidate_details &&
                 candidatesList?.corporate_candidate_details?.data &&
-                candidatesList?.corporate_candidate_details?.data.length > 0 || statusNote.value ?
-
+                candidatesList?.corporate_candidate_details?.data.length > 0) ||
+                isCandidatesExist ||
+                searchCandidate ? (
                 <div className="mt-5">
                   <Card
                     style={{
@@ -725,12 +780,10 @@ function VariantInfo() {
                               data={statusList}
                               selected={statusNote.value}
                               onChange={statusNote.onChange}
-
                             />
                           </div>
 
-                          {!corporateScheduleDetails?.is_closed &&
-
+                          {!corporateScheduleDetails?.is_closed && (
                             <div className="row pr-md-5 pr-0 pl-sm-0 pl-4">
                               <div className="pl-sm-0">
                                 <DropzoneFilePicker
@@ -772,9 +825,7 @@ function VariantInfo() {
                                 />
                               </div>
                             </div>
-                          }
-
-
+                          )}
                         </div>
                       </div>
 
@@ -794,7 +845,9 @@ function VariantInfo() {
                               tableDataSet={
                                 candidatesList?.corporate_candidate_details
                               }
-                              displayDataSet={normalizedTableData(candidatesList)}
+                              displayDataSet={normalizedTableData(
+                                candidatesList
+                              )}
                               noOfPage={candidatesListNumOfPages}
                               currentPage={candidatesListCurrentPages}
                               paginationNumberClick={(currentPage) => {
@@ -827,17 +880,15 @@ function VariantInfo() {
                             "d-flex  justify-content-center align-items-center mx-auto my-9 "
                           }
                         >
-                          {" "}
                           <NoRecordsFound />
                         </div>
                       )}
                     </div>
                   </Card>
-                </div> : <div></div>
-              }
-
-
-
+                </div>
+              ) : (
+                <div></div>
+              )}
             </>
           )}
 
@@ -978,7 +1029,10 @@ function VariantInfo() {
       </div>
       <Modal
         isOpen={addNewCandidateModal.visible}
-        onClose={addNewCandidateModal.hide}
+        onClose={() => {
+          addNewCandidateModal.hide();
+          resetValues();
+        }}
       >
         <div className="row  m-0 p-0">
           <div className="col-xl-12 d-flex bg-white align-items-center justify-content-center  my-sm-0 my-4">
@@ -1036,41 +1090,47 @@ function VariantInfo() {
       <Modal
         isOpen={modifyDeadlineModal.visible}
         onClose={() => {
-          modifyDeadlineModal.hide()
-          resetValues()
-        }}>
-          <div className="px-md-5 px-3 "> 
-        <div className='mt-4'>
-          <DateTimePicker
-            disableFuture={true}
-            heading={"Schedule Date"}
-            placeholder={"Schedule Date"}
-            value={scheduleDate}
-            onChange={(e) => { setScheduleDate(e) }}
+          modifyDeadlineModal.hide();
+          resetValues();
+        }}
+      >
+        <div className="px-md-5 px-3 text-secondary mb-3">
+          <Heading
+            heading={"Modify Deadline"}
+            style={{ fontSize: 26, color: "#2f1c6a" }}
           />
-        </div>
-        <div className=''>
-          <InputHeading
-            id={"End Time"}
-            heading={"End Time"}
-          />
-          <Input
-            id="End Time"
-            type="time"
-            value={endTime}
-            onChange={
-              (e) => { setEndTime((e.target.value)) }
-            }
-          />
-        </div>
-        <div className="d-flex justify-content-center">
-          <Button
-            size={"md"}
-            text={"Submit"}
-            onClick={() => corporateScheduleActionsHandler(selectedModifyOption.name)}
-            style={{ borderRadius: 4, paddingLeft: 70, paddingRight: 70 }}
-          />
-        </div>
+          <div className="d-flex flex-sm-row flex-column justify-content-between mt-4">
+            <div className="col-sm-6">
+              <DateTimePicker
+                disableFuture={true}
+                heading={"Schedule Date"}
+                placeholder={"Schedule Date"}
+                value={scheduleDate}
+                onChange={(e) => {
+                  setScheduleDate(e);
+                }}
+              />
+            </div>
+            <div className="col-sm-6">
+              <InputHeading id={"End Time"} heading={"End Time"} />
+              <Input
+                id="End Time"
+                type="time"
+                value={endTime}
+                onChange={(e) => {
+                  setEndTime(e.target.value);
+                }}
+              />
+            </div>
+          </div>
+          <div className="d-flex justify-content-center mt-4">
+            <Button
+              size={"md"}
+              text={"Submit"}
+              onClick={() => validateDeadlineField(selectedModifyOption.name)}
+              style={{ borderRadius: 4, paddingLeft: 70, paddingRight: 70 }}
+            />
+          </div>
         </div>
       </Modal>
 
@@ -1080,9 +1140,107 @@ function VariantInfo() {
       >
         <PreparingYourInterview />
       </Modal>
+
+      {/* remove candidate modal */}
+
+      <Modal
+        isOpen={removeCandidateModal.visible}
+        onClose={() => {
+          removeCandidateModal.hide();
+          setRemoveCandidateData(undefined);
+        }}
+      >
+        <div className="mt--3 mx-4 mb-2">
+          <Heading
+            heading={`Remove Candidate`}
+            style={{ fontSize: 26, color: "#2f1c6a" }}
+          />
+
+          <div>
+            <span className="text-default">
+              {"Are you sure, want to remove this candidate?"}
+            </span>
+          </div>
+
+          <div className="d-flex justify-content-end mt-5">
+            <div>
+              <Button
+                className={"rounded-sm btn-white"}
+                text={"Cancel"}
+                onClick={() => {
+                  removeCandidateModal.hide();
+                  setRemoveCandidateData(undefined);
+                }}
+              />
+            </div>
+
+            <div className="ml-3">
+              <Button
+                className={"rounded-sm"}
+                text={"Confirm"}
+                onClick={() => {
+                  manualApprovalsOnCandidate(
+                    removeCandidateData.action,
+                    removeCandidateData.el
+                  );
+                }}
+              />
+            </div>
+          </div>
+        </div>
+      </Modal>
+
+      {/* disable / close candidate modal */}
+
+      <Modal
+        isOpen={closeCandidateModal.visible}
+        onClose={() => {
+          closeCandidateModal.hide();
+          setCloseCandidateData(undefined);
+        }}
+      >
+        <div className="mt--3 mx-4 mb-2">
+          <Heading
+            heading={`Disable Candidate`}
+            style={{ fontSize: 26, color: "#2f1c6a" }}
+          />
+
+          <div>
+            <span className="text-default">
+              {"Are you sure, want to disable this candidate?"}
+              <br />
+            </span>
+          </div>
+
+          <div className="d-flex justify-content-end mt-5">
+            <div>
+              <Button
+                className={"rounded-sm btn-white"}
+                text={"Cancel"}
+                onClick={() => {
+                  closeCandidateModal.hide();
+                  setCloseCandidateData(undefined);
+                }}
+              />
+            </div>
+
+            <div className="ml-3">
+              <Button
+                className={"rounded-sm"}
+                text={"Confirm"}
+                onClick={() => {
+                  manualApprovalsOnCandidate(
+                    closeCandidateData.action,
+                    closeCandidateData.el
+                  );
+                }}
+              />
+            </div>
+          </div>
+        </div>
+      </Modal>
     </>
   );
 }
 
 export { VariantInfo };
-

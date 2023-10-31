@@ -48,12 +48,11 @@ const NOTE = [
 ];
 
 const REPORT_TYPE = [
-  { id: "BR", text: "Basic Report"},
-  { id: "DR", text: "Detailed Report"},
+  { id: "BR", text: "Basic Report" },
+  { id: "DR", text: "Detailed Report" },
 ];
 
 function Report() {
-
   const { schedule_id } = useParams();
 
   const dispatch = useDispatch();
@@ -246,7 +245,6 @@ function Report() {
   useEffect(() => {
     setCardHeight(heightRef?.current?.offsetHeight);
   }, []);
-
 
   function removeDuplicates() {
     let count = 0;
@@ -535,11 +533,15 @@ function Report() {
                     style={{ fontSize: 12 }}
                   >
                     {`${basicReportData.interview_meta_info?.role} - ${
-                      basicReportData.interview_meta_info?.experience
+                      !basicReportData.interview_meta_info?.experience
+                        ? "Fresher"
+                        : basicReportData.interview_meta_info?.experience
                     } ${
                       basicReportData.interview_meta_info?.experience > 1
                         ? "years"
-                        : "year"
+                        : basicReportData.interview_meta_info?.experience === 1
+                        ? "year"
+                        : ""
                     }`}
                   </span>
                 </div>
@@ -709,7 +711,7 @@ function Report() {
                                 className="font-weight-bolder text-secondary"
                                 style={{ fontSize: 18 }}
                               >
-                                {capitalizeFirstLetter(heading)}
+                                {capitalizeFirstLetter(heading).replace("_"," ")}
                               </span>
                             </div>
                           </div>

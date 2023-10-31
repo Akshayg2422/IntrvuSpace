@@ -52,7 +52,7 @@
 }
 
 /* Submit Button */
-.mt-4 .btn-primary {
+/* .mt-4 .btn-primary {
     background-color: #5FD777;
     border: none;
     padding: 10px 20px;
@@ -64,7 +64,7 @@
 
 .mt-4 .btn-primary:hover {
     background-color: #5FD799;
-}
+} */
 
 .deleteIcon {
     transition: transform .1s
