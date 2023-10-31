@@ -122,10 +122,7 @@ const DashboardReducer = (state = initialState, action: any) => {
     //selected Group Id
 
     case ActionTypes.SET_SELECTED_ROLE:
-      console.log(
-        "2222222222222222222222222222222222222222222222222222222222222222222222222",
-        action.payload
-      );
+
       state = { ...state, selectedRole: action.payload };
       break;
 
@@ -586,7 +583,6 @@ const DashboardReducer = (state = initialState, action: any) => {
       state = { ...state, retrieveEmail: undefined };
       break;
     case ActionTypes.FORGOT_PASSWORD_SUCCESS:
-      console.log(JSON.stringify(action.payload));
       state = { ...state, retrieveEmail: action.payload };
       break;
     case ActionTypes.FORGOT_PASSWORD_FAILURE:

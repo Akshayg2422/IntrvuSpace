@@ -34,7 +34,6 @@ const useScreenRecorder = () => {
           setIsScreenRecording(true);
           const recordedChunks: any = [];
           mediaRecorder.ondataavailable = (event) => {
-            console.log("dataceeeee", event.data)
             if (event.data.size > 0) {
               recordedChunks.push(event.data);
             }
@@ -44,9 +43,7 @@ const useScreenRecorder = () => {
           mediaRecorder.start(1000);
 
           setRecordStatus(true);
-          console.log('User selected the entire screen.');
         } else {
-          console.log('User selected an application window.');
           track.stop();
           setRecordStatus(false);
         }
@@ -103,7 +100,6 @@ const useScreenRecorder = () => {
     }
 
 
-    console.log("formData====>", videoBlob);
 
 
     // const params = formData

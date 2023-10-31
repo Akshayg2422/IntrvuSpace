@@ -104,7 +104,6 @@ function VariantInfo() {
 
     const { schedules } = corporateScheduleDetails || {}
 
-    console.log(JSON.stringify(schedules), 'schedulessssssssssss');
 
 
     const normalizedTableData = (data: any) => {
@@ -170,7 +169,6 @@ function VariantInfo() {
                     showToast(response.success, 'success')
                     bulkUploadLoader.hide()
                     getCorporateScheduleDetailsHandler()
-                    console.log(response, '1111111111111111111111111111111111111')
                 },
                 onError: (error: any) => () => {
                     showToast(error.error_message, 'error')
@@ -209,7 +207,6 @@ function VariantInfo() {
                                                     title={'Upload Candidates'}
                                                     onSelect={(data) => {
                                                         let eventPickers = [data]?.toString().replace(/^data:(.*,)?/, "");
-                                                        console.log('eventPickers=======>..', eventPickers);
                                                         setCandidateBulkUploadData(eventPickers);
                                                     }}
                                                     onSubmitClick={() => {
@@ -248,7 +245,6 @@ function VariantInfo() {
                                         title={'Upload Candidates'}
                                         onSelect={(data) => {
                                             let eventPickers = [data]?.toString().replace(/^data:(.*,)?/, "");
-                                            console.log('eventPickers=======>..', eventPickers);
                                             setCandidateBulkUploadData(eventPickers);
                                         }}
                                         onSubmitClick={() => {
