@@ -112,20 +112,16 @@ function* getSectorsSaga(action) {
   try {
 
     const response = yield call(Api.getSectorsApi, action.payload.params);
-    console.log('sasasasas');
 
     if (response.success) {
-      console.log('success');
       yield put(Action.getSectorsSuccess(response));
       yield call(action.payload.onSuccess(response));
     } else {
-      console.log('erroe');
 
       yield put(Action.getSectorsFailure(response.error_message));
       yield call(action.payload.onError(response));
     }
   } catch (error) {
-    console.log('erroe00000');
 
     yield put(Action.getSectorsFailure(error));
     yield call(action.payload.onError(error));
@@ -155,7 +151,6 @@ function* createQuestionFormSaga(action) {
 function* getQuestionFormSaga(action) {
   try {
     const response = yield call(Api.getQuestionFormApi, action.payload.params);
-    console.log(JSON.stringify(response));
     if (response.success) {
       yield put(Action.getQuestionFormSuccess(response));
       yield call(action.payload.onSuccess(response));
@@ -481,7 +476,6 @@ function* getCorporateScheduleDetailsSaga(action) {
 function* postStudentCodeSubmissionSaga(action) {
   try {
     const response = yield call(Api.postStudentCodeSubmissionApi, action.payload.params);
-    console.log("response============--->", response);
     if (response) {
       yield put(Action.postStudentCodeSubmissionSuccess(response));
       yield call(action.payload.onSuccess(response));
@@ -557,9 +551,7 @@ function* getSectorsCorporateSaga(action) {
 function* addSectorsCorporateSaga(action) {
   try {
     const response = yield call(Api.addCorporateSectorApi, action.payload.params);
-    console.log(response, 678);
     if (response.success) {
-      console.log(45);
       yield put(Action.addSectorCorporateSuccess(response));
       yield call(action.payload.onSuccess(response));
     } else {
@@ -577,9 +569,7 @@ function* addSectorsCorporateSaga(action) {
 function* addDepartmentCorporateSaga(action) {
   try {
     const response = yield call(Api.addDepartmentCorporateApi, action.payload.params);
-    console.log(response, '----->addDepartmentCorporateApi');
     if (response.success) {
-      console.log('addDepartmentCorporateApi');
       yield put(Action.addDepartmentCorporateSuccess(response));
       yield call(action.payload.onSuccess(response));
     } else {
@@ -617,9 +607,7 @@ function* getDepartmentCorporateSaga(action) {
 function* createCorporateSchedulesSaga(action) {
   try {
     const response = yield call(Api.createCorporateScheduleApi, action.payload.params);
-    console.log(response, '----->createCorporateScheduleApi');
     if (response.success) {
-      console.log('createCorporateScheduleApi');
       yield put(Action.createCorporateSchedulesSuccess(response));
       yield call(action.payload.onSuccess(response));
     } else {
@@ -656,9 +644,7 @@ function* getCorporateSchedulesSaga(action) {
 function* createSchedulesSuperAdminSaga(action) {
   try {
     const response = yield call(Api.createSchedulesSuperAdminApi, action.payload.params);
-    console.log(response, '----->createCorporateScheduleApi');
     if (response.success) {
-      console.log('createCorporateScheduleApi');
       yield put(Action.createSchedulesSuperAdminSuccess(response));
       yield call(action.payload.onSuccess(response));
     } else {
@@ -717,7 +703,6 @@ function* forgotPasswordSaga(action) {
     const response = yield call(Api.forgotPasswordApi, action.payload.params);
     if (response.success) {
 
-      console.log(JSON.stringify(response));
       yield put(Action.forgotPasswordSuccess(response?.details));
       yield call(action.payload.onSuccess(response));
     } else {
@@ -790,7 +775,6 @@ function* bulkUploadCandidatesCpSaga(action) {
     const response = yield call(Api.bulkUploadCandidatesCpApi, action.payload.params);
     if (response.success) {
 
-      console.log(JSON.stringify(response));
       yield put(Action.bulkUploadCandidatesSuccess(response?.details));
       yield call(action.payload.onSuccess(response));
     } else {
@@ -809,7 +793,6 @@ function* postManualApprovalOnCandidateSaga(action) {
   try {
     const response = yield call(Api.postManualApprovalOnCandidateApi, action.payload.params);
     if (response.success) {
-      console.log(JSON.stringify(response));
       yield put(Action.postManualApprovalOnCandidateSuccess(response?.details));
       yield call(action.payload.onSuccess(response));
     } else {
@@ -827,9 +810,7 @@ function* postManualApprovalOnCandidateSaga(action) {
 function* fetchCandidatesCorporateSaga(action) {
   try {
     const response = yield call(Api.fetchCandidatesCorporateApi, action.payload.params);
-    console.log("responseeee candidateee===>", response)
     if (response.success) {
-      console.log(JSON.stringify(response));
       yield put(Action.fetchCandidatesCorporateSuccess(response));
       yield call(action.payload.onSuccess(response));
     } else {
@@ -867,9 +848,7 @@ function* syncVideoSaga(action) {
 function* postCorporateScheduleActionsSaga(action) {
   try {
     const response = yield call(Api.postCorporateScheduleActionsApi, action.payload.params);
-    console.log("responseeee coirpao===>", response)
     if (response.success) {
-      console.log(JSON.stringify(response));
       yield put(Action.postCorporateScheduleActionsSuccess(response));
       yield call(action.payload.onSuccess(response));
     } else {

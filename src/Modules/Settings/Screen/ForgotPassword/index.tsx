@@ -48,7 +48,6 @@ function ForgotPassword() {
             onSuccess: (response: any) => () => {
                 loginLoader.hide()
                 if (response.success) {
-                    console.log('111111111111', response?.details)
                     showToast(response.message, 'success')
                     goTo(ROUTES["auth-module"].createNewPassword)
                 }
@@ -121,20 +120,20 @@ function ForgotPassword() {
         <>
             <div className="row  m-0 p-0 h-100vh">
                 <div className="col-xl-12 d-flex bg-white align-items-center justify-content-center  my-sm-0 my-4 ">
-                    
+
                     <div className="col-12 col-md-6 col-lg-4  align-items-center ">
-                    <div className='position-absolute pointer top-0 left-sm-9'
-                        onClick={() => {
-                            goBack()
-                        }}
-                    >
-                        <i className="bi bi-arrow-left text-black fa-lg font-weight-bolder"></i>
-                    </div>
+                        <div className='position-absolute pointer top-0 left-sm-9'
+                            onClick={() => {
+                                goBack()
+                            }}
+                        >
+                            <i className="bi bi-arrow-left text-black fa-lg font-weight-bolder"></i>
+                        </div>
                         <div className="mb--2">
                             <div className="align-items-center text-center">
                                 <Image src={icons.logoText} height={22} />
                             </div>
-                           
+
                         </div>
                         <div
                             className="pt-2  mx-0"
@@ -142,7 +141,7 @@ function ForgotPassword() {
                                 scale: "",
                             }}
                         >
-                             <div className="my-4 ">
+                            <div className="my-4 ">
                                 <span
                                     className="text-secondary"
                                     style={{ fontSize: 22, fontWeight: 800 }}
@@ -173,13 +172,13 @@ function ForgotPassword() {
                                     size="lg"
                                     text={'Get OTP'}
                                     onClick={() => {
-                                         onSubmit()
-                                       
+                                        onSubmit()
+
 
                                     }}
                                 />
                             </div>
-                         
+
                         </div>
                     </div>
                 </div>

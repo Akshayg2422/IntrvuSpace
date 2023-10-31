@@ -47,7 +47,6 @@ function Questions() {
   const loader = useLoader(false);
   const generateJdModal = useModal(false);
 
-  console.log("breadCrumbQuestionsssssssssssss------>", breadCrumb);
 
   useEffect(() => {
     getQuestionsFormApi();
@@ -61,8 +60,8 @@ function Questions() {
     dispatch(
       getQuestionForm({
         params,
-        onSuccess: () => () => {},
-        onError: () => () => {},
+        onSuccess: () => () => { },
+        onError: () => () => { },
       })
     );
   };

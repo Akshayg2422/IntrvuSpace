@@ -162,7 +162,6 @@ export const combineBase64Strings = (stringsArray) => {
     }
   });
 
-  console.log('Decoded Array:', decodedArray); // Log the decoded arrays to check
 
   const validDecodedArray = decodedArray.filter((item) => item !== null);
 
@@ -195,7 +194,6 @@ export function getShortName(fullName: string) {
     return names[0].substring(0, 2).toUpperCase();
   }
 
-  console.log("namesnames", names)
 
   const firstNameInitial = names[0][0].toUpperCase();
 

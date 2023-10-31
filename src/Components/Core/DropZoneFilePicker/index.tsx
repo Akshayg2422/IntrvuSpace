@@ -47,7 +47,7 @@ function DropzoneFilePicker({
   }, [isOpen]);
 
   const selectHandler = (e: any) => {
-    console.log("e", e);
+
     let fileName = document.getElementById(
       "selectImage"
     ) as HTMLInputElement | null;
@@ -55,7 +55,7 @@ function DropzoneFilePicker({
 
     if (check != null) {
       const file = e.target.files[0];
-      console.log("filefile", file);
+
       setFileName(file.name);
 
       const name = file.name.split(".");
@@ -69,13 +69,13 @@ function DropzoneFilePicker({
         if (onSelect) {
           onSelect(encoded);
           setFileData(encoded);
-          console.log(encoded, "encoded=====>");
+
         }
-        console.log("encidededed-================>", encoded);
+
       };
     } else {
       showToast("Please upload Excel files only.", "error");
-      console.log("check ", check);
+
     }
   };
 

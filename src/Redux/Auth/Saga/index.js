@@ -9,7 +9,6 @@ import * as Action from '../Store'
 function* registerAsMemberSaga(action) {
     try {
         const response = yield call(Api.registerAsMemberAPi, action.payload.params);
-        console.log(JSON.stringify(response) + '========getMyPastInterviewsSaga');
         if (response.success) {
             yield put(Action.registerAsMemberSuccess(response));
             yield call(action.payload.onSuccess(response));
@@ -28,7 +27,6 @@ function* registerAsMemberSaga(action) {
 function* memberLoginUsingPasswordSaga(action) {
     try {
         const response = yield call(Api.memberLoginUsingPasswordApi, action.payload.params);
-        console.log(JSON.stringify(response) + '========memberLoginUsingPasswordSuccess');
         if (response) {
             yield put(Action.memberLoginUsingPasswordSuccess(response));
             yield call(action.payload.onSuccess(response));
@@ -47,7 +45,6 @@ function* memberLoginUsingPasswordSaga(action) {
 function* fetchOtpSaga(action) {
     try {
         const response = yield call(Api.fetchOTPApi, action.payload.params);
-        console.log(JSON.stringify(response) + '========memberLoginUsingPasswordSuccess');
         if (response) {
             yield put(Action.fetchOTPSuccess(response));
             yield call(action.payload.onSuccess(response));
@@ -67,7 +64,6 @@ function* fetchOtpSaga(action) {
 function* fetchMemberLoginUsingOtpSaga(action) {
     try {
         const response = yield call(Api.fetchMemberLoginUsingOtpApi, action.payload.params);
-        console.log(JSON.stringify(response) + '========memberLoginUsingPasswordSuccess');
         if (response) {
             yield put(Action.fetchMemberUsingLoginOtpSuccess(response));
             yield call(action.payload.onSuccess(response));
