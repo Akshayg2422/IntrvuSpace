@@ -13,16 +13,13 @@ function DesignationItem({
   onEdit,
   onView,
   onClick,
+  onViewMore
 }: DesignationItemProps) {
-  const MENU = [{ id: 0, name: "Edit", icon: icons.edit }];
-  const { goTo, goBack } = useNavigation();
+
   const VIEW_MORE_LENGTH = 300;
-  const [updatedJdDetails, setUpdatedJdDetails] = useState<any>({});
 
 
-  useEffect(() => {
-    setUpdatedJdDetails({ ...item.job_description, isActive: false });
-  }, []);
+
 
   return (
     <>
@@ -132,16 +129,18 @@ function DesignationItem({
                     </div>
                   </div>
                   {item.job_description.details.length < VIEW_MORE_LENGTH ||
-                    updatedJdDetails.isActive ? (
+                    item?.is_view_more ? (
                     <div className="mt-3 mb-2" style={{ fontSize: "14px" }}>
                       <span> {item.job_description.details} </span>
-                      {updatedJdDetails.isActive && <span
+                      {item?.is_view_more && <span
                         className="text-primary font-weight-800 pointer"
                         onClick={() => {
-                          setUpdatedJdDetails({
-                            ...updatedJdDetails,
-                            isActive: false,
-                          });
+                          if (onViewMore)
+                            onViewMore(false)
+                          /** 
+                           * false
+                           */
+
                         }}
                       >
                         {"View Less"}
@@ -159,10 +158,14 @@ function DesignationItem({
                       <span
                         className="text-primary font-weight-800 pointer"
                         onClick={() => {
-                          setUpdatedJdDetails({
-                            ...updatedJdDetails,
-                            isActive: true,
-                          });
+                          if (onViewMore)
+                            onViewMore(true)
+
+                          /**
+                           *  true
+                           */
+
+
                         }}
                       >
                         {"View More"}

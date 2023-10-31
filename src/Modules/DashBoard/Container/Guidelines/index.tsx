@@ -1,9 +1,8 @@
-import React from 'react'
-import { GuidelinesProps } from './interfaces'
-import { Back, Button, Image, Modal } from '@Components'
-import { useModal, useNavigation } from '@Hooks'
 import { icons } from '@Assets'
+import { Button, Modal } from '@Components'
+import { useModal, useNavigation } from '@Hooks'
 import { useSelector } from 'react-redux'
+import { GuidelinesProps } from './interfaces'
 
 const START_INTERVIEW_GUIDELINES = [
     { icon: icons.check, title: "Use of headphones for better quality" },
@@ -47,19 +46,19 @@ function Guidelines({ scheduleInfo = undefined, loading, heading, onClick }: Gui
                                     <small className="pl-2 m-0 font-weight-500 text-secondary">{step.title}</small>
                                 </div>
                             ))}
-                            {(
-                                <div className="d-flex justify-content-center pr-sm-0 pr-5 mt-md-5 mt-sm-0 mt-2">
-                                    <Button className={'px-5 border border-primary rounded-sm'}
-                                        loading={loading}
-                                        text={!scheduleInfo.is_started ? 'Start Interview' : 'Resume Interview'}
-                                        onClick={() => {
-                                            if (onClick) {
-                                                onClick()
-                                            }
-                                        }}
-                                    />
-                                </div>
-                            )}
+
+                            <div className="d-flex justify-content-center pr-sm-0 pr-5 mt-md-5 mt-sm-0 mt-2">
+                                <Button className={'px-5 border border-primary rounded-sm'}
+                                    loading={loading}
+                                    text={!scheduleInfo.is_started ? 'Start Interview' : 'Resume Interview'}
+                                    onClick={() => {
+                                        if (onClick) {
+                                            onClick()
+                                        }
+                                    }}
+                                />
+                            </div>
+
                         </div>
                     </div>
                 </Modal>
@@ -89,7 +88,7 @@ function Guidelines({ scheduleInfo = undefined, loading, heading, onClick }: Gui
                                 )}
                             </div>
                         </div>
-                        
+
                     </Modal>
                 ) : (
                     <></>
@@ -100,4 +99,5 @@ function Guidelines({ scheduleInfo = undefined, loading, heading, onClick }: Gui
     );
 }
 
-export { Guidelines };
+export { Guidelines }
+
