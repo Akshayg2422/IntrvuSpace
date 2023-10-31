@@ -5,6 +5,7 @@ import {
   ButtonGroup,
   CommonTable,
   Divider,
+  DropDown,
   DropDownIcon,
   Heading,
   Image,
@@ -47,15 +48,11 @@ const NOTE = [
 ];
 
 const REPORT_TYPE = [
-  { id: "Basic Report", name: "Basic Report", value: "Basic Report" },
-  { id: "Detailed Report", name: "Detailed Report", value: "Detailed Report" },
+  { id: "BR", text: "Basic Report"},
+  { id: "DR", text: "Detailed Report"},
 ];
 
 function Report() {
-  // const FILTER = [
-  //   { id: 1, title: "Basic Report" },
-  //   { id: 2, title: "Detailed Report" },
-  // ];
 
   const { schedule_id } = useParams();
 
@@ -77,13 +74,12 @@ function Report() {
   const [cardHeight, setCardHeight] = useState<any>(null);
   const [percentage, setPercentage] = useState<any>({});
   const [fileName, setFileName] = useState("");
-  const [reportType, setReportType] = useState(REPORT_TYPE[0].id);
-
-  console.log("reportType", reportType);
+  // const [reportType, setReportType] = useState(REPORT_TYPE[0].id);
+  const reportType = useDropDown(REPORT_TYPE[0]);
 
   useEffect(() => {
     getBasicReportData();
-  }, [reportType]);
+  }, [reportType.value.id]);
 
   useEffect(() => {
     if (basicReportData) {
@@ -120,7 +116,7 @@ function Report() {
     basicReportLoader.show();
     const params = {
       schedule_id: schedule_id,
-      ...(reportType === "Detailed Report" && { is_detailed: true }),
+      ...(reportType.value.id === "DR" && { is_detailed: true }),
     };
 
     dispatch(
@@ -128,7 +124,7 @@ function Report() {
         params,
         onSuccess: (success) => () => {
           basicReportLoader.hide();
-          console.log("success===>", success.details);
+          // console.log("success===>", success.details);
           setBasicReportData(success.details);
 
           // const {
@@ -251,7 +247,6 @@ function Report() {
     setCardHeight(heightRef?.current?.offsetHeight);
   }, []);
 
-  console.log("cardheight", cardHeight);
 
   function removeDuplicates() {
     let count = 0;
@@ -426,7 +421,6 @@ function Report() {
                             {el?.suggestions?.covered_not_valid?.length > 0 &&
                               el?.suggestions?.covered_not_valid?.map(
                                 (items) => {
-                                  console.log("9090909e333333333333", items);
                                   return (
                                     <>
                                       <li>{items}</li>
@@ -510,14 +504,18 @@ function Report() {
       <div className="d-flex flex-column px-sm-6 px-2 py-3" ref={componentRef}>
         <div className="position-relative">
           <div className="col-sm-3 position-absolute top-4 left-0 p-0">
-            <DropDownIcon
+            <DropDown
+              // data={REPORT_TYPE}
+              // value={reportType}
+              // onChange={(e) => {
+              //   setReportType(e.target.value);
+              // }}
+              // style={{ height: "44px", borderColor: "#727586" }}
+              id={"status"}
+              // heading={"Status"}
               data={REPORT_TYPE}
-              value={reportType}
-              onChange={(e) => {
-                setReportType(e.target.value);
-              }}
-              style={{ height: "44px", borderColor: "#727586" }}
-              className={"rounded-sm pb-2 pr-3 text-default "}
+              selected={reportType.value}
+              onChange={reportType.onChange}
             />
           </div>
           <div className="position-relative mt-7 mt-sm-0">
@@ -536,7 +534,13 @@ function Report() {
                     className="font-weight-bolder text-secondary font-weight-600"
                     style={{ fontSize: 12 }}
                   >
-                    {`${basicReportData.interview_meta_info?.role} - ${basicReportData.interview_meta_info?.experience} years`}
+                    {`${basicReportData.interview_meta_info?.role} - ${
+                      basicReportData.interview_meta_info?.experience
+                    } ${
+                      basicReportData.interview_meta_info?.experience > 1
+                        ? "years"
+                        : "year"
+                    }`}
                   </span>
                 </div>
                 <div>
@@ -566,7 +570,7 @@ function Report() {
           </div>
         </div>
 
-        {reportType === "Basic Report" ? (
+        {reportType.value.id === "BR" ? (
           <div className="mt-md-6 p-0">
             <div className="mx-0 pb-0 mb--2 pt-5 pb-md-5">
               <div className="row">
@@ -605,8 +609,6 @@ function Report() {
                 {basicReportData.report_other_analytics &&
                   Object.keys(basicReportData.report_other_analytics)?.map(
                     (heading) => {
-                      console.log(heading, "heading");
-
                       return (
                         <div className="col-sm-3 ">
                           <Card
@@ -623,7 +625,10 @@ function Report() {
                                   className="font-weight-bolder text-secondary"
                                   style={{ fontSize: 16 }}
                                 >
-                                  {capitalizeFirstLetter(heading)?.replace("_", " ")}
+                                  {capitalizeFirstLetter(heading)?.replace(
+                                    "_",
+                                    " "
+                                  )}
                                 </span>
                               </div>
 
@@ -679,37 +684,39 @@ function Report() {
                     </div>
                   </div>
                 </div>
-                {basicReportData && basicReportData?.report_other_analytics && basicReportData?.report_other_analytics?.hlv_r &&
-                  Object.keys(basicReportData?.report_other_analytics?.hlv_r)?.map(
-                    (heading) => {
-                      return (
-                        <>
-                          <div className="col-sm-3 px-1 text-center">
-                            <div className="progress-wrapper col py-md-0 py-3 m-0">
-                              <div className="">
-                                <span
-                                  className="text-secondary font-weight-bolder"
-                                  style={{
-                                    fontSize: "36px",
-                                  }}
-                                >
-                                  {`${basicReportData.report_other_analytics.hlv_r[heading]} %`}
-                                </span>
-                              </div>
-                              <div className="h4 mb-0 pb-0 pt-2">
-                                <span
-                                  className="font-weight-bolder text-secondary"
-                                  style={{ fontSize: 18 }}
-                                >
-                                  {capitalizeFirstLetter(heading)}
-                                </span>
-                              </div>
+                {basicReportData &&
+                  basicReportData?.report_other_analytics &&
+                  basicReportData?.report_other_analytics?.hlv_r &&
+                  Object.keys(
+                    basicReportData?.report_other_analytics?.hlv_r
+                  )?.map((heading) => {
+                    return (
+                      <>
+                        <div className="col-sm-3 px-1 text-center">
+                          <div className="progress-wrapper col py-md-0 py-3 m-0">
+                            <div className="">
+                              <span
+                                className="text-secondary font-weight-bolder"
+                                style={{
+                                  fontSize: "36px",
+                                }}
+                              >
+                                {`${basicReportData.report_other_analytics.hlv_r[heading]} %`}
+                              </span>
+                            </div>
+                            <div className="h4 mb-0 pb-0 pt-2">
+                              <span
+                                className="font-weight-bolder text-secondary"
+                                style={{ fontSize: 18 }}
+                              >
+                                {capitalizeFirstLetter(heading)}
+                              </span>
                             </div>
                           </div>
-                        </>
-                      );
-                    }
-                  )}
+                        </div>
+                      </>
+                    );
+                  })}
               </div>
             </Card>
           </div>
@@ -770,7 +777,7 @@ function Report() {
             </div>
           </div>
 
-          {reportType === "Detailed Report" && (
+          {reportType.value.id === "DR" && (
             <>
               <div className="pt-5 text-secondary d-flex justify-content-between align-items-center font-weight-bolder">
                 <span style={{ fontSize: 26 }}>{"Skill Matrix Report"}</span>
@@ -842,7 +849,7 @@ function Report() {
                             <div>
                               {skill?.questions &&
                                 skill?.questions.length > 0 &&
-                                skill?.questions.map((que) => {
+                                skill?.questions.map((que: any) => {
                                   return (
                                     <>
                                       <div className="mt-3">
@@ -855,39 +862,81 @@ function Report() {
                                       </div>
 
                                       <div className="mt-3">
-                                        {que?.expected_answer_key_points &&
-                                        que.expected_answer_key_points
-                                          ?.points &&
-                                        que.expected_answer_key_points?.points
-                                          .length > 0 ? (
-                                          que.expected_answer_key_points?.points.map(
+                                        {que?.suggestions &&
+                                          que.suggestions?.covered &&
+                                          que.suggestions?.covered.length > 0 &&
+                                          que.suggestions.covered.map(
                                             (ans: any) => {
-                                              let index = ans.indexOf("-");
-                                              if (index < 0) {
-                                                ans = ans;
-                                              } else {
-                                                ans = ans.slice(2);
-                                              }
                                               return (
                                                 <div>
                                                   <Image
                                                     src={icons.check}
                                                     height={20}
                                                   />
-                                                  <span className="text-default ml-1">
+                                                  <span className="text-default ml-2">
                                                     {ans}
                                                   </span>
                                                 </div>
                                               );
                                             }
-                                          )
-                                        ) : (
-                                          <div>
-                                            <span className="text-default">
-                                              {"Not Answered"}
-                                            </span>
-                                          </div>
-                                        )}
+                                          )}
+
+                                        {que?.suggestions &&
+                                          que.suggestions?.covered_partial &&
+                                          que.suggestions?.covered_partial
+                                            .length > 0 &&
+                                          que.suggestions.covered_partial.map(
+                                            (ans: any) => {
+                                              return (
+                                                <div>
+                                                  <Image
+                                                    src={icons.checkBlack}
+                                                    height={20}
+                                                  />
+                                                  <span className="text-default ml-2">
+                                                    {ans}
+                                                  </span>
+                                                </div>
+                                              );
+                                            }
+                                          )}
+
+                                        {que?.suggestions &&
+                                          que.suggestions?.covered_not_valid &&
+                                          que.suggestions?.covered_not_valid
+                                            .length > 0 &&
+                                          que.suggestions.covered_not_valid.map(
+                                            (ans: any) => {
+                                              return (
+                                                <div>
+                                                  <Image
+                                                    src={icons.frame}
+                                                    height={20}
+                                                  />
+                                                  <span className="text-default ml-2">
+                                                    {ans}
+                                                  </span>
+                                                </div>
+                                              );
+                                            }
+                                          )}
+
+                                        {que.suggestions?.covered_not_valid
+                                          .length === 0 &&
+                                          que.suggestions?.covered.length ===
+                                            0 &&
+                                          que.suggestions?.covered_partial
+                                            .length === 0 && (
+                                            <div>
+                                              <Image
+                                                src={icons.frame}
+                                                height={20}
+                                              />
+                                              <span className="text-default ml-2">
+                                                {"Not Answered"}
+                                              </span>
+                                            </div>
+                                          )}
                                       </div>
                                     </>
                                   );
@@ -900,21 +949,20 @@ function Report() {
                   })}
               </div>
 
-              {basicReportData.report_other_analytics &&
-                basicReportData.report_other_analytics.llv_r &&
-                basicReportData.report_other_analytics.hlv_r &&
-                Object.keys(basicReportData.report_other_analytics.hlv_r).map(
+              {basicReportData &&
+                basicReportData?.report_other_analytics &&
+                basicReportData.report_other_analytics?.llv_r &&
+                basicReportData.report_other_analytics?.hlv_r &&
+                Object.keys(basicReportData.report_other_analytics?.hlv_r).map(
                   (heading) => {
                     return (
                       <>
                         <div className="pt-5 text-secondary d-flex justify-content-between align-items-center font-weight-bolder">
-                          <span style={{ fontSize: 26 }}>{heading}</span>
+                          <span style={{ fontSize: 26 }}>
+                            {capitalizeFirstLetter(heading).replace("_", " ")}
+                          </span>
                           <span style={{ fontSize: 36 }}>
-                            {
-                              basicReportData.report_other_analytics.hlv_r[
-                                heading
-                              ]
-                            }
+                            {`${basicReportData.report_other_analytics.hlv_r[heading]} %`}
                           </span>
                         </div>
 
@@ -974,67 +1022,6 @@ function Report() {
                     );
                   }
                 )}
-
-              {/* <div className="pt-5 text-secondary d-flex justify-content-between align-items-center font-weight-bolder">    
-                  <span style={{ fontSize: 26 }}>{"Personality Trait"}</span>
-                  <span style={{ fontSize: 36 }}>{"36%"}</span>
-                </div>
-
-                <div>
-                  <div className="" style={{ paddingTop: 20 }}>
-                    <div>
-                      {basicReportData &&
-                        Object.keys(basicReportData).map((item) => {
-                          return (
-                            <div>
-                              {item === "trait" &&
-                                basicReportData?.trait &&
-                                basicReportData?.trait.length > 0 &&
-                                basicReportData?.trait.map((el: any) => {
-                                  return (
-                                    <Card
-                                      className="p-4"
-                                      style={{
-                                        borderWidth: 1.5,
-                                        borderColor: "#e8edff",
-                                        backgroundColor: "transparent",
-                                      }}
-                                    >
-                                      <div className="d-flex justify-content-between align-items-start">
-                                        <div>
-                                          <div>
-                                            <span
-                                              className="text-secondary font-weight-bolder"
-                                              style={{ fontSize: 16 }}
-                                            >
-                                              {el.trait}
-                                            </span>
-                                          </div>
-                                          <span
-                                            className="text-default"
-                                            style={{ fontSize: 14 }}
-                                          >
-                                            {el.reason}
-                                          </span>
-                                        </div>
-                                        <div>
-                                        <span
-                                          className="text-secondary font-weight-bolder"
-                                          style={{ fontSize: 16 }}
-                                        >
-                                          {el.percent}
-                                        </span>
-                                        </div>
-                                      </div>
-                                    </Card>
-                                  );
-                                })}
-                            </div>
-                          );
-                        })}
-                    </div>
-                  </div>
-                </div> */}
             </>
           )}
         </div>

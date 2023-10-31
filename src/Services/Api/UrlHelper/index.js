@@ -189,6 +189,10 @@ export const FETCH_CANDIDATES_CORPORATE = ASSISTANT + 'getCandidatesCorporate'
  *  video sync
  */
 
-export const URL_SYNC_VIDEO = ASSISTANT + 'syncVideo'
+export const URL_SYNC_VIDEO = ASSISTANT + 'recordInterviewSession'
+
+// corporateScheduleActions
+
+export const POST_CORPORATE_SCHEUDULE_ACTIONS = ASSISTANT + 'corporateScheduleActions'
 
 

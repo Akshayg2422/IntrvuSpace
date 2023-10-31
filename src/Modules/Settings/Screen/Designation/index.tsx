@@ -1,30 +1,18 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 
-import { Button, DropDown, DesignationItem, Input, Modal, NoDataFound, Breadcrumbs, showToast, TextArea, ReactAutoComplete, Heading, InputHeading, TopNavbarCorporateFlow, Spinner, PageNation } from '@Components';
+import { Button, DesignationItem, DropDown, Heading, Input, InputHeading, Modal, NoDataFound, PageNation, ReactAutoComplete, Spinner, TextArea, TopNavbarCorporateFlow, showToast } from '@Components';
 import { useDropDown, useInput, useKeyPress, useLoader, useModal, useNavigation } from '@Hooks';
-import { CREATE_KNOWLEDGE_GROUP_VARIANT_FAILURE, breadCrumbs, clearBreadCrumbs, createCorporateSchedules, createKnowledgeGroup, createKnowledgeGroupVariant, getDepartmentCorporate, getCorporateSchedules, getKnowledgeGroups, getSectorCorporate, getSectors, setSelectedRole, addSectorCorporate, addDepartmentCorporate, showCreateOpeningsModal, hideCreateOpeningsModal, fetchCandidatesCorporateSuccess } from '@Redux';
+import { UploadCorporateOpeningsCard } from '@Modules';
+import { addDepartmentCorporate, addSectorCorporate, breadCrumbs, clearBreadCrumbs, createCorporateSchedules, getCorporateSchedules, getDepartmentCorporate, getSectorCorporate, hideCreateOpeningsModal, setSelectedRole } from '@Redux';
 import { ROUTES } from '@Routes';
-import { ADD_DESIGNATION_RULES, CREATE_CORPORATE_SCHEDULE_RULES, CREATE_KNOWLEDGE_GROUP_VARIANT_RULES, STATUS_LIST, getDropDownCompanyDisplayData, getValidateError, ifObjectExist, paginationHandler, validate } from '@Utils';
+import { CREATE_CORPORATE_SCHEDULE_RULES, STATUS_LIST, getValidateError, ifObjectExist, paginationHandler, validate, getDropDownCompanyDisplayData, EXPERIENCE_LIST, INTERVIEW_DURATIONS } from '@Utils';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import classnames from 'classnames'
-import { UploadCorporateOpeningsCard } from '@Modules';
-
-
-const PLACE_HOLDER = {
-    "sector": "Software, Banking...",
-}
 
 
 function Designation() {
 
-    const { sectors } = useSelector((state: any) => state.DashboardReducer)
     const { sectorsCorporate, departmentCorporate, createOpening, corporateSchedules, corporateScheduleNumOfPages, corporateScheduleCurrentPages } = useSelector((state: any) => state.DashboardReducer)
-    console.log('action.payload?.details.corporate_jd_items.num_pages', corporateScheduleNumOfPages);
-    console.log('action.payload?.details.corporate_jd_items.next_page', corporateScheduleCurrentPages);
-
-
-    console.log('corporateSchedules---------->', JSON.stringify(corporateSchedules));
-
 
     const { goTo, goBack } = useNavigation()
     const dispatch = useDispatch()
@@ -37,7 +25,6 @@ function Designation() {
     const [selectedDesignation, setSelectedDesignation] = useState<any>({})
     const [selectedVariant, setSelectedVariant] = useState<any>({})
 
-    console.log(selectSector, "card selectSectorselectSectorselectSector------>");
 
 
     const addDesignationModal = useModal(false);
@@ -47,22 +34,26 @@ function Designation() {
     const description = useInput("");
     const sector = useDropDown({});
     // const experience = useInput('')
-    const [experience, setExperience] = useState("")
+    const experience = useDropDown(EXPERIENCE_LIST[0])
     const jd = useInput('');
     const portalUrl = useInput('');
     const position = useInput('');
     const sectorInput = useInput('');
     const loader = useLoader(false);
-    const interviewDurations: any = [
-        { id: 1, text: 'Quick', subText: '5 mins', value: 5, isActive: false },
-        { id: 2, text: 'Short', subText: '10 mins', value: 10, isActive: false },
-        { id: 3, text: 'Medium', subText: '15 mins', value: 15, isActive: false },
-        { id: 4, text: 'Long', subText: '30 mins', value: 30, isActive: false },
-    ];
 
-    const [changeColorButton, setChangeColorButton] = useState<any>(interviewDurations)
-    const [vacancies, setVacancies] = useState<any>('')
-    const [interviewDuration, setInterviewDuration] = useState<any>('')
+    const DEFAULT_VALUE = { id: '-1', text: "All" }
+
+
+    const filterDepartment = useDropDown(DEFAULT_VALUE);
+    const filterSector = useDropDown(DEFAULT_VALUE);
+
+
+
+
+    const [selectedDuration, setSelectedDuration] = useState<any>(INTERVIEW_DURATIONS[0])
+
+
+    const vacancies = useInput('1')
     const [loading, setLoading] = useState(true);
     const status = useDropDown(STATUS_LIST[1]);
     const enterPress = useKeyPress("Enter");
@@ -71,7 +62,7 @@ function Designation() {
 
     useEffect(() => {
         getCorporateScheduleApiHandler(corporateScheduleCurrentPages);
-    }, []);
+    }, [filterSector.value, filterDepartment.value, status.value]);
 
 
     useEffect(() => {
@@ -82,14 +73,10 @@ function Designation() {
 
 
 
-
-
     useEffect(() => {
         dispatch(clearBreadCrumbs([]))
-        // getSectorsApiHandler();
         getSectorsCorporateApiHandler();
         getDepartmentCorporateApiHandler();
-        // dispatch(fetchCandidatesCorporateSuccess(undefined))
     }, [])
 
     const getSectorsCorporateApiHandler = () => {
@@ -107,13 +94,13 @@ function Designation() {
     }
 
     const addSectorCorporateApiHandler = (value) => {
-        console.log(value, "apiCheck");
         const params = { name: value, description: null }
         dispatch(
             addSectorCorporate({
                 params,
                 onSuccess: (response) => () => {
-                    console.log(response, "addSectorCorporateApiHandler");
+                    const { details } = response
+                    setSelectedSector(details);
                     getSectorsCorporateApiHandler();
                 },
                 onError: (error) => () => {
@@ -128,7 +115,6 @@ function Designation() {
             getDepartmentCorporate({
                 params,
                 onSuccess: (response: any) => () => {
-                    console.log('getDepartmentCorporate-------->', JSON.stringify(response))
                 },
                 onError: () => () => {
                 },
@@ -137,15 +123,13 @@ function Designation() {
     }
 
     const addDepartmentApiHandler = (value) => {
-        console.log(value, "apiCheck");
-
         const params = { name: value }
         dispatch(
             addDepartmentCorporate({
                 params,
-                onSuccess: (response) => () => {
-                    console.log(response, 'addDepartapiHandler');
-
+                onSuccess: (response: any) => () => {
+                    const { details } = response
+                    setSelectedDepartment(details);
                     getDepartmentCorporateApiHandler();
                 },
                 onError: (error) => () => {
@@ -157,14 +141,16 @@ function Designation() {
     const createCorporateScheduleApiHandler = () => {
 
         const params = {
-            sector_id: selectSector.id,
-            department_id: selectDepartment.id,
+            ...(selectSector ? { sector_id: selectSector.id } : {}),
+            ...(selectDepartment ? { department_id: selectDepartment?.id } : {}),
             role: position.value,
-            experience: experience,
+            experience: parseInt(experience.value?.id),
             jd: jd.value,
-            vacancies: vacancies,
-            interview_duration: interviewDuration,
+            vacancies: vacancies?.value,
+            interview_duration: selectedDuration?.value,
         }
+
+
         const validation = validate(CREATE_CORPORATE_SCHEDULE_RULES, params)
 
         if (ifObjectExist(validation)) {
@@ -173,7 +159,6 @@ function Designation() {
                 createCorporateSchedules({
                     params,
                     onSuccess: (response) => () => {
-                        console.log(response, "submit");
                         getCorporateScheduleApiHandler(corporateScheduleCurrentPages)
                         loader.hide()
                         showToast(response.message, 'success');
@@ -195,57 +180,43 @@ function Designation() {
     function resetValues() {
         addRoleModal.hide()
         position.set("")
-        setExperience("")
+        experience.set({})
         jd.set("")
         position.set('')
-        setVacancies('')
-        setInterviewDuration('')
+        vacancies.set('')
+        setSelectedDuration({});
     }
 
     const getCorporateScheduleApiHandler = (page_number: number) => {
-        console.log('getCorporateScheduleApiHandler----------->', getCorporateScheduleApiHandler)
 
-        let is_active = '';
+        let filterStatus: any = undefined;
 
-        if (status.value === 'ACV') {
-            is_active = 'true';
-        } else if (status.value === 'CSD') {
-            is_active = 'false';
+        if (status.value?.id === 'ACV') {
+            filterStatus = { is_Active: true }
+        } else if (status.value?.id === 'CSD') {
+            filterStatus = { is_Active: false };
         }
         const params = {
             position: positionSearch,
             page_number,
-            is_active
-            // sector_id: '',
-            // department_id: ''
+            ...(filterStatus ? filterStatus : {}),
+            ...((filterSector && filterSector.value.id !== '-1') && { sector_id: filterSector?.value?.id }),
+            ...((filterDepartment && filterDepartment.value.id !== '-1') && { sector_id: filterDepartment?.value?.id })
         }
         dispatch(getCorporateSchedules({
             params,
             onSuccess: (response: any) => () => {
                 setCardData(response.details.corporate_jd_items.data)
-                console.log('getCorporateScheduleApiHandler---->', response)
                 setLoading(false)
             },
-            onError: (error) => () => {
-
+            onError: () => () => {
             },
         }))
     }
 
 
-    const handleItemClick = (index) => {
-        const updatedButtons = changeColorButton.map((item, i) => {
-            if (i === index) {
-                return { ...item, isActive: true };
-            } else {
-                return { ...item, isActive: false };
-            }
-        });
-        setChangeColorButton(updatedButtons);
-    };
 
-    console.log('status.onChangestatus.onChange----------------', status.value)
-    console.log("isPositionExist===>", isPositionExist)
+
 
     return (
         <>
@@ -257,7 +228,7 @@ function Designation() {
                     </div>
                 ) : corporateSchedules?.details?.corporate_jd_items?.data.length === 0 && !isPositionExist ? (
                     <UploadCorporateOpeningsCard />
-                ) : (<div className='pt-4 mx-sm-7'>
+                ) : (<div className='pt-4 mx-sm-0 mx-3 mx-md-7'>
                     <div className='row pt-6'>
                         <div className='col'>
                             <Input
@@ -274,31 +245,35 @@ function Designation() {
                         </div>
                         <div className="col-lg-3 col-md-3 col-sm-12 ">
                             <DropDown
-                                className="form-control-md rounded-sm"
+                                id={'status'}
                                 heading={'Status'}
                                 data={STATUS_LIST}
                                 selected={status.value}
                                 onChange={status.onChange}
+
                             />
                         </div>
-                        <div className='col'>
+                        {departmentCorporate && departmentCorporate.length > 0 && <div className='col'>
                             <DropDown
-                                className="form-control-md rounded-sm"
+                                id={'department'}
                                 heading={'Department'}
-                            // data={}
-                            // selected={}
-                            // onChange={}
+                                data={[DEFAULT_VALUE, ...getDropDownCompanyDisplayData(departmentCorporate)]}
+                                selected={filterDepartment.value}
+                                onChange={filterDepartment.onChange}
                             />
                         </div>
-                        <div className='col'>
-                            <DropDown
-                                className="form-control-md rounded-sm"
-                                heading={'Sector'}
-                            // data={}
-                            // selected={}
-                            // onChange={}
-                            />
-                        </div>
+                        }
+                        {sectorsCorporate && sectorsCorporate.length > 0 &&
+                            <div className='col'>
+                                <DropDown
+                                    id={'sector'}
+                                    heading={'Sector'}
+                                    data={[DEFAULT_VALUE, ...getDropDownCompanyDisplayData(sectorsCorporate)]}
+                                    selected={filterSector.value}
+                                    onChange={filterSector.onChange}
+                                />
+                            </div>
+                        }
                         <div>
                         </div>
                     </div>
@@ -309,7 +284,15 @@ function Designation() {
                                 return (
                                     <div className='col-sm-12 col-lg-12 mb-3' key={index}>
                                         <DesignationItem
+                                            onViewMore={(status) => {
+                                                const updatedCardData = [...cardData]
+                                                updatedCardData[index] = { ...updatedCardData[index], is_view_more: status }
+                                                setCardData(updatedCardData)
+                                            }
+                                            }
                                             item={el}
+                                            data={cardData}
+                                            index={index}
                                             onEdit={(designation, role) => {
                                                 setSelectedDesignation(designation);
                                                 dispatch(setSelectedRole(role));
@@ -342,10 +325,11 @@ function Designation() {
                             </div>
                         )}
                     </div>
+
                     <PageNation
                         currentPage={corporateScheduleCurrentPages}
                         noOfPage={corporateScheduleNumOfPages}
-                        isPagination={true}
+                        isPagination={corporateScheduleNumOfPages > 1}
                         paginationNumberClick={(currentPage) => {
                             getCorporateScheduleApiHandler(paginationHandler("current", currentPage));
                         }}
@@ -381,30 +365,25 @@ function Designation() {
                                     onChange={position.onChange} />
                             </div>
 
-                            <div className='col-sm-4'>
-                                <InputHeading heading={'Experience'} />
-                                <select
-                                    id="experience"
-                                    value={experience}
-                                    placeholder='Select'
-                                    onChange={(e) => setExperience(e.target.value)}
-                                    className={`form-control ${experience.length === 0 ? 'text-default' : 'text-black'} rounded-sm `}
-                                >
-                                    {Array.from({ length: 31 }, (_, index) => (
-                                        <option key={index} value={index.toString()}>
-                                            {index === 0 ? 'Fresher' : index}
-                                        </option>
-                                    ))}
-                                </select>
+                            <div className='col-sm-4' style={{
+                                zIndex: 1
+                            }}>
+                                <DropDown
+                                    heading={'Experience'}
+                                    id={'experience'}
+                                    data={EXPERIENCE_LIST}
+                                    selected={experience.value}
+                                    onChange={experience.onChange}
+                                />
                             </div>
                             <div className='col-sm-3 mt-4 mt-sm-0'>
                                 <Input
-
                                     heading={'Vacancies'}
                                     type={'number'}
                                     placeHolder={"0"}
-                                    value={vacancies}
-                                    onChange={(e) => setVacancies(e.target.value)} />
+                                    value={vacancies.value}
+                                    onChange={vacancies.onChange}
+                                />
                             </div>
                         </div>
 
@@ -420,16 +399,18 @@ function Designation() {
                             <InputHeading heading={'Duration'} />
                             <div className='d-flex flex-wrap justify-content-between'>
                                 {
-                                    changeColorButton.map((item, index) => {
-                                        return <div className='mb-4 mb-sm-0'>
-                                            <Button text={item.subText} className={`${item.isActive ? "btn-outline-primary" : "btn-outline-light-gray text-default"} rounded-sm px-sm-4`} style={{ width: "140px" }} onClick={() => {
-                                                console.log(item.value);
-                                                setInterviewDuration(item.value)
-
-                                                handleItemClick(index)
-                                            }} />
-
-                                        </div>
+                                    INTERVIEW_DURATIONS.map((item) => {
+                                        const { id, subText } = item
+                                        return (
+                                            <div className='mb-4 mb-sm-0'>
+                                                <Button
+                                                    text={subText}
+                                                    className={`${selectedDuration?.id === id ? "btn-outline-primary" : "btn-outline-light-gray text-default"} rounded-sm px-sm-4`} style={{ width: "140px" }} onClick={() => {
+                                                        setSelectedDuration(item)
+                                                    }}
+                                                />
+                                            </div>
+                                        )
                                     })
                                 }
                             </div>
@@ -437,24 +418,24 @@ function Designation() {
                         <div className='row'>
                             <div className='col'>
                                 <ReactAutoComplete
-
+                                    selected={selectSector?.name}
                                     data={sectorsCorporate}
                                     heading={"Sector"}
-                                    onAdd={(value) => {
+                                    onAdd={(value: any) => {
                                         addSectorCorporateApiHandler(value)
                                     }}
-                                    state={setSelectedSector}
+                                    onSelected={setSelectedSector}
                                 />
                             </div>
                             <div className='col'>
                                 <ReactAutoComplete
-
+                                    selected={selectDepartment?.name}
                                     data={departmentCorporate}
                                     heading={"Department"}
-                                    onAdd={(value) => {
+                                    onAdd={(value: string) => {
                                         addDepartmentApiHandler(value)
                                     }}
-                                    state={setSelectedDepartment}
+                                    onSelected={setSelectedDepartment}
                                 />
                             </div>
                         </div>
@@ -465,7 +446,7 @@ function Designation() {
                         <Button size={'md'}
                             loading={loader.loader}
                             text={"Create Opening"}
-                            className={'rounded px-5'}
+                            className={'rounded-sm px-5'}
                             onClick={createCorporateScheduleApiHandler}
                         />
                     </div>

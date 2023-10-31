@@ -254,78 +254,77 @@ function Designation() {
                     experience.set("")
                     jd.set("")
                     role1.set('')
-                }} style={{padding: 0}}>
+                }} style={{ padding: 0 }}>
                     <div className='px-6'>
-                    <Heading heading={'Create Opening'} style={{fontSize: '26px', fontWeight: 800, margin: 0}}/>
-                    <div className='text-default pt-1 font-weight-500'>Input job details, specifying qualifications, requirements, interview duration</div>
-                    
-                    <div className={'col-12 pt-6 px-0'}>
-                        <div className='row'>
-                            <div className='col'>
-                                <ReactAutoComplete
-                                    isMandatory
-                                    data={sectorsCorporate}
-                                    heading={"Sector"}
-                                    onAdd={(value) => {
-                                        addSectorCorporateApiHandler(value)
-                                    }}
-                                    state={setSelectedSector}
-                                />
+                        <Heading heading={'Create Opening'} style={{ fontSize: '26px', fontWeight: 800, margin: 0 }} />
+                        <div className='text-default pt-1 font-weight-500'>Input job details, specifying qualifications, requirements, interview duration</div>
+                        <div className={'col-12 pt-6 px-0'}>
+                            <div className='row'>
+                                <div className='col'>
+                                    <ReactAutoComplete
+                                        isMandatory
+                                        data={sectorsCorporate}
+                                        heading={"Sector"}
+                                        onAdd={(value) => {
+                                            addSectorCorporateApiHandler(value)
+                                        }}
+                                        state={setSelectedSector}
+                                    />
+                                </div>
+                                <div className='col'>
+                                    <ReactAutoComplete
+                                        isMandatory
+                                        data={departmentCorporate}
+                                        heading={"Department"}
+                                        onAdd={(value) => {
+                                            addDepartmentApiHandler(value)
+                                        }}
+                                        state={setSelectedDepartment}
+                                    />
+                                </div>
                             </div>
-                            <div className='col'>
-                                <ReactAutoComplete
-                                    isMandatory
-                                    data={departmentCorporate}
-                                    heading={"Department"}
-                                    onAdd={(value) => {
-                                        addDepartmentApiHandler(value)
-                                    }}
-                                    state={setSelectedDepartment}
-                                />
+
+                            <div className='row'>
+                                <div className='col'>
+                                    <Input
+                                        isMandatory
+                                        heading={'Role'}
+                                        type={'text'}
+                                        placeHolder={"Role"}
+                                        value={role1.value}
+                                        onChange={role1.onChange} />
+                                </div>
+
+                                <div className='col'>
+                                    <Input
+                                        isMandatory
+                                        heading={'Experience'}
+                                        type={'number'}
+                                        placeHolder={"Experience"}
+                                        value={experience.value}
+                                        onChange={experience.onChange} />
+                                </div>
                             </div>
+
+
+                            <div>
+                                <TextArea
+                                    isMandatory
+                                    heading='Job Description'
+                                    value={jd.value}
+                                    className={"float-end"}
+                                    onChange={jd.onChange} />
+                            </div>
+
                         </div>
 
-                        <div className='row'>
-                            <div className='col'>
-                                <Input
-                                    isMandatory
-                                    heading={'Role'}
-                                    type={'text'}
-                                    placeHolder={"Role"}
-                                    value={role1.value}
-                                    onChange={role1.onChange} />
-                            </div>
-
-                            <div className='col'>
-                                <Input
-                                    isMandatory
-                                    heading={'Experience'}
-                                    type={'number'}
-                                    placeHolder={"Experience"}
-                                    value={experience.value}
-                                    onChange={experience.onChange} />
-                            </div>
+                        <div className="col text-right">
+                            <Button size={'md'}
+                                loading={loader.loader}
+                                text={"Submit"}
+                                onClick={createCorporateScheduleApiHandler}
+                            />
                         </div>
-
-
-                        <div>
-                            <TextArea
-                                isMandatory
-                                heading='Job Description'
-                                value={jd.value}
-                                className={"float-end"}
-                                onChange={jd.onChange} />
-                        </div>
-
-                    </div>
-
-                    <div className="col text-right">
-                        <Button size={'md'}
-                            loading={loader.loader}
-                            text={"Submit"}
-                            onClick={createCorporateScheduleApiHandler}
-                        />
-                    </div>
                     </div>
 
                 </Modal >

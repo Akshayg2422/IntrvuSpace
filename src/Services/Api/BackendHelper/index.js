@@ -192,4 +192,10 @@ export const fetchCandidatesCorporateApi = payload => post(URL.FETCH_CANDIDATES_
 
 export const syncVideoApi = payload => post(URL.URL_SYNC_VIDEO, payload, {});
 
+//corporateScheduleActions
+
+export const postCorporateScheduleActionsApi = payload => post(URL.POST_CORPORATE_SCHEUDULE_ACTIONS, payload, {});
+
+
+
 

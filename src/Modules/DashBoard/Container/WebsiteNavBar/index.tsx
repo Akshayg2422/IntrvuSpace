@@ -4,24 +4,16 @@ import {
   Container,
   NavbarBrand,
   UncontrolledCollapse,
-  Row,
-  Col,
   Nav,
-  NavItem,
-  NavLink,
 } from "reactstrap";
 import "./index.css";
 import { icons } from "@Assets";
 import { Image, Button } from "@Components";
 import { ROUTES } from "@Routes";
-import { useDynamicHeight, useNavigation } from "@Hooks";
+import { useNavigation } from "@Hooks";
 
 function WebsiteNavBar() {
   const { goTo } = useNavigation();
-
-  let dynamicHeight: any = useDynamicHeight();
-
-  const dynamicPaddingTop = dynamicHeight.dynamicWidth <= 576 ? "pt-2" : "";
 
   return (
     <Navbar
@@ -32,29 +24,43 @@ function WebsiteNavBar() {
     >
       <Container>
         <NavbarBrand to="/" tag={Link}>
-          <div className={"ml-sm--5 ml--4"} >
-            <img alt="..." src={icons.logoText} style={{ height: 55, zIndex: 100 }} />
+          <div className="d-flex justify-content-between">
+            <img className={'d-none d-lg-block d-md-block d-xl-block'} src={icons.logoText} alt="Logo" style={{ height: '20%', width: '20%' }} />
+            <img className={'d-block d-md-none d-lg-none d-xl-none'} src={icons.logoText} alt="Logo" style={{ height: '30%', width: '30%' }} />
+            <button
+              aria-controls="navbar-collapse"
+              aria-expanded={false}
+              aria-label="Toggle navigation"
+              className="navbar-toggler mr--4"
+              data-target="#navbar-collapse"
+              data-toggle="collapse"
+              id="navbar-collapse"
+              type="button"
+            >
+              <Image height={30} width={30} src={icons.navbarToggler} />
+            </button>
           </div>
         </NavbarBrand>
-        <button
-          aria-controls="navbar-collapse"
-          aria-expanded={false}
-          aria-label="Toggle navigation"
-          className="navbar-toggler"
-          data-target="#navbar-collapse"
-          data-toggle="collapse"
-          id="navbar-collapse"
-          type="button"
-        >
-          <div className={"pt-2"}>
-            <Image height={30} width={30} src={icons.navbarToggler} />
-          </div>
-        </button>
         <UncontrolledCollapse
           className="navbar-custom-collapse"
           navbar
           toggler="#navbar-collapse"
         >
+          <div className="d-flex justify-content-end">
+          <button
+            aria-controls="navbar-collapse"
+            aria-expanded={false}
+            aria-label="Toggle navigation"
+            className="navbar-toggler d-flex justify-content-end"
+            data-target="#navbar-collapse"
+            data-toggle="collapse"
+            id="navbar-collapse"
+            type="button"
+          >
+            <span />
+            <span />
+          </button>
+          </div>
           <Nav className="ml-auto" navbar>
             {/* <NavLink to="/admin/dashboard" tag={Link}>
             <span className="text-primary tab-font-style">Home</span>
@@ -73,11 +79,11 @@ function WebsiteNavBar() {
               style={{
                 borderColor: "#d8dade",
                 // borderWidth: 1,
-                paddingTop:10,
-                paddingBottom:10,
+                paddingTop: 10,
+                paddingBottom: 10,
                 fontSize: 14,
-                paddingRight: 10,
-                paddingLeft: 10,
+                paddingRight: 15,
+                paddingLeft: 15,
                 borderRadius: 4
               }}
               onClick={() => {

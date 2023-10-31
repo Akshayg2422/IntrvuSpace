@@ -104,17 +104,18 @@ function ContentRenderer({ filterContent, questions }: ContentRendererProps) {
         {selectCourseIde(filterContent)?.isEditor ? (
           // JS, PY and HTML
 
-          <CodeEditor
-            timeInSec={30}
-            // value={studentProgramData}
-            courseIde={selectCourseIde(filterContent)?.type}
-            themeCallBack={(theme) => setThemeColor(theme)}
-            // codeOutput={codeOutput}
-            // isLoading={isLoadingSubmitButton}
-            // isFromStudentTask
-            // onSubmit={(code) => {
-            // }}
-          />
+          <></>
+          // <CodeEditor
+          //   timeInSec={30}
+          //   // value={studentProgramData}
+          //   courseIde={selectCourseIde(filterContent)?.type}
+          //   themeCallBack={(theme) => setThemeColor(theme)}
+          //   // codeOutput={codeOutput}
+          //   // isLoading={isLoadingSubmitButton}
+          //   // isFromStudentTask
+          //   // onSubmit={(code) => {
+          //   // }}
+          // />
         ) : !selectCourseIde(filterContent)?.isEditor &&
           // Flow Diagram
 
@@ -167,7 +168,7 @@ function ContentRenderer({ filterContent, questions }: ContentRendererProps) {
               <h1 className="text-center text-white">{"Questionnaire"}</h1>
               <div className="row">
                 {/* // question with choice select multi option */}
-                
+
                 <QuestionWithMultipleChoices
                   question={questions.question}
                   choices={questions.choices}
@@ -198,7 +199,7 @@ function ContentRenderer({ filterContent, questions }: ContentRendererProps) {
               <FileUploader
                 onFileUpload={handleFileUpload}
                 isImageUpload
-                onClick={(imageArr) => {}}
+                onClick={(imageArr) => { }}
               />
             </div>
           </div>
@@ -211,7 +212,7 @@ function ContentRenderer({ filterContent, questions }: ContentRendererProps) {
               {/* /file upload any */}
               <FileUploader
                 onFileUpload={handleFileUpload}
-                onClick={(fileArr) => {}}
+                onClick={(fileArr) => { }}
               />
             </div>
           )

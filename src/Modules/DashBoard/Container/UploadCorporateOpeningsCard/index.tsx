@@ -22,38 +22,40 @@ function UploadCorporateOpeningsCard() {
     };
     return (
 
-        <div className={'container-fluid mt-md-7 mt-sm-0 mt-8'}>
+        <div className={'container-fluid mt-md-7 mt-sm-0 mt-5'}>
 
-            <div className={'row mx-md-5 '}>
-                <div className={'col-lg-5 col-sm-12'}>
+            <div className={'row'}>
+                <div className={'col-lg-6 col-sm-12'}>
                     <div className="mt-2 ml-md-5">
                         <div className={'mb-md-3 mb-sm-0 mb-4'}>
-                            <span style={{ lineHeight: '30px' }} className="display-3 text-secondary font-weight-bolder mb-0 ls-1">
+                            <span style={{ lineHeight: '36px' }} className="display-3 text-secondary font-weight-bolder mb-0 ls-1">
                                 Streamlined <br />
                                 Interviews & Insights
                             </span>
                         </div>
-                        <div className={'text-default font-weight-500 mb-md-3 mb-sm-0 mb-4'}>
+                        <div style={{ maxWidth: '75%' }} className={'text-default font-weight-500 mb-md-3 mb-sm-0 mb-4'}>
                             Get access to interview video recordings and detailed curated reports on Candidates for wach interview
                         </div>
 
-                        <div className="pt-md-1 pt-sm-0 pt-2">
+                        <div className="pt-md-2 pt-sm-0 pt-2">
                             {insightsdAndReports.map((item) => {
                                 return (
                                     <>
                                         <div className="row">
-                                            <span className={'col-1 ni ni-check-bold text-green'} />
+                                            <div className={'col-1'} style={{ lineHeight: '16px' }} >
+                                                <Image src={icons.check} height={20} />
+                                            </div>
                                             <span
-                                                className="col-11 text-secondary"
+                                                className="col-11 text-secondary m-0 p-0"
                                             >
-                                                <p style={{ lineHeight: '16px' }} className={'font-weight-700'}>{item.description}<small style={{fontSize:'15px'}} className={'pl-1 font-weight-500'}>{item.description2}</small></p>
+                                                <p style={{ lineHeight: '18px' }} className={'font-weight-700'}>{item.description}<small style={{ fontSize: '15px' }} className={'pl-1 font-weight-500'}>{item.description2}</small></p>
                                             </span>
                                         </div>
                                     </>
                                 );
                             })}
                         </div>
-                        <div className='pt-md-3 pt-sm-0 pt-4'></div>
+                        <div className='pt-md-4 pt-sm-0 pt-4'></div>
                         <Button
                             className={'px-md-5 px-sm-0 px-7 ml-sm-0 ml-2 rounded-sm'}
                             isTextLowercase={false}
@@ -62,7 +64,7 @@ function UploadCorporateOpeningsCard() {
                     </div>
                 </div>
 
-                <div className={'pt-md-5 pt-sm-0 pt-4 col-lg-5 col-sm-12 ml-md-8'}>
+                <div className={'pt-sm-0 pt-4 col-lg-6 col-sm-12'}>
                     <div>
                         <Image
                             src={image.StreamlinedInterviewAndInsights}
