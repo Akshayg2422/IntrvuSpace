@@ -26,12 +26,12 @@ function Modal({ isOpen, children, title, size = "lg", style, onClose, ...rest }
       fade={false}
       className={`modal-dialog-centered modal-${size}`}
       style={{
-        borderRadius: 0
+        borderRadius: "4px"
       }}
       isOpen={isOpen}
       {...rest}
     >
-      <div className="modal-content rounded-0 shadow-0">
+      <div className="modal-content  shadow-0 ">
         <div className={"modal-header mb-0"} style={{
           paddingBottom: '0px'
         }}>
