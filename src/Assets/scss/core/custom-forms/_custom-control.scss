@@ -4,18 +4,19 @@
 //
 
 .custom-control-label {
+
     // Background-color and (when enabled) gradient
     &::before {
         border: $custom-control-indicator-border-width solid $custom-control-indicator-border-color;
         @include transition($input-transition);
-        top:calc(($font-size-base * $line-height-base - $custom-control-indicator-size) / 2);
+        top: calc(($font-size-base * $line-height-base - $custom-control-indicator-size) / 2);
         left: -($custom-control-gutter + $custom-control-indicator-size - 1rem);
 
     }
 
-    &::after{
-      top:calc(($font-size-base * $line-height-base - $custom-control-indicator-size) / 2);
-      left: -($custom-control-gutter + $custom-control-indicator-size - 1rem);
+    &::after {
+        top: calc(($font-size-base * $line-height-base - $custom-control-indicator-size) / 2);
+        left: -($custom-control-gutter + $custom-control-indicator-size - 1rem);
 
     }
 
@@ -34,6 +35,7 @@
 
 .custom-control-alternative {
     .custom-control-label {
+
         // Background-color and (when enabled) gradient
         &::before {
             border: 0;
@@ -43,7 +45,7 @@
 
     .custom-control-input {
         &:checked {
-            ~ .custom-control-label {
+            ~.custom-control-label {
                 &::before {
                     box-shadow: $input-focus-alternative-box-shadow;
                 }

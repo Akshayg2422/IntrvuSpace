@@ -2,3 +2,9 @@
 body {
     height: 100%;
 } */
+
+:root {
+    --primary: #641df2;
+    --secondary: #2f1c6a;
+    --placeholder: #727586;
+}

@@ -12,17 +12,11 @@ const packageContent = [
 ];
 
 function WebsiteHeader() {
-  let dynamicHeight: any = useDynamicHeight();
 
-  const { growingWidth, titleLineRef: websiteHeaderRef } =
+  const { titleLineRef: websiteHeaderRef } =
     useGrowingTitleLine();
 
-  let dynamicWidthCalculation =
-    dynamicHeight.dynamicWidth <= 510
-      ? dynamicHeight.dynamicWidth / 1.3
-      : dynamicHeight.dynamicHeight - 44;
 
-  const screenHeight = dynamicHeight.dynamicWidth <= 576 ? "" : "h-100vh";
 
   return (
     <div
@@ -50,7 +44,7 @@ function WebsiteHeader() {
                       Where AI
                     </span>
                   </div>
-                  <div style={{marginTop: -11}}>
+                  <div style={{ marginTop: -11 }}>
                     <span className="display-3 text-secondary font-weight-bolder ls-1">
                       meets HR
                     </span>
@@ -83,14 +77,13 @@ function WebsiteHeader() {
                     );
                   })}
                 </div>
+                <div className={"mt-5 col-sm-10 ls-0"}>
+                  <Button
+                    block
+                    text={"Start Now"}
+                  />
+                </div>
 
-                <Button
-                  className={"mt-7 col-sm-10 ls-0"}
-                  style={{borderRadius: 4}}
-                  block
-                  text={"Start Now"}
-                  size="lg"
-                />
 
                 <div className="pt-3 pb-sm-0 pb-3 ">
                   <Image src={icons.headSet} height={20} />

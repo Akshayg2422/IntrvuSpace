@@ -1,4 +1,4 @@
-import { Button, Image, Input, showToast } from "@Components";
+import { Button, Image, showToast, InputPassword } from "@Components";
 import { useInput, useKeyPress, useLoader, useNavigation } from "@Hooks";
 import { memberLoginUsingPassword, userLoginDetails } from "@Redux";
 import { ROUTES } from "@Routes";
@@ -7,6 +7,21 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { LoginSideContent } from "../../Container";
 import { icons } from "@Assets";
+import classnames from "classnames";
+import {
+  Card,
+  CardHeader,
+  CardBody,
+  FormGroup,
+  Form,
+  Input,
+  InputGroupAddon,
+  InputGroupText,
+  InputGroup,
+  Container,
+  Row,
+  Col,
+} from "reactstrap";
 
 function Login() {
   const { goTo } = useNavigation();
@@ -92,6 +107,7 @@ function Login() {
 
   return (
     <>
+
       <div className="row  m-0 p-0 h-100vh">
         <div className="col-xl-12 d-flex bg-white align-items-center justify-content-center  my-sm-0 my-4">
           <div className="col-12 col-md-6 col-lg-4  text-center align-items-center">
@@ -109,83 +125,22 @@ function Login() {
               </div>
             </div>
             <div
-              className="pt-2 mx-md-3 mx-0"
-              style={{
-                scale: "0.9",
-              }}
-            >
+              className="pt-2 mx-md-3 mx-0">
               <div>
                 <Input
-                  className="form-control"
                   value={email.value}
                   placeholder="Email"
                   onChange={email.onChange}
                 />
               </div>
               <div>
-                <div className="input-group mb-3">
-                  <input
-                    style={{
-                      borderRight: 0,
-                      borderRadius: '4px 0 0 4px',
-                      borderColor: toggleInput ? "#673de6" : "#d0d0d0"
-                    }}
-                    value={password.value}
-                    type={showPassword ? "text" : "password"}
-                    className="form-control"
-                    placeholder="Password"
-                    aria-label="Recipient's username"
-                    aria-describedby="basic-addon2"
-                    onFocus={() => {
-                      setToggleInput(true);
-                    }}
-                    onBlur={() => {
-                      setToggleInput(false);
-                    }}
-                    onChange={password.onChange}
-                  />
-                  <span
-                    className="input-group-text"
-                    id="basic-addon2"
-                    style={{
-                      borderTopLeftRadius: 0,
-                      borderBottomLeftRadius: 0,
-                      borderLeft: 0,
-                      borderRadius: '0 4px 4px 0',
-                      borderColor: toggleInput ? "#673de6" : "#d0d0d0",
-                    }}
-                    onClick={() => {
-                      setShowPassword(!showPassword);
-                    }}
-                  >
-                    {showPassword ? (
-                      <i
-                        className="bi bi-eye-fill text-default mt--1"
-                        style={{
-                          fontSize: "20px",
-                          marginBottom: "-5px",
-                        }}
-                      ></i>
-                    ) : (
-                      <i
-                        className="bi bi-eye-slash-fill text-default mt--1 pb-0"
-                        style={{
-                          fontSize: "20px",
-                          marginBottom: "-5px",
-                        }}
-                      ></i>
-                    )}
-                  </span>
-                </div>
+                <InputPassword />
               </div>
               <div className="pt-2">
                 <Button
-                  className={"text-white font-weight-bold py-3 bg-primary rounded-sm"}
                   loading={loginLoader.loader}
                   block
-                  size="md"
                   text={"Log in"}
-
                   onClick={() => onSubmit()}
                 />
               </div>
