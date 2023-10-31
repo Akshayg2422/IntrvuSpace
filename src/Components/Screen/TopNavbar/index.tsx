@@ -232,11 +232,14 @@ function TopNavbar() {
                 </div>
             </Navbar >
 
-            <Modal title={'Logout User'} isOpen={logoutModal.visible} onClose={logoutModal.hide}>
-                <div>
+            <Modal  isOpen={logoutModal.visible} onClose={logoutModal.hide}>
+                
+                <div className={'mx-sm-4 mb-sm-3 mx-1 mb-1 mt--4'}>
+                        <div className='display-4 text-secondary font-weight-900 mb-2'>{'Logout User'}
+                        </div>
                     <span>{"Please click on proceed to logout user"}</span>
                     <div
-                        className='d-flex justify-content-end'
+                        className='d-flex justify-content-end mt-2'
                     >
                         <Button
                             color='white'
@@ -244,6 +247,7 @@ function TopNavbar() {
                             onClick={() => logoutModal.hide()}
                         />
                         <Button
+                        className={'rounded-sm'}
                             text={'Proceed'}
                             onClick={proceedLogout}
                         />

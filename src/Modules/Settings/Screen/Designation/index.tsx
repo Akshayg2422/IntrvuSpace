@@ -30,7 +30,7 @@ function Designation() {
     const addDesignationModal = useModal(false);
     const addRoleModal = useModal(false);
     const title = useInput("");
-    const [positionSearch, setPositionSearch] = useState("")
+    const [positionSearch, setPositionSearch] = useState(undefined)
     const description = useInput("");
     const sector = useDropDown({});
     // const experience = useInput('')
@@ -46,6 +46,7 @@ function Designation() {
 
     const filterDepartment = useDropDown(DEFAULT_VALUE);
     const filterSector = useDropDown(DEFAULT_VALUE);
+    const [isFilter, setIsFilter] = useState(false)
 
 
 
@@ -57,7 +58,6 @@ function Designation() {
     const [loading, setLoading] = useState(true);
     const status = useDropDown(STATUS_LIST[1]);
     const enterPress = useKeyPress("Enter");
-    const [isPositionExist, setIsPositionExist] = useState<boolean>(false)
 
 
     useEffect(() => {
@@ -66,9 +66,7 @@ function Designation() {
 
 
     useEffect(() => {
-        if (isPositionExist) {
-            getCorporateScheduleApiHandler(corporateScheduleCurrentPages);
-        }
+        getCorporateScheduleApiHandler(corporateScheduleCurrentPages);
     }, [enterPress]);
 
 
@@ -197,12 +195,25 @@ function Designation() {
             filterStatus = { is_Active: false };
         }
         const params = {
-            position: positionSearch,
             page_number,
+            ...(positionSearch ? { position: positionSearch } : {}),
             ...(filterStatus ? filterStatus : {}),
             ...((filterSector && filterSector.value.id !== '-1') && { sector_id: filterSector?.value?.id }),
-            ...((filterDepartment && filterDepartment.value.id !== '-1') && { sector_id: filterDepartment?.value?.id })
+            ...((filterDepartment && filterDepartment.value.id !== '-1') && { department_id: filterDepartment?.value?.id })
         }
+        const keysToCheck = ['position', 'sector_id', 'department_id'];
+
+        let exists = false; // Initialize a flag variable to false
+
+        for (const key of keysToCheck) {
+            if (params.hasOwnProperty(key)) {
+                exists = true; // Set the flag to true if any key exists
+            }
+        }
+
+        setIsFilter(exists);
+
+
         dispatch(getCorporateSchedules({
             params,
             onSuccess: (response: any) => () => {
@@ -219,134 +230,137 @@ function Designation() {
 
 
     return (
-        <>
+        <div >
             <TopNavbarCorporateFlow />
             {
                 loading ? (
                     <div className={'vh-100 d-flex justify-content-center align-items-center'}>
                         <Spinner />
                     </div>
-                ) : corporateSchedules?.details?.corporate_jd_items?.data.length === 0 && !isPositionExist ? (
-                    <UploadCorporateOpeningsCard />
-                ) : (<div className='pt-4 mx-sm-0 mx-3 mx-md-7'>
-                    <div className='row pt-6'>
-                        <div className='col'>
-                            <Input
-                                heading={'Position'}
-                                type={'text'}
-                                placeHolder={"HR Executive, QA Manager..."}
-                                value={positionSearch}
-                                onChange={(e: any) => {
-                                    setPositionSearch(e.target.value)
-                                }}
-                                onFocus={() => setIsPositionExist(true)}
-                                onBlur={() => setIsPositionExist(false)}
-                            />
-                        </div>
-                        <div className="col-lg-3 col-md-3 col-sm-12 ">
-                            <DropDown
-                                id={'status'}
-                                heading={'Status'}
-                                data={STATUS_LIST}
-                                selected={status.value}
-                                onChange={status.onChange}
+                ) : corporateSchedules?.details?.corporate_jd_items?.data.length === 0 && !isFilter ? (
 
-                            />
-                        </div>
-                        {departmentCorporate && departmentCorporate.length > 0 && <div className='col'>
-                            <DropDown
-                                id={'department'}
-                                heading={'Department'}
-                                data={[DEFAULT_VALUE, ...getDropDownCompanyDisplayData(departmentCorporate)]}
-                                selected={filterDepartment.value}
-                                onChange={filterDepartment.onChange}
-                            />
-                        </div>
-                        }
-                        {sectorsCorporate && sectorsCorporate.length > 0 &&
+                    <UploadCorporateOpeningsCard />
+
+                ) : (
+                    <div className='pt-4 mx-sm-0 mx-3 mx-md-7'>
+                        <div className='row pt-6'>
                             <div className='col'>
-                                <DropDown
-                                    id={'sector'}
-                                    heading={'Sector'}
-                                    data={[DEFAULT_VALUE, ...getDropDownCompanyDisplayData(sectorsCorporate)]}
-                                    selected={filterSector.value}
-                                    onChange={filterSector.onChange}
+                                <Input
+                                    heading={'Position'}
+                                    type={'text'}
+                                    placeHolder={"HR Executive, QA Manager..."}
+                                    value={positionSearch}
+                                    onChange={(e: any) => {
+                                        setPositionSearch(e.target.value)
+                                    }}
                                 />
                             </div>
-                        }
-                        <div>
-                        </div>
-                    </div>
+                            <div className="col-lg-3 col-md-3 col-sm-12 ">
+                                <DropDown
+                                    id={'status'}
+                                    heading={'Status'}
+                                    data={STATUS_LIST}
+                                    selected={status.value}
+                                    onChange={status.onChange}
 
-                    <div className='row pt-4 '>
-                        {cardData && cardData.length > 0 ? (
-                            cardData.map((el: any, index: number) => {
-                                return (
-                                    <div className='col-sm-12 col-lg-12 mb-3' key={index}>
-                                        <DesignationItem
-                                            onViewMore={(status) => {
-                                                const updatedCardData = [...cardData]
-                                                updatedCardData[index] = { ...updatedCardData[index], is_view_more: status }
-                                                setCardData(updatedCardData)
-                                            }
-                                            }
-                                            item={el}
-                                            data={cardData}
-                                            index={index}
-                                            onEdit={(designation, role) => {
-                                                setSelectedDesignation(designation);
-                                                dispatch(setSelectedRole(role));
-                                                const { name, description } = role;
-                                                title.set(name);
-                                                position.set(name);
-                                                if (description) {
-                                                    description.set(description);
-                                                }
-                                                addRoleModal.show();
-                                            }}
-                                            onView={(role) => {
-                                                dispatch(setSelectedRole(role));
-                                                dispatch(breadCrumbs({ name: role?.name, title: el?.name, path: window.location.pathname }));
-                                                goTo(ROUTES['designation-module']['variant-info']);
-                                            }}
-                                        />
-                                    </div>
-                                );
-                            })
-
-                        ) : (
-                            <div
-                                className={'d-flex justify-content-center align-items-center mx-auto my-auto'}
-                                style={{
-                                    height: '60vh'
-                                }}
-                            >
-                                <NoDataFound />
+                                />
                             </div>
-                        )}
-                    </div>
+                            {departmentCorporate && departmentCorporate.length > 0 && <div className='col'>
+                                <DropDown
+                                    id={'department'}
+                                    heading={'Department'}
+                                    data={[DEFAULT_VALUE, ...getDropDownCompanyDisplayData(departmentCorporate)]}
+                                    selected={filterDepartment.value}
+                                    onChange={filterDepartment.onChange}
+                                />
+                            </div>
+                            }
+                            {sectorsCorporate && sectorsCorporate.length > 0 &&
+                                <div className='col'>
+                                    <DropDown
+                                        id={'sector'}
+                                        heading={'Sector'}
+                                        data={[DEFAULT_VALUE, ...getDropDownCompanyDisplayData(sectorsCorporate)]}
+                                        selected={filterSector.value}
+                                        onChange={filterSector.onChange}
+                                    />
+                                </div>
+                            }
+                            <div>
+                            </div>
+                        </div>
 
-                    <PageNation
-                        currentPage={corporateScheduleCurrentPages}
-                        noOfPage={corporateScheduleNumOfPages}
-                        isPagination={corporateScheduleNumOfPages > 1}
-                        paginationNumberClick={(currentPage) => {
-                            getCorporateScheduleApiHandler(paginationHandler("current", currentPage));
-                        }}
-                        previousClick={() => {
-                            getCorporateScheduleApiHandler(paginationHandler("prev", corporateScheduleCurrentPages))
-                        }
-                        }
-                        nextClick={() => {
-                            getCorporateScheduleApiHandler(paginationHandler("next", corporateScheduleCurrentPages));
-                        }}
-                    />
-                </div>
+                        <div className='row pt-4 '>
+                            {cardData && cardData.length > 0 ? (
+                                cardData.map((el: any, index: number) => {
+                                    return (
+                                        <div className='col-sm-12 col-lg-12 mb-3' key={index}>
+                                            <DesignationItem
+                                                onViewMore={(status) => {
+                                                    const updatedCardData = [...cardData]
+                                                    updatedCardData[index] = { ...updatedCardData[index], is_view_more: status }
+                                                    setCardData(updatedCardData)
+                                                }
+                                                }
+                                                item={el}
+                                                data={cardData}
+                                                index={index}
+                                                onEdit={(designation, role) => {
+                                                    setSelectedDesignation(designation);
+                                                    dispatch(setSelectedRole(role));
+                                                    const { name, description } = role;
+                                                    title.set(name);
+                                                    position.set(name);
+                                                    if (description) {
+                                                        description.set(description);
+                                                    }
+                                                    addRoleModal.show();
+                                                }}
+                                                onView={(role) => {
+                                                    dispatch(setSelectedRole(role));
+                                                    dispatch(breadCrumbs({ name: role?.name, title: el?.name, path: window.location.pathname }));
+                                                    goTo(ROUTES['designation-module']['variant-info']);
+                                                }}
+                                            />
+                                        </div>
+                                    );
+                                })
+
+                            ) : (
+                                <div
+                                    className={'d-flex justify-content-center align-items-center mx-auto my-auto'}
+                                    style={{
+                                        height: '60vh'
+                                    }}
+                                >
+                                    <NoDataFound />
+                                </div>
+                            )}
+                        </div>
+
+                        <PageNation
+                            currentPage={corporateScheduleCurrentPages}
+                            noOfPage={corporateScheduleNumOfPages}
+                            isPagination={corporateScheduleNumOfPages > 1}
+                            paginationNumberClick={(currentPage) => {
+                                getCorporateScheduleApiHandler(paginationHandler("current", currentPage));
+                            }}
+                            previousClick={() => {
+                                getCorporateScheduleApiHandler(paginationHandler("prev", corporateScheduleCurrentPages))
+                            }
+                            }
+                            nextClick={() => {
+                                getCorporateScheduleApiHandler(paginationHandler("next", corporateScheduleCurrentPages));
+                            }}
+                        />
+                    </div>
                 )
             }
 
             <Modal size={'lg'} isOpen={createOpening} onClose={() => {
-                resetValues()
+                addRoleModal.hide()
+                jd.set("")
+                position.set('')
                 dispatch(hideCreateOpeningsModal())
             }}
                 style={{ padding: 0 }}>
@@ -453,7 +467,7 @@ function Designation() {
                 </div>
 
             </Modal >
-        </>
+        </div>
     )
 }
 

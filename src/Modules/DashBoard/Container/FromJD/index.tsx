@@ -6,7 +6,7 @@ import { useDropDown, useInput, useLoader, useModal, useNavigation } from '@Hook
 import { PreparingYourInterview, UploadJdCard } from '@Modules';
 import { canStartInterview, createNewJdSchedule, getJdItemList, hideCreateJdModal, postJdVariant, selectedScheduleId, showCreateJddModal } from '@Redux';
 import { ROUTES } from '@Routes';
-import { EXPERIENCE_LIST, FROM_JD_RULES, formatDateTime, getValidateError, ifObjectExist, validate } from '@Utils';
+import { EXPERIENCE_LIST, FROM_JD_RULES, INTERVIEW_DURATIONS, formatDateTime, getValidateError, ifObjectExist, validate } from '@Utils';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import './index.css';
@@ -53,14 +53,14 @@ function FromJD() {
     const [fresherChecked, setFresherChecked] = useState(false)
 
     const [jdDescriptionError, setJdDescriptionError] = useState<any>(undefined)
-    const [selectedDuration, setSelectedDuration] = useState('');
+    const [selectedDuration, setSelectedDuration] = useState<any>(INTERVIEW_DURATIONS[0])
     const startInterviewLoader = useLoader(false);
 
     const handleDurationClick = (interviewDurations) => {
         setSelectedDuration(interviewDurations);
     };
-    const [changeColorButton, setChangeColorButton] = useState<any>(interviewDurations)
 
+    const [isQuestionGenerated, setIsQuestionGenerated] = useState(false);
 
     useEffect(() => {
         getKnowledgeGroupFromJdHandler();
@@ -95,7 +95,7 @@ function FromJD() {
         const params = {
             sector_name: sector.value,
             position: position.value,
-            interview_duration: selectedDuration,
+            interview_duration: selectedDuration?.value,
             experience: experience?.value?.id,
             jd: jd.value
         }
@@ -119,8 +119,9 @@ function FromJD() {
                             dispatch(canStartInterview({
                                 params: canStartParams,
                                 onSuccess: (res: any) => () => {
-                                    generateJdModal.hide();
-                                    completedModal.show();
+                                    setIsQuestionGenerated(true);
+                                    // generateJdModal.hide();
+                                    // completedModal.show();
                                     getKnowledgeGroupFromJdHandler();
                                     resetValues();
                                     // showToast(res.status, 'success');
@@ -130,6 +131,8 @@ function FromJD() {
                                 },
                                 onError: (error: any) => () => {
                                     console.log(error);
+                                    setIsQuestionGenerated(false);
+
                                 }
                             }))
                         }, INTERVAL_TIME);
@@ -177,8 +180,7 @@ function FromJD() {
                             dispatch(canStartInterview({
                                 params: canStartParams,
                                 onSuccess: (res: any) => () => {
-                                    generateJdModal.hide();
-                                    completedModal.show();
+                                    setIsQuestionGenerated(true);
                                     getKnowledgeGroupFromJdHandler();
                                     resetValues();
                                     showToast(res.status, 'success');
@@ -186,6 +188,7 @@ function FromJD() {
                                 },
                                 onError: (error: any) => () => {
                                     console.log(error);
+                                    setIsQuestionGenerated(false);
                                 }
                             }))
                         }, INTERVAL_TIME);
@@ -245,16 +248,7 @@ function FromJD() {
         }
     };
 
-    const handleItemClick = (index) => {
-        const updatedButtons = changeColorButton.map((item, i) => {
-            if (i === index) {
-                return { ...item, isActive: true };
-            } else {
-                return { ...item, isActive: false };
-            }
-        });
-        setChangeColorButton(updatedButtons);
-    };
+    console.log('rendered');
 
 
     return (
@@ -557,7 +551,7 @@ function FromJD() {
                             </div>
 
                             <div className={'col-md-4 col-sm-0 col-12 mb-sm-0 mb-4'}>
-                                <div className='col-sm-4' style={{
+                                <div style={{
                                     zIndex: 1
                                 }}>
                                     <DropDown
@@ -591,15 +585,18 @@ function FromJD() {
                             <InputHeading heading={'Interview Duration'} />
                             <div className='d-flex flex-wrap justify-content-between'>
                                 {
-                                    changeColorButton.map((item, index) => {
-                                        return <div className='mb-4 mb-sm-0'>
-                                            <Button text={item.subText} className={`${item.isActive ? "btn-outline-primary" : "btn-outline-light-gray text-default"} rounded-sm px-sm-4`} style={{ width: "140px" }} onClick={() => {
-                                                setSelectedDuration(item.value)
-
-                                                handleItemClick(index)
-                                            }} />
-
-                                        </div>
+                                    INTERVIEW_DURATIONS.map((item) => {
+                                        const { id, subText } = item
+                                        return (
+                                            <div className='mb-4 mb-sm-0'>
+                                                <Button
+                                                    text={subText}
+                                                    className={`${selectedDuration?.id === id ? "btn-outline-primary" : "btn-outline-light-gray text-default"} rounded-sm px-sm-4`} style={{ width: "140px" }} onClick={() => {
+                                                        setSelectedDuration(item)
+                                                    }}
+                                                />
+                                            </div>
+                                        )
                                     })
                                 }
                             </div>
@@ -614,7 +611,7 @@ function FromJD() {
                         </div>
 
                         <div className='text-center mt-md-6'>
-                            <Button className={'rounded-sm px-md-5 px-sm-0 px-6'} size='md' text={'Start Inteview'} width={30} onClick={submitJdApiHandler} />
+                            <Button className={'rounded-sm px-md-5 px-sm-0 px-6'} size='md' text={'Create Interview'} width={30} onClick={submitJdApiHandler} />
                         </div>
                     </div>
 
@@ -623,10 +620,15 @@ function FromJD() {
             </div>
 
             <Modal isOpen={generateJdModal.visible} onClose={generateJdModal.hide}>
-                <PreparingYourInterview />
+                <PreparingYourInterview showStart={isQuestionGenerated}
+                    onClick={() => {
+                        if (scheduleId) {
+                            proceedInterviewHandler(scheduleId)
+                        }
+                    }} />
             </Modal>
 
-            <Modal isOpen={completedModal.visible} onClose={completedModal.hide}>
+            {/* <Modal isOpen={completedModal.visible} onClose={completedModal.hide}>
                 <div className='text-center '>
                     <div className='display-1 text-black'>
                         Your Interview is Ready!
@@ -650,7 +652,7 @@ function FromJD() {
                         </div>
                     </div>
                 </div>
-            </Modal>
+            </Modal> */}
 
 
             <Modal isOpen={jdScheduleModal.visible} onClose={jdScheduleModal.hide}>
