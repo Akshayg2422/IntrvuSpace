@@ -9,10 +9,35 @@ body {
     --placeholder: #727586;
 }
 
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
 .auth-screen {
     min-height: 100dvh;
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
+}
+
+.auth-container {
+    width: 350px;
+}
+
+
+.auth-logo {
+    position: absolute;
+    top: 3%;
+    left: 8%;
 }

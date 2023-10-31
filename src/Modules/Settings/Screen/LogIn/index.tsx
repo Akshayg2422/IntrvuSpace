@@ -2,8 +2,8 @@ import { Button, Input, InputPassword, Logo, showToast } from "@Components";
 import { useInput, useKeyPress, useLoader, useNavigation } from "@Hooks";
 import { memberLoginUsingPassword, userLoginDetails } from "@Redux";
 import { ROUTES } from "@Routes";
-import { USER_TOKEN, ifObjectExist, getValidateError, validate, LOGIN_WITH_EMAIL_RULES } from "@Utils";
-import { useEffect, useState } from "react";
+import { LOGIN_WITH_EMAIL_RULES, USER_TOKEN, getValidateError, ifObjectExist, validate } from "@Utils";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import './index.css';
 
@@ -35,7 +35,6 @@ function Login() {
       password: password.value,
     };
 
-    console.log(JSON.stringify(params));
 
     const validation = validate(LOGIN_WITH_EMAIL_RULES, params)
 
@@ -78,9 +77,20 @@ function Login() {
 
   };
 
+
+  function goToForgotPasswordScreen() {
+    goTo(ROUTES["auth-module"].forgotPassword);
+  }
+
+  function goToRegisterScreen() {
+    goTo(ROUTES["auth-module"].register);
+
+  }
+
+
   return (
-    <div className="auth-screen">
-      <div className="container-login">
+    <div className={'auth-screen'}>
+      <div className={'auth-container'}>
         <Logo />
         <div className="text-sub-heading heading-text">Log in</div>
         <Input
@@ -99,17 +109,15 @@ function Login() {
           onClick={loginApiHandler}
         />
 
-        <h5 className={"forgot-password font-weight-700"}
-          onClick={() => {
-            goTo(ROUTES["auth-module"].forgotPassword);
-          }}
-        >
-          Forgot password?
+        <h5
+          className={"forgot-password font-weight-700"}
+          onClick={goToForgotPasswordScreen}>
+          {'Forgot password?'}
         </h5>
 
         <div className="text-center font-size-md register">
-          <span className="text-secondary font-weight-700 pointer"> {"Not a member yet?"}</span>
-          <span className="text-primary font-weight-700 pointer ml-1"> {"Register now "}</span>
+          <span className="text-secondary font-weight-700"> {"Not a member yet?"}</span>
+          <span className="text-primary font-weight-700 pointer ml-1" onClick={goToRegisterScreen}> {"Register now "}</span>
         </div>
       </div>
 

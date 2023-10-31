@@ -17,7 +17,7 @@ export const ROUTES = {
     reports: '/reports',
     'how-it-works': '/how-it-works',
     introduction: '/introduction',
-    forgotPassword:'/forgotPassword',
+    forgotPassword: '/forgotPassword',
     createNewPassword: '/createNewPassword'
   },
   'designation-module': {
@@ -37,7 +37,7 @@ export const ROUTES = {
     'variant-info': '/variant-info',
     settings: '/settings',
     'response': '/response',
-    'preparing-your-interview':'/preparing-your-interview'
+    'preparing-your-interview': '/preparing-your-interview'
   }
 }
 
@@ -53,63 +53,58 @@ export const AUTH_ROUTES = [
     path: ROUTES['auth-module'].otp,
     component: <Otp />
   },
-  // {
-  //   id: 3,
-  //   path: ROUTES['auth-module'].splash,
-  //   component: <Splash />
-  // },
   {
-    id: 4,
+    id: 3,
     path: ROUTES['auth-module'].register,
     component: <Register />
   },
   {
-    id: 5,
+    id: 4,
     path: ROUTES['auth-module'].loginWithOtp,
     component: <LoginWithOtp />
   },
   {
-    id: 6,
+    id: 5,
     path: ROUTES['auth-module'].admin_login,
     component: <AdminLogin />
   },
   {
-    key: 7,
+    key: 6,
     path: ROUTES['auth-module'].privacy,
     component: <PrivacyPolicy />
   },
   {
-    key: 8,
+    key: 7,
     path: ROUTES['auth-module'].TermsAndConditions,
     component: <TermsAndConditions />
   },
   {
-    key: 9,
+    key: 8,
     path: ROUTES['auth-module'].ReturnAndRefund,
     component: <ReturnAndRefund />
   },
   {
-    key: 10,
+    key: 9,
     path: ROUTES['auth-module'].reports,
     component: <Reports />
   },
   {
-    key: 11,
+    key: 10,
     path: ROUTES['auth-module']['how-it-works'],
     component: <HowItWorks />
   },
   {
-    key: 12,
+    key: 11,
     path: ROUTES['auth-module'].introduction,
     component: <Introduction />
   },
   {
-    key: 13,
+    key: 12,
     path: ROUTES['auth-module'].forgotPassword,
     component: <ForgotPassword />
   },
   {
-    key: 14,
+    key: 13,
     path: ROUTES['auth-module'].createNewPassword,
     component: <CreateNewPassword />
   },
@@ -171,7 +166,7 @@ export const DASHBOARD_ROUTES = [
   {
     id: 11,
     path: ROUTES['designation-module']['preparing-your-interview'],
-    component: <PreparingYourInterview/>
+    component: <PreparingYourInterview />
   },
 ]
 

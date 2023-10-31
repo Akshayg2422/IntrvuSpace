@@ -1,7 +1,3 @@
-.container-login {
-    width: 350px;
-}
-
 .heading-text {
     text-align: center !important;
     margin-top: 28px;
@@ -17,5 +13,5 @@
 }
 
 .register {
-    margin-top: 40px !important;
+    margin-top: 35px !important;
 }

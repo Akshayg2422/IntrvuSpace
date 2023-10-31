@@ -37,7 +37,7 @@ function InputPassword({ id, className, heading, variant = 'default', isMandator
                 />
                 <InputGroupAddon addonType="append" >
                     <InputGroupText>
-                        <i className={`fas fa-eye ${showPassword ? 'active' : 'in-active'}`} style={{ fontSize: '18px' }} onClick={() => { setShowPassword(!showPassword) }} />
+                        <i className={`fas fa-eye ${showPassword ? 'active' : 'in-active'}`} style={{ fontSize: '16px' }} onClick={() => { setShowPassword(!showPassword) }} />
                     </InputGroupText>
                 </InputGroupAddon>
             </InputGroup>
