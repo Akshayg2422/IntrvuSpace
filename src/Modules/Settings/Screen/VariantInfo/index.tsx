@@ -221,7 +221,7 @@ function VariantInfo() {
             preparingInterviewModal.hide();
             getCorporateScheduleDetailsHandler();
             getCandidatesCorporate(candidatesListCurrentPages);
-            setIsCandidatesExist(true)
+            setIsCandidatesExist(true);
           },
           onError: (error: any) => () => {
             showToast(error.error_message, "error");
@@ -275,6 +275,7 @@ function VariantInfo() {
   const normalizedTableData = (data: any) => {
     if (data && data?.corporate_candidate_details?.data.length > 0)
       return data?.corporate_candidate_details?.data.map((el: any) => {
+        console.log("elllee==>", el);
         const {
           candidate_score,
           interviewee_name,
@@ -368,24 +369,8 @@ function VariantInfo() {
   // report screen navigation
 
   const handleNextStep = (item: any) => {
-    const { id, is_report_completed, is_started } = item;
-    if (is_report_completed === true) {
-      return (
-        <Button
-          text={"Report"}
-          size="md"
-          className={"btn btn-outline-primary rounded-sm mr--3 px-0 "}
-          style={{
-            borderColor: "#d8dade",
-            fontSize: "15px",
-            width: "110px",
-          }}
-          onClick={() => {
-            goTo(ROUTES["designation-module"].report + "/" + id);
-          }}
-        />
-      );
-    }
+    const { schedule_id } = item;
+    goTo(ROUTES["designation-module"].report + "/" + schedule_id);
   };
 
   // bulk upload candidates
@@ -405,7 +390,7 @@ function VariantInfo() {
           bulkUploadLoader.hide();
           getCorporateScheduleDetailsHandler();
           getCandidatesCorporate(candidatesListCurrentPages);
-          setIsCandidatesExist(true)
+          setIsCandidatesExist(true);
         },
         onError: (error: any) => () => {
           showToast(error.error_message, "error");
