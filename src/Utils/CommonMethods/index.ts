@@ -1,3 +1,4 @@
+import { SERVER } from "@Services";
 import {
   getPhoto,
 } from "@Utils";
@@ -64,6 +65,8 @@ export function paginationHandler(type: 'next' | 'prev' | 'current', position: n
   let page = type === 'next' ? position + 1 : type === 'prev' ? position - 1 : position;
   return page;
 }
+
+
 
 export function getArrayFromArrayOfObject(data: Array<any>, key: string) {
   let modifiedArr: any = [];
@@ -138,7 +141,7 @@ export function getDropDownCompanyDisplayData(data: any, key: 'name' | 'title' =
   return data && data?.map((item: any) => {
     return {
       ...item,
-      text: item[key]
+      text: item[key].charAt(0).toUpperCase() + item[key].slice(1)
     }
   })
 }
@@ -159,7 +162,6 @@ export const combineBase64Strings = (stringsArray) => {
     }
   });
 
-  console.log('Decoded Array:', decodedArray); // Log the decoded arrays to check
 
   const validDecodedArray = decodedArray.filter((item) => item !== null);
 
@@ -185,13 +187,16 @@ export async function checkMicrophoneState() {
 
 
 export function getShortName(fullName: string) {
+  fullName = fullName.trim()
   const names = fullName.split(' ');
 
   if (names.length === 1) {
     return names[0].substring(0, 2).toUpperCase();
   }
 
+
   const firstNameInitial = names[0][0].toUpperCase();
+
   const lastNameInitial = names[names.length - 1][0].toUpperCase();
   return `${firstNameInitial}${lastNameInitial}`;
 }
@@ -263,4 +268,77 @@ export function gotoPermissionSetting() {
     alert("Microphone settings are not available on your current operating system.");
   }
 }
+
+// to convert server date and time  2023-10-05T19:10:15.604190+05:30 into  05 OCT 7:10 PM 
+
+export function formatDateTime(dateTimeString: any) {
+  const options: any = {
+    day: '2-digit',
+    month: 'short',
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true,
+  };
+
+  const date = new Date(dateTimeString);
+  const formattedDate = date.toLocaleString('en-US', options);
+
+  return formattedDate;
+}
+
+export function displayFormatDate(inputDate: any) {
+  const date = new Date(inputDate);
+  const options: any = {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true,
+  };
+  return date.toLocaleString('en-US', options).replace(',', '');;
+}
+
+// bulk upload
+
+export const downloadFile = (response) => {
+  const fileUrl = response;
+  fetch(SERVER + fileUrl)
+    .then(response => response.blob())
+    .then(blob => {
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `bulk_upload.csv`;
+      link.click();
+      URL.revokeObjectURL(url);
+    })
+    .catch(error => {
+      console.error('Error downloading file:', error);
+    })
+}
+
+// get display time from server date-time response
+
+export const getDisplayTime = (dateString: any) => {
+  const inputDate = new Date(dateString);
+  const hours = inputDate.getHours().toString().padStart(2, '0');
+  const minutes = inputDate.getMinutes().toString().padStart(2, '0');
+  return `${hours}:${minutes}`;
+}
+
+// get date from server date-time response
+
+export const getDateFromServer = (dateString: any) => {
+  const inputDate = new Date(dateString);
+  const year = inputDate.getFullYear();
+  const month = (inputDate.getMonth() + 1).toString().padStart(2, '0');
+  const day = inputDate.getDate().toString().padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+
+
+
+
 

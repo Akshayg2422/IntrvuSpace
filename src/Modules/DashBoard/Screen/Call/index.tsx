@@ -1,4 +1,5 @@
-import { AnimatedImage, Back, Button, Modal, Spinner } from "@Components";
+import { icons } from "@Assets";
+import { AnimatedImage, Back, Button, Image, Modal, Spinner } from "@Components";
 import { useLoader, useModal, useNavigation } from "@Hooks";
 import { CallHeader, CallHeaderMobile, Guidelines, Report } from "@Modules";
 import {
@@ -49,13 +50,14 @@ const NETWORK_DESIGN = [
   },
 ];
 
-
-
-
 function Call() {
 
 
+
   const SPEECH_VOICE_UP = 47
+
+
+
 
 
   const intervalIdRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -114,6 +116,8 @@ function Call() {
 
   const lastAiResponseTime = useRef<any>(undefined);
   const canConnect = useRef<any>(true);
+  const isSpeakingRef = useRef<any>(false);
+  const voiceUpSaturation = useRef<any>(1);
 
   const [networkBreakTime, setNetworkBreakTime] = useState(0);
 
@@ -129,16 +133,25 @@ function Call() {
   const websocketStatus = useRef(WEBSOCKET_IDLE);
 
 
+  /**
+   * permission modal
+   * 
+   */
+
+  const browserSpeakPermission = useModal(false);
+  const [aiResponse, setAiResponse] = useState(undefined)
+
+
   function generateRandomID() {
     const min = 100000;
     const max = 999999;
     const randomID = Math.floor(Math.random() * (max - min + 1)) + min;
-    // console.log("resss01", randomID)
     return randomID;
   }
 
   const speak = (ttsBase64) => {
     setIsTtfSpeaking(true);
+
 
     const ttsData = Array.from(atob(ttsBase64));
     const audioBlob = new Blob(
@@ -154,15 +167,12 @@ function Call() {
     // Create an audio element and play the received TTS audio
     audioElementRef.current = new Audio(URL.createObjectURL(audioBlob));
     audioElementRef.current.onerror = function (event) {
-      // console.error("Audio An error occurred:", event);
       setIsTtfSpeaking(false);
     };
 
     audioElementRef.current.onloadstart = function () {
-      // console.log("Audio playback started.");
     };
     audioElementRef.current.onended = function () {
-      // console.log("Audio playback ended.");
       setIsTtfSpeaking(false);
       if (closeCall.current === true) {
         proceedStopListening();
@@ -171,7 +181,11 @@ function Call() {
         window.location.reload();
       }
     };
-    audioElementRef.current.play();
+
+    audioElementRef.current.play().catch((error) => {
+      browserSpeakPermission.show();
+    });
+
   };
 
   function onEndCallHandler() {
@@ -215,20 +229,20 @@ function Call() {
 
   const proceedHandleResponseV1 = (response) => {
     setProcessCallInprogress(false);
-    // console.log("SpeakText01", response);
+    //// console.log("SpeakText01", response);
     if (response.type === "PRO") {
       lastAiResponseTime.current = undefined;
       setNetworkBreakTime(0);
       const { data, rt, uu_action, mapId } = response.next_step[0];
-
-      // console.log("response.next_step[0]", response.next_step[0]);
+      setAiResponse(data)
+      //// console.log("response.next_step[0]", response.next_step[0]);
 
       if (
         data &&
         data !== "" &&
         window.location.pathname === `/interview/${schedule_id}`
       ) {
-        // console.log("resss011");
+        //// console.log("resss011");
         resetLastMessage();
         speak(data);
         mapIdRef.current = mapId;
@@ -250,7 +264,7 @@ function Call() {
           const minutes = Math.floor(duration.asMinutes());
           setNetworkBreakTime(minutes);
         } else {
-          // console.log("Invalid time format");
+          //// console.log("Invalid time format");
         }
       }
     }
@@ -313,7 +327,7 @@ function Call() {
 
       socketRef.current.addEventListener("open", () => {
 
-        console.log('Web Socket Opened');
+        //// console.log('Web Socket Opened');
 
         websocketStatus.current = WEBSOCKET_IDLE;
 
@@ -358,14 +372,14 @@ function Call() {
       map_id: intitalRequestSent.current === false ? "1" : mapIdRef.current,
       ie_interaction_chunk_ref_id: activeResponseTextId.current,
       waiting_start_time: intitalRequestSent.current === false ? true : false,
-      is_voiceup_current_chunk_state: is_voiceup_current_chunk_state,
+      is_voiceup_current_chunk_state: isSpeakingRef.current,
       proceed_refresh: !intitalRequestSent.current,
       blob_data: "",
     };
 
     if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
       if (intitalRequestSent.current === false) {
-        // console.log("sentrrrrra1", JSON.stringify(syncD))
+        //// console.log("sentrrrrra1", JSON.stringify(syncD))
         socketRef.current.send(JSON.stringify(syncD));
         intitalRequestSent.current = true;
       } else if (
@@ -386,7 +400,7 @@ function Call() {
                   JSON.stringify({ ...syncD, blob_data: base64String })
                 );
               } else {
-                // console.log("t0000000000000000000015")
+                //// console.log("t0000000000000000000015")
               }
             };
             reader.readAsDataURL(file);
@@ -395,7 +409,7 @@ function Call() {
         }
       }
     } else {
-      // console.log("WebSocket connection is not open.");
+      //// console.log("WebSocket connection is not open.");
       createWebSocket(false);
     }
   };
@@ -416,7 +430,7 @@ function Call() {
 
   useEffect(() => {
     ttsRef.current = isTtfSpeaking;
-    // console.log("isTtfSpeakingisTtfSpeakingisTtfSpeaking", isTtfSpeaking)
+    //// console.log("isTtfSpeakingisTtfSpeakingisTtfSpeaking", isTtfSpeaking)
   }, [isTtfSpeaking]);
 
   useEffect(() => {
@@ -441,6 +455,9 @@ function Call() {
       })
     );
   };
+
+
+
 
   useEffect(() => {
     return () => {
@@ -501,7 +518,6 @@ function Call() {
       }
       stream.current = await navigator.mediaDevices.getUserMedia({
         audio: true,
-        video: true,
       });
 
       if (!listener.current) {
@@ -515,19 +531,24 @@ function Call() {
         listener.current.on("volume_change", function (value) {
           // const voiceDetectionSaturation = ambianceVolume.current - 18
           const valueP = Math.abs(value);
-          console.log("valueP", valueP);
+          //// console.log("valueP", valueP);
 
-          // console.log("voiceDetectionSaturation", voiceDetectionSaturation, valueP)
+          //// console.log("voiceDetectionSaturation", voiceDetectionSaturation, valueP)
 
           // addToDecibleCollection(valueP)
           const currentDate = moment();
-          // console.log("value", value)
+          //// console.log("value", value)
           if (ttsRef.current) {
             voiceUpCount.current = 0;
             speakingShouldProcess.current = false;
             if (voiceUp === true) setVoiceUp(false);
           } else if (valueP < SPEECH_VOICE_UP) {
-            isVoiceUpCurrentChunk.current = true;
+            if (voiceUpSaturation.current === 1)
+              isVoiceUpCurrentChunk.current = true;
+            else {
+              voiceUpSaturation.current = voiceUpSaturation.current + 1
+            }
+
 
             /**
              * extend waiting time if decibile is of talking size
@@ -549,7 +570,7 @@ function Call() {
                 const lastSpokeActiveTimeTemp = moment().format(
                   compare_moment_format
                 );
-                // console.log("isUserDidntInterrupt last set value", lastSpokeActiveTimeTemp)
+                //// console.log("isUserDidntInterrupt last set value", lastSpokeActiveTimeTemp)
                 lastSpokeActiveTime.current = lastSpokeActiveTimeTemp;
               }
               speakingShouldProcess.current = true;
@@ -560,7 +581,7 @@ function Call() {
               // voiceUpTime.current = limitDateTime
             }
             if (currentDate > voiceUpTime.current) {
-              // console.log("voiceUpCount.currentaaav", voiceUpCount.current)
+              //// console.log("voiceUpCount.currentaaav", voiceUpCount.current)
               setErrorType1("Please speak little louder, Your voice is low!");
 
               voiceUpCount.current = 0;
@@ -681,12 +702,14 @@ function Call() {
 
   const onStartSpeaking = () => {
     console.log('start speaking')
+    isSpeakingRef.current = true
     setSpeaking(true);
   };
 
   const onStopSpeaking = () => {
     console.log('stop speaking')
     setSpeaking(false);
+    isSpeakingRef.current = false
   };
 
   /**
@@ -711,14 +734,15 @@ function Call() {
   };
 
   const onDataAvailable = async (blob: Blob) => {
-    // console.log("receivedddassss", blob)
-    // console.log("receivedddassssa", blob)
+    //// console.log("receivedddassss", blob)
+    //// console.log("receivedddassssa", blob)
 
     // const d = {'time':moment(), data:blob}
 
     sendDataToSocket(blob, isVoiceUpCurrentChunk.current);
     isVoiceUpCurrentChunk.current = false;
-    // console.log("calledTTF Data Rec", ttsRef.current, speakingShouldProcess.current)
+    voiceUpSaturation.current = 0
+    //// console.log("calledTTF Data Rec", ttsRef.current, speakingShouldProcess.current)
 
     // if (!ttsRef.current && speakingShouldProcess.current === true) {
     //     accumulatedBlobs.current.push(blob);
@@ -733,13 +757,6 @@ function Call() {
     // lastCallState.current = CALL_STATE_TRANSCRIBING
   };
 
-  const turnOnMicAndAudioRecording = () => {
-    if (!isRecording) {
-      startRecording();
-      setIsRecording(true);
-      setMute(false);
-    }
-  };
   const validateProceedStartListening = async () => {
     if (!isRecording) {
       startRecording();
@@ -751,7 +768,7 @@ function Call() {
   const resetLastMessage = () => {
     activeResponseText.current = "";
     accumulatedBlobs.current = [];
-    // console.log("resss012")
+    //// console.log("resss012")
     const newid = generateRandomID();
     activeResponseTextId.current = newid;
   };
@@ -776,7 +793,7 @@ function Call() {
     transcriptionReferenceId.current = generateRandomID();
     // proceedgetChatDetailsApiHandler({ message: "start" }, transcriptionReferenceId.current)
     setProcessCallInprogress(false);
-    // console.log("resss0114")
+    //// console.log("resss0114")
     resetLastMessage();
     setInterviewStarted(true);
     // setTimeout(() => {
@@ -810,7 +827,7 @@ function Call() {
 
             },
             onError: (error: any) => () => {
-              // console.log(error);
+              //// console.log(error);
             },
           })
         );
@@ -883,10 +900,10 @@ function Call() {
   const IE_IDLE = 2;
 
   // const interviewee_state = voiceUp && !mute ? IE_SPEAKING : IE_IDLE
-  const interviewee_state = isVoiceUpCurrentChunk.current && !mute
+  const interviewee_state = !mute && isSpeakingRef.current === true
     ? IE_SPEAKING
     : IE_IDLE;
-
+  // isVoiceUpCurrentChunk.current && 
   let interviewer_state = IV_IDLE;
 
   if (isTtfSpeaking) interviewer_state = IV_SPEAKING;
@@ -956,9 +973,15 @@ function Call() {
                       </div>
                     </div>
 
-                    <div className="position-absolute bottom-0 right-0 mr-3 mb-2 align-items-center">
+                    <div className="position-absolute bottom-4 right-0 mr-3 mb-2 align-items-center">
                       <div className="row align-items-end">
                         {renderNetworkRange()}
+                      </div>
+                    </div>
+
+                    <div className="position-absolute bottom-0 right-0 mr-4 mb-2 align-items-center">
+                      <div className="row align-items-end">
+                        <Image src={icons.logoText} height={16} />
                       </div>
                     </div>
                   </div>
@@ -1094,6 +1117,18 @@ function Call() {
         </div>
         <div className="d-flex float-right">
           <Button text={"OK"} onClick={micPermissionModal.hide} />
+        </div>
+      </Modal>
+
+      <Modal
+        isOpen={browserSpeakPermission.visible}
+        title={'Permission Denied!'}>
+        <h3 className='m-0'>{'The interview is blocked of the browser permission issue, Please tap on continue to Proceed.'}</h3>
+        <div className="d-flex align-items-center justify-content-center mt-3">
+          <Button className="rounded" text={'Continue'} onClick={() => {
+            browserSpeakPermission.hide();
+            speak(aiResponse);
+          }} />
         </div>
       </Modal>
     </>

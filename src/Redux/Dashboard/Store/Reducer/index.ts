@@ -2,12 +2,11 @@
 import {
   CREATE_SECTOR,
   CREATE_SECTOR_FAILURE,
-  CREATE_SECTOR_SUCCESS
+  CREATE_SECTOR_SUCCESS,
 } from "../ActionTypes";
 
 import { DashboardProp } from "../../Interfaces";
 import * as ActionTypes from "../ActionTypes";
-
 
 const initialState: DashboardProp = {
   userLoggedIn: false,
@@ -49,6 +48,12 @@ const initialState: DashboardProp = {
   createForOthersJdModal: false,
   interviewScheduleDetails: undefined,
   retrieveEmail: undefined,
+  createOpening: false,
+  corporateScheduleNumOfPages: undefined,
+  corporateScheduleCurrentPages: 1,
+  candidatesList: undefined,
+  candidatesListNumOfPages: undefined,
+  candidatesListCurrentPages: 1,
 };
 
 const DashboardReducer = (state = initialState, action: any) => {
@@ -117,6 +122,7 @@ const DashboardReducer = (state = initialState, action: any) => {
     //selected Group Id
 
     case ActionTypes.SET_SELECTED_ROLE:
+
       state = { ...state, selectedRole: action.payload };
       break;
 
@@ -389,7 +395,11 @@ const DashboardReducer = (state = initialState, action: any) => {
       state = { ...state, corporateScheduleDetails: undefined };
       break;
     case ActionTypes.GET_CORPORATE_SCHEDULE_DETAILS_SUCCESS:
-      state = { ...state, corporateScheduleDetails: action.payload.details.corporate_schedule_details };
+      state = {
+        ...state,
+        corporateScheduleDetails:
+          action?.payload?.details?.corporate_schedule_details,
+      };
       break;
     case ActionTypes.GET_CORPORATE_SCHEDULE_DETAILS_FAILURE:
       state = { ...state, corporateScheduleDetails: undefined };
@@ -427,11 +437,9 @@ const DashboardReducer = (state = initialState, action: any) => {
       state = { ...state, createJdModal: true };
       break;
 
-
     case ActionTypes.HIDE_CREATE_JD_MODAL:
       state = { ...state, createJdModal: false };
       break;
-
 
     /**
      * getSectorsCorporate
@@ -442,12 +450,14 @@ const DashboardReducer = (state = initialState, action: any) => {
       break;
 
     case ActionTypes.GET_SECTORS_CORPORATE_SUCCESS:
-      state = { ...state, sectorsCorporate: action.payload.details?.knowledege_groups };
+      state = {
+        ...state,
+        sectorsCorporate: action.payload.details?.knowledege_groups,
+      };
       break;
     case ActionTypes.GET_SECTORS_CORPORATE_FAILURE:
       state = { ...state, sectorsCorporate: undefined };
       break;
-
 
     case ActionTypes.ADD_SECTORS_CORPORATE:
       state = { ...state };
@@ -498,10 +508,24 @@ const DashboardReducer = (state = initialState, action: any) => {
     /**getCorporateSchedulesD */
 
     case ActionTypes.GET_CORPORATE_SCHEDULES:
-      state = { ...state, corporateSchedules: undefined };
+      state = {
+        ...state,
+        corporateSchedules: undefined,
+        corporateScheduleNumOfPages: 0,
+        corporateScheduleCurrentPages: 1,
+      };
       break;
     case ActionTypes.GET_CORPORATE_SCHEDULES_SUCCESS:
-      state = { ...state, corporateSchedules: action.payload };
+      state = {
+        ...state,
+        corporateSchedules: action.payload,
+        corporateScheduleNumOfPages:
+          action.payload?.details.corporate_jd_items.num_pages,
+        corporateScheduleCurrentPages:
+          action.payload?.details.corporate_jd_items.next_page === -1
+            ? action.payload?.details.corporate_jd_items.num_pages
+            : action.payload?.details.corporate_jd_items.next_page - 1,
+      };
       break;
     case ActionTypes.GET_CORPORATE_SCHEDULES_FAILURE:
       state = { ...state, corporateSchedules: undefined };
@@ -512,7 +536,6 @@ const DashboardReducer = (state = initialState, action: any) => {
     case ActionTypes.SHOW_CREATE_FOR_OTHERS_JD_MODAL:
       state = { ...state, createForOthersJdModal: true };
       break;
-
 
     case ActionTypes.HIDE_CREATE_FOR_OTHERS_JD_MODAL:
       state = { ...state, createForOthersJdModal: false };
@@ -560,11 +583,82 @@ const DashboardReducer = (state = initialState, action: any) => {
       state = { ...state, retrieveEmail: undefined };
       break;
     case ActionTypes.FORGOT_PASSWORD_SUCCESS:
-      console.log(JSON.stringify(action.payload));
       state = { ...state, retrieveEmail: action.payload };
       break;
     case ActionTypes.FORGOT_PASSWORD_FAILURE:
       state = { ...state, retrieveEmail: action.payload };
+      break;
+
+    // bulkUploadCandidatesCP
+
+    case ActionTypes.BULK_UPLOAD_CANDIDATES_CP:
+      state = { ...state };
+      break;
+    case ActionTypes.BULK_UPLOAD_CANDIDATES_CP_SUCCESS:
+      state = { ...state };
+      break;
+    case ActionTypes.BULK_UPLOAD_CANDIDATES_CP_FAILURE:
+      state = { ...state };
+      break;
+
+    // showCreateOpeningsModal
+
+    case ActionTypes.SHOW_CREATE_OPENINGS_MODAL:
+      state = { ...state, createOpening: true };
+      break;
+
+    case ActionTypes.HIDE_CREATE_OPENINGS_MODAL:
+      state = { ...state, createOpening: false };
+      break;
+
+    // postManualApprovalOnCandidate
+
+    case ActionTypes.POST_MANUAL_APPROVALS_ON_CANDIDATE:
+      state = { ...state };
+      break;
+    case ActionTypes.POST_MANUAL_APPROVALS_ON_CANDIDATE_SUCCESS:
+      state = { ...state };
+      break;
+    case ActionTypes.POST_MANUAL_APPROVALS_ON_CANDIDATE_FAILURE:
+      state = { ...state };
+      break;
+
+    // getCandidatesCorporate
+
+    case ActionTypes.FETCH_CANDIDATES_CORPORATE:
+      state = {
+        ...state,
+        candidatesList: undefined,
+        candidatesListNumOfPages: 0,
+        candidatesListCurrentPages: 1,
+      };
+      break;
+    case ActionTypes.FETCH_CANDIDATES_CORPORATE_SUCCESS:
+      state = {
+        ...state,
+        candidatesList: action.payload?.details,
+        candidatesListNumOfPages:
+          action.payload?.details?.corporate_candidate_details.num_pages,
+        candidatesListCurrentPages:
+          action.payload?.details.corporate_candidate_details.next_page === -1
+            ? action.payload?.details.corporate_candidate_details.num_pages
+            : action.payload?.details.corporate_candidate_details.next_page - 1,
+      };
+      break;
+    case ActionTypes.FETCH_CANDIDATES_CORPORATE_FAILURE:
+      state = { ...state, candidatesList: undefined };
+      break;
+
+    // corporateScheduleActions
+
+    case ActionTypes.POST_CORPORATE_SCHEUDULE_ACTIONS:
+      state = { ...state };
+      break;
+    case ActionTypes.POST_CORPORATE_SCHEUDULE_ACTIONS_SUCCESS:
+      state = { ...state };
+      break;
+    case ActionTypes.POST_CORPORATE_SCHEUDULE_ACTIONS_FAILURE:
+      state = { ...state };
       break;
 
     default:

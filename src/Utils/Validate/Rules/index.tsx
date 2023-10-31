@@ -129,8 +129,8 @@ export const FROM_JD_RULES = {
   //   length: { minimum: 3, message: "Sector name minimum 3 chars" },
   // },
   position: {
-    presence: { message: "Role name cannot be empty" },
-    length: { minimum: 3, message: "Role minimum 3 chars" },
+    presence: { message: "Position name cannot be empty" },
+    length: { minimum: 3, message: "Position minimum 3 chars" },
   },
   experience: {
     presence: { allowEmpty: false, message: "Experience cannot be empty" },
@@ -199,6 +199,12 @@ export const CREATE_CORPORATE_SCHEDULE_RULES = {
   jd: {
     presence: { allowEmpty: false, message: "Job Description cannot be empty" },
   },
+  department_id: {
+    presence: { allowEmpty: false, message: "Department cannot be empty" },
+  },
+  sector_id: {
+    presence: { allowEmpty: false, message: "Sector cannot be empty" },
+  }
 }
 
 export const CREATE_FOR_OTHERS_RULES = {

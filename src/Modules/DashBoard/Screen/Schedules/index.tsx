@@ -86,7 +86,6 @@ function Schedules() {
         }
     }
 
-
     const videoPlayerHandler = (item: any) => {
         showVideoModal.show()
         setVideoDetails(item)

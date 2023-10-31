@@ -1,19 +1,22 @@
-import React, { useState } from 'react'
-import { DropDownProps } from './interfaces'
+import { useRef } from 'react'
+import { InputHeading, Option, Image } from '@Components';
 import Select2 from 'react-select2-wrapper';
-import { Option, InputHeading } from '@Components'
-import { FormGroup } from 'reactstrap'
+import { FormGroup } from 'reactstrap';
+import { DropDownProps } from './interfaces';
+import { icons } from '@Assets'
+
+import { Select2Type } from 'react-select2-wrapper';
 
 function DropDown({ id, heading, disabled, placeHolder, selected, data, onChange, className = 'form-control', Class }: DropDownProps) {
 
-    // const [selected, setSelected] = useState<Option | undefined>(value);
+    const select2Ref = useRef<Select2Type | null>(null); // Create a ref for the Select2 component
 
 
     function proceedOnChange(e: any) {
         const selectedId = e.target.value
         if (onChange) {
             const selectedItemById = data?.find((option: Option) => {
-                return option.id == selectedId
+                return option.id === selectedId
             })
             if (selectedItemById) {
                 onChange(selectedItemById)
@@ -23,28 +26,51 @@ function DropDown({ id, heading, disabled, placeHolder, selected, data, onChange
 
     }
 
-
+    function openSelect2Dropdown() {
+        if (select2Ref.current) {
+            select2Ref.current.el.select2('open');
+        }
+    }
     return (
         <FormGroup>
             <InputHeading heading={heading} Class={Class} id={id} />
-            <Select2
-                // style={{   height: 10, width: 10, borderRadius: 5, margin: "5px", background:'green'}}
-                className={className}
-                data-minimum-results-for-search={'Infinity'}
-                data={data}
-                value={selected && selected.id}
-                options={
-                    {
-                        placeholder: placeHolder,
-                        disabled: disabled,
-                        allowArrow: true,
+            <div style={{
+                position: "relative",
+            }}>
+                <Select2
+                    id={id}
+                    ref={select2Ref}
+                    className={className}
+                    data-minimum-results-for-search={'Infinity'}
+                    data={data}
+                    value={selected && selected.id}
+                    options={
+                        {
+                            placeholder: placeHolder,
+                            disabled: disabled,
+                            allowArrow: true,
+                        }
                     }
-                }
-                onChange={proceedOnChange}
-            >
-            </Select2>
+                    onChange={proceedOnChange}
+                >
+
+                </Select2>
+                <span
+                    style={{
+                        position: 'absolute',
+                        right: "5%",
+                        top: "25%",
+                        cursor: 'pointer'
+                    }}
+                    onClick={openSelect2Dropdown}
+                >
+                    <Image src={icons.downArrowBlack} height={10} width={12} style={{
+                        objectFit: 'contain'
+                    }} />
+                </span>
+            </div>
         </FormGroup>
     )
 }
 
-export { DropDown }
+export { DropDown };

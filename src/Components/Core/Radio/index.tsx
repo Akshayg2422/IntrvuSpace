@@ -34,7 +34,7 @@ function Radio({
           return (
             <div
               key={id}
-              className={`custom-control custom-radio  mb-2 ${variant === 'row' && index !== 0 && 'ml-4'}`}
+              className={`custom-control custom-radio  mb-2 ${variant === 'row' && index !== 0 && 'ml-lg-4 ml-sm-0 ml-2'}`}
             >
               <input
                 className={'custom-control-input'}

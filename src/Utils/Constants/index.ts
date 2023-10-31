@@ -68,18 +68,6 @@ export const TASK_FILTER_LIST = [
 ];
 
 
-export const TASK_STATUS_LIST = [
-  { id: 'ALL', text: 'All', },
-  { id: 'RAI', text: 'Raised', color: "gray" },
-  { id: 'INP', text: 'In-Progress', color: "yellow" },
-  { id: 'CAN', text: 'Cancel', color: "red" },
-  { id: "CLS", text: 'Close', color: "red" },
-  { id: 'ONH', text: 'On-Hold', color: "black" },
-  { id: 'REJ', text: 'Reject', color: "red" }
-
-]
-
-
 export const TASK_PRIORITY_LIST = [
   { id: 'ALL', text: "All" },
   { id: 1, text: "Lowest", color: "black" },
@@ -116,29 +104,6 @@ export const TICKET_PRIORITY_LIST = [
   { id: 5, text: "Critical", color: "gray" },
 ];
 
-
-
-export const STATUS_LIST = [
-  { id: 'ALL', text: 'All', },
-  { id: 'RAI', text: 'Raised', color: "gray" },
-  { id: 'INP', text: 'In-Progress', color: "yellow" },
-  { id: 'CAN', text: 'Cancel', color: "red" },
-  { id: "CLS", text: 'Close', color: "red" },
-  { id: 'ONH', text: 'On-Hold', color: "black" },
-  { id: 'REJ', text: 'Reject', color: "red" }
-
-]
-
-export const GROUP_STATUS_LIST = [
-  { id: 'ALL', text: 'All', },
-  { id: 'RAI', text: 'Raised', color: "gray" },
-  { id: 'INP', text: 'In-Progress', color: "yellow" },
-  { id: 'CAN', text: 'Cancel', color: "red" },
-  { id: "CLS", text: 'Close', color: "red" },
-  { id: 'ONH', text: 'On-Hold', color: "black" },
-  { id: 'REJ', text: 'Reject', color: "red" }
-
-]
 
 
 export const FILTERED_LIST = [
@@ -568,3 +533,24 @@ export const interviewDurations = [
   { id: '3', text: 'Long', subText: '(30 mins)', value: 30 },
 ];
 
+export const STATUS_LIST = [
+  { id: 'ALL', text: 'All' },
+  { id: 'ACV', text: 'Active' },
+  { id: 'CSD', text: 'Closed' },
+]
+
+
+
+export const EXPERIENCE_LIST = Array.from({ length: 31 }, (_, index) => ({
+  id: index + "",
+  text: (index === 0 ? 'Fresher' : index).toString()
+}));
+
+
+
+export const INTERVIEW_DURATIONS = [
+  { id: 1, text: 'Quick', subText: '5 mins', value: 5, isActive: false },
+  { id: 2, text: 'Short', subText: '10 mins', value: 10, isActive: false },
+  { id: 3, text: 'Medium', subText: '15 mins', value: 15, isActive: false },
+  { id: 4, text: 'Long', subText: '30 mins', value: 30, isActive: false },
+];

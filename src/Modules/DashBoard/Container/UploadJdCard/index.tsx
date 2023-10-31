@@ -1,77 +1,88 @@
 import React from 'react'
-import { Button } from '@Components'
+import { Button, Image } from '@Components'
 import { color } from '@Themes'
 import { showCreateJddModal } from '@Redux'
+import { icons, image } from '@Assets';
+import { Col, Container, Row } from 'reactstrap';
 import { useDispatch } from 'react-redux'
 
 function UploadJdCard() {
 
     const dispatch = useDispatch();
 
-    const headingAndSubtext = [
-        { 'Retrieve Job Description from the Job Portal:': 'Kindly extract the Job Description (JD) from the designated Job Portal source.' },
-        { 'Await Swift Interview Generation by Our System:': 'Once the JD is uploaded, our advanced system will promptly generate a tailored interview based on the provided Job Description. This process will be completed within a maximum of 30 seconds.' },
-        { 'Engage in the Interview Session:': 'Participate in the generated interview session, where you will encounter thought-provoking questions and scenarios pertinent to the role outlined in the Job Description.' },
-        { 'Access Your Interview Report:': 'Subsequent to the interview, you will receive an insightful report detailing your performance, strengths, and areas for potential growth. This report will aid you in gauging your alignment with the job requirements and expectations.' }
-    ]
+    const insightsdAndReports = [
+        { id: 1, description: "Interview video recording" },
+        { id: 2, description: "Skill Matrix", description2: "Report" },
+        { id: 3, description: "Communication", description2: "Report" },
+        { id: 4, description: "Aptitude", description2: "Report" },
+        { id: 5, description: "Personality Trait", description2: "Report" },
+    ];
 
     return (
-        <div className='d-flex justify-content-center align-items-center'>
-            <div className={'col-md-8 col-lg-8 col-sm-8 card p-4'}>
-                <div className='d-flex justify-content-center align-items-center'>
-                    <div className={'row align-items-start pl-5'}>
-                        <div className="text-black display-2 pl-2" style={{ fontSize: '50px' }}>
-                            <div className={'row'}>
-                                <div>Upload JD</div>
-                                <div className={'px-2'}>&</div>
-                                <div>Begin Interview</div>
-                            </div>
-                        </div>
-                        <div className='mt-3'>
-                            {
-                                headingAndSubtext && headingAndSubtext.length > 0 && headingAndSubtext.map((item, index) => {
-                                    const key = Object.keys(item)[0];
-                                    const value = item[key];
 
-                                    return (
-                                        <div className='col mt-2' key={index}>
-                                            <div className='row align-items-center'>
-                                                <div style={{
-                                                    width: 10,
-                                                    height: 10,
-                                                    backgroundColor: color.primary,
-                                                    borderRadius: 5
-                                                }}></div>
-
-                                                <div className="ml-3">
-                                                    <p className="h3 mb-0 text-black">{key}</p>
-                                                </div>
-                                            </div>
-                                            <p style={{ fontSize: '14px' }} className={'col'}>{value}</p>
-                                        </div>
-                                    );
-                                })
-                            }
-                        </div>
-
+        <div style={{ maxHeight: '60vh' }} className={'container-fluid mt--5'}>
+            <div className="">
+                <div className={'row text-center'}>
+                    <div className={'col-12 display-3 text-secondary font-weight-bolder ls-1'}>
+                        Start Your Interview Now !
+                    </div>
+                    <div className={'w-100'}></div>
+                    <div className={'col-12 text-default'}>
+                        Input job details, specifying qualifications, requirements, interview duration and start attending the one to one Video interview <br></br> with AI backend precision
                     </div>
                 </div>
 
+                <div className={'row mx-md-3'}>
+                    <div className={'col-lg-6'}>
+                        <div className="mt-2">
+                            <div>
+                                <span className="display-3 text-secondary font-weight-bolder mb-0 ls-1">
+                                    Insights & Reports
+                                </span>
+                            </div>
+                            <div style={{maxWidth:'80%'}} className={'text-default font-weight-500 mb-sm-0 mb-3'}>
+                                Upon completion of the interview, Get access  to interview view video recording and detailed curated reports
+                            </div>
 
-                <div className='pb-4'>
-                    <p className="mb-0 text-center h4 font-weight-500 pl-4 ml-2">{'We are committed to providing you with a streamlined and comprehensive virtual interview experience. Your active involvement will lead to valuable insights into your compatibility with the job role.'}</p>
-                    <div className='mt-4'></div>
-                    <Button
-                        block
-                        text={'Create Interview'}
-                        onClick={() => {
-                            dispatch(showCreateJddModal())
-                        }} />
+                            <div className="pt-md-3">
+                                {insightsdAndReports.map((item) => {
+                                    return (
+                                        <div className="row">
+                                            <div className={'col-1'} style={{ lineHeight: '16px' }} >
+                                                <Image src={icons.check} height={20} />
+                                            </div>
+                                            <span
+                                                className="col-11 text-secondary m-0 p-0"
+                                            >
+                                                <p style={{ lineHeight: '18px' }} className={'font-weight-700'}>{item.description}<small style={{ fontSize: '15px' }} className={'pl-1 font-weight-500'}>{item.description2}</small></p>
+                                            </span>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                            <div className='pt-md-2'></div>
+                            <Button
+                                className={'px-md-6 px-sm-0 px-7 rounded-sm'}
+                                isTextLowercase={false}
+                                text={'Create Interview'}
+                                onClick={() => {
+                                    dispatch(showCreateJddModal())
+                                }} />
+                        </div>
+                    </div>
+
+                    <div className={'pt-md-4 pt-sm-0 pt-4 col-lg-6 col-sm-12'}>
+                        <div>
+                            <img
+                                src={image.InsightsAndReports}
+                                width={"100%"}
+                                height={"100%"}
+                            />
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-
-
+        </div >
     )
 }
 
