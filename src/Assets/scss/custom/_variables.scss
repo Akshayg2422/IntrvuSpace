@@ -374,6 +374,10 @@ $font-size-xs: (
   $font-size-base * .75
 );
 
+
+$font-size-md : $font-size-base;
+
+
 $font-weight-light: 300 !default;
 $font-weight-normal: 400 !default;
 $font-weight-bold: 600 !default;
@@ -552,7 +556,9 @@ $input-disabled-bg: $gray-200 !default;
 $input-muted-bg: #F7FAFE !default;
 $input-focus-muted-bg: lighten($input-muted-bg, 1%) !default;
 
+
 $input-color: $black !default;
+
 $input-border-color: $border-color !default;
 $input-border-width: $input-btn-border-width !default;
 $input-box-shadow: 0 3px 2px rgba($gray-200, .05) !default;

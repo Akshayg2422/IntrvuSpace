@@ -38,14 +38,12 @@ export const REGISTER_AS_MEMBER_RULES = {
 
 
 export const LOGIN_WITH_EMAIL_RULES = {
-
   email: {
     email: { message: "doesn't look like a valid email" },
   },
   password: {
     presence: { message: "password cannot be empty" }
   },
-
 
 }
 

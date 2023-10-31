@@ -8,3 +8,11 @@ body {
     --secondary: #2f1c6a;
     --placeholder: #727586;
 }
+
+.auth-screen {
+    min-height: 100dvh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
