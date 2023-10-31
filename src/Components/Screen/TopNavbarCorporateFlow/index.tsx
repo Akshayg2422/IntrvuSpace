@@ -31,7 +31,7 @@ function TopNavbarCorporateFlow() {
 
     const HEADER_MENU = [
         { id: '1', name: 'Schedule', value: 'SC', icon: 'ni ni-badge' },
-        { id: '2', name: 'Setting', value: 'ST', icon: 'ni ni-settings-gear-65' },
+        // { id: '2', name: 'Setting', value: 'ST', icon: 'ni ni-settings-gear-65' },
         { id: '3', name: 'View as member', value: 'VAM', icon: 'ni ni-single-02', },
         { id: '4', name: 'Logout', value: 'LG', icon: 'ni ni-button-power' },
     ]
