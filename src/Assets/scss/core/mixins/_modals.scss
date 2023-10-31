@@ -18,8 +18,8 @@
 	}
 
 	.close {
-		&>span:not(.sr-only) {
-			color: $white;
-		}
-	}
+    	& > span:not(.sr-only) {
+    		color: $white;
+    	}
+    }
 }

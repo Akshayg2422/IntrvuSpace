@@ -11,11 +11,10 @@
     letter-spacing: $btn-letter-spacing;
     font-size: $input-btn-font-size;
     will-change: transform;
-    box-shadow: none;
-    border-radius: 0;
+
 
     &:hover {
-        // @include box-shadow($btn-hover-box-shadow);
+        @include box-shadow($btn-hover-box-shadow);
         transform: translateY($btn-hover-translate-y);
     }
 
@@ -89,9 +88,4 @@
 
 .btn-neutral {
     color: theme-color("primary");
-}
-
-
-.pointer {
-    cursor: pointer;
 }

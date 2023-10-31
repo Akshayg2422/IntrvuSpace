@@ -18,8 +18,8 @@
         padding: .5rem 1rem;
         font-size: $font-size-sm;
 
-        >i,
-        >svg {
+        > i,
+        > svg {
             margin-right: 1rem;
             font-size: 1rem;
             vertical-align: -17%;
@@ -46,7 +46,7 @@
 .dropdown-menu {
     a.media {
 
-        >div {
+        > div {
             &:first-child {
                 line-height: 1;
             }
@@ -57,7 +57,6 @@
         }
 
         &:hover {
-
             .heading,
             p {
                 color: theme-color("default") !important;
@@ -67,14 +66,7 @@
 }
 
 .dropdown-menu-dark {
-
-    .h1,
-    .h2,
-    .h3,
-    .h4,
-    .h5,
-    .h6,
-    a {
+    .h1, .h2, .h3, .h4, .h5, .h6, a {
         color: white;
     }
 }

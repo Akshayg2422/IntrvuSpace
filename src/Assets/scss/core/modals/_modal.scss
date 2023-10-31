@@ -24,8 +24,7 @@
 
 // Background color variations
 
-@each $color,
-$value in $theme-colors {
+@each $color, $value in $theme-colors {
     .modal-#{$color} {
         @include modal-variant($value);
     }
