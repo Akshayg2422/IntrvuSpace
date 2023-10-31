@@ -1,7 +1,7 @@
 /* eslint-disable no-empty-pattern */
 /* eslint-disable react-hooks/rules-of-hooks */
 import { icons } from '@Assets';
-import { Button, Card, Divider, DropDown, Input, InputHeading, Modal, Spinner, TextArea, showToast } from '@Components';
+import { Button, Card, CommonTable, Divider, DropDown, Input, InputHeading, Modal, Spinner, TextArea, showToast } from '@Components';
 import { useDropDown, useInput, useLoader, useModal, useNavigation } from '@Hooks';
 import { PreparingYourInterview, UploadJdCard } from '@Modules';
 import { canStartInterview, createNewJdSchedule, getJdItemList, hideCreateJdModal, postJdVariant, selectedScheduleId, showCreateJddModal } from '@Redux';
@@ -60,6 +60,7 @@ function FromJD() {
         setSelectedDuration(interviewDurations);
     };
     const [changeColorButton, setChangeColorButton] = useState<any>(interviewDurations)
+
 
 
     useEffect(() => {
@@ -266,15 +267,16 @@ function FromJD() {
                             <div className={'mt-3'}>
                                 {jdItem && jdItem.length > 0 && jdItem.map((item: any, index: any) => {
 
-                                    const { job_description: { details, experience }, schedules, name, id, interview_duration } = item
-
+                                    const { job_description: { details, experience }, schedules, name, id, interview_duration, } = item
+                                    
                                     const more = jdMore[index]?.more
 
                                     const modifiedSchedules = schedules.filter((each: any) => {
-                                        const { is_started, is_complete, id } = each
+                                        const { is_started, is_complete, id ,report_analytics} = each
                                         return is_started && is_complete
                                     })
-
+                                    console.log(modifiedSchedules,"modifiedSchedules");
+                                    
                                     const proceedInterview = schedules.find((each: any) => {
                                         const { is_complete } = each
                                         return !is_complete
@@ -435,7 +437,7 @@ function FromJD() {
                                                             modifiedSchedules.slice().reverse().map((each: any, index: number) => {
 
 
-                                                                const { is_complete, is_report_complete, id, created_at, custom_interviewee_details } = each;
+                                                                const { is_complete, is_report_complete, id, created_at, custom_interviewee_details,report_analytics } = each;
 
                                                                 const basic_info = custom_interviewee_details?.basic_info
 
@@ -483,9 +485,9 @@ function FromJD() {
                                                                             <div className='col-9'>
                                                                                 <div className='d-flex'>
                                                                                     <div className='col-9 d-flex justify-content-around align-items-center'>
-                                                                                        <h5>-</h5>
-                                                                                        <h5>-</h5>
-                                                                                        <h5>-</h5>
+                                                                                        <h5>{report_analytics.skill_matrix}</h5>
+                                                                                        <h5>{report_analytics.other_analytics.communication}</h5>
+                                                                                        <h5>{report_analytics.other_analytics.aptitude}</h5>
                                                                                     </div>
 
                                                                                     <div className='col-3 d-flex justify-content-center'>
@@ -518,8 +520,9 @@ function FromJD() {
 
                                                                             </div>
                                                                         </div>
-
+                                                                        {/* <CommonTable /> */}
                                                                     </div>
+                                                                   
                                                                 )
                                                             })
                                                         }
