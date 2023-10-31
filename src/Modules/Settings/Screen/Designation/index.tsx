@@ -184,7 +184,7 @@ function Designation() {
         jd.set("")
         position.set('')
         vacancies.set('')
-        setSelectedDuration({});
+        setSelectedDuration(INTERVIEW_DURATIONS[0]);
     }
 
     const getCorporateScheduleApiHandler = (page_number: number) => {
