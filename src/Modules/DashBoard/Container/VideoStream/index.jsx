@@ -50,7 +50,7 @@ const VideoStream = (props) => {
                 reader.onload = function () {
                     syncVideoApiHelper(reader.result)
                 };
-                reader.readAsDataURL(blob);
+                reader.readAsDataURL(blob);  
             }
         };
 
