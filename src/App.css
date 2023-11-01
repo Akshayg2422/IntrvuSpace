@@ -41,3 +41,8 @@ input[type=number] {
     top: 3%;
     left: 8%;
 }
+
+.screen {
+    min-height: 100dvh;
+    width: 100%;
+}

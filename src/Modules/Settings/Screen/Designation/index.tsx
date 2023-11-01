@@ -230,8 +230,8 @@ function Designation() {
 
 
     return (
-        <div >
-            <TopNavbarCorporateFlow />
+        <div className={'screen'}>
+            {/* <TopNavbarCorporateFlow /> */}
             {
                 loading ? (
                     <div className={'vh-100 d-flex justify-content-center align-items-center'}>

@@ -83,7 +83,6 @@ function Register() {
   }
 
   return (
-
     <div className={'auth-screen'}>
       <div className={'auth-logo'}>
         <Logo />

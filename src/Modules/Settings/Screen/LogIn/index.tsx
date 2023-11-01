@@ -90,8 +90,10 @@ function Login() {
 
   return (
     <div className={'auth-screen'}>
-      <div className={'auth-container'}>
+      <div className={'auth-logo'}>
         <Logo />
+      </div>
+      <div className={'auth-container'}>
         <div className="text-sub-heading heading-text">Log in</div>
         <Input
           value={email.value}

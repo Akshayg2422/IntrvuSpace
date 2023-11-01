@@ -77,10 +77,25 @@
 
 
 .text-des {
-	font-size: 0.875rem !important;
+	font-size: 1rem !important;
 	color: #727586 !important;
 	font-weight: 400 !important;
 }
+
+
+.point-heading {
+	font-weight: 700 !important;
+	font-size: 0.875rem !important;
+	color: $secondary;
+}
+
+.point-sub-heading {
+	font-weight: 400 !important;
+	font-size: 0.875rem !important;
+	color: $secondary;
+	margin-left: 5px;
+}
+
 
 
 // Line heights
