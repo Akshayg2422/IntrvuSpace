@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useState } from "react";
 // react library for routing
 import { Link } from "react-router-dom";
 // reactstrap components
@@ -37,6 +37,7 @@ function TopNavbar() {
     const { goTo } = useNavigation()
     const { loginDetails } = useSelector((state: any) => state.AppReducer);
     const { jdItem } = useSelector((state: any) => state.DashboardReducer);
+    const [loginDetailsHandle, setLoginDetailsHandle] = useState(false)
 
 
     console.log(JSON.stringify(loginDetails) + '=====loginDetails');
@@ -179,7 +180,7 @@ function TopNavbar() {
 
                             <NavItem className="d-none d-lg-block ml-lg-4">
                                 <div className='row align-items-center m-auto'>
-                                    <span className='mb-0 text-black font-weight-400'>
+                                    <span className='mb-0 text-black font-weight-400 pointer' onClick={()=>{ setLoginDetailsHandle(!true)}}>
                                         {loginDetails?.user}
                                     </span>
                                     <Nav navbar>
@@ -198,6 +199,7 @@ function TopNavbar() {
                                                             onClick={(e) => {
                                                                 e.preventDefault()
                                                                 dropdownHandler(item);
+                                                                setLoginDetailsHandle(!true)
                                                             }}
                                                         >
                                                             <i className={item.icon}></i>
@@ -221,7 +223,7 @@ function TopNavbar() {
                                                 }}
                                             >
                                                 {/* <i className={item.icon}></i> */}
-                                                <span className={`nav-link-inner--text text-black`}>{item.name}</span>
+                                                <span className={`nav-link-inner--text text-black`} >{item.name}</span>
                                             </NavLink>
                                         </NavItem>
                                     );
@@ -232,11 +234,11 @@ function TopNavbar() {
                 </div>
             </Navbar >
 
-            <Modal  isOpen={logoutModal.visible} onClose={logoutModal.hide}>
-                
+            <Modal isOpen={logoutModal.visible} onClose={logoutModal.hide}>
+
                 <div className={'mx-sm-4 mb-sm-3 mx-1 mb-1 mt--4'}>
-                        <div className='display-4 text-secondary font-weight-900 mb-2'>{'Logout User'}
-                        </div>
+                    <div className='display-4 text-secondary font-weight-900 mb-2'>{'Logout User'}
+                    </div>
                     <span>{"Please click on proceed to logout user"}</span>
                     <div
                         className='d-flex justify-content-end mt-2'
@@ -247,7 +249,7 @@ function TopNavbar() {
                             onClick={() => logoutModal.hide()}
                         />
                         <Button
-                        className={'rounded-sm'}
+                            className={'rounded-sm'}
                             text={'Proceed'}
                             onClick={proceedLogout}
                         />
