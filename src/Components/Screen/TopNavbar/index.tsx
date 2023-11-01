@@ -37,7 +37,7 @@ function TopNavbar() {
     const { goTo } = useNavigation()
     const { loginDetails } = useSelector((state: any) => state.AppReducer);
     const { jdItem } = useSelector((state: any) => state.DashboardReducer);
-    const [isOpenDropdown, setIsOpenDropdown] = useState(false)
+    const [dropdownOpen, setDropdownOpen] = useState(false)
 
 
 
@@ -82,9 +82,12 @@ function TopNavbar() {
         dispatch(showCreateForOthersJdModal());
     };
 
-    const toggleDropdownHandler = () => {
-        setIsOpenDropdown(!isOpenDropdown)
-    }
+    const toggleDropdown = () => {
+        console.log("Before Toggle: dropdownOpen =", dropdownOpen);
+        setDropdownOpen(!dropdownOpen);
+        console.log("After Toggle: dropdownOpen =", !dropdownOpen);
+    };
+
 
     return (
         <>
@@ -181,12 +184,12 @@ function TopNavbar() {
 
                             <NavItem className="d-none d-lg-block ml-lg-4">
                                 <div className='row align-items-center m-auto'>
-                                    <span className='mb-0 text-black font-weight-400 pointer' onClick={toggleDropdownHandler}>
+                                    <span className='mb-0 text-black font-weight-400 pointer' onClick={toggleDropdown}>
                                         {loginDetails?.user}
                                     </span>
 
                                     <Nav navbar>
-                                        <UncontrolledDropdown nav>
+                                        <UncontrolledDropdown nav isOpen={dropdownOpen} toggle={toggleDropdown}>
                                             <DropdownToggle className="nav-link pr-0" color="" tag="a">
                                                 <Media className="align-items-center">
                                                     <Media className="d-none d-lg-block ml--2 mr-2 pointer">
@@ -201,6 +204,7 @@ function TopNavbar() {
                                                             onClick={(e) => {
                                                                 e.preventDefault()
                                                                 dropdownHandler(item);
+                                                                setDropdownOpen(false)
                                                             }}
                                                         >
                                                             <i className={item.icon}></i>

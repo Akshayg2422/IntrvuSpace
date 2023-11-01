@@ -948,6 +948,7 @@ function Call() {
                       </div>
                       <div className="d-flex flex-column align-items-center justify-content-center col-md-6">
                         <AnimatedImage
+                          device={'web'}
                           show={false}
                           showWebCam={showCam}
                           name={getShortName(scheduleInfo?.interviewee_name)}
@@ -1015,6 +1016,7 @@ function Call() {
                           <div>
                             <AnimatedImage
                               show={false}
+                              device={'mobile'}
                               showWebCam={showCam}
                               name={getShortName(scheduleInfo?.interviewee_name)}
                               shouldBlink={interviewee_state === IE_SPEAKING}
@@ -1033,6 +1035,7 @@ function Call() {
                           }}>
                             <div>
                               <AnimatedImage
+
                                 variant={'sm'}
                                 show={interviewer_state === IV_PROCESSING}
                                 name={getShortName(scheduleInfo?.interviewer_name)}
