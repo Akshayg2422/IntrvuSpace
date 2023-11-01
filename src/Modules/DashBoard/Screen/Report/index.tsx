@@ -126,16 +126,16 @@ function Report() {
           // console.log("success===>", success.details);
           setBasicReportData(success.details);
 
-          // const {
-          //   communication,
-          //   skill_matrix,
-          //   trait,
-          //   overall_weightage,
-          //   name,
-          //   sub_text,
-          // } = success.details;
-          // // setFileName(name + "_" + sub_text + "_" + filter?.value.title);
-          // setFileName(name + "_" + sub_text + "_" + reportType)
+          const {
+            communication,
+            skill_matrix,
+            trait,
+            overall_weightage,
+            name,
+            sub_text,
+          } = success.details;
+          // setFileName(name + "_" + sub_text + "_" + filter?.value.title);
+          setFileName(name + "_" + sub_text + "_" + reportType)
 
           // console.log(communication, "communication data");
           // console.log(skill_matrix, "skill_matrix data");
@@ -470,38 +470,8 @@ function Report() {
 
   return (
     <>
-      {/* <div
-          className="row position-fixed bottom-0 right-0 m-3 p-3"
-          style={{
-            zIndex: 1,
-          }}
-        > */}
-      {/* <ButtonGroup
-            size={"btn-sm"}
-            sortData={FILTER}
-            selected={filter.value}
-            onClick={handleButtonClick}
-          /> */}
-      {/* <div className="ml-3">
-            {fileName && (
-              <ReactToPrint
-                documentTitle={fileName}
-                trigger={() => (
-                  <Button
-                    variant={"icon-rounded"}
-                    color="info"
-                    icons={"bi bi-printer-fill text-white fa-lg"}
-                  />
-                )}
-                content={() => componentRef.current}
-              />
-            )}
-          </div>
-        </div> */}
-
-      <div className="d-flex flex-column px-sm-6 px-2 py-3" ref={componentRef}>
-        <div className="position-relative">
-          <div className="col-sm-3 position-absolute top-0 left-0 p-0">
+    <div className="position-relative ml-sm-6">
+    <div className="col-sm-3 position-absolute top-3 left-0 p-0">
             <DropDown
               // data={REPORT_TYPE}
               // value={reportType}
@@ -516,7 +486,45 @@ function Report() {
               onChange={reportType.onChange}
             />
           </div>
+    </div>
+      <div
+          className="row position-fixed bottom-0 right-0 m-sm-3 p-3"
+          style={{
+            zIndex: 1,
+          }}
+        >
+      {/* <ButtonGroup
+            size={"btn-sm"}
+            sortData={FILTER}
+            selected={filter.value}
+            onClick={handleButtonClick}
+          /> */}
+      <div className="ml-3">
+            {fileName && (
+              <ReactToPrint
+                documentTitle={fileName}
+                trigger={() => (
+                  <Button
+                    variant={"icon-rounded"}
+                    color="info"
+                    icons={"bi bi-printer-fill text-white fa-lg"}
+                  />
+                )}
+                content={() => componentRef.current}
+              />
+            )}
+          </div>
+          
+        </div>
+
+      <div className="d-flex flex-column px-sm-6 px-3 py-3" ref={componentRef}>
+        
+        <div className="">
+        
           <div className="position-relative ">
+            <div className="position-absolute top-2 ">
+              {/* <Image src={image.passportImage} height={100}/> */}
+            </div>
             <div className="mt-5">
               <div className="text-center">
                 <div className="">
@@ -602,14 +610,14 @@ function Report() {
                             fontSize: "36px",
                           }}
                         >
-                          {basicReportData.skill_matrix_overal_percent}
+                          {basicReportData?.skill_matrix_overal_percent}
                         </span>
                       </div>
                     </div>
                   </Card>
                 </div>
-                {basicReportData.report_other_analytics &&
-                  Object.keys(basicReportData.report_other_analytics)?.map(
+                {basicReportData?.report_other_analytics &&
+                  Object.keys(basicReportData?.report_other_analytics)?.map(
                     (heading) => {
                       return (
                         <div className="col-sm-3 ">
@@ -623,7 +631,7 @@ function Report() {
                           >
                             <div className="progress-wrapper col py-0 m-0 ">
                               <div className="h4 mb-0 pb-0 pt-2">
-                                <span
+                                {heading && <span
                                   className="font-weight-bolder text-secondary"
                                   style={{ fontSize: 16 }}
                                 >
@@ -631,17 +639,17 @@ function Report() {
                                     "_",
                                     " "
                                   )}
-                                </span>
+                                </span>}
                               </div>
 
                               <div className="mt--2">
-                                <span
+                               <span
                                   className={"text-secondary font-weight-bold"}
                                   style={{
                                     fontSize: "36px",
                                   }}
                                 >
-                                  {`${basicReportData.report_other_analytics[heading]} %`}
+                                  {`${basicReportData?.report_other_analytics[heading]} %`}
                                 </span>
                               </div>
                             </div>
@@ -801,7 +809,7 @@ function Report() {
                             <Image src={item.icon} height={20} />
                             <span
                               style={{ fontSize: 14 }}
-                              className="text-default ml-2"
+                              className="text-default ml-2 font-weight-500"
                             >
                               {item.text}
                             </span>
@@ -832,20 +840,19 @@ function Report() {
                             <div className="d-flex justify-content-between">
                               <div>
                                 <div>
-                                  <span
+                                  <h2
                                     className="text-secondary font-weight-bolder"
-                                    style={{ fontSize: 16 }}
+                                    
                                   >
                                     {skill.name}
-                                  </span>
+                                  </h2>
                                 </div>
                               </div>
-                              <span
+                              <h2
                                 className="text-secondary font-weight-bolder"
-                                style={{ fontSize: 16 }}
                               >
                                 {skill.rating}
-                              </span>
+                              </h2>
                             </div>
 
                             <div>
@@ -855,12 +862,12 @@ function Report() {
                                   return (
                                     <>
                                       <div className="mt-3">
-                                        <span
-                                          className="text-secondary"
-                                          style={{ fontSize: 16 }}
+                                        <b
+                                          className="text-secondary font-weight-500"
+                                          
                                         >
                                           {que.question}
-                                        </span>
+                                        </b>
                                       </div>
 
                                       <div className="mt-3">
@@ -875,9 +882,9 @@ function Report() {
                                                     src={icons.check}
                                                     height={20}
                                                   />
-                                                  <span className="text-default ml-2">
+                                                  <small className="text-default ml-2 font-weight-500">
                                                     {ans}
-                                                  </span>
+                                                  </small>
                                                 </div>
                                               );
                                             }
@@ -895,9 +902,9 @@ function Report() {
                                                     src={icons.checkBlack}
                                                     height={20}
                                                   />
-                                                  <span className="text-default ml-2">
+                                                  <small className="text-default ml-2 font-weight-500">
                                                     {ans}
-                                                  </span>
+                                                  </small>
                                                 </div>
                                               );
                                             }
@@ -915,9 +922,9 @@ function Report() {
                                                     src={icons.frame}
                                                     height={20}
                                                   />
-                                                  <span className="text-default ml-2">
+                                                  <small className="text-default ml-2 font-weight-500">
                                                     {ans}
-                                                  </span>
+                                                  </small>
                                                 </div>
                                               );
                                             }
@@ -934,9 +941,9 @@ function Report() {
                                                 src={icons.frame}
                                                 height={20}
                                               />
-                                              <span className="text-default ml-2">
+                                              <small className="text-default ml-2 font-weight-500">
                                                 {"Not Answered"}
-                                              </span>
+                                              </small>
                                             </div>
                                           )}
                                       </div>
@@ -1028,7 +1035,9 @@ function Report() {
           )}
         </div>
         <div className="d-flex justify-content-end mt-5 mb-6">
+        <a href={'https://www.intrvu.space'} target="_blank" rel="noreferrer">
           <Image src={icons.poweredBy} height={40} />
+         </a>
         </div>
       </div>
     </>
