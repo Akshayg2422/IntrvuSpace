@@ -215,5 +215,6 @@ export const icons = {
   poweredBy: require('./PoweredBy/icon.png'),
   more: require('./More/icon.png'),
   frame: require('./Frame/icon.png'),
-  checkBlack: require('./CheckBlack/icon.png')
+  checkBlack: require('./CheckBlack/icon.png'),
+  rupees:require('./Rupees/icon.png')
 };

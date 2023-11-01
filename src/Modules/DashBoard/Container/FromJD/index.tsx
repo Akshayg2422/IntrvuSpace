@@ -152,10 +152,10 @@ function FromJD() {
 
     function resetValues() {
         position.set('')
-        experience.set({})
+        experience.set(EXPERIENCE_LIST[0])
         jd.set('')
         sector.set('')
-        setSelectedDuration('')
+        setSelectedDuration(INTERVIEW_DURATIONS[0])
     }
 
     function createNewJdScheduleApiHandler(id: string) {
@@ -531,7 +531,9 @@ function FromJD() {
             }
 
             <div className='p-5'>
-                <Modal size={'lg'} isOpen={createJdModal} onClose={() => { dispatch(hideCreateJdModal()) }}>
+                <Modal size={'lg'} isOpen={createJdModal} onClose={() => { 
+                    resetValues()
+                    dispatch(hideCreateJdModal()) }}>
                     <div className={'m-md-5 mt-sm-0 mt-5'}>
                         <div className='display-4 text-secondary font-weight-bolder mt--6 mb-md-5'>{'Create Interview'}
                             <p className={'text-default'} style={{ fontSize: '15px', fontWeight: 400 }}>{'Input job details, specifying qualifications, requirements, interview duration'}</p>

@@ -107,7 +107,7 @@ function VariantInfo() {
   const candidateStatus = useDropDown(CANDIDATE_STATUS[0]);
   const modifyDeadlineModal = useModal(false);
 
-  const preparingInterviewModal = useModal(false);
+
   const [jdMore, setJdMore] = useState<any>(false);
   const statusList = [
     { id: "ALL", text: "All" },
@@ -125,7 +125,7 @@ function VariantInfo() {
 
   const closeCandidateModal = useModal(false);
   const [closeCandidateData, setCloseCandidateData] = useState<any>();
-  const [jdDetails, setJdDetails] = useState<any>();
+  const addCandidateLoader = useLoader(false)
 
   useEffect(() => {
     getCorporateScheduleDetailsHandler();
@@ -206,26 +206,24 @@ function VariantInfo() {
     const validation = validate(VALIDATE_ADD_NEW_CANDIDATES_RULES, params);
 
     if (ifObjectExist(validation)) {
-      preparingInterviewModal.show();
-      addNewCandidateModal.hide();
-      loader.show();
+
+      addCandidateLoader.show()
       dispatch(
         createSchedule({
           params,
           onSuccess: (response: any) => () => {
             resetValues();
             showToast("Candidate added successfully", "success");
-            loader.hide();
-            preparingInterviewModal.hide();
+            addCandidateLoader.hide()
+            addNewCandidateModal.hide();
             getCorporateScheduleDetailsHandler();
             getCandidatesCorporate(candidatesListCurrentPages);
             setIsCandidatesExist(true);
           },
           onError: (error: any) => () => {
             showToast(error.error_message, "error");
-            preparingInterviewModal.hide();
-            addNewCandidateModal.show();
-            loader.hide();
+            addNewCandidateModal.hide();
+            addCandidateLoader.hide()
           },
         })
       );
@@ -1079,6 +1077,7 @@ function VariantInfo() {
                 <Button
                   size={"md"}
                   text={"Submit"}
+                  loading={addCandidateLoader.loader}
                   onClick={generateNewCandidateHandler}
                   style={{ borderRadius: 4, paddingLeft: 70, paddingRight: 70 }}
                 />
@@ -1132,13 +1131,6 @@ function VariantInfo() {
             />
           </div>
         </div>
-      </Modal>
-
-      <Modal
-        isOpen={preparingInterviewModal.visible}
-        onClose={preparingInterviewModal.hide}
-      >
-        <PreparingYourInterview />
       </Modal>
 
       {/* remove candidate modal */}

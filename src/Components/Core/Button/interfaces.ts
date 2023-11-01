@@ -11,4 +11,5 @@ export interface ButtonProps extends RsButtonProps {
     height?: number;
     width?: number;
     buttonOutline?:string
+    loading?:any;
 }

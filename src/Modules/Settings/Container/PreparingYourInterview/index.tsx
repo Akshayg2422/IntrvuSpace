@@ -12,7 +12,7 @@ function PreparingYourInterview({ showStart, onClick }: PreparingYourInterviewPr
         { icon: icons.check, text: 'Extracting key areas' },
         { icon: icons.check, text: 'Preparing Topics' },
         { icon: icons.check, text: 'Generating evaluation criteria' },
-        { icon: icons.check, text: 'Preparing interview Room' },
+        { icon: showStart && icons.check, text: 'Preparing interview Room' },
     ];
 
     const [currentStep, setCurrentStep] = useState(-1);
