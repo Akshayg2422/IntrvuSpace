@@ -255,7 +255,7 @@ function Report() {
             count =
               count +
               +basicReportData[el].overal_percent /
-                basicReportData[el].sections.length;
+              basicReportData[el].sections.length;
           });
       } else if (Array.isArray(basicReportData[el])) {
         basicReportData[el].length > 0 &&
@@ -318,7 +318,7 @@ function Report() {
             </div>
             <div className="ml-2 pl-1 pb-3 text-black">
               {el?.expected_answer_key_points?.points &&
-              el?.expected_answer_key_points?.points.length > 0 ? (
+                el?.expected_answer_key_points?.points.length > 0 ? (
                 <>
                   <h5 className="text-black text-uppercase">
                     Expected Key Points
@@ -345,10 +345,10 @@ function Report() {
             {(el?.suggestions?.covered?.length > 0 ||
               el?.suggestions?.covered_partial?.length > 0 ||
               el?.suggestions?.covered_not_valid?.length > 0) && (
-              <div className="ml-1 pb-2">
-                <h5 className="text-black text-uppercase ">Answer breakdown</h5>
-              </div>
-            )}
+                <div className="ml-1 pb-2">
+                  <h5 className="text-black text-uppercase ">Answer breakdown</h5>
+                </div>
+              )}
             <div className="mx-5">
               <div
                 className="row p-0 ml--6 mr--7"
@@ -359,79 +359,79 @@ function Report() {
                 {(el?.suggestions?.covered?.length > 0 ||
                   el?.suggestions?.covered_partial?.length > 0 ||
                   el?.suggestions?.covered_not_valid?.length > 0) && (
-                  <>
-                    {el?.suggestions?.covered?.length > 0 && (
-                      <div className="col-sm-4">
-                        <Card
-                          className="check"
-                          style={{
-                            height: maxNumber + "px",
-                          }}
-                        >
-                          <CardHeader className="h3">Valid</CardHeader>
-                          <CardBody>
-                            <div>
-                              {el?.suggestions?.covered?.length > 0 &&
-                                el?.suggestions?.covered?.map((items) => {
-                                  return (
-                                    <>
-                                      <li>
-                                        <span>{items}</span>
-                                      </li>
-                                    </>
-                                  );
-                                })}
-                            </div>
-                          </CardBody>
-                        </Card>
-                      </div>
-                    )}
-                    {el?.suggestions?.covered_partial?.length > 0 && (
-                      <div className="col-sm-4">
-                        <Card
-                          style={{
-                            height: maxNumber + "px",
-                          }}
-                        >
-                          <CardHeader className="h3">Partial</CardHeader>
-                          <CardBody>
-                            {el?.suggestions?.covered_partial?.length > 0 &&
-                              el?.suggestions?.covered_partial?.map((items) => {
-                                return (
-                                  <>
-                                    <li>{items}</li>
-                                  </>
-                                );
-                              })}
-                          </CardBody>
-                        </Card>
-                      </div>
-                    )}
-                    {el?.suggestions?.covered_not_valid?.length > 0 && (
-                      <div className="col-sm-4">
-                        <Card
-                          style={{
-                            height: maxNumber,
-                          }}
-                        >
-                          <CardHeader className="h3">Invalid</CardHeader>
-                          <CardBody>
-                            {el?.suggestions?.covered_not_valid?.length > 0 &&
-                              el?.suggestions?.covered_not_valid?.map(
-                                (items) => {
+                    <>
+                      {el?.suggestions?.covered?.length > 0 && (
+                        <div className="col-sm-4">
+                          <Card
+                            className="check"
+                            style={{
+                              height: maxNumber + "px",
+                            }}
+                          >
+                            <CardHeader className="h3">Valid</CardHeader>
+                            <CardBody>
+                              <div>
+                                {el?.suggestions?.covered?.length > 0 &&
+                                  el?.suggestions?.covered?.map((items) => {
+                                    return (
+                                      <>
+                                        <li>
+                                          <span>{items}</span>
+                                        </li>
+                                      </>
+                                    );
+                                  })}
+                              </div>
+                            </CardBody>
+                          </Card>
+                        </div>
+                      )}
+                      {el?.suggestions?.covered_partial?.length > 0 && (
+                        <div className="col-sm-4">
+                          <Card
+                            style={{
+                              height: maxNumber + "px",
+                            }}
+                          >
+                            <CardHeader className="h3">Partial</CardHeader>
+                            <CardBody>
+                              {el?.suggestions?.covered_partial?.length > 0 &&
+                                el?.suggestions?.covered_partial?.map((items) => {
                                   return (
                                     <>
                                       <li>{items}</li>
                                     </>
                                   );
-                                }
-                              )}
-                          </CardBody>
-                        </Card>
-                      </div>
-                    )}
-                  </>
-                )}
+                                })}
+                            </CardBody>
+                          </Card>
+                        </div>
+                      )}
+                      {el?.suggestions?.covered_not_valid?.length > 0 && (
+                        <div className="col-sm-4">
+                          <Card
+                            style={{
+                              height: maxNumber,
+                            }}
+                          >
+                            <CardHeader className="h3">Invalid</CardHeader>
+                            <CardBody>
+                              {el?.suggestions?.covered_not_valid?.length > 0 &&
+                                el?.suggestions?.covered_not_valid?.map(
+                                  (items) => {
+                                    return (
+                                      <>
+                                        <li>{items}</li>
+                                      </>
+                                    );
+                                  }
+                                )}
+                            </CardBody>
+                          </Card>
+                        </div>
+                      )}
+                    </>
+                  )}
               </div>
             </div>
           </div>
@@ -540,17 +540,15 @@ function Report() {
                     className="font-weight-bolder text-secondary font-weight-600"
                     style={{ fontSize: 12 }}
                   >
-                    {`${basicReportData.interview_meta_info?.role} - ${
-                      !basicReportData.interview_meta_info?.experience
-                        ? "Fresher"
-                        : basicReportData.interview_meta_info?.experience
-                    } ${
-                      basicReportData.interview_meta_info?.experience > 1
+                    {`${basicReportData.interview_meta_info?.role} - ${!basicReportData.interview_meta_info?.experience
+                      ? "Fresher"
+                      : basicReportData.interview_meta_info?.experience
+                      } ${basicReportData.interview_meta_info?.experience > 1
                         ? "years"
                         : basicReportData.interview_meta_info?.experience === 1
-                        ? "year"
-                        : ""
-                    }`}
+                          ? "year"
+                          : ""
+                      }`}
                   </span>
                 </div>
                 <div>
@@ -719,7 +717,7 @@ function Report() {
                                 className="font-weight-bolder text-secondary"
                                 style={{ fontSize: 18 }}
                               >
-                                {capitalizeFirstLetter(heading).replace("_"," ")}
+                                {capitalizeFirstLetter(heading).replace("_", " ")}
                               </span>
                             </div>
                           </div>
@@ -933,7 +931,7 @@ function Report() {
                                         {que.suggestions?.covered_not_valid
                                           .length === 0 &&
                                           que.suggestions?.covered.length ===
-                                            0 &&
+                                          0 &&
                                           que.suggestions?.covered_partial
                                             .length === 0 && (
                                             <div>

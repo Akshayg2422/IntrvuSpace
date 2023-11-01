@@ -51,7 +51,7 @@ const VideoStream = (props) => {
                 const blob = new Blob([event.data], { type: 'video/webm' });
                 const reader = new FileReader();
                 reader.onload = function () {
-                    // syncVideoApiHelper(reader.result)
+                    syncVideoApiHelper(reader.result)
                 };
                 reader.readAsDataURL(blob);  
             }
