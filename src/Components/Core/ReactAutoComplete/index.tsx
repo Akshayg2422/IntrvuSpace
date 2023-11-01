@@ -31,11 +31,11 @@ function ReactAutoComplete({ selected, isMandatory, heading, placeholder, data, 
         }
 
         const regex = new RegExp('^' + escapedValue, 'i');
-        const suggestions = data && data.filter(each => regex.test(each.name)).slice(0, 5);
+        const suggestions = data && data.length > 0 && data.filter(each => regex.test(each.name)).slice(0, 5);
 
         if (suggestions?.length <= 0) {
             return [
-                ...suggestions, { isAddNew: true }
+                { isAddNew: true }
             ];
         }
 
