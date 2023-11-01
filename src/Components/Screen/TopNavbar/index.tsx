@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useState } from "react";
 // react library for routing
 import { Link } from "react-router-dom";
 // reactstrap components
@@ -37,6 +37,7 @@ function TopNavbar() {
     const { goTo } = useNavigation()
     const { loginDetails } = useSelector((state: any) => state.AppReducer);
     const { jdItem } = useSelector((state: any) => state.DashboardReducer);
+    const [isOpenDropdown, setIsOpenDropdown] = useState(false)
 
 
 
@@ -80,6 +81,10 @@ function TopNavbar() {
     const handleCreateForOthersInterviewClick = () => {
         dispatch(showCreateForOthersJdModal());
     };
+
+    const toggleDropdownHandler = () => {
+        setIsOpenDropdown(!isOpenDropdown)
+    }
 
     return (
         <>
@@ -176,9 +181,10 @@ function TopNavbar() {
 
                             <NavItem className="d-none d-lg-block ml-lg-4">
                                 <div className='row align-items-center m-auto'>
-                                    <span className='mb-0 text-black font-weight-400'>
+                                    <span className='mb-0 text-black font-weight-400 pointer' onClick={toggleDropdownHandler}>
                                         {loginDetails?.user}
                                     </span>
+
                                     <Nav navbar>
                                         <UncontrolledDropdown nav>
                                             <DropdownToggle className="nav-link pr-0" color="" tag="a">
@@ -205,6 +211,7 @@ function TopNavbar() {
                                             </DropdownMenu>
                                         </UncontrolledDropdown>
                                     </Nav>
+
                                 </div>
                             </NavItem>
                             <div className="d-xl-none d-lg-none">
@@ -218,7 +225,7 @@ function TopNavbar() {
                                                 }}
                                             >
                                                 {/* <i className={item.icon}></i> */}
-                                                <span className={`nav-link-inner--text text-black`}>{item.name}</span>
+                                                <span className={`nav-link-inner--text text-black`} >{item.name}</span>
                                             </NavLink>
                                         </NavItem>
                                     );
