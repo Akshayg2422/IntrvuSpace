@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
-import { Button, DesignationItem, DropDown, Heading, Input, InputHeading, Modal, NoDataFound, PageNation, ReactAutoComplete, Spinner, TextArea, TopNavbarCorporateFlow, showToast } from '@Components';
-import { useDropDown, useInput, useKeyPress, useLoader, useModal, useNavigation } from '@Hooks';
+import { Button, DesignationItem, DropDown, Heading, Input, InputHeading, Modal, NoDataFound, PageNation, ReactAutoComplete, Spinner, TextArea, showToast } from '@Components';
+import { useDropDown, useInput, useLoader, useModal, useNavigation } from '@Hooks';
 import { UploadCorporateOpeningsCard } from '@Modules';
 import { addDepartmentCorporate, addSectorCorporate, breadCrumbs, createCorporateSchedules, getCorporateSchedules, getDepartmentCorporate, getSectorCorporate, hideCreateOpeningsModal, setSelectedRole } from '@Redux';
 import { ROUTES } from '@Routes';
@@ -57,17 +57,13 @@ function Designation() {
     const vacancies = useInput('1')
     const [loading, setLoading] = useState(false);
     const status = useDropDown(STATUS_LIST[1]);
-    const enterPress = useKeyPress("Enter");
+
+
 
 
     useEffect(() => {
         getCorporateScheduleApiHandler(corporateScheduleCurrentPages);
     }, [filterSector.value, filterDepartment.value, status.value]);
-
-
-    // useEffect(() => {
-    //     getCorporateScheduleApiHandler(corporateScheduleCurrentPages);
-    // }, [enterPress]);
 
 
 
@@ -230,13 +226,13 @@ function Designation() {
 
     return (
         <div className={'screen'}>
-            <TopNavbarCorporateFlow />
+            {/* <TopNavbarCorporateFlow /> */}
             {
                 loading ? (
                     <div className={'vh-100 d-flex justify-content-center align-items-center'}>
                         <Spinner />
                     </div>
-                ) : corporateSchedules?.details?.corporate_jd_items?.data.length < 0 && !isFilter ? (
+                ) : corporateSchedules?.details?.corporate_jd_items?.data.length === 0 && !isFilter ? (
                     <UploadCorporateOpeningsCard />
                 ) : (
                     <div className='pt-4 mx-sm-0 mx-3 mx-md-7'>
