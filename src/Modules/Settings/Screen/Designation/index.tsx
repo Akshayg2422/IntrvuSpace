@@ -3,9 +3,9 @@
 import { Button, DesignationItem, DropDown, Heading, Input, InputHeading, Modal, NoDataFound, PageNation, ReactAutoComplete, Spinner, TextArea, TopNavbarCorporateFlow, showToast } from '@Components';
 import { useDropDown, useInput, useKeyPress, useLoader, useModal, useNavigation } from '@Hooks';
 import { UploadCorporateOpeningsCard } from '@Modules';
-import { addDepartmentCorporate, addSectorCorporate, breadCrumbs, clearBreadCrumbs, createCorporateSchedules, getCorporateSchedules, getDepartmentCorporate, getSectorCorporate, hideCreateOpeningsModal, setSelectedRole } from '@Redux';
+import { addDepartmentCorporate, addSectorCorporate, breadCrumbs, createCorporateSchedules, getCorporateSchedules, getDepartmentCorporate, getSectorCorporate, hideCreateOpeningsModal, setSelectedRole } from '@Redux';
 import { ROUTES } from '@Routes';
-import { CREATE_CORPORATE_SCHEDULE_RULES, STATUS_LIST, getValidateError, ifObjectExist, paginationHandler, validate, getDropDownCompanyDisplayData, EXPERIENCE_LIST, INTERVIEW_DURATIONS } from '@Utils';
+import { CREATE_CORPORATE_SCHEDULE_RULES, EXPERIENCE_LIST, INTERVIEW_DURATIONS, STATUS_LIST, getDropDownCompanyDisplayData, getValidateError, ifObjectExist, paginationHandler, validate } from '@Utils';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -14,10 +14,10 @@ function Designation() {
 
     const { sectorsCorporate, departmentCorporate, createOpening, corporateSchedules, corporateScheduleNumOfPages, corporateScheduleCurrentPages } = useSelector((state: any) => state.DashboardReducer)
 
-    const { goTo, goBack } = useNavigation()
+    const { goTo } = useNavigation()
     const dispatch = useDispatch()
-    const [navIndex, setNavIndex] = useState<any>(0)
-    const [navList, setNavList] = useState<any>([])
+
+
     const [cardData, setCardData] = useState<any>([])
     const [selectSector, setSelectedSector] = useState<any>('')
     const [selectDepartment, setSelectedDepartment] = useState<any>('')
@@ -55,7 +55,7 @@ function Designation() {
 
 
     const vacancies = useInput('1')
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const status = useDropDown(STATUS_LIST[1]);
     const enterPress = useKeyPress("Enter");
 
@@ -65,14 +65,13 @@ function Designation() {
     }, [filterSector.value, filterDepartment.value, status.value]);
 
 
-    useEffect(() => {
-        getCorporateScheduleApiHandler(corporateScheduleCurrentPages);
-    }, [enterPress]);
+    // useEffect(() => {
+    //     getCorporateScheduleApiHandler(corporateScheduleCurrentPages);
+    // }, [enterPress]);
 
 
 
     useEffect(() => {
-        dispatch(clearBreadCrumbs([]))
         getSectorsCorporateApiHandler();
         getDepartmentCorporateApiHandler();
     }, [])
@@ -231,16 +230,14 @@ function Designation() {
 
     return (
         <div className={'screen'}>
-            {/* <TopNavbarCorporateFlow /> */}
+            <TopNavbarCorporateFlow />
             {
                 loading ? (
                     <div className={'vh-100 d-flex justify-content-center align-items-center'}>
                         <Spinner />
                     </div>
-                ) : corporateSchedules?.details?.corporate_jd_items?.data.length === 0 && !isFilter ? (
-
+                ) : corporateSchedules?.details?.corporate_jd_items?.data.length < 0 && !isFilter ? (
                     <UploadCorporateOpeningsCard />
-
                 ) : (
                     <div className='pt-4 mx-sm-0 mx-3 mx-md-7'>
                         <div className='row pt-6'>

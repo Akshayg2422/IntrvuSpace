@@ -91,8 +91,6 @@ function DesignationItem({
                           {" "}
                           <img
                             src={icons.check}
-                            height={20}
-                            width={20}
                             style={{
                               objectFit: "contain",
                             }}

@@ -132,6 +132,26 @@ function Call() {
   const WEBSOCKET_IDLE = -1;
   const websocketStatus = useRef(WEBSOCKET_IDLE);
 
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+
+  useEffect(() => {
+    // Function to update window width when the screen size changes
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    // Add an event listener to the 'resize' event
+    window.addEventListener('resize', handleResize);
+
+    // Clean up the event listener when the component unmounts
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+
+  console.log(windowWidth + '===windowWidth');
 
   /**
    * permission modal
@@ -910,6 +930,7 @@ function Call() {
   else if (!voiceUp && !mute) interviewer_state = IV_PROCESSING;
 
 
+
   return (
     <>
       <div
@@ -995,6 +1016,7 @@ function Call() {
 
                 }
 
+
                 <div className="d-block d-md-none d-lg-none d-xl-none h-100vh">
                   <div className="d-flex flex-column" >
                     <div style={{
@@ -1065,6 +1087,7 @@ function Call() {
 
                   </div>
                 </div>
+
               </>
             )}
             {!interviewStarted ? (
