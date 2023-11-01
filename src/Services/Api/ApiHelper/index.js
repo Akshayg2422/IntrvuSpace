@@ -28,7 +28,7 @@ export const SERVER =
 
 
 
-export const CALL_WEBSOCKET = `wss://mepp.leorainfotech.in/aaa`
+export const CALL_WEBSOCKET = `wss://mockeazyprimary.leorainfotech.in/aaa`
 
 
 const axiosApi = axios.create({
@@ -89,7 +89,6 @@ export async function post(url, data, config, submissionUrl) {
       return response.data;
     })
     .catch(error => {
-      console.log(error);
 
     });
 }

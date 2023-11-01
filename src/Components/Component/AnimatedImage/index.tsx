@@ -6,7 +6,6 @@ import { VideoStream } from "@Modules";
 const AnimatedImage = ({ name, shouldBlink, show, showWebCam = false, isMuted = false, variant = 'lg' }) => {
   const imageClasses = classNames(!isMuted ? variant === 'sm' ? "animated-image-small" : "animated-image" : "", { blink: shouldBlink });
 
-  console.log(showWebCam);
 
   return (
     <div className={`${imageClasses}`} >

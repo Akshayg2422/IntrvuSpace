@@ -57,6 +57,9 @@ function Call() {
   const SPEECH_VOICE_UP = 47
 
 
+
+
+
   const intervalIdRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const socketInterviewRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
@@ -143,7 +146,6 @@ function Call() {
     const min = 100000;
     const max = 999999;
     const randomID = Math.floor(Math.random() * (max - min + 1)) + min;
-    //// console.log("resss01", randomID)
     return randomID;
   }
 
@@ -169,10 +171,8 @@ function Call() {
     };
 
     audioElementRef.current.onloadstart = function () {
-      //// console.log("Audio playback started.");
     };
     audioElementRef.current.onended = function () {
-      //// console.log("Audio playback ended.");
       setIsTtfSpeaking(false);
       if (closeCall.current === true) {
         proceedStopListening();
@@ -183,7 +183,6 @@ function Call() {
     };
 
     audioElementRef.current.play().catch((error) => {
-      // console.log("Playback failed due to user permissions:");
       browserSpeakPermission.show();
     });
 

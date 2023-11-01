@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useState } from "react";
 // react library for routing
 import { Link } from "react-router-dom";
 // reactstrap components
@@ -37,9 +37,8 @@ function TopNavbar() {
     const { goTo } = useNavigation()
     const { loginDetails } = useSelector((state: any) => state.AppReducer);
     const { jdItem } = useSelector((state: any) => state.DashboardReducer);
+    const [isOpenDropdown, setIsOpenDropdown] = useState(false)
 
-
-    console.log(JSON.stringify(loginDetails) + '=====loginDetails');
 
 
     const location = useLocation()
@@ -48,7 +47,6 @@ function TopNavbar() {
     const pathName = location.pathname
 
 
-    console.log(pathName);
 
 
     const dropdownHandler = (item: any) => {
@@ -68,7 +66,7 @@ function TopNavbar() {
                         goTo(ROUTES["auth-module"].splash, true)
                     },
                     onError: () => {
-                        console.log('error');
+
                     },
                 }),
             );
@@ -83,6 +81,10 @@ function TopNavbar() {
     const handleCreateForOthersInterviewClick = () => {
         dispatch(showCreateForOthersJdModal());
     };
+
+    const toggleDropdownHandler = () => {
+        setIsOpenDropdown(!isOpenDropdown)
+    }
 
     return (
         <>
@@ -179,9 +181,10 @@ function TopNavbar() {
 
                             <NavItem className="d-none d-lg-block ml-lg-4">
                                 <div className='row align-items-center m-auto'>
-                                    <span className='mb-0 text-black font-weight-400'>
+                                    <span className='mb-0 text-black font-weight-400 pointer' onClick={toggleDropdownHandler}>
                                         {loginDetails?.user}
                                     </span>
+
                                     <Nav navbar>
                                         <UncontrolledDropdown nav>
                                             <DropdownToggle className="nav-link pr-0" color="" tag="a">
@@ -208,6 +211,7 @@ function TopNavbar() {
                                             </DropdownMenu>
                                         </UncontrolledDropdown>
                                     </Nav>
+
                                 </div>
                             </NavItem>
                             <div className="d-xl-none d-lg-none">
@@ -221,7 +225,7 @@ function TopNavbar() {
                                                 }}
                                             >
                                                 {/* <i className={item.icon}></i> */}
-                                                <span className={`nav-link-inner--text text-black`}>{item.name}</span>
+                                                <span className={`nav-link-inner--text text-black`} >{item.name}</span>
                                             </NavLink>
                                         </NavItem>
                                     );
@@ -232,11 +236,11 @@ function TopNavbar() {
                 </div>
             </Navbar >
 
-            <Modal  isOpen={logoutModal.visible} onClose={logoutModal.hide}>
-                
+            <Modal isOpen={logoutModal.visible} onClose={logoutModal.hide}>
+
                 <div className={'mx-sm-4 mb-sm-3 mx-1 mb-1 mt--4'}>
-                        <div className='display-4 text-secondary font-weight-900 mb-2'>{'Logout User'}
-                        </div>
+                    <div className='display-4 text-secondary font-weight-900 mb-2'>{'Logout User'}
+                    </div>
                     <span>{"Please click on proceed to logout user"}</span>
                     <div
                         className='d-flex justify-content-end mt-2'
@@ -247,7 +251,7 @@ function TopNavbar() {
                             onClick={() => logoutModal.hide()}
                         />
                         <Button
-                        className={'rounded-sm'}
+                            className={'rounded-sm'}
                             text={'Proceed'}
                             onClick={proceedLogout}
                         />

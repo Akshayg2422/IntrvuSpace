@@ -85,11 +85,9 @@ function VariantInfo() {
     candidatesListCurrentPages,
   } = useSelector((state: any) => state.DashboardReducer);
 
-  console.log(candidatesList, "candidatesList");
 
   const VIEW_MORE_LENGTH = 300;
 
-  console.log("corporateScheduleDetails-------->", corporateScheduleDetails);
 
   const { goTo } = useNavigation();
   const addNewCandidateModal = useModal(false);
@@ -157,8 +155,8 @@ function VariantInfo() {
     dispatch(
       getCorporateScheduleDetails({
         params,
-        onSuccess: (response: any) => () => {},
-        onError: (error: any) => () => {},
+        onSuccess: (response: any) => () => { },
+        onError: (error: any) => () => { },
       })
     );
   };
@@ -189,7 +187,7 @@ function VariantInfo() {
             setIsCandidatesExist(true);
           // console.log("response candidtae===>", response);
         },
-        onError: (error: any) => () => {},
+        onError: (error: any) => () => { },
       })
     );
   };
@@ -275,7 +273,6 @@ function VariantInfo() {
   const normalizedTableData = (data: any) => {
     if (data && data?.corporate_candidate_details?.data.length > 0)
       return data?.corporate_candidate_details?.data.map((el: any) => {
-        console.log("elllee==>", el);
         const {
           candidate_score,
           interviewee_name,
@@ -450,7 +447,6 @@ function VariantInfo() {
     }
   };
 
-  console.log("scheduleDate", scheduleDate, "endtime", endTime);
 
   // corporateScheduleActions Api
 
@@ -469,7 +465,6 @@ function VariantInfo() {
       postCorporateScheduleActions({
         params,
         onSuccess: (response: any) => () => {
-          console.log(response, "response close");
           getCorporateScheduleDetailsHandler();
           showToast(response.message, "success");
           getCandidatesCorporate(candidatesListCurrentPages);
@@ -515,11 +510,10 @@ function VariantInfo() {
             <div className="d-flex align-items-center">
               <div className="pl-3 pl-sm-0">
                 <span className="headingText text-secondary">
-                  {`${corporateScheduleDetails?.vacancies ?? ""} ${
-                    corporateScheduleDetails?.vacancies > 1
-                      ? "Vacancies"
-                      : "Vacancy"
-                  }`}
+                  {`${corporateScheduleDetails?.vacancies ?? ""} ${corporateScheduleDetails?.vacancies > 1
+                    ? "Vacancies"
+                    : "Vacancy"
+                    }`}
                 </span>
               </div>
               {!corporateScheduleDetails?.is_closed && (
@@ -552,13 +546,13 @@ function VariantInfo() {
           </div>
 
           {candidatesList &&
-          candidatesList?.corporate_candidate_details &&
-          candidatesList?.corporate_candidate_details?.data &&
-          candidatesList?.corporate_candidate_details?.data.length === 0 &&
-          !corporateScheduleDetails?.is_closed &&
-          // !statusNote.value.text &&
-          !isCandidatesExist &&
-          !searchCandidate ? (
+            candidatesList?.corporate_candidate_details &&
+            candidatesList?.corporate_candidate_details?.data &&
+            candidatesList?.corporate_candidate_details?.data.length === 0 &&
+            !corporateScheduleDetails?.is_closed &&
+            // !statusNote.value.text &&
+            !isCandidatesExist &&
+            !searchCandidate ? (
             <div className="mt-5 text-center">
               <div>
                 <span className="titleText text-secondary">
@@ -645,12 +639,11 @@ function VariantInfo() {
 
                         <div>
                           <span
-                            className={`${
-                              corporateScheduleDetails?.candidate_details
-                                ?.selected_candidates
-                                ? "text-primary"
-                                : "text-secondary"
-                            } titleText`}
+                            className={`${corporateScheduleDetails?.candidate_details
+                              ?.selected_candidates
+                              ? "text-primary"
+                              : "text-secondary"
+                              } titleText`}
                           >
                             {
                               corporateScheduleDetails?.candidate_details
@@ -728,8 +721,8 @@ function VariantInfo() {
                 candidatesList?.corporate_candidate_details &&
                 candidatesList?.corporate_candidate_details?.data &&
                 candidatesList?.corporate_candidate_details?.data.length > 0) ||
-              isCandidatesExist ||
-              searchCandidate ? (
+                isCandidatesExist ||
+                searchCandidate ? (
                 <div className="mt-5">
                   <Card
                     style={{
@@ -840,9 +833,9 @@ function VariantInfo() {
                       </div>
 
                       {candidatesList &&
-                      candidatesList?.corporate_candidate_details &&
-                      candidatesList?.corporate_candidate_details?.data &&
-                      candidatesList?.corporate_candidate_details?.data.length >
+                        candidatesList?.corporate_candidate_details &&
+                        candidatesList?.corporate_candidate_details?.data &&
+                        candidatesList?.corporate_candidate_details?.data.length >
                         0 ? (
                         <div className={"row px-0 mx--4"}>
                           <div
@@ -980,9 +973,8 @@ function VariantInfo() {
                         className="font-weight-bolder"
                         style={{ fontSize: 18 }}
                       >
-                        {`${
-                          corporateScheduleDetails?.interview_duration || 0
-                        } minutes`}
+                        {`${corporateScheduleDetails?.interview_duration || 0
+                          } minutes`}
                       </span>
                     </div>
                   </div>
