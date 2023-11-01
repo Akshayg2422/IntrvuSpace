@@ -212,7 +212,7 @@ export const icons = {
   globe: require('./PackageIcons/globe.png'),
   headSet: require('./PackageIcons/headset.png'),
   check: require("./Check/icon.png"),
-  poweredBy: require('./PoweredBy/icon.png'),
+  poweredBy: require('./PoweredBy/Group 126.png'),
   more: require('./More/icon.png'),
   frame: require('./Frame/icon.png'),
   checkBlack: require('./CheckBlack/icon.png'),
