@@ -190,9 +190,9 @@ function Designation() {
         let filterStatus: any = undefined;
 
         if (status.value?.id === 'ACV') {
-            filterStatus = { is_Active: true }
+            filterStatus = { is_active: true }
         } else if (status.value?.id === 'CSD') {
-            filterStatus = { is_Active: false };
+            filterStatus = { is_active: false };
         }
         const params = {
             page_number,
