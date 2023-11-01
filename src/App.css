@@ -7,7 +7,12 @@ body {
     --primary: #641df2;
     --secondary: #2f1c6a;
     --placeholder: #727586;
+    --border: #DADCE0;
+    --border-radius: 4px;
+    --badge: #EBE4FF;
 }
+
+
 
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
@@ -45,4 +50,27 @@ input[type=number] {
 .screen {
     min-height: 100dvh;
     width: 100%;
+    position: relative;
+}
+
+.screen-container {
+    padding: 4%;
+}
+
+.card-container {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: var(--border-radius);
+    padding: 2% 3%;
+}
+
+.badge-schedule {
+    background-color: var(--badge);
+    border-radius: 20px;
+    border-width: 0px;
+    padding: 5px 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 15px;
 }

@@ -15,8 +15,6 @@ const VideoStream = (props) => {
     console.log('rendered');
 
     useEffect(() => {
-
-        // Use the getUserMedia API to access the user's webcam
         if (props.isRecording) {
             navigator.mediaDevices
                 .getUserMedia({ video: true, audio: true })
@@ -32,7 +30,6 @@ const VideoStream = (props) => {
         } else {
             stopRecording();
         }
-
 
 
         return () => {
@@ -52,8 +49,7 @@ const VideoStream = (props) => {
                 const blob = new Blob([event.data], { type: 'video/webm' });
                 const reader = new FileReader();
                 reader.onload = function () {
-                    console.log("syncVideoApiHelper");
-                    // syncVideoApiHelper(reader.result)
+                    syncVideoApiHelper(reader.result)
                 };
                 reader.readAsDataURL(blob);
             }

@@ -57,7 +57,6 @@ function TopNavbarCorporateFlow() {
 
     function proceedLogout() {
         try {
-
             dispatch(
                 userLogout({
                     onSuccess: () => {
@@ -75,6 +74,9 @@ function TopNavbarCorporateFlow() {
     const handleCreateOpeningsClick = () => {
         dispatch(showCreateOpeningsModal());
     };
+
+    console.log("corporateSchedules", corporateSchedules);
+
 
     return (
         <>
@@ -136,11 +138,10 @@ function TopNavbarCorporateFlow() {
                         {/* <hr className="d-lg-none" /> */}
 
                         <Nav className="align-items-lg-center ml-lg-auto mr--4 justify-content-end" navbar>
-                            {corporateSchedules?.details?.corporate_jd_items?.data?.length > 0 && <NavItem>
+                            {corporateSchedules?.length <= 0 && <NavItem>
                                 <NavLink to="/schedule" tag={Link}>
                                     <Button
                                         size='md'
-
                                         className='btn btn-primary rounded-sm mr--3'
                                         style={{
                                             borderColor: "#d8dade",

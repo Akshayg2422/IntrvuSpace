@@ -21457,6 +21457,12 @@ button.section-darker:focus {
   font-size: 1.5rem !important;
 }
 
+.screen-heading {
+  font-size: 1.5rem !important;
+  font-weight: 700 !important;
+  color: #2f1c6a;
+}
+
 .text-heading {
   font-size: 2.25rem !important;
   font-weight: 700 !important;
@@ -21473,6 +21479,25 @@ button.section-darker:focus {
   font-size: 1rem !important;
   color: #727586 !important;
   font-weight: 400 !important;
+}
+
+.point-heading {
+  font-weight: 700 !important;
+  font-size: 0.875rem !important;
+  color: #2f1c6a;
+}
+
+.point-sub-heading {
+  font-weight: 400 !important;
+  font-size: 0.875rem !important;
+  color: #2f1c6a;
+  margin-left: 5px;
+}
+
+.badge-text {
+  font-size: 0.875rem !important;
+  color: #641df2;
+  font-weight: 600;
 }
 
 .lh-100 {

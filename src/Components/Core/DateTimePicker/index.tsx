@@ -15,7 +15,7 @@ function DateTimePicker({ id, heading, placeholder, type = 'date',dateFormatType
 
   return (
     <FormGroup>
-      {heading && <InputHeading id={id} heading={heading} />}
+      {heading && <InputHeading Class={"position-relative"} id={id} heading={heading} />}
 
       <ReactDatetime
         {...rest}

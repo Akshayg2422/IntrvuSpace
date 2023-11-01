@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { icons } from '@Assets';
-import { useModal, useNavigation } from '@Hooks';
-import { Button, Modal } from '@Components';
-import { useSelector } from 'react-redux';
+import { Button } from '@Components';
 import { PreparingYourInterviewProps } from './interfaces'
 
 function PreparingYourInterview({ showStart, onClick }: PreparingYourInterviewProps) {
@@ -12,7 +10,7 @@ function PreparingYourInterview({ showStart, onClick }: PreparingYourInterviewPr
         { icon: icons.check, text: 'Extracting key areas' },
         { icon: icons.check, text: 'Preparing Topics' },
         { icon: icons.check, text: 'Generating evaluation criteria' },
-        { icon: icons.check, text: 'Preparing interview Room' },
+        { icon: showStart && icons.check, text: 'Preparing interview Room' },
     ];
 
     const [currentStep, setCurrentStep] = useState(-1);

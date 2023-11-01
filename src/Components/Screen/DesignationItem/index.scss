@@ -1,0 +1,24 @@
+.view-details-btn {
+    width: 215px;
+}
+
+.status-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 3px;
+}
+
+.status-active {
+    color: black;
+    font-size: 14px;
+    margin-left: 8px;
+    font-weight: 700;
+}
+
+.status-closed {
+    color: black;
+    font-size: 14px;
+    margin-left: 8px;
+    font-weight: 700;
+}

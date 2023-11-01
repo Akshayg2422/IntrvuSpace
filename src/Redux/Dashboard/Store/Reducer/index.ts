@@ -44,7 +44,7 @@ const initialState: DashboardProp = {
   createJdModal: false,
   sectorsCorporate: undefined,
   departmentCorporate: undefined,
-  corporateSchedules: undefined,
+  corporateSchedules: [],
   createForOthersJdModal: false,
   interviewScheduleDetails: undefined,
   retrieveEmail: undefined,
@@ -510,28 +510,28 @@ const DashboardReducer = (state = initialState, action: any) => {
     case ActionTypes.GET_CORPORATE_SCHEDULES:
       state = {
         ...state,
-        corporateSchedules: undefined,
+        corporateSchedules: [],
         corporateScheduleNumOfPages: 0,
         corporateScheduleCurrentPages: 1,
       };
       break;
     case ActionTypes.GET_CORPORATE_SCHEDULES_SUCCESS:
+      const { corporate_jd_items } = action.payload?.details
       state = {
         ...state,
-        corporateSchedules: action.payload,
-        corporateScheduleNumOfPages:
-          action.payload?.details.corporate_jd_items.num_pages,
+        corporateSchedules: corporate_jd_items?.data,
+        corporateScheduleNumOfPages: corporate_jd_items.num_pages,
         corporateScheduleCurrentPages:
-          action.payload?.details.corporate_jd_items.next_page === -1
-            ? action.payload?.details.corporate_jd_items.num_pages
-            : action.payload?.details.corporate_jd_items.next_page - 1,
+          corporate_jd_items.next_page === -1
+            ? corporate_jd_items.num_pages
+            : corporate_jd_items.next_page - 1,
       };
       break;
+
     case ActionTypes.GET_CORPORATE_SCHEDULES_FAILURE:
-      state = { ...state, corporateSchedules: undefined };
+      state = { ...state, corporateSchedules: [] };
       break;
 
-    // showModalCreateForOthers
 
     case ActionTypes.SHOW_CREATE_FOR_OTHERS_JD_MODAL:
       state = { ...state, createForOthersJdModal: true };

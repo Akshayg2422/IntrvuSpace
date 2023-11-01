@@ -24,6 +24,10 @@ function Guidelines({ scheduleInfo = undefined, loading, heading, onClick }: Gui
     const startInterviewModal = useModal(true)
     const goToDashboardModal = useModal(true)
 
+    const {interviewee_expected_designation, interviewee_experience, interview_duration} = scheduleInfo
+
+    console.log("scheduleinfooo==>", scheduleInfo)
+
     return (
         <>
             {!scheduleInfo.is_complete &&
@@ -69,10 +73,14 @@ function Guidelines({ scheduleInfo = undefined, loading, heading, onClick }: Gui
                 scheduleInfo.is_complete && !scheduleInfo.is_report_complete ? (
                     <Modal size={'md'} isOpen={goToDashboardModal.visible} onClose={() => { goBack() }}>
 
-                        <div className="col-md-12 rounded-sm px-md-4">
+                        <div className="col-md-12 rounded-sm px-md-4 mt--4 mb-3">
                             <div className="text-secondary col-md-12 mb-md-4">
                                 <h2 className='m-0'>Wola! You have successfully completed your interview</h2>
-                                <small className='text-default'>React Native Developer | Fresher | 30 mins duration</small>
+                                {/* <small className='text-default'>React Native Developer | Fresher | 30 mins duration</small> */}
+                                <small>{interviewee_expected_designation && interviewee_expected_designation + " "}</small> |
+                                <small>{interviewee_experience === 0 ? " Fresher" : " " + interviewee_experience + (interviewee_experience > 1 ? " years of experience" : " year of experience") }</small> |
+                                <small>{`${interview_duration && " " + interview_duration} mins duration`}</small>
+
                             </div>
                             <div className="pt-4 text-secondary col-12">
                                 {GO_TO_DASHBOARD_GUIDELINES.map((step, index) => (

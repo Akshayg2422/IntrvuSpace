@@ -217,7 +217,7 @@ function AllInOnePlatform() {
                               className="text-gray"
                               style={{ fontSize: 13 }}
                             >
-                              {"40.00/interview for 1000+"}
+                              {"250.00/interview for 1000+"}
                             </span>
                           </div>
                         </div>
