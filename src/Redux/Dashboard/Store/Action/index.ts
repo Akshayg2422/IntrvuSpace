@@ -138,9 +138,7 @@ export const getSectorsFailure = (error: any) => {
 // setSelectedRole
 
 export const setSelectedRole = (params) => {
-  console.log(
-    "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111"
-  );
+
   return {
     type: ActionTypes.SET_SELECTED_ROLE,
     payload: params,

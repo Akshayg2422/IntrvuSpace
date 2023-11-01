@@ -48,7 +48,7 @@ function ReactAutoComplete({ selected, isMandatory, heading, placeholder, data, 
     );
 
     const onSuggestionsFetchRequested = ({ value }) => {
-        console.log(suggestions, "suggestions");
+
         setSuggestions(getSuggestions(value))
     };
 
@@ -75,7 +75,6 @@ function ReactAutoComplete({ selected, isMandatory, heading, placeholder, data, 
         if (!isExist) {
             setAddValue(value)
         }
-        console.log(addValue, 'check');
 
 
 

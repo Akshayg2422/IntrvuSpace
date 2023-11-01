@@ -43,9 +43,8 @@ const FilePicker = ({ }: FilePickerProps) => {
 
 
 
-    console.log(JSON.stringify(files));
 
-    
+
 
     return (
         <>

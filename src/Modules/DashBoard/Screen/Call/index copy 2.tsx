@@ -115,7 +115,6 @@ function Call() {
 
     const proceedHandleResponseV1 = (response) => {
         setProcessCallInprogress(false)
-        console.log("Socket Response 01", response)
         // {"next_step":[{"response_type":"ANSWER_IN_PROGRESS","reason":"No response from interviewee yet","question_id":"47912654-738b-4395-a8c4-3e1a001480d8","message_type":"SPEAK","response_text":"","message":""}]}
         const { response_text, message_type, response_type } = response.next_step[0]
 

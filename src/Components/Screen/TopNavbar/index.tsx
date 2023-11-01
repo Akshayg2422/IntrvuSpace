@@ -40,8 +40,6 @@ function TopNavbar() {
     const [loginDetailsHandle, setLoginDetailsHandle] = useState(false)
 
 
-    console.log(JSON.stringify(loginDetails) + '=====loginDetails');
-
 
     const location = useLocation()
     const dispatch = useDispatch();
@@ -49,7 +47,6 @@ function TopNavbar() {
     const pathName = location.pathname
 
 
-    console.log(pathName);
 
 
     const dropdownHandler = (item: any) => {
@@ -69,7 +66,7 @@ function TopNavbar() {
                         goTo(ROUTES["auth-module"].splash, true)
                     },
                     onError: () => {
-                        console.log('error');
+
                     },
                 }),
             );

@@ -1,7 +1,7 @@
 /* eslint-disable no-empty-pattern */
 /* eslint-disable react-hooks/rules-of-hooks */
 import { icons } from '@Assets';
-import { Button, Card, Divider, DropDown, Input, InputHeading, Modal, Spinner, TextArea, showToast } from '@Components';
+import { Button, Card, CommonTable, Divider, DropDown, Input, InputHeading, Modal, Spinner, TextArea, showToast } from '@Components';
 import { useDropDown, useInput, useLoader, useModal, useNavigation } from '@Hooks';
 import { PreparingYourInterview, UploadJdCard } from '@Modules';
 import { canStartInterview, createNewJdSchedule, getJdItemList, hideCreateJdModal, postJdVariant, selectedScheduleId, showCreateJddModal } from '@Redux';
@@ -61,6 +61,7 @@ function FromJD() {
     };
 
     const [isQuestionGenerated, setIsQuestionGenerated] = useState(false);
+
 
     useEffect(() => {
         getKnowledgeGroupFromJdHandler();
@@ -130,7 +131,6 @@ function FromJD() {
                                     }
                                 },
                                 onError: (error: any) => () => {
-                                    console.log(error);
                                     setIsQuestionGenerated(false);
 
                                 }
@@ -157,7 +157,6 @@ function FromJD() {
         sector.set('')
         setSelectedDuration('')
     }
-    console.log('1111111111111', selectedDuration);
 
     function createNewJdScheduleApiHandler(id: string) {
         const params = {
@@ -187,7 +186,6 @@ function FromJD() {
                                     clearInterval(intervalId);
                                 },
                                 onError: (error: any) => () => {
-                                    console.log(error);
                                     setIsQuestionGenerated(false);
                                 }
                             }))
@@ -248,7 +246,6 @@ function FromJD() {
         }
     };
 
-    console.log('rendered');
 
 
     return (
@@ -260,12 +257,12 @@ function FromJD() {
                             <div className={'mt-3'}>
                                 {jdItem && jdItem.length > 0 && jdItem.map((item: any, index: any) => {
 
-                                    const { job_description: { details, experience }, schedules, name, id, interview_duration } = item
+                                    const { job_description: { details, experience }, schedules, name, id, interview_duration, } = item
 
                                     const more = jdMore[index]?.more
 
                                     const modifiedSchedules = schedules.filter((each: any) => {
-                                        const { is_started, is_complete, id } = each
+                                        const { is_started, is_complete, id, report_analytics } = each
                                         return is_started && is_complete
                                     })
 
@@ -275,7 +272,6 @@ function FromJD() {
                                     })
 
                                     const copyInterviewLink = schedules && schedules.length > 0 && schedules[0].custom_interview_link;
-                                    console.log('copyInterviewLink', copyInterviewLink)
 
                                     const basic_info = proceedInterview?.custom_interviewee_details?.basic_info
 
@@ -307,7 +303,6 @@ function FromJD() {
                                                             modifiedSchedules.slice().reverse().map((each: any, index: number) => {
 
                                                                 const { is_complete, is_report_complete, id, created_at, custom_interviewee_details } = each;
-                                                                console.log(is_complete, 'com', created_at);
 
 
                                                                 return (
@@ -429,7 +424,7 @@ function FromJD() {
                                                             modifiedSchedules.slice().reverse().map((each: any, index: number) => {
 
 
-                                                                const { is_complete, is_report_complete, id, created_at, custom_interviewee_details } = each;
+                                                                const { is_complete, is_report_complete, id, created_at, custom_interviewee_details, report_analytics } = each;
 
                                                                 const basic_info = custom_interviewee_details?.basic_info
 
@@ -477,9 +472,9 @@ function FromJD() {
                                                                             <div className='col-9'>
                                                                                 <div className='d-flex'>
                                                                                     <div className='col-9 d-flex justify-content-around align-items-center'>
-                                                                                        <h5>-</h5>
-                                                                                        <h5>-</h5>
-                                                                                        <h5>-</h5>
+                                                                                        <h5>{report_analytics.skill_matrix}</h5>
+                                                                                        <h5>{report_analytics.other_analytics.communication}</h5>
+                                                                                        <h5>{report_analytics.other_analytics.aptitude}</h5>
                                                                                     </div>
 
                                                                                     <div className='col-3 d-flex justify-content-center'>
@@ -512,8 +507,9 @@ function FromJD() {
 
                                                                             </div>
                                                                         </div>
-
+                                                                        {/* <CommonTable /> */}
                                                                     </div>
+
                                                                 )
                                                             })
                                                         }
