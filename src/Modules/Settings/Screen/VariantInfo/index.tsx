@@ -339,7 +339,7 @@ function VariantInfo() {
           "  ": (
             <>
               {!corporateScheduleDetails?.is_closed && (
-                <div>
+                <div className={`${candidatesList?.corporate_candidate_details?.data.length === 1 ? "pb-4" : "pb-0"}`}>
                   <MenuBar
                     menuData={OPTIONS}
                     onClick={(action) => {
@@ -418,6 +418,9 @@ function VariantInfo() {
         params,
         onSuccess: (response: any) => () => {
           showToast(response.message, "success");
+          if(action.id === 3 && candidatesList?.corporate_candidate_details?.data.length === 1){
+            setIsCandidatesExist(false)
+          }
           getCandidatesCorporate(candidatesListCurrentPages);
           getCorporateScheduleDetailsHandler();
           removeCandidateModal.hide();

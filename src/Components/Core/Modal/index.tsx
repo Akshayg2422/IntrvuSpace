@@ -52,7 +52,7 @@ function Modal({ isOpen, children, title, size = "lg", style, onClose, ...rest }
             </button>
           }
         </div>
-        <div className="modal-body scroll-hidden" style={{ ...style, marginTop: "0px", overflow: 'hidden' }}>
+        <div className="modal-body overflow-auto overflow-hide" style={{ ...style, marginTop: "0px" }}>
           {children}
         </div>
       </div>
