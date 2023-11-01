@@ -18,7 +18,6 @@ function DateTimePicker({ id, heading, placeholder, type = 'date',dateFormatType
       {heading && <InputHeading Class={"position-relative"} id={id} heading={heading} />}
 
       <ReactDatetime
-      className='position-relative z-index-1'
         {...rest}
         inputProps={
           {
