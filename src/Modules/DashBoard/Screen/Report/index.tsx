@@ -501,7 +501,7 @@ function Report() {
 
       <div className="d-flex flex-column px-sm-6 px-2 py-3" ref={componentRef}>
         <div className="position-relative">
-          <div className="col-sm-3 position-absolute top-4 left-0 p-0">
+          <div className="col-sm-3 position-absolute top-0 left-0 p-0">
             <DropDown
               // data={REPORT_TYPE}
               // value={reportType}
@@ -516,7 +516,7 @@ function Report() {
               onChange={reportType.onChange}
             />
           </div>
-          <div className="position-relative mt-7 mt-sm-0">
+          <div className="position-relative ">
             <div className="mt-5">
               <div className="text-center">
                 <div className="">
