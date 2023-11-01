@@ -73,12 +73,12 @@ function CreateNewPassword() {
 
         dispatch(resetPassword({
             params,
-            onSuccess: (response) => {
+            onSuccess: (response) => () => {
                 showToast(response.message, "success");
                 goTo(ROUTES['auth-module'].splash, true);
                 loginLoader.hide();
             },
-            onError: (error) => {
+            onError: (error) => () => {
                 showToast(error.error_message, 'error');
                 loginLoader.hide();
             },

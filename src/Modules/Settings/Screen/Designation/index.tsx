@@ -201,7 +201,7 @@ function Designation() {
             ...((filterSector && filterSector.value.id !== '-1') && { sector_id: filterSector?.value?.id }),
             ...((filterDepartment && filterDepartment.value.id !== '-1') && { department_id: filterDepartment?.value?.id })
         }
-        const keysToCheck = ['position', 'sector_id', 'department_id'];
+        const keysToCheck = ['position', 'sector_id', 'department_id', 'is_active'];
 
         let exists = false; // Initialize a flag variable to false
 
@@ -237,7 +237,7 @@ function Designation() {
                     <div className={'vh-100 d-flex justify-content-center align-items-center'}>
                         <Spinner />
                     </div>
-                ) : corporateSchedules?.details?.corporate_jd_items?.data.length === 0 && !isFilter ? (
+                ) : corporateSchedules?.details?.corporate_jd_items?.data.length === 0 && !isFilter? (
 
                     <UploadCorporateOpeningsCard />
 

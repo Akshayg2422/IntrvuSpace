@@ -155,7 +155,7 @@ function FromJD() {
         experience.set({})
         jd.set('')
         sector.set('')
-        setSelectedDuration('')
+        setSelectedDuration(INTERVIEW_DURATIONS[0])
     }
 
     function createNewJdScheduleApiHandler(id: string) {
@@ -296,7 +296,9 @@ function FromJD() {
                                                             {name.charAt(0).toUpperCase() + name.slice(1) + demoDisplayName}
                                                         </span> : <></>
                                                         }
-                                                        <small className={"text-secondary ml-1"}>{experience}</small>
+                                                        <div className='mt--1'>
+                                                        <small className={"text-secondary"}>{experience}</small>
+                                                        </div>
                                                         {
                                                             modifiedSchedules &&
                                                             modifiedSchedules.length > 0 &&
@@ -306,7 +308,7 @@ function FromJD() {
 
 
                                                                 return (
-                                                                    <>  {index === 0 && <div className=' d-flex align-items-center'>
+                                                                    <>  {index === 0 && <div className=' d-flex align-items-center mt-1'>
                                                                         <img src={icons.check} height={20} width={20} style={{
                                                                             objectFit: 'contain'
                                                                         }} />
@@ -531,7 +533,10 @@ function FromJD() {
             }
 
             <div className='p-5'>
-                <Modal size={'lg'} isOpen={createJdModal} onClose={() => { dispatch(hideCreateJdModal()) }}>
+                <Modal size={'lg'} isOpen={createJdModal} onClose={() => { 
+                    dispatch(hideCreateJdModal()) 
+                    resetValues()                    
+                    }}>
                     <div className={'m-md-5 mt-sm-0 mt-5'}>
                         <div className='display-4 text-secondary font-weight-bolder mt--6 mb-md-5'>{'Create Interview'}
                             <p className={'text-default'} style={{ fontSize: '15px', fontWeight: 400 }}>{'Input job details, specifying qualifications, requirements, interview duration'}</p>
