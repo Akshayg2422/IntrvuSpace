@@ -472,9 +472,9 @@ function FromJD() {
                                                                             <div className='col-9'>
                                                                                 <div className='d-flex'>
                                                                                     <div className='col-9 d-flex justify-content-around align-items-center'>
-                                                                                        <h5>{report_analytics.skill_matrix}</h5>
-                                                                                        <h5>{report_analytics.other_analytics.communication}</h5>
-                                                                                        <h5>{report_analytics.other_analytics.aptitude}</h5>
+                                                                                        <h5>{report_analytics?.skill_matrix}</h5>
+                                                                                        <h5>{report_analytics?.other_analytics.communication}</h5>
+                                                                                        <h5>{report_analytics?.other_analytics.aptitude}</h5>
                                                                                     </div>
 
                                                                                     <div className='col-3 d-flex justify-content-center'>
