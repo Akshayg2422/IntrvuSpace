@@ -9,6 +9,7 @@ import {
   DropDownIcon,
   Heading,
   Image,
+  NoDataFound,
   Spinner,
 } from "@Components";
 import { useDropDown, useLoader } from "@Hooks";
@@ -63,7 +64,7 @@ function Report() {
     "skill_matrix",
   ]);
 
-  const [basicReportData, setBasicReportData] = useState<any>([]);
+  const [basicReportData, setBasicReportData] = useState<any>(undefined);
   // const filter = useDropDown(FILTER[0]);
 
   const componentRef = useRef(null);
@@ -75,6 +76,7 @@ function Report() {
   const [fileName, setFileName] = useState("");
   // const [reportType, setReportType] = useState(REPORT_TYPE[0].id);
   const reportType = useDropDown(REPORT_TYPE[0]);
+  
 
   useEffect(() => {
     getBasicReportData();
@@ -117,7 +119,6 @@ function Report() {
       schedule_id: schedule_id,
       ...(reportType.value.id === "DR" && { is_detailed: true }),
     };
-
     dispatch(
       fetchBasicReport({
         params,
@@ -200,11 +201,15 @@ function Report() {
           // });
         },
         onError: (error) => () => {
+
           basicReportLoader.hide();
+          console.log(error,"error");
+          
         },
       })
     );
   };
+console.log(basicReportData,"basicReportData");
 
   // const calculateRating = (data: any) => {
   //   let overallPercent = 0;
@@ -469,9 +474,8 @@ function Report() {
   // console.log("basicReportData===>", basicReportData);
 
   return (
-    <>
-    <div className="position-relative ml-sm-6">
-    <div className="col-sm-3 position-absolute top-3 left-0 p-0">
+    <> <div className="position-relative ml-sm-6">
+      <div className="col-sm-3 position-absolute top-3 left-0 p-0">
             <DropDown
               // data={REPORT_TYPE}
               // value={reportType}
@@ -516,7 +520,14 @@ function Report() {
           </div>
           
         </div>
-
+        { basicReportLoader.loader ?  <div
+      className={
+        "vh-100 d-flex justify-content-center align-items-center"
+      }
+    >
+      <Spinner />
+    </div> 
+   : basicReportData ? (
       <div className="d-flex flex-column px-sm-6 px-3 py-3" ref={componentRef}>
         
         <div className="">
@@ -617,8 +628,9 @@ function Report() {
                 {basicReportData?.report_other_analytics &&
                   Object.keys(basicReportData?.report_other_analytics)?.map(
                     (heading) => {
-                      return (
-                        <div className="col-sm-3 ">
+                      return (<>
+                      {typeof basicReportData?.report_other_analytics[heading] !== "number" ? <div>{''}</div>
+                       : <div className="col-sm-3 ">
                           <Card
                             style={{
                               borderWidth: 1.5,
@@ -653,6 +665,8 @@ function Report() {
                             </div>
                           </Card>
                         </div>
+                    }
+                        </>
                       );
                     }
                   )}
@@ -1037,7 +1051,17 @@ function Report() {
           <Image src={icons.poweredBy} height={40} />
          </a>
         </div>
-      </div>
+      </div> ) :
+       (
+        <div
+          className={
+            "d-flex h-100vh justify-content-center align-items-center mx-auto"
+          }
+        >
+          <NoDataFound />
+        </div>
+      )
+}
     </>
   );
 }
