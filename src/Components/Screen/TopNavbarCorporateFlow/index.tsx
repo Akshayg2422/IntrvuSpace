@@ -20,6 +20,7 @@ import { useModal, useNavigation } from '@Hooks';
 import { ROUTES } from '@Routes';
 import { showCreateOpeningsModal, userLogout } from "@Redux";
 import { useDispatch, useSelector } from "react-redux";
+import { filteredName } from "@Utils";
 
 function TopNavbarCorporateFlow() {
 
@@ -162,7 +163,7 @@ function TopNavbarCorporateFlow() {
                             <NavItem className="d-none d-lg-block ml-lg-4">
                                 <div className='row align-items-center m-auto'>
                                     <span className='mb-0 text-secondary font-weight-400 pointer' onClick={toggleDropdown}>
-                                        {loginDetails?.user}
+                                        {filteredName(loginDetails?.user, 20)}
                                     </span>
                                     <Nav navbar>
                                         <UncontrolledDropdown nav isOpen={dropdownOpen} toggle={toggleDropdown}>
