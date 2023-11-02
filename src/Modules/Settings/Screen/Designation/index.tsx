@@ -55,7 +55,7 @@ function Designation() {
 
 
     const vacancies = useInput('1')
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const status = useDropDown(STATUS_LIST[1]);
     const enterPress = useKeyPress("Enter");
 
