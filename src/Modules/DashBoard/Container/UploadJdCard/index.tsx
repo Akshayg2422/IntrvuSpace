@@ -20,7 +20,7 @@ function UploadJdCard() {
 
     return (
 
-        <div style={{ maxHeight: '60vh' }} className={'container-fluid mt--5'}>
+        <div style={{ maxHeight: '60vh' }} className={'container-fluid'}>
             <div className="">
                 <div className={'row text-center'}>
                     <div className={'col-12 display-3 text-secondary font-weight-bolder ls-1'}>
