@@ -38,17 +38,7 @@ function TopNavbar() {
     const { loginDetails } = useSelector((state: any) => state.AppReducer);
     const { jdItem } = useSelector((state: any) => state.DashboardReducer);
     const [dropdownOpen, setDropdownOpen] = useState(false)
-
-
-
-    const location = useLocation()
     const dispatch = useDispatch();
-
-    const pathName = location.pathname
-
-
-
-
     const dropdownHandler = (item: any) => {
         if (item.value === 'ST') {
         }

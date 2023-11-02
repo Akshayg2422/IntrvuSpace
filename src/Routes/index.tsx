@@ -171,7 +171,7 @@ export const DASHBOARD_ROUTES = [
   {
     id: 11,
     path: ROUTES['designation-module']['preparing-your-interview'],
-    component: <PreparingYourInterview/>
+    component: <UploadJdCard/>
   },
 ]
 

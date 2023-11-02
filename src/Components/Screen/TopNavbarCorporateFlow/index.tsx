@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useState } from "react";
 // react library for routing
 import { Link } from "react-router-dom";
 // reactstrap components
@@ -28,11 +28,12 @@ function TopNavbarCorporateFlow() {
     const { loginDetails } = useSelector((state: any) => state.AppReducer);
     const { corporateSchedules } = useSelector((state: any) => state.DashboardReducer)
     const dispatch = useDispatch();
+    const [dropdownOpen, setDropdownOpen] = useState(false)
 
     const HEADER_MENU = [
-        { id: '1', name: 'Schedule', value: 'SC', icon: 'ni ni-badge' },
+        // { id: '1', name: 'Schedule', value: 'SC', icon: 'ni ni-badge' },
         // { id: '2', name: 'Setting', value: 'ST', icon: 'ni ni-settings-gear-65' },
-        { id: '3', name: 'View as member', value: 'VAM', icon: 'ni ni-single-02', },
+        // { id: '3', name: 'View as member', value: 'VAM', icon: 'ni ni-single-02', },
         { id: '4', name: 'Logout', value: 'LG', icon: 'ni ni-button-power' },
     ]
 
@@ -74,6 +75,12 @@ function TopNavbarCorporateFlow() {
 
     const handleCreateOpeningsClick = () => {
         dispatch(showCreateOpeningsModal());
+    };
+
+    const toggleDropdown = () => {
+        console.log("Before Toggle: dropdownOpen =", dropdownOpen);
+        setDropdownOpen(!dropdownOpen);
+        console.log("After Toggle: dropdownOpen =", !dropdownOpen);
     };
 
     return (
@@ -154,11 +161,11 @@ function TopNavbarCorporateFlow() {
                             }
                             <NavItem className="d-none d-lg-block ml-lg-4">
                                 <div className='row align-items-center m-auto'>
-                                    <span className='mb-0 text-secondary font-weight-400'>
+                                    <span className='mb-0 text-secondary font-weight-400 pointer' onClick={toggleDropdown}>
                                         {loginDetails?.user}
                                     </span>
                                     <Nav navbar>
-                                        <UncontrolledDropdown nav>
+                                        <UncontrolledDropdown nav isOpen={dropdownOpen} toggle={toggleDropdown}>
                                             <DropdownToggle className="nav-link pr-0" color="" tag="a">
                                                 <Media className="align-items-center">
                                                     <Media className="d-none d-lg-block ml--2 mr-2 pointer">
@@ -174,6 +181,7 @@ function TopNavbarCorporateFlow() {
                                                                 onClick={(e) => {
                                                                     e.preventDefault()
                                                                     dropdownHandler(item);
+                                                                    setDropdownOpen(false)
                                                                 }}
                                                             >
                                                                 <i className={item.icon}></i>
