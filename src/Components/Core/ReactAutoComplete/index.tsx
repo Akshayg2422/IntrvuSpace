@@ -31,12 +31,12 @@ function ReactAutoComplete({ selected, isMandatory, heading, placeholder, data, 
         }
 
         const regex = new RegExp('^' + escapedValue, 'i');
-        const suggestions = data && data.length > 0 && data.filter(each => regex.test(each.name)).slice(0, 5);
+        let suggestions = data && data.length > 0 && data.filter(each => regex.test(each.name)).slice(0, 5);
 
-        if (suggestions?.length <= 0) {
-            return [
-                { isAddNew: true }
-            ];
+        const isValueExist = data && data.length > 0 && data.some(each => each.name.toLowerCase() === value.trim().toLowerCase());
+
+        if (!isValueExist) {
+            suggestions = suggestions ? [...suggestions, { isAddNew: true }] : [{ isAddNew: true }]
         }
 
         return suggestions;
