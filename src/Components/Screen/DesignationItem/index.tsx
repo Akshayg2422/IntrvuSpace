@@ -12,7 +12,6 @@ function DesignationItem({
 
   const { job_description: { position, experience, details }, candidate_details: { selected_candidates, total_candidates }, is_active, vacancies, interview_duration, is_view_more } = item
 
-  console.log(is_view_more + '==is_view_more');
 
   return (
 

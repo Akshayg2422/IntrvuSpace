@@ -5,14 +5,21 @@ import { useDropDown, useInput, useLoader, useModal, useNavigation } from '@Hook
 import { UploadCorporateOpeningsCard, } from '@Modules';
 import { addDepartmentCorporate, addSectorCorporate, breadCrumbs, createCorporateSchedules, getCorporateSchedules, getDepartmentCorporate, getSectorCorporate, hideCreateOpeningsModal, setSelectedRole, updateCorporateSchedules } from '@Redux';
 import { ROUTES } from '@Routes';
-import { CREATE_CORPORATE_SCHEDULE_RULES, EXPERIENCE_LIST, INTERVIEW_DURATIONS, STATUS_LIST, getDropDownCompanyDisplayData, getValidateError, ifObjectExist, paginationHandler, validate } from '@Utils';
+import { CREATE_CORPORATE_SCHEDULE_RULES, EXPERIENCE_LIST, INTERVIEW_DURATIONS, STATUS_LIST, getDropDownCompanyDisplayData, getValidateError, ifObjectExist, paginationHandler, validate, PLACEHOLDER_ROLES } from '@Utils';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import './index.css'
 
 function Designation() {
 
-    const { sectorsCorporate, departmentCorporate, createOpening, corporateSchedules, corporateScheduleNumOfPages, corporateScheduleCurrentPages } = useSelector((state: any) => state.DashboardReducer)
+    const {
+        sectorsCorporate,
+        departmentCorporate,
+        isCreateOpening,
+        corporateSchedules,
+        corporateScheduleNumOfPages,
+        corporateScheduleCurrentPages
+    } = useSelector((state: any) => state.DashboardReducer)
 
     const { goTo } = useNavigation()
     const dispatch = useDispatch()
@@ -28,42 +35,36 @@ function Designation() {
     const status = useDropDown(STATUS_LIST[1]);
 
 
+    /**
+     *  create opening modal form state
+     */
 
+    const position = useInput('');
+    const experience = useDropDown(EXPERIENCE_LIST[0])
+    const vacancies = useInput('1')
+    const jd = useInput('');
+    const [duration, setDuration] = useState<any>(INTERVIEW_DURATIONS[0])
     const [selectSector, setSelectedSector] = useState<any>('')
     const [selectDepartment, setSelectedDepartment] = useState<any>('')
 
-    const [selectedDesignation, setSelectedDesignation] = useState<any>({})
-    const [selectedVariant, setSelectedVariant] = useState<any>({})
 
+    /**
+     * loader state
+     */
     const listLoader = useLoader(false);
+    const createOpeningLoader = useLoader(false);
 
 
-
-    const addDesignationModal = useModal(false);
-    const addRoleModal = useModal(false);
-    const title = useInput("");
-    const description = useInput("");
-    const sector = useDropDown({});
-    // const experience = useInput('')
-    const experience = useDropDown(EXPERIENCE_LIST[0])
-    const jd = useInput('');
-    const portalUrl = useInput('');
-    const sectorInput = useInput('');
-    const loader = useLoader(false);
-    const position = useInput('');
-
-
-
+    /**
+     * key for showing no data found design based on params
+     */
     const [isFilter, setIsFilter] = useState(false)
 
 
 
 
-    const [selectedDuration, setSelectedDuration] = useState<any>(INTERVIEW_DURATIONS[0])
 
 
-    const vacancies = useInput('1')
-    const [loading, setLoading] = useState(false);
 
 
 
@@ -147,28 +148,27 @@ function Designation() {
             experience: parseInt(experience.value?.id),
             jd: jd.value,
             vacancies: vacancies?.value,
-            interview_duration: selectedDuration?.value,
+            interview_duration: duration?.value,
         }
 
 
         const validation = validate(CREATE_CORPORATE_SCHEDULE_RULES, params)
 
         if (ifObjectExist(validation)) {
-            loader.show()
+            createOpeningLoader.show()
             dispatch(
                 createCorporateSchedules({
                     params,
                     onSuccess: (response) => () => {
                         getCorporateScheduleApiHandler(corporateScheduleCurrentPages)
-                        loader.hide()
+                        createOpeningLoader.hide()
                         showToast(response.message, 'success');
-                        addRoleModal.hide()
                         resetValues()
                         dispatch(hideCreateOpeningsModal())
                     },
                     onError: (error) => () => {
                         showToast(error.error_message, 'error');
-                        loader.hide()
+                        createOpeningLoader.hide()
                     },
                 })
             )
@@ -180,12 +180,11 @@ function Designation() {
 
 
     function resetValues() {
-        addRoleModal.hide()
         position.set("")
         experience.set({})
         jd.set("")
         vacancies.set('')
-        setSelectedDuration(INTERVIEW_DURATIONS[0]);
+        setDuration(INTERVIEW_DURATIONS[0]);
     }
 
     const getCorporateScheduleApiHandler = (page_number: number) => {
@@ -212,73 +211,72 @@ function Designation() {
         )
     }
 
+
+    function hideCreateOpeningModal() {
+        dispatch(hideCreateOpeningsModal())
+    }
+
     return (
         <div className={'screen'}>
-            {/* <TopNavbarCorporateFlow /> */}
-
+            <TopNavbarCorporateFlow />
             {
-                listLoader.loader && <div className='h-100'><Spinner /></div>
+                listLoader.loader && <Spinner />
             }
             {
-                !listLoader.loader && corporateSchedules.length <= 0 && <UploadCorporateOpeningsCard />
-            }
+                !listLoader.loader && corporateSchedules.length <= 0 && !isFilter ? <UploadCorporateOpeningsCard /> :
+                    <div className={'screen-container'}>
+                        <div className='row'>
+                            <div className='col-sm-3'>
+                                <Input
+                                    heading={'Position'}
+                                    type={'text'}
+                                    placeHolder={"HR Executive, QA Manager..."}
+                                    value={positionSearch?.value}
+                                    onChange={positionSearch.onChange}
+                                />
+                            </div>
+                            <div className="col-sm-3">
+                                <DropDown
+                                    id={'status'}
+                                    heading={'Status'}
+                                    data={STATUS_LIST}
+                                    selected={status.value}
+                                    onChange={status.onChange}
 
-            {corporateSchedules.length > 0 &&
-                <div className={'screen-container'}>
-                    <div>
-                        <div>
-                            <div className='row'>
-                                <div className='col-sm-3'>
-                                    <Input
-                                        heading={'Position'}
-                                        type={'text'}
-                                        placeHolder={"HR Executive, QA Manager..."}
-                                        value={positionSearch?.value}
-                                        onChange={positionSearch.onChange}
-                                    />
-                                </div>
-                                <div className="col-sm-3">
+                                />
+                            </div>
+                            <div className='col-sm-3'>
+                                {departmentCorporate && departmentCorporate.length > 0 && <DropDown
+                                    id={'department'}
+                                    heading={'Department'}
+                                    data={[DEFAULT_VALUE, ...getDropDownCompanyDisplayData(departmentCorporate)]}
+                                    selected={filterDepartment.value}
+                                    onChange={filterDepartment.onChange}
+                                />
+                                }
+                            </div>
+
+
+                            <div className='col-sm-3'>
+                                {sectorsCorporate && sectorsCorporate.length > 0 &&
                                     <DropDown
-                                        id={'status'}
-                                        heading={'Status'}
-                                        data={STATUS_LIST}
-                                        selected={status.value}
-                                        onChange={status.onChange}
-
+                                        id={'sector'}
+                                        heading={'Sector'}
+                                        data={[DEFAULT_VALUE, ...getDropDownCompanyDisplayData(sectorsCorporate)]}
+                                        selected={filterSector.value}
+                                        onChange={filterSector.onChange}
                                     />
-                                </div>
-                                <div className='col-sm-3'>
-                                    {departmentCorporate && departmentCorporate.length > 0 && <DropDown
-                                        id={'department'}
-                                        heading={'Department'}
-                                        data={[DEFAULT_VALUE, ...getDropDownCompanyDisplayData(departmentCorporate)]}
-                                        selected={filterDepartment.value}
-                                        onChange={filterDepartment.onChange}
-                                    />
-                                    }
-                                </div>
+                                }
+                            </div>
 
-
-                                <div className='col-sm-3'>
-                                    {sectorsCorporate && sectorsCorporate.length > 0 &&
-                                        <DropDown
-                                            id={'sector'}
-                                            heading={'Sector'}
-                                            data={[DEFAULT_VALUE, ...getDropDownCompanyDisplayData(sectorsCorporate)]}
-                                            selected={filterSector.value}
-                                            onChange={filterSector.onChange}
-                                        />
-                                    }
-                                </div>
-
-                                <div>
-                                </div>
+                            <div>
                             </div>
                         </div>
+
                         <div>
                             {
-                                corporateSchedules && corporateSchedules.length > 0 &&
-                                (
+                                corporateSchedules && corporateSchedules.length > 0 ?
+
                                     corporateSchedules.map((item: any, index: number) => {
                                         return (
                                             <div className={index === 0 ? 'schedule-container-top' : 'schedule-container'}>
@@ -297,10 +295,12 @@ function Designation() {
                                         );
                                     })
 
-                                )
+                                    :
+                                    <div className={'no-data-container'}>
+                                        < NoDataFound />
+                                    </div>
                             }
                         </div>
-
                         {
                             corporateScheduleNumOfPages > 1 &&
                             <div className='mt-3'>
@@ -321,36 +321,32 @@ function Designation() {
                                 />
                             </div>
                         }
-
                     </div>
-                </div>
             }
 
             <Modal
-                size={'lg'}
-                isOpen={createOpening}
-                onClose={() => {
-                    dispatch(hideCreateOpeningsModal())
-                }}
+                loading={createOpeningLoader.loader}
+                isOpen={isCreateOpening}
+                title={'Create Opening'}
+                subTitle={'Input job details, specifying qualifications, requirements, interview duration'}
+                buttonText={'Create Opening'}
+                onClose={hideCreateOpeningModal}
+                onClick={createCorporateScheduleApiHandler}
+
             >
-                <div className='px-md-6 px-3 '>
-                    <Heading heading={'Create Opening'} style={{ fontSize: '26px', fontWeight: 800, margin: 0 }} />
-                    <div className='text-default pt-1 font-weight-500'>Input job details, specifying qualifications, requirements, interview duration</div>
+                <div className={'create-opening-container'}>
+                    <div className='row m-0 p-0'>
+                        <div className={'col-sm-5 m-0 p-0'}>
+                            <Input
+                                heading={'Position'}
+                                type={'text'}
+                                placeHolder={"HR Executive, QA Manager..."}
+                                value={position.value}
+                                onChange={position.onChange} />
+                        </div>
 
-                    <div className={'pt-5 px-0'}>
-                        <div className='row'>
-                            <div className='col-sm-5'>
-                                <Input
-                                    heading={'Position'}
-                                    type={'text'}
-                                    placeHolder={"HR Executive, QA Manager..."}
-                                    value={position.value}
-                                    onChange={position.onChange} />
-                            </div>
-
-                            <div className='col-sm-4' style={{
-                                zIndex: 1
-                            }}>
+                        <div className={'col-sm-4 m-0 p-0'}>
+                            <div className={'opening-form-container'}>
                                 <DropDown
                                     heading={'Experience'}
                                     id={'experience'}
@@ -359,84 +355,80 @@ function Designation() {
                                     onChange={experience.onChange}
                                 />
                             </div>
-                            <div className='col-sm-3 mt-4 mt-sm-0'>
+                        </div>
+                        <div className={'col-sm-3 m-0 p-0 opening-form-container'}>
+                            <div className={'opening-form-container'}>
                                 <Input
                                     heading={'Vacancies'}
                                     type={'number'}
                                     placeHolder={"0"}
                                     value={vacancies.value}
                                     onChange={vacancies.onChange}
+                                    maxLength={4}
                                 />
                             </div>
                         </div>
-
-                        <div className='pt-2 '>
-                            <TextArea
-                                heading='Job Description'
-                                value={jd.value}
-                                placeholder={'Role : \n...............................................................................................................................................\n...............................................................................................................................................\n...............................................................................................................................................\n.......................................................................................\nResponsibilities :\n1. ............................................................................................................................................\n2. ...........................................................................................................................................\n3. ...........................................................................................................................................'}
-                                className={"float-end p-4"}
-                                onChange={jd.onChange} />
-                        </div>
-                        <div className='mb-sm-4'>
-                            <InputHeading heading={'Duration'} />
-                            <div className='d-flex flex-wrap justify-content-between'>
-                                {
-                                    INTERVIEW_DURATIONS.map((item) => {
-                                        const { id, subText } = item
-                                        return (
-                                            <div className='mb-4 mb-sm-0'>
-                                                <Button
-                                                    text={subText}
-                                                    className={`${selectedDuration?.id === id ? "btn-outline-primary" : "btn-outline-light-gray text-default"} rounded-sm px-sm-4`} style={{ width: "140px" }} onClick={() => {
-                                                        setSelectedDuration(item)
-                                                    }}
-                                                />
-                                            </div>
-                                        )
-                                    })
-                                }
-                            </div>
-                        </div>
-                        <div className='row'>
-                            <div className='col'>
-                                <ReactAutoComplete
-                                    selected={selectSector?.name}
-                                    data={sectorsCorporate}
-                                    heading={"Sector"}
-                                    onAdd={(value: any) => {
-                                        addSectorCorporateApiHandler(value)
-                                    }}
-                                    onSelected={setSelectedSector}
-                                />
-                            </div>
-                            <div className='col'>
-                                <ReactAutoComplete
-                                    selected={selectDepartment?.name}
-                                    data={departmentCorporate}
-                                    heading={"Department"}
-                                    onAdd={(value: string) => {
-                                        addDepartmentApiHandler(value)
-                                    }}
-                                    onSelected={setSelectedDepartment}
-                                />
-                            </div>
-                        </div>
-
                     </div>
 
-                    <div className="col d-flex justify-content-center py-5">
-                        <Button size={'md'}
-                            loading={loader.loader}
-                            text={"Create Opening"}
-                            className={'rounded-sm px-5'}
-                            onClick={createCorporateScheduleApiHandler}
-                        />
+
+                    <TextArea
+                        heading='Job Description'
+                        value={jd.value}
+                        placeholder={PLACEHOLDER_ROLES}
+                        className={"p-4"}
+                        onChange={jd.onChange} />
+
+                    <div className={'duration-container'}>
+                        <InputHeading heading={'Duration'} />
+                        <div className={'duration-content-container'}>
+                            {
+                                INTERVIEW_DURATIONS.map((item: any, index: number) => {
+                                    const { id, subText } = item
+                                    return (
+                                        <div className={index === 0 ? 'each-duration' : 'each-duration each-duration-space'}>
+                                            <Button
+                                                block
+                                                outline
+                                                className={`${duration?.id === id ? 'btn-outline-primary-active' : 'btn-outline-primary-inactive'}`}
+                                                text={subText}
+                                                onClick={setDuration}
+                                            />
+                                        </div>
+                                    )
+                                })
+                            }
+                        </div>
+                    </div>
+                    <div className='group-container row'>
+                        <div className={'col-sm-6'}>
+                            <ReactAutoComplete
+                                selected={selectDepartment?.name}
+                                data={departmentCorporate}
+                                heading={"Department"}
+                                placeholder={'Department, Account...'}
+                                onAdd={(value: string) => {
+                                    addDepartmentApiHandler(value)
+                                }}
+                                onSelected={setSelectedDepartment}
+                            />
+                        </div>
+                        <div className={'col-sm-6'}>
+                            <ReactAutoComplete
+                                selected={selectSector?.name}
+                                data={sectorsCorporate}
+                                placeholder={'Software, Healthcare...'}
+                                heading={"Sector"}
+                                onAdd={(value: any) => {
+                                    addSectorCorporateApiHandler(value)
+                                }}
+                                onSelected={setSelectedSector}
+                            />
+                        </div>
+
                     </div>
                 </div>
-
             </Modal >
-        </div>
+        </div >
     )
 }
 

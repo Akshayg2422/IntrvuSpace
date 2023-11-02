@@ -1,4 +1,6 @@
-.loader, .loader:before, .loader:after {
+.loader,
+.loader:before,
+.loader:after {
   border-radius: 50%;
   width: 2.5em;
   height: 2.5em;
@@ -37,4 +39,11 @@
   40% {
     box-shadow: 0 2.5em 0 0;
   }
+}
+.loader-container {
+  display: flex;
+  width: 100%;
+  min-height: 100dvh;
+  align-items: center;
+  justify-content: center;
 }/*# sourceMappingURL=style.css.map */

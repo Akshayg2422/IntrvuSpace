@@ -312,6 +312,8 @@ $shape-height-sm: 1.5 !default;
 
 $border-width: 1px !default;
 $border-color: #DADCE0 !default;
+$border-color-modal: #D5DFFF !default;
+
 
 $border-radius: 0.25rem !default;
 $border-radius-xl: .5rem !default;
@@ -975,14 +977,14 @@ $tooltip-font-size: $font-size-sm !default;
 
 $modal-inner-padding: 1.5rem !default;
 
-$modal-lg: 800px !default;
+$modal-lg: 755px !default;
 $modal-md: 500px !default;
 $modal-sm: 380px !default;
 
 $modal-title-font-size: $h3-font-size !default;
 $modal-title-line-height: 1.1 !default;
 
-$modal-content-bg: $white !default;
+$modal-content-bg: #FFFFFF !default;
 $modal-content-border-color: rgba($black, .2) !default;
 $modal-content-border-width: 0 !default;
 $modal-content-border-radius: $border-radius-lg !default;
@@ -991,7 +993,7 @@ $modal-content-box-shadow-sm-up: 0 15px 35px rgba(50, 50, 93, .2), 0 5px 15px rg
 
 $modal-backdrop-bg: $black !default;
 $modal-backdrop-opacity: .16 !default;
-$modal-header-border-color: $gray-200 !default;
+$modal-header-border-color: $primary !default;
 $modal-footer-border-color: $modal-header-border-color !default;
 $modal-header-border-width: $modal-content-border-width !default;
 $modal-footer-border-width: $modal-header-border-width !default;

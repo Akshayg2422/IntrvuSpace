@@ -40,7 +40,7 @@ export interface DashboardProp {
   retrieveEmail: any,
   corporateScheduleNumOfPages: any,
   corporateScheduleCurrentPages: number,
-  createOpening?:boolean;
+  isCreateOpening?: boolean;
   candidatesList?: boolean;
   candidatesListNumOfPages: any,
   candidatesListCurrentPages: number,

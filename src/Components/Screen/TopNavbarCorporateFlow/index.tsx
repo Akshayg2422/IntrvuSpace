@@ -138,7 +138,7 @@ function TopNavbarCorporateFlow() {
                         {/* <hr className="d-lg-none" /> */}
 
                         <Nav className="align-items-lg-center ml-lg-auto mr--4 justify-content-end" navbar>
-                            {corporateSchedules?.length <= 0 && <NavItem>
+                            {<NavItem>
                                 <NavLink to="/schedule" tag={Link}>
                                     <Button
                                         size='md'

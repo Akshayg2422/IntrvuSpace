@@ -1,10 +1,14 @@
 //
 // Modal
 //
-
+.modal-content {
+    border-radius: $border-radius;
+    border: 1px solid $border-color-modal;
+}
 
 .modal-title {
     font-size: $modal-title-font-size;
+
 }
 
 

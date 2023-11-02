@@ -76,6 +76,29 @@
     }
 }
 
+.btn-outline-primary-active {
+    padding: 12px 18px;
+    border-color: $primary;
+    cursor: pointer;
+
+    &:hover {
+        background: none;
+        color: $primary; // Change the text color on hover
+    }
+}
+
+.btn-outline-primary-inactive {
+    padding: 12px 18px;
+    border-color: $border-color;
+    cursor: pointer;
+    color: #727586;
+
+    &:hover {
+        background: none;
+        color: $primary; // Change the text color on hover
+    }
+}
+
 .btn-outline-secondary {
     color: darken(theme-color("secondary"), 50%);
 }

@@ -48,7 +48,7 @@ const initialState: DashboardProp = {
   createForOthersJdModal: false,
   interviewScheduleDetails: undefined,
   retrieveEmail: undefined,
-  createOpening: false,
+  isCreateOpening: false,
   corporateScheduleNumOfPages: undefined,
   corporateScheduleCurrentPages: 1,
   candidatesList: undefined,
@@ -613,11 +613,11 @@ const DashboardReducer = (state = initialState, action: any) => {
     // showCreateOpeningsModal
 
     case ActionTypes.SHOW_CREATE_OPENINGS_MODAL:
-      state = { ...state, createOpening: true };
+      state = { ...state, isCreateOpening: true };
       break;
 
     case ActionTypes.HIDE_CREATE_OPENINGS_MODAL:
-      state = { ...state, createOpening: false };
+      state = { ...state, isCreateOpening: false };
       break;
 
     // postManualApprovalOnCandidate
