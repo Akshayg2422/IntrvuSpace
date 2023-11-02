@@ -55,7 +55,7 @@ function Designation() {
 
 
     const vacancies = useInput('1')
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const status = useDropDown(STATUS_LIST[1]);
     const enterPress = useKeyPress("Enter");
 
@@ -201,7 +201,7 @@ function Designation() {
             ...((filterSector && filterSector.value.id !== '-1') && { sector_id: filterSector?.value?.id }),
             ...((filterDepartment && filterDepartment.value.id !== '-1') && { department_id: filterDepartment?.value?.id })
         }
-        const keysToCheck = ['position', 'sector_id', 'department_id'];
+        const keysToCheck = ['position', 'sector_id', 'department_id', 'is_active'];
 
         let exists = false; // Initialize a flag variable to false
 
@@ -237,7 +237,7 @@ function Designation() {
                     <div className={'vh-100 d-flex justify-content-center align-items-center'}>
                         <Spinner />
                     </div>
-                ) : corporateSchedules?.details?.corporate_jd_items?.data.length === 0 && !isFilter ? (
+                ) : corporateSchedules?.details?.corporate_jd_items?.data.length === 0 && !isFilter? (
 
                     <UploadCorporateOpeningsCard />
 
@@ -265,27 +265,29 @@ function Designation() {
 
                                 />
                             </div>
-                            {departmentCorporate && departmentCorporate.length > 0 && <div className='col'>
-                                <DropDown
+                            <div className='col'>
+                                {departmentCorporate && departmentCorporate.length > 0 && <DropDown
                                     id={'department'}
                                     heading={'Department'}
                                     data={[DEFAULT_VALUE, ...getDropDownCompanyDisplayData(departmentCorporate)]}
                                     selected={filterDepartment.value}
                                     onChange={filterDepartment.onChange}
                                 />
+                                }
                             </div>
-                            }
-                            {sectorsCorporate && sectorsCorporate.length > 0 &&
-                                <div className='col'>
-                                    <DropDown
-                                        id={'sector'}
-                                        heading={'Sector'}
-                                        data={[DEFAULT_VALUE, ...getDropDownCompanyDisplayData(sectorsCorporate)]}
-                                        selected={filterSector.value}
-                                        onChange={filterSector.onChange}
-                                    />
-                                </div>
-                            }
+
+
+                            <div className='col'>
+                                {sectorsCorporate && sectorsCorporate.length > 0 && <DropDown
+                                    id={'sector'}
+                                    heading={'Sector'}
+                                    data={[DEFAULT_VALUE, ...getDropDownCompanyDisplayData(sectorsCorporate)]}
+                                    selected={filterSector.value}
+                                    onChange={filterSector.onChange}
+                                />
+                                }
+                            </div>
+
                             <div>
                             </div>
                         </div>

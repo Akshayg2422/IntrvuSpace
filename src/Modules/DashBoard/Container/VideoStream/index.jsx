@@ -14,8 +14,6 @@ const VideoStream = (props) => {
 
 
     useEffect(() => {
-
-        // Use the getUserMedia API to access the user's webcam
         if (props.isRecording) {
             navigator.mediaDevices
                 .getUserMedia({ video: true, audio: true })
@@ -31,7 +29,6 @@ const VideoStream = (props) => {
         } else {
             stopRecording();
         }
-
 
 
         return () => {
