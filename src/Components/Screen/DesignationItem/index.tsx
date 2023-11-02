@@ -1,12 +1,8 @@
-import { DesignationItemProps } from "./interfaces";
-import { NoDataFound, Button, MenuBar, Image, Badge } from "@Components";
 import { icons } from "@Assets";
-import { Card, CardBody, CardFooter } from "reactstrap";
-import { useEffect, useState } from "react";
-import { useNavigation } from "@Hooks";
-import { ROUTES } from "@Routes";
+import { Button, Image, ViewMore } from "@Components";
 import { capitalizeFirstLetter } from "@Utils";
-import './index.scss'
+import { DesignationItemProps } from "./interfaces";
+import './index.css';
 
 function DesignationItem({
   item,
@@ -14,19 +10,17 @@ function DesignationItem({
   onViewMore
 }: DesignationItemProps) {
 
-  console.log(JSON.stringify(item));
+  const { job_description: { position, experience, details }, candidate_details: { selected_candidates, total_candidates }, is_active, vacancies, interview_duration, is_view_more } = item
 
-  const { job_description: { position }, candidate_details: { selected_candidates }, is_active } = item
-
-  const VIEW_MORE_LENGTH = 300;
+  console.log(is_view_more + '==is_view_more');
 
   return (
 
     <div className={'card-container'}>
-      <div className="d-flex align-items-center justify-content-between">
+      <div className={'section-container'}>
         <div>
-          <div className="d-flex align-items-center justify-content-center">
-            <span className={'screen-heading'}>
+          <div className="d-flex align-items-center">
+            <span className={'screen-heading m-0 p-0'}>
               {capitalizeFirstLetter(position)}
             </span>
             {
@@ -35,6 +29,9 @@ function DesignationItem({
                 <span className={'badge-text'}>{`${selected_candidates} Selected`}</span>
               </div>
             }
+          </div>
+          <div className={'experience'}>
+            {experience}
           </div>
         </div>
         <div>
@@ -51,25 +48,47 @@ function DesignationItem({
             />
           </div>
           <div className={'d-flex align-items-center justify-content-center'}>
-            {is_active && false ? (
-              <div className={'status-container'}>
-                <Image
-                  src={icons.check}
-                  height={12}
-                  width={12}
-                  style={{
-                    objectFit: "contain",
-                  }}
-                />
-                <span className="status-active">Active</span>
-              </div>
-            ) : (
-              <h5 className="text-des">
-                Closed
-              </h5>
-            )}
+            <div className={'status-container'}>
+              {is_active ? (
+                <>
+                  <Image
+                    src={icons.check}
+                    height={12}
+                    width={12}
+                    style={{
+                      objectFit: 'contain',
+                    }}
+                  />
+                  <span className={'status-active'}>Active</span>
+                </>
+
+              ) : (
+                <h5 className={'status-closed'}>
+                  Closed
+                </h5>
+              )}
+            </div>
           </div>
         </div>
+      </div>
+
+      <div className={'d-flex align-items-center details-wrapper'}>
+        <div className={'details-container'}>
+          <span className={'details-title'}>{vacancies}</span>
+          <span className={'details-desc'}>{'Vacancies'}</span>
+        </div>
+        <div className={'details-container details-container-space'}>
+          <span className={'details-title'}>{total_candidates}</span>
+          <span className={'details-desc'}>{'Candidates added'}</span>
+        </div>
+        <div className={'details-container details-container-space'}>
+          <span className={'details-title'}>{interview_duration} min</span>
+          <span className={'details-desc'}>{'Duration'}</span>
+        </div>
+      </div>
+
+      <div className={'jd-container'}>
+        <ViewMore text={details} onViewMore={onViewMore} isViewMore={is_view_more} />
       </div>
 
     </div >

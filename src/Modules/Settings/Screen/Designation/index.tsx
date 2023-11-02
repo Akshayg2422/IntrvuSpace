@@ -3,12 +3,12 @@
 import { Button, DesignationItem, DropDown, Heading, Input, InputHeading, Modal, NoDataFound, PageNation, ReactAutoComplete, Spinner, TextArea, showToast, TopNavbarCorporateFlow } from '@Components';
 import { useDropDown, useInput, useLoader, useModal, useNavigation } from '@Hooks';
 import { UploadCorporateOpeningsCard, } from '@Modules';
-import { addDepartmentCorporate, addSectorCorporate, breadCrumbs, createCorporateSchedules, getCorporateSchedules, getDepartmentCorporate, getSectorCorporate, hideCreateOpeningsModal, setSelectedRole } from '@Redux';
+import { addDepartmentCorporate, addSectorCorporate, breadCrumbs, createCorporateSchedules, getCorporateSchedules, getDepartmentCorporate, getSectorCorporate, hideCreateOpeningsModal, setSelectedRole, updateCorporateSchedules } from '@Redux';
 import { ROUTES } from '@Routes';
 import { CREATE_CORPORATE_SCHEDULE_RULES, EXPERIENCE_LIST, INTERVIEW_DURATIONS, STATUS_LIST, getDropDownCompanyDisplayData, getValidateError, ifObjectExist, paginationHandler, validate } from '@Utils';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
+import './index.css'
 
 function Designation() {
 
@@ -16,6 +16,17 @@ function Designation() {
 
     const { goTo } = useNavigation()
     const dispatch = useDispatch()
+
+    const DEFAULT_VALUE = { id: '-1', text: "All" }
+
+    /**
+     * filter state
+     */
+    const positionSearch = useInput('')
+    const filterDepartment = useDropDown(DEFAULT_VALUE);
+    const filterSector = useDropDown(DEFAULT_VALUE);
+    const status = useDropDown(STATUS_LIST[1]);
+
 
 
     const [selectSector, setSelectedSector] = useState<any>('')
@@ -31,22 +42,18 @@ function Designation() {
     const addDesignationModal = useModal(false);
     const addRoleModal = useModal(false);
     const title = useInput("");
-    const [positionSearch, setPositionSearch] = useState(undefined)
     const description = useInput("");
     const sector = useDropDown({});
     // const experience = useInput('')
     const experience = useDropDown(EXPERIENCE_LIST[0])
     const jd = useInput('');
     const portalUrl = useInput('');
-    const position = useInput('');
     const sectorInput = useInput('');
     const loader = useLoader(false);
+    const position = useInput('');
 
-    const DEFAULT_VALUE = { id: '-1', text: "All" }
 
 
-    const filterDepartment = useDropDown(DEFAULT_VALUE);
-    const filterSector = useDropDown(DEFAULT_VALUE);
     const [isFilter, setIsFilter] = useState(false)
 
 
@@ -58,7 +65,6 @@ function Designation() {
     const vacancies = useInput('1')
     const [loading, setLoading] = useState(false);
 
-    const status = useDropDown(STATUS_LIST[1]);
 
 
 
@@ -69,18 +75,17 @@ function Designation() {
 
 
 
-    // useEffect(() => {
-    //     getSectorsCorporateApiHandler();
-    //     getDepartmentCorporateApiHandler();
-    // }, [])
+    useEffect(() => {
+        getSectorsCorporateApiHandler();
+        getDepartmentCorporateApiHandler();
+    }, [])
 
     const getSectorsCorporateApiHandler = () => {
         const params = {}
         dispatch(
             getSectorCorporate({
                 params,
-                onSuccess: (response: any) => () => {
-
+                onSuccess: () => () => {
                 },
                 onError: () => () => {
                 },
@@ -179,36 +184,21 @@ function Designation() {
         position.set("")
         experience.set({})
         jd.set("")
-        position.set('')
         vacancies.set('')
         setSelectedDuration(INTERVIEW_DURATIONS[0]);
     }
 
     const getCorporateScheduleApiHandler = (page_number: number) => {
-
-        let filterStatus: any = undefined;
-
-        if (status.value?.id === 'ACV') {
-            filterStatus = { is_active: true }
-        } else if (status.value?.id === 'CSD') {
-            filterStatus = { is_active: false };
-        }
+        const filterStatus = status.value?.id === 'ACV' ? { is_active: true } : status.value?.id === 'CSD' ? { is_active: false } : undefined;
         const params = {
             page_number,
-            ...(positionSearch ? { position: positionSearch } : {}),
-            ...(filterStatus ? filterStatus : {}),
+            ...(positionSearch?.value && { position: positionSearch?.value }),
+            ...(filterStatus && filterStatus),
             ...((filterSector && filterSector.value.id !== '-1') && { sector_id: filterSector?.value?.id }),
             ...((filterDepartment && filterDepartment.value.id !== '-1') && { department_id: filterDepartment?.value?.id })
         }
         const keysToCheck = ['position', 'sector_id', 'department_id'];
-
-        let exists = false; // Initialize a flag variable to false
-
-        for (const key of keysToCheck) {
-            if (params.hasOwnProperty(key)) {
-                exists = true; // Set the flag to true if any key exists
-            }
-        }
+        const exists = keysToCheck.some(key => params.hasOwnProperty(key));
 
         setIsFilter(exists);
 
@@ -216,88 +206,94 @@ function Designation() {
         dispatch(
             getCorporateSchedules({
                 params,
-                onSuccess: () => () => {
-                    listLoader.hide();
-                },
-                onError: () => () => {
-                    listLoader.hide();
-                },
+                onSuccess: () => listLoader.hide,
+                onError: () => listLoader.hide,
             })
         )
-
     }
 
     return (
         <div className={'screen'}>
             {/* <TopNavbarCorporateFlow /> */}
-            <div className={'screen-container'}>
-                {
-                    listLoader.loader && <div className='h-100'><Spinner /></div>
-                }
-                {
-                    !listLoader.loader && corporateSchedules.length <= 0 && <UploadCorporateOpeningsCard />
-                }
 
-                {corporateSchedules.length > 0 &&
+            {
+                listLoader.loader && <div className='h-100'><Spinner /></div>
+            }
+            {
+                !listLoader.loader && corporateSchedules.length <= 0 && <UploadCorporateOpeningsCard />
+            }
+
+            {corporateSchedules.length > 0 &&
+                <div className={'screen-container'}>
                     <div>
-                        {/* <div className='row pt-6'>
-                        <div className='col'>
-                            <Input
-                                heading={'Position'}
-                                type={'text'}
-                                placeHolder={"HR Executive, QA Manager..."}
-                                value={positionSearch}
-                                onChange={(e: any) => {
-                                    setPositionSearch(e.target.value)
-                                }}
-                            />
-                        </div>
-                        <div className="col-lg-3 col-md-3 col-sm-12 ">
-                            <DropDown
-                                id={'status'}
-                                heading={'Status'}
-                                data={STATUS_LIST}
-                                selected={status.value}
-                                onChange={status.onChange}
-
-                            />
-                        </div>
-                        <div className='col'>
-                            {departmentCorporate && departmentCorporate.length > 0 && <DropDown
-                                id={'department'}
-                                heading={'Department'}
-                                data={[DEFAULT_VALUE, ...getDropDownCompanyDisplayData(departmentCorporate)]}
-                                selected={filterDepartment.value}
-                                onChange={filterDepartment.onChange}
-                            />
-                            }
-                        </div>
-
-
-                        <div className='col'>
-                            {sectorsCorporate && sectorsCorporate.length > 0 && <DropDown
-                                id={'sector'}
-                                heading={'Sector'}
-                                data={[DEFAULT_VALUE, ...getDropDownCompanyDisplayData(sectorsCorporate)]}
-                                selected={filterSector.value}
-                                onChange={filterSector.onChange}
-                            />
-                            }
-                        </div>
-
                         <div>
-                        </div>
-                    </div> */}
+                            <div className='row'>
+                                <div className='col-sm-3'>
+                                    <Input
+                                        heading={'Position'}
+                                        type={'text'}
+                                        placeHolder={"HR Executive, QA Manager..."}
+                                        value={positionSearch?.value}
+                                        onChange={positionSearch.onChange}
+                                    />
+                                </div>
+                                <div className="col-sm-3">
+                                    <DropDown
+                                        id={'status'}
+                                        heading={'Status'}
+                                        data={STATUS_LIST}
+                                        selected={status.value}
+                                        onChange={status.onChange}
 
+                                    />
+                                </div>
+                                <div className='col-sm-3'>
+                                    {departmentCorporate && departmentCorporate.length > 0 && <DropDown
+                                        id={'department'}
+                                        heading={'Department'}
+                                        data={[DEFAULT_VALUE, ...getDropDownCompanyDisplayData(departmentCorporate)]}
+                                        selected={filterDepartment.value}
+                                        onChange={filterDepartment.onChange}
+                                    />
+                                    }
+                                </div>
+
+
+                                <div className='col-sm-3'>
+                                    {sectorsCorporate && sectorsCorporate.length > 0 &&
+                                        <DropDown
+                                            id={'sector'}
+                                            heading={'Sector'}
+                                            data={[DEFAULT_VALUE, ...getDropDownCompanyDisplayData(sectorsCorporate)]}
+                                            selected={filterSector.value}
+                                            onChange={filterSector.onChange}
+                                        />
+                                    }
+                                </div>
+
+                                <div>
+                                </div>
+                            </div>
+                        </div>
                         <div>
-                            {corporateSchedules && corporateSchedules.length > 0 &&
+                            {
+                                corporateSchedules && corporateSchedules.length > 0 &&
                                 (
                                     corporateSchedules.map((item: any, index: number) => {
                                         return (
-                                            <DesignationItem
-                                                key={index}
-                                                item={item}
-                                            />
+                                            <div className={index === 0 ? 'schedule-container-top' : 'schedule-container'}>
+                                                <DesignationItem
+                                                    key={index}
+                                                    item={item}
+                                                    onViewMore={
+                                                        (status) => {
+                                                            const updateData = [...corporateSchedules]
+                                                            updateData[index] = { ...updateData[index], is_view_more: status }
+                                                            dispatch(updateCorporateSchedules(updateData))
+                                                        }
+                                                    }
+                                                />
+                                            </div>
                                         );
                                     })
 
@@ -305,24 +301,30 @@ function Designation() {
                             }
                         </div>
 
-                        {/* <PageNation
-                            currentPage={corporateScheduleCurrentPages}
-                            noOfPage={corporateScheduleNumOfPages}
-                            isPagination={corporateScheduleNumOfPages > 1}
-                            paginationNumberClick={(currentPage) => {
-                                getCorporateScheduleApiHandler(paginationHandler("current", currentPage));
-                            }}
-                            previousClick={() => {
-                                getCorporateScheduleApiHandler(paginationHandler("prev", corporateScheduleCurrentPages))
-                            }
-                            }
-                            nextClick={() => {
-                                getCorporateScheduleApiHandler(paginationHandler("next", corporateScheduleCurrentPages));
-                            }}
-                        /> */}
+                        {
+                            corporateScheduleNumOfPages > 1 &&
+                            <div className='mt-3'>
+                                <PageNation
+                                    currentPage={corporateScheduleCurrentPages}
+                                    noOfPage={corporateScheduleNumOfPages}
+                                    isPagination={corporateScheduleNumOfPages}
+                                    paginationNumberClick={(currentPage) => {
+                                        getCorporateScheduleApiHandler(paginationHandler("current", currentPage));
+                                    }}
+                                    previousClick={() => {
+                                        getCorporateScheduleApiHandler(paginationHandler("prev", corporateScheduleCurrentPages))
+                                    }
+                                    }
+                                    nextClick={() => {
+                                        getCorporateScheduleApiHandler(paginationHandler("next", corporateScheduleCurrentPages));
+                                    }}
+                                />
+                            </div>
+                        }
+
                     </div>
-                }
-            </div>
+                </div>
+            }
 
             <Modal
                 size={'lg'}

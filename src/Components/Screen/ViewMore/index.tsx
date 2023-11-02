@@ -1,0 +1,63 @@
+import React from 'react'
+import { ViewMoreProps } from './interfaces'
+import './index.css'
+
+function ViewMore({ text, isViewMore = false, onViewMore }: ViewMoreProps) {
+
+    const VIEW_MORE_LENGTH = 300;
+
+    console.log(text.length < VIEW_MORE_LENGTH);
+
+    return (
+        <>
+            {
+                text.length < VIEW_MORE_LENGTH ?
+                    <div className={'screen-des'}>{text}</div> :
+                    <>
+                        {
+                            !isViewMore ?
+                                <div>
+                                    <span className={'screen-des'}>
+                                        {
+                                            text.slice(
+                                                0,
+                                                VIEW_MORE_LENGTH
+                                            ) + '...'
+                                        }
+                                    </span>
+                                    <span
+                                        className='view-more-text'
+                                        onClick={() => {
+                                            if (onViewMore) {
+                                                onViewMore(true)
+                                            }
+                                        }}>
+                                        {'View More'}
+                                    </span>
+                                </div> :
+                                <div>
+                                    <span className={'screen-des'}>
+                                        {
+                                            text
+                                        }
+                                    </span>
+                                    <span
+                                        className='view-more-text'
+                                        onClick={() => {
+                                            if (onViewMore) {
+                                                onViewMore(false)
+                                            }
+                                        }}>
+                                        {'View Less'}
+                                    </span>
+                                </div>
+
+
+                        }
+                    </>
+            }
+        </>
+    )
+}
+
+export { ViewMore };

@@ -533,6 +533,15 @@ const DashboardReducer = (state = initialState, action: any) => {
       break;
 
 
+    case ActionTypes.UPDATE_CORPORATE_SCHEDULE:
+      state = {
+        ...state,
+        corporateSchedules: action.payload,
+      };
+      break;
+
+
+
     case ActionTypes.SHOW_CREATE_FOR_OTHERS_JD_MODAL:
       state = { ...state, createForOthersJdModal: true };
       break;

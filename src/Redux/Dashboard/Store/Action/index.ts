@@ -1134,3 +1134,17 @@ export const postCorporateScheduleActionsFailure = (error: any) => {
     payload: error,
   };
 };
+
+
+
+/**
+ *  update corporate Schedules
+ */
+
+
+export const updateCorporateSchedules = (response: any) => {
+  return {
+    type: ActionTypes.UPDATE_CORPORATE_SCHEDULE,
+    payload: response,
+  };
+};
