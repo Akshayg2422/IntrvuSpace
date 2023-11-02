@@ -19,7 +19,7 @@ import {
 import { icons } from '@Assets'
 import { Image, Modal, Button } from '@Components'
 import { Profile } from '@Modules'
-import { getPhoto, } from '@Utils'
+import { filteredName, getPhoto, } from '@Utils'
 import { useModal, useNavigation } from '@Hooks';
 import { ROUTES } from '@Routes';
 import { useLocation } from 'react-router-dom'
@@ -175,7 +175,7 @@ function TopNavbar() {
                             <NavItem className="d-none d-lg-block ml-lg-4">
                                 <div className='row align-items-center m-auto'>
                                     <span className='mb-0 text-black font-weight-400 pointer' onClick={toggleDropdown}>
-                                        {loginDetails?.user}
+                                        {filteredName(loginDetails?.user,20)}
                                     </span>
 
                                     <Nav navbar>
