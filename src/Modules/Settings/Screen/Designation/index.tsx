@@ -228,6 +228,7 @@ function Designation() {
 
 
 
+console.log(corporateSchedules, "corporateSchedules");
 
     return (
         <div >
@@ -237,7 +238,7 @@ function Designation() {
                     <div className={'vh-100 d-flex justify-content-center align-items-center'}>
                         <Spinner />
                     </div>
-                ) : corporateSchedules?.details?.corporate_jd_items?.data.length === 0 && !isFilter? (
+                ) : corporateSchedules ? ( corporateSchedules?.details?.corporate_jd_items?.data.length === 0 && !isFilter? (
 
                     <UploadCorporateOpeningsCard />
 
@@ -355,6 +356,17 @@ function Designation() {
                                 getCorporateScheduleApiHandler(paginationHandler("next", corporateScheduleCurrentPages));
                             }}
                         />
+                    </div>
+                )
+                ) :  (
+                    <div
+                        className={'d-flex justify-content-center align-items-center mx-auto my-auto'}
+                        style={{
+                            height: '60vh'
+                        }}
+                    >
+                        {/* <NoDataFound /> */}
+                        <Spinner />
                     </div>
                 )
             }

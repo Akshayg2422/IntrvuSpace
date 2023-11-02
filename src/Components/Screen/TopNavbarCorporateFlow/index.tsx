@@ -82,6 +82,7 @@ function TopNavbarCorporateFlow() {
         setDropdownOpen(!dropdownOpen);
         console.log("After Toggle: dropdownOpen =", !dropdownOpen);
     };
+console.log(corporateSchedules, "corporateSchedules");
 
     return (
         <>
@@ -143,7 +144,8 @@ function TopNavbarCorporateFlow() {
                         {/* <hr className="d-lg-none" /> */}
 
                         <Nav className="align-items-lg-center ml-lg-auto mr--4 justify-content-end" navbar>
-                            {corporateSchedules?.details?.corporate_jd_items?.data?.length > 0 && <NavItem>
+                            {corporateSchedules?.details?.corporate_jd_items?.data?.length > 0 && 
+                             <NavItem>
                                 <NavLink to="/schedule" tag={Link}>
                                     <Button
                                         size='md'

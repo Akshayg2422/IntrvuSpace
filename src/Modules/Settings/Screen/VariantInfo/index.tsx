@@ -1139,8 +1139,8 @@ function VariantInfo() {
             heading={"Modify Deadline"}
             style={{ fontSize: 26, color: "#2f1c6a" }}
           />
-          <div className="d-flex flex-sm-row flex-column justify-content-between mt-4">
-            <div className="col-sm-6">
+          <div className="d-flex flex-column justify-content-between mt-4">
+            <div className="col">
               <DateTimePicker
                 disableFuture={true}
                 heading={"Schedule Date"}
@@ -1151,7 +1151,7 @@ function VariantInfo() {
                 }}
               />
             </div>
-            <div className="col-sm-6">
+            <div className="col">
               <InputHeading id={"End Time"} heading={"End Time"} />
               <Input
                 id="End Time"
