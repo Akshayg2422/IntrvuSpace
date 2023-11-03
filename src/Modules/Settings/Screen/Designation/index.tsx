@@ -58,6 +58,7 @@ function Designation() {
     const [loading, setLoading] = useState(false);
     const status = useDropDown(STATUS_LIST[1]);
     const enterPress = useKeyPress("Enter");
+    const [isCandidatesExist, setIsCandidatesExist] = useState<boolean>(false);
 
 
     useEffect(() => {
@@ -66,7 +67,9 @@ function Designation() {
 
 
     useEffect(() => {
-        getCorporateScheduleApiHandler(corporateScheduleCurrentPages);
+        if(isCandidatesExist){
+            getCorporateScheduleApiHandler(corporateScheduleCurrentPages);
+        }
     }, [enterPress]);
 
 
@@ -238,7 +241,7 @@ console.log(corporateSchedules, "corporateSchedules");
                     <div className={'vh-100 d-flex justify-content-center align-items-center'}>
                         <Spinner />
                     </div>
-                ) : corporateSchedules ? ( corporateSchedules?.details?.corporate_jd_items?.data.length === 0 && !isFilter? (
+                ) : corporateSchedules ? ( corporateSchedules?.details?.schedule_count === 0 ? (
 
                     <UploadCorporateOpeningsCard />
 
@@ -253,7 +256,12 @@ console.log(corporateSchedules, "corporateSchedules");
                                     value={positionSearch}
                                     onChange={(e: any) => {
                                         setPositionSearch(e.target.value)
-                                    }}
+                                    }}onFocus={() => {
+                                        setIsCandidatesExist(true);
+                                      }}
+                                      onBlur={() => {
+                                        setIsCandidatesExist(false);
+                                      }}
                                 />
                             </div>
                             <div className="col-lg-3 col-md-3 col-sm-12 ">

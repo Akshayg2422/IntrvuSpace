@@ -78,6 +78,8 @@ export const CANDIDATE_STATUS = [
 function VariantInfo() {
   const { goBack } = useNavigation();
   const enterPress = useKeyPress("Enter");
+  console.log(enterPress, "enterpressssssssssss");
+
   const {
     selectedRole,
     corporateScheduleDetails,
@@ -126,21 +128,23 @@ function VariantInfo() {
   const addCandidateLoader = useLoader(false);
   const [loading, setLoading] = useState(false);
 
+
   useEffect(() => {
     getCorporateScheduleDetailsHandler();
-    getCandidatesCorporate(candidatesListCurrentPages);
   }, []);
 
   useEffect(() => {
-    getCandidatesCorporate(candidatesListCurrentPages);
+      getCandidatesCorporate(candidatesListCurrentPages);
+    console.log("22222222222222222");
+
   }, [statusNote.value]);
 
-  useEffect(() => {
+ useEffect(() => {
     if (isCandidatesExist) {
       getCandidatesCorporate(candidatesListCurrentPages);
-    }
-  }, [enterPress]);
+    } 
 
+  }, [enterPress]);
   const Refresh = () => {
     const refresh = () => window.location.reload();
 
@@ -170,7 +174,7 @@ function VariantInfo() {
   const getCandidatesCorporate = (page_number: number) => {
     const params = {
       corporate_openings_details_id: selectedRole?.id,
-      ...(searchCandidate && { q: searchCandidate }),
+      ...(searchCandidate ? { q: searchCandidate } : {}),
       ...(statusNote.value.text === "Selected" && { is_approved: true }),
       ...(statusNote.value.text === "Rejected" && { is_rejected: true }),
       ...(statusNote.value.text === "Yet to Start" && {
@@ -182,16 +186,9 @@ function VariantInfo() {
       fetchCandidatesCorporate({
         params,
         onSuccess: (response: any) => () => {
-          if (
-            statusNote.value.text === "Selected" ||
-            statusNote.value.text === "Rejected" ||
-            statusNote.value.text === "Yet to Start" ||
-            searchCandidate
-          )
-            setIsCandidatesExist(true);
-          // console.log("response candidtae===>", response);
+          setIsCandidatesExist(false)
         },
-        onError: (error: any) => () => {},
+        onError: (error: any) => () => { },
       })
     );
   };
@@ -221,7 +218,6 @@ function VariantInfo() {
             addNewCandidateModal.hide();
             getCorporateScheduleDetailsHandler();
             getCandidatesCorporate(candidatesListCurrentPages);
-            setIsCandidatesExist(true);
           },
           onError: (error: any) => () => {
             showToast(error.error_message, "error");
@@ -341,12 +337,11 @@ function VariantInfo() {
             <>
               {!corporateScheduleDetails?.is_closed && (
                 <div
-                  className={`${
-                    candidatesList?.corporate_candidate_details?.data.length ===
-                    1
+                  className={`${candidatesList?.corporate_candidate_details?.data.length ===
+                      1
                       ? "pb-4"
                       : "pb-0"
-                  }`}
+                    }`}
                 >
                   <MenuBar
                     menuData={OPTIONS}
@@ -395,7 +390,6 @@ function VariantInfo() {
           bulkUploadLoader.hide();
           getCorporateScheduleDetailsHandler();
           getCandidatesCorporate(candidatesListCurrentPages);
-          setIsCandidatesExist(true);
         },
         onError: (error: any) => () => {
           showToast(error.error_message, "error");
@@ -426,12 +420,6 @@ function VariantInfo() {
         params,
         onSuccess: (response: any) => () => {
           showToast(response.message, "success");
-          if (
-            action.id === 3 &&
-            candidatesList?.corporate_candidate_details?.data.length === 1
-          ) {
-            setIsCandidatesExist(false);
-          }
           getCandidatesCorporate(candidatesListCurrentPages);
           getCorporateScheduleDetailsHandler();
           removeCandidateModal.hide();
@@ -529,11 +517,10 @@ function VariantInfo() {
               <div className="d-flex align-items-center">
                 <div className="pl-3 pl-sm-0">
                   <span className="headingText text-secondary">
-                    {`${corporateScheduleDetails?.vacancies ?? ""} ${
-                      corporateScheduleDetails?.vacancies > 1
+                    {`${corporateScheduleDetails?.vacancies ?? ""} ${corporateScheduleDetails?.vacancies > 1
                         ? "Vacancies"
                         : "Vacancy"
-                    }`}
+                      }`}
                   </span>
                 </div>
                 {!corporateScheduleDetails?.is_closed && (
@@ -566,13 +553,7 @@ function VariantInfo() {
             </div>
 
             {candidatesList &&
-            candidatesList?.corporate_candidate_details &&
-            candidatesList?.corporate_candidate_details?.data &&
-            candidatesList?.corporate_candidate_details?.data.length === 0 &&
-            !corporateScheduleDetails?.is_closed &&
-            // !statusNote.value.text &&
-            !isCandidatesExist &&
-            !searchCandidate ? (
+              candidatesList?.candidate_count === 0  && !corporateScheduleDetails?.is_closed ? (
               <div className="mt-5 text-center">
                 <div>
                   <span className="titleText text-secondary">
@@ -617,7 +598,8 @@ function VariantInfo() {
               </div>
             ) : (
               <>
-                {!corporateScheduleDetails?.is_closed && (
+                { candidatesList &&
+              candidatesList?.candidate_count > 0  && 
                   <div className="mt-6 row">
                     <div className="col-md-6 col-xl-3">
                       <Card
@@ -663,12 +645,11 @@ function VariantInfo() {
 
                           <div>
                             <span
-                              className={`${
-                                corporateScheduleDetails?.candidate_details
+                              className={`${corporateScheduleDetails?.candidate_details
                                   ?.selected_candidates
                                   ? "text-primary"
                                   : "text-secondary"
-                              } titleText`}
+                                } titleText`}
                             >
                               {
                                 corporateScheduleDetails?.candidate_details
@@ -740,15 +721,10 @@ function VariantInfo() {
                       </Card>
                     </div>
                   </div>
-                )}
+            }
 
-                {(candidatesList &&
-                  candidatesList?.corporate_candidate_details &&
-                  candidatesList?.corporate_candidate_details?.data &&
-                  candidatesList?.corporate_candidate_details?.data.length >
-                    0) ||
-                isCandidatesExist ||
-                searchCandidate ? (
+                {candidatesList &&
+                  candidatesList?.candidate_count > 0 ? (
                   <div className="mt-5">
                     <Card
                       style={{
@@ -859,10 +835,7 @@ function VariantInfo() {
                         </div>
 
                         {candidatesList &&
-                        candidatesList?.corporate_candidate_details &&
-                        candidatesList?.corporate_candidate_details?.data &&
-                        candidatesList?.corporate_candidate_details?.data
-                          .length > 0 ? (
+                          candidatesList?.candidate_count > 0 ? (
                           <div className={"row px-0 mx--4"}>
                             <div
                               className={
@@ -916,6 +889,7 @@ function VariantInfo() {
                     </Card>
                   </div>
                 ) : (
+                  
                   <div></div>
                 )}
               </>
@@ -999,9 +973,8 @@ function VariantInfo() {
                           className="font-weight-bolder"
                           style={{ fontSize: 18 }}
                         >
-                          {`${
-                            corporateScheduleDetails?.interview_duration || 0
-                          } minutes`}
+                          {`${corporateScheduleDetails?.interview_duration || 0
+                            } minutes`}
                         </span>
                       </div>
                     </div>
