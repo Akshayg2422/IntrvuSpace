@@ -77,14 +77,31 @@ function* fetchMemberLoginUsingOtpSaga(action) {
     }
 }
 
+// registerAsCompany
+
+function* registerAsCompanySaga(action) {
+    try {
+        const response = yield call(Api.registerAsCompanyAPi, action.payload.params);
+        if (response.success) {
+            yield put(Action.registerAsCompanySuccess(response));
+            yield call(action.payload.onSuccess(response));
+        } else {
+            yield put(Action.registerAsCompanyFailure(response.error_message));
+            yield call(action.payload.onError(response));
+        }
+    } catch (error) {
+        yield put(Action.registerAsCompanyFailure(error));
+        yield call(action.payload.onError(error));
+    }
+}
+
 function* AuthSaga() {
 
     yield takeLatest(Action.MEMBER_LOGIN_USING_PASSWORD, memberLoginUsingPasswordSaga);
     yield takeLatest(Action.REGISTER_AS_MEMBER, registerAsMemberSaga);
     yield takeLatest(Action.FETCH_OTP, fetchOtpSaga);
     yield takeLatest(Action.FETCH_MEMBER_USING_LOGIN_OTP, fetchMemberLoginUsingOtpSaga);
-
-
+    yield takeLatest(Action.REGISTER_AS_COMPANY, registerAsCompanySaga);
 }
 
 export default AuthSaga;

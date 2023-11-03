@@ -1,9 +1,9 @@
-export const EMAIL_RULES = {
-  email: {
-    email: { message: "doesn't look like a valid email" },
-  }
+export const NAME_RULES = {
+  first_name: {
+    presence: { message: "First name cannot be empty" },
+    length: { minimum: 3, message: "First name minimum 3 chars" },
+  },
 }
-
 
 export const MOBILE_NUMBER_RULES = {
   mobile_number: {
@@ -12,33 +12,21 @@ export const MOBILE_NUMBER_RULES = {
   }
 }
 
-export const OTP_NUMBER_RULES = {
-  otp: {
-    presence: { message: "Otp cannot be empty" },
-    length: { is: 4, message: "Otp should be 4 number" },
+export const EMAIL_RULES = {
+  email: {
+    email: { message: "doesn't look like a valid email" },
   }
 }
 
-export const NAME_RULES = {
-  first_name: {
-    presence: { message: "First name cannot be empty" },
-    length: { minimum: 3, message: "First name minimum 3 chars" },
-  },
-}
-
-
-
-
-
-
 
 export const REGISTER_RULES = {
-  ...EMAIL_RULES,
-  ...MOBILE_NUMBER_RULES,
   ...NAME_RULES,
-  password: {
-    presence: { message: "Password cannot be empty" },
-    length: { minimum: 8, message: "Password minimum 8 chars" },
+  ...MOBILE_NUMBER_RULES,
+  address: {
+    presence: { message: "Address cannot be empty" },
+  },
+  pincode: {
+    presence: { message: "Pincode cannot be empty" },
   }
 }
 
@@ -170,7 +158,7 @@ export const GENERATE_QUESTION_COUNT_RULES = {
 }
 
 export const FROM_JD_RULES = {
-  
+
   position: {
     presence: { message: "Position name cannot be empty" },
     length: { minimum: 3, message: "Position minimum 3 chars" },
