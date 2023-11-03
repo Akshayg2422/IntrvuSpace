@@ -233,7 +233,7 @@ function Designation() {
                 listLoader.loader && <div className={'loader-container'}><Spinner /></div>
             }
             {
-                !listLoader.loader && corporateSchedules.length <= 0 && !isFilter ? <UploadCorporateOpeningsCard /> :
+                !listLoader.loader && corporateSchedules?.length <= 0 && !isFilter ? <UploadCorporateOpeningsCard /> :
                     <div className={'screen-container'}>
                         <div className='row'>
                             <div className='col-sm-3'>
