@@ -51,7 +51,7 @@ const initialState: DashboardProp = {
   isCreateOpening: false,
   corporateScheduleNumOfPages: undefined,
   corporateScheduleCurrentPages: 1,
-  candidatesList: undefined,
+  candidatesList: [],
   candidatesListNumOfPages: undefined,
   candidatesListCurrentPages: 1,
 };
@@ -338,7 +338,7 @@ const DashboardReducer = (state = initialState, action: any) => {
 
     case ActionTypes.CLEAR_LAST_BREADCRUMB:
       const updatedBreadCrumb = state.breadCrumb.pop();
-      return { ...state, breadCrumb: updatedBreadCrumb };
+      state = { ...state, breadCrumb: updatedBreadCrumb };
       break;
 
     /**
@@ -642,18 +642,21 @@ const DashboardReducer = (state = initialState, action: any) => {
         candidatesListCurrentPages: 1,
       };
       break;
+
+
     case ActionTypes.FETCH_CANDIDATES_CORPORATE_SUCCESS:
+      const { corporate_candidate_details } = action.payload?.details
+
       state = {
         ...state,
-        candidatesList: action.payload?.details,
-        candidatesListNumOfPages:
-          action.payload?.details?.corporate_candidate_details.num_pages,
-        candidatesListCurrentPages:
-          action.payload?.details.corporate_candidate_details.next_page === -1
-            ? action.payload?.details.corporate_candidate_details.num_pages
-            : action.payload?.details.corporate_candidate_details.next_page - 1,
+        candidatesList: corporate_candidate_details?.data,
+        candidatesListNumOfPages: corporate_candidate_details.num_pages,
+        candidatesListCurrentPages: corporate_candidate_details.next_page === -1
+          ? corporate_candidate_details.num_pages
+          : corporate_candidate_details.next_page - 1,
       };
       break;
+
     case ActionTypes.FETCH_CANDIDATES_CORPORATE_FAILURE:
       state = { ...state, candidatesList: undefined };
       break;

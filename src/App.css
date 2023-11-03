@@ -70,11 +70,11 @@ input[type=number] {
     background-color: var(--badge);
     border-radius: 20px;
     border-width: 0px;
-    padding: 5px 15px;
+    padding: 5px 20px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-left: 15px;
+    margin-left: 20px;
 }
 
 @media(max-width: 768px) {

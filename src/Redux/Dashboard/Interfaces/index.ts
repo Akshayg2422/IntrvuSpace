@@ -41,7 +41,7 @@ export interface DashboardProp {
   corporateScheduleNumOfPages: any,
   corporateScheduleCurrentPages: number,
   isCreateOpening?: boolean;
-  candidatesList?: boolean;
+  candidatesList?: any;
   candidatesListNumOfPages: any,
   candidatesListCurrentPages: number,
 }

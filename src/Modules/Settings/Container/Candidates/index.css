@@ -1,0 +1,132 @@
+.candidate-dashboard-container {
+    display: flex;
+    margin: 50px 0px;
+    justify-content: space-between;
+}
+
+
+.dashboard-title {
+    color: var(--secondary);
+    font-size: 18px;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+.dashboard-card-container {
+    width: 100%;
+    height: 125px;
+    border: 1px solid var(--card-border);
+    border-radius: var(--border-radius);
+    padding: 2% 3%;
+}
+
+.dashboard-card-spacing {
+    margin: 0px 25px;
+}
+
+.dashboard-card-left-spacing {
+    margin-left: 0px;
+}
+
+.dashboard-card-right-spacing {
+    margin-right: 0px;
+}
+
+.selected-sub-text {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--secondary);
+}
+
+
+.table-heading {
+    display: flex;
+}
+
+
+.table-search-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 40px;
+
+}
+
+.table-container {
+    margin: 0px -3%;
+    margin-top: 40px;
+}
+
+
+.add-candidate-container {
+    display: flex;
+    align-items: center;
+    margin-right: 15px;
+}
+
+.add-button-container {
+    margin-left: 30px;
+    width: 130px;
+
+}
+
+.th-button {
+    width: 115px;
+}
+
+.th-menu-container {
+    margin-left: 15px;
+}
+
+@media(max-width: 768px) {
+
+    .candidate-dashboard-container {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .dashboard-card-spacing {
+        margin: 0px;
+        margin-top: 20px;
+    }
+
+    .dashboard-card-container {
+        width: 100%;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border: 1px solid var(--card-border);
+        border-radius: var(--border-radius);
+    }
+
+    .table-search-container {
+        display: flex;
+        flex-direction: column;
+
+    }
+
+    .add-candidate-container {
+        display: flex;
+        margin-top: 15px;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .add-button-container {
+        display: flex;
+        flex: 1;
+        margin: 10px;
+    }
+
+    .input-container {
+        margin-top: 20px;
+    }
+
+    .table-container {
+        width: 100%;
+        overflow: auto;
+    }
+
+
+}

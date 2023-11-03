@@ -5,7 +5,6 @@
 .variant-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
 }
 
 .experience {
@@ -22,4 +21,142 @@
 
 .menu-container {
     margin-left: 10px;
+}
+
+.role-container {
+    display: flex;
+}
+
+.empty-candidates-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 60px;
+}
+
+.empty-candidates-des-container {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.empty-candidates-btn-container {
+    display: flex;
+    margin-top: 30px;
+}
+
+.empty-btn-container {
+    width: 240px;
+}
+
+.bulk-btn-container {
+    margin-left: 14px;
+}
+
+.jd-details-container {
+    margin-top: 80px;
+}
+
+.heading-space {
+    margin-bottom: 15px;
+}
+
+
+.other-info-container {
+    margin-top: 80px;
+}
+
+.other-info-details-container {
+    display: flex;
+    padding: 20px;
+}
+
+.info-title {
+    color: var(--secondary);
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.info-content {
+    color: var(--secondary);
+    font-size: 18px;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+.info-container {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+@media(max-width: 768px) {
+
+    .screen-variant-info {
+        padding: 25px;
+    }
+
+    .variant-header {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .vacancies-container {
+        margin-top: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .empty-candidates-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+
+    }
+
+    .empty-candidates-btn-container {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .empty-btn-container {
+        width: '100%';
+    }
+
+
+    .bulk-btn-container {
+        margin-left: 0px;
+        margin-top: 15px;
+    }
+
+
+    .other-info-details-container {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .info-container {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        margin-top: 15px;
+    }
+
+    .other-info-details-container {
+        display: flex;
+        padding: 0px;
+    }
+
+    .jd-details-container {
+        margin-top: 40px;
+    }
+
+    .other-info-container {
+        margin-top: 40px;
+    }
+
+
 }

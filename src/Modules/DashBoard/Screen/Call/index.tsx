@@ -20,7 +20,7 @@ import { RecordRTCPromisesHandler, StereoAudioRecorder } from "recordrtc";
 
 const compare_moment_format = "YYYY-MM-DDHH:mm:ss";
 
-const INTERVAL_TIME = 5000;
+let INTERVAL_TIME = 5000;
 
 const NETWORK_DESIGN = [
   {
@@ -247,8 +247,8 @@ function Call() {
   const socketRef = useRef<any>(null);
   const videoRecorderRef = useRef(null);
 
-  console.log('111111111111111111111111111111111111111111111111111111',scheduleInfo);
-  
+  console.log('111111111111111111111111111111111111111111111111111111', scheduleInfo);
+
 
   const proceedHandleResponseV1 = (response) => {
     setProcessCallInprogress(false);

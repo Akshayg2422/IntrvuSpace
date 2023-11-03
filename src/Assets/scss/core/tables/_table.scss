@@ -13,6 +13,7 @@
         text-transform: $table-head-text-transform;
         letter-spacing: $table-head-letter-spacing;
         border-bottom: $table-border-width solid $table-border-color;
+        border: none;
     }
 
     th {
@@ -31,12 +32,15 @@
     th {
         font-size: $table-body-font-size;
         white-space: nowrap;
+        border: none;
+        padding: 25px;
     }
 
 
     // Vetical align table content
 
     &.align-items-center {
+
         td,
         th {
             vertical-align: middle;
@@ -44,9 +48,9 @@
     }
 
 
-   // Styles for dark table
+    // Styles for dark table
 
-   .thead-dark {
+    .thead-dark {
         th {
             background-color: $table-dark-head-bg;
             color: $table-dark-head-color;
@@ -62,11 +66,13 @@
 
     .thead-light {
         th {
-            background-color: $table-head-bg;
+            height: 50px;
+            background-color: #FAFBFF;
             color: $table-head-color;
 
             a {
-                color: $table-head-color;
+                color: $secondary;
+                text-transform: capitalize;
             }
         }
     }
@@ -85,6 +91,7 @@
 // Flush tables
 
 .table-flush {
+
     td,
     th {
         border-left: 0;
@@ -94,6 +101,7 @@
     tbody {
         tr {
             &:first-child {
+
                 td,
                 th {
                     border-top: 0;
@@ -101,6 +109,7 @@
             }
 
             &:last-child {
+
                 td,
                 th {
                     border-bottom: 0;

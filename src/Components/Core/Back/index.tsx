@@ -16,9 +16,9 @@ function Back({ variant = 'default', icon = icons.backButton, h = 13, w = 13, on
                 }
             }
 
-        }} className='pointer'>
-            <Image src={icon} width={h} height={w} style={{
-                objectFit: 'contain'
+        }} className='pointer d-flex align-items-center'>
+            <Image src={icon} height={h} width={w} style={{
+                objectFit: 'contain',
             }} />
         </div>
     )

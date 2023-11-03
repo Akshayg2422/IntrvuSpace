@@ -24,7 +24,7 @@ function Guidelines({ scheduleInfo = undefined, loading, heading, onClick }: Gui
     const startInterviewModal = useModal(true)
     const goToDashboardModal = useModal(true)
 
-    const {interviewee_expected_designation, interviewee_experience, interview_duration} = scheduleInfo
+    const { interviewee_expected_designation, interviewee_experience, interview_duration } = scheduleInfo
 
     console.log("scheduleinfooo==>", scheduleInfo)
 
@@ -78,7 +78,7 @@ function Guidelines({ scheduleInfo = undefined, loading, heading, onClick }: Gui
                                 <h2 className='m-0'>Wola! You have successfully completed your interview</h2>
                                 {/* <small className='text-default'>React Native Developer | Fresher | 30 mins duration</small> */}
                                 <small>{interviewee_expected_designation && interviewee_expected_designation + " "}</small> |
-                                <small>{interviewee_experience === 0 ? " Fresher" : " " + interviewee_experience + (interviewee_experience > 1 ? " years of experience" : " year of experience") }</small> |
+                                <small>{interviewee_experience === 0 ? " Fresher" : " " + interviewee_experience + (interviewee_experience > 1 ? " years of experience" : " year of experience")}</small> |
                                 <small>{`${interview_duration && " " + interview_duration} mins duration`}</small>
 
                             </div>

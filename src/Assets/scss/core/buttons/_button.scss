@@ -12,6 +12,7 @@
     font-size: $input-btn-font-size;
     will-change: transform;
     border-radius: $border-radius;
+    padding: 12px 18px;
 
     &:hover {
         @include box-shadow($btn-hover-box-shadow);

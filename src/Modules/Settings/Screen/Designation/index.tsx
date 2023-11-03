@@ -401,7 +401,9 @@ function Designation() {
                                                 outline
                                                 className={`${duration?.id === id ? 'btn-outline-primary-active' : 'btn-outline-primary-inactive'}`}
                                                 text={subText}
-                                                onClick={setDuration}
+                                                onClick={() => {
+                                                    setDuration(item)
+                                                }}
                                             />
                                         </div>
                                     )

@@ -13,6 +13,8 @@
 
 .dropdown-menu {
     min-width: 12rem;
+    border: 1px solid $border-color-modal;
+    border-radius: $border-radius;
 
     .dropdown-item {
         padding: .5rem 1rem;

@@ -71,6 +71,7 @@
 	font-size: 2.25rem !important;
 	font-weight: 700 !important;
 	color: $secondary;
+	line-height: 1;
 }
 
 
@@ -120,6 +121,21 @@
 	font-size: 0.875rem !important;
 	color: $primary;
 	font-weight: 600;
+	letter-spacing: 1.1;
+}
+
+
+.th-bold {
+	font-size: 14px;
+	font-weight: 600;
+	color: var(--secondary);
+}
+
+
+.th-regular {
+	font-size: 14px;
+	font-weight: 400;
+	color: var(--secondary);
 }
 
 
@@ -180,4 +196,20 @@
 
 @each $color, $value in $colors {
 	@include text-emphasis-variant(".text-#{$color}", $value, $ignore-warning: true);
+}
+
+@media(max-width: 768px) {
+
+	.text-heading {
+		font-size: 1.25rem !important;
+		font-weight: 700 !important;
+		color: $secondary;
+	}
+
+
+	.screen-heading {
+		font-size: 1rem !important;
+		font-weight: 700 !important;
+		color: $secondary;
+	}
 }
