@@ -1,6 +1,7 @@
 import { icons, image } from "@Assets";
 import { Button, Image } from "@Components";
-import { useDynamicHeight, useGrowingTitleLine } from "@Hooks";
+import { useGrowingTitleLine, useNavigation } from "@Hooks";
+import { ROUTES } from "@Routes";
 import { Col, Container, Row } from "reactstrap";
 
 const packageContent = [
@@ -12,17 +13,11 @@ const packageContent = [
 ];
 
 function WebsiteHeader() {
-  let dynamicHeight: any = useDynamicHeight();
+  const { goTo } = useNavigation();
+
 
   const { growingWidth, titleLineRef: websiteHeaderRef } =
     useGrowingTitleLine();
-
-  let dynamicWidthCalculation =
-    dynamicHeight.dynamicWidth <= 510
-      ? dynamicHeight.dynamicWidth / 1.3
-      : dynamicHeight.dynamicHeight - 44;
-
-  const screenHeight = dynamicHeight.dynamicWidth <= 576 ? "" : "h-100vh";
 
   return (
     <div
@@ -50,7 +45,7 @@ function WebsiteHeader() {
                       Where AI
                     </span>
                   </div>
-                  <div style={{marginTop: -11}}>
+                  <div style={{ marginTop: -11 }}>
                     <span className="display-3 text-secondary font-weight-bolder ls-1">
                       meets HR
                     </span>
@@ -86,10 +81,13 @@ function WebsiteHeader() {
 
                 <Button
                   className={"mt-7 col-sm-10 ls-0"}
-                  style={{borderRadius: 4}}
+                  style={{ borderRadius: 4 }}
                   block
-                  text={"Start Now"}
+                  text={"Register"}
                   size="lg"
+                  onClick={() => {
+                    goTo(ROUTES["auth-module"].register);
+                  }}
                 />
 
                 <div className="pt-3 pb-sm-0 pb-3 ">

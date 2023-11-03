@@ -3,7 +3,7 @@ import classNames from "classnames";
 import "./AnimatedImageFrame.scss";
 import { VideoStream } from "@Modules";
 
-const AnimatedImage = ({ name, shouldBlink, show, showWebCam = false, isMuted = false, variant = 'lg' }) => {
+const AnimatedImage = ({ name, shouldBlink, show, showWebCam = false, isMuted = false, variant = 'lg', device = "web" }) => {
   const imageClasses = classNames(!isMuted ? variant === 'sm' ? "animated-image-small" : "animated-image" : "", { blink: shouldBlink });
 
 
@@ -16,7 +16,7 @@ const AnimatedImage = ({ name, shouldBlink, show, showWebCam = false, isMuted = 
       >
         {!show ?
           <div>
-            <VideoStream isRecording={showWebCam} />
+            {(device === 'web' && showWebCam) && <VideoStream isRecording={showWebCam} />}
             {!showWebCam &&
               <div className="d-flex align-items-center justify-content-center">
                 <h1 className="text-white font-weight-700" style={{

@@ -9,6 +9,7 @@ import {
   DropDownIcon,
   Heading,
   Image,
+  NoDataFound,
   Spinner,
 } from "@Components";
 import { useDropDown, useLoader } from "@Hooks";
@@ -63,7 +64,7 @@ function Report() {
     "skill_matrix",
   ]);
 
-  const [basicReportData, setBasicReportData] = useState<any>([]);
+  const [basicReportData, setBasicReportData] = useState<any>(undefined);
   // const filter = useDropDown(FILTER[0]);
 
   const componentRef = useRef(null);
@@ -75,6 +76,7 @@ function Report() {
   const [fileName, setFileName] = useState("");
   // const [reportType, setReportType] = useState(REPORT_TYPE[0].id);
   const reportType = useDropDown(REPORT_TYPE[0]);
+  
 
   useEffect(() => {
     getBasicReportData();
@@ -117,7 +119,6 @@ function Report() {
       schedule_id: schedule_id,
       ...(reportType.value.id === "DR" && { is_detailed: true }),
     };
-
     dispatch(
       fetchBasicReport({
         params,
@@ -126,16 +127,16 @@ function Report() {
           // console.log("success===>", success.details);
           setBasicReportData(success.details);
 
-          // const {
-          //   communication,
-          //   skill_matrix,
-          //   trait,
-          //   overall_weightage,
-          //   name,
-          //   sub_text,
-          // } = success.details;
-          // // setFileName(name + "_" + sub_text + "_" + filter?.value.title);
-          // setFileName(name + "_" + sub_text + "_" + reportType)
+          const {
+            communication,
+            skill_matrix,
+            trait,
+            overall_weightage,
+            name,
+            sub_text,
+          } = success.details;
+          // setFileName(name + "_" + sub_text + "_" + filter?.value.title);
+          setFileName(name + "_" + sub_text + "_" + reportType)
 
           // console.log(communication, "communication data");
           // console.log(skill_matrix, "skill_matrix data");
@@ -200,11 +201,15 @@ function Report() {
           // });
         },
         onError: (error) => () => {
+
           basicReportLoader.hide();
+          console.log(error,"error");
+          
         },
       })
     );
   };
+console.log(basicReportData,"basicReportData");
 
   // const calculateRating = (data: any) => {
   //   let overallPercent = 0;
@@ -255,7 +260,7 @@ function Report() {
             count =
               count +
               +basicReportData[el].overal_percent /
-                basicReportData[el].sections.length;
+              basicReportData[el].sections.length;
           });
       } else if (Array.isArray(basicReportData[el])) {
         basicReportData[el].length > 0 &&
@@ -318,7 +323,7 @@ function Report() {
             </div>
             <div className="ml-2 pl-1 pb-3 text-black">
               {el?.expected_answer_key_points?.points &&
-              el?.expected_answer_key_points?.points.length > 0 ? (
+                el?.expected_answer_key_points?.points.length > 0 ? (
                 <>
                   <h5 className="text-black text-uppercase">
                     Expected Key Points
@@ -345,10 +350,10 @@ function Report() {
             {(el?.suggestions?.covered?.length > 0 ||
               el?.suggestions?.covered_partial?.length > 0 ||
               el?.suggestions?.covered_not_valid?.length > 0) && (
-              <div className="ml-1 pb-2">
-                <h5 className="text-black text-uppercase ">Answer breakdown</h5>
-              </div>
-            )}
+                <div className="ml-1 pb-2">
+                  <h5 className="text-black text-uppercase ">Answer breakdown</h5>
+                </div>
+              )}
             <div className="mx-5">
               <div
                 className="row p-0 ml--6 mr--7"
@@ -359,79 +364,79 @@ function Report() {
                 {(el?.suggestions?.covered?.length > 0 ||
                   el?.suggestions?.covered_partial?.length > 0 ||
                   el?.suggestions?.covered_not_valid?.length > 0) && (
-                  <>
-                    {el?.suggestions?.covered?.length > 0 && (
-                      <div className="col-sm-4">
-                        <Card
-                          className="check"
-                          style={{
-                            height: maxNumber + "px",
-                          }}
-                        >
-                          <CardHeader className="h3">Valid</CardHeader>
-                          <CardBody>
-                            <div>
-                              {el?.suggestions?.covered?.length > 0 &&
-                                el?.suggestions?.covered?.map((items) => {
-                                  return (
-                                    <>
-                                      <li>
-                                        <span>{items}</span>
-                                      </li>
-                                    </>
-                                  );
-                                })}
-                            </div>
-                          </CardBody>
-                        </Card>
-                      </div>
-                    )}
-                    {el?.suggestions?.covered_partial?.length > 0 && (
-                      <div className="col-sm-4">
-                        <Card
-                          style={{
-                            height: maxNumber + "px",
-                          }}
-                        >
-                          <CardHeader className="h3">Partial</CardHeader>
-                          <CardBody>
-                            {el?.suggestions?.covered_partial?.length > 0 &&
-                              el?.suggestions?.covered_partial?.map((items) => {
-                                return (
-                                  <>
-                                    <li>{items}</li>
-                                  </>
-                                );
-                              })}
-                          </CardBody>
-                        </Card>
-                      </div>
-                    )}
-                    {el?.suggestions?.covered_not_valid?.length > 0 && (
-                      <div className="col-sm-4">
-                        <Card
-                          style={{
-                            height: maxNumber,
-                          }}
-                        >
-                          <CardHeader className="h3">Invalid</CardHeader>
-                          <CardBody>
-                            {el?.suggestions?.covered_not_valid?.length > 0 &&
-                              el?.suggestions?.covered_not_valid?.map(
-                                (items) => {
+                    <>
+                      {el?.suggestions?.covered?.length > 0 && (
+                        <div className="col-sm-4">
+                          <Card
+                            className="check"
+                            style={{
+                              height: maxNumber + "px",
+                            }}
+                          >
+                            <CardHeader className="h3">Valid</CardHeader>
+                            <CardBody>
+                              <div>
+                                {el?.suggestions?.covered?.length > 0 &&
+                                  el?.suggestions?.covered?.map((items) => {
+                                    return (
+                                      <>
+                                        <li>
+                                          <span>{items}</span>
+                                        </li>
+                                      </>
+                                    );
+                                  })}
+                              </div>
+                            </CardBody>
+                          </Card>
+                        </div>
+                      )}
+                      {el?.suggestions?.covered_partial?.length > 0 && (
+                        <div className="col-sm-4">
+                          <Card
+                            style={{
+                              height: maxNumber + "px",
+                            }}
+                          >
+                            <CardHeader className="h3">Partial</CardHeader>
+                            <CardBody>
+                              {el?.suggestions?.covered_partial?.length > 0 &&
+                                el?.suggestions?.covered_partial?.map((items) => {
                                   return (
                                     <>
                                       <li>{items}</li>
                                     </>
                                   );
-                                }
-                              )}
-                          </CardBody>
-                        </Card>
-                      </div>
-                    )}
-                  </>
-                )}
+                                })}
+                            </CardBody>
+                          </Card>
+                        </div>
+                      )}
+                      {el?.suggestions?.covered_not_valid?.length > 0 && (
+                        <div className="col-sm-4">
+                          <Card
+                            style={{
+                              height: maxNumber,
+                            }}
+                          >
+                            <CardHeader className="h3">Invalid</CardHeader>
+                            <CardBody>
+                              {el?.suggestions?.covered_not_valid?.length > 0 &&
+                                el?.suggestions?.covered_not_valid?.map(
+                                  (items) => {
+                                    return (
+                                      <>
+                                        <li>{items}</li>
+                                      </>
+                                    );
+                                  }
+                                )}
+                            </CardBody>
+                          </Card>
+                        </div>
+                      )}
+                    </>
+                  )}
               </div>
             </div>
           </div>
@@ -469,39 +474,8 @@ function Report() {
   // console.log("basicReportData===>", basicReportData);
 
   return (
-    <>
-      {/* <div
-          className="row position-fixed bottom-0 right-0 m-3 p-3"
-          style={{
-            zIndex: 1,
-          }}
-        > */}
-      {/* <ButtonGroup
-            size={"btn-sm"}
-            sortData={FILTER}
-            selected={filter.value}
-            onClick={handleButtonClick}
-          /> */}
-      {/* <div className="ml-3">
-            {fileName && (
-              <ReactToPrint
-                documentTitle={fileName}
-                trigger={() => (
-                  <Button
-                    variant={"icon-rounded"}
-                    color="info"
-                    icons={"bi bi-printer-fill text-white fa-lg"}
-                  />
-                )}
-                content={() => componentRef.current}
-              />
-            )}
-          </div>
-        </div> */}
-
-      <div className="d-flex flex-column px-sm-6 px-2 py-3" ref={componentRef}>
-        <div className="position-relative">
-          <div className="col-sm-3 position-absolute top-4 left-0 p-0">
+    <> <div className="position-relative ml-sm-6">
+      <div className="col-sm-3 position-absolute top-3 left-0 p-0">
             <DropDown
               // data={REPORT_TYPE}
               // value={reportType}
@@ -516,7 +490,52 @@ function Report() {
               onChange={reportType.onChange}
             />
           </div>
-          <div className="position-relative mt-7 mt-sm-0">
+    </div>
+      <div
+          className="row position-fixed bottom-0 right-0 m-sm-3 p-3"
+          style={{
+            zIndex: 1,
+          }}
+        >
+      {/* <ButtonGroup
+            size={"btn-sm"}
+            sortData={FILTER}
+            selected={filter.value}
+            onClick={handleButtonClick}
+          /> */}
+      <div className="ml-3">
+            {fileName && (
+              <ReactToPrint
+                documentTitle={fileName}
+                trigger={() => (
+                  <Button
+                    variant={"icon-rounded"}
+                    color="info"
+                    icons={"bi bi-printer-fill text-white fa-lg"}
+                  />
+                )}
+                content={() => componentRef.current}
+              />
+            )}
+          </div>
+          
+        </div>
+        { basicReportLoader.loader ?  <div
+      className={
+        "vh-100 d-flex justify-content-center align-items-center"
+      }
+    >
+      <Spinner />
+    </div> 
+   : basicReportData ? (
+      <div className="d-flex flex-column px-sm-6 px-3 py-3" ref={componentRef}>
+        
+        <div className="">
+        
+          <div className="position-relative ">
+            <div className="position-absolute top-2 ">
+              {/* <Image src={image.passportImage} height={100}/> */}
+            </div>
             <div className="mt-5">
               <div className="text-center">
                 <div className="">
@@ -532,17 +551,15 @@ function Report() {
                     className="font-weight-bolder text-secondary font-weight-600"
                     style={{ fontSize: 12 }}
                   >
-                    {`${basicReportData.interview_meta_info?.role} - ${
-                      !basicReportData.interview_meta_info?.experience
-                        ? "Fresher"
-                        : basicReportData.interview_meta_info?.experience
-                    } ${
-                      basicReportData.interview_meta_info?.experience > 1
+                    {`${basicReportData.interview_meta_info?.role} - ${!basicReportData.interview_meta_info?.experience
+                      ? "Fresher"
+                      : basicReportData.interview_meta_info?.experience
+                      } ${basicReportData.interview_meta_info?.experience > 1
                         ? "years"
                         : basicReportData.interview_meta_info?.experience === 1
-                        ? "year"
-                        : ""
-                    }`}
+                          ? "year"
+                          : ""
+                      }`}
                   </span>
                 </div>
                 <div>
@@ -602,17 +619,18 @@ function Report() {
                             fontSize: "36px",
                           }}
                         >
-                          {basicReportData.skill_matrix_overal_percent}
+                          {basicReportData?.skill_matrix_overal_percent}
                         </span>
                       </div>
                     </div>
                   </Card>
                 </div>
-                {basicReportData.report_other_analytics &&
-                  Object.keys(basicReportData.report_other_analytics)?.map(
+                {basicReportData?.report_other_analytics &&
+                  Object.keys(basicReportData?.report_other_analytics)?.map(
                     (heading) => {
-                      return (
-                        <div className="col-sm-3 ">
+                      return (<>
+                      {typeof basicReportData?.report_other_analytics[heading] !== "number" ? <div>{''}</div>
+                       : <div className="col-sm-3 ">
                           <Card
                             style={{
                               borderWidth: 1.5,
@@ -623,7 +641,7 @@ function Report() {
                           >
                             <div className="progress-wrapper col py-0 m-0 ">
                               <div className="h4 mb-0 pb-0 pt-2">
-                                <span
+                                {heading && <span
                                   className="font-weight-bolder text-secondary"
                                   style={{ fontSize: 16 }}
                                 >
@@ -631,22 +649,24 @@ function Report() {
                                     "_",
                                     " "
                                   )}
-                                </span>
+                                </span>}
                               </div>
 
                               <div className="mt--2">
-                                <span
+                               <span
                                   className={"text-secondary font-weight-bold"}
                                   style={{
                                     fontSize: "36px",
                                   }}
                                 >
-                                  {`${basicReportData.report_other_analytics[heading]} %`}
+                                  {`${basicReportData?.report_other_analytics[heading]} %`}
                                 </span>
                               </div>
                             </div>
                           </Card>
                         </div>
+                    }
+                        </>
                       );
                     }
                   )}
@@ -711,7 +731,7 @@ function Report() {
                                 className="font-weight-bolder text-secondary"
                                 style={{ fontSize: 18 }}
                               >
-                                {capitalizeFirstLetter(heading).replace("_"," ")}
+                                {capitalizeFirstLetter(heading).replace("_", " ")}
                               </span>
                             </div>
                           </div>
@@ -801,7 +821,7 @@ function Report() {
                             <Image src={item.icon} height={20} />
                             <span
                               style={{ fontSize: 14 }}
-                              className="text-default ml-2"
+                              className="text-default ml-2 font-weight-500"
                             >
                               {item.text}
                             </span>
@@ -832,20 +852,19 @@ function Report() {
                             <div className="d-flex justify-content-between">
                               <div>
                                 <div>
-                                  <span
+                                  <h2
                                     className="text-secondary font-weight-bolder"
-                                    style={{ fontSize: 16 }}
+                                    
                                   >
                                     {skill.name}
-                                  </span>
+                                  </h2>
                                 </div>
                               </div>
-                              <span
+                              <h2
                                 className="text-secondary font-weight-bolder"
-                                style={{ fontSize: 16 }}
                               >
                                 {skill.rating}
-                              </span>
+                              </h2>
                             </div>
 
                             <div>
@@ -855,12 +874,12 @@ function Report() {
                                   return (
                                     <>
                                       <div className="mt-3">
-                                        <span
-                                          className="text-secondary"
-                                          style={{ fontSize: 16 }}
+                                        <b
+                                          className="text-secondary font-weight-500"
+                                          
                                         >
                                           {que.question}
-                                        </span>
+                                        </b>
                                       </div>
 
                                       <div className="mt-3">
@@ -875,9 +894,9 @@ function Report() {
                                                     src={icons.check}
                                                     height={20}
                                                   />
-                                                  <span className="text-default ml-2">
+                                                  <small className="text-default ml-2 font-weight-500">
                                                     {ans}
-                                                  </span>
+                                                  </small>
                                                 </div>
                                               );
                                             }
@@ -895,9 +914,9 @@ function Report() {
                                                     src={icons.checkBlack}
                                                     height={20}
                                                   />
-                                                  <span className="text-default ml-2">
+                                                  <small className="text-default ml-2 font-weight-500">
                                                     {ans}
-                                                  </span>
+                                                  </small>
                                                 </div>
                                               );
                                             }
@@ -915,9 +934,9 @@ function Report() {
                                                     src={icons.frame}
                                                     height={20}
                                                   />
-                                                  <span className="text-default ml-2">
+                                                  <small className="text-default ml-2 font-weight-500">
                                                     {ans}
-                                                  </span>
+                                                  </small>
                                                 </div>
                                               );
                                             }
@@ -926,7 +945,7 @@ function Report() {
                                         {que.suggestions?.covered_not_valid
                                           .length === 0 &&
                                           que.suggestions?.covered.length ===
-                                            0 &&
+                                          0 &&
                                           que.suggestions?.covered_partial
                                             .length === 0 && (
                                             <div>
@@ -934,9 +953,9 @@ function Report() {
                                                 src={icons.frame}
                                                 height={20}
                                               />
-                                              <span className="text-default ml-2">
+                                              <small className="text-default ml-2 font-weight-500">
                                                 {"Not Answered"}
-                                              </span>
+                                              </small>
                                             </div>
                                           )}
                                       </div>
@@ -1028,9 +1047,21 @@ function Report() {
           )}
         </div>
         <div className="d-flex justify-content-end mt-5 mb-6">
+        <a href={'https://www.intrvu.space'} target="_blank" rel="noreferrer">
           <Image src={icons.poweredBy} height={40} />
+         </a>
         </div>
-      </div>
+      </div> ) :
+       (
+        <div
+          className={
+            "d-flex h-100vh justify-content-center align-items-center mx-auto"
+          }
+        >
+          <NoDataFound />
+        </div>
+      )
+}
     </>
   );
 }

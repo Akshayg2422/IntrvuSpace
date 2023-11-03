@@ -6,19 +6,19 @@ import { icons } from "@Assets";
 
 function Modal({ isOpen, children, title, size = "lg", style, onClose, ...rest }: ModalProps) {
 
-  useEffect(() => {
-    // Add and remove the "overflow-hidden" class to the body based on modal's open state
-    if (isOpen) {
-      document.body.classList.add('overflow-hidden');
-    } else {
-      document.body.classList.remove('overflow-hidden');
-    }
+  // useEffect(() => {
+  //   // Add and remove the "overflow-hidden" class to the body based on modal's open state
+  //   if (isOpen) {
+  //     document.body.classList.add('overflow-hidden');
+  //   } else {
+  //     document.body.classList.remove('overflow-hidden');
+  //   }
 
-    // Cleanup the class when the component unmounts
-    return () => {
-      document.body.classList.remove('overflow-hidden');
-    };
-  }, [isOpen]);
+  //   // Cleanup the class when the component unmounts
+  //   return () => {
+  //     document.body.classList.remove('overflow-hidden');
+  //   };
+  // }, [isOpen]);
 
   return (
 
@@ -29,9 +29,8 @@ function Modal({ isOpen, children, title, size = "lg", style, onClose, ...rest }
       isOpen={isOpen}
       {...rest}
     >
-      <div className="modal-content" style={{ border: "1px solid #D5DFFF", borderRadius: "4px", overflow: 'hidden' }} >
+      <div className="modal-content"  >
         <div className={"modal-header mb-0"} style={{
-          overflow: 'hidden'
         }} >
           {title && <div className='display-3 text-secondary font-weight-700'>
             {title}
@@ -52,7 +51,7 @@ function Modal({ isOpen, children, title, size = "lg", style, onClose, ...rest }
             </button>
           }
         </div>
-        <div className="modal-body scroll-hidden" style={{ ...style, marginTop: "0px", overflow: 'hidden' }}>
+        <div className="modal-body" style={{ ...style, marginTop: "0px" }}>
           {children}
         </div>
       </div>
