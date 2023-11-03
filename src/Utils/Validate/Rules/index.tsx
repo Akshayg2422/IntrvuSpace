@@ -1,3 +1,49 @@
+export const EMAIL_RULES = {
+  email: {
+    email: { message: "doesn't look like a valid email" },
+  }
+}
+
+
+export const MOBILE_NUMBER_RULES = {
+  mobile_number: {
+    presence: { message: "Mobile number cannot be empty" },
+    length: { is: 10, message: "Mobile number should be 10 number" },
+  }
+}
+
+export const OTP_NUMBER_RULES = {
+  otp: {
+    presence: { message: "Otp cannot be empty" },
+    length: { is: 4, message: "Otp should be 4 number" },
+  }
+}
+
+export const NAME_RULES = {
+  first_name: {
+    presence: { message: "First name cannot be empty" },
+    length: { minimum: 3, message: "First name minimum 3 chars" },
+  },
+}
+
+
+
+
+
+
+
+export const REGISTER_RULES = {
+  ...EMAIL_RULES,
+  ...MOBILE_NUMBER_RULES,
+  ...NAME_RULES,
+  password: {
+    presence: { message: "Password cannot be empty" },
+    length: { minimum: 8, message: "Password minimum 8 chars" },
+  }
+}
+
+
+
 export const CREATE_QUESTION_FORM_RULES = {
   name: {
     length: { minimum: 3, message: "Name minimum 3 chars" },
