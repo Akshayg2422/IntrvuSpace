@@ -1,14 +1,25 @@
-.headingText {
-    font-size: 26px;
-    font-weight: 800;
+.screen-variant-info {
+    padding: 40px 50px;
 }
 
-.titleText {
-    font-size: 36px;
-    font-weight: 800;
+.variant-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.selectionText {
-    font-size: 16px;
-    font-weight: 800;
+.experience {
+    color: var(--secondary);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1;
+}
+
+.vacancies-container {
+    display: flex;
+    align-items: center;
+}
+
+.menu-container {
+    margin-left: 10px;
 }

@@ -16826,7 +16826,13 @@ a.btn-icon-only {
   color: #172b4d !important;
 }
 
-.dropdown-menu-dark .h1, .dropdown-menu-dark .h2, .dropdown-menu-dark .h3, .dropdown-menu-dark .h4, .dropdown-menu-dark .h5, .dropdown-menu-dark .h6, .dropdown-menu-dark a {
+.dropdown-menu-dark .h1,
+.dropdown-menu-dark .h2,
+.dropdown-menu-dark .h3,
+.dropdown-menu-dark .h4,
+.dropdown-menu-dark .h5,
+.dropdown-menu-dark .h6,
+.dropdown-menu-dark a {
   color: white;
 }
 

@@ -6,25 +6,22 @@ import {
   DropdownItem,
 } from "reactstrap";
 import { Image } from "@Components";
+import { icons } from '@Assets'
+import './index.css'
 
-function MenuBar({ toggleIcon, menuData, onClick }: TripleDotProps) {
+function MenuBar({ icon = icons.more, menuData, onClick }: TripleDotProps) {
   return (
     <div>
       <UncontrolledDropdown>
-        <DropdownToggle color="" size={"md"} className="text-light shadow-0">
-          {toggleIcon ? (
-            <Image src={toggleIcon} width={20} height={20} />
-          ) : (
-            <i
-              style={{
-                color: "#2f1c6a",
-              }}
-              className="fas fa-ellipsis-v"
-            />
-          )}
+        <DropdownToggle
+          data-toggle={'dropdown'}
+          tag={'span'}
+          className={'dropdown-container'}
+        >
+          <Image src={icon} width={20} height={20} />
         </DropdownToggle>
-        <DropdownMenu className="dropdown-menu-arrow shadow-0" right>
-          {menuData &&
+        <DropdownMenu right>
+          {/* {menuData &&
             menuData.length > 0 &&
             menuData.map((el: any, index: number) => {
               const { icon, name } = el;
@@ -53,7 +50,7 @@ function MenuBar({ toggleIcon, menuData, onClick }: TripleDotProps) {
                   </DropdownItem>
                 </>
               );
-            })}
+            })} */}
         </DropdownMenu>
       </UncontrolledDropdown>
     </div>
