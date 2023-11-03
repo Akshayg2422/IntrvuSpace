@@ -163,7 +163,7 @@ function AllInOnePlatform() {
                               className="text-gray"
                               style={{ fontSize: 13, fontFamily: "cursive" }}
                             >
-                              <s>{`₹ 700.00`}</s>
+                              <s>{`₹ 1200.00`}</s>
                             </span>
                             <Badge
                               className="text-primary ml-2"
@@ -189,7 +189,7 @@ function AllInOnePlatform() {
                               {"₹"}
                             </span>
                             <span className="text-secondary display-2 ml-1">
-                              300
+                              700
                             </span>
                             <span
                               className="text-secondary ml-1"
