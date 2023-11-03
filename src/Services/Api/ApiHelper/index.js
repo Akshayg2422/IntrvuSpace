@@ -28,7 +28,7 @@ export const SERVER =
 
 
 
-export const CALL_WEBSOCKET = `ws://192.168.170.126:8005/aaa`
+export const CALL_WEBSOCKET = `wss://mepp.leorainfotech.in/aaa`
 
 
 const axiosApi = axios.create({
