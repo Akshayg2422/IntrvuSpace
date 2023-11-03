@@ -1,0 +1,9 @@
+.active {
+    color: var(--primary);
+
+}
+
+.in-active {
+    color: var(--placeholder);
+
+}

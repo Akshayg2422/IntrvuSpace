@@ -1,11 +1,11 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { Back, Button, Divider, ImagePicker, Input, Logo, showToast } from "@Components";
+import { Back, Button, Divider, ImagePicker, Input, InputPassword, Logo, showToast } from "@Components";
 import { useInput, useKeyPress, useLoader, useNavigation } from "@Hooks";
 import { registerAsCompany } from "@Redux";
 import { ROUTES } from "@Routes";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { ifObjectExist, validate, getValidateError, REGISTER_RULES } from '@Utils'
+import { ifObjectExist, validate, getValidateError, REGISTER_COMPANY_RULES } from '@Utils'
 import './index.css'
 
 function RegisterCompany() {
@@ -15,15 +15,17 @@ function RegisterCompany() {
 
     const dispatch = useDispatch();
 
-    const name = useInput("");
+    const brandName = useInput("");
     const address = useInput("");
     const mobileNumber = useInput("");
     const pincode = useInput("");
     const loader = useLoader(false);
     const enterPress = useKeyPress("Enter");
-    const fullName = useInput("")
+    const firstName = useInput("")
     const email = useInput("")
     const sector = useInput("")
+    const password = useInput("")
+    const confirmPassword = useInput("")
     const [photo, setPhoto] = useState("");
 
     useEffect(() => {
@@ -37,41 +39,42 @@ function RegisterCompany() {
     const registerAsCompanyApiHandler = () => {
 
         const params = {
-            name: name.value,
+            logo: photo,
+            brand_name: brandName.value,
             mobile_number: mobileNumber.value,
-            address: address.value,
+            communication_address: address.value,
             pincode: pincode.value,
             sector: sector.value,
-            full_name: fullName.value,
-            email: email.value
+            first_name: firstName.value,
+            email: email.value,
+            password: password.value,
+            confirm_password: confirmPassword.value
         };
-        // const validation = validate(REGISTER_RULES, params)
+        const validation = validate(REGISTER_COMPANY_RULES, params)
 
-        // if (ifObjectExist(validation)) {
-
-
-        loader.show();
-        dispatch(
-            registerAsCompany({
-                params,
-                onSuccess: (response: any) => () => {
-                    if (response.success) {
-                        goTo(ROUTES["auth-module"].login);
-                        showToast(response.message, "success");
+        if (ifObjectExist(validation)) {
+            loader.show();
+            dispatch(
+                registerAsCompany({
+                    params,
+                    onSuccess: (response: any) => () => {
+                        if (response.success) {
+                            goTo(ROUTES["auth-module"].login);
+                            showToast(response.message, "success");
+                            loader.hide();
+                        } else {
+                            showToast(response.error_message, "error");
+                        }
+                    },
+                    onError: (error) => () => {
                         loader.hide();
-                    } else {
-                        showToast(response.error_message, "error");
-                    }
-                },
-                onError: (error) => () => {
-                    loader.hide();
-                    showToast(error.error_message, "error");
-                },
-            })
-        );
-        // } else {
-        //     showToast(getValidateError(validation))
-        // }
+                        showToast(error.error_message, "error");
+                    },
+                })
+            );
+        } else {
+            showToast(getValidateError(validation))
+        }
     };
 
     function goToLogin() {
@@ -110,9 +113,9 @@ function RegisterCompany() {
                 <div className={'text-default h4 mb-3'}>{'Company Details :'}</div>
 
                 <Input
-                    value={name?.value}
-                    placeholder={'Name'}
-                    onChange={name.onChange}
+                    value={brandName?.value}
+                    placeholder={'Brand Name'}
+                    onChange={brandName.onChange}
                 />
                 <Input
                     value={address?.value}
@@ -129,13 +132,12 @@ function RegisterCompany() {
                 <Input
                     type={'number'}
                     placeholder={"Pincode"}
-                    // maxLength={6}
                     onChange={pincode.onChange}
                     value={pincode.value}
                 />
                 <Input
                     value={sector?.value}
-                    placeholder={'Name'}
+                    placeholder={'Sector'}
                     onChange={sector.onChange}
                 />
 
@@ -144,14 +146,25 @@ function RegisterCompany() {
                 <div className={'text-default h4 mb-3'}>{'Primary Contact Person :'}</div>
 
                 <Input
-                    value={fullName?.value}
+                    value={firstName?.value}
                     placeholder={'Name'}
-                    onChange={fullName.onChange}
+                    onChange={firstName.onChange}
                 />
                 <Input
                     value={email?.value}
                     placeholder={'Address'}
                     onChange={email.onChange}
+                />
+
+                <InputPassword
+                    value={password.value}
+                    placeholder={'Enter your password'}
+                    onChange={password.onChange}
+                />
+                <InputPassword
+                    value={confirmPassword.value}
+                    placeholder={'Confirm your password'}
+                    onChange={confirmPassword.onChange}
                 />
 
                 <Button

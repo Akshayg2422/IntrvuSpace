@@ -19,14 +19,29 @@ export const EMAIL_RULES = {
 }
 
 
-export const REGISTER_RULES = {
-  ...NAME_RULES,
+export const REGISTER_COMPANY_RULES = {
+  brand_name: {
+
+  },
   ...MOBILE_NUMBER_RULES,
   address: {
     presence: { message: "Address cannot be empty" },
   },
   pincode: {
     presence: { message: "Pincode cannot be empty" },
+    communication_address: {
+
+    },
+    pincode: {
+
+    },
+    sector: {
+
+    },
+    first_name: {
+
+    },
+    ...EMAIL_RULES,
   }
 }
 
