@@ -227,9 +227,6 @@ function Call() {
   const socketRef = useRef<any>(null);
   const videoRecorderRef = useRef(null);
 
-  console.log('111111111111111111111111111111111111111111111111111111',scheduleInfo);
-  
-
   const proceedHandleResponseV1 = (response) => {
     setProcessCallInprogress(false);
     //// console.log("SpeakText01", response);
