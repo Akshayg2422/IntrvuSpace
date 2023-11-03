@@ -4,4 +4,5 @@ export interface AuthProps {
   loginUser: any,
   OTP: any,
   memberUsingLoginOtp: any,
+  registerCompanyDetails: any,
 }
