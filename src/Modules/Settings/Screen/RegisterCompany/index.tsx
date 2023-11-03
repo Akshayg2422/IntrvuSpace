@@ -6,6 +6,7 @@ import { ROUTES } from "@Routes";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { ifObjectExist, validate, getValidateError, REGISTER_RULES } from '@Utils'
+import './index.css'
 
 function RegisterCompany() {
 
