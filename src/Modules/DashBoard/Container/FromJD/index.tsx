@@ -155,6 +155,7 @@ function FromJD() {
                       // generateJdModal.hide();
                       // completedModal.show();
                       getKnowledgeGroupFromJdHandler();
+                      console.log('ppppppppppppppppppppp')
                       resetValues();
                       // showToast(res.status, 'success');
                       if (intervalIdRef.current) {

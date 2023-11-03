@@ -54,6 +54,7 @@ const initialState: DashboardProp = {
   candidatesList: undefined,
   candidatesListNumOfPages: undefined,
   candidatesListCurrentPages: 1,
+  onGoingScheduleMessage :undefined,
 };
 
 const DashboardReducer = (state = initialState, action: any) => {
@@ -648,6 +649,27 @@ const DashboardReducer = (state = initialState, action: any) => {
     case ActionTypes.FETCH_CANDIDATES_CORPORATE_FAILURE:
       state = { ...state, candidatesList: undefined };
       break;
+
+
+      ///onGoing schedule
+
+      case ActionTypes.FETCH_ONGOING_SCHEDULES:
+        state = {
+          ...state,
+          onGoingScheduleMessage: undefined,
+         
+        };
+        break;
+      case ActionTypes.FETCH_ONGOING_SCHEDULES_SUCCESS:
+        state = {
+          ...state,
+          onGoingScheduleMessage: action.payload?.details,
+      
+        };
+        break;
+      case ActionTypes.FETCH_ONGOING_SCHEDULES_FAILURE:
+        state = { ...state, onGoingScheduleMessage: undefined };
+        break;
 
     // corporateScheduleActions
 

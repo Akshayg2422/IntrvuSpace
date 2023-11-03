@@ -148,7 +148,36 @@ function TopNavbar() {
 
                         {/* <hr className="d-lg-none" /> */}
 
+
+                    {/* new schedule  */}
+                    
+
                         <Nav className="align-items-lg-center ml-lg-auto mr--4 justify-content-end" navbar>
+
+                        {jdItem && jdItem.length > 0 &&
+                                <NavItem>
+                                    {/* <NavLink to="/home" tag={Link}> */}
+                                        <Button
+                                            size='md'
+                                            className={'btn btn-outline-primary rounded-sm mr--3 px-0 '}
+                                            style={{
+                                                borderColor: "#d8dade",
+                                                fontSize: "15px",
+                                                width: '150px'
+                                            }}
+                                            text={'Schedule'}
+
+                                                onClick={()=>{
+                                         
+                                                    goTo(ROUTES['designation-module']['scheduling-interview'])
+                                                }
+                                                }
+                                        />
+                                    {/* </NavLink> */}
+                                </NavItem>
+                            }
+
+
                             {loginDetails?.is_super_admin && <NavItem>
                                 <NavLink to="/home" tag={Link}>
                                     <Button

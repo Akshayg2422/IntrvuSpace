@@ -196,3 +196,8 @@ export const URL_SYNC_VIDEO = ASSISTANT + 'recordInterviewSession'
 export const POST_CORPORATE_SCHEUDULE_ACTIONS = ASSISTANT + 'corporateScheduleActions'
 
 
+//getOngoingSchedules
+
+export const GRT_ONGOING_SCHEDULES= ASSISTANT +'getOngoingSchedules'
+
+

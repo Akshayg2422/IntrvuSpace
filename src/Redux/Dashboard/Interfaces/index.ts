@@ -11,6 +11,7 @@ export interface DashboardProp {
   selectedQuestionForm: any
   formSectionQuestions: any
   basicReport: any
+  onGoingScheduleMessage :any,
   myPastInterviews: any
   scheduleId: any
   generateQuestionSections: any

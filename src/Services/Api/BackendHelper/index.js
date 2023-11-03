@@ -197,5 +197,8 @@ export const syncVideoApi = payload => post(URL.URL_SYNC_VIDEO, payload, {});
 export const postCorporateScheduleActionsApi = payload => post(URL.POST_CORPORATE_SCHEUDULE_ACTIONS, payload, {});
 
 
+export const getOngoingSchedulesApi =payload =>post(URL.GRT_ONGOING_SCHEDULES,payload,{})
+
+
 
 
