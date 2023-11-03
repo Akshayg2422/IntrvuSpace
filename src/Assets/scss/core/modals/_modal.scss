@@ -4,13 +4,19 @@
 .modal-content {
     border-radius: $border-radius;
     border: 1px solid $border-color-modal;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
 }
 
 .modal-title {
     font-size: $modal-title-font-size;
-
 }
 
+.modal {
+    background: rgba(255, 255, 255, 0.3);
+    /* Semi-transparent background */
+    backdrop-filter: blur(5px);
+    /* Apply blur effect to the background */
+}
 
 // Fluid modal
 

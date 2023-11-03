@@ -43,7 +43,6 @@ function Modal({ loading, isOpen, children, title, subTitle, buttonText, size = 
         </div>
       </div>
     </RsModal>
-
   );
 }
 

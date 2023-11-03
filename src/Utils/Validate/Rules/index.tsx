@@ -285,9 +285,9 @@ export const CREATE_FOR_OTHERS_RULES = {
     presence: { message: "Role name cannot be empty" },
     length: { minimum: 3, message: "Role name should be at least 3 characters" },
   },
-  // jd: {
-  //   presence: { allowEmpty: false, message: "Job Details cannot be empty" },
-  // },
+  jd: {
+    presence: { allowEmpty: false, message: "Job Details cannot be empty" },
+  },
   // is_notify_interview: {
   //   inclusion: { within: [true, false], message: "Invalid value for is_notify_interview" },
   // },
