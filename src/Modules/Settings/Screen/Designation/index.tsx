@@ -211,16 +211,26 @@ function Designation() {
         )
     }
 
+    /**
+     * close create opening modal 
+     */
 
     function hideCreateOpeningModal() {
         dispatch(hideCreateOpeningsModal())
+    }
+
+
+    function viewMoreDetailsHandler(status: boolean, index: number) {
+        const updateData = [...corporateSchedules]
+        updateData[index] = { ...updateData[index], is_view_more: status }
+        dispatch(updateCorporateSchedules(updateData))
     }
 
     return (
         <div className={'screen'}>
             <TopNavbarCorporateFlow />
             {
-                listLoader.loader && <Spinner />
+                listLoader.loader && <div className={'loader-container'}><Spinner /></div>
             }
             {
                 !listLoader.loader && corporateSchedules.length <= 0 && !isFilter ? <UploadCorporateOpeningsCard /> :
@@ -284,12 +294,12 @@ function Designation() {
                                                     key={index}
                                                     item={item}
                                                     onViewMore={
-                                                        (status) => {
-                                                            const updateData = [...corporateSchedules]
-                                                            updateData[index] = { ...updateData[index], is_view_more: status }
-                                                            dispatch(updateCorporateSchedules(updateData))
-                                                        }
+                                                        (status) => viewMoreDetailsHandler(status, index)
                                                     }
+                                                    onViewDetails={() => {
+                                                        dispatch(setSelectedRole(item));
+                                                        goTo(ROUTES['designation-module']['variant-info']);
+                                                    }}
                                                 />
                                             </div>
                                         );

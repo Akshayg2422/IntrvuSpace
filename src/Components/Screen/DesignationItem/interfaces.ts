@@ -1,5 +1,5 @@
 export interface DesignationItemProps {
     item: any
-    onView?: () => void
+    onViewDetails?: () => void
     onViewMore?: (status: boolean) => void
 }

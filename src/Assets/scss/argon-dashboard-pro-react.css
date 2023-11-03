@@ -17572,7 +17572,7 @@ textarea[resize=horizontal] {
 }
 
 .modal {
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.8);
   /* Semi-transparent background */
   -webkit-backdrop-filter: blur(5px);
           backdrop-filter: blur(5px);

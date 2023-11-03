@@ -6,7 +6,7 @@ import './index.css';
 
 function DesignationItem({
   item,
-  onView,
+  onViewDetails,
   onViewMore
 }: DesignationItemProps) {
 
@@ -40,8 +40,8 @@ function DesignationItem({
               block
               text={'View Details'}
               onClick={() => {
-                if (onView) {
-                  onView();
+                if (onViewDetails) {
+                  onViewDetails();
                 }
               }}
             />

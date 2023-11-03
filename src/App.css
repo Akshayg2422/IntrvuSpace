@@ -86,3 +86,11 @@ input[type=number] {
     }
 
 }
+
+.loader-container {
+    display: flex;
+    width: 100%;
+    min-height: 100dvh;
+    align-items: center;
+    justify-content: center;
+}

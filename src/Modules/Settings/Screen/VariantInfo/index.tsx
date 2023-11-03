@@ -60,7 +60,6 @@ const OPTIONS = [
   { id: 2, name: "Reject Manually" },
   { id: 3, name: "Remove Candidate" },
   { id: 4, name: "Close Candidate" },
-  // { id: 5, name: "Watch Interview" },
 ];
 
 const MODIFY_OPTION = [
@@ -135,11 +134,7 @@ function VariantInfo() {
     getCandidatesCorporate(candidatesListCurrentPages);
   }, [statusNote.value]);
 
-  useEffect(() => {
-    if (isCandidatesExist) {
-      getCandidatesCorporate(candidatesListCurrentPages);
-    }
-  }, [enterPress]);
+
 
   const Refresh = () => {
     const refresh = () => window.location.reload();
@@ -191,7 +186,7 @@ function VariantInfo() {
             setIsCandidatesExist(true);
           // console.log("response candidtae===>", response);
         },
-        onError: (error: any) => () => {},
+        onError: (error: any) => () => { },
       })
     );
   };
@@ -341,12 +336,11 @@ function VariantInfo() {
             <>
               {!corporateScheduleDetails?.is_closed && (
                 <div
-                  className={`${
-                    candidatesList?.corporate_candidate_details?.data.length ===
+                  className={`${candidatesList?.corporate_candidate_details?.data.length ===
                     1
-                      ? "pb-4"
-                      : "pb-0"
-                  }`}
+                    ? "pb-4"
+                    : "pb-0"
+                    }`}
                 >
                   <MenuBar
                     menuData={OPTIONS}
@@ -529,11 +523,10 @@ function VariantInfo() {
               <div className="d-flex align-items-center">
                 <div className="pl-3 pl-sm-0">
                   <span className="headingText text-secondary">
-                    {`${corporateScheduleDetails?.vacancies ?? ""} ${
-                      corporateScheduleDetails?.vacancies > 1
-                        ? "Vacancies"
-                        : "Vacancy"
-                    }`}
+                    {`${corporateScheduleDetails?.vacancies ?? ""} ${corporateScheduleDetails?.vacancies > 1
+                      ? "Vacancies"
+                      : "Vacancy"
+                      }`}
                   </span>
                 </div>
                 {!corporateScheduleDetails?.is_closed && (
@@ -566,13 +559,13 @@ function VariantInfo() {
             </div>
 
             {candidatesList &&
-            candidatesList?.corporate_candidate_details &&
-            candidatesList?.corporate_candidate_details?.data &&
-            candidatesList?.corporate_candidate_details?.data.length === 0 &&
-            !corporateScheduleDetails?.is_closed &&
-            // !statusNote.value.text &&
-            !isCandidatesExist &&
-            !searchCandidate ? (
+              candidatesList?.corporate_candidate_details &&
+              candidatesList?.corporate_candidate_details?.data &&
+              candidatesList?.corporate_candidate_details?.data.length === 0 &&
+              !corporateScheduleDetails?.is_closed &&
+              // !statusNote.value.text &&
+              !isCandidatesExist &&
+              !searchCandidate ? (
               <div className="mt-5 text-center">
                 <div>
                   <span className="titleText text-secondary">
@@ -663,12 +656,11 @@ function VariantInfo() {
 
                           <div>
                             <span
-                              className={`${
-                                corporateScheduleDetails?.candidate_details
-                                  ?.selected_candidates
-                                  ? "text-primary"
-                                  : "text-secondary"
-                              } titleText`}
+                              className={`${corporateScheduleDetails?.candidate_details
+                                ?.selected_candidates
+                                ? "text-primary"
+                                : "text-secondary"
+                                } titleText`}
                             >
                               {
                                 corporateScheduleDetails?.candidate_details
@@ -746,9 +738,9 @@ function VariantInfo() {
                   candidatesList?.corporate_candidate_details &&
                   candidatesList?.corporate_candidate_details?.data &&
                   candidatesList?.corporate_candidate_details?.data.length >
-                    0) ||
-                isCandidatesExist ||
-                searchCandidate ? (
+                  0) ||
+                  isCandidatesExist ||
+                  searchCandidate ? (
                   <div className="mt-5">
                     <Card
                       style={{
@@ -859,10 +851,10 @@ function VariantInfo() {
                         </div>
 
                         {candidatesList &&
-                        candidatesList?.corporate_candidate_details &&
-                        candidatesList?.corporate_candidate_details?.data &&
-                        candidatesList?.corporate_candidate_details?.data
-                          .length > 0 ? (
+                          candidatesList?.corporate_candidate_details &&
+                          candidatesList?.corporate_candidate_details?.data &&
+                          candidatesList?.corporate_candidate_details?.data
+                            .length > 0 ? (
                           <div className={"row px-0 mx--4"}>
                             <div
                               className={
@@ -999,9 +991,8 @@ function VariantInfo() {
                           className="font-weight-bolder"
                           style={{ fontSize: 18 }}
                         >
-                          {`${
-                            corporateScheduleDetails?.interview_duration || 0
-                          } minutes`}
+                          {`${corporateScheduleDetails?.interview_duration || 0
+                            } minutes`}
                         </span>
                       </div>
                     </div>
@@ -1066,7 +1057,7 @@ function VariantInfo() {
           </div>
         )}
       </div>
-      <Modal
+      {/* <Modal
         isOpen={addNewCandidateModal.visible}
         onClose={() => {
           addNewCandidateModal.hide();
@@ -1172,10 +1163,10 @@ function VariantInfo() {
             />
           </div>
         </div>
-      </Modal>
+      </Modal> */}
 
       {/* remove candidate modal */}
-
+      {/* 
       <Modal
         isOpen={removeCandidateModal.visible}
         onClose={() => {
@@ -1221,11 +1212,11 @@ function VariantInfo() {
             </div>
           </div>
         </div>
-      </Modal>
+      </Modal> */}
 
       {/* disable / close candidate modal */}
 
-      <Modal
+      {/* <Modal
         isOpen={closeCandidateModal.visible}
         onClose={() => {
           closeCandidateModal.hide();
@@ -1271,7 +1262,7 @@ function VariantInfo() {
             </div>
           </div>
         </div>
-      </Modal>
+      </Modal> */}
     </>
   );
 }
