@@ -58,6 +58,7 @@ function Designation() {
     const [loading, setLoading] = useState(false);
     const status = useDropDown(STATUS_LIST[1]);
     const enterPress = useKeyPress("Enter");
+    const [isCandidatesExist, setIsCandidatesExist] = useState<boolean>(false);
 
 
     useEffect(() => {
@@ -66,7 +67,9 @@ function Designation() {
 
 
     useEffect(() => {
-        getCorporateScheduleApiHandler(corporateScheduleCurrentPages);
+        if(isCandidatesExist){
+            getCorporateScheduleApiHandler(corporateScheduleCurrentPages);
+        }
     }, [enterPress]);
 
 
@@ -228,6 +231,7 @@ function Designation() {
 
 
 
+console.log(corporateSchedules, "corporateSchedules");
 
     return (
         <div >
@@ -237,7 +241,7 @@ function Designation() {
                     <div className={'vh-100 d-flex justify-content-center align-items-center'}>
                         <Spinner />
                     </div>
-                ) : corporateSchedules?.details?.corporate_jd_items?.data.length === 0 && !isFilter? (
+                ) : corporateSchedules ? ( corporateSchedules?.details?.schedule_count === 0 ? (
 
                     <UploadCorporateOpeningsCard />
 
@@ -252,7 +256,12 @@ function Designation() {
                                     value={positionSearch}
                                     onChange={(e: any) => {
                                         setPositionSearch(e.target.value)
-                                    }}
+                                    }}onFocus={() => {
+                                        setIsCandidatesExist(true);
+                                      }}
+                                      onBlur={() => {
+                                        setIsCandidatesExist(false);
+                                      }}
                                 />
                             </div>
                             <div className="col-lg-3 col-md-3 col-sm-12 ">
@@ -355,6 +364,17 @@ function Designation() {
                                 getCorporateScheduleApiHandler(paginationHandler("next", corporateScheduleCurrentPages));
                             }}
                         />
+                    </div>
+                )
+                ) :  (
+                    <div
+                        className={'d-flex justify-content-center align-items-center mx-auto my-auto'}
+                        style={{
+                            height: '60vh'
+                        }}
+                    >
+                        {/* <NoDataFound /> */}
+                        <Spinner />
                     </div>
                 )
             }

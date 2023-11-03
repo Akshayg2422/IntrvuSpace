@@ -82,11 +82,11 @@ function Report() {
     getBasicReportData();
   }, [reportType.value.id]);
 
-  useEffect(() => {
-    if (basicReportData) {
-      removeDuplicates();
-    }
-  }, [basicReportData]);
+  // useEffect(() => {
+  //   if (basicReportData) {
+  //     removeDuplicates();
+  //   }
+  // }, [basicReportData]);
 
   const handleRating = (el: any) => {
     if (typeof el.rating === "string" && !isNaN(el.rating)) {
