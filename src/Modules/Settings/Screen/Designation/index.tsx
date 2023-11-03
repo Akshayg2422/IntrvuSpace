@@ -237,7 +237,7 @@ function Designation() {
                     <div className={'vh-100 d-flex justify-content-center align-items-center'}>
                         <Spinner />
                     </div>
-                ) : corporateSchedules?.details?.corporate_jd_items?.data.length === 0 && !isFilter? (
+                ) : corporateSchedules?.details?.corporate_jd_items?.data.length === 0 && !isFilter ? (
 
                     <UploadCorporateOpeningsCard />
 
