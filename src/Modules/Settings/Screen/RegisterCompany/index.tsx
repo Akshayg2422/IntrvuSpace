@@ -11,10 +11,7 @@ import './index.css'
 function RegisterCompany() {
 
     const { goTo } = useNavigation();
-
-
     const dispatch = useDispatch();
-
     const brandName = useInput("");
     const address = useInput("");
     const mobileNumber = useInput("");
@@ -34,8 +31,6 @@ function RegisterCompany() {
         }
     }, [enterPress]);
 
-
-
     const registerAsCompanyApiHandler = () => {
 
         const params = {
@@ -50,28 +45,36 @@ function RegisterCompany() {
             password: password.value,
             confirm_password: confirmPassword.value
         };
+        console.log('Params:', params);
+
         const validation = validate(REGISTER_COMPANY_RULES, params)
 
+        console.log('Validation:', validation);
+
         if (ifObjectExist(validation)) {
-            loader.show();
-            dispatch(
-                registerAsCompany({
-                    params,
-                    onSuccess: (response: any) => () => {
-                        if (response.success) {
-                            goTo(ROUTES["auth-module"].login);
-                            showToast(response.message, "success");
+            if (password?.value === confirmPassword?.value) {
+                loader.show();
+                dispatch(
+                    registerAsCompany({
+                        params,
+                        onSuccess: (response: any) => () => {
+                            if (response.success) {
+                                goTo(ROUTES["auth-module"].login);
+                                showToast(response.message, "success");
+                                loader.hide();
+                            } else {
+                                showToast(response.error_message, "error");
+                            }
+                        },
+                        onError: (error) => () => {
                             loader.hide();
-                        } else {
-                            showToast(response.error_message, "error");
-                        }
-                    },
-                    onError: (error) => () => {
-                        loader.hide();
-                        showToast(error.error_message, "error");
-                    },
-                })
-            );
+                            showToast(error.error_message, "error");
+                        },
+                    })
+                )
+            } else {
+                showToast('Passwords do not match', 'error')
+            }
         } else {
             showToast(getValidateError(validation))
         }

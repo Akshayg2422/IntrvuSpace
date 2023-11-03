@@ -14,36 +14,38 @@ export const MOBILE_NUMBER_RULES = {
 
 export const EMAIL_RULES = {
   email: {
-    email: { message: "doesn't look like a valid email" },
+    presence: { message: "doesn't look like a valid email" },
+  }
+}
+
+export const ADDRESS = {
+  communication_address: {
+    presence: {allowEmpty: false, message: "Address cannot be empty" },
   }
 }
 
 
 export const REGISTER_COMPANY_RULES = {
   brand_name: {
-
+    presence: { message: "Brand Name cannot be empty" },
   },
+  ...ADDRESS,
   ...MOBILE_NUMBER_RULES,
-  address: {
-    presence: { message: "Address cannot be empty" },
-  },
   pincode: {
-    presence: { message: "Pincode cannot be empty" },
-    communication_address: {
-
-    },
-    pincode: {
-
-    },
-    sector: {
-
-    },
-    first_name: {
-
-    },
-    ...EMAIL_RULES,
+    presence: { message: "Pincode cannot be empty" }
+  },
+  sector: {
+    presence: { message: "Sector cannot be empty" },
+  },
+  ...NAME_RULES,
+  ...EMAIL_RULES,
+  ...ADDRESS,
+  password: {
+    presence: { message: "Password cannot be empty" },
+    length: { minimum: 8, message: "Password minimum 8 chars" },
   }
 }
+
 
 
 
