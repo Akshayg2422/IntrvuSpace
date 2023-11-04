@@ -61,6 +61,10 @@ export const getObjectFromArrayByKey = (array: any, key: string, value: any) => 
   });
 };
 
+export function ifObjectKeyExist(object: any, key: string) {
+  return object["key"] !== undefined
+}
+
 export function paginationHandler(type: 'next' | 'prev' | 'current', position: number) {
   let page = type === 'next' ? position + 1 : type === 'prev' ? position - 1 : position;
   return page;
@@ -142,6 +146,16 @@ export function getDropDownCompanyDisplayData(data: any, key: 'name' | 'title' =
     return {
       ...item,
       text: item[key].charAt(0).toUpperCase() + item[key].slice(1)
+    }
+  })
+}
+
+export function getDropDownDisplayData(data: any) {
+
+  return data && data?.map((item: any) => {
+    return {
+      ...item,
+      text: item.name
     }
   })
 }

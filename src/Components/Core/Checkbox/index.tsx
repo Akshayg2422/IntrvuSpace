@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { CheckboxProps } from './interfaces'
 import { FormGroup } from 'reactstrap'
+import { color } from '@Themes'
 
 function Checkbox({ id = '0', text, defaultChecked, variant = 'primary', onCheckChange, ...rest }: CheckboxProps) {
 
@@ -21,7 +22,7 @@ function Checkbox({ id = '0', text, defaultChecked, variant = 'primary', onCheck
 
     return (
         <FormGroup className='m-0 p-0'>
-            <div className={`custom-control custom-checkbox custom-checkbox-${variant}`}>
+            <div className={`custom-control custom-checkbox custom-checkbox-${variant} `} >
                 <input
                     {...rest}
                     id={id}
@@ -29,6 +30,7 @@ function Checkbox({ id = '0', text, defaultChecked, variant = 'primary', onCheck
                     className={'custom-control-input'}
                     type={'checkbox'}
                     onChange={onChangeHandler}
+                    color='black'
                 />
                 <label
                     className={'custom-control-label'}

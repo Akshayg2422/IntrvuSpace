@@ -44,4 +44,10 @@ export interface DashboardProp {
   candidatesList?: boolean;
   candidatesListNumOfPages: any,
   candidatesListCurrentPages: number,
+  error?: string;
+  designations:any;
+  designationsNumOfPage:any,
+  designationsCurrentPage:any,
+  addTeamMates:any,
+  getTeamMateDatas:any
 }

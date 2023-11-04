@@ -7,6 +7,7 @@ import {
 
 import { DashboardProp } from "../../Interfaces";
 import * as ActionTypes from "../ActionTypes";
+import { ifObjectKeyExist } from "@Utils";
 
 const initialState: DashboardProp = {
   userLoggedIn: false,
@@ -54,6 +55,12 @@ const initialState: DashboardProp = {
   candidatesList: undefined,
   candidatesListNumOfPages: undefined,
   candidatesListCurrentPages: 1,
+  designations: undefined,
+  designationsNumOfPage: undefined,
+  designationsCurrentPage: 1,
+  error: '',
+  addTeamMates:undefined,
+  getTeamMateDatas:undefined
 };
 
 const DashboardReducer = (state = initialState, action: any) => {
@@ -455,6 +462,7 @@ const DashboardReducer = (state = initialState, action: any) => {
         sectorsCorporate: action.payload.details?.knowledege_groups,
       };
       break;
+
     case ActionTypes.GET_SECTORS_CORPORATE_FAILURE:
       state = { ...state, sectorsCorporate: undefined };
       break;
@@ -492,6 +500,79 @@ const DashboardReducer = (state = initialState, action: any) => {
     case ActionTypes.GET_DEPARTMENT_CORPORATE_FAILURE:
       state = { ...state, departmentCorporate: undefined };
       break;
+
+    /** addDesignation */
+
+    case ActionTypes.ADD_DESIGNATION:
+      state = { ...state };
+      break;
+    case ActionTypes.ADD_DESIGNATION_SUCCESS:
+      state = { ...state };
+      break;
+    case ActionTypes.ADD_DESIGNATION_FAILURE:
+      state = { ...state };
+      break;
+
+    /**getDesignation */
+
+    case ActionTypes.GET_FETCH_DESIGNATION:
+      // state = { ...state, designationsCorporate: undefined };
+      state = {
+        ...state,
+        designations: undefined,
+        // designationsNumOfPage: 0,
+        // designationsCurrentPage: 1,
+        loading: true
+      };
+      break;
+    case ActionTypes.GET_FETCH_DESIGNATION_SUCCESS:
+      // state = { ...state, designationsCorporate: action.payload.details };
+      // const designations = action.payload.details
+
+      // const isDesignations = ifObjectKeyExist(designations, 'data')
+
+      state = {
+        ...state,
+        loading: false,
+        designations: action.payload?.details
+        // designationsNumOfPage: action.payload?.details?.num_pages,
+        // designationsCurrentPage:
+        //   action.payload.details.next_page === -1 ?
+        //     action?.payload?.details.num_pages
+        //     : action?.payload?.details?.next_page - 1,
+      };
+      break;
+    case ActionTypes.GET_FETCH_DESIGNATION_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
+
+       //Add TeamMate
+
+       case ActionTypes.ADD_TEAM_MATE_DATA:
+        state = { ...state };
+        break;
+      case ActionTypes.ADD_TEAM_MATE_DATA_SUCCESS:
+        state = { ...state, loading: false, addTeamMates: action.payload };
+        break;
+      case ActionTypes.ADD_TEAM_MATE_DATA_FAILURE:
+        state = { ...state };
+        break;
+
+         //get TeamMate
+
+      case ActionTypes.GET_TEAM_MATE_DATA:
+        state = { ...state ,getTeamMateDatas: undefined};
+        break;
+      case ActionTypes.GET_TEAM_MATE_DATA_SUCCESS:
+        state = { ...state, loading: false, getTeamMateDatas: action.payload?.details };
+        break;
+      case ActionTypes.GET_TEAM_MATE_DATA_FAILURE:
+        state = { ...state,error: action.payload,loading:false};
+        break;
 
     /**createCorporateSchedule */
 
@@ -660,6 +741,17 @@ const DashboardReducer = (state = initialState, action: any) => {
     case ActionTypes.POST_CORPORATE_SCHEUDULE_ACTIONS_FAILURE:
       state = { ...state };
       break;
+
+
+        // case ActionTypes.GET_TEAM_MATE_DATA:
+        //   state = { ...state, getTeamMateDatas: undefined };
+        //   break;
+        // case ActionTypes.GET_TEAM_MATE_DATA_SUCCESS:
+        //   state = { ...state, getTeamMateDatas: action.payload.details };
+        //   break;
+        // case ActionTypes.GET_TEAM_MATE_DATA_FAILURE:
+        //   state = { ...state, getTeamMateDatas: undefined };
+        //   break;
 
     default:
       state = state;

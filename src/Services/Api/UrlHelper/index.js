@@ -140,6 +140,14 @@ export const URL_ADD_DEPARTMENT = COMPANY + 'addDepartment'
 
 export const URL_GET_DEPARTMENT = COMPANY + 'getDepartments'
 
+// addDesignations
+
+export const URL_ADD_DESIGNATION = EMPLOYEE + 'addDesignation'
+
+// getDesignations
+
+export const URL_GET_FETCH_DESIGNATION = EMPLOYEE + 'getDesignations'
+
 // createCorporateSchedule
 
 export const URL_CREATE_CORPORATE_SCHEDULE = ASSISTANT + 'createCorporateSchedule'
@@ -194,5 +202,13 @@ export const URL_SYNC_VIDEO = ASSISTANT + 'recordInterviewSession'
 // corporateScheduleActions
 
 export const POST_CORPORATE_SCHEUDULE_ACTIONS = ASSISTANT + 'corporateScheduleActions'
+
+// addTeamMate
+
+export const URL_ADD_TEAM_MATE_DATA = EMPLOYEE + 'addTeamMate'
+
+// GETTeamMate
+
+export const URL_GET_TEAM_MATE_DATA = EMPLOYEE + 'getTeamMate'
 
 

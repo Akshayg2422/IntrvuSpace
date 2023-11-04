@@ -29,7 +29,7 @@ import { useDispatch, useSelector } from "react-redux";
 function TopNavbar() {
 
     const HEADER_MENU = [
-        { id: '1', name: 'Setting', value: 'ST', icon: 'ni ni-badge' },
+        // { id: '1', name: 'Setting', value: 'ST', icon: 'ni ni-badge' },
         { id: '2', name: 'Logout', value: 'LG', icon: 'ni ni-button-power' },
     ]
 
@@ -51,6 +51,7 @@ function TopNavbar() {
 
     const dropdownHandler = (item: any) => {
         if (item.value === 'ST') {
+          goTo(ROUTES['designation-module'].settings)
         }
         else if (item.value === 'LG') {
             logoutModal.show()
@@ -201,10 +202,12 @@ function TopNavbar() {
                                                             onClick={(e) => {
                                                                 e.preventDefault()
                                                                 dropdownHandler(item);
+                                                                
                                                             }}
                                                         >
                                                             <i className={item.icon}></i>
                                                             <span>{item.name}</span>
+                                                            
                                                         </DropdownItem>
                                                     );
                                                 })}

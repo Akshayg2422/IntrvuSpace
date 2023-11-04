@@ -554,3 +554,5 @@ export const INTERVIEW_DURATIONS = [
   { id: 3, text: 'Medium', subText: '15 mins', value: 15, isActive: false },
   { id: 4, text: 'Long', subText: '30 mins', value: 30, isActive: false },
 ];
+
+

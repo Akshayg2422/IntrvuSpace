@@ -1,10 +1,10 @@
 import React, { Component, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { createSector, getSectors, getStartChat } from '@Redux';
+import { addSectorCorporate, createSector, getSectorCorporate, getSectors, getStartChat } from '@Redux';
 import { useInput, useLoader, useModal } from '@Hooks';
 import { translate } from "@I18n";
 import { Back, Button, Card, CommonTable, Image, ImagePicker, Input, Modal, showToast } from '@Components';
-import { ADD_SECTOR_RULES, getPhoto, getValidateError, ifObjectExist, validate, filteredName } from '@Utils';
+import { ADD_SECTOR_RULES, getPhoto, getValidateError, ifObjectExist, validate, filteredName, ADD_SECTOR_CORPORATE_RULES } from '@Utils';
 
 
 function Sector() {
@@ -14,38 +14,37 @@ function Sector() {
 
   const name = useInput("");
   const description = useInput("");
-  const [image, setImage] = useState("");
   const addSectorLoader = useLoader(false);
+  const { sectorsCorporate } = useSelector((state: any) => state.DashboardReducer)
+  console.log('1111111111111111111111111111111===========', sectorsCorporate);
 
-  const [photo, setPhoto] = useState<any>("");
-  const { sectors } = useSelector((state: any) => state.DashboardReducer)
 
 
   useEffect(() => {
-    getSectorDetailsApiHandler()
+    getSectorCorporateDetailsApiHandler()
   }, [])
 
-  const addSectorDetailsApiHandler = () => {
+  const addSectorCorporateDetailsApiHandler = () => {
     const params = {
       name: name.value,
       description: description.value,
-      photo: photo
+      // photo: photo
     }
+    console.log('Corporate========>', params);
 
-    const validation = validate(ADD_SECTOR_RULES, params)
+    const validation = validate(ADD_SECTOR_CORPORATE_RULES, params)
 
     if (ifObjectExist(validation)) {
       addSectorLoader.show()
       dispatch(
-        createSector({
+        addSectorCorporate({
           params,
           onSuccess: (success: any) => () => {
             addSector.hide()
             description.set('')
             name.set('')
-            setPhoto('')
             addSectorLoader.hide()
-            getSectorDetailsApiHandler()
+            getSectorCorporateDetailsApiHandler()
             showToast(success.message, 'success')
           },
           onError: (error: any) => () => {
@@ -60,12 +59,15 @@ function Sector() {
     }
   };
 
-  const getSectorDetailsApiHandler = () => {
+  const getSectorCorporateDetailsApiHandler = () => {
     const params = {}
     dispatch(
-      getSectors({
+      getSectorCorporate({
         params,
         onSuccess: (success: any) => () => {
+          console.log('sector====================>', JSON.stringify(success));
+
+
         },
         onError: (error: string) => () => {
         },
@@ -75,8 +77,8 @@ function Sector() {
 
   const normalizedTableData = (data: any) => {
     return data?.map((el: any) => {
+      // console.log('2000000',el);
       return {
-        '': <Image variant={'rounded'} src={getPhoto(el?.photo)} />,
         Name: el.name,
         description: filteredName(el?.description, 90),
       };
@@ -103,16 +105,16 @@ function Sector() {
               card
               isPagination
               title={'Sectors'}
-              displayDataSet={normalizedTableData(sectors)}
+              displayDataSet={normalizedTableData(sectorsCorporate)}
             />
           </div>
         </div>
       </div>
-      < Modal size={'lg'} title={"Add Sector"} isOpen={addSector.visible} onClose={()=>{
+      < Modal size={'lg'} title={"Add Sector"} isOpen={addSector.visible} onClose={() => {
         addSector.hide()
         name.set("")
         description.set("")
-        setPhoto("")
+        // setPhoto("")
       }} >
         <div className="col-md-9">
           <div className="mt--2">
@@ -129,7 +131,7 @@ function Sector() {
               onChange={description.onChange}
             />
           </div>
-          <div className=" pb-4 mt--4">
+          {/* <div className=" pb-4 mt--4">
             <div className="row">
               <ImagePicker
                 icon={image}
@@ -142,13 +144,13 @@ function Sector() {
                 }}
               />
             </div>
-          </div>
+          </div> */}
         </div>
         <div className="col text-right ">
           <Button size={'md'}
             loading={addSectorLoader.loader}
             text={"Submit"}
-            onClick={addSectorDetailsApiHandler}
+            onClick={addSectorCorporateDetailsApiHandler}
           />
         </div>
       </Modal >
