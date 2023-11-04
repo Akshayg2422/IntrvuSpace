@@ -1,47 +1,49 @@
 export const NAME_RULES = {
   first_name: {
-    presence: { message: "First name cannot be empty" },
+    presence: { allowEmpty: false, message: "First name cannot be empty" },
     length: { minimum: 3, message: "First name minimum 3 chars" },
   },
 }
 
 export const MOBILE_NUMBER_RULES = {
   mobile_number: {
-    presence: { message: "Mobile number cannot be empty" },
+    presence: { allowEmpty: false, message: "Mobile number cannot be empty" },
     length: { is: 10, message: "Mobile number should be 10 number" },
   }
 }
 
 export const EMAIL_RULES = {
-  email: {
-    presence: { message: "doesn't look like a valid email" },
+  email: {    presence: { allowEmpty: false, message: "Doesn't look like a valid email" },
   }
 }
 
 export const ADDRESS = {
   communication_address: {
-    presence: {allowEmpty: false, message: "Address cannot be empty" },
+    presence: { allowEmpty: false, message: "Address cannot be empty" },
   }
 }
 
 
 export const REGISTER_COMPANY_RULES = {
+  logo: {
+    presence: { allowEmpty: false, message: "Upload Company logo" }
+  },
   brand_name: {
-    presence: { message: "Brand Name cannot be empty" },
+    presence: { allowEmpty: false, message: "Brand Name cannot be empty" },
   },
   ...ADDRESS,
   ...MOBILE_NUMBER_RULES,
   pincode: {
-    presence: { message: "Pincode cannot be empty" }
+    presence: { allowEmpty: false, message: "Pincode cannot be empty" }
   },
   sector: {
-    presence: { message: "Sector cannot be empty" },
+    presence: { allowEmpty: false, message: "Sector cannot be empty" },
   },
   ...NAME_RULES,
   ...EMAIL_RULES,
   ...ADDRESS,
   password: {
-    presence: { message: "Password cannot be empty" },
+    presence: { allowEmpty: false, message: "Password cannot be empty" },
     length: { minimum: 8, message: "Password minimum 8 chars" },
   }
 }
