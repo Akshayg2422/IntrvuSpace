@@ -13,9 +13,14 @@ export const MOBILE_NUMBER_RULES = {
 }
 
 export const EMAIL_RULES = {
-  email: {    presence: { allowEmpty: false, message: "Doesn't look like a valid email" },
+  email: {
+    presence: { allowEmpty: false, message: "Email is required" },
+    format: {
+      pattern: /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/,
+      message: "Please enter a valid email address"
+    }
   }
-}
+};
 
 export const ADDRESS = {
   communication_address: {
@@ -86,7 +91,6 @@ export const REGISTER_AS_MEMBER_RULES = {
     presence: { message: "Mobile number cannot be empty" },
     length: { is: 10, message: "Mobile number should be 10 number" },
   },
-
 }
 
 
