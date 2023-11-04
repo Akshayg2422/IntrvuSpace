@@ -68,7 +68,7 @@ function Designation() {
 
 
     useEffect(() => {
-        if(isCandidatesExist){
+        if (isCandidatesExist) {
             getCorporateScheduleApiHandler(corporateScheduleCurrentPages);
         }
     }, [enterPress]);
@@ -168,8 +168,8 @@ function Designation() {
                         addRoleModal.hide()
                         resetValues()
                         dispatch(hideCreateOpeningsModal())
-                        console.log(response,'responseeeeeeeeeeeeeeee');
-                        
+                        console.log(response, 'responseeeeeeeeeeeeeeee');
+
                     },
                     onError: (error) => () => {
                         showToast(error.error_message, 'error');
@@ -237,7 +237,7 @@ function Designation() {
 
 
 
-console.log(corporateSchedules, "corporateSchedules");
+    console.log(corporateSchedules, "corporateSchedules");
 
     return (
         <div >
@@ -247,7 +247,7 @@ console.log(corporateSchedules, "corporateSchedules");
                     <div className={'vh-100 d-flex justify-content-center align-items-center'}>
                         <Spinner />
                     </div>
-                ) : corporateSchedules ? ( corporateSchedules?.details?.schedule_count === 0 ? (
+                ) : corporateSchedules ? (corporateSchedules?.details?.schedule_count === 0 ? (
 
                     <UploadCorporateOpeningsCard />
 
@@ -262,12 +262,12 @@ console.log(corporateSchedules, "corporateSchedules");
                                     value={positionSearch}
                                     onChange={(e: any) => {
                                         setPositionSearch(e.target.value)
-                                    }}onFocus={() => {
+                                    }} onFocus={() => {
                                         setIsCandidatesExist(true);
-                                      }}
-                                      onBlur={() => {
+                                    }}
+                                    onBlur={() => {
                                         setIsCandidatesExist(false);
-                                      }}
+                                    }}
                                 />
                             </div>
                             <div className="col-lg-3 col-md-3 col-sm-12 ">
@@ -372,7 +372,7 @@ console.log(corporateSchedules, "corporateSchedules");
                         />
                     </div>
                 )
-                ) :  (
+                ) : (
                     <div
                         className={'d-flex justify-content-center align-items-center mx-auto my-auto'}
                         style={{
@@ -389,7 +389,6 @@ console.log(corporateSchedules, "corporateSchedules");
                 addRoleModal.hide()
                 jd.set("")
                 position.set('')
-                experience.set({})
                 vacancies.set('')
                 referenceId.set('')
                 setSelectedDepartment('')

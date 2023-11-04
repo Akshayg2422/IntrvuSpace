@@ -43,7 +43,6 @@ function RegisterCompany() {
             first_name: firstName.value,
             email: email.value,
             password: password.value,
-            confirm_password: confirmPassword.value
         };
         console.log('Params:', params);
 
@@ -85,9 +84,9 @@ function RegisterCompany() {
     }
 
     return (
-        <div className={'auth-screen '}>
+        <div className={'auth-screen border border-primary'}>
 
-            <div className={'auth-container overflow-auto overflow-hidden'}>
+            <div className={'auth-container'}>
 
                 <div className='d-flex align-items-center heading-container'>
                     <Back />
@@ -96,21 +95,15 @@ function RegisterCompany() {
                     </div>
                 </div>
 
-                <div className=" pb-2">
-                    <div className="row">
-                        <ImagePicker
-                            size='xl'
-                            // heading={'Logo'}
-                            noOfFileImagePickers={0}
-                            onSelect={(image) => {
-                                let file = image.toString().replace(/^data:(.*,)?/, "")
-                                setPhoto(file);
-
-
-                            }}
-                            onSelectImagePicker={(el) => { }}
-                        />
-                    </div>
+                <div className="mb-2 row">
+                    <ImagePicker
+                        size='xl'
+                        noOfFileImagePickers={0}
+                        onSelect={(image) => {
+                            let file = image.toString().replace(/^data:(.*,)?/, "")
+                            setPhoto(file);
+                        }}
+                    />
                 </div>
 
                 <div className={'text-default h4 mb-3'}>{'Company Details :'}</div>
@@ -144,7 +137,7 @@ function RegisterCompany() {
                     onChange={sector.onChange}
                 />
 
-                {/* <Divider /> */}
+                <Divider />
 
                 <div className={'text-default h4 mb-3'}>{'Primary Contact Person :'}</div>
 
@@ -155,7 +148,7 @@ function RegisterCompany() {
                 />
                 <Input
                     value={email?.value}
-                    placeholder={'Address'}
+                    placeholder={'Email'}
                     onChange={email.onChange}
                 />
 
