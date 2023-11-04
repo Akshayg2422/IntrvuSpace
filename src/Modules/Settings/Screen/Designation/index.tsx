@@ -40,6 +40,7 @@ function Designation() {
     const position = useInput('');
     const sectorInput = useInput('');
     const loader = useLoader(false);
+    const referenceId = useInput('');
 
     const DEFAULT_VALUE = { id: '-1', text: "All" }
 
@@ -145,6 +146,7 @@ function Designation() {
             ...(selectSector ? { sector_id: selectSector.id } : {}),
             ...(selectDepartment ? { department_id: selectDepartment?.id } : {}),
             role: position.value,
+            reference_id: referenceId.value,
             experience: parseInt(experience.value?.id),
             jd: jd.value,
             vacancies: vacancies?.value,
@@ -166,6 +168,8 @@ function Designation() {
                         addRoleModal.hide()
                         resetValues()
                         dispatch(hideCreateOpeningsModal())
+                        console.log(response,'responseeeeeeeeeeeeeeee');
+                        
                     },
                     onError: (error) => () => {
                         showToast(error.error_message, 'error');
@@ -183,8 +187,10 @@ function Designation() {
         position.set("")
         experience.set({})
         jd.set("")
-        position.set('')
         vacancies.set('')
+        referenceId.set('')
+        setSelectedSector('')
+        setSelectedDepartment('')
         setSelectedDuration(INTERVIEW_DURATIONS[0]);
     }
 
@@ -383,6 +389,11 @@ console.log(corporateSchedules, "corporateSchedules");
                 addRoleModal.hide()
                 jd.set("")
                 position.set('')
+                experience.set({})
+                vacancies.set('')
+                referenceId.set('')
+                setSelectedDepartment('')
+                setSelectedSector('')
                 dispatch(hideCreateOpeningsModal())
             }}
                 style={{ padding: 0 }}>
@@ -392,7 +403,7 @@ console.log(corporateSchedules, "corporateSchedules");
 
                     <div className={'pt-5 px-0'}>
                         <div className='row'>
-                            <div className='col-sm-5'>
+                            <div className='col'>
                                 <Input
                                     heading={'Position'}
                                     type={'text'}
@@ -401,7 +412,7 @@ console.log(corporateSchedules, "corporateSchedules");
                                     onChange={position.onChange} />
                             </div>
 
-                            <div className='col-sm-4' style={{
+                            <div className='col' style={{
                                 zIndex: 1
                             }}>
                                 <DropDown
@@ -412,13 +423,25 @@ console.log(corporateSchedules, "corporateSchedules");
                                     onChange={experience.onChange}
                                 />
                             </div>
-                            <div className='col-sm-3 mt-4 mt-sm-0'>
+                        </div>
+                        <div className='row'>
+                            <div className='col'>
                                 <Input
                                     heading={'Vacancies'}
                                     type={'number'}
                                     placeHolder={"0"}
                                     value={vacancies.value}
                                     onChange={vacancies.onChange}
+                                />
+                            </div>
+                            <div className='col '>
+                                <Input
+                                    heading={'Reference Id'}
+                                    type={'text'}
+                                    maxLength={12}
+                                    placeHolder={"Reference Id"}
+                                    value={referenceId.value}
+                                    onChange={referenceId.onChange}
                                 />
                             </div>
                         </div>
