@@ -28,7 +28,6 @@ export const ADDRESS = {
   }
 }
 
-
 export const REGISTER_COMPANY_RULES = {
   logo: {
     presence: { allowEmpty: false, message: "Upload Company logo" }
@@ -52,9 +51,6 @@ export const REGISTER_COMPANY_RULES = {
     length: { minimum: 8, message: "Password minimum 8 chars" },
   }
 }
-
-
-
 
 export const CREATE_QUESTION_FORM_RULES = {
   name: {
@@ -93,7 +89,6 @@ export const REGISTER_AS_MEMBER_RULES = {
   },
 }
 
-
 export const LOGIN_WITH_EMAIL_RULES = {
 
   email: {
@@ -102,8 +97,6 @@ export const LOGIN_WITH_EMAIL_RULES = {
   password: {
     presence: { message: "password cannot be empty" }
   },
-
-
 }
 
 export const LOGIN_WITH_MOBILE_NO_RULES = {
@@ -199,7 +192,6 @@ export const FROM_JD_RULES = {
     presence: { message: "Sector name cannot be empty" },
     length: { minimum: 3, message: "Sector name minimum 3 chars" },
   },
-
 }
 
 export const CREATE_CORPORATE_RULES = {
@@ -229,22 +221,13 @@ export const CREATE_KNOWLEDGE_GROUP_VARIANT_RULES = {
 }
 
 export const VALIDATE_ADD_NEW_CANDIDATES_RULES = {
-  first_name: {
-    presence: { message: "First name cannot be empty" },
-    length: { minimum: 3, message: "First name minimum 3 chars" },
-  },
+  ...NAME_RULES,
   last_name: {
     presence: { message: "Last name cannot be empty" },
-    length: { minimum: 1, message: "First name minimum 3 chars" },
+    length: { minimum: 1, message: "Last name minimum 3 chars" },
   },
-  email: {
-    email: { message: "Doesn't look like a valid email" },
-  },
-  mobile_number: {
-    presence: { message: "Mobile number cannot be empty" },
-    length: { is: 10, message: "Mobile number should be 10 number" },
-  },
-
+  ...MOBILE_NUMBER_RULES,
+  ...EMAIL_RULES,
 }
 
 export const CREATE_CORPORATE_SCHEDULE_RULES = {

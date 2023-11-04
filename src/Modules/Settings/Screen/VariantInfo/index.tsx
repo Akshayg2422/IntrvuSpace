@@ -200,8 +200,8 @@ function VariantInfo() {
       corporate_openings_details_id: selectedRole?.id,
       first_name: firstName.value,
       last_name: lastName.value,
-      email: email.value,
       mobile_number: mobileNumber.value,
+      email: email.value,
     };
 
     const validation = validate(VALIDATE_ADD_NEW_CANDIDATES_RULES, params);
