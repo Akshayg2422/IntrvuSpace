@@ -533,9 +533,9 @@ function Report() {
             <div className="">
 
               <div className="position-relative ">
-                <div className="position-absolute top-2" style={{ width: '35mm', height: '45mm', overflow: 'hidden' }}>
+                {/* <div className="position-absolute top-2" style={{ width: '35mm', height: '45mm', overflow: 'hidden' }}>
                   <Image src={image.passportImage} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                </div>
+                </div> */}
                 <div className="mt-5">
                   <div className="text-center">
                     <div className="">
