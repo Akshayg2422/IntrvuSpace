@@ -45,7 +45,7 @@ function Website() {
         {/* <AuthenticationAndDashboardModule />
         <Pricing /> */}
         {/* <ContactUs />
-        <Footer /> */}
+        <Footer />  */}
       </div>
     </div>
   );

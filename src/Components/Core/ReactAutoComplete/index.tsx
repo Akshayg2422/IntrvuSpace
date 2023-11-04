@@ -33,7 +33,7 @@ function ReactAutoComplete({ selected, isMandatory, heading, placeholder, data, 
         const regex = new RegExp('^' + escapedValue, 'i');
         let suggestions = data && data.length > 0 && data.filter(each => regex.test(each.name)).slice(0, 5);
 
-        const isValueExist = data && data.length > 0 && data.some(each => each.name.toLowerCase() === value.trim().toLowerCase());
+        const isValueExist = data && data.length > 0 && data.some(each => each.name.trim().toLowerCase() === value.trim().toLowerCase());
 
         if (!isValueExist) {
             suggestions = [...suggestions, { isAddNew: true }]
