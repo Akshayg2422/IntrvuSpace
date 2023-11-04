@@ -17,8 +17,9 @@ const useScreenRecorder = () => {
   const { scheduleId, VideoSessionDetails } = useSelector(
     (state: any) => state.DashboardReducer
   );
+  const [isScreenRecordingReady, setIsScreenRecordingReady] = useState(false);
 
-  console.log("Audio Blobbbb00------>", recordedAudioData);
+  console.log("isScreenRecordingReady", isScreenRecordingReady);
   
 
   const dispatch = useDispatch();
@@ -81,8 +82,12 @@ const useScreenRecorder = () => {
     intervalIdRef.current = setInterval(() => {
       if (recordedVideoData && recordedVideoData.length > 0) {
         const videoBlob = new Blob(recordedVideoData, { type: "video/webm" });
-        console.log("video blob00---->", videoBlob)
-        sendBlobToServer(videoBlob, false);
+        console.log("blobbbb====>", videoBlob);
+        
+        if (isScreenRecordingReady) {
+          sendBlobToServer(videoBlob, false);
+        }
+        recordedVideoData.length = 0;
       }
     }, 1000);
     return () => clearInterval(intervalIdRef.current);
@@ -107,27 +112,27 @@ const useScreenRecorder = () => {
     formData.append("video_data", videoBlob);
     formData.append("schedule_id", scheduleId);
 
-    if (VideoSessionDetails) {
-      formData.append("video_id", VideoSessionDetails?.id);
-    }
-    if (isRecordingDone) {
-      formData.append("stop_recording", isRecordingDone);
-    }
+    // if (VideoSessionDetails) {
+    //   formData.append("video_id", VideoSessionDetails?.id);
+    // }
+    // if (isRecordingDone) {
+    //   formData.append("stop_recording", isRecordingDone);
+    // }
 
     // console.log("formData====>", videoBlob);
 
-    // const params = formData;
-    // dispatch(
-    //   recordInterviewSession({
-    //     params,
-    //     onSuccess: (res: any) => () => {
-    //       if (!VideoSessionDetails?.id) {
-    //         dispatch(getRecordedVideoSessionDetails(res?.details));
-    //       }
-    //     },
-    //     onError: (error: any) => () => {},
-    //   })
-    // );
+    const params = formData;
+    dispatch(
+      recordInterviewSession({
+        params,
+        onSuccess: (res: any) => () => {
+          if (!VideoSessionDetails?.id) {
+            dispatch(getRecordedVideoSessionDetails(res?.details));
+          }
+        },
+        onError: (error: any) => () => {},
+      })
+    );
   };
 
   return {
@@ -138,7 +143,9 @@ const useScreenRecorder = () => {
     setRecordStatus,
     recordedVideoData,
     setRecordedAudioData,
-    recordedAudioData
+    recordedAudioData,
+    setIsScreenRecordingReady,
+    isScreenRecordingReady,
   };
 };
 

@@ -236,6 +236,8 @@ function Call() {
     recordedAudioData,
     setRecordedAudioData,
     recordedVideoData,
+    isScreenRecordingReady,
+    setIsScreenRecordingReady
   } = useScreenRecorder();
 
   console.log("recordSttaus==>", recordStatus);
@@ -249,7 +251,7 @@ function Call() {
   const [isCancelRecording, setIsCancelRecording] = useState(false);
   const [isEnableRecording, setIsEnableRecording] = useState(false);
 
-  const [isForceRecord, setIsForceRecord] = useState(false); // static state to force record by default setting false
+  const [isForceRecord, setIsForceRecord] = useState(true); // static state to force record by default setting false
 
   // console.log("recordStatus--->", recordStatus);
   // console.log("video blobbbbsss====>", recordedVideoData);
@@ -773,6 +775,10 @@ function Call() {
   const validateProceedStartListening = async () => {
     if (!isRecording) {
       startRecording();
+
+      //call screen recording boolean
+      setIsScreenRecordingReady(true);
+
       setIsRecording(true);
       setMute(false);
     }
@@ -797,9 +803,7 @@ function Call() {
 
   const openCallView = () => {
     setNetworkError(false);
-
     startInterviewLoader.hide();
-
     startStreamTime.current = moment().add(1, "seconds");
     transcriptionReferenceId.current = generateRandomID();
     // proceedgetChatDetailsApiHandler({ message: "start" }, transcriptionReferenceId.current)
@@ -920,24 +924,29 @@ function Call() {
   }
 
   const closeRecordingModal = () => {
+    console.log("11111111111111111111")
     setIsConfirmRecordingModalOpen(false);
     setIsCancelRecording(false);
     setIsEnableRecording(false);
   };
 
   const confirmForceRecord = () => {
+    console.log("2222222222222")
     setIsConfirmRecordingModalOpen(false);
     setIsCancelRecording(false);
     startScreenRecording();
   };
 
   const cancelRecording = () => {
+    console.log("3333333333333333")
     setIsCancelRecording(true);
     setIsConfirmRecordingModalOpen(true);
     setRecordStatus(undefined);
   };
 
   const enableRecording = () => {
+    console.log("44444444444444444");
+    
     setIsConfirmRecordingModalOpen(false);
     setIsCancelRecording(false);
     startScreenRecording();
@@ -946,6 +955,8 @@ function Call() {
   };
 
   const confirmRecording = () => {
+    console.log("555555555555555555555");
+    
     setIsConfirmRecordingModalOpen(false);
     setIsCancelRecording(false);
     startInterviewHandler();
@@ -1217,7 +1228,7 @@ function Call() {
       >
         <div className="mt--5">
           <div>
-            <Heading
+            <Heading className={"text-secondary display-4"}
               heading={
                 isForceRecord
                   ? "Confirm Recording"
@@ -1225,7 +1236,6 @@ function Call() {
                   ? "Confirm without Recording"
                   : "Cancel Recording"
               }
-              style={{fontSize: 26 , color: "#2f1c6a"}}
             />
           </div>
           <div className="text-default">

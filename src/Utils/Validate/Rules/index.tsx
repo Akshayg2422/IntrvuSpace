@@ -232,7 +232,7 @@ export const VALIDATE_ADD_NEW_CANDIDATES_RULES = {
 
 export const CREATE_CORPORATE_SCHEDULE_RULES = {
   role: {
-    presence: { message: "Position cannot be empty" },
+    presence: { allowEmpty: false, message: "Position cannot be empty" },
     length: { minimum: 3, message: "Minimum 3 chars in Position" },
   },
   experience: {

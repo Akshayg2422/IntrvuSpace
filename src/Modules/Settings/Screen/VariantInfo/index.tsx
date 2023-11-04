@@ -127,23 +127,21 @@ function VariantInfo() {
   const [closeCandidateData, setCloseCandidateData] = useState<any>();
   const addCandidateLoader = useLoader(false);
   const [loading, setLoading] = useState(false);
-
+  const closeJdModal = useModal(false);
 
   useEffect(() => {
     getCorporateScheduleDetailsHandler();
   }, []);
 
   useEffect(() => {
-      getCandidatesCorporate(candidatesListCurrentPages);
+    getCandidatesCorporate(candidatesListCurrentPages);
     console.log("22222222222222222");
-
   }, [statusNote.value]);
 
- useEffect(() => {
+  useEffect(() => {
     if (isCandidatesExist) {
       getCandidatesCorporate(candidatesListCurrentPages);
-    } 
-
+    }
   }, [enterPress]);
   const Refresh = () => {
     const refresh = () => window.location.reload();
@@ -186,9 +184,9 @@ function VariantInfo() {
       fetchCandidatesCorporate({
         params,
         onSuccess: (response: any) => () => {
-          setIsCandidatesExist(false)
+          setIsCandidatesExist(false);
         },
-        onError: (error: any) => () => { },
+        onError: (error: any) => () => {},
       })
     );
   };
@@ -337,11 +335,12 @@ function VariantInfo() {
             <>
               {!corporateScheduleDetails?.is_closed && (
                 <div
-                  className={`${candidatesList?.corporate_candidate_details?.data.length ===
-                      1
+                  className={`${
+                    candidatesList?.corporate_candidate_details?.data.length ===
+                    1
                       ? "pb-4"
                       : "pb-0"
-                    }`}
+                  }`}
                 >
                   <MenuBar
                     menuData={OPTIONS}
@@ -434,7 +433,7 @@ function VariantInfo() {
 
   // validation for deadline fields
 
-  const validateDeadlineField = (action) => {
+  const validateDeadlineField = (action: any) => {
     if (!scheduleDate) {
       showToast("Please select Schedule date", "info");
       return;
@@ -448,7 +447,7 @@ function VariantInfo() {
 
   // corporateScheduleActions Api
 
-  const corporateScheduleActionsHandler = (action) => {
+  const corporateScheduleActionsHandler = (action: any) => {
     const params = {
       corporate_openings_details_id: corporateScheduleDetails?.id,
       ...(action === "Close JD" && { is_closed: true }),
@@ -474,6 +473,16 @@ function VariantInfo() {
         },
       })
     );
+  };
+
+  // modify deadline handler
+
+  const modifyDeadlineHandler = () => {
+    modifyDeadlineModal.show();
+    setScheduleDate(
+      getDateFromServer(corporateScheduleDetails?.candidate_deadline)
+    );
+    setEndTime(getDisplayTime(corporateScheduleDetails?.candidate_deadline));
   };
 
   return (
@@ -517,10 +526,11 @@ function VariantInfo() {
               <div className="d-flex align-items-center">
                 <div className="pl-3 pl-sm-0">
                   <span className="headingText text-secondary">
-                    {`${corporateScheduleDetails?.vacancies ?? ""} ${corporateScheduleDetails?.vacancies > 1
+                    {`${corporateScheduleDetails?.vacancies ?? ""} ${
+                      corporateScheduleDetails?.vacancies > 1
                         ? "Vacancies"
                         : "Vacancy"
-                      }`}
+                    }`}
                   </span>
                 </div>
                 {!corporateScheduleDetails?.is_closed && (
@@ -530,19 +540,9 @@ function VariantInfo() {
                       onClick={(action) => {
                         setSelectedModifyOption(action);
                         if (action.name === "Modify Deadlines") {
-                          modifyDeadlineModal.show();
-                          setScheduleDate(
-                            getDateFromServer(
-                              corporateScheduleDetails?.candidate_deadline
-                            )
-                          );
-                          setEndTime(
-                            getDisplayTime(
-                              corporateScheduleDetails?.candidate_deadline
-                            )
-                          );
+                          modifyDeadlineHandler();
                         } else if (action.name === "Close JD") {
-                          corporateScheduleActionsHandler(action.name);
+                          closeJdModal.show();
                         }
                       }}
                       toggleIcon={icons.more}
@@ -553,7 +553,8 @@ function VariantInfo() {
             </div>
 
             {candidatesList &&
-              candidatesList?.candidate_count === 0  && !corporateScheduleDetails?.is_closed ? (
+            candidatesList?.candidate_count === 0 &&
+            !corporateScheduleDetails?.is_closed ? (
               <div className="mt-5 text-center">
                 <div>
                   <span className="titleText text-secondary">
@@ -598,8 +599,7 @@ function VariantInfo() {
               </div>
             ) : (
               <>
-                { candidatesList &&
-              candidatesList?.candidate_count > 0  && 
+                {candidatesList && candidatesList?.candidate_count > 0 && (
                   <div className="mt-6 row">
                     <div className="col-md-6 col-xl-3">
                       <Card
@@ -645,11 +645,12 @@ function VariantInfo() {
 
                           <div>
                             <span
-                              className={`${corporateScheduleDetails?.candidate_details
+                              className={`${
+                                corporateScheduleDetails?.candidate_details
                                   ?.selected_candidates
                                   ? "text-primary"
                                   : "text-secondary"
-                                } titleText`}
+                              } titleText`}
                             >
                               {
                                 corporateScheduleDetails?.candidate_details
@@ -721,10 +722,9 @@ function VariantInfo() {
                       </Card>
                     </div>
                   </div>
-            }
+                )}
 
-                {candidatesList &&
-                  candidatesList?.candidate_count > 0 ? (
+                {candidatesList && candidatesList?.candidate_count > 0 ? (
                   <div className="mt-5">
                     <Card
                       style={{
@@ -835,7 +835,7 @@ function VariantInfo() {
                         </div>
 
                         {candidatesList &&
-                          candidatesList?.candidate_count > 0 ? (
+                        candidatesList?.candidate_count > 0 ? (
                           <div className={"row px-0 mx--4"}>
                             <div
                               className={
@@ -889,7 +889,6 @@ function VariantInfo() {
                     </Card>
                   </div>
                 ) : (
-                  
                   <div></div>
                 )}
               </>
@@ -973,8 +972,9 @@ function VariantInfo() {
                           className="font-weight-bolder"
                           style={{ fontSize: 18 }}
                         >
-                          {`${corporateScheduleDetails?.interview_duration || 0
-                            } minutes`}
+                          {`${
+                            corporateScheduleDetails?.interview_duration || 0
+                          } minutes`}
                         </span>
                       </div>
                     </div>
@@ -1156,7 +1156,7 @@ function VariantInfo() {
           setRemoveCandidateData(undefined);
         }}
       >
-        <div className="mt--3 mx-4 mb-2">
+        <div className="mt--5 mx-4 mb-2">
           <Heading
             heading={`Remove Candidate`}
             style={{ fontSize: 26, color: "#2f1c6a" }}
@@ -1168,7 +1168,7 @@ function VariantInfo() {
             </span>
           </div>
 
-          <div className="d-flex justify-content-end mt-5">
+          <div className="d-flex justify-content-end mt-4">
             <div>
               <Button
                 className={"rounded-sm btn-white"}
@@ -1205,7 +1205,7 @@ function VariantInfo() {
           setCloseCandidateData(undefined);
         }}
       >
-        <div className="mt--3 mx-4 mb-2">
+        <div className="mt--5 mx-4 mb-2">
           <Heading
             heading={`Disable Candidate`}
             style={{ fontSize: 26, color: "#2f1c6a" }}
@@ -1218,7 +1218,7 @@ function VariantInfo() {
             </span>
           </div>
 
-          <div className="d-flex justify-content-end mt-5">
+          <div className="d-flex justify-content-end mt-4">
             <div>
               <Button
                 className={"rounded-sm btn-white"}
@@ -1239,6 +1239,53 @@ function VariantInfo() {
                     closeCandidateData.action,
                     closeCandidateData.el
                   );
+                }}
+              />
+            </div>
+          </div>
+        </div>
+      </Modal>
+
+      {/* close JD modal */}
+
+      <Modal
+        isOpen={closeJdModal.visible}
+        onClose={() => {
+          closeJdModal.hide();
+          setCloseCandidateData(undefined);
+        }}
+      >
+        <div className="mt--5 mx-4 mb-2">
+          <Heading
+            heading={`Close JD`}
+            style={{ fontSize: 26, color: "#2f1c6a" }}
+          />
+
+          <div>
+            <span className="text-default">
+              {"Are you sure, want to close this JD?"}
+              <br />
+            </span>
+          </div>
+
+          <div className="d-flex justify-content-end mt-4">
+            <div>
+              <Button
+                className={"rounded-sm btn-white"}
+                text={"Cancel"}
+                onClick={() => {
+                  closeJdModal.hide();
+                  setCloseCandidateData(undefined);
+                }}
+              />
+            </div>
+
+            <div className="ml-3">
+              <Button
+                className={"rounded-sm"}
+                text={"Confirm"}
+                onClick={() => {
+                  corporateScheduleActionsHandler(selectedModifyOption.name);
                 }}
               />
             </div>

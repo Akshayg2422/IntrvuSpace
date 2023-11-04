@@ -9,10 +9,12 @@ export const BUILD_TYPE_PRE_PROD_IP = 5;
 
 const LIVE_IP = "https://mockeazyprimary.leorainfotech.in/"
 const PRE_PROD_IP = "https://mepp.leorainfotech.in/"
-const LOCAL_IP = "https://f4d0-103-118-190-4.ngrok-free.app/"
+// const LOCAL_IP = "https://f4d0-103-118-190-4.ngrok-free.app/"
+const LOCAL_IP = "http://192.168.119.126:8005/"
 
 
-export const BUILD_TYPE = BUILD_TYPE_PRE_PROD_IP;
+
+export const BUILD_TYPE = BUILD_TYPE_LOCAL;
 export const SERVER =
   BUILD_TYPE === BUILD_TYPE_LIVE
     ? LIVE_IP
@@ -28,7 +30,9 @@ export const SERVER =
 
 
 
-export const CALL_WEBSOCKET = `wss://mepp.leorainfotech.in/aaa`
+// export const CALL_WEBSOCKET = `wss://mepp.leorainfotech.in/aaa`
+export const CALL_WEBSOCKET = `ws://192.168.119.126:8005/aaa`
+
 
 
 const axiosApi = axios.create({
