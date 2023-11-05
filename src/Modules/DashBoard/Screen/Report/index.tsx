@@ -1,508 +1,115 @@
-import { icons, image } from "@Assets";
+import { icons } from "@Assets";
 import {
   Badge,
   Button,
-  ButtonGroup,
-  CommonTable,
-  Divider,
   DropDown,
-  DropDownIcon,
-  Heading,
   Image,
   NoDataFound,
-  Spinner,
+  Spinner
 } from "@Components";
 import { useDropDown, useLoader } from "@Hooks";
 import { fetchBasicReport } from "@Redux";
-import { color } from "@Themes";
 import { capitalizeFirstLetter } from "@Utils";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import ReactToPrint from "react-to-print";
-import { Card, CardBody, CardFooter, CardHeader, Progress } from "reactstrap";
+import { Card } from "reactstrap";
+import { ReportHeader, BasicReport } from '@Modules'
 
-const PERFORMANCE_CONTENT = [
-  {
-    id: 1,
-    topic: "skill_matrix",
-    subText:
-      "Performance in relation to the specified job description and specifications",
-  },
-  {
-    id: 2,
-    topic: "communication",
-    subText:
-      "Evaluation of communication skills, encompassing fluency and grammar",
-  },
-  {
-    id: 3,
-    topic: "trait",
-    subText: "Diplomacy, work ethics, character and suitability for the role",
-  },
-];
 
-const NOTE = [
-  { id: 1, icon: icons.check, text: "Completely Covered" },
-  { id: 2, icon: icons.checkBlack, text: "Partially Covered" },
-  { id: 3, icon: icons.frame, text: "Covered by invalid" },
-];
 
-const REPORT_TYPE = [
-  { id: "BR", text: "Basic Report" },
-  { id: "DR", text: "Detailed Report" },
-];
 
 function Report() {
-  const { schedule_id } = useParams();
 
   const dispatch = useDispatch();
 
-  const [dataId, setDataId] = useState<any>([
-    "trait",
-    "communication",
-    "skill_matrix",
-  ]);
 
-  const [basicReportData, setBasicReportData] = useState<any>(undefined);
-  // const filter = useDropDown(FILTER[0]);
+  const { schedule_id } = useParams();
+
+  const REPORT_TYPE = [
+    { id: "BR", text: "Basic Report" },
+    { id: "DR", text: "Detailed Report" },
+  ];
+
+  const NOTE = [
+    { id: 1, icon: icons.check, text: "Completely Covered" },
+    { id: 2, icon: icons.checkBlack, text: "Partially Covered" },
+    { id: 3, icon: icons.frame, text: "Covered by invalid" },
+  ];
+
+
+  const loader = useLoader(false);
+  const [report, setReport] = useState<any>(undefined);
+
 
   const componentRef = useRef(null);
-  let basicReportLoader = useLoader(false);
-  const [check, setCheck] = useState<any>(0);
-  const heightRef = useRef<any>();
-  const [cardHeight, setCardHeight] = useState<any>(null);
-  const [percentage, setPercentage] = useState<any>({});
+
+
   const [fileName, setFileName] = useState("");
-  // const [reportType, setReportType] = useState(REPORT_TYPE[0].id);
   const reportType = useDropDown(REPORT_TYPE[0]);
 
 
+
   useEffect(() => {
-    getBasicReportData();
+    getReportApiHandler();
   }, [reportType.value.id]);
 
-  // useEffect(() => {
-  //   if (basicReportData) {
-  //     removeDuplicates();
-  //   }
-  // }, [basicReportData]);
 
-  const handleRating = (el: any) => {
-    if (typeof el.rating === "string" && !isNaN(el.rating)) {
-      return parseInt(el.rating);
-    } else if (typeof el.rating === "number" && !isNaN(el.rating)) {
-      return el.rating;
-    } else {
-      return 0;
-    }
-  };
-
-  function getPercentage(array: any, key: string) {
-    const arrayWithUpdatedRatings = array.map((it) => {
-      return {
-        ...it,
-        rating: handleRating(it),
-      };
-    });
-
-    return (
-      arrayWithUpdatedRatings.reduce(function (acc, obj) {
-        return acc + parseFloat(obj[key]);
-      }, 0) / array.length
-    );
-  }
-
-  const getBasicReportData = () => {
-    basicReportLoader.show();
+  const getReportApiHandler = () => {
+    loader.show();
     const params = {
       schedule_id: schedule_id,
-      ...(reportType.value.id === "DR" && { is_detailed: true }),
+      ...(reportType.value.id === 'DR' && { is_detailed: true }),
     };
+
     dispatch(
       fetchBasicReport({
         params,
-        onSuccess: (success) => () => {
-          basicReportLoader.hide();
-          // console.log("success===>", success.details);
-          setBasicReportData(success.details);
-
+        onSuccess: (response: any) => () => {
+          loader.hide();
+          setReport(response.details);
           const {
-            communication,
-            skill_matrix,
-            trait,
-            overall_weightage,
             name,
             sub_text,
-          } = success.details;
-          // setFileName(name + "_" + sub_text + "_" + filter?.value.title);
+          } = response.details;
           setFileName(name + "_" + sub_text + "_" + reportType)
-
-          // console.log(communication, "communication data");
-          // console.log(skill_matrix, "skill_matrix data");
-          // console.log(trait, "trait data");
-
-          // const communicationPercentage =
-          //   communication?.length > 0
-          //     ? parseFloat(
-          //         (
-          //           (getPercentage(communication, "rating") / 100) *
-          //           overall_weightage.communication
-          //         ).toFixed(1)
-          //       )
-          //     : 0;
-          // const skillMatrixPercentage =
-          //   skill_matrix?.sections?.length > 0
-          //     ? parseFloat(
-          //         (
-          //           (getPercentage(skill_matrix?.sections, "rating") / 100) *
-          //           overall_weightage.skill_matrix
-          //         ).toFixed(1)
-          //       )
-          //     : 0;
-          // const traitPercentage =
-          //   trait.length > 0
-          //     ? parseFloat(
-          //         (
-          //           (getPercentage(trait, "percent") / 100) *
-          //           overall_weightage.trait
-          //         ).toFixed(1)
-          //       )
-          //     : 0;
-
-          // console.log(
-          //   communicationPercentage,
-          //   "communicationPercentage=========="
-          // );
-          // console.log(skillMatrixPercentage, "communicationPercentage======");
-          // console.log(traitPercentage, "communicationPercentage===");
-
-          // const total = (
-          //   communicationPercentage +
-          //   skillMatrixPercentage +
-          //   traitPercentage
-          // ).toFixed(1);
-          // console.log("total0===================>", total);
-
-          // setPercentage({
-          //   communication: communicationPercentage,
-          //   skillMatrix: skillMatrixPercentage,
-          //   trait: traitPercentage,
-          //   communicationOverAll:
-          //     communication?.length > 0
-          //       ? parseFloat(getPercentage(communication, "rating").toFixed(1))
-          //       : 0,
-          //   skillMatrixOverAll: "",
-          //   traitOverAll:
-          //     trait.length > 0
-          //       ? parseFloat(getPercentage(trait, "percent").toFixed(1))
-          //       : 0,
-          //   overAll: parseFloat(total),
-          // });
         },
-        onError: (error) => () => {
-
-          basicReportLoader.hide();
+        onError: (error: any) => () => {
+          loader.hide();
           console.log(error, "error");
-
         },
       })
     );
   };
-  console.log(basicReportData, "basicReportData");
 
-  // const calculateRating = (data: any) => {
-  //   let overallPercent = 0;
-  //   if (Array.isArray(data)) {
-  //     data.length > 0 &&
-  //       data.filter((el) => {
-  //         overallPercent = el?.percent
-  //           ? +overallPercent + +el?.percent
-  //           : +overallPercent + +el?.rating;
-  //       });
-  //   }
-  //   return overallPercent ? +overallPercent / data.length : 0;
-  // };
-
-  // const formatDateAndTime = (text) => {
-  //     // Define the regex pattern to match multi numbers in date and time format
-  //     const dateRegex = /(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})/g;
-
-  //     // Function to replace matched date and time with formatted date and time
-  //     const replaceDateAndTime = (match, year, month, day, hour, minute, second) => {
-  //       const months = [
-  //         'January', 'February', 'March', 'April', 'May', 'June', 'July',
-  //         'August', 'September', 'October', 'November', 'December'
-  //       ];
-
-  //       // Format the date and time as desired
-  //       const formattedDate = `${months[parseInt(month, 10) - 1]} ${parseInt(day, 10)}, ${year}`;
-  //       const formattedTime = `${parseInt(hour, 10) > 12 ? parseInt(hour, 10) - 12 : hour}:${minute} ${parseInt(hour, 10) >= 12 ? 'pm' : 'am'}`;
-
-  //       // Return the formatted date and time
-  //       return `${formattedDate} ${formattedTime}`;
-  //     };
-
-  //     // Replace occurrences of multi numbers in date and time format with formatted date and time
-  //     return text?.replace(dateRegex, replaceDateAndTime);
-  //   };
-
-  useEffect(() => {
-    setCardHeight(heightRef?.current?.offsetHeight);
-  }, []);
-
-  function removeDuplicates() {
-    let count = 0;
-    Object.keys(basicReportData).map((el) => {
-      if (el === "skill_matrix") {
-        basicReportData[el].sections.length > 0 &&
-          basicReportData[el].sections.map((item) => {
-            count =
-              count +
-              +basicReportData[el].overal_percent /
-              basicReportData[el].sections.length;
-          });
-      } else if (Array.isArray(basicReportData[el])) {
-        basicReportData[el].length > 0 &&
-          basicReportData[el].map((it) => {
-            count = it.percent
-              ? count + +it.percent / basicReportData[el].length
-              : count + +it.rating / basicReportData[el].length;
-          });
-      }
-    });
-    setCheck(count);
-  }
-
-  const normalizedTableData = (data: any, heading: any) => {
-    let length = 0;
-    return (
-      data.length > 0 &&
-      data.map((el, index) => {
-        // let array: any = loopFunction(el)
-        if (el?.suggestions?.covered?.length > length) {
-          length = el?.suggestions?.covered?.length;
-        } else if (el?.suggestions?.covered_partial?.length > length) {
-          length = el?.suggestions?.covered_partial?.length;
-        } else if (el?.suggestions?.covered_not_valid?.length > length) {
-          length = el?.suggestions?.covered_not_valid?.length;
-        }
-
-        const { covered, covered_partial, covered_not_valid } = el?.suggestions;
-
-        let coveredHeight;
-        let coveredPartialHeight;
-        let coveredNotValidHeight;
-
-        if (covered && covered.length > 0)
-          coveredHeight = covered
-            .map((card: any) => card.length)
-            .reduce((a, b) => a + b);
-
-        if (covered_partial && covered_partial.length > 0)
-          coveredPartialHeight = covered_partial
-            .map((card: any) => card.length)
-            .reduce((a, b) => a + b);
-
-        if (covered_not_valid && covered_not_valid.length > 0)
-          coveredNotValidHeight = covered_not_valid
-            .map((card: any) => card.length)
-            .reduce((a, b) => a + b);
-
-        const maxNumber =
-          Math.max(
-            coveredHeight ? coveredHeight : 0,
-            coveredPartialHeight ? coveredPartialHeight : 0,
-            coveredNotValidHeight ? coveredNotValidHeight : 0
-          ) + 100;
-
-        return (
-          <div className=" py-2">
-            <div className="">
-              <h5 className="text-black">{`${index + 1}.${el.question}`}</h5>
-            </div>
-            <div className="ml-2 pl-1 pb-3 text-black">
-              {el?.expected_answer_key_points?.points &&
-                el?.expected_answer_key_points?.points.length > 0 ? (
-                <>
-                  <h5 className="text-black text-uppercase">
-                    Expected Key Points
-                  </h5>
-                  {el?.expected_answer_key_points?.points?.map((it) => {
-                    return (
-                      <>
-                        <li
-                          className=""
-                          style={{
-                            fontSize: "12px",
-                          }}
-                        >
-                          {it}
-                        </li>
-                      </>
-                    );
-                  })}
-                </>
-              ) : (
-                <span className="text-muted font-weight-500">Not Answered</span>
-              )}
-            </div>
-            {(el?.suggestions?.covered?.length > 0 ||
-              el?.suggestions?.covered_partial?.length > 0 ||
-              el?.suggestions?.covered_not_valid?.length > 0) && (
-                <div className="ml-1 pb-2">
-                  <h5 className="text-black text-uppercase ">Answer breakdown</h5>
-                </div>
-              )}
-            <div className="mx-5">
-              <div
-                className="row p-0 ml--6 mr--7"
-                style={{
-                  zoom: "80%",
-                }}
-              >
-                {(el?.suggestions?.covered?.length > 0 ||
-                  el?.suggestions?.covered_partial?.length > 0 ||
-                  el?.suggestions?.covered_not_valid?.length > 0) && (
-                    <>
-                      {el?.suggestions?.covered?.length > 0 && (
-                        <div className="col-sm-4">
-                          <Card
-                            className="check"
-                            style={{
-                              height: maxNumber + "px",
-                            }}
-                          >
-                            <CardHeader className="h3">Valid</CardHeader>
-                            <CardBody>
-                              <div>
-                                {el?.suggestions?.covered?.length > 0 &&
-                                  el?.suggestions?.covered?.map((items) => {
-                                    return (
-                                      <>
-                                        <li>
-                                          <span>{items}</span>
-                                        </li>
-                                      </>
-                                    );
-                                  })}
-                              </div>
-                            </CardBody>
-                          </Card>
-                        </div>
-                      )}
-                      {el?.suggestions?.covered_partial?.length > 0 && (
-                        <div className="col-sm-4">
-                          <Card
-                            style={{
-                              height: maxNumber + "px",
-                            }}
-                          >
-                            <CardHeader className="h3">Partial</CardHeader>
-                            <CardBody>
-                              {el?.suggestions?.covered_partial?.length > 0 &&
-                                el?.suggestions?.covered_partial?.map((items) => {
-                                  return (
-                                    <>
-                                      <li>{items}</li>
-                                    </>
-                                  );
-                                })}
-                            </CardBody>
-                          </Card>
-                        </div>
-                      )}
-                      {el?.suggestions?.covered_not_valid?.length > 0 && (
-                        <div className="col-sm-4">
-                          <Card
-                            style={{
-                              height: maxNumber,
-                            }}
-                          >
-                            <CardHeader className="h3">Invalid</CardHeader>
-                            <CardBody>
-                              {el?.suggestions?.covered_not_valid?.length > 0 &&
-                                el?.suggestions?.covered_not_valid?.map(
-                                  (items) => {
-                                    return (
-                                      <>
-                                        <li>{items}</li>
-                                      </>
-                                    );
-                                  }
-                                )}
-                            </CardBody>
-                          </Card>
-                        </div>
-                      )}
-                    </>
-                  )}
-              </div>
-            </div>
-          </div>
-        );
-      })
-    );
+  const colorVariant = (percentage: any) => {
+    if (percentage <= 20) return "red";
+    if (percentage <= 40) return "orange";
+    if (percentage <= 60) return "#ebeb1b";
+    if (percentage <= 80) return "green";
+    return "#FFD700";
   };
 
-  const colorVariant = (percentage) => {
-    if (percentage <= 20) {
-      return "red";
-    } else if (percentage <= 40) {
-      return "orange";
-    } else if (percentage <= 60) {
-      return "#ebeb1b";
-    } else if (percentage <= 80) {
-      return "green";
-    } else if (percentage <= 100) {
-      return "#FFD700";
-    }
-  };
-
-  // const handleButtonClick = (selectedOption) => {
-  //   if (selectedOption.title === "Detailed Report") {
-  //     // getBasicReportData("Detailed Report");
-  //   } else {
-  //     // getBasicReportData("");
-  //   }
-
-  //   // filter.onChange(selectedOption);
-  // };
-
-  let array = 0;
-
-  // console.log("basicReportData===>", basicReportData);
 
   return (
-    <> <div className="position-relative ml-sm-6">
-      <div className="col-sm-3 position-absolute top-3 left-0 p-0">
-        <DropDown
-          // data={REPORT_TYPE}
-          // value={reportType}
-          // onChange={(e) => {
-          //   setReportType(e.target.value);
-          // }}
-          // style={{ height: "44px", borderColor: "#727586" }}
-          id={"status"}
-          // heading={"Status"}
-          data={REPORT_TYPE}
-          selected={reportType.value}
-          onChange={reportType.onChange}
-        />
-      </div>
-    </div>
-      <div
+    <div className={'screen'}>
+      {/* <div className="position-relative ml-sm-6">
+        <div className="col-sm-3 position-absolute top-3 left-0 p-0">
+          <DropDown
+            id={"status"}
+            data={REPORT_TYPE}
+            selected={reportType.value}
+            onChange={reportType.onChange}
+          />
+        </div>
+      </div> */}
+      {/* <div
         className="row position-fixed bottom-0 right-0 m-sm-3 p-3"
         style={{
           zIndex: 1,
         }}
       >
-        {/* <ButtonGroup
-            size={"btn-sm"}
-            sortData={FILTER}
-            selected={filter.value}
-            onClick={handleButtonClick}
-          /> */}
         <div className="ml-3">
           {fileName && (
             <ReactToPrint
@@ -519,23 +126,28 @@ function Report() {
           )}
         </div>
 
-      </div>
-      {basicReportLoader.loader ? <div
+      </div> */}
+
+      {
+        loader.loader && <div className={'loader-container'}> <Spinner /></div>
+      }
+      {
+        <>
+          <ReportHeader details={report} />
+          <BasicReport />
+        </>
+      }
+      {/* {loader.loader ? <div
         className={
           "vh-100 d-flex justify-content-center align-items-center"
         }
       >
         <Spinner />
       </div>
-        : basicReportData ? (
+        : report ? (
           <div className="d-flex flex-column px-sm-6 px-3 py-3" ref={componentRef}>
-
             <div className="">
-
               <div className="position-relative ">
-                {/* <div className="position-absolute top-2" style={{ width: '35mm', height: '45mm', overflow: 'hidden' }}>
-                  <Image src={image.passportImage} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                </div> */}
                 <div className="mt-5">
                   <div className="text-center">
                     <div className="">
@@ -543,7 +155,7 @@ function Report() {
                         style={{ fontSize: 38 }}
                         className="font-weight-bolder text-secondary"
                       >
-                        {basicReportData?.interview_meta_info?.name}
+                        {report?.interview_meta_info?.name}
                       </span>
                     </div>
                     <div className="mt--2">
@@ -551,12 +163,12 @@ function Report() {
                         className="font-weight-bolder text-secondary font-weight-600"
                         style={{ fontSize: 12 }}
                       >
-                        {`${basicReportData.interview_meta_info?.role} - ${!basicReportData.interview_meta_info?.experience
+                        {`${report.interview_meta_info?.role} - ${!report.interview_meta_info?.experience
                           ? "Fresher"
-                          : basicReportData.interview_meta_info?.experience
-                          } ${basicReportData.interview_meta_info?.experience > 1
+                          : report.interview_meta_info?.experience
+                          } ${report.interview_meta_info?.experience > 1
                             ? "years"
-                            : basicReportData.interview_meta_info?.experience === 1
+                            : report.interview_meta_info?.experience === 1
                               ? "year"
                               : ""
                           }`}
@@ -571,7 +183,7 @@ function Report() {
                           fontSize: 12,
                           borderWidth: 0,
                         }}
-                        text={`${basicReportData.interview_meta_info?.interview_duration} min Interview`}
+                        text={`${report.interview_meta_info?.interview_duration} min Interview`}
                       />
                     </div>
                   </div>
@@ -580,14 +192,16 @@ function Report() {
                   <h1
                     className="font-weight-bolder text-right display-2"
                     style={{
-                      color: colorVariant(basicReportData.candidate_score),
+                      color: colorVariant(report.candidate_score),
                     }}
                   >
-                    {basicReportData.candidate_score}
+                    {report.candidate_score}
                   </h1>
                 </div>
               </div>
             </div>
+
+            <ReportHeader />
 
             {reportType.value.id === "BR" ? (
               <div className="mt-md-6 p-0">
@@ -619,17 +233,17 @@ function Report() {
                                 fontSize: "36px",
                               }}
                             >
-                              {basicReportData?.skill_matrix_overal_percent}
+                              {report?.skill_matrix_overal_percent}
                             </span>
                           </div>
                         </div>
                       </Card>
                     </div>
-                    {basicReportData?.report_other_analytics &&
-                      Object.keys(basicReportData?.report_other_analytics)?.map(
+                    {report?.report_other_analytics &&
+                      Object.keys(report?.report_other_analytics)?.map(
                         (heading) => {
                           return (<>
-                            {typeof basicReportData?.report_other_analytics[heading] !== "number" ? <div>{''}</div>
+                            {typeof report?.report_other_analytics[heading] !== "number" ? <div>{''}</div>
                               : <div className="col-sm-3 ">
                                 <Card
                                   style={{
@@ -659,7 +273,7 @@ function Report() {
                                           fontSize: "36px",
                                         }}
                                       >
-                                        {`${basicReportData?.report_other_analytics[heading]} %`}
+                                        {`${report?.report_other_analytics[heading]} %`}
                                       </span>
                                     </div>
                                   </div>
@@ -693,7 +307,7 @@ function Report() {
                               fontSize: "36px",
                             }}
                           >
-                            {`${basicReportData?.skill_matrix_overal_percent} %`}
+                            {`${report?.skill_matrix_overal_percent} %`}
                           </span>
                         </div>
                         <div className="h4 mb-0 pb-0 pt-2">
@@ -706,11 +320,11 @@ function Report() {
                         </div>
                       </div>
                     </div>
-                    {basicReportData &&
-                      basicReportData?.report_other_analytics &&
-                      basicReportData?.report_other_analytics?.hlv_r &&
+                    {report &&
+                      report?.report_other_analytics &&
+                      report?.report_other_analytics?.hlv_r &&
                       Object.keys(
-                        basicReportData?.report_other_analytics?.hlv_r
+                        report?.report_other_analytics?.hlv_r
                       )?.map((heading) => {
                         return (
                           <>
@@ -723,7 +337,7 @@ function Report() {
                                       fontSize: "36px",
                                     }}
                                   >
-                                    {`${basicReportData.report_other_analytics.hlv_r[heading]} %`}
+                                    {`${report.report_other_analytics.hlv_r[heading]} %`}
                                   </span>
                                 </div>
                                 <div className="h4 mb-0 pb-0 pt-2">
@@ -757,13 +371,13 @@ function Report() {
               <div>
                 <div className="" style={{ paddingTop: 30 }}>
                   <div>
-                    {basicReportData &&
-                      Object.keys(basicReportData).map((item) => {
+                    {report &&
+                      Object.keys(report).map((item) => {
                         return (
                           <div>
                             {item === "skill_matrix" &&
-                              basicReportData?.skill_matrix?.sections &&
-                              basicReportData?.skill_matrix?.sections.map(
+                              report?.skill_matrix?.sections &&
+                              report?.skill_matrix?.sections.map(
                                 (skill) => {
                                   return (
                                     <Card
@@ -805,7 +419,7 @@ function Report() {
                     <span style={{ fontSize: 26 }}>{"Skill Matrix Report"}</span>
                     <span
                       style={{ fontSize: 36 }}
-                    >{`${basicReportData.skill_matrix_overal_percent}%`}</span>
+                    >{`${report.skill_matrix_overal_percent}%`}</span>
                   </div>
 
                   <div className="d-flex justify-content-end mt-4">
@@ -834,10 +448,10 @@ function Report() {
                   </div>
 
                   <div className="">
-                    {basicReportData &&
-                      basicReportData?.skill_matrix &&
-                      basicReportData.skill_matrix?.sections.length > 0 &&
-                      basicReportData.skill_matrix.sections.map((skill: any) => {
+                    {report &&
+                      report?.skill_matrix &&
+                      report.skill_matrix?.sections.length > 0 &&
+                      report.skill_matrix.sections.map((skill: any) => {
                         return (
                           <div className="mt-5">
                             <Card
@@ -970,11 +584,11 @@ function Report() {
                       })}
                   </div>
 
-                  {basicReportData &&
-                    basicReportData?.report_other_analytics &&
-                    basicReportData.report_other_analytics?.llv_r &&
-                    basicReportData.report_other_analytics?.hlv_r &&
-                    Object.keys(basicReportData.report_other_analytics?.hlv_r).map(
+                  {report &&
+                    report?.report_other_analytics &&
+                    report.report_other_analytics?.llv_r &&
+                    report.report_other_analytics?.hlv_r &&
+                    Object.keys(report.report_other_analytics?.hlv_r).map(
                       (heading) => {
                         return (
                           <>
@@ -983,17 +597,17 @@ function Report() {
                                 {capitalizeFirstLetter(heading).replace("_", " ")}
                               </span>
                               <span style={{ fontSize: 36 }}>
-                                {`${basicReportData.report_other_analytics.hlv_r[heading]} %`}
+                                {`${report.report_other_analytics.hlv_r[heading]} %`}
                               </span>
                             </div>
 
                             <div>
                               <div className="" style={{ paddingTop: 20 }}>
                                 <div>
-                                  {basicReportData.report_other_analytics.llv_r[
+                                  {report.report_other_analytics.llv_r[
                                     heading
                                   ] &&
-                                    basicReportData.report_other_analytics.llv_r[
+                                    report.report_other_analytics.llv_r[
                                       heading
                                     ].map((item) => {
                                       return (
@@ -1061,8 +675,8 @@ function Report() {
               <NoDataFound />
             </div>
           )
-      }
-    </>
+      } */}
+    </div>
   );
 }
 

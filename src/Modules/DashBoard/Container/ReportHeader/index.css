@@ -1,0 +1,41 @@
+.base-info-container {
+    display: flex;
+    position: relative;
+    justify-content: center;
+}
+
+.user-info-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: var(--secondary);
+}
+
+.user-mark-container {
+    position: absolute;
+    top: 50%;
+    bottom: 50%;
+    transform: translate(-50%, -50%);
+    right: 5%;
+}
+
+
+.user-heading {
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.user-role {
+    font-size: 16px;
+    font-weight: 700;
+    margin-top: 12px;
+    text-transform: capitalize;
+    margin-bottom: 10px;
+}
+
+.mark-text {
+    font-size: 70px;
+    line-height: 1;
+}

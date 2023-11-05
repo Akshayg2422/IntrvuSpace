@@ -191,7 +191,6 @@ function VariantInfo() {
         <div className={'other-info-container'}>
           <div className={'screen-heading heading-space'}>{'Other Information'}</div>
           <div className={'card-container'}>
-
             <div className={'other-info-details-container'}>
               <div className={'info-container '}>
                 <div className={'info-title'}>
@@ -294,8 +293,6 @@ function VariantInfo() {
           </div>
         </div>
       </Modal >
-
-
     </div >
   );
 }

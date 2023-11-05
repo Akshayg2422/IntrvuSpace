@@ -52,6 +52,10 @@ export * from './WebsiteReportsAndInsights'
 export * from './WebsiteAutoApprovalForCandidatesPerformance'
 export * from './UploadCorporateOpeningsCard'
 export * from './VideoStream'
+export * from './ReportHeader'
+export * from './AdvancedReport'
+export * from './BasicReport'
+
 
 
 
