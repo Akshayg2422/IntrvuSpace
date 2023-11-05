@@ -626,6 +626,7 @@ function* getCorporateSchedulesSaga(action) {
   try {
     const response = yield call(Api.getCorporateSchedulesApi, action.payload.params);
 
+
     if (response.success) {
       yield put(Action.getCorporateSchedulesSuccess(response));
       yield call(action.payload.onSuccess(response));

@@ -1,5 +1,5 @@
 import { icons } from '@Assets'
-import { Designation, WeightageCountForm, CreateQuestionForm, Clients, Sector, Questions, Call, Report, QuestionSections, AnalyzingAnimation, Schedules, Login, Otp, Splash, Register, LoginWithOtp, AdminLogin, VariantInfo, PrivacyPolicy, TermsAndConditions, ReturnAndRefund, Reports, HowItWorks, Introduction, Settings, Response, CreateNewPassword, ForgotPassword, PreparingYourInterview, UploadCorporateOpeningsCard, UploadJdCard } from '@Modules';
+import { Designation, WeightageCountForm, CreateQuestionForm, Clients, Sector, Questions, Call, Report, QuestionSections, AnalyzingAnimation, Schedules, Login, Otp, Splash, Register, LoginWithOtp, AdminLogin, VariantInfo, PrivacyPolicy, TermsAndConditions, ReturnAndRefund, Reports, HowItWorks, Introduction, Settings, Response, CreateNewPassword, ForgotPassword, PreparingYourInterview, UploadCorporateOpeningsCard, UploadJdCard, RegisterCompany } from '@Modules';
 
 
 
@@ -18,7 +18,8 @@ export const ROUTES = {
     'how-it-works': '/how-it-works',
     introduction: '/introduction',
     forgotPassword: '/forgotPassword',
-    createNewPassword: '/createNewPassword'
+    createNewPassword: '/createNewPassword',
+    'register-company': '/register-company'
   },
   'designation-module': {
     Dashboard: "/dashboard",
@@ -37,7 +38,7 @@ export const ROUTES = {
     'variant-info': '/variant-info',
     settings: '/settings',
     'response': '/response',
-    'preparing-your-interview': '/preparing-your-interview'
+    'preparing-your-interview': '/preparing-your-interview',
   }
 }
 
@@ -107,6 +108,11 @@ export const AUTH_ROUTES = [
     key: 13,
     path: ROUTES['auth-module'].createNewPassword,
     component: <CreateNewPassword />
+  },
+  {
+    key: 15,
+    path: ROUTES['auth-module']['register-company'],
+    component: <RegisterCompany />
   },
 
 

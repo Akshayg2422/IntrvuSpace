@@ -17,13 +17,15 @@ function Modal({ loading, isOpen, children, title, subTitle, buttonText, size = 
     >
       <div className={'modal-container'}>
         <div className={'cancel-container'}>
-          {onClose &&
-            <div className={'modal-cancel-container'} onClick={onClose}>
+
+          <div className={'modal-cancel-container'} onClick={onClose}>
+            {onClose &&
               <Image src={icons.close} height={16} width={16} style={{
                 objectFit: 'contain'
               }} />
-            </div>
-          }
+            }
+          </div>
+
         </div>
       </div>
       <div className={'section-modal-container'}>
@@ -36,11 +38,13 @@ function Modal({ loading, isOpen, children, title, subTitle, buttonText, size = 
         {
           children
         }
-        <div className={'modal-bottom-container'}>
-          <div className={'modal-bottom-btn'}>
-            <Button loading={loading} block text={buttonText} onClick={onClick} />
+        {onClick &&
+          <div className={'modal-bottom-container'}>
+            <div className={'modal-bottom-btn'}>
+              <Button loading={loading} block text={buttonText} onClick={onClick} />
+            </div>
           </div>
-        </div>
+        }
       </div>
     </RsModal>
   );

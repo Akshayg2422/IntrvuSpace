@@ -45,6 +45,7 @@ const initialState: DashboardProp = {
   sectorsCorporate: undefined,
   departmentCorporate: undefined,
   corporateSchedules: [],
+  corporateScheduleCount: undefined,
   createForOthersJdModal: false,
   interviewScheduleDetails: undefined,
   retrieveEmail: undefined,
@@ -513,13 +514,18 @@ const DashboardReducer = (state = initialState, action: any) => {
         corporateSchedules: [],
         corporateScheduleNumOfPages: 0,
         corporateScheduleCurrentPages: 1,
+        corporateScheduleCount: undefined,
       };
       break;
     case ActionTypes.GET_CORPORATE_SCHEDULES_SUCCESS:
-      const { corporate_jd_items } = action.payload?.details
+      const { corporate_jd_items, schedule_count } = action.payload?.details
+
+      console.log(JSON.stringify(action.payload) + '===');
+
       state = {
         ...state,
         corporateSchedules: corporate_jd_items?.data,
+        corporateScheduleCount: schedule_count,
         corporateScheduleNumOfPages: corporate_jd_items.num_pages,
         corporateScheduleCurrentPages:
           corporate_jd_items.next_page === -1
@@ -529,7 +535,7 @@ const DashboardReducer = (state = initialState, action: any) => {
       break;
 
     case ActionTypes.GET_CORPORATE_SCHEDULES_FAILURE:
-      state = { ...state, corporateSchedules: [] };
+      state = { ...state, corporateSchedules: [], corporateScheduleCount: undefined, };
       break;
 
 

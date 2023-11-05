@@ -1,13 +1,14 @@
 import {
   MenuBar,
   ViewMore,
-  showToast
+  showToast,
+  Alert
 } from "@Components";
 import { useModal } from '@Hooks';
-import { Candidates } from '@Modules';
+import { Candidates, } from '@Modules';
 import { fetchCandidatesCorporate, getCorporateScheduleDetails, postCorporateScheduleActions } from '@Redux';
 import { displayFormatDate, } from '@Utils';
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./index.css";
 
@@ -39,9 +40,16 @@ function VariantInfo() {
   const { job_description, department, interview_duration, candidate_deadline, created_by, created_at, vacancies, is_closed, candidate_details } = corporateScheduleDetails || {};
   const { position, experience, details } = job_description || {};
 
-
-
   const loader = useModal(false);
+
+
+  /**
+   * view more details
+   */
+
+  const [viewMore, setViewMore] = useState(false)
+
+
 
   useEffect(() => {
     getCorporateScheduleDetailsHandler();
@@ -173,7 +181,7 @@ function VariantInfo() {
         <div className={'jd-details-container'}>
           <div className={'screen-heading heading-space'}>{'Job Details'}</div>
           <div>
-            {details && <ViewMore text={details} />}
+            {details && <ViewMore text={details} isViewMore={viewMore} onViewMore={setViewMore} />}
           </div>
         </div>
 
@@ -235,13 +243,10 @@ function VariantInfo() {
         </div>
 
       </div>
-      {/* <div
-          className={
-            "vh-100 d-flex justify-content-center align-items-center"
-          }
-        >
-          <Spinner />
-        </div> */}
+
+
+      <Alert title={'Close Jd'} subTitle={'Are you sure, want to close this JD?'} isOpen={true} onClose={() => { }} />
+
     </div >
   );
 }

@@ -11,7 +11,7 @@ const CREATE_JD_AND_ADD_CANDIDATE = [
   {
     id: 3,
     mainText: "Candidate",
-    subText: " can attend at their convinient time",
+    subText: " can attend at their convenient time",
   },
   { id: 4, mainText: "Deadlines", subText: " for interviews" },
   { id: 5, mainText: "Unlimited Candidates", subText: " for single JD" },
@@ -22,7 +22,7 @@ const REPORTS_AND_AUTO_APPROVALS = [
   { id: 2, mainText: "Skill Matrix", subText: " Report" },
   { id: 3, mainText: "Communication", subText: " Report" },
   { id: 4, mainText: "Aptitude", subText: " Report" },
-  { id: 5, mainText: "Personality Trait", subText: " included" },
+  { id: 5, mainText: "Personality Traits", subText: " included" },
 ];
 
 function AllInOnePlatform() {

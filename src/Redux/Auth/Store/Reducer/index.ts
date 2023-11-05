@@ -9,6 +9,7 @@ const initialState: AuthProps = {
     loginUser: undefined,
     OTP: undefined,
     memberUsingLoginOtp: undefined,
+    registerCompanyDetails: undefined,
 };
 
 
@@ -63,6 +64,18 @@ const AuthReducer = (state = initialState, action: any) => {
             break;
         case ActionTypes.FETCH_MEMBER_USING_LOGIN_OTP_FAILURE:
             state = { ...state, memberUsingLoginOtp: undefined };
+            break;
+
+        // registerAsCompany
+
+        case ActionTypes.REGISTER_AS_COMPANY:
+            state = { ...state, registerCompanyDetails: undefined };
+            break;
+        case ActionTypes.REGISTER_AS_COMPANY_SUCCESS:
+            state = { ...state, registerCompanyDetails: action.payload };
+            break;
+        case ActionTypes.REGISTER_AS_COMPANY_FAILURE:
+            state = { ...state, registerCompanyDetails: undefined };
             break;
 
         default:
