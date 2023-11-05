@@ -5,7 +5,7 @@ import { Image, Button } from '@Components'
 import { icons } from "@Assets";
 import './index.css'
 
-function Modal({ loading, isOpen, children, title, subTitle, buttonText, size = 'lg', style, onClose, onClick, ...rest }: ModalProps) {
+function Modal({ loading, isOpen, children, title, subTitle, buttonText = 'Submit', size = 'lg', style, onClose, onClick, ...rest }: ModalProps) {
 
   return (
 
@@ -16,17 +16,15 @@ function Modal({ loading, isOpen, children, title, subTitle, buttonText, size = 
       {...rest}
     >
       <div className={'modal-container'}>
-        <div className={'cancel-container'}>
-
-          <div className={'modal-cancel-container'} onClick={onClose}>
-            {onClose &&
-              <Image src={icons.close} height={16} width={16} style={{
+        {onClose &&
+          <div className={'cancel-container'}>
+            <div className={'modal-cancel-container'} onClick={onClose}>
+              <Image src={icons.close} height={15} width={15} style={{
                 objectFit: 'contain'
               }} />
-            }
+            </div>
           </div>
-
-        </div>
+        }
       </div>
       <div className={'section-modal-container'}>
         <div>
@@ -35,9 +33,11 @@ function Modal({ loading, isOpen, children, title, subTitle, buttonText, size = 
             <small className={'text-des'}>{subTitle}</small>
           </div>
         </div>
-        {
-          children
-        }
+        <div className={'modal-child-container'}>
+          {
+            children
+          }
+        </div>
         {onClick &&
           <div className={'modal-bottom-container'}>
             <div className={'modal-bottom-btn'}>

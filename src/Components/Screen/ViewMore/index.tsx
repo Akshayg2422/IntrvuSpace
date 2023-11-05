@@ -6,8 +6,6 @@ function ViewMore({ text, isViewMore = false, onViewMore }: ViewMoreProps) {
 
     const VIEW_MORE_LENGTH = 300;
 
-    console.log(text.length < VIEW_MORE_LENGTH);
-
     return (
         <>
             {

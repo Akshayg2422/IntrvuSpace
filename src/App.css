@@ -94,3 +94,7 @@ input[type=number] {
     align-items: center;
     justify-content: center;
 }
+
+.btn-wrapper {
+    width: 215px;
+}

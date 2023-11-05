@@ -29,7 +29,7 @@ function TopNavbarCorporateFlow() {
   const logoutModal = useModal(false);
   const { goTo } = useNavigation();
   const { loginDetails } = useSelector((state: any) => state.AppReducer);
-  const { corporateSchedules } = useSelector(
+  const { corporateScheduleCount } = useSelector(
     (state: any) => state.DashboardReducer
   );
   const dispatch = useDispatch();
@@ -81,7 +81,6 @@ function TopNavbarCorporateFlow() {
     setDropdownOpen(!dropdownOpen);
     console.log("After Toggle: dropdownOpen =", !dropdownOpen);
   };
-  console.log(corporateSchedules, "corporateSchedules");
 
   return (
     <>
@@ -155,7 +154,7 @@ function TopNavbarCorporateFlow() {
               className="align-items-lg-center ml-lg-auto mr--4 justify-content-end"
               navbar
             >
-              {corporateSchedules?.details?.schedule_count >
+              {corporateScheduleCount >
                 0 && (
                   <NavItem>
                     <NavLink to="/schedule" tag={Link}>

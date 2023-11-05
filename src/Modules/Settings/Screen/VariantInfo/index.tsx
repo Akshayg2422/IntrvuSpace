@@ -1,17 +1,20 @@
 import {
+  Alert,
+  DateTimePicker,
   MenuBar,
+  Modal,
   ViewMore,
   showToast,
-  Alert
+  DropzoneFilePicker
 } from "@Components";
-import { useModal } from '@Hooks';
+import { useLoader, useModal } from '@Hooks';
 import { Candidates, } from '@Modules';
-import { fetchCandidatesCorporate, getCorporateScheduleDetails, postCorporateScheduleActions } from '@Redux';
-import { displayFormatDate, } from '@Utils';
+import { getCorporateScheduleDetails, postCorporateScheduleActions } from '@Redux';
+import { displayFormatDate, getDateFromServer, getDisplayTime, capitalizeFirstLetter } from '@Utils';
+import moment from "moment";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./index.css";
-
 
 function VariantInfo() {
 
@@ -30,9 +33,7 @@ function VariantInfo() {
   const {
     selectedRole,
     corporateScheduleDetails,
-    candidatesList,
-    candidatesListNumOfPages,
-    candidatesListCurrentPages,
+    refreshCorporateSchedules
   } = useSelector((state: any) => state.DashboardReducer);
 
   const { id } = selectedRole
@@ -43,42 +44,34 @@ function VariantInfo() {
   const loader = useModal(false);
 
 
+
   /**
    * view more details
    */
-
   const [viewMore, setViewMore] = useState(false)
 
+
+  /**
+   * close modal state
+   */
+
+  const closeJdModal = useModal(false)
+
+
+  const scheduleActionLoader = useLoader(false);
+
+  /**
+ * modify deadline
+ */
+
+  const modifyDeadlineModal = useModal(false)
+  const [scheduleEndDate, setScheduleEndDate] = useState<any>("");
+  const [scheduleEndTime, setScheduleEndTime] = useState<any>("");
 
 
   useEffect(() => {
     getCorporateScheduleDetailsHandler();
-  }, []);
-
-
-
-  const getCandidatesCorporate = (page_number: number) => {
-
-    const params = {
-      corporate_openings_details_id: id,
-      // ...(searchCandidate && { q: searchCandidate }),
-      // ...(statusNote.value.text === "Selected" && { is_approved: true }),
-      // ...(statusNote.value.text === "Rejected" && { is_rejected: true }),
-      // ...(statusNote.value.text === "Yet to Start" && {
-      //   is_not_attended: true,
-      // }),
-      page_number,
-    };
-
-    dispatch(
-      fetchCandidatesCorporate({
-        params,
-        onSuccess: () => () => {
-        },
-        onError: () => () => { },
-      })
-    );
-  };
+  }, [refreshCorporateSchedules]);
 
 
   const getCorporateScheduleDetailsHandler = () => {
@@ -102,70 +95,81 @@ function VariantInfo() {
 
   function onScheduleMenuHandler(action: any) {
     if (action.id === MODIFY_OPTION[0].id) {
-      console.log('action');
-
-      const params = { is_closed: true }
-      corporateScheduleActionsHandler(params);
-
-      // modifyDeadlineModal.show();
-      // setScheduleDate(
-      //   getDateFromServer(
-      //     corporateScheduleDetails?.candidate_deadline
-      //   )
-      // );
-      // setEndTime(
-      //   getDisplayTime(
-      //     corporateScheduleDetails?.candidate_deadline
-      //   )
-      // );
-    } else if (action.name === "Close JD") {
+      closeJdModal.show();
+    } else if (action.id === MODIFY_OPTION[1].id) {
+      modifyDeadlineHandler();
     }
+  }
+
+
+  function proceedCloseJdApiHandler() {
+    const params = { is_closed: true }
+    corporateScheduleActionsHandler(params);
   }
 
   const corporateScheduleActionsHandler = (updatedParams: any) => {
     const params = {
       corporate_openings_details_id: corporateScheduleDetails?.id,
       ...updatedParams
-      // ...(action === "Close JD" && ),
-      // ...(action === "Modify Deadlines" && {
-      //   deadline: moment(scheduleDate + "T" + endTime).format(
-      //     "YYYY-MM-DDTHH:mm:ss"
-      //   ),
-      // }),
     };
+
+    scheduleActionLoader.show();
 
     dispatch(
       postCorporateScheduleActions({
         params,
         onSuccess: (response: any) => () => {
+          scheduleActionLoader.hide();
+          modifyDeadlineModal.hide();
+          closeJdModal.hide();
           getCorporateScheduleDetailsHandler();
           showToast(response.message, "success");
-          // getCandidatesCorporate(candidatesListCurrentPages);
-          // modifyDeadlineModal.hide();
-          // resetValues();
         },
         onError: (error: any) => () => {
+          scheduleActionLoader.hide();
           showToast(error.error_message, "error");
         },
       })
     );
+
   };
 
+  const modifyDeadlineHandler = () => {
+
+    const displayTime = moment(getDisplayTime(candidate_deadline), 'HH:mm:ss').format('hh:mm A');
+    setScheduleEndDate(
+      getDateFromServer(candidate_deadline)
+    );
+    setScheduleEndTime(displayTime);
+
+    modifyDeadlineModal.show();
+  };
+
+  function proceedModifyDeadlineApiHandler() {
+
+    const convertedTime = moment(scheduleEndTime, 'hh:mm A').format('HH:mm:ss')
+    const date = moment(scheduleEndDate + "T" + convertedTime).format(
+      "YYYY-MM-DDTHH:mm:ss");
+
+    const params = { deadline: date }
+
+    corporateScheduleActionsHandler(params);
+
+  }
 
   return (
     <div className={'screen'}>
       <div className={'screen-variant-info'}>
-
         <div className={'variant-header'}>
           <div>
-            <div className={'screen-heading'}>{position}</div>
+            <div className={'screen-heading'}>{capitalizeFirstLetter(position)}</div>
             <div className={'experience'}>
-              {experience}
+              {capitalizeFirstLetter(experience)}
             </div>
           </div>
 
           <div className={'vacancies-container'}>
-            <div className={'screen-heading'}>{`${vacancies} Vacancies`}</div>
+            <div className={'screen-heading'}>{`${vacancies}  ${vacancies > 1 ? 'Vacancies' : 'Vacancy'}`}</div>
             {!is_closed &&
               <div className={'menu-container'}>
                 <MenuBar menuData={MODIFY_OPTION} onClick={onScheduleMenuHandler} />
@@ -174,7 +178,6 @@ function VariantInfo() {
           </div>
 
         </div>
-
 
         <Candidates id={id} details={corporateScheduleDetails} />
 
@@ -241,11 +244,57 @@ function VariantInfo() {
             </div>
           </div>
         </div>
-
       </div>
 
 
-      <Alert title={'Close Jd'} subTitle={'Are you sure, want to close this JD?'} isOpen={true} onClose={() => { }} />
+      {
+        /**
+         * close js modal
+         */
+      }
+      <Alert
+        loading={scheduleActionLoader.loader}
+        title={'Close JD'}
+        subTitle={'Are you sure, want to close this JD?'}
+        isOpen={closeJdModal.visible}
+        onClose={closeJdModal.hide}
+        primaryOnClick={proceedCloseJdApiHandler}
+        secondaryOnClick={closeJdModal.hide}
+      />
+
+      <Modal
+        loading={scheduleActionLoader.loader}
+        title={'Modify Deadline'}
+        isOpen={modifyDeadlineModal.visible}
+        onClose={modifyDeadlineModal.hide}
+        buttonText={'Submit'}
+        onClick={proceedModifyDeadlineApiHandler}
+      >
+        <div className={'row'}>
+          <div className={'col-sm-6'}>
+            <DateTimePicker
+              noSpace
+              disableFuture={true}
+              heading={'Schedule Date'}
+              placeholder={'Schedule Date'}
+              value={scheduleEndDate}
+              onChange={setScheduleEndDate}
+            />
+          </div>
+          <div className="col-sm-6">
+            <DateTimePicker
+              noSpace
+              type={'time'}
+              dateFormat={'HH:mm:ss'}
+              heading={'Schedule Date'}
+              placeholder={'Schedule Date'}
+              value={scheduleEndTime}
+              onChange={setScheduleEndTime}
+            />
+          </div>
+        </div>
+      </Modal >
+
 
     </div >
   );

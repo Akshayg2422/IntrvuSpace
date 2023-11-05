@@ -44,6 +44,7 @@ const initialState: DashboardProp = {
   createJdModal: false,
   sectorsCorporate: undefined,
   departmentCorporate: undefined,
+  refreshCorporateSchedules: false,
   corporateSchedules: [],
   corporateScheduleCount: undefined,
   createForOthersJdModal: false,
@@ -53,6 +54,7 @@ const initialState: DashboardProp = {
   corporateScheduleNumOfPages: undefined,
   corporateScheduleCurrentPages: 1,
   candidatesList: [],
+  candidatesCount: undefined,
   candidatesListNumOfPages: undefined,
   candidatesListCurrentPages: 1,
 };
@@ -547,6 +549,13 @@ const DashboardReducer = (state = initialState, action: any) => {
       break;
 
 
+    case ActionTypes.REFRESH_CORPORATE_SCHEDULE_DETAILS:
+      state = {
+        ...state,
+        refreshCorporateSchedules: !state.refreshCorporateSchedules,
+      };
+      break;
+
 
     case ActionTypes.SHOW_CREATE_FOR_OTHERS_JD_MODAL:
       state = { ...state, createForOthersJdModal: true };
@@ -646,15 +655,17 @@ const DashboardReducer = (state = initialState, action: any) => {
         candidatesList: undefined,
         candidatesListNumOfPages: 0,
         candidatesListCurrentPages: 1,
+        candidatesCount: undefined
       };
       break;
 
 
     case ActionTypes.FETCH_CANDIDATES_CORPORATE_SUCCESS:
-      const { corporate_candidate_details } = action.payload?.details
+      const { corporate_candidate_details, candidate_count } = action.payload?.details
 
       state = {
         ...state,
+        candidatesCount: candidate_count,
         candidatesList: corporate_candidate_details?.data,
         candidatesListNumOfPages: corporate_candidate_details.num_pages,
         candidatesListCurrentPages: corporate_candidate_details.next_page === -1
@@ -664,8 +675,10 @@ const DashboardReducer = (state = initialState, action: any) => {
       break;
 
     case ActionTypes.FETCH_CANDIDATES_CORPORATE_FAILURE:
-      state = { ...state, candidatesList: undefined };
+      state = { ...state, candidatesList: undefined, candidatesCount: undefined };
       break;
+
+
 
     // corporateScheduleActions
 

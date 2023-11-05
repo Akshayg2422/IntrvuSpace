@@ -1,0 +1,10 @@
+.modal-alert-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: -50px;
+}
+
+.btn-spacing {
+    margin-left: 15px;
+}

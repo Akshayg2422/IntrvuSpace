@@ -3,18 +3,18 @@
 }
 
 .cancel-container {
-    display: flex;
-    justify-content: end;
-    right: 35px;
-    top: 35px;
+    position: absolute;
+    bottom: 0px;
+    right: 30px;
 }
 
 .modal-container {
-    padding: 20px 20px 0px 0px;
+    position: relative;
+    height: 50px;
 }
 
 .section-modal-container {
-    padding: 0px 8% 60px 8%;
+    padding: 0px 50px 50px 50px;
 }
 
 
@@ -30,7 +30,7 @@
 
 .modal-cancel-container {
     cursor: pointer;
-    padding: 10px;
+    padding: 5px 10px;
 }
 
 
@@ -46,4 +46,8 @@
     /* Adjust the blur radius (10px) as needed */
     z-index: 999;
     /* Adjust the z-index as needed */
+}
+
+.modal-child-container {
+    margin: 50px 0px;
 }

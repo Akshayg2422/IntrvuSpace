@@ -5,7 +5,7 @@ import { FormGroup } from 'reactstrap';
 import { DateTimePickerProps } from './interfaces';
 
 
-function DateTimePicker({ id, heading, placeholder, type = 'date',dateFormatType= "LT", onChange, disableFuture = false,dateShowingFormat="after", ...rest }: DateTimePickerProps) {
+function DateTimePicker({ id, heading, noSpace, placeholder, type = 'date', dateFormatType = "LT", onChange, disableFuture = false, dateShowingFormat = "after", ...rest }: DateTimePickerProps) {
 
   const currentDate = moment();
   const currentDate1 = moment().subtract(1, 'day')
@@ -14,8 +14,8 @@ function DateTimePicker({ id, heading, placeholder, type = 'date',dateFormatType
     : (current: any) => current.isBefore(currentDate, 'day');
 
   return (
-    <FormGroup>
-      {heading && <InputHeading Class={"position-relative"} id={id} heading={heading} />}
+    <FormGroup className={noSpace ? 'm-0 b-0' : ""}>
+      {heading && <InputHeading id={id} heading={heading} />}
 
       <ReactDatetime
         {...rest}
@@ -23,8 +23,6 @@ function DateTimePicker({ id, heading, placeholder, type = 'date',dateFormatType
           {
             placeholder: placeholder,
             onKeyDown: (e) => { e.preventDefault() },
-            // readOnly: true,
-
           }
         }
         closeOnSelect={true}

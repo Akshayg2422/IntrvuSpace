@@ -662,6 +662,13 @@ export const getCorporateScheduleDetailsFailure = (error: any) => {
   };
 };
 
+
+export const refreshCorporateSchedule = () => {
+  return {
+    type: ActionTypes.REFRESH_CORPORATE_SCHEDULE_DETAILS,
+  };
+};
+
 /**
  * student code submission
  */

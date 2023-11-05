@@ -6,7 +6,7 @@ function Alert({ ...props }: AlertProps) {
 
     return (
         <Modal {...props}>
-            <ModalFooter {...props} primary={'Proceed'} secondary={'cancel'} />
+            <ModalFooter {...props} primary={'Confirm'} secondary={'Cancel'} />
         </Modal>
     )
 }

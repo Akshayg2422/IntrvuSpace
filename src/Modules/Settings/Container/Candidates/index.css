@@ -53,7 +53,6 @@
 }
 
 .table-container {
-    margin: 0px -3%;
     margin-top: 40px;
 }
 
@@ -76,6 +75,13 @@
 
 .th-menu-container {
     margin-left: 15px;
+}
+
+.no-data-found {
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 @media(max-width: 768px) {
