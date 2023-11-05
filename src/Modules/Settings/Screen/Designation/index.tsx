@@ -125,8 +125,8 @@ function Designation() {
     dispatch(
       getSectorCorporate({
         params,
-        onSuccess: (response: any) => () => {},
-        onError: () => () => {},
+        onSuccess: (response: any) => () => { },
+        onError: () => () => { },
       })
     );
   };
@@ -141,7 +141,7 @@ function Designation() {
           setSelectedSector(details);
           getSectorsCorporateApiHandler();
         },
-        onError: (error) => () => {},
+        onError: (error) => () => { },
       })
     );
   };
@@ -151,8 +151,8 @@ function Designation() {
     dispatch(
       getDepartmentCorporate({
         params,
-        onSuccess: (response: any) => () => {},
-        onError: () => () => {},
+        onSuccess: (response: any) => () => { },
+        onError: () => () => { },
       })
     );
   };
@@ -167,7 +167,7 @@ function Designation() {
           setSelectedDepartment(details);
           getDepartmentCorporateApiHandler();
         },
-        onError: (error) => () => {},
+        onError: (error) => () => { },
       })
     );
   };
@@ -237,12 +237,12 @@ function Designation() {
       ...(filterStatus ? filterStatus : {}),
       ...(filterSector &&
         filterSector.value.id !== "-1" && {
-          sector_id: filterSector?.value?.id,
-        }),
+        sector_id: filterSector?.value?.id,
+      }),
       ...(filterDepartment &&
         filterDepartment.value.id !== "-1" && {
-          department_id: filterDepartment?.value?.id,
-        }),
+        department_id: filterDepartment?.value?.id,
+      }),
     };
     const keysToCheck = ["position", "sector_id", "department_id", "is_active"];
 
@@ -264,7 +264,7 @@ function Designation() {
           setLoading(false);
           setIsCandidatesExist(false)
         },
-        onError: () => () => {},
+        onError: () => () => { },
       })
     );
   };
@@ -533,11 +533,10 @@ function Designation() {
                     <div className="mb-4 mb-sm-0">
                       <Button
                         text={subText}
-                        className={`${
-                          selectedDuration?.id === id
+                        className={`${selectedDuration?.id === id
                             ? "btn-outline-primary"
                             : "btn-outline-light-gray text-default"
-                        } rounded-sm px-sm-4`}
+                          } rounded-sm px-sm-4`}
                         style={{ width: "140px" }}
                         onClick={() => {
                           setSelectedDuration(item);
