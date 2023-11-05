@@ -2,3 +2,95 @@
 body {
     height: 100%;
 } */
+
+:root {
+    --primary: #641df2;
+    --secondary: #2f1c6a;
+    --placeholder: #727586;
+    --border: #DADCE0;
+    --border-radius: 4px;
+    --badge: #EBE4FF;
+    --description: #5A5D73;
+    --card-border: #D5DFFF;
+}
+
+
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+.auth-screen {
+    min-height: 100dvh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.auth-container {
+    width: 350px;
+}
+
+
+.auth-logo {
+    position: absolute;
+    top: 3%;
+    left: 8%;
+}
+
+.screen {
+    min-height: 100dvh;
+    width: 100%;
+    position: relative;
+}
+
+.screen-container {
+    padding: 4%;
+}
+
+.card-container {
+    width: 100%;
+    border: 1px solid var(--card-border);
+    border-radius: var(--border-radius);
+    padding: 3% 3%;
+}
+
+.badge-schedule {
+    background-color: var(--badge);
+    border-radius: 20px;
+    border-width: 0px;
+    padding: 5px 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 15px;
+}
+
+@media(max-width: 768px) {
+    .card-container {
+        width: 100%;
+        border: 1px solid var(--card-border);
+        border-radius: var(--border-radius);
+        padding: 5%;
+    }
+
+}
+
+.loader-container {
+    display: flex;
+    width: 100%;
+    min-height: 100dvh;
+    align-items: center;
+    justify-content: center;
+}

@@ -207,8 +207,19 @@ function Login() {
                   style={{ fontSize: 17 }}
                 >
                   Not a member yet?{" "}
-                  <a
+                  <div
                     className="text-primary pointer pl-1"
+                    onClick={() => {
+                      goTo(ROUTES['auth-module']['register-company']);
+                    }}
+                    style={{
+                      fontSize: "17px",
+                    }}
+                  >
+                    <b> Register now</b>
+                  </div>
+                  <div
+                    className="text-primary pointer"
                     onClick={() => {
                       goTo(ROUTES["auth-module"].register);
                     }}
@@ -216,8 +227,8 @@ function Login() {
                       fontSize: "17px",
                     }}
                   >
-                    <b> Register now</b>
-                  </a>
+                    <b> Register as student</b>
+                  </div>
                 </b>
               </div>
             </div>
