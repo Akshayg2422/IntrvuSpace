@@ -20,7 +20,6 @@ const useScreenRecorder = () => {
   const [isScreenRecordingReady, setIsScreenRecordingReady] = useState(false);
 
   console.log("isScreenRecordingReady", isScreenRecordingReady);
-  
 
   const dispatch = useDispatch();
 
@@ -83,7 +82,6 @@ const useScreenRecorder = () => {
       if (recordedVideoData && recordedVideoData.length > 0) {
         const videoBlob = new Blob(recordedVideoData, { type: "video/webm" });
         console.log("blobbbb====>", videoBlob);
-        
         if (isScreenRecordingReady) {
           sendBlobToServer(videoBlob, false);
         }
@@ -121,18 +119,18 @@ const useScreenRecorder = () => {
 
     // console.log("formData====>", videoBlob);
 
-    const params = formData;
-    dispatch(
-      recordInterviewSession({
-        params,
-        onSuccess: (res: any) => () => {
-          if (!VideoSessionDetails?.id) {
-            dispatch(getRecordedVideoSessionDetails(res?.details));
-          }
-        },
-        onError: (error: any) => () => {},
-      })
-    );
+    // const params = formData;
+    // dispatch(
+    //   recordInterviewSession({
+    //     params,
+    //     onSuccess: (res: any) => () => {
+    //       if (!VideoSessionDetails?.id) {
+    //         dispatch(getRecordedVideoSessionDetails(res?.details));
+    //       }
+    //     },
+    //     onError: (error: any) => () => {},
+    //   })
+    // );
   };
 
   return {

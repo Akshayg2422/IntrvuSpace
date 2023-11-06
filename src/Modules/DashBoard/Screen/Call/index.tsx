@@ -237,7 +237,7 @@ function Call() {
     setRecordedAudioData,
     recordedVideoData,
     isScreenRecordingReady,
-    setIsScreenRecordingReady
+    setIsScreenRecordingReady,
   } = useScreenRecorder();
 
   console.log("recordSttaus==>", recordStatus);
@@ -253,15 +253,13 @@ function Call() {
 
   const [isForceRecord, setIsForceRecord] = useState(true); // static state to force record by default setting false
 
-  // console.log("recordStatus--->", recordStatus);
-  // console.log("video blobbbbsss====>", recordedVideoData);
-
   {
     /** interview recording useEffect */
   }
 
   useEffect(() => {
     if (recordStatus) {
+      console.log("9999999999999");
       startInterviewHandler();
     } else if (recordStatus === false) {
       setIsConfirmRecordingModalOpen(true);
@@ -776,9 +774,6 @@ function Call() {
     if (!isRecording) {
       startRecording();
 
-      //call screen recording boolean
-      setIsScreenRecordingReady(true);
-
       setIsRecording(true);
       setMute(false);
     }
@@ -802,6 +797,11 @@ function Call() {
   }
 
   const openCallView = () => {
+    //call screen recording boolean
+    setIsScreenRecordingReady(true);
+    
+    console.log("1010010101010");
+
     setNetworkError(false);
     startInterviewLoader.hide();
     startStreamTime.current = moment().add(1, "seconds");
@@ -839,7 +839,7 @@ function Call() {
             },
             onError: (error: any) => () => {
               startInterviewLoader.hide();
-              setNetworkError(true)
+              setNetworkError(true);
             },
           })
         );
@@ -924,21 +924,21 @@ function Call() {
   }
 
   const closeRecordingModal = () => {
-    console.log("11111111111111111111")
+    console.log("11111111111111111111");
     setIsConfirmRecordingModalOpen(false);
     setIsCancelRecording(false);
     setIsEnableRecording(false);
   };
 
   const confirmForceRecord = () => {
-    console.log("2222222222222")
+    console.log("2222222222222");
     setIsConfirmRecordingModalOpen(false);
     setIsCancelRecording(false);
     startScreenRecording();
   };
 
   const cancelRecording = () => {
-    console.log("3333333333333333")
+    console.log("3333333333333333");
     setIsCancelRecording(true);
     setIsConfirmRecordingModalOpen(true);
     setRecordStatus(undefined);
@@ -946,7 +946,7 @@ function Call() {
 
   const enableRecording = () => {
     console.log("44444444444444444");
-    
+
     setIsConfirmRecordingModalOpen(false);
     setIsCancelRecording(false);
     startScreenRecording();
@@ -956,7 +956,7 @@ function Call() {
 
   const confirmRecording = () => {
     console.log("555555555555555555555");
-    
+
     setIsConfirmRecordingModalOpen(false);
     setIsCancelRecording(false);
     startInterviewHandler();
@@ -1166,7 +1166,11 @@ function Call() {
                 Technical breakdown please try again
               </h4>
               <div className="my-3"></div>
-              <Button className="rounded-sm" text={"Try Again"} onClick={refreshScreen} />
+              <Button
+                className="rounded-sm"
+                text={"Try Again"}
+                onClick={refreshScreen}
+              />
             </div>
           </div>
         )}
@@ -1228,7 +1232,8 @@ function Call() {
       >
         <div className="mt--5">
           <div>
-            <Heading className={"text-secondary display-4"}
+            <Heading
+              className={"text-secondary display-4"}
               heading={
                 isForceRecord
                   ? "Confirm Recording"
@@ -1239,36 +1244,49 @@ function Call() {
             />
           </div>
           <div className="text-default">
-          {isForceRecord ? (
-            <p className="mt-3">
-              {
-                "Please confirm to record this interview and select entire screen to share to your interviewer"
-              }
-            </p>
-          ) : isCancelRecording ? (
-            <p className="mt-3">
-              {"Please confirm to proceed the interview without recording"}
-            </p>
-          ) : (
-            <p className="mt-3">
-              {"Are you sure, want to cancel the interview recording"}
-            </p>
-          )}
+            {isForceRecord ? (
+              <p className="mt-3">
+                {
+                  "Please confirm to record this interview and select entire screen to share to your interviewer"
+                }
+              </p>
+            ) : isCancelRecording ? (
+              <p className="mt-3">
+                {"Please confirm to proceed the interview without recording"}
+              </p>
+            ) : (
+              <p className="mt-3">
+                {"Are you sure, want to cancel the interview recording"}
+              </p>
+            )}
           </div>
           <div className="text-center mt-4 mb-3">
             {isForceRecord ? (
-              <Button className="rounded-sm" text={"Confirm"} onClick={confirmForceRecord} />
+              <Button
+                className="rounded-sm"
+                text={"Confirm"}
+                onClick={confirmForceRecord}
+              />
             ) : !isCancelRecording && !isEnableRecording ? (
               <>
-                <Button className="rounded-sm"
+                <Button
+                  className="rounded-sm"
                   text={"Cancel Recording"}
                   onClick={cancelRecording}
                   color="white"
                 />
-                <Button className="rounded-sm" text={"Enable Recording"} onClick={enableRecording} />
+                <Button
+                  className="rounded-sm"
+                  text={"Enable Recording"}
+                  onClick={enableRecording}
+                />
               </>
             ) : (
-              <Button className="rounded-sm" text={"Confirm"} onClick={confirmRecording} />
+              <Button
+                className="rounded-sm"
+                text={"Confirm"}
+                onClick={confirmRecording}
+              />
             )}
           </div>
         </div>
