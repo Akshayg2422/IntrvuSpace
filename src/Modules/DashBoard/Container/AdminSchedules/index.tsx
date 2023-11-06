@@ -1309,7 +1309,7 @@ function AdminSchedules() {
         isOpen={openWatchInterviewModal.visible}
         onClose={() => {
           openWatchInterviewModal.hide();
-          setWatchInterviewUrl(undefined)
+          setWatchInterviewUrl(undefined);
         }}
       >
         <div className="mt--5 mx-4 mb-2">
@@ -1321,7 +1321,12 @@ function AdminSchedules() {
           {watchInterviewUrl && watchInterviewUrl?.recording_url ? (
             <video controls className="d-flex col pt--3">
               <source
-                src={SERVER + watchInterviewUrl.recording_url.slice(1)}
+                src={
+                  SERVER +
+                  (watchInterviewUrl.recording_url.charAt(0) === "/"
+                    ? watchInterviewUrl.recording_url.slice(1)
+                    : watchInterviewUrl.recording_url)
+                }
                 type="video/mp4"
               />
             </video>

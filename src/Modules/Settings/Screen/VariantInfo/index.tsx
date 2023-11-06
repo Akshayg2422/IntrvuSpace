@@ -1,4 +1,4 @@
-import { icons } from "@Assets";
+import { icons, image } from "@Assets";
 import {
   Badge,
   Button,
@@ -54,6 +54,8 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./index.css";
 import moment from "moment";
+import { UncontrolledTooltip } from "reactstrap";
+import { SERVER } from "@Services";
 
 const OPTIONS = [
   { id: 1, name: "Approve Manually" },
@@ -128,6 +130,9 @@ function VariantInfo() {
   const addCandidateLoader = useLoader(false);
   const [loading, setLoading] = useState(false);
   const closeJdModal = useModal(false);
+
+  const [watchInterviewUrl, setWatchInterviewUrl] = useState<any>();
+  const openWatchInterviewModal = useModal(false);
 
   useEffect(() => {
     getCorporateScheduleDetailsHandler();
@@ -276,7 +281,10 @@ function VariantInfo() {
           status_note,
           status_note_colour,
           status_icon_type,
+          is_completed,
           is_report_completed,
+          recording_url,
+          interview_duration
         } = el;
         return {
           "   ": <Image src={getIconColor(status_icon_type)} height={20} />,
@@ -312,6 +320,34 @@ function VariantInfo() {
             </div>
           ),
 
+          "  ": 
+            <>
+              {is_report_completed && recording_url && (
+                <>
+                  <UncontrolledTooltip
+                    delay={0}
+                    placement="top"
+                    target={`tooltip1000`}
+                  >
+                    {"Watch Interview"}
+                  </UncontrolledTooltip>
+                  <div className="d-flex align-items-center mr-3">
+                    <i
+                      id={"tooltip1000"}
+                      className="bi bi-eye-fill text-primary fa-lg pointer"
+                      onClick={() => {
+                        setWatchInterviewUrl({
+                          recording_url,
+                          interview_duration,
+                        });
+                        openWatchInterviewModal.show();
+                      }}
+                    ></i>
+                  </div>
+                </>
+              )}
+            </>
+          ,
           " ": (
             <>
               {is_report_completed && (
@@ -331,7 +367,7 @@ function VariantInfo() {
               )}
             </>
           ),
-          "  ": (
+          "     ": (
             <>
               {!corporateScheduleDetails?.is_closed && (
                 <div
@@ -1107,9 +1143,9 @@ function VariantInfo() {
           resetValues();
         }}
       >
-        <div className="px-md-5 px-3 text-secondary mb-3">
+        <div className="px-md-5 px-3 text-secondary mb-3 mt--5">
           <Heading
-            heading={"Modify Deadline"}
+            heading={"Modify Deadline"} className={"text-secondary display-4"}
             style={{ fontSize: 26, color: "#2f1c6a" }}
           />
           <div className="d-flex flex-column justify-content-between mt-4">
@@ -1290,6 +1326,48 @@ function VariantInfo() {
               />
             </div>
           </div>
+        </div>
+      </Modal>
+
+      {/** watch interview modal */}
+
+      <Modal
+        isOpen={openWatchInterviewModal.visible}
+        onClose={() => {
+          openWatchInterviewModal.hide();
+          setWatchInterviewUrl(undefined);
+        }}
+      >
+        <div className="mt--5 mx-4 mb-2">
+          <Heading
+            className={"display-4 text-secondary"}
+            heading={`Interview Video (${watchInterviewUrl?.interview_duration} minutes)`}
+          />
+
+          {watchInterviewUrl && watchInterviewUrl?.recording_url ? (
+            <video controls className="d-flex col pt--3">
+              <source
+                src={
+                  SERVER +
+                  (watchInterviewUrl.recording_url.charAt(0) === "/"
+                    ? watchInterviewUrl.recording_url.slice(1)
+                    : watchInterviewUrl.recording_url)
+                }
+                type="video/mp4"
+              />
+            </video>
+          ) : (
+            <div className="d-flex justify-content-center">
+              <div className="mt-5 mb-5">
+                <div className="align-self-center">
+                  <Image src={image.noVideo} />
+                </div>
+                <div className="mt-2" style={{ color: "#e3e5e8" }}>
+                  {"No Video Found"}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </Modal>
     </>

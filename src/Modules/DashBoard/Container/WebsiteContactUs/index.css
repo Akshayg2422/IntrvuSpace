@@ -1,0 +1,52 @@
+.button {
+  font-family: inherit;
+  background: linear-gradient(112.2deg, #001532 -1.1%, #001532 100.7%);
+  color: #ffffff;
+  padding: 0.35em 0;
+  font-size: 15px;
+  border: none;
+  /* border-radius: 0.4em; */
+  letter-spacing: 0.08em;
+  position: relative;
+  display: flex;
+  align-content: center;
+  align-items: center;
+  overflow: hidden;
+  height: 2.5em;
+  padding-left: 2.8em;
+  padding-right: 0.92em;
+}
+
+.button .icon {
+  background: #fff;
+  height: 2em;
+  width: 2em;
+  /* border-radius: 2em; */
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  left: 0.4em;
+  transition: all 0.5s;
+}
+
+.icon svg {
+  transition: all 0.5s;
+  color: #001532;
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.button:hover .icon svg {
+  transform: rotate(360deg);
+}
+
+.button:hover .icon {
+  width: calc(100% - 0.85rem);
+  /* border-radius: 0.3em; */
+}
+
+.NavItem:hover .NavLink {
+  color: #000;
+  /* Change the text color on hover */
+}
