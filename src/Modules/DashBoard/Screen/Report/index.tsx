@@ -15,7 +15,7 @@ import {
 import { useDropDown, useLoader } from "@Hooks";
 import { fetchBasicReport } from "@Redux";
 import { color } from "@Themes";
-import { capitalizeFirstLetter } from "@Utils";
+import { capitalizeFirstLetter, getPhoto, ifObjectExist, COUNTRY_ISO_CODE } from "@Utils";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -76,6 +76,9 @@ function Report() {
   const [fileName, setFileName] = useState("");
   // const [reportType, setReportType] = useState(REPORT_TYPE[0].id);
   const reportType = useDropDown(REPORT_TYPE[0]);
+
+
+
 
 
   useEffect(() => {
@@ -471,6 +474,10 @@ function Report() {
 
   let array = 0;
 
+  function getCountryName(code: string) {
+    return COUNTRY_ISO_CODE.find(country => country.code === code)?.name ? COUNTRY_ISO_CODE.find(country => country.code === code)?.name : code
+  }
+
   // console.log("basicReportData===>", basicReportData);
 
   return (
@@ -533,46 +540,79 @@ function Report() {
             <div className="">
 
               <div className="position-relative ">
-                {/* <div className="position-absolute top-2" style={{ width: '35mm', height: '45mm', overflow: 'hidden' }}>
-                  <Image src={image.passportImage} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                </div> */}
+
                 <div className="mt-5">
-                  <div className="text-center">
-                    <div className="">
-                      <span
-                        style={{ fontSize: 38 }}
-                        className="font-weight-bolder text-secondary"
-                      >
-                        {basicReportData?.interview_meta_info?.name}
-                      </span>
-                    </div>
-                    <div className="mt--2">
-                      <span
-                        className="font-weight-bolder text-secondary font-weight-600"
-                        style={{ fontSize: 12 }}
-                      >
-                        {`${basicReportData.interview_meta_info?.role} - ${!basicReportData.interview_meta_info?.experience
-                          ? "Fresher"
-                          : basicReportData.interview_meta_info?.experience
-                          } ${basicReportData.interview_meta_info?.experience > 1
-                            ? "years"
-                            : basicReportData.interview_meta_info?.experience === 1
-                              ? "year"
-                              : ""
-                          }`}
-                      </span>
-                    </div>
-                    <div>
-                      <Badge
-                        className="text-primary text-lowercase mt-1 font-weight-bolder px-4"
-                        style={{
-                          backgroundColor: "#ebe4ff",
-                          borderRadius: 30,
-                          fontSize: 12,
-                          borderWidth: 0,
-                        }}
-                        text={`${basicReportData.interview_meta_info?.interview_duration} min Interview`}
-                      />
+                  <div className={'d-flex align-items-center justify-content-center'}>
+                    {basicReportData?.candidate_photo &&
+                      <div className={'d-flex flex-column align-items-center justify-content-center'}>
+                        <div className="" style={{ width: '35mm', height: '45mm', overflow: 'hidden', border: '1px solid rgba(0, 0, 0, 0.05)', padding: "1px", }}>
+                          <Image src={getPhoto(basicReportData?.candidate_photo)} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        </div>
+                        <div>
+                          {
+                            !ifObjectExist(basicReportData.interview_meta_info?.user_location_info) &&
+                            <div>
+                              <div className="mt-1">
+                                <span className="text-secondary text-center font-weight-500">
+                                  {
+                                    basicReportData?.interview_meta_info?.user_location_info?.city === '-' ? "" : basicReportData?.interview_meta_info?.user_location_info?.city
+                                  }
+                                </span>
+                                <span>{', '}</span>
+                                <span className="text-secondary text-center font-weight-500">
+                                  {
+                                    basicReportData?.interview_meta_info?.user_location_info?.region === '-' ? "" : basicReportData?.interview_meta_info?.user_location_info?.region
+                                  }
+                                </span>
+                              </div>
+                              <div className="text-secondary text-center font-weight-400">
+                                {
+                                  basicReportData?.interview_meta_info?.user_location_info?.country === '-' ? "" : getCountryName(basicReportData?.interview_meta_info?.user_location_info?.country)
+                                }
+                              </div>
+
+                            </div>
+                          }
+                        </div>
+                      </div>
+                    }
+                    <div className={'text-center ml-3'}>
+                      <div className="">
+                        <span
+                          style={{ fontSize: 38 }}
+                          className="font-weight-bolder text-secondary"
+                        >
+                          {basicReportData?.interview_meta_info?.name}
+                        </span>
+                      </div>
+                      <div className="mt--2">
+                        <span
+                          className="font-weight-bolder text-secondary font-weight-600"
+                          style={{ fontSize: 12 }}
+                        >
+                          {`${basicReportData.interview_meta_info?.role} - ${!basicReportData.interview_meta_info?.experience
+                            ? "Fresher"
+                            : basicReportData.interview_meta_info?.experience
+                            } ${basicReportData.interview_meta_info?.experience > 1
+                              ? "years"
+                              : basicReportData.interview_meta_info?.experience === 1
+                                ? "year"
+                                : ""
+                            }`}
+                        </span>
+                      </div>
+                      <div>
+                        <Badge
+                          className="text-primary text-lowercase mt-1 font-weight-bolder px-4"
+                          style={{
+                            backgroundColor: "#ebe4ff",
+                            borderRadius: 30,
+                            fontSize: 12,
+                            borderWidth: 0,
+                          }}
+                          text={`${basicReportData.interview_meta_info?.interview_duration} min Interview`}
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
