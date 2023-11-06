@@ -119,6 +119,8 @@ function Call() {
   const [isTtfSpeaking, setIsTtfSpeaking] = useState<boolean>(false);
 
   const [networkError, setNetworkError] = useState(false);
+  const [networkErrorResponse, setNetworkErrorResponse] = useState<any>(undefined);
+
   const [websocketError, setWebSocketError] = useState(false);
 
   const lastAiResponseTime = useRef<any>(undefined);
@@ -171,7 +173,7 @@ function Call() {
       setIsTtfSpeaking(false);
     };
 
-    audioElementRef.current.onloadstart = function () {};
+    audioElementRef.current.onloadstart = function () { };
     audioElementRef.current.onended = function () {
       setIsTtfSpeaking(false);
       if (closeCall.current === true) {
@@ -226,6 +228,8 @@ function Call() {
 
   const socketRef = useRef<any>(null);
   const videoRecorderRef = useRef(null);
+
+  const interviewLimitModal = useModal(false);
 
   const {
     startScreenRecording,
@@ -339,7 +343,7 @@ function Call() {
           canConnect.current = false;
           socketRef.current.close();
           socketRef.current = null;
-        } catch (e) {}
+        } catch (e) { }
         clearInterval(reconnectInterval);
       }
     };
@@ -468,9 +472,13 @@ function Call() {
         onSuccess: () => () => {
           loader.hide();
           setNetworkError(false);
+          setNetworkErrorResponse(undefined)
+          interviewLimitModal.hide();
         },
-        onError: () => () => {
+        onError: (response: any) => () => {
+          setNetworkErrorResponse(response)
           setNetworkError(true);
+          interviewLimitModal.show();
           loader.hide();
         },
       })
@@ -865,7 +873,7 @@ function Call() {
         onSuccess: () => () => {
           endInterviewHandler();
         },
-        onError: () => () => {},
+        onError: () => () => { },
       })
     );
   }
@@ -946,7 +954,7 @@ function Call() {
 
   const enableRecording = () => {
     console.log("44444444444444444");
-    
+
     setIsConfirmRecordingModalOpen(false);
     setIsCancelRecording(false);
     startScreenRecording();
@@ -956,7 +964,7 @@ function Call() {
 
   const confirmRecording = () => {
     console.log("555555555555555555555");
-    
+
     setIsConfirmRecordingModalOpen(false);
     setIsCancelRecording(false);
     startInterviewHandler();
@@ -1159,7 +1167,7 @@ function Call() {
             <Spinner />
           </div>
         )}
-        {(networkError || websocketError) && (
+        {websocketError && (
           <div className="d-flex align-items-center justify-content-center h-100 ">
             <div className="text-center ">
               <h4 className="display-4 mb-0">
@@ -1233,27 +1241,27 @@ function Call() {
                 isForceRecord
                   ? "Confirm Recording"
                   : isCancelRecording
-                  ? "Confirm without Recording"
-                  : "Cancel Recording"
+                    ? "Confirm without Recording"
+                    : "Cancel Recording"
               }
             />
           </div>
           <div className="text-default">
-          {isForceRecord ? (
-            <p className="mt-3">
-              {
-                "Please confirm to record this interview and select entire screen to share to your interviewer"
-              }
-            </p>
-          ) : isCancelRecording ? (
-            <p className="mt-3">
-              {"Please confirm to proceed the interview without recording"}
-            </p>
-          ) : (
-            <p className="mt-3">
-              {"Are you sure, want to cancel the interview recording"}
-            </p>
-          )}
+            {isForceRecord ? (
+              <p className="mt-3">
+                {
+                  "Please confirm to record this interview and select entire screen to share to your interviewer"
+                }
+              </p>
+            ) : isCancelRecording ? (
+              <p className="mt-3">
+                {"Please confirm to proceed the interview without recording"}
+              </p>
+            ) : (
+              <p className="mt-3">
+                {"Are you sure, want to cancel the interview recording"}
+              </p>
+            )}
           </div>
           <div className="text-center mt-4 mb-3">
             {isForceRecord ? (
@@ -1273,6 +1281,36 @@ function Call() {
           </div>
         </div>
       </Modal>
+
+
+
+      {
+        /**
+         * nerowork error
+         */
+      }
+
+      <Modal
+        isOpen={interviewLimitModal.visible}
+        title={networkErrorResponse?.status_code === 3 ? "Server Full" : "Network Error"}
+      >
+        <h3 className="m-0">
+          {
+            networkErrorResponse?.status_code === 3 ? networkErrorResponse?.error_message : " Technical breakdown please try again"
+          }
+        </h3>
+        <div className="d-flex align-items-center justify-content-center mt-3">
+          <Button
+            className="rounded"
+            text={"Try Again"}
+            onClick={() => {
+              interviewLimitModal.hide();
+              getBasicInfo()
+            }}
+          />
+        </div>
+      </Modal>
+
     </>
   );
 }
