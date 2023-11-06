@@ -55,6 +55,8 @@ export * from './VideoStream'
 export * from './ReportHeader'
 export * from './AdvancedReport'
 export * from './BasicReport'
+export * from './CreateNew'
+
 
 
 

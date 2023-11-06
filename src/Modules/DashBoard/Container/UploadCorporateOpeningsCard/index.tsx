@@ -1,8 +1,8 @@
-import { Button, Image } from '@Components'
-import { showCreateOpeningsModal } from '@Redux'
-import { icons, image } from '@Assets';
-import { useDispatch } from 'react-redux'
-import './index.css'
+import { image } from '@Assets';
+import { CreateNew } from '@Modules';
+import { showCreateOpeningsModal } from '@Redux';
+import { useDispatch } from 'react-redux';
+import './index.css';
 
 function UploadCorporateOpeningsCard() {
 
@@ -20,64 +20,16 @@ function UploadCorporateOpeningsCard() {
         dispatch(showCreateOpeningsModal());
     };
 
-
     return (
-
-        <div className={'opening-card-container'}>
-            <div className={'section-1'}>
-                <div className={'section-1-content'}>
-                    <span className='text-heading lh-110'>
-                        {'Streamlined'}
-                        <br />
-                        {'Interviews & Insights'}
-                    </span>
-
-                    <div className={'text-des text-des-container'}>
-                        Get access to interview video recordings and detailed curated reports on Candidates for watch interview
-                    </div>
-
-                    <div className={'points-container'}>
-                        {INSIGHTS_AND_REPORTS.map((item) => {
-                            const { description, description2 } = item;
-                            return (
-                                <div className={'d-flex align-items-center'} style={{
-                                    marginTop: '18px'
-                                }}>
-                                    <Image height={9} width={12} src={icons.check} style={{
-                                        objectFit: 'contain',
-                                    }} />
-                                    <div style={{
-                                        marginLeft: '8px'
-                                    }}>
-                                        <span className={'point-heading'}>{description}<small className={'point-sub-heading'}>{description2}</small></span>
-                                    </div>
-                                </div>
-                            );
-                        })}
-                    </div>
-                </div>
-                <div className={'create-opening-btn'}>
-                    <Button
-                        block
-                        text={'Create Opening'}
-                        onClick={handleCreateOpeningsClick}
-                    />
-                </div>
-
-            </div>
-
-            <div className={'section-2'}>
-                <Image
-                    src={image.StreamlinedInterviewAndInsights}
-                    className={'section-image'}
-                    height={'70%'}
-                    width={'70%'}
-                />
-            </div>
-
-        </div>
-
+        <CreateNew
+            image={image.StreamlinedInterviewAndInsights}
+            title={`Streamlined \n Interviews & Insights`}
+            description={'Get access to interview video recordings and detailed curated reports on Candidates for watch interview'}
+            keyPoints={INSIGHTS_AND_REPORTS}
+            buttonText={'Create Opening'}
+            onButtonClick={handleCreateOpeningsClick}
+        />
     )
 }
 
-export { UploadCorporateOpeningsCard }
+export { UploadCorporateOpeningsCard };
