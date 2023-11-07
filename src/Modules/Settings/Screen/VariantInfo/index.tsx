@@ -399,7 +399,7 @@ function VariantInfo() {
 
   // download csv file
   const downloadCSVTemplate = () => {
-    downloadFile(corporateScheduleDetails?.bulk_upload_template);
+    downloadFile(corporateScheduleDetails?.bulk_upload_template?.slice(1));
   };
 
   // manual approval on candidate
