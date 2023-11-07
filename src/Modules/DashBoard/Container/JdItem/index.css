@@ -18,11 +18,12 @@
   font-weight: 400;
 }
 
-.experience {
-  margin-top: 5px;
+.experience-home {
+  margin-left: 10px;
   color: var(--secondary);
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 400;
+  line-height: 1;
 }
 
 
@@ -68,6 +69,80 @@
   width: 215px;
 }
 
+.completed-date-container {
+  margin-top: 5px;
+  display: flex;
+  align-items: center;
+}
+
+.completed-text-container {
+  margin-left: 3px;
+}
+
+
+.created-at-des {
+  margin-top: 5px;
+  font-size: 14px !important;
+  color: #727586 !important;
+  font-weight: 400 !important;
+}
+
+
+.complete-schedule-container {
+  margin-top: 40px;
+  background-color: #FAFBFF;
+  padding: 50px;
+
+}
+
+.completed-item-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+}
+
+.completed-item-heading {
+  max-width: 300px;
+  flex: 1;
+}
+
+.completed-item-content {
+  flex: 1;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  padding: 20px 20px;
+
+}
+
+.completed-item-content-border {
+  border-bottom: 1px solid #D5DFFF;
+}
+
+
+.completed-at {
+  margin-left: 4px;
+  font-size: 14px !important;
+  color: #727586 !important;
+  font-weight: 400 !important;
+}
+
+.skill-value {
+  flex: 1;
+  font-size: 1rem !important;
+  color: var(--secondary) !important;
+  font-weight: 400 !important;
+}
+
+.report-btn-container {
+  width: 155px;
+}
+
+.skill-empty {
+  flex: 0.5;
+
+}
 
 @media (max-width: 768px) {
 

@@ -1,16 +1,7 @@
 /* eslint-disable no-empty-pattern */
 /* eslint-disable react-hooks/rules-of-hooks */
-import { icons } from "@Assets";
 import {
-  Button,
-  Card,
-  Divider,
-  DropDown,
-  Input,
-  InputHeading,
-  Modal,
   Spinner,
-  TextArea,
   showToast
 } from "@Components";
 import {
@@ -20,7 +11,7 @@ import {
   useModal,
   useNavigation,
 } from "@Hooks";
-import { PreparingYourInterview, UploadJdCard, JdItem } from "@Modules";
+import { JdItem, UploadJdCard } from '@Modules';
 import {
   canStartInterview,
   createNewJdSchedule,
@@ -36,12 +27,11 @@ import {
   EXPERIENCE_LIST,
   FROM_JD_RULES,
   INTERVIEW_DURATIONS,
-  formatDateTime,
   getValidateError,
   ifObjectExist,
-  validate,
+  validate
 } from "@Utils";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./index.css";
 
@@ -203,9 +193,7 @@ function FromJD() {
     const params = {
       knowledge_group_variant_id: id,
     };
-
     generateJdModal.show();
-
     dispatch(
       createNewJdSchedule({
         params,
@@ -239,30 +227,15 @@ function FromJD() {
         },
       })
     );
+
   }
 
   function proceedInterviewHandler(id: string) {
     if (id) {
       if (id !== "-1") {
-        // const canStartParams = { schedule_id: id }
         startInterviewLoader.hide();
         dispatch(selectedScheduleId(id));
         goTo(ROUTES["designation-module"].interview + "/" + id);
-
-        // startInterviewLoader.show();
-        // const intervalId = setInterval(() => {
-        //     dispatch(canStartInterview({
-        //         params: canStartParams,
-        //         onSuccess: (res: any) => () => {
-        //             startInterviewLoader.hide();
-        //             goTo(ROUTES['designation-module'].interview + "/" + id)
-        //             clearInterval(intervalId);
-        //         },
-        //         onError: (error: any) => () => {
-        //             console.log(error);
-        //         }
-        //     }))
-        // }, INTERVAL_TIME);
       } else {
         jdScheduleModal.show();
       }
@@ -295,16 +268,21 @@ function FromJD() {
       {
         loading.loader && <div className={'loader-container'}><Spinner /></div>
       }
-      {!loading.loader && jdItem.length <= 0 && <UploadJdCard />}
+      {!loading.loader && jdItem?.length <= 0 && <UploadJdCard />}
       {
-        !loading.loader && jdItem.length > 0 &&
+        !loading.loader && jdItem?.length > 0 &&
         <div className={'screen-container'}>
-
           {
             jdItem.map((item: any, index: number) => {
               return (
                 <div className={index !== 0 ? 'jd-container-top' : ''}>
-                  <JdItem item={item} onViewMore={(status) => viewMoreDetailsHandler(status, index)} />
+                  <JdItem
+                    item={item}
+                    onViewMore={(status) => viewMoreDetailsHandler(status, index)}
+                    onTryAnotherClick={createNewJdScheduleApiHandler}
+                    onProceedClick={proceedInterviewHandler}
+                    onViewReport={proceedReport}
+                  />
                 </div>
               );
             })
