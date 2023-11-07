@@ -47,6 +47,7 @@ const initialState: DashboardProp = {
   corporateSchedules: undefined,
   createForOthersJdModal: false,
   interviewScheduleDetails: undefined,
+  interviewUserScheduleDetails:undefined,
   retrieveEmail: undefined,
   createOpening: false,
   corporateScheduleNumOfPages: undefined,
@@ -55,9 +56,12 @@ const initialState: DashboardProp = {
   candidatesListNumOfPages: undefined,
   candidatesListCurrentPages: 1,
   onGoingScheduleMessage :undefined,
+  onGoingSelectedId:undefined,
 };
 
 const DashboardReducer = (state = initialState, action: any) => {
+
+
   switch (action.type) {
     case ActionTypes.GET_START_CHAT:
       state = {
@@ -566,6 +570,19 @@ const DashboardReducer = (state = initialState, action: any) => {
       state = { ...state, interviewScheduleDetails: undefined };
       break;
 
+
+          /**createScheduleSuperAdmin
+createScheduleSuperAdmin
+ */
+
+
+
+  
+    case ActionTypes.GET_INTERVIEW_SCHEDULE_DETAILS_FAILURE:
+      state = { ...state, 
+        interviewScheduleDetails: undefined ,
+        interviewUserScheduleDetails:undefined};
+      break;
     // resetPassword
 
     case ActionTypes.RESET_PASSWORD:
@@ -671,6 +688,16 @@ const DashboardReducer = (state = initialState, action: any) => {
         state = { ...state, onGoingScheduleMessage: undefined };
         break;
 
+
+        //ongoing selected id
+        case ActionTypes.ON_GOING_SELECTED_ID:
+          state = {
+            ...state,
+            onGoingSelectedId: action.payload,
+           
+          };
+          break;
+
     // corporateScheduleActions
 
     case ActionTypes.POST_CORPORATE_SCHEUDULE_ACTIONS:
@@ -682,6 +709,8 @@ const DashboardReducer = (state = initialState, action: any) => {
     case ActionTypes.POST_CORPORATE_SCHEUDULE_ACTIONS_FAILURE:
       state = { ...state };
       break;
+
+
 
     default:
       state = state;

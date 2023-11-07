@@ -815,11 +815,9 @@ function Call() {
         dispatch(
           canStartInterview({
             params: canStartParams,
-           
             onSuccess: (res: any) => () => {
 
               initiateSocket();
-              console.log('jhbjknl',"rrrrrrrrreeeeeeeee",res)
 
               proceedOpenCallView.current = true
 

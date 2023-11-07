@@ -1157,3 +1157,13 @@ export const getOngoingSchedulesFailure = (error: any) => {
     payload: error,
   };
 };
+
+
+
+export const onGoingSelectedIIds = (params: any) => {
+  console.log('parasmaaasssss,',params)
+  return {
+    type: ActionTypes.ON_GOING_SELECTED_ID,
+    payload: params,
+  };
+};
