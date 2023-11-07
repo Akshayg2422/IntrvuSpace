@@ -806,10 +806,8 @@ function Call() {
 
   const openCallView = () => {
     //call screen recording boolean
-    setIsScreenRecordingReady(true);
+    // setIsScreenRecordingReady(true);
     
-    console.log("1010010101010");
-
     setNetworkError(false);
     startInterviewLoader.hide();
     startStreamTime.current = moment().add(1, "seconds");
@@ -932,29 +930,24 @@ function Call() {
   }
 
   const closeRecordingModal = () => {
-    console.log("11111111111111111111");
     setIsConfirmRecordingModalOpen(false);
     setIsCancelRecording(false);
     setIsEnableRecording(false);
   };
 
   const confirmForceRecord = () => {
-    console.log("2222222222222");
     setIsConfirmRecordingModalOpen(false);
     setIsCancelRecording(false);
     startScreenRecording();
   };
 
   const cancelRecording = () => {
-    console.log("3333333333333333");
     setIsCancelRecording(true);
     setIsConfirmRecordingModalOpen(true);
     setRecordStatus(undefined);
   };
 
   const enableRecording = () => {
-    console.log("44444444444444444");
-
     setIsConfirmRecordingModalOpen(false);
     setIsCancelRecording(false);
     startScreenRecording();
@@ -963,8 +956,6 @@ function Call() {
   };
 
   const confirmRecording = () => {
-    console.log("555555555555555555555");
-
     setIsConfirmRecordingModalOpen(false);
     setIsCancelRecording(false);
     startInterviewHandler();

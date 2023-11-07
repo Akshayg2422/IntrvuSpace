@@ -502,6 +502,7 @@ function VariantInfo() {
           showToast(response.message, "success");
           getCandidatesCorporate(candidatesListCurrentPages);
           modifyDeadlineModal.hide();
+          closeJdModal.hide();
           resetValues();
         },
         onError: (error: any) => () => {
@@ -1082,7 +1083,7 @@ function VariantInfo() {
           resetValues();
         }}
       >
-        <div className="row  m-0 p-0">
+        <div className="row  m-0 p-0 mt--5">
           <div className="col-xl-12 d-flex bg-white align-items-center justify-content-center  my-sm-0 my-4">
             <div className="col-12 col-md-12 col-lg-12">
               <Heading

@@ -54,6 +54,10 @@ export * from './UploadCorporateOpeningsCard'
 export * from './VideoStream'
 export * from './WebsiteContactUs'
 export * from './WebsiteFooter'
+export * from './DetailedReport'
+export * from './JobDescriptionKeyAreas'
+export * from './BasicReportMatrixCard'
+export * from './DetailedReportMatrixCard'
 
 
 
