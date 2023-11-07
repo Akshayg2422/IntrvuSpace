@@ -13,6 +13,7 @@ import { CallHeader, CallHeaderMobile, Guidelines, Report } from "@Modules";
 import {
   canStartInterview,
   closeInterview,
+  getJdItemList,
   getScheduleBasicInfo,
 } from "@Redux";
 import { CALL_WEBSOCKET } from "@Services";
@@ -189,9 +190,24 @@ function Call() {
     });
   };
 
+  const getKnowledgeGroupFromJdHandler = () => {
+    const params = { from_jd: true };
+
+    dispatch(
+      getJdItemList({
+        params,
+        onSuccess: () => () => {
+          // setLoading(false);
+        },
+        onError: () => () => {},
+      })
+    );
+  };
+
   function onEndCallHandler() {
     proceedStopListening();
     setButtonConditional("end");
+    getKnowledgeGroupFromJdHandler() // list refresh to update the report and watch interview buttons
     if (audioElementRef.current) audioElementRef.current.pause();
     getBasicInfo();
     setTimeout(() => {

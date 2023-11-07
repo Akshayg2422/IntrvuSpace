@@ -41,6 +41,7 @@ import {
   convertToUpperCase,
   displayFormatDate,
   downloadFile,
+  getBrowserInfo,
   getDateFromServer,
   getDisplayDateFromMoment,
   getDisplayTime,
@@ -284,7 +285,7 @@ function VariantInfo() {
           is_completed,
           is_report_completed,
           recording_url,
-          interview_duration
+          interview_duration,
         } = el;
         return {
           "   ": <Image src={getIconColor(status_icon_type)} height={20} />,
@@ -320,7 +321,7 @@ function VariantInfo() {
             </div>
           ),
 
-          "  ": 
+          "  ": (
             <>
               {is_report_completed && recording_url && (
                 <>
@@ -340,14 +341,23 @@ function VariantInfo() {
                           recording_url,
                           interview_duration,
                         });
-                        openWatchInterviewModal.show();
+                        if (
+                          getBrowserInfo().browserName !== "Mozilla Firefox"
+                        ) {
+                          openWatchInterviewModal.show();
+                        } else {
+                          showToast(
+                            "Screen recording is not supported in this browser",
+                            "info"
+                          );
+                        }
                       }}
                     ></i>
                   </div>
                 </>
               )}
             </>
-          ,
+          ),
           " ": (
             <>
               {is_report_completed && (
@@ -436,7 +446,7 @@ function VariantInfo() {
 
   // download csv file
   const downloadCSVTemplate = () => {
-    downloadFile(corporateScheduleDetails?.bulk_upload_template);
+    downloadFile(corporateScheduleDetails?.bulk_upload_template?.slice(1));
   };
 
   // manual approval on candidate
@@ -1146,7 +1156,8 @@ function VariantInfo() {
       >
         <div className="px-md-5 px-3 text-secondary mb-3 mt--5">
           <Heading
-            heading={"Modify Deadline"} className={"text-secondary display-4"}
+            heading={"Modify Deadline"}
+            className={"text-secondary display-4"}
             style={{ fontSize: 26, color: "#2f1c6a" }}
           />
           <div className="d-flex flex-column justify-content-between mt-4">
@@ -1334,6 +1345,7 @@ function VariantInfo() {
 
       <Modal
         isOpen={openWatchInterviewModal.visible}
+        size="lg"
         onClose={() => {
           openWatchInterviewModal.hide();
           setWatchInterviewUrl(undefined);

@@ -49,6 +49,7 @@ import {
   ifObjectExist,
   validate,
   CREATE_FOR_ADD_ANOTHER_RULES,
+  getBrowserInfo,
 } from "@Utils";
 import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -758,7 +759,11 @@ function AdminSchedules() {
                                                   recording_url,
                                                   interview_duration,
                                                 });
+                                                if (getBrowserInfo().browserName !== "Mozilla Firefox") {
                                                 openWatchInterviewModal.show();
+                                                } else {
+                                                  showToast("Watch Interview is not supported in this browser", "info");
+                                                }
                                               }}
                                             ></i>
                                           </div>
@@ -1309,6 +1314,7 @@ function AdminSchedules() {
 
       <Modal
         isOpen={openWatchInterviewModal.visible}
+        size="lg"
         onClose={() => {
           openWatchInterviewModal.hide();
           setWatchInterviewUrl(undefined);

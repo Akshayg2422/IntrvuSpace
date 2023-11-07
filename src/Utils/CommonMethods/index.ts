@@ -338,6 +338,37 @@ export const getDateFromServer = (dateString: any) => {
 }
 
 
+export function getBrowserInfo() {
+  const userAgent: any = navigator.userAgent;
+  
+  let browserName: any;
+  let browserVersion: any;
+
+  if (userAgent.includes("Chrome")) {
+    browserName = "Google Chrome";
+    browserVersion = userAgent.match(/Chrome\/(\d+\.\d+)/)[1];
+  } else if (userAgent.includes("Firefox")) {
+    browserName = "Mozilla Firefox";
+    browserVersion = userAgent.match(/Firefox\/(\d+\.\d+)/)[1];
+  } else if (userAgent.includes("Edge")) {
+    browserName = "Microsoft Edge";
+    browserVersion = userAgent.match(/Edge\/(\d+\.\d+)/)[1];
+  } else if (userAgent.includes("Safari")) {
+    browserName = "Safari";
+    browserVersion = userAgent.match(/Version\/(\d+\.\d+)/)[1];
+  } else if (userAgent.includes("Opera")) {
+    browserName = "Opera";
+    browserVersion = userAgent.match(/Opera\/(\d+\.\d+)/)[1];
+  } else {
+    browserName = "Unknown";
+    browserVersion = "N/A";
+  }
+
+  return { browserName, browserVersion };
+}
+
+
+
 
 
 
