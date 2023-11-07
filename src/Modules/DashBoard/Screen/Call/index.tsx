@@ -119,6 +119,8 @@ function Call() {
   const [isTtfSpeaking, setIsTtfSpeaking] = useState<boolean>(false);
 
   const [networkError, setNetworkError] = useState(false);
+  const [networkErrorResponse, setNetworkErrorResponse] = useState<any>(undefined);
+
   const [websocketError, setWebSocketError] = useState(false);
 
   const lastAiResponseTime = useRef<any>(undefined);
@@ -171,7 +173,7 @@ function Call() {
       setIsTtfSpeaking(false);
     };
 
-    audioElementRef.current.onloadstart = function () {};
+    audioElementRef.current.onloadstart = function () { };
     audioElementRef.current.onended = function () {
       setIsTtfSpeaking(false);
       if (closeCall.current === true) {
@@ -227,6 +229,8 @@ function Call() {
   const socketRef = useRef<any>(null);
   const videoRecorderRef = useRef(null);
 
+  const interviewLimitModal = useModal(false);
+
   const {
     startScreenRecording,
     stopScreenRecording,
@@ -237,7 +241,7 @@ function Call() {
     setRecordedAudioData,
     recordedVideoData,
     isScreenRecordingReady,
-    setIsScreenRecordingReady
+    setIsScreenRecordingReady,
   } = useScreenRecorder();
 
   console.log("recordSttaus==>", recordStatus);
@@ -253,15 +257,13 @@ function Call() {
 
   const [isForceRecord, setIsForceRecord] = useState(true); // static state to force record by default setting false
 
-  // console.log("recordStatus--->", recordStatus);
-  // console.log("video blobbbbsss====>", recordedVideoData);
-
   {
     /** interview recording useEffect */
   }
 
   useEffect(() => {
     if (recordStatus) {
+      console.log("9999999999999");
       startInterviewHandler();
     } else if (recordStatus === false) {
       setIsConfirmRecordingModalOpen(true);
@@ -339,7 +341,7 @@ function Call() {
           canConnect.current = false;
           socketRef.current.close();
           socketRef.current = null;
-        } catch (e) {}
+        } catch (e) { }
         clearInterval(reconnectInterval);
       }
     };
@@ -468,9 +470,13 @@ function Call() {
         onSuccess: () => () => {
           loader.hide();
           setNetworkError(false);
+          setNetworkErrorResponse(undefined)
+          interviewLimitModal.hide();
         },
-        onError: () => () => {
+        onError: (response: any) => () => {
+          setNetworkErrorResponse(response)
           setNetworkError(true);
+          interviewLimitModal.show();
           loader.hide();
         },
       })
@@ -776,9 +782,6 @@ function Call() {
     if (!isRecording) {
       startRecording();
 
-      //call screen recording boolean
-      setIsScreenRecordingReady(true);
-
       setIsRecording(true);
       setMute(false);
     }
@@ -802,6 +805,9 @@ function Call() {
   }
 
   const openCallView = () => {
+    //call screen recording boolean
+    // setIsScreenRecordingReady(true);
+    
     setNetworkError(false);
     startInterviewLoader.hide();
     startStreamTime.current = moment().add(1, "seconds");
@@ -839,7 +845,7 @@ function Call() {
             },
             onError: (error: any) => () => {
               startInterviewLoader.hide();
-              setNetworkError(true)
+              setNetworkError(true);
             },
           })
         );
@@ -865,7 +871,7 @@ function Call() {
         onSuccess: () => () => {
           endInterviewHandler();
         },
-        onError: () => () => {},
+        onError: () => () => { },
       })
     );
   }
@@ -924,29 +930,24 @@ function Call() {
   }
 
   const closeRecordingModal = () => {
-    console.log("11111111111111111111")
     setIsConfirmRecordingModalOpen(false);
     setIsCancelRecording(false);
     setIsEnableRecording(false);
   };
 
   const confirmForceRecord = () => {
-    console.log("2222222222222")
     setIsConfirmRecordingModalOpen(false);
     setIsCancelRecording(false);
     startScreenRecording();
   };
 
   const cancelRecording = () => {
-    console.log("3333333333333333")
     setIsCancelRecording(true);
     setIsConfirmRecordingModalOpen(true);
     setRecordStatus(undefined);
   };
 
   const enableRecording = () => {
-    console.log("44444444444444444");
-    
     setIsConfirmRecordingModalOpen(false);
     setIsCancelRecording(false);
     startScreenRecording();
@@ -955,8 +956,6 @@ function Call() {
   };
 
   const confirmRecording = () => {
-    console.log("555555555555555555555");
-    
     setIsConfirmRecordingModalOpen(false);
     setIsCancelRecording(false);
     startInterviewHandler();
@@ -1159,14 +1158,18 @@ function Call() {
             <Spinner />
           </div>
         )}
-        {(networkError || websocketError) && (
+        {websocketError && (
           <div className="d-flex align-items-center justify-content-center h-100 ">
             <div className="text-center ">
               <h4 className="display-4 mb-0">
                 Technical breakdown please try again
               </h4>
               <div className="my-3"></div>
-              <Button className="rounded-sm" text={"Try Again"} onClick={refreshScreen} />
+              <Button
+                className="rounded-sm"
+                text={"Try Again"}
+                onClick={refreshScreen}
+              />
             </div>
           </div>
         )}
@@ -1228,51 +1231,95 @@ function Call() {
       >
         <div className="mt--5">
           <div>
-            <Heading className={"text-secondary display-4"}
+            <Heading
+              className={"text-secondary display-4"}
               heading={
                 isForceRecord
                   ? "Confirm Recording"
                   : isCancelRecording
-                  ? "Confirm without Recording"
-                  : "Cancel Recording"
+                    ? "Confirm without Recording"
+                    : "Cancel Recording"
               }
             />
           </div>
           <div className="text-default">
-          {isForceRecord ? (
-            <p className="mt-3">
-              {
-                "Please confirm to record this interview and select entire screen to share to your interviewer"
-              }
-            </p>
-          ) : isCancelRecording ? (
-            <p className="mt-3">
-              {"Please confirm to proceed the interview without recording"}
-            </p>
-          ) : (
-            <p className="mt-3">
-              {"Are you sure, want to cancel the interview recording"}
-            </p>
-          )}
+            {isForceRecord ? (
+              <p className="mt-3">
+                {
+                  "Please confirm to record this interview and select entire screen to share to your interviewer"
+                }
+              </p>
+            ) : isCancelRecording ? (
+              <p className="mt-3">
+                {"Please confirm to proceed the interview without recording"}
+              </p>
+            ) : (
+              <p className="mt-3">
+                {"Are you sure, want to cancel the interview recording"}
+              </p>
+            )}
           </div>
           <div className="text-center mt-4 mb-3">
             {isForceRecord ? (
-              <Button className="rounded-sm" text={"Confirm"} onClick={confirmForceRecord} />
+              <Button
+                className="rounded-sm"
+                text={"Confirm"}
+                onClick={confirmForceRecord}
+              />
             ) : !isCancelRecording && !isEnableRecording ? (
               <>
-                <Button className="rounded-sm"
+                <Button
+                  className="rounded-sm"
                   text={"Cancel Recording"}
                   onClick={cancelRecording}
                   color="white"
                 />
-                <Button className="rounded-sm" text={"Enable Recording"} onClick={enableRecording} />
+                <Button
+                  className="rounded-sm"
+                  text={"Enable Recording"}
+                  onClick={enableRecording}
+                />
               </>
             ) : (
-              <Button className="rounded-sm" text={"Confirm"} onClick={confirmRecording} />
+              <Button
+                className="rounded-sm"
+                text={"Confirm"}
+                onClick={confirmRecording}
+              />
             )}
           </div>
         </div>
       </Modal>
+
+
+
+      {
+        /**
+         * nerowork error
+         */
+      }
+
+      <Modal
+        isOpen={interviewLimitModal.visible}
+        title={networkErrorResponse?.status_code === 3 ? "Server Full" : "Network Error"}
+      >
+        <h3 className="m-0">
+          {
+            networkErrorResponse?.status_code === 3 ? networkErrorResponse?.error_message : " Technical breakdown please try again"
+          }
+        </h3>
+        <div className="d-flex align-items-center justify-content-center mt-3">
+          <Button
+            className="rounded"
+            text={"Try Again"}
+            onClick={() => {
+              interviewLimitModal.hide();
+              getBasicInfo()
+            }}
+          />
+        </div>
+      </Modal>
+
     </>
   );
 }

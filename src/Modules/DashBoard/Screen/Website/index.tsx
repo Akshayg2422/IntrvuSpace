@@ -18,7 +18,9 @@ import {
   WebsiteScheduleAndNotification,
   WebsiteReportsAndInsights,
   WebsiteAutoApprovalForCandidatesPerformance,
-  WebsiteCandidateAttendsInterview
+  WebsiteCandidateAttendsInterview,
+  WebsiteContactUs,
+  WebsiteFooter,
 } from "@Modules";
 
 function Website() {
@@ -44,8 +46,8 @@ function Website() {
         {/* <From /> */}
         {/* <AuthenticationAndDashboardModule />
         <Pricing /> */}
-        {/* <ContactUs />
-        <Footer />  */}
+        <WebsiteContactUs />
+        <WebsiteFooter /> 
       </div>
     </div>
   );

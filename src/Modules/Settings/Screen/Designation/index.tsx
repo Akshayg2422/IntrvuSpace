@@ -214,9 +214,9 @@ function Designation() {
   function resetValues() {
     addRoleModal.hide();
     position.set("");
-    experience.set({});
+    experience.set(EXPERIENCE_LIST[0]);
     jd.set("");
-    vacancies.set("");
+    vacancies.set("1");
     referenceId.set("");
     setSelectedSector("");
     setSelectedDepartment("");
@@ -442,14 +442,7 @@ function Designation() {
         size={"lg"}
         isOpen={createOpening}
         onClose={() => {
-          addRoleModal.hide();
-          jd.set("");
-          position.set("");
-          experience.set({});
-          vacancies.set("");
-          referenceId.set("");
-          setSelectedDepartment("");
-          setSelectedSector("");
+          resetValues()
           dispatch(hideCreateOpeningsModal());
         }}
         style={{ padding: 0 }}

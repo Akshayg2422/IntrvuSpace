@@ -1,5 +1,5 @@
 import { icons } from "@Assets";
-import { Modal, Image, Button, showToast, Card } from "@Components";
+import { Modal, Image, Button, showToast, Card, Heading } from "@Components";
 import { translate } from "@I18n";
 import { imagePickerConvertBase64 } from "@Utils";
 import React, { useEffect, useRef, useState } from "react";
@@ -47,7 +47,6 @@ function DropzoneFilePicker({
   }, [isOpen]);
 
   const selectHandler = (e: any) => {
-
     let fileName = document.getElementById(
       "selectImage"
     ) as HTMLInputElement | null;
@@ -69,13 +68,10 @@ function DropzoneFilePicker({
         if (onSelect) {
           onSelect(encoded);
           setFileData(encoded);
-
         }
-
       };
     } else {
       showToast("Please upload Excel files only.", "error");
-
     }
   };
 
@@ -106,97 +102,107 @@ function DropzoneFilePicker({
         }}
         outline={outline}
       />
-      {/* <span className=" ni ni-cloud-upload-96 text-primary mt-1 mr-2 ni-lg pointer" onClick={() => { setIsOpenModal(!isOpenModal) }}></span> */}
-
       <Modal
         isOpen={isOpenModal}
         size={size}
         onClose={() => setIsOpenModal(!isOpenModal)}
-        title={title}
       >
-        <div className="mt--4 font-weight-light h4 text-primary">
-          <a role={"button"} onClick={onTemplateClick}>
-            {"Download templete"}
-          </a>
-        </div>
-        <div className="dropzone dropzone-multiple" id="dropzone-multiple">
-          {!fileData && (
-            <Card
-              className="dz-default dz-message"
-              onClick={() => {
-                handleRefClick();
-              }}
-              style={{
-                borderWidth: 1.5,
-                borderColor: "#e8edff",
-                backgroundColor: "transparent",
-              }}
-            >
-              <input
-                id="selectImage"
-                type="file"
-                hidden
-                onChange={(e) => selectHandler(e)}
-                accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-              />
-              <button className="dz-button" type="button">
-                {"Drop file here to upload"}
-              </button>
-            </Card>
-          )}
-
-          {fileName && (
-            <div className="mt-3">
-              <Row className=" align-items-center">
-                <Col className=" col-auto">
-                  <div className=" avatar">
-                    <img
-                      alt="..."
-                      className=" avatar-img rounded"
-                      src={icons.excel}
-                    />
-                  </div>
-                </Col>
-                <div className=" col ml--3">
-                  <h4 className=" mb-1">{fileName}</h4>
-                </div>
-                <Col className=" col-auto">
-                  <RSButton
-                    size="sm"
-                    color="warning"
-                    onClick={() => {
-                      setFileData("");
-                      setFileName("");
-                    }}
-                  >
-                    <i className="fas fa-trash" />
-                  </RSButton>
-                </Col>
-              </Row>
-            </div>
-          )}
-        </div>
-
-        <div className="text-center mt-3">
-          <Button
-            color={"primary"}
-            text={"Upload"}
-            style={{ borderRadius: 4, paddingLeft: 70, paddingRight: 70 }}
-            onClick={() => {
-              if (!fileData) {
-                showToast("Please select a file.", "error");
-                return;
-              }
-
-              if (onSubmitClick) {
-                setFileData("");
-                setFileName("");
-                onSubmitClick(fileData);
-                setIsOpenModal(false);
-              }
-            }}
+        <>
+          <Heading
+            heading={title}
+            className={"font-weight-800 display-4 mt--5"}
           />
-        </div>
+          <div className="">
+            <span className="text-decoration-underline-hover pointer" onClick={onTemplateClick}>
+          <i className="bi bi-file-arrow-down-fill text-primary "></i>
+
+            <a role={"button"} className="font-weight-600 text-primary ml-1" >
+              {"Download templete"}
+            </a>
+            </span>
+          </div>
+          <div
+            className="dropzone dropzone-multiple mt-3"
+            id="dropzone-multiple"
+          >
+            {!fileData && (
+              <Card
+                className="dz-default dz-message"
+                onClick={() => {
+                  handleRefClick();
+                }}
+                style={{
+                  borderWidth: 1.5,
+                  borderColor: "#e8edff",
+                  backgroundColor: "transparent",
+                }}
+              >
+                <input
+                  id="selectImage"
+                  type="file"
+                  hidden
+                  onChange={(e) => selectHandler(e)}
+                  accept=".csv"
+                />
+                <button className="dz-button" type="button">
+                  {"Drop file here to upload"}
+                </button>
+              </Card>
+            )}
+
+            {fileName && (
+              <div className="mt-3">
+                <Row className=" align-items-center">
+                  <Col className=" col-auto">
+                    <div className=" avatar">
+                      <img
+                        alt="..."
+                        className=" avatar-img rounded"
+                        src={icons.excel}
+                      />
+                    </div>
+                  </Col>
+                  <div className=" col ml--3">
+                    <h4 className=" mb-1">{fileName}</h4>
+                  </div>
+                  <Col className=" col-auto">
+                    <RSButton
+                      size="sm"
+                      color="warning"
+                      onClick={() => {
+                        setFileData("");
+                        setFileName("");
+                      }}
+                    >
+                      <i className="fas fa-trash" />
+                    </RSButton>
+                  </Col>
+                </Row>
+              </div>
+            )}
+          </div>
+
+          <div className="text-center mt-3">
+            <Button
+              color={"primary"}
+              text={"Upload"}
+              style={{ borderRadius: 4, paddingLeft: 70, paddingRight: 70 }}
+              onClick={() => {
+                if (!fileData) {
+                  showToast("Please select a file.", "error");
+                  return;
+                }
+
+                if (onSubmitClick) {
+                  setFileData("");
+                  setFileName("");
+                  onSubmitClick(fileData);
+                  setIsOpenModal(false);
+                }
+              }}
+            />
+          </div>
+        </>
       </Modal>
     </div>
   );

@@ -19,9 +19,6 @@ const useScreenRecorder = () => {
   );
   const [isScreenRecordingReady, setIsScreenRecordingReady] = useState(false);
 
-  console.log("isScreenRecordingReady", isScreenRecordingReady);
-  
-
   const dispatch = useDispatch();
 
   const startScreenRecording = async () => {
@@ -79,18 +76,15 @@ const useScreenRecorder = () => {
   // console.log("VideoDataBlobbbsss===>", recordedVideoData);
 
   useEffect(() => {
-    intervalIdRef.current = setInterval(() => {
-      if (recordedVideoData && recordedVideoData.length > 0) {
-        const videoBlob = new Blob(recordedVideoData, { type: "video/webm" });
-        console.log("blobbbb====>", videoBlob);
-        
-        if (isScreenRecordingReady) {
+      intervalIdRef.current = setInterval(() => {
+        if (recordedVideoData && recordedVideoData.length > 0) {
+          const videoBlob = new Blob(recordedVideoData, { type: "video/webm" });
+          console.log("blobbbb====>", videoBlob);
           sendBlobToServer(videoBlob, false);
+          recordedVideoData.length = 0;
         }
-        recordedVideoData.length = 0;
-      }
-    }, 1000);
-    return () => clearInterval(intervalIdRef.current);
+      }, 1000);
+      return () => clearInterval(intervalIdRef.current);
   }, [recordedVideoData, VideoSessionDetails]);
 
   const stopScreenRecording = async () => {
