@@ -216,5 +216,8 @@ export const icons = {
   more: require('./More/icon.png'),
   frame: require('./Frame/icon.png'),
   checkBlack: require('./CheckBlack/icon.png'),
-  rupees:require('./Rupees/icon.png')
+  rupees:require('./Rupees/icon.png'),
+  phoneCall: require('./PhoneCall/icon.png'),
+  email: require('./Email/icon.png'),
+  mark: require('./Mark/icon.png')
 };
