@@ -12,10 +12,9 @@ function Clients() {
         return component;
     }
 
-
     return (
         <div className={'screen'}>
-            {/* <TopNavbar /> */}
+            <TopNavbar />
             {
                 renderComponent()
             }

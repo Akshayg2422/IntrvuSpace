@@ -2,8 +2,16 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import {
   Spinner,
-  showToast
+  showToast,
+  Modal,
+  Button,
+  Input,
+  DropDown,
+  TextArea,
+  InputHeading,
+  Alert
 } from "@Components";
+
 import {
   useDropDown,
   useInput,
@@ -11,7 +19,7 @@ import {
   useModal,
   useNavigation,
 } from "@Hooks";
-import { JdItem, UploadJdCard } from '@Modules';
+import { JdItem, UploadJdCard, PreparingYourInterview } from '@Modules';
 import {
   canStartInterview,
   createNewJdSchedule,
@@ -51,8 +59,8 @@ const PLACE_HOLDER = {
 const INTERVAL_TIME = 5000;
 
 function FromJD() {
+
   const CHAR_LENGTH = 5000;
-  const VIEW_MORE_LENGTH = 300;
   const intervalIdRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const ERROR_MESSAGE =
@@ -64,36 +72,35 @@ function FromJD() {
     (state: any) => state.DashboardReducer
   );
 
+  const { goTo } = useNavigation();
+
+
   /**
    * loading
    */
   const loading = useLoader(false);
 
 
-  const { goTo } = useNavigation();
+
+  /**
+   *  create interview form
+   */
+
   const position = useInput("");
   const experience = useDropDown(EXPERIENCE_LIST[0]);
   const jd = useInput("");
-  const sector = useInput("");
-  const generateJdModal = useModal(false);
-  const completedModal = useModal(false);
-  const [scheduleId, setScheduleId] = useState(undefined);
-  const jdScheduleModal = useModal(false);
-  const [jdMore, setJdMore] = useState<any>([]);
-  const [fresherChecked, setFresherChecked] = useState(false);
-
-  const [jdDescriptionError, setJdDescriptionError] = useState<any>(undefined);
-  const [selectedDuration, setSelectedDuration] = useState<any>(
+  const [duration, setDuration] = useState<any>(
     INTERVIEW_DURATIONS[0]
   );
+  const sector = useInput("");
+
+  const [jdDescriptionError, setJdDescriptionError] = useState<any>(undefined);
 
 
+  const generateJdModal = useModal(false);
+  const [scheduleId, setScheduleId] = useState(undefined);
+  const jdScheduleModal = useModal(false);
   const startInterviewLoader = useLoader(false);
-
-  const handleDurationClick = (interviewDurations) => {
-    setSelectedDuration(interviewDurations);
-  };
-
   const [isQuestionGenerated, setIsQuestionGenerated] = useState(false);
 
   useEffect(() => {
@@ -126,7 +133,7 @@ function FromJD() {
     const params = {
       sector_name: sector.value,
       position: position.value,
-      interview_duration: selectedDuration?.value,
+      interview_duration: duration?.value,
       experience: experience?.value?.id,
       jd: jd.value,
     };
@@ -151,11 +158,8 @@ function FromJD() {
                     params: canStartParams,
                     onSuccess: (res: any) => () => {
                       setIsQuestionGenerated(true);
-                      // generateJdModal.hide();
-                      // completedModal.show();
                       getKnowledgeGroupFromJdHandler();
                       resetValues();
-                      // showToast(res.status, 'success');
                       if (intervalIdRef.current) {
                         clearInterval(intervalIdRef.current);
                       }
@@ -170,7 +174,6 @@ function FromJD() {
           },
           onError: (error) => () => {
             generateJdModal.hide();
-            // addJdModal.show();
             dispatch(showCreateJddModal());
             showToast(error.error_message, "error");
           },
@@ -186,7 +189,7 @@ function FromJD() {
     experience.set(EXPERIENCE_LIST[0]);
     jd.set("");
     sector.set("");
-    setSelectedDuration(INTERVIEW_DURATIONS[0]);
+    setDuration(INTERVIEW_DURATIONS[0]);
   }
 
   function createNewJdScheduleApiHandler(id: string) {
@@ -290,6 +293,114 @@ function FromJD() {
         </div>
       }
 
+      <Modal
+        isOpen={createJdModal}
+        title={'Create Interview'}
+        subTitle={'Input job details, specifying qualifications, requirements, interview duration'}
+        onClick={submitJdApiHandler}
+        buttonText={'Create Interview'}
+        onClose={() => {
+          dispatch(hideCreateJdModal());
+        }}
+      >
+
+        <div className={'row'}>
+          <div className={'col-sm-6'}>
+            <Input
+              heading={"Position"}
+              placeHolder={PLACE_HOLDER.role}
+              value={position.value}
+              onChange={position.onChange}
+            />
+          </div>
+
+          <div className={'col-sm-6'}>
+            <DropDown
+              heading={"Experience"}
+              id={"experience"}
+              data={EXPERIENCE_LIST}
+              selected={experience?.value}
+              onChange={experience.onChange}
+            />
+          </div>
+        </div>
+
+        <TextArea
+          error={jdDescriptionError}
+          placeholder={PLACE_HOLDER.jd}
+          heading={'Job Description'}
+          value={jd.value.slice(0, CHAR_LENGTH)}
+          onChange={(e) => {
+            let value = e.target.value;
+            if (value.length > CHAR_LENGTH) {
+              setJdDescriptionError(ERROR_MESSAGE);
+            } else {
+              setJdDescriptionError(undefined);
+            }
+            jd.set(value);
+          }}
+        />
+
+        <div className={'duration-container'}>
+          <InputHeading heading={'Duration'} />
+          <div className={'duration-content-container'}>
+            {
+              INTERVIEW_DURATIONS.map((item: any, index: number) => {
+                const { id, subText } = item
+                return (
+                  <div className={index === 0 ? 'each-duration' : 'each-duration each-duration-space'}>
+                    <Button
+                      block
+                      outline
+                      className={`${duration?.id === id ? 'btn-outline-primary-active' : 'btn-outline-primary-inactive'}`}
+                      text={subText}
+                      onClick={() => {
+                        setDuration(item)
+                      }}
+                    />
+                  </div>
+                )
+              })
+            }
+          </div>
+        </div>
+
+        <div className={'row group-container'}>
+          <div className={"col-sm-6"}>
+            <Input
+              heading={'Sector'}
+              placeHolder={PLACE_HOLDER.sector}
+              value={sector.value}
+              onChange={sector.onChange}
+            />
+          </div>
+        </div>
+      </Modal>
+
+      <Modal
+        isOpen={generateJdModal.visible}
+        title={'Preparing your Interview...'}
+        subTitle={'It will take a couple of minutes. You can wait and join using the link that will be sent to your email once the interview is ready.'}
+        onClose={generateJdModal.hide}>
+        <PreparingYourInterview
+          showStart={isQuestionGenerated}
+          onClick={() => {
+            if (scheduleId) {
+              proceedInterviewHandler(scheduleId);
+            }
+          }}
+        />
+      </Modal>
+
+      <Modal
+        title={'Interview Preparation is in progress'}
+        subTitle={`Interview Preparation is in progress it will take couple of minutes, you will receive schedule confirmation over mail.`}
+        isOpen={jdScheduleModal.visible}
+        onClose={jdScheduleModal.hide}
+        buttonText={'Close'}
+        onClick={jdScheduleModal.hide}
+      >
+      </Modal>
     </>
   );
 }
