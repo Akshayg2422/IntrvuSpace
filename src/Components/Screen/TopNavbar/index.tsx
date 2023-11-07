@@ -58,10 +58,10 @@ function TopNavbar() {
           onSuccess: () => {
             goTo(ROUTES["auth-module"].splash, true);
           },
-          onError: () => {},
+          onError: () => { },
         })
       );
-    } catch (error) {}
+    } catch (error) { }
   }
 
   const handleCreateInterviewClick = () => {
@@ -154,12 +154,7 @@ function TopNavbar() {
                 <NavItem>
                   <NavLink to="/home" tag={Link}>
                     <Button
-                      className="btn btn-outline-primary rounded-sm px-0"
-                      style={{
-                        borderColor: "#d8dade",
-                        fontSize: "15px",
-                        width: "150px",
-                      }}
+                      block
                       text={"Create For Others"}
                       onClick={handleCreateForOthersInterviewClick}
                     />
@@ -170,15 +165,8 @@ function TopNavbar() {
                 <NavItem>
                   <NavLink to="/home" tag={Link}>
                     <Button
-                      size="md"
-                      className={
-                        "btn btn-outline-primary rounded-sm mr--3 px-0 "
-                      }
-                      style={{
-                        borderColor: "#d8dade",
-                        fontSize: "15px",
-                        width: "150px",
-                      }}
+                      outline
+                      block
                       text={"Create Interview"}
                       onClick={handleCreateInterviewClick}
                     />

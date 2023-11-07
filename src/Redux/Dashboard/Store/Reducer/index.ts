@@ -357,6 +357,11 @@ const DashboardReducer = (state = initialState, action: any) => {
       state = { ...state, jdItem: undefined };
       break;
 
+
+    case ActionTypes.UPDATE_JD_ITEM:
+      state = { ...state, jdItem: action.payload };
+      break;
+
     // GET_SCHEDULE_BASIC_INFO
 
     case ActionTypes.GET_SCHEDULE_BASIC_INFO:

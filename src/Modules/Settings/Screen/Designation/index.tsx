@@ -1,14 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
-import { Button, DesignationItem, DropDown, Heading, Input, InputHeading, Modal, NoDataFound, PageNation, ReactAutoComplete, Spinner, TextArea, showToast, TopNavbarCorporateFlow } from '@Components';
-import { useDropDown, useInput, useLoader, useModal, useNavigation } from '@Hooks';
+import { Button, DesignationItem, DropDown, Input, InputHeading, Modal, NoDataFound, PageNation, ReactAutoComplete, Spinner, TextArea, showToast } from '@Components';
+import { useDropDown, useInput, useLoader, useNavigation } from '@Hooks';
 import { UploadCorporateOpeningsCard, } from '@Modules';
-import { addDepartmentCorporate, addSectorCorporate, breadCrumbs, createCorporateSchedules, getCorporateSchedules, getDepartmentCorporate, getSectorCorporate, hideCreateOpeningsModal, setSelectedRole, updateCorporateSchedules } from '@Redux';
+import { addDepartmentCorporate, addSectorCorporate, createCorporateSchedules, getCorporateSchedules, getDepartmentCorporate, getSectorCorporate, hideCreateOpeningsModal, setSelectedRole, updateCorporateSchedules } from '@Redux';
 import { ROUTES } from '@Routes';
-import { CREATE_CORPORATE_SCHEDULE_RULES, EXPERIENCE_LIST, INTERVIEW_DURATIONS, STATUS_LIST, getDropDownCompanyDisplayData, getValidateError, ifObjectExist, paginationHandler, validate, PLACEHOLDER_ROLES } from '@Utils';
+import { CREATE_CORPORATE_SCHEDULE_RULES, EXPERIENCE_LIST, INTERVIEW_DURATIONS, PLACEHOLDER_ROLES, STATUS_LIST, getDropDownCompanyDisplayData, getValidateError, ifObjectExist, paginationHandler, validate } from '@Utils';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import './index.css'
+import './index.css';
 
 function Designation() {
 
@@ -20,7 +20,8 @@ function Designation() {
     corporateScheduleCount,
     corporateScheduleNumOfPages,
     corporateScheduleCurrentPages
-  } = useSelector((state: any) => state.DashboardReducer)
+  } = useSelector((state: any) => state.DashboardReducer);
+
 
   const { goTo } = useNavigation()
   const dispatch = useDispatch()
@@ -213,7 +214,7 @@ function Designation() {
 
   return (
     <div className={'screen'}>
-      <TopNavbarCorporateFlow />
+      {/* <TopNavbarCorporateFlow /> */}
       {
         listLoader.loader && <div className={'loader-container'}><Spinner /></div>
       }

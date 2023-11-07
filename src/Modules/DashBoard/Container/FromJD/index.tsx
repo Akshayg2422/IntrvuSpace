@@ -20,7 +20,7 @@ import {
   useModal,
   useNavigation,
 } from "@Hooks";
-import { PreparingYourInterview, UploadJdCard } from "@Modules";
+import { PreparingYourInterview, UploadJdCard, JdItem } from "@Modules";
 import {
   canStartInterview,
   createNewJdSchedule,
@@ -29,6 +29,7 @@ import {
   postJdVariant,
   selectedScheduleId,
   showCreateJddModal,
+  updateJdItem
 } from "@Redux";
 import { ROUTES } from "@Routes";
 import {
@@ -68,9 +69,16 @@ function FromJD() {
     "In beta version, you can upload only max of " +
     CHAR_LENGTH +
     " characters.";
+
   const { createJdModal, jdItem } = useSelector(
     (state: any) => state.DashboardReducer
   );
+
+  /**
+   * loading
+   */
+  const loading = useLoader(false);
+
 
   const { goTo } = useNavigation();
   const position = useInput("");
@@ -81,7 +89,6 @@ function FromJD() {
   const completedModal = useModal(false);
   const [scheduleId, setScheduleId] = useState(undefined);
   const jdScheduleModal = useModal(false);
-  const [loading, setLoading] = useState(true);
   const [jdMore, setJdMore] = useState<any>([]);
   const [fresherChecked, setFresherChecked] = useState(false);
 
@@ -89,6 +96,8 @@ function FromJD() {
   const [selectedDuration, setSelectedDuration] = useState<any>(
     INTERVIEW_DURATIONS[0]
   );
+
+
   const startInterviewLoader = useLoader(false);
 
   const handleDurationClick = (interviewDurations) => {
@@ -109,14 +118,16 @@ function FromJD() {
 
   const getKnowledgeGroupFromJdHandler = () => {
     const params = { from_jd: true };
-
+    loading.show();
     dispatch(
       getJdItemList({
         params,
         onSuccess: () => () => {
-          setLoading(false);
+          loading.hide();
         },
-        onError: () => () => { },
+        onError: () => () => {
+          loading.hide();
+        },
       })
     );
   };
@@ -271,11 +282,36 @@ function FromJD() {
     }
   };
 
+
+  function viewMoreDetailsHandler(status: boolean, index: number) {
+    const updateData = [...jdItem]
+    updateData[index] = { ...updateData[index], is_view_more: status }
+    dispatch(updateJdItem(updateData))
+  }
+
+
   return (
     <>
-      <UploadJdCard />
-      {/* <div className={'screen-container'}>
-      </div> */}
+      {
+        loading.loader && <div className={'loader-container'}><Spinner /></div>
+      }
+      {!loading.loader && jdItem.length <= 0 && <UploadJdCard />}
+      {
+        !loading.loader && jdItem.length > 0 &&
+        <div className={'screen-container'}>
+
+          {
+            jdItem.map((item: any, index: number) => {
+              return (
+                <div className={index !== 0 ? 'jd-container-top' : ''}>
+                  <JdItem item={item} onViewMore={(status) => viewMoreDetailsHandler(status, index)} />
+                </div>
+              );
+            })
+          }
+        </div>
+      }
+
     </>
   );
 }

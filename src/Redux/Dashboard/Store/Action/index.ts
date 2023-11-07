@@ -578,6 +578,17 @@ export const getJdItemListFailure = (error: any) => {
   };
 };
 
+/**
+ * update Jd item
+ */
+
+export const updateJdItem = (params: any) => {
+  return {
+    type: ActionTypes.UPDATE_JD_ITEM,
+    payload: params,
+  };
+};
+
 // GET_SCHEDULE_BASIC_INFO
 
 export const getScheduleBasicInfo = (params: any) => {
