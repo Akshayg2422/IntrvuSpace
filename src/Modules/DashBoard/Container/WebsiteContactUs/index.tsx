@@ -93,20 +93,25 @@ function WebsiteContactUs() {
                   </div>
                 </div>
               </div>
-              <div className="col-sm-4 d-flex justify-content-start mt-lg-0 mt-5">
+              <div className="col-sm-8 col-md-8 col-lg-4 d-flex justify-content-start mt-lg-0 mt-5">
                 <div className="">
                   <h3 className="text-seconary font-weight-800">CONTACT US</h3>
                   <div className="text-secondary">
-                    <div className="mt-4">
-                      <span>contact@leorainfotech.in</span>
+                    <div className="mt-4 d-flex align-items-center">
+                      <Image src={icons.email} height={16} />
+                      <span className="ml-2">contact@leorainfotech.in</span>
                     </div>
                     <div className="mt-2">
-                      <span>+91 9445092211</span>
+                      <Image src={icons.phoneCall} height={16} />
+                      <span className="ml-2">+91 9445092211</span>
                     </div>
                     <div className="mt-2">
-                      <span>
-                        No:03, Prithiv Nagar, G.N.T Road, Gummidipoondi - 601
-                        201
+                      <Image src={icons.mark} height={16} />
+
+                      <span className="ml-2">
+                        No:03, Prithiv Nagar, G.N.T Road,
+                        <br />{" "}
+                        <span className="ml-4"> Gummidipoondi - 601 201</span>
                       </span>
                     </div>
                   </div>
