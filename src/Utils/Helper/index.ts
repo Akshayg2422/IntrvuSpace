@@ -33,7 +33,7 @@ export function arrayOrderbyCreatedAt(array: any) {
 }
 
 
-export function arrayOrderbyDate(array: any, key: string) {
+export function arrayOrderbyDate(array: any, key: string, isReverse: boolean = false) {
   let modifiedArray = [];
   if (array && array.length > 0) {
     modifiedArray = array.sort((a: any, b: any) => {
@@ -43,6 +43,11 @@ export function arrayOrderbyDate(array: any, key: string) {
           ? 1
           : 0;
     });
+    if (isReverse) {
+      modifiedArray = modifiedArray.reverse();
+    }
     return modifiedArray;
+
+
   }
 }

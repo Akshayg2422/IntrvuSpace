@@ -22,7 +22,7 @@ function JdItem({
     return is_started && is_complete;
   });
 
-  const completedSchedules = arrayOrderbyDate(filteredSchedules, 'interview_end_time');
+  const completedSchedules = arrayOrderbyDate(filteredSchedules, 'interview_end_time', true);
 
 
   const pendingSchedules = schedules.find((each: any) => {
