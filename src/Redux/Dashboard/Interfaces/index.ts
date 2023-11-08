@@ -46,5 +46,6 @@ export interface DashboardProp {
   candidatesList?: boolean;
   candidatesListNumOfPages: any,
   candidatesListCurrentPages: number,
-  interviewUserScheduleDetails:any
+  interviewUserScheduleDetails:any,
+  onGoingMessage:any,
 }

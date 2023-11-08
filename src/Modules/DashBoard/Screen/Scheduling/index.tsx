@@ -19,7 +19,6 @@ function Scheduling() {
                 <div className='col-4  '>
 
                     <OnGoingSchedule />
-
                 </div>
                 <div className='col-8  '>
 

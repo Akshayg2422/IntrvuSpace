@@ -17,7 +17,7 @@ function OnGoingSchedule() {
     const loader = useLoader(false);
 
 
-    console.log(onGoingInterviewDetails, "onGoingScheduleMessage................???")
+
 
     useEffect(() => {
         loader.show();
@@ -45,7 +45,6 @@ function OnGoingSchedule() {
 
     useEffect(() => {
 
-        console.log(onGoingSelectId,"onGoingSelectId")
         if (!onGoingSelectId) {
            
             setOnGoingSelectId(onGoingScheduleMessage?.ongoing_schedules[0]?.id)
@@ -119,7 +118,7 @@ function OnGoingSchedule() {
 
         < >
 
-            <div className='card rounded-0 custom-height  mb-5' style={{ borderColor: '#d3deff' }}
+            <div className='card rounded-sm custom-height  mb-5' style={{ borderColor: '#d3deff' }}
             >
                 <div className='card-header sticky-top  '>
                     <div className=' row pl-1 col'>
@@ -149,7 +148,7 @@ function OnGoingSchedule() {
                                 <div>
                                     <div className='mt-0 mb-2 card p-3  pointer'
                                         style={{
-                                            backgroundColor: `${id === onGoingSelectId ? '#dedede' : hoverColor?.id === id ? '#f2f2f2' : ''}`
+                                            backgroundColor: `${id === onGoingSelectId ? '#fafbff' : hoverColor?.id === id ? '#f2f2f2' : ''}`
                                         }}
                                         onClick={() => {
                                             setOnGoingSelectId(id)
@@ -209,7 +208,8 @@ function OnGoingSchedule() {
 
                     </div>
                     : <>
-                       <div className='custom-height   d-flex justify-content-center align-items-center'>
+
+            <div className='custom-height   d-flex justify-content-center align-items-center'>
   <NoRecordsFound text={'There are no ongoing schedules.'} />
 </div>
                     </>

@@ -10,7 +10,7 @@ function ScheduleDetails() {
 
     const [interviewMessage, setInterviewMessage] = useState<any>()
     const dispatch = useDispatch()
-    const { onGoingSelectedId, interviewScheduleDetails, onGoingScheduleMessage,interviewUserScheduleDetails } = useSelector((state: any) => state.DashboardReducer);
+    const { onGoingSelectedId, interviewScheduleDetails, onGoingScheduleMessage,interviewUserScheduleDetails, } = useSelector((state: any) => state.DashboardReducer);
 const loader =useLoader(false)
 
 console.log(interviewUserScheduleDetails,"interviewScheduleDetails============???",interviewScheduleDetails)
@@ -19,10 +19,12 @@ console.log(interviewUserScheduleDetails,"interviewScheduleDetails============??
         console.log(onGoingSelectedId,"onGoingSelectedId=++++++++++++")
 
         if (onGoingSelectedId) {
+        
             getInterviewHandler()
+
+        
             loader.show()
          
-        
         }
 
         else {
@@ -44,13 +46,12 @@ if(onGoingSelectedId){
         }
 
         dispatch(
+
             getInterviewScheduleDetails({
                 params,
                 onSuccess: (response: any) => () => {
-                    console.log(response,'rrrrrrrrrrrrrrrrrrrrrrr')
                     loader.hide()
                     setInterviewMessage(response?.details)
-
                 },
                 onError: () => () => {
                     loader.hide()
@@ -86,7 +87,7 @@ if(onGoingSelectedId){
 
     return (
         <>
-            <div className='card custom-height m-0' style={{ borderColor: '#d3deff' }} >
+            <div className='card rounded-sm custom-height m-0' style={{ borderColor: '#d3deff' }} >
 
 
                 <div className='card-header sticky-top'>
@@ -102,7 +103,7 @@ if(onGoingSelectedId){
                     <Spinner />
                 </div>
             }
-{onGoingSelectedId?
+{!loader.loader &&onGoingSelectedId ?
                 <div className='overflow-auto overflow-hide d-flex mx-4 my-1' style={{ flexDirection: 'column-reverse' , overflowY:'scroll'}}>
 
                     <div  >

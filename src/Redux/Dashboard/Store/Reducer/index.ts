@@ -57,6 +57,7 @@ const initialState: DashboardProp = {
   candidatesListCurrentPages: 1,
   onGoingScheduleMessage :undefined,
   onGoingSelectedId:undefined,
+  onGoingMessage:undefined,
 };
 
 const DashboardReducer = (state = initialState, action: any) => {
@@ -709,7 +710,7 @@ createScheduleSuperAdmin
     case ActionTypes.POST_CORPORATE_SCHEUDULE_ACTIONS_FAILURE:
       state = { ...state };
       break;
-
+      
 
 
     default:
