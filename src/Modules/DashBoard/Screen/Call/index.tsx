@@ -120,7 +120,8 @@ function Call() {
   const [isTtfSpeaking, setIsTtfSpeaking] = useState<boolean>(false);
 
   const [networkError, setNetworkError] = useState(false);
-  const [networkErrorResponse, setNetworkErrorResponse] = useState<any>(undefined);
+  const [networkErrorResponse, setNetworkErrorResponse] =
+    useState<any>(undefined);
 
   const [websocketError, setWebSocketError] = useState(false);
 
@@ -174,7 +175,7 @@ function Call() {
       setIsTtfSpeaking(false);
     };
 
-    audioElementRef.current.onloadstart = function () { };
+    audioElementRef.current.onloadstart = function () {};
     audioElementRef.current.onended = function () {
       setIsTtfSpeaking(false);
       if (closeCall.current === true) {
@@ -207,7 +208,7 @@ function Call() {
   function onEndCallHandler() {
     proceedStopListening();
     setButtonConditional("end");
-    getKnowledgeGroupFromJdHandler() // list refresh to update the report and watch interview buttons
+    getKnowledgeGroupFromJdHandler(); // list refresh to update the report and watch interview buttons
     if (audioElementRef.current) audioElementRef.current.pause();
     getBasicInfo();
     setTimeout(() => {
@@ -357,7 +358,7 @@ function Call() {
           canConnect.current = false;
           socketRef.current.close();
           socketRef.current = null;
-        } catch (e) { }
+        } catch (e) {}
         clearInterval(reconnectInterval);
       }
     };
@@ -486,11 +487,11 @@ function Call() {
         onSuccess: () => () => {
           loader.hide();
           setNetworkError(false);
-          setNetworkErrorResponse(undefined)
+          setNetworkErrorResponse(undefined);
           interviewLimitModal.hide();
         },
         onError: (response: any) => () => {
-          setNetworkErrorResponse(response)
+          setNetworkErrorResponse(response);
           setNetworkError(true);
           interviewLimitModal.show();
           loader.hide();
@@ -823,7 +824,7 @@ function Call() {
   const openCallView = () => {
     //call screen recording boolean
     // setIsScreenRecordingReady(true);
-    
+
     setNetworkError(false);
     startInterviewLoader.hide();
     startStreamTime.current = moment().add(1, "seconds");
@@ -843,29 +844,35 @@ function Call() {
     if (hasMicPermission) {
       micPermissionModal.hide();
       const canStartParams = { schedule_id };
+      if (!recordStatus) {
+        await startScreenRecording();
+      }
+      else if (recordStatus) {
+        startInterviewLoader.show();
 
-      startInterviewLoader.show();
+        intervalIdRef.current = setInterval(() => {
+          dispatch(
+            canStartInterview({
+              params: canStartParams,
+              onSuccess: (res: any) => () => {
+                initiateSocket();
 
-      intervalIdRef.current = setInterval(() => {
-        dispatch(
-          canStartInterview({
-            params: canStartParams,
-            onSuccess: (res: any) => () => {
-              initiateSocket();
+                proceedOpenCallView.current = true;
 
-              proceedOpenCallView.current = true;
-
-              if (intervalIdRef.current) {
-                clearInterval(intervalIdRef.current);
-              }
-            },
-            onError: (error: any) => () => {
-              startInterviewLoader.hide();
-              setNetworkError(true);
-            },
-          })
-        );
-      }, INTERVAL_TIME);
+                if (intervalIdRef.current) {
+                  clearInterval(intervalIdRef.current);
+                }
+              },
+              onError: (error: any) => () => {
+                startInterviewLoader.hide();
+                setNetworkError(true);
+              },
+            })
+          );
+        }, INTERVAL_TIME);
+      } else {
+        startScreenRecording();
+      }
     } else {
       micPermissionModal.show();
     }
@@ -887,7 +894,7 @@ function Call() {
         onSuccess: () => () => {
           endInterviewHandler();
         },
-        onError: () => () => { },
+        onError: () => () => {},
       })
     );
   }
@@ -1161,7 +1168,7 @@ function Call() {
                 scheduleInfo={scheduleInfo}
                 loading={startInterviewLoader.loader}
                 heading={scheduleInfo?.interviewee_expected_designation}
-                onClick={startScreenRecording}
+                onClick={startInterviewHandler}
               />
             ) : (
               <></>
@@ -1253,8 +1260,8 @@ function Call() {
                 isForceRecord
                   ? "Confirm Recording"
                   : isCancelRecording
-                    ? "Confirm without Recording"
-                    : "Cancel Recording"
+                  ? "Confirm without Recording"
+                  : "Cancel Recording"
               }
             />
           </div>
@@ -1307,22 +1314,22 @@ function Call() {
         </div>
       </Modal>
 
-
-
-      {
-        /**
-         * nerowork error
-         */
-      }
+      {/**
+       * nerowork error
+       */}
 
       <Modal
         isOpen={interviewLimitModal.visible}
-        title={networkErrorResponse?.status_code === 3 ? "Server Full" : "Network Error"}
+        title={
+          networkErrorResponse?.status_code === 3
+            ? "Server Full"
+            : "Network Error"
+        }
       >
         <h3 className="m-0">
-          {
-            networkErrorResponse?.status_code === 3 ? networkErrorResponse?.error_message : " Technical breakdown please try again"
-          }
+          {networkErrorResponse?.status_code === 3
+            ? networkErrorResponse?.error_message
+            : " Technical breakdown please try again"}
         </h3>
         <div className="d-flex align-items-center justify-content-center mt-3">
           <Button
@@ -1330,12 +1337,11 @@ function Call() {
             text={"Try Again"}
             onClick={() => {
               interviewLimitModal.hide();
-              getBasicInfo()
+              getBasicInfo();
             }}
           />
         </div>
       </Modal>
-
     </>
   );
 }

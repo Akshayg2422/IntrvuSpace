@@ -1335,7 +1335,7 @@ function AdminSchedules() {
                     ? watchInterviewUrl.recording_url.slice(1)
                     : watchInterviewUrl.recording_url)
                 }
-                type="video/mp4"
+                type={"video/webm"}
               />
             </video>
           ) : (
