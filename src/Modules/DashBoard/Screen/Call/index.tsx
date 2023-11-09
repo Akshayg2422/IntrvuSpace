@@ -23,6 +23,7 @@ import {
   getOperatingSystem,
   getShortName,
   gotoPermissionSetting,
+  hasCameraPermission,
   hasMicrophonePermission,
 } from "@Utils";
 import type { Harker } from "hark";
@@ -191,24 +192,9 @@ function Call() {
     });
   };
 
-  const getKnowledgeGroupFromJdHandler = () => {
-    const params = { from_jd: true };
-
-    dispatch(
-      getJdItemList({
-        params,
-        onSuccess: () => () => {
-          // setLoading(false);
-        },
-        onError: () => () => {},
-      })
-    );
-  };
-
   function onEndCallHandler() {
     proceedStopListening();
     setButtonConditional("end");
-    getKnowledgeGroupFromJdHandler(); // list refresh to update the report and watch interview buttons
     if (audioElementRef.current) audioElementRef.current.pause();
     getBasicInfo();
     setTimeout(() => {
@@ -247,6 +233,7 @@ function Call() {
   const videoRecorderRef = useRef(null);
 
   const interviewLimitModal = useModal(false);
+  const camPermissionModal = useModal(false);
 
   const {
     startScreenRecording,
@@ -839,42 +826,49 @@ function Call() {
   };
 
   async function startInterviewHandler() {
-    const hasMicPermission = await hasMicrophonePermission();
+    const hasCamPermission = await hasCameraPermission();
+    if (hasCamPermission) {
+      camPermissionModal.hide();
 
-    if (hasMicPermission) {
-      micPermissionModal.hide();
-      const canStartParams = { schedule_id };
-      if (!recordStatus) {
-        await startScreenRecording();
-      }
-      else if (recordStatus) {
-        startInterviewLoader.show();
+      const hasMicPermission = await hasMicrophonePermission();
+      if (hasMicPermission) {
+        micPermissionModal.hide();
 
-        intervalIdRef.current = setInterval(() => {
-          dispatch(
-            canStartInterview({
-              params: canStartParams,
-              onSuccess: (res: any) => () => {
-                initiateSocket();
+        const canStartParams = { schedule_id };
 
-                proceedOpenCallView.current = true;
+        if (!recordStatus) {
+          await startScreenRecording();
+        } else if (recordStatus) {
+          startInterviewLoader.show();
 
-                if (intervalIdRef.current) {
-                  clearInterval(intervalIdRef.current);
-                }
-              },
-              onError: (error: any) => () => {
-                startInterviewLoader.hide();
-                setNetworkError(true);
-              },
-            })
-          );
-        }, INTERVAL_TIME);
+          intervalIdRef.current = setInterval(() => {
+            dispatch(
+              canStartInterview({
+                params: canStartParams,
+                onSuccess: (res: any) => () => {
+                  initiateSocket();
+
+                  proceedOpenCallView.current = true;
+
+                  if (intervalIdRef.current) {
+                    clearInterval(intervalIdRef.current);
+                  }
+                },
+                onError: (error: any) => () => {
+                  startInterviewLoader.hide();
+                  setNetworkError(true);
+                },
+              })
+            );
+          }, INTERVAL_TIME);
+        } else {
+          startScreenRecording();
+        }
       } else {
-        startScreenRecording();
+        micPermissionModal.show();
       }
     } else {
-      micPermissionModal.show();
+      camPermissionModal.show();
     }
   }
 
@@ -1340,6 +1334,40 @@ function Call() {
               getBasicInfo();
             }}
           />
+        </div>
+      </Modal>
+
+      {/**
+       * Camera permission modal
+       */}
+
+      <Modal
+        isOpen={camPermissionModal.visible}
+        onClose={camPermissionModal.hide}
+      >
+        <div className="mt--5">
+          <Heading
+            className={"text-secondary display-4"}
+            heading={"Camera Permission"}
+          />
+          <div className="text-default">
+            <p className="mt-3">
+              {
+                "Please provide access to your web camera to start the interview"
+              }
+            </p>
+          </div>
+
+          <div className="d-flex align-items-center justify-content-center mt-4 mb-3">
+            <Button
+              className="rounded-sm"
+              text={"OK"}
+              onClick={async () => {
+                camPermissionModal.hide();
+                // await hasCameraPermission()
+              }}
+            />
+          </div>
         </div>
       </Modal>
     </>

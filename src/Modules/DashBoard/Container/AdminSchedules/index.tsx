@@ -741,7 +741,7 @@ function AdminSchedules() {
                                   </h5>
                                   <div className="col m-0 p-0 d-flex justify-content-end">
                                     <div className="row mr-lg-3 mr-sm-0 mr-0">
-                                      {is_complete && is_report_complete && (
+                                      {is_complete && recording_url && (
                                         <>
                                           <UncontrolledTooltip
                                             delay={0}
@@ -759,27 +759,36 @@ function AdminSchedules() {
                                                   recording_url,
                                                   interview_duration,
                                                 });
-                                                if (getBrowserInfo().browserName !== "Mozilla Firefox") {
-                                                openWatchInterviewModal.show();
+                                                if (
+                                                  getBrowserInfo()
+                                                    .browserName !==
+                                                  "Mozilla Firefox"
+                                                ) {
+                                                  openWatchInterviewModal.show();
                                                 } else {
-                                                  showToast("Watch Interview is not supported in this browser", "info");
+                                                  showToast(
+                                                    "Watch Interview is not supported in this browser",
+                                                    "info"
+                                                  );
                                                 }
                                               }}
                                             ></i>
                                           </div>
-                                          <div>
-                                            <Button
-                                              className="rounded-sm"
-                                              text={"View Report"}
-                                              onClick={() => {
-                                                proceedReport(id);
-                                              }}
-                                            />
-                                          </div>
                                         </>
                                       )}
-                                      {is_complete && !is_report_complete && (
+                                      {is_complete && is_report_complete && (
                                         <div>
+                                          <Button
+                                            className="rounded-sm"
+                                            text={"View Report"}
+                                            onClick={() => {
+                                              proceedReport(id);
+                                            }}
+                                          />
+                                        </div>
+                                      )}
+                                      {is_complete && !is_report_complete && (
+                                        <div className="d-flex align-items-center">
                                           <span className="name mb-0 text-sm">
                                             Generating Report ...
                                           </span>
