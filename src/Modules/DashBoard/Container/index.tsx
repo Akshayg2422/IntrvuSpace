@@ -54,7 +54,12 @@ export * from './UploadCorporateOpeningsCard'
 export * from './VideoStream'
 export *from './OnGoingSchedules'
 export *from './ScheduleDetails'
-
+export * from './WebsiteContactUs'
+export * from './WebsiteFooter'
+export * from './DetailedReport'
+export * from './JobDescriptionKeyAreas'
+export * from './BasicReportMatrixCard'
+export * from './DetailedReportMatrixCard'
 
 
 

@@ -10,7 +10,7 @@ function Logo() {
         <H
           className={"mb-0 mt-2"}
           tag={"h2"}
-          text={translate("common.businessAppName")}
+          text={'Intrvu Space'}
         />
         {/* <div className="paragraph">
           <P text={translate("common.businessAppSubtext")} />

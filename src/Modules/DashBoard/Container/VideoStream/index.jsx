@@ -84,14 +84,14 @@ const VideoStream = (props) => {
 
     function syncVideoApiHelper(base64) {
         const params = { schedule_id: schedule_id, 'data_b64': base64 };
-        dispatch(
-            syncVideo({
-                params,
-                onSuccess: () => () => {
-                },
-                onError: () => () => { },
-            })
-        );
+        // dispatch(
+        //     syncVideo({
+        //         params,
+        //         onSuccess: () => () => {
+        //         },
+        //         onError: () => () => { },
+        //     })
+        // );
     }
 
 

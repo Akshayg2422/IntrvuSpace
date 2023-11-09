@@ -1,12 +1,13 @@
 /* eslint-disable no-empty-pattern */
 /* eslint-disable react-hooks/rules-of-hooks */
 
-import { icons } from "@Assets";
+import { icons, image } from "@Assets";
 import {
   Button,
   Card,
   Checkbox,
   Divider,
+  Heading,
   Image,
   Input,
   InputHeading,
@@ -40,6 +41,7 @@ import {
   deleteJd,
 } from "@Redux";
 import { ROUTES } from "@Routes";
+import { SERVER } from "@Services";
 import {
   CREATE_FOR_OTHERS_RULES,
   FROM_JD_RULES,
@@ -50,6 +52,7 @@ import {
 } from "@Utils";
 import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { UncontrolledTooltip } from "reactstrap";
 
 const interviewDurations = [
   { id: "0", text: "Quick", subText: "(5 mins)", value: 5 },
@@ -144,6 +147,8 @@ function AdminSchedules() {
    */
 
   const [copiedInterviewLink, setCopiedInterviewLink] = useState("");
+  const [watchInterviewUrl, setWatchInterviewUrl] = useState<any>();
+  const openWatchInterviewModal = useModal(false);
 
   useEffect(() => {
     getKnowledgeGroupFromJdHandler();
@@ -539,6 +544,7 @@ function AdminSchedules() {
                         <div className="row">
                           <div>
                             <Button
+                              className="rounded-sm"
                               text={"Add Another"}
                               onClick={() => {
                                 addAnotherModal.show();
@@ -557,6 +563,7 @@ function AdminSchedules() {
                               onClick={(action) =>
                                 proceedJDMenuClickHandler(action, id)
                               }
+                              toggleIcon={icons.more}
                             />
                           </div>
                         </div>
@@ -650,6 +657,8 @@ function AdminSchedules() {
                               note,
                               q,
                               custom_interview_link,
+                              recording_url,
+                              interview_duration,
                             } = each;
 
                             const basic_info =
@@ -731,14 +740,37 @@ function AdminSchedules() {
                                   <div className="col m-0 p-0 d-flex justify-content-end">
                                     <div className="row mr-lg-3 mr-sm-0 mr-0">
                                       {is_complete && is_report_complete && (
-                                        <div>
-                                          <Button
-                                            text={"View Report"}
-                                            onClick={() => {
-                                              proceedReport(id);
-                                            }}
-                                          />
-                                        </div>
+                                        <>
+                                          <UncontrolledTooltip
+                                            delay={0}
+                                            placement="top"
+                                            target={`tooltip1000`}
+                                          >
+                                            Watch Interview
+                                          </UncontrolledTooltip>
+                                          <div className="d-flex align-items-center mr-3">
+                                            <i
+                                              id={"tooltip1000"}
+                                              className="bi bi-eye-fill text-primary fa-lg pointer"
+                                              onClick={() => {
+                                                setWatchInterviewUrl({
+                                                  recording_url,
+                                                  interview_duration,
+                                                });
+                                                openWatchInterviewModal.show();
+                                              }}
+                                            ></i>
+                                          </div>
+                                          <div>
+                                            <Button
+                                              className="rounded-sm"
+                                              text={"View Report"}
+                                              onClick={() => {
+                                                proceedReport(id);
+                                              }}
+                                            />
+                                          </div>
+                                        </>
                                       )}
                                       {is_complete && !is_report_complete && (
                                         <div>
@@ -754,7 +786,9 @@ function AdminSchedules() {
                                             loading={
                                               startInterviewLoader.loader
                                             }
-                                            className={" border border-primary"}
+                                            className={
+                                              " border border-primary rounded-sm"
+                                            }
                                             text={
                                               is_started
                                                 ? "Resume Interview"
@@ -772,6 +806,7 @@ function AdminSchedules() {
                                           onClick={(action) =>
                                             proceedMenuClickHandler(action, id)
                                           }
+                                          toggleIcon={icons.more}
                                         />
                                       </div>
                                     </div>
@@ -1266,6 +1301,48 @@ function AdminSchedules() {
             text={"Submit"}
             onClick={createNewJdScheduleApiHandler}
           />
+        </div>
+      </Modal>
+
+      {/** watch interview modal */}
+
+      <Modal
+        isOpen={openWatchInterviewModal.visible}
+        onClose={() => {
+          openWatchInterviewModal.hide();
+          setWatchInterviewUrl(undefined);
+        }}
+      >
+        <div className="mt--5 mx-4 mb-2">
+          <Heading
+            className={"display-4 text-secondary"}
+            heading={`Interview Video (${watchInterviewUrl?.interview_duration} minutes)`}
+          />
+
+          {watchInterviewUrl && watchInterviewUrl?.recording_url ? (
+            <video controls className="d-flex col pt--3">
+              <source
+                src={
+                  SERVER +
+                  (watchInterviewUrl.recording_url.charAt(0) === "/"
+                    ? watchInterviewUrl.recording_url.slice(1)
+                    : watchInterviewUrl.recording_url)
+                }
+                type="video/mp4"
+              />
+            </video>
+          ) : (
+            <div className="d-flex justify-content-center">
+              <div className="mt-5 mb-5">
+                <div className="align-self-center">
+                  <Image src={image.noVideo} />
+                </div>
+                <div className="mt-2" style={{ color: "#e3e5e8" }}>
+                  {"No Video Found"}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </Modal>
     </>

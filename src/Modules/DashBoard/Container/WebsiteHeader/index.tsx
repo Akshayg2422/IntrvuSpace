@@ -86,7 +86,7 @@ function WebsiteHeader() {
                   text={"Register"}
                   size="lg"
                   onClick={() => {
-                    goTo(ROUTES["auth-module"].register);
+                    goTo(ROUTES['auth-module']['register-company']);
                   }}
                 />
 

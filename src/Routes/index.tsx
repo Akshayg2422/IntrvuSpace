@@ -1,7 +1,5 @@
 import { icons } from '@Assets'
-import { Designation, WeightageCountForm, CreateQuestionForm, Clients, Sector, Questions, Call, Report, QuestionSections, AnalyzingAnimation, Schedules, Login, Otp, Splash, Register, LoginWithOtp, AdminLogin, VariantInfo, PrivacyPolicy, TermsAndConditions, ReturnAndRefund, Reports, HowItWorks, Introduction, Settings, Response, CreateNewPassword, ForgotPassword, PreparingYourInterview, UploadCorporateOpeningsCard, UploadJdCard, Scheduling } from '@Modules';
-
-
+import { Designation, WeightageCountForm, CreateQuestionForm, Clients, Sector, Questions, Call, Report, QuestionSections, AnalyzingAnimation, Schedules, Login, Otp, Splash, Register, LoginWithOtp, AdminLogin, VariantInfo, PrivacyPolicy, TermsAndConditions, ReturnAndRefund, Reports, HowItWorks, Introduction, Settings, Response, CreateNewPassword, ForgotPassword, PreparingYourInterview, UploadCorporateOpeningsCard, UploadJdCard, Scheduling ,RegisterCompany} from '@Modules';
 
 export const ROUTES = {
   'auth-module': {
@@ -17,8 +15,9 @@ export const ROUTES = {
     reports: '/reports',
     'how-it-works': '/how-it-works',
     introduction: '/introduction',
-    forgotPassword:'/forgotPassword',
-    createNewPassword: '/createNewPassword'
+    forgotPassword: '/forgotPassword',
+    createNewPassword: '/createNewPassword',
+    'register-company': '/register-company'
   },
   'designation-module': {
     Dashboard: "/dashboard",
@@ -38,8 +37,7 @@ export const ROUTES = {
     settings: '/settings',
     'response': '/response',
     'preparing-your-interview':'/preparing-your-interview',
-    'scheduling-interview':'/scheduling-interview'
-
+    'scheduling-interview':'/scheduling-interview',
   }
 }
 
@@ -115,6 +113,11 @@ export const AUTH_ROUTES = [
     path: ROUTES['auth-module'].createNewPassword,
     component: <CreateNewPassword />
   },
+  {
+    key: 15,
+    path: ROUTES['auth-module']['register-company'],
+    component: <RegisterCompany />
+  },
 
 
 ]
@@ -173,7 +176,7 @@ export const DASHBOARD_ROUTES = [
   {
     id: 11,
     path: ROUTES['designation-module']['preparing-your-interview'],
-    component: <PreparingYourInterview/>
+    component: <PreparingYourInterview />
   },
   {
     id: 12,

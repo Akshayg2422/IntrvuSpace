@@ -195,6 +195,10 @@ export const URL_SYNC_VIDEO = ASSISTANT + 'recordInterviewSession'
 
 export const POST_CORPORATE_SCHEUDULE_ACTIONS = ASSISTANT + 'corporateScheduleActions'
 
+// registerAsCompany
+
+export const URL_REGISTER_AS_COMPANY = EMPLOYEE + 'registerCompanyCorporate'
+
 
 //getOngoingSchedules
 

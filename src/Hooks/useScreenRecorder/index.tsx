@@ -1,6 +1,10 @@
-import { getRecordedVideoSessionDetails, recordInterviewSession, screenRecordingPermission } from '@Redux';
-import { useEffect, useState, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import {
+  getRecordedVideoSessionDetails,
+  recordInterviewSession,
+  screenRecordingPermission,
+} from "@Redux";
+import { useEffect, useState, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 const useScreenRecorder = () => {
   const [mediaStream, setMediaStream] = useState<any>(null);
@@ -8,18 +12,26 @@ const useScreenRecorder = () => {
   const [isScreenRecording, setIsScreenRecording] = useState(false);
   const [recordedVideoData, setRecordedVideoData] = useState([]);
   const intervalIdRef = useRef<any>(null);
-  const { scheduleId, VideoSessionDetails } = useSelector((state: any) => state.DashboardReducer)
+  const { scheduleId, VideoSessionDetails } = useSelector(
+    (state: any) => state.DashboardReducer
+  );
 
-  const dispatch = useDispatch()
-
+  const dispatch = useDispatch();
 
   const startScreenRecording = async () => {
     try {
-      const audioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      const videoStream = await navigator.mediaDevices.getDisplayMedia({ video: true });
-      const stream = new MediaStream([...audioStream.getTracks(), ...videoStream.getTracks()]);
+      const audioStream = await navigator.mediaDevices.getUserMedia({
+        audio: true,
+      });
+      const videoStream = await navigator.mediaDevices.getDisplayMedia({
+        video: true,
+      });
+      const stream = new MediaStream([
+        ...audioStream.getTracks(),
+        ...videoStream.getTracks(),
+      ]);
       setMediaStream(stream);
-      dispatch(screenRecordingPermission(true))
+      dispatch(screenRecordingPermission(true));
       const mediaRecorder = new MediaRecorder(stream);
       setRecorder(mediaRecorder);
       setIsScreenRecording(true);
@@ -33,14 +45,15 @@ const useScreenRecorder = () => {
       mediaRecorder.start(5000);
       setRecordedVideoData(recordedChunks);
     } catch (error) {
-      console.error('Error starting recording!', error);
+      console.error("Error starting recording!", error);
     }
   };
 
   useEffect(() => {
     intervalIdRef.current = setInterval(() => {
       if (recordedVideoData && recordedVideoData.length > 0) {
-        const videoBlob = new Blob(recordedVideoData, { type: 'video/webm' });
+        const videoBlob = new Blob(recordedVideoData, { type: "video/webm" });
+        console.log("blob", videoBlob);
         sendBlobToServer(videoBlob, false);
       }
     }, 5000);
@@ -53,38 +66,37 @@ const useScreenRecorder = () => {
       mediaStream.getTracks().forEach((track) => track.stop());
     }
     setIsScreenRecording(false);
-    const videoBlob = await new Blob(recordedVideoData, { type: 'video/webm' });
+    const videoBlob = await new Blob(recordedVideoData, { type: "video/webm" });
     await sendBlobToServer(videoBlob, true);
     setRecordedVideoData([]);
-    dispatch(screenRecordingPermission(false))
-    dispatch(getRecordedVideoSessionDetails(undefined))
-
+    dispatch(screenRecordingPermission(false));
+    dispatch(getRecordedVideoSessionDetails(undefined));
   };
-  
+
   const sendBlobToServer = (videoBlob, isRecordingDone) => {
     const formData = new FormData();
-    formData.append('video_data', videoBlob);
-    formData.append('schedule_id', scheduleId)
+    formData.append("video_data", videoBlob);
+    formData.append("schedule_id", scheduleId);
 
     if (VideoSessionDetails) {
-      formData.append('video_id', VideoSessionDetails?.id);
+      formData.append("video_id", VideoSessionDetails?.id);
     }
     if (isRecordingDone) {
-      formData.append('stop_recording', isRecordingDone);
+      formData.append("stop_recording", isRecordingDone);
     }
 
-    const params = formData
-    dispatch(recordInterviewSession({
-      params,
-      onSuccess: (res: any) => () => {
-        if (!VideoSessionDetails?.id) {
-          dispatch(getRecordedVideoSessionDetails(res?.details))
-        }
-      },
-      onError: (error: any) => () => {
-
-      }
-    }))
+    const params = formData;
+    dispatch(
+      recordInterviewSession({
+        params,
+        onSuccess: (response: any) => () => {
+          if (!VideoSessionDetails?.id) {
+            dispatch(getRecordedVideoSessionDetails(response?.details));
+          }
+        },
+        onError: (error: any) => () => {},
+      })
+    );
   };
 
   return {

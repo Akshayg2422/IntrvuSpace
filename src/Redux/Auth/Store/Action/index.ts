@@ -99,3 +99,27 @@ export const fetchMemberUsingLoginOtpFailure = (error: any) => {
         payload: error
     }
 }
+
+// registerAsCompany
+
+export const registerAsCompany = (params: any) => {
+    return {
+        type: ActionTypes.REGISTER_AS_COMPANY,
+        payload: params,
+    };
+};
+
+export const registerAsCompanySuccess = (response: any) => {
+
+    return {
+        type: ActionTypes.REGISTER_AS_COMPANY_SUCCESS,
+        payload: response
+    }
+}
+
+export const registerAsCompanyFailure = (error: any) => {
+    return {
+        type: ActionTypes.REGISTER_AS_COMPANY_FAILURE,
+        payload: error
+    }
+}
