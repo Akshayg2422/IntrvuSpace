@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { CheckboxProps } from './interfaces'
 import { FormGroup } from 'reactstrap'
 
+
 function Checkbox({ id = '0', text, defaultChecked, variant = 'primary', onCheckChange, ...rest }: CheckboxProps) {
 
     // const [checked, setChecked] = useState(defaultChecked);
@@ -26,7 +27,7 @@ function Checkbox({ id = '0', text, defaultChecked, variant = 'primary', onCheck
                     {...rest}
                     id={id}
                     checked={defaultChecked}
-                    className={'custom-control-input'}
+                    className={'custom-control-input '}
                     type={'checkbox'}
                     onChange={onChangeHandler}
                 />

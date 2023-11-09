@@ -210,6 +210,7 @@ export const icons = {
   twitter: require('./SocialMedia/twitter.png'),
   shield: require('./PackageIcons/shield.png'),
   globe: require('./PackageIcons/globe.png'),
+  appLogoText: require('./AppLogoText/icon.png'),
   headSet: require('./PackageIcons/headset.png'),
   check: require("./Check/icon.png"),
   poweredBy: require('./PoweredBy/Group 126.png'),

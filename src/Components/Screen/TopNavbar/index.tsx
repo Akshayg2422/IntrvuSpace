@@ -150,90 +150,185 @@ function TopNavbar() {
               className="align-items-lg-center ml-lg-auto mr--4 justify-content-end"
               navbar
             >
-              {loginDetails?.is_super_admin && (
-                <NavItem>
-                  <NavLink to="/home" tag={Link}>
-                    <Button
-                      className="btn btn-outline-primary rounded-sm px-0"
-                      style={{
-                        borderColor: "#d8dade",
-                        fontSize: "15px",
-                        width: "150px",
-                      }}
-                      text={"Create For Others"}
-                      onClick={handleCreateForOthersInterviewClick}
-                    />
-                  </NavLink>
-                </NavItem>
-              )}
-              {jdItem && jdItem.length > 0 && (
-                <NavItem>
-                  <NavLink to="/home" tag={Link}>
-                    <Button
-                      size="md"
-                      className={
-                        "btn btn-outline-primary rounded-sm mr--3 px-0 "
-                      }
-                      style={{
-                        borderColor: "#d8dade",
-                        fontSize: "15px",
-                        width: "150px",
-                      }}
-                      text={"Create Interview"}
-                      onClick={handleCreateInterviewClick}
-                    />
-                  </NavLink>
-                </NavItem>
-              )}
-
-              <NavItem className="d-none d-lg-block ml-lg-4">
-                <div className="row align-items-center m-auto">
-                  <span
-                    className="mb-0 text-black font-weight-400 pointer"
-                    onClick={toggleDropdown}
-                  >
-                    {filteredName(loginDetails?.user, 20)}
-                  </span>
-
-                  <Nav navbar>
-                    <UncontrolledDropdown
-                      nav
-                      isOpen={dropdownOpen}
-                      toggle={toggleDropdown}
-                    >
-                      <DropdownToggle
-                        className="nav-link pr-0"
-                        color=""
-                        tag="a"
-                      >
-                        <Media className="align-items-center">
-                          <Media className="d-none d-lg-block ml--2 mr-2 pointer">
-                            <Image
-                              height={12}
-                              width={12}
-                              src={icons.downArrowBlack}
-                            />
-                          </Media>
-                        </Media>
-                      </DropdownToggle>
-                      <DropdownMenu right>
-                        {HEADER_MENU.map((item) => {
-                          return (
-                            <DropdownItem
-                              onClick={(e) => {
-                                e.preventDefault();
-                                dropdownHandler(item);
-                                setDropdownOpen(false);
-                              }}
+                  <NavItem>
+                <div className="container-fluid mx-md-3 mx-sm-0 mx-2 ">
+              
+                    <NavbarBrand tag={Link}>
+                        <div className="d-flex justify-content-between">
+                            <img className={'d-none d-lg-block d-md-block d-xl-block '} src={icons.logoText} alt="Logo" height={'!00%'} width={'70%'} style={{
+                                objectFit:'contain'
+                            }}/>
+                            <img className={'d-block d-md-none d-lg-none d-xl-none'} src={icons.logoText} alt="Logo" style={{ height: '30%', width: '30%' }} />
+                            <button
+                                aria-controls="navbar-collapse"
+                                aria-expanded={false}
+                                aria-label="Toggle navigation"
+                                className="navbar-toggler mr--4"
+                                data-target="#navbar-collapse"
+                                data-toggle="collapse"
+                                id="navbar-collapse"
+                                type="button"
                             >
-                              <i className={item.icon}></i>
-                              <span>{item.name}</span>
-                            </DropdownItem>
-                          );
-                        })}
-                      </DropdownMenu>
-                    </UncontrolledDropdown>
-                  </Nav>
+                                <Image height={30} width={30} src={icons.navbarToggler} />
+                            </button>
+                        </div>
+                    </NavbarBrand>
+                    <UncontrolledCollapse
+                        className="navbar-custom-collapse"
+                        navbar
+                        toggler="#navbar-collapse"
+                    >
+                        <div className="navbar-collapse-header">
+                            <Row className="d-flex justify-content-between">
+                                <Col>
+                                    <div className='font-weight-bold text-black'>
+                                        {loginDetails?.user}
+                                    </div>
+                                </Col>
+                                <Col className="collapse-close" xs="6">
+                                    <button
+                                        aria-controls="navbar-collapse"
+                                        aria-expanded={false}
+                                        aria-label="Toggle navigation"
+                                        className="navbar-toggler"
+                                        data-target="#navbar-collapse"
+                                        data-toggle="collapse"
+                                        id="navbar-collapse"
+                                        type="button"
+                                    >
+                                        <span />
+                                        <span />
+                                    </button>
+                                </Col>
+
+                            </Row>
+                        </div>
+
+                        {/* <hr className="d-lg-none" /> */}
+
+
+                    {/* new schedule  */}
+                    
+
+                        <Nav className="align-items-lg-center ml-lg-auto mr--4  justify-content-end" navbar>
+
+                     
+                            {loginDetails?.is_super_admin && <NavItem>
+                                <NavLink to="/home" tag={Link}>
+                                    <Button
+                                        className='btn btn-outline-primary rounded-sm mr--4 px-0'
+                                        style={{
+                                            borderColor: "#d8dade",
+                                            fontSize: "15px",
+                                            width: '150px'
+                                        }}
+                                        text={'Create For Others'}
+                                        onClick={handleCreateForOthersInterviewClick}
+                                    />
+                                </NavLink>
+                            </NavItem>
+                            }
+                            {jdItem && jdItem.length > 0 &&
+                                <NavItem>
+                                    <NavLink to="/home" tag={Link}>
+                                        <Button
+                                            size='md'
+                                            className={'btn btn-outline-primary rounded-sm mr--2 px-0 '}
+                                            style={{
+                                                borderColor: "#d8dade",
+                                                fontSize: "15px",
+                                                width: '150px'
+                                            }}
+                                            text={'Create Interview'}
+                                            onClick={handleCreateInterviewClick}
+                                        />
+                                    </NavLink>
+                                </NavItem>
+                            }
+
+{loginDetails?.is_super_admin &&
+                                <NavItem>
+                                     {/* <NavLink to="/home" tag={Link}> */}
+                                        <Button
+                                            size='md'
+                                            className={'btn btn-outline-primary rounded-sm mr--3 px-0 '}
+                                            style={{
+                                                borderColor: "#d8dade",
+                                                fontSize: "15px",
+                                                width: '150px'
+                                            }}
+                                            text={'On Going Schedule'}
+
+                                                onClick={()=>{
+                                         
+                                                    goTo(ROUTES['designation-module']['scheduling-interview'])
+                                                }
+                                                }
+                                        />
+                                          {/* </NavLink> */}
+                                
+                                </NavItem>
+                            }
+
+
+
+
+
+                            <NavItem className="d-none d-lg-block ml-lg-4">
+                                <div className='row align-items-center m-auto'>
+                                    <span className='mb-0 text-black font-weight-400 pointer' onClick={toggleDropdown}>
+                                        {filteredName(loginDetails?.user,20)}
+                                    </span>
+
+                                    <Nav navbar>
+                                        <UncontrolledDropdown nav isOpen={dropdownOpen} toggle={toggleDropdown}>
+                                            <DropdownToggle className="nav-link pr-0" color="" tag="a">
+                                                <Media className="align-items-center">
+                                                    <Media className="d-none d-lg-block ml--2 mr-2 pointer">
+                                                        <Image height={12} width={12} src={icons.downArrowBlack} />
+                                                    </Media>
+                                                </Media>
+                                            </DropdownToggle>
+                                            <DropdownMenu right >
+                                                {HEADER_MENU.map((item) => {
+                                                    return (
+                                                        <DropdownItem
+                                                            onClick={(e) => {
+                                                                e.preventDefault()
+                                                                dropdownHandler(item);
+                                                                setDropdownOpen(false)
+                                                            }}
+                                                        >
+                                                            <i className={item.icon}></i>
+                                                            <span>{item.name}</span>
+                                                        </DropdownItem>
+                                                    );
+                                                })}
+                                            </DropdownMenu>
+                                        </UncontrolledDropdown>
+                                    </Nav>
+
+                                </div>
+                            </NavItem>
+                            <div className="d-xl-none d-lg-none">
+                                {HEADER_MENU.map((item) => {
+                                    return (
+                                        <NavItem>
+                                            <NavLink
+                                                onClick={(e) => {
+                                                    e.preventDefault()
+                                                    dropdownHandler(item);
+                                                }}
+                                            >
+                                                {/* <i className={item.icon}></i> */}
+                                                <span className={`nav-link-inner--text text-black`} >{item.name}</span>
+                                            </NavLink>
+                                        </NavItem>
+                                    );
+                                })}
+                            </div>
+                        </Nav>
+                    </UncontrolledCollapse>
                 </div>
               </NavItem>
               <div className="d-xl-none d-lg-none">
