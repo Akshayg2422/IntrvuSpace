@@ -13,9 +13,9 @@ function Scheduling() {
 
 
     return (
-        <div className='container  pt-4 fixed-top '>
+        <div className='container-fluid  pt-4 fixed-top '>
 
-            <div className='row'>
+            <div className='row  '>
                 <div className='col-4  '>
 
                     <OnGoingSchedule />

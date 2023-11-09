@@ -87,17 +87,27 @@ if(onGoingSelectedId){
 
     return (
         <>
-            <div className='card rounded-sm custom-height m-0' style={{ borderColor: '#d3deff' }} >
+      { onGoingSelectedId &&   <div className='card rounded-sm custom-height m-0' style={{ borderColor: '#d3deff' }} >
 
 
                 <div className='card-header sticky-top'>
                     <div className='d-flex align-items-center'>
 
-                        <h2 className=" display-6 mb-0 font-weight-bolder text-primary mb-0">Interview for the role of Junior Software developer</h2>
+                        <h2 className=" display-6 mb-0 font-weight-bolder text-primary mb-0 ">Interview for the role of {interviewMessage?.basic_info?.role} </h2>
 
                     </div>
+                    <div className="mt-0">
+                              <small className={"text-secondary"}>
+                              <span style={{
+                                                    fontSize: "15px"
+                                                }} className='text-black font-weight-600'>
+                                                    {interviewMessage?.basic_info?.name.charAt(0).toUpperCase() + interviewMessage?.basic_info?.name?.slice(1)}
+                                                </span> {' - '}
+                                {interviewMessage?.basic_info?.experience} years of experience
+                              </small>
+                            </div>
                 </div>
-
+              
                 {loader.loader &&
                 <div className='row align-items-center justify-content-center h-100vh'>
                     <Spinner />
@@ -194,14 +204,14 @@ if(onGoingSelectedId){
                 </div>
                 :<>
 <div className='custom-height   d-flex justify-content-center align-items-center'>
-  <NoRecordsFound text={'There are no ongoing schedule record.'} />
+  <NoRecordsFound text={'There are no ongoing schedule at present.'} />
 </div>
                 </>
 }
 
 
             </div>
-
+}
         </>
 
     )

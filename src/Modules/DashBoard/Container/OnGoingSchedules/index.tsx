@@ -121,7 +121,7 @@ function OnGoingSchedule() {
             <div className='card rounded-sm custom-height  mb-5' style={{ borderColor: '#d3deff' }}
             >
                 <div className='card-header sticky-top  '>
-                    <div className=' row pl-1 col'>
+                    <div className=' row pl-1  py-2 mb-1 col'>
                         <div onClick={() => {
                             setOnGoingSelectId('')
                             dispatch(
@@ -146,9 +146,11 @@ function OnGoingSchedule() {
                             const { interviewee_name, interviewee_email, interview_duration, interviewee_role, id } = el
                             return (
                                 <div>
-                                    <div className='mt-0 mb-2 card p-3  pointer'
+                                    <div className='mt-0 mb-2 card m-2 p-3  pointer'
                                         style={{
-                                            backgroundColor: `${id === onGoingSelectId ? '#fafbff' : hoverColor?.id === id ? '#f2f2f2' : ''}`
+                                            backgroundColor: `${id === onGoingSelectId ? '#fafbff' : hoverColor?.id === id ? '#f2f2f2' : ''}`,
+                                            borderColor:`${id === onGoingSelectId ? '#d3deff' : hoverColor?.id === id ? '#f2f2f2' : ''}`
+
                                         }}
                                         onClick={() => {
                                             setOnGoingSelectId(id)

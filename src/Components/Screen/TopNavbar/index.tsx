@@ -86,10 +86,12 @@ function TopNavbar() {
                 expand="lg"
                 id="navbar-main"
             >
-                <div className="container-fluid mx-md-3 mx-sm-0 mx-2">
+                <div className="container-fluid mx-md-3 mx-sm-0 mx-2 ">
                     <NavbarBrand tag={Link}>
                         <div className="d-flex justify-content-between">
-                            <img className={'d-none d-lg-block d-md-block d-xl-block'} src={icons.logoText} alt="Logo" style={{ height: '20%', width: '20%' }} />
+                            <img className={'d-none d-lg-block d-md-block d-xl-block '} src={icons.logoText} alt="Logo" height={'!00%'} width={'70%'} style={{
+                                objectFit:'contain'
+                            }}/>
                             <img className={'d-block d-md-none d-lg-none d-xl-none'} src={icons.logoText} alt="Logo" style={{ height: '30%', width: '30%' }} />
                             <button
                                 aria-controls="navbar-collapse"
@@ -142,36 +144,13 @@ function TopNavbar() {
                     {/* new schedule  */}
                     
 
-                        <Nav className="align-items-lg-center ml-lg-auto mr--4 justify-content-end" navbar>
+                        <Nav className="align-items-lg-center ml-lg-auto mr--4  justify-content-end" navbar>
 
-                        {
-                                <NavItem>
-                                   
-                                        <Button
-                                            size='md'
-                                            className={'btn btn-outline-primary rounded-sm mr--3 px-0 '}
-                                            style={{
-                                                borderColor: "#d8dade",
-                                                fontSize: "15px",
-                                                width: '150px'
-                                            }}
-                                            text={'Schedule'}
-
-                                                onClick={()=>{
-                                         
-                                                    goTo(ROUTES['designation-module']['scheduling-interview'])
-                                                }
-                                                }
-                                        />
-                                
-                                </NavItem>
-                            }
-
-
+                     
                             {loginDetails?.is_super_admin && <NavItem>
                                 <NavLink to="/home" tag={Link}>
                                     <Button
-                                        className='btn btn-outline-primary rounded-sm px-0'
+                                        className='btn btn-outline-primary rounded-sm mr--4 px-0'
                                         style={{
                                             borderColor: "#d8dade",
                                             fontSize: "15px",
@@ -188,7 +167,7 @@ function TopNavbar() {
                                     <NavLink to="/home" tag={Link}>
                                         <Button
                                             size='md'
-                                            className={'btn btn-outline-primary rounded-sm mr--3 px-0 '}
+                                            className={'btn btn-outline-primary rounded-sm mr--2 px-0 '}
                                             style={{
                                                 borderColor: "#d8dade",
                                                 fontSize: "15px",
@@ -200,6 +179,34 @@ function TopNavbar() {
                                     </NavLink>
                                 </NavItem>
                             }
+
+{loginDetails?.is_super_admin &&
+                                <NavItem>
+                                     {/* <NavLink to="/home" tag={Link}> */}
+                                        <Button
+                                            size='md'
+                                            className={'btn btn-outline-primary rounded-sm mr--3 px-0 '}
+                                            style={{
+                                                borderColor: "#d8dade",
+                                                fontSize: "15px",
+                                                width: '150px'
+                                            }}
+                                            text={'On Going Schedule'}
+
+                                                onClick={()=>{
+                                         
+                                                    goTo(ROUTES['designation-module']['scheduling-interview'])
+                                                }
+                                                }
+                                        />
+                                          {/* </NavLink> */}
+                                
+                                </NavItem>
+                            }
+
+
+
+
 
                             <NavItem className="d-none d-lg-block ml-lg-4">
                                 <div className='row align-items-center m-auto'>

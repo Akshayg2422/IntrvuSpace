@@ -164,7 +164,7 @@ function AdminSchedules() {
         onSuccess: () => () => {
           setLoading(false);
         },
-        onError: () => () => {},
+        onError: () => () => { },
       })
     );
   };
@@ -207,7 +207,7 @@ function AdminSchedules() {
 
                       stopInterval();
                     },
-                    onError: (error: any) => () => {},
+                    onError: (error: any) => () => { },
                   })
                 );
               }, INTERVAL_TIME);
@@ -285,7 +285,7 @@ function AdminSchedules() {
                           clearInterval(intervalIdRef.current);
                         }
                       },
-                      onError: (error: any) => () => {},
+                      onError: (error: any) => () => { },
                     })
                   );
                 }, INTERVAL_TIME);
@@ -347,7 +347,7 @@ function AdminSchedules() {
                         clearInterval(intervalIdRef.current);
                       }
                     },
-                    onError: (error: any) => () => {},
+                    onError: (error: any) => () => { },
                   })
                 );
               }, INTERVAL_TIME);
@@ -397,7 +397,7 @@ function AdminSchedules() {
         onSuccess: () => () => {
           getKnowledgeGroupFromJdHandler();
         },
-        onError: () => () => {},
+        onError: () => () => { },
       })
     );
   }
@@ -411,7 +411,7 @@ function AdminSchedules() {
         onSuccess: () => () => {
           getKnowledgeGroupFromJdHandler();
         },
-        onError: () => () => {},
+        onError: () => () => { },
       })
     );
   }
@@ -431,7 +431,7 @@ function AdminSchedules() {
         onSuccess: () => () => {
           getKnowledgeGroupFromJdHandler();
         },
-        onError: () => () => {},
+        onError: () => () => { },
       })
     );
   }
@@ -475,6 +475,7 @@ function AdminSchedules() {
 
   return (
     <>
+  
       {loading ? (
         <div className={"d-flex justify-content-center my-9"}>
           <Spinner />
@@ -675,14 +676,12 @@ function AdminSchedules() {
                                 return `${timeDifference} mins ago`;
                               } else if (timeDifference < 1440) {
                                 const hours = Math.floor(timeDifference / 60);
-                                return `${hours} ${
-                                  hours === 1 ? "hour" : "hours"
-                                } ago`;
+                                return `${hours} ${hours === 1 ? "hour" : "hours"
+                                  } ago`;
                               } else {
                                 const days = Math.floor(timeDifference / 1440);
-                                return `${days} ${
-                                  days === 1 ? "day" : "days"
-                                } ago`;
+                                return `${days} ${days === 1 ? "day" : "days"
+                                  } ago`;
                               }
                             };
 
@@ -696,9 +695,9 @@ function AdminSchedules() {
                                       <h5 className="m-0 p-0">
                                         {demoDisplayName
                                           ? demoDisplayName
-                                              .charAt(0)
-                                              .toUpperCase() +
-                                            demoDisplayName.slice(1)
+                                            .charAt(0)
+                                            .toUpperCase() +
+                                          demoDisplayName.slice(1)
                                           : "Interview " + (index + 1)}
                                       </h5>
                                       <h5 className="m-0 p-0 ml-2">
@@ -723,11 +722,11 @@ function AdminSchedules() {
                                   <h5 className="mb-0 text-center d-none d-lg-block d-md-block d-xl-block">
                                     {is_complete
                                       ? `Completed: ${getDisplayTimeFromMoment(
-                                          interview_end_time
-                                        )}`
+                                        interview_end_time
+                                      )}`
                                       : `Created at: ${getDisplayTimeFromMoment(
-                                          created_at
-                                        )}`}
+                                        created_at
+                                      )}`}
                                   </h5>
                                   <div className="col m-0 p-0 d-flex justify-content-end">
                                     <div className="row mr-lg-3 mr-sm-0 mr-0">
@@ -781,11 +780,11 @@ function AdminSchedules() {
                                   <h5 className="mb-0 text-center d-block d-sm-none">
                                     {is_complete
                                       ? `Completed: ${getDisplayTimeFromMoment(
-                                          interview_end_time
-                                        )}`
+                                        interview_end_time
+                                      )}`
                                       : `Created at: ${getDisplayTimeFromMoment(
-                                          created_at
-                                        )}`}
+                                        created_at
+                                      )}`}
                                   </h5>
                                 </div>
                                 {index !== schedules.length - 1 && (
