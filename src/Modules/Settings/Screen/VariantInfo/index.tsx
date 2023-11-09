@@ -41,6 +41,7 @@ import {
   convertToUpperCase,
   displayFormatDate,
   downloadFile,
+  getBrowserInfo,
   getDateFromServer,
   getDisplayDateFromMoment,
   getDisplayTime,
@@ -80,7 +81,6 @@ export const CANDIDATE_STATUS = [
 function VariantInfo() {
   const { goBack } = useNavigation();
   const enterPress = useKeyPress("Enter");
-  console.log(enterPress, "enterpressssssssssss");
 
   const {
     selectedRole,
@@ -133,6 +133,7 @@ function VariantInfo() {
 
   const [watchInterviewUrl, setWatchInterviewUrl] = useState<any>();
   const openWatchInterviewModal = useModal(false);
+  const [displayDeadlineDate, setDisplayDeadlineDate] = useState("")
 
   useEffect(() => {
     getCorporateScheduleDetailsHandler();
@@ -140,7 +141,6 @@ function VariantInfo() {
 
   useEffect(() => {
     getCandidatesCorporate(candidatesListCurrentPages);
-    console.log("22222222222222222");
   }, [statusNote.value]);
 
   useEffect(() => {
@@ -250,7 +250,6 @@ function VariantInfo() {
 
   const { schedules } = corporateScheduleDetails || {};
 
-  // console.log(schedules, "schedulessssssssssss");
 
   const getIconColor = (iconType: any) => {
     switch (iconType) {
@@ -284,7 +283,7 @@ function VariantInfo() {
           is_completed,
           is_report_completed,
           recording_url,
-          interview_duration
+          interview_duration,
         } = el;
         return {
           "   ": <Image src={getIconColor(status_icon_type)} height={20} />,
@@ -320,7 +319,7 @@ function VariantInfo() {
             </div>
           ),
 
-          "  ": 
+          "  ": (
             <>
               {is_report_completed && recording_url && (
                 <>
@@ -340,14 +339,23 @@ function VariantInfo() {
                           recording_url,
                           interview_duration,
                         });
-                        openWatchInterviewModal.show();
+                        if (
+                          getBrowserInfo().browserName !== "Mozilla Firefox"
+                        ) {
+                          openWatchInterviewModal.show();
+                        } else {
+                          showToast(
+                            "Screen recording is not supported in this browser",
+                            "info"
+                          );
+                        }
                       }}
                     ></i>
                   </div>
                 </>
               )}
             </>
-          ,
+          ),
           " ": (
             <>
               {is_report_completed && (
@@ -436,7 +444,7 @@ function VariantInfo() {
 
   // download csv file
   const downloadCSVTemplate = () => {
-    downloadFile(corporateScheduleDetails?.bulk_upload_template);
+    downloadFile(corporateScheduleDetails?.bulk_upload_template?.slice(1));
   };
 
   // manual approval on candidate
@@ -471,10 +479,10 @@ function VariantInfo() {
 
   const validateDeadlineField = (action: any) => {
     if (!scheduleDate) {
-      showToast("Please select Schedule date", "info");
+      showToast("Please select Deadline date", "info");
       return;
     } else if (!endTime) {
-      showToast("Please select end time", "info");
+      showToast("Please select Deadline time", "info");
       return;
     } else {
       corporateScheduleActionsHandler(action);
@@ -517,6 +525,9 @@ function VariantInfo() {
   const modifyDeadlineHandler = () => {
     modifyDeadlineModal.show();
     setScheduleDate(
+      getDateFromServer(corporateScheduleDetails?.candidate_deadline)
+    );
+    setDisplayDeadlineDate(
       getDateFromServer(corporateScheduleDetails?.candidate_deadline)
     );
     setEndTime(getDisplayTime(corporateScheduleDetails?.candidate_deadline));
@@ -772,7 +783,7 @@ function VariantInfo() {
                     >
                       <div>
                         <div className="p-sm-3 p-0">
-                          <div className="d-flex flex-sm-row flex-column">
+                          <div className="d-flex flex-sm-row flex-column align-items-center">
                             <div className="">
                               <span className="headingText text-secondary">
                                 {"Candidates"}
@@ -780,7 +791,7 @@ function VariantInfo() {
                             </div>
                             <div>
                               <Badge
-                                className="text-primary text-lowercase mt-1 font-weight-800 ml-sm-4"
+                                className="text-primary text-lowercase font-weight-800 ml-sm-4"
                                 style={{
                                   backgroundColor: "#ebe4ff",
                                   borderRadius: 40,
@@ -815,7 +826,7 @@ function VariantInfo() {
                                 }}
                               />
                             </div>
-                            <div className="col-sm-3 col mr-3">
+                            <div className="col-sm-4 col mr-3">
                               <DropDown
                                 id="StatusNote"
                                 className={"form-control-md rounded-sm"}
@@ -1146,25 +1157,26 @@ function VariantInfo() {
       >
         <div className="px-md-5 px-3 text-secondary mb-3 mt--5">
           <Heading
-            heading={"Modify Deadline"} className={"text-secondary display-4"}
-            style={{ fontSize: 26, color: "#2f1c6a" }}
+            heading={"Modify Deadline"}
+            className={"text-secondary display-4"}
           />
           <div className="d-flex flex-column justify-content-between mt-4">
             <div className="col">
               <DateTimePicker
                 disableFuture={true}
-                heading={"Schedule Date"}
-                placeholder={"Schedule Date"}
-                value={scheduleDate}
+                heading={"Deadline Date"}
+                placeholder={"Deadline Date"}
+                value={displayFormatDate(displayDeadlineDate).split(",")[0]}
                 onChange={(e) => {
                   setScheduleDate(e);
+                  setDisplayDeadlineDate(e)
                 }}
               />
             </div>
             <div className="col">
-              <InputHeading id={"End Time"} heading={"End Time"} />
+              <InputHeading id={"Deadline Time"} heading={"Deadline Time"} />
               <Input
-                id="End Time"
+                id="Deadline Time"
                 type="time"
                 value={endTime}
                 onChange={(e) => {
@@ -1334,6 +1346,7 @@ function VariantInfo() {
 
       <Modal
         isOpen={openWatchInterviewModal.visible}
+        size="lg"
         onClose={() => {
           openWatchInterviewModal.hide();
           setWatchInterviewUrl(undefined);

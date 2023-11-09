@@ -1,8 +1,10 @@
+import { showToast } from "@Components";
 import {
   getRecordedVideoSessionDetails,
   recordInterviewSession,
   screenRecordingPermission,
 } from "@Redux";
+import { getBrowserInfo } from "@Utils";
 import { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -23,49 +25,51 @@ const useScreenRecorder = () => {
 
   const startScreenRecording = async () => {
     try {
-      const audioStream = await navigator.mediaDevices.getUserMedia({
-        audio: true,
-      });
-      const videoStream = await navigator.mediaDevices.getDisplayMedia({
-        video: true,
-      });
-      const stream = new MediaStream([
-        ...audioStream.getTracks(),
-        ...videoStream.getTracks(),
-      ]);
+      if (getBrowserInfo().browserName !== "Mozilla Firefox") {
+        const audioStream = await navigator.mediaDevices.getUserMedia({
+          audio: true,
+        });
+        const videoStream = await navigator.mediaDevices.getDisplayMedia({
+          video: true,
+        });
 
-      const tracks = videoStream.getTracks();
+        const stream = new MediaStream([
+          ...audioStream.getTracks(),
+          ...videoStream.getTracks(),
+        ]);
 
-      if (tracks.length > 0) {
-        const track = tracks[0];
-        const settings: any = track.getSettings();
+        const tracks = videoStream.getTracks();
 
-        if (settings.displaySurface === "monitor") {
-          setMediaStream(stream);
-          dispatch(screenRecordingPermission(true));
-          const mediaRecorder = new MediaRecorder(stream);
-          setRecorder(mediaRecorder);
-          setIsScreenRecording(true);
-          const recordedChunks: any = [];
-          mediaRecorder.ondataavailable = (event: any) => {
-            // console.log("video blobbbbb--->", event.data);
-            // setRecordedVideoData([...recordedVideoData, event.data]);
+        if (tracks.length > 0) {
+          const track = tracks[0];
+          const settings: any = track.getSettings();
 
-            if (event.data.size > 0) {
-              recordedChunks.push(event.data);
-            }
-            setRecordedVideoData(recordedChunks);
-          };
-          // Start recording every 1 second.
-          mediaRecorder.start(1000);
+          if (settings.displaySurface === "monitor") {
+            setMediaStream(stream);
+            dispatch(screenRecordingPermission(true));
+            const mediaRecorder = new MediaRecorder(stream);
+            setRecorder(mediaRecorder);
+            setIsScreenRecording(true);
+            const recordedChunks: any = [];
+            mediaRecorder.ondataavailable = (event: any) => {
+              if (event.data.size > 0) {
+                recordedChunks.push(event.data);
+              }
+              setRecordedVideoData(recordedChunks);
+            };
+            // Start recording every 1 second.
+            mediaRecorder.start(1000);
 
-          setRecordStatus(true);
-          console.log("User selected the entire screen.");
-        } else {
-          console.log("User selected an application window.");
-          track.stop();
-          setRecordStatus(false);
+            setRecordStatus(true);
+            console.log("User selected the entire screen.");
+          } else {
+            console.log("User selected an application window.");
+            track.stop();
+            setRecordStatus(false);
+          }
         }
+      } else {
+        showToast("Screen recording is not supported in this browser", "info");
       }
     } catch (error) {
       console.error("Error starting recording!", error);
@@ -73,18 +77,16 @@ const useScreenRecorder = () => {
     }
   };
 
-  // console.log("VideoDataBlobbbsss===>", recordedVideoData);
-
   useEffect(() => {
-      intervalIdRef.current = setInterval(() => {
-        if (recordedVideoData && recordedVideoData.length > 0) {
-          const videoBlob = new Blob(recordedVideoData, { type: "video/webm" });
-          console.log("blobbbb====>", videoBlob);
-          sendBlobToServer(videoBlob, false);
-          recordedVideoData.length = 0;
-        }
-      }, 1000);
-      return () => clearInterval(intervalIdRef.current);
+    intervalIdRef.current = setInterval(() => {
+      if (recordedVideoData && recordedVideoData.length > 0) {
+        const videoBlob = new Blob(recordedVideoData, { type: "video/webm" });
+        console.log("blobbbb====>", videoBlob);
+        sendBlobToServer(videoBlob, false);
+        recordedVideoData.length = 0;
+      }
+    }, 1000);
+    return () => clearInterval(intervalIdRef.current);
   }, [recordedVideoData, VideoSessionDetails]);
 
   const stopScreenRecording = async () => {
@@ -93,8 +95,8 @@ const useScreenRecorder = () => {
       mediaStream.getTracks().forEach((track) => track.stop());
     }
     setIsScreenRecording(false);
-    const videoBlob = await new Blob(recordedVideoData, { type: "video/webm" });
-    await sendBlobToServer(videoBlob, true);
+    // const videoBlob = await new Blob(recordedVideoData, { type: "video/webm" });
+    // await sendBlobToServer(videoBlob, true);
     setRecordedVideoData([]);
     dispatch(screenRecordingPermission(false));
     dispatch(getRecordedVideoSessionDetails(undefined));

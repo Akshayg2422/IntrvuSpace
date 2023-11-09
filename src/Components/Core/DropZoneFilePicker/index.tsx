@@ -112,7 +112,7 @@ function DropzoneFilePicker({
             heading={title}
             className={"font-weight-800 display-4 mt--5"}
           />
-          <div className="">
+          <div className="mb-3 mt--1">
             <span className="text-decoration-underline-hover pointer" onClick={onTemplateClick}>
           <i className="bi bi-file-arrow-down-fill text-primary "></i>
 
@@ -182,7 +182,7 @@ function DropzoneFilePicker({
             )}
           </div>
 
-          <div className="text-center mt-3">
+          <div className="text-center mt-3 mb-3">
             <Button
               color={"primary"}
               text={"Upload"}
