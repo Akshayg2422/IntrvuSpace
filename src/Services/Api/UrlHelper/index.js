@@ -200,3 +200,8 @@ export const POST_CORPORATE_SCHEUDULE_ACTIONS = ASSISTANT + 'corporateScheduleAc
 export const URL_REGISTER_AS_COMPANY = EMPLOYEE + 'registerCompanyCorporate'
 
 
+//getOngoingSchedules
+
+export const GRT_ONGOING_SCHEDULES= ASSISTANT +'getOngoingSchedules'
+
+

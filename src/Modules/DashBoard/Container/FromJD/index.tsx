@@ -151,10 +151,12 @@ function FromJD() {
                   canStartInterview({
                     params: canStartParams,
                     onSuccess: (res: any) => () => {
+                      console.log('ppppppppppppppppppppp,":---------------------->>>')
                       setIsQuestionGenerated(true);
                       // generateJdModal.hide();
                       // completedModal.show();
                       getKnowledgeGroupFromJdHandler();
+                     
                       resetValues();
                       // showToast(res.status, 'success');
                       if (intervalIdRef.current) {
@@ -212,6 +214,7 @@ function FromJD() {
                   params: canStartParams,
                   onSuccess: (res: any) => () => {
                     setIsQuestionGenerated(true);
+                    console.log('ppppppppppppppppppppp,":---------------------->>>[[[[[[[[[[[[[[[[[[[[[')
                     getKnowledgeGroupFromJdHandler();
                     resetValues();
                     showToast(res.status, "success");

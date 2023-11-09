@@ -201,5 +201,8 @@ export const postCorporateScheduleActionsApi = payload => post(URL.POST_CORPORAT
 export const registerAsCompanyAPi = payload => post(URL.URL_REGISTER_AS_COMPANY, payload, {});
 
 
+export const getOngoingSchedulesApi =payload =>post(URL.GRT_ONGOING_SCHEDULES,payload,{})
+
+
 
 

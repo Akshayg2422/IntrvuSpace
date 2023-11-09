@@ -1134,3 +1134,36 @@ export const postCorporateScheduleActionsFailure = (error: any) => {
     payload: error,
   };
 };
+
+
+
+// ONGOING SCHEDULE
+
+export const getOngoingSchedules = (params: any) => {
+  return {
+    type: ActionTypes.FETCH_ONGOING_SCHEDULES,
+    payload: params,
+  };
+};
+export const getOngoingSchedulesSuccess = (response: any) => {
+  return {
+    type: ActionTypes.FETCH_ONGOING_SCHEDULES_SUCCESS,
+    payload: response,
+  };
+};
+export const getOngoingSchedulesFailure = (error: any) => {
+  return {
+    type: ActionTypes.FETCH_ONGOING_SCHEDULES_FAILURE,
+    payload: error,
+  };
+};
+
+
+
+export const onGoingSelectedIIds = (params: any) => {
+  console.log('parasmaaasssss,',params)
+  return {
+    type: ActionTypes.ON_GOING_SELECTED_ID,
+    payload: params,
+  };
+};

@@ -1,7 +1,5 @@
 import { icons } from '@Assets'
-import { Designation, WeightageCountForm, CreateQuestionForm, Clients, Sector, Questions, Call, Report, QuestionSections, AnalyzingAnimation, Schedules, Login, Otp, Splash, Register, LoginWithOtp, AdminLogin, VariantInfo, PrivacyPolicy, TermsAndConditions, ReturnAndRefund, Reports, HowItWorks, Introduction, Settings, Response, CreateNewPassword, ForgotPassword, PreparingYourInterview, UploadCorporateOpeningsCard, UploadJdCard, RegisterCompany } from '@Modules';
-
-
+import { Designation, WeightageCountForm, CreateQuestionForm, Clients, Sector, Questions, Call, Report, QuestionSections, AnalyzingAnimation, Schedules, Login, Otp, Splash, Register, LoginWithOtp, AdminLogin, VariantInfo, PrivacyPolicy, TermsAndConditions, ReturnAndRefund, Reports, HowItWorks, Introduction, Settings, Response, CreateNewPassword, ForgotPassword, PreparingYourInterview, UploadCorporateOpeningsCard, UploadJdCard, Scheduling ,RegisterCompany} from '@Modules';
 
 export const ROUTES = {
   'auth-module': {
@@ -38,7 +36,8 @@ export const ROUTES = {
     'variant-info': '/variant-info',
     settings: '/settings',
     'response': '/response',
-    'preparing-your-interview': '/preparing-your-interview',
+    'preparing-your-interview':'/preparing-your-interview',
+    'scheduling-interview':'/scheduling-interview',
   }
 }
 
@@ -179,6 +178,11 @@ export const DASHBOARD_ROUTES = [
     path: ROUTES['designation-module']['preparing-your-interview'],
     component: <PreparingYourInterview />
   },
+  {
+    id: 12,
+    path: ROUTES['designation-module']['scheduling-interview'],
+    component: <Scheduling/>
+  },
 ]
 
 export const HOME_ROUTES = [
@@ -203,6 +207,8 @@ export const HOME_ROUTES = [
     layout: "",
     component: <Clients />
   },
+
+
   // {
   //   path: ROUTES['designation-module'].report,
   //   name: "Report",

@@ -16571,6 +16571,7 @@ a.btn-icon-only {
 .custom-checkbox .custom-control-input ~ .custom-control-label {
   cursor: pointer;
   font-size: 0.875rem;
+  
 }
 .custom-checkbox .custom-control-input:checked ~ .custom-control-label::before {
   border-color: #673de6;
