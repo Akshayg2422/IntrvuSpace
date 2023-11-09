@@ -1,5 +1,5 @@
 import { icons } from '@Assets'
-import { Designation, WeightageCountForm, CreateQuestionForm, Clients, Sector, Questions, Call, Report, QuestionSections, AnalyzingAnimation, Schedules, Login, Otp, Splash, Register, LoginWithOtp, AdminLogin, VariantInfo, PrivacyPolicy, TermsAndConditions, ReturnAndRefund, Reports, HowItWorks, Introduction, Settings, Response, CreateNewPassword, ForgotPassword, PreparingYourInterview, UploadCorporateOpeningsCard, UploadJdCard, Department, Designations, AddTeamMate, Sectors, EmployeeDesignation, } from '@Modules';
+import { Designation, WeightageCountForm, CreateQuestionForm, Clients, Sector, Questions, Call, Report, QuestionSections, AnalyzingAnimation, Schedules, Login, Otp, Splash, Register, LoginWithOtp, AdminLogin, VariantInfo, PrivacyPolicy, TermsAndConditions, ReturnAndRefund, Reports, HowItWorks, Introduction, Settings, Response, CreateNewPassword, ForgotPassword, PreparingYourInterview, UploadCorporateOpeningsCard, UploadJdCard, Department, Designations, ManageTeamMate, Sectors, EmployeeDesignation, } from '@Modules';
 
 
 
@@ -40,7 +40,7 @@ export const ROUTES = {
     'preparing-your-interview':'/preparing-your-interview',
     'department':'/department',
     'employeeDesignations':'/employeeDesignations',
-    'AddTeamMate':'/AddTeamMate',
+    'ManageTeamMate':'/ManageTeamMate',
     // 'Sectors':'/Sectors'
   }
 }
@@ -209,11 +209,11 @@ export const HOME_ROUTES = [
     component:<EmployeeDesignation/>
   },
   {
-    path: ROUTES['designation-module'].AddTeamMate,
-    name: "Add-Team-Mate",
+    path: ROUTES['designation-module'].ManageTeamMate,
+    name: "ManageTeamMate",
     // icon: icons.settings,
     layout: "",
-    component:<AddTeamMate/>
+    component:<ManageTeamMate/>
   },
   // {
   //   path: ROUTES['designation-module'].Sectors,

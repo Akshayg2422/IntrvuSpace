@@ -43,8 +43,9 @@ const initialState: DashboardProp = {
   selectedSectionId: undefined,
   canStartInterview: undefined,
   createJdModal: false,
-  sectorsCorporate: undefined,
   departmentCorporate: undefined,
+  departmentCorporateNumOfPages: undefined,
+  departmentsCorporateCurrentPages: 1,
   corporateSchedules: undefined,
   createForOthersJdModal: false,
   interviewScheduleDetails: undefined,
@@ -59,8 +60,13 @@ const initialState: DashboardProp = {
   designationsNumOfPage: undefined,
   designationsCurrentPage: 1,
   error: '',
-  addTeamMates:undefined,
-  getTeamMateDatas:undefined
+  addTeamMates: undefined,
+  getTeamMateDatas: undefined,
+  getTeamMateDatasNumOfPages: undefined,
+  getTeamMateDatasCurrentPages: 1,
+  sectorsCorporate: undefined,
+  sectorsCorporateNumOfPages: undefined,
+  sectorsCorporateCurrentPages: 1,
 };
 
 const DashboardReducer = (state = initialState, action: any) => {
@@ -448,34 +454,7 @@ const DashboardReducer = (state = initialState, action: any) => {
       state = { ...state, createJdModal: false };
       break;
 
-    /**
-     * getSectorsCorporate
-     */
 
-    case ActionTypes.GET_SECTORS_CORPORATE:
-      state = { ...state, sectorsCorporate: undefined };
-      break;
-
-    case ActionTypes.GET_SECTORS_CORPORATE_SUCCESS:
-      state = {
-        ...state,
-        sectorsCorporate: action.payload.details?.knowledege_groups,
-      };
-      break;
-
-    case ActionTypes.GET_SECTORS_CORPORATE_FAILURE:
-      state = { ...state, sectorsCorporate: undefined };
-      break;
-
-    case ActionTypes.ADD_SECTORS_CORPORATE:
-      state = { ...state };
-      break;
-    case ActionTypes.ADD_SECTORS_CORPORATE_SUCCESS:
-      state = { ...state };
-      break;
-    case ActionTypes.ADD_SECTORS_CORPORATE_FAILURE:
-      state = { ...state };
-      break;
 
     /** addDepartment */
 
@@ -492,13 +471,31 @@ const DashboardReducer = (state = initialState, action: any) => {
     /**getDepartments */
 
     case ActionTypes.GET_DEPARTMENT_CORPORATE:
-      state = { ...state, departmentCorporate: undefined };
+      state = {
+        ...state,
+        departmentCorporate: undefined,
+        departmentCorporateNumOfPages: 0,
+        departmentsCorporateCurrentPages: 1,
+        
+        loading: true
+      };
       break;
     case ActionTypes.GET_DEPARTMENT_CORPORATE_SUCCESS:
-      state = { ...state, departmentCorporate: action.payload.details };
+      state = {
+        ...state,
+        departmentCorporate: action.payload?.details,
+        departmentCorporateNumOfPages: action.payload?.details?.num_pages,
+        departmentsCorporateCurrentPages:
+          action.payload?.details.next_page === -1
+            ? action?.payload?.details.num_pages
+            : action?.payload?.details?.next_page - 1,
+      };
       break;
     case ActionTypes.GET_DEPARTMENT_CORPORATE_FAILURE:
-      state = { ...state, departmentCorporate: undefined };
+      state = {
+        ...state, error: action.payload,
+        loading: false
+      };
       break;
 
     /** addDesignation */
@@ -520,26 +517,21 @@ const DashboardReducer = (state = initialState, action: any) => {
       state = {
         ...state,
         designations: undefined,
-        // designationsNumOfPage: 0,
-        // designationsCurrentPage: 1,
+        designationsNumOfPage: 0,
+        designationsCurrentPage: 1,
         loading: true
       };
       break;
     case ActionTypes.GET_FETCH_DESIGNATION_SUCCESS:
-      // state = { ...state, designationsCorporate: action.payload.details };
-      // const designations = action.payload.details
-
-      // const isDesignations = ifObjectKeyExist(designations, 'data')
-
       state = {
         ...state,
         loading: false,
-        designations: action.payload?.details
-        // designationsNumOfPage: action.payload?.details?.num_pages,
-        // designationsCurrentPage:
-        //   action.payload.details.next_page === -1 ?
-        //     action?.payload?.details.num_pages
-        //     : action?.payload?.details?.next_page - 1,
+        designations: action.payload?.details,
+        designationsNumOfPage: action.payload?.details?.num_pages,
+        designationsCurrentPage:
+          action.payload.details.next_page === -1 ?
+            action?.payload?.details.num_pages
+            : action?.payload?.details?.next_page - 1,
       };
       break;
     case ActionTypes.GET_FETCH_DESIGNATION_FAILURE:
@@ -550,29 +542,88 @@ const DashboardReducer = (state = initialState, action: any) => {
       };
       break;
 
-       //Add TeamMate
+    //Add TeamMate
 
-       case ActionTypes.ADD_TEAM_MATE_DATA:
-        state = { ...state };
-        break;
-      case ActionTypes.ADD_TEAM_MATE_DATA_SUCCESS:
-        state = { ...state, loading: false, addTeamMates: action.payload };
-        break;
-      case ActionTypes.ADD_TEAM_MATE_DATA_FAILURE:
-        state = { ...state };
-        break;
+    case ActionTypes.ADD_TEAM_MATE_DATA:
+      state = { ...state };
+      break;
+    case ActionTypes.ADD_TEAM_MATE_DATA_SUCCESS:
+      state = { ...state, loading: false, addTeamMates: action.payload };
+      break;
+    case ActionTypes.ADD_TEAM_MATE_DATA_FAILURE:
+      state = { ...state };
+      break;
 
-         //get TeamMate
+    //get TeamMate
 
-      case ActionTypes.GET_TEAM_MATE_DATA:
-        state = { ...state ,getTeamMateDatas: undefined};
-        break;
-      case ActionTypes.GET_TEAM_MATE_DATA_SUCCESS:
-        state = { ...state, loading: false, getTeamMateDatas: action.payload?.details };
-        break;
-      case ActionTypes.GET_TEAM_MATE_DATA_FAILURE:
-        state = { ...state,error: action.payload,loading:false};
-        break;
+    case ActionTypes.GET_TEAM_MATE_DATA:
+      state = {
+        ...state,
+        getTeamMateDatas: undefined,
+        getTeamMateDatasNumOfPages: 0,
+        getTeamMateDatasCurrentPages: 1,
+        loading: true
+      };
+      break;
+    case ActionTypes.GET_TEAM_MATE_DATA_SUCCESS:
+      state = {
+        ...state,
+        getTeamMateDatas: action.payload?.details,
+        getTeamMateDatasNumOfPages: action.payload?.details?.num_pages,
+        getTeamMateDatasCurrentPages:
+          action.payload?.details.next_page === -1
+            ? action?.payload?.details.num_pages
+            : action?.payload?.details?.next_page - 1,
+      };
+      break;
+    case ActionTypes.GET_TEAM_MATE_DATA_FAILURE:
+      state = {
+        ...state, error: action.payload,
+        loading: false
+      };
+      break;
+
+
+    case ActionTypes.ADD_SECTORS_CORPORATE:
+      state = { ...state };
+      break;
+    case ActionTypes.ADD_SECTORS_CORPORATE_SUCCESS:
+      state = { ...state };
+      break;
+    case ActionTypes.ADD_SECTORS_CORPORATE_FAILURE:
+      state = { ...state };
+      break;
+
+
+    /**
+     * getSectorsCorporate
+     */
+
+    case ActionTypes.GET_SECTORS_CORPORATE:
+      state = {
+        ...state,
+        sectorsCorporate: undefined,
+        sectorsCorporateNumOfPages: 0,
+        sectorsCorporateCurrentPages: 1,
+        loading: true
+      };
+      break;
+
+    case ActionTypes.GET_SECTORS_CORPORATE_SUCCESS:
+      state = {
+        ...state,
+        sectorsCorporate: action.payload?.details?.knowledege_groups,
+        sectorsCorporateNumOfPages: action.payload?.details?.num_pages,
+        sectorsCorporateCurrentPages:
+          action.payload?.details.next_page === -1
+            ? action?.payload?.details.num_pages
+            : action?.payload?.details?.next_page - 1,
+      };
+      break;
+
+    case ActionTypes.GET_SECTORS_CORPORATE_FAILURE:
+      state = { ...state, sectorsCorporate: undefined };
+      break;
 
     /**createCorporateSchedule */
 
@@ -743,15 +794,15 @@ const DashboardReducer = (state = initialState, action: any) => {
       break;
 
 
-        // case ActionTypes.GET_TEAM_MATE_DATA:
-        //   state = { ...state, getTeamMateDatas: undefined };
-        //   break;
-        // case ActionTypes.GET_TEAM_MATE_DATA_SUCCESS:
-        //   state = { ...state, getTeamMateDatas: action.payload.details };
-        //   break;
-        // case ActionTypes.GET_TEAM_MATE_DATA_FAILURE:
-        //   state = { ...state, getTeamMateDatas: undefined };
-        //   break;
+    // case ActionTypes.GET_TEAM_MATE_DATA:
+    //   state = { ...state, getTeamMateDatas: undefined };
+    //   break;
+    // case ActionTypes.GET_TEAM_MATE_DATA_SUCCESS:
+    //   state = { ...state, getTeamMateDatas: action.payload.details };
+    //   break;
+    // case ActionTypes.GET_TEAM_MATE_DATA_FAILURE:
+    //   state = { ...state, getTeamMateDatas: undefined };
+    //   break;
 
     default:
       state = state;

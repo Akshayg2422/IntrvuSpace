@@ -37,7 +37,7 @@ function CommonTable({ card = false, title, displayDataSet, tableDataSet, isPagi
     return (
       <>
         {card ? <div className='col ' >
-          <div className='card shadow-none'>
+          <div className='card shadow-none overflow-auto overflow-hide '>
             {title && <div className="card-header border-0">
               <div className="row align-items-center">
                 <div className="col" >

@@ -293,7 +293,7 @@ export const CREATE_NEW_PASSWORD_RULES = {
 export const USER_FORM_RULES = {
   first_name: {
     presence: { message: "Name cannot be empty." },
-    length: { minimum: 3, message: "Name should have a minimum of 3 characters." },
+    length: { minimum: 3, message: "Fast Name should have a minimum of 3 characters." },
   },
   last_name: {
     presence: { message: "Last name cannot be empty" },
@@ -316,9 +316,9 @@ export const USER_FORM_RULES = {
   designation_id: {
     presence: { allowEmpty: false, message: "Designation cannot be empty" },
   },
-  gender: {
-    presence: { message: "Please select a gender." },
-  },
+  // gender: {
+  //   presence: { message: "Please select a gender." },
+  // },
 };
 
 

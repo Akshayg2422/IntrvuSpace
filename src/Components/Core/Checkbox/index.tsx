@@ -30,7 +30,7 @@ function Checkbox({ id = '0', text, defaultChecked, variant = 'primary', onCheck
                     className={'custom-control-input'}
                     type={'checkbox'}
                     onChange={onChangeHandler}
-                    color='black'
+                    // style={{borderBlockColor:'darkgray',backgroundColor:'darkgray'}}
                 />
                 <label
                     className={'custom-control-label'}

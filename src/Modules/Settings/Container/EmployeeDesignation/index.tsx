@@ -2,7 +2,7 @@ import { addDesignation, getDesignations } from '@Redux';
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { convertToUpperCase, paginationHandler, ADD_DESIGNATION, ifObjectExist, validate, getValidateError, INITIAL_PAGE, } from "@Utils";
-import { useDynamicHeight, useModal, useInput, useLoader, useDropDown } from "@Hooks";
+import { useDynamicHeight, useModal, useInput, useLoader, useDropDown, useNavigation } from "@Hooks";
 import {
     Button,
     Card,
@@ -14,6 +14,9 @@ import {
     Checkbox,
     Spinner,
     MenuBar,
+    NoDataFound,
+    Back,
+    Heading,Image
 } from "@Components";
 import { translate } from "@I18n";
 import { icons } from '@Assets';
@@ -21,7 +24,7 @@ import { icons } from '@Assets';
 function EmployeeDesignation() {
 
     const {
-        designations,
+        designations,designationsNumOfPage,designationsCurrentPage
     } = useSelector(
         (state: any) => state.DashboardReducer
     );
@@ -31,30 +34,24 @@ function EmployeeDesignation() {
     const isDepartment_Admin = designations
     const isSuper_Admin = designations
     const isHr = designations
-    const [loading, setLoading] = useState(false)
     const dispatch = useDispatch();
-    const department = useDropDown({})
-    const dynamicHeight: any = useDynamicHeight()
-    const [showDesignations, setShowDesignations] = useState(true);
+    const { goBack } = useNavigation();
     const addDesignationModal = useModal(false);
     const designationName = useInput('')
     const [isHrAdmin, setIsHrAdmin] = useState(false);
     const [isDepartmentAdmin, setIsDepartmentAdmin] = useState(false);
     const [isSuperAdmin, setIsSuperAdmin] = useState(false);
     const [isHR, setIsHR] = useState(false);
+    const [loading, setLoading] = useState(true)
     const loginLoader = useLoader(false)
     const [selectDesignation, setSelectedDesignation] = useState<any>()
-
-// console.log('EmployeeDesignation>>>>>>>>',JSON.stringify(designations));
+    console.log(isHrAdmin, "isHrAdmin=====", isDepartmentAdmin, isSuperAdmin, isHR)
 
 
     useEffect(() => {
-        getDesignationApiHandler()
+        getDesignationApiHandler(designationsCurrentPage)
     }, [])
 
-    // useEffect(() => {
-    //     console.log('Designations:========>>>//', designations);
-    // }, [designations])
 
     const getDesignationMenu = () => [
         { id: '0', name: "Edit", icon: icons.edit },
@@ -72,10 +69,10 @@ function EmployeeDesignation() {
                     onSuccess: (success: any) => () => {
                         addDesignationModal.hide()
                         loginLoader.hide()
-                        getDesignationApiHandler()
+                        getDesignationApiHandler(designationsCurrentPage)
                         resetValues()
-                        department.set({})
                         setSelectedDesignation('')
+                        showToast(success.message, 'success')
                     },
                     onError: (error: string) => () => {
                         loginLoader.hide()
@@ -89,14 +86,19 @@ function EmployeeDesignation() {
         }
     };
 
-    const getDesignationApiHandler = () => {
+    const getDesignationApiHandler = (page_number:number) => {
         setLoading(true)
-        const params = {};
+        const params = {
+            page_number,
+        };
         loginLoader.show()
         dispatch(
             getDesignations({
                 params,
                 onSuccess: (response: any) => () => {
+                    console.log('response=======>>', JSON.stringify(response));
+
+                    // setDesignationDetails(response?.details)
                     setLoading(false)
                     loginLoader.hide()
                     // console.log('getDesignations=====----', response);
@@ -115,101 +117,71 @@ function EmployeeDesignation() {
     const normalizedDesignationData = (data: any) => {
 
         return data.map((el: any) => {
-     
-            // console.log('qqqqqqqqqqqqqq...',el);
-            
+
             const { name, id, is_hr, is_hr_admin, is_department_admin, is_super_admin } = el
 
             return {
+
                 name: name,
                 ...(isHr_Admin && {
-                    'HR Admin': 
+                    'HR Admin':
                         <div className="mb--4">
-                            <Checkbox id={id + "_HRadmin"} defaultChecked={is_hr_admin} checked={is_hr_admin} onCheckChange={(checked) => {
-                                const params = {
-                                    is_hr_admin: checked,
-                                    id: id,
-                                    name
-                                };
-                                addDesignationApiHandler(params)
-
-                            }} />
+                            <Checkbox id={id + "_HRadmin"}
+                                defaultChecked={is_hr_admin}
+                                checked={is_hr_admin}
+                            />
                         </div>
                 }),
                 ...(isDepartment_Admin && {
                     'Department Admin':
                         <div className="mb--4">
-                            <Checkbox id={id + "_DepartmentAdmin"} defaultChecked={is_department_admin} checked={is_department_admin} onCheckChange={(checked) => {
-                                const params = {
-                                    is_department_admin: checked,
-                                    id: id,
-                                    name
-                                };
-                                addDesignationApiHandler(params)
-
-                            }} />
+                            <Checkbox id={id + "_DepartmentAdmin"}
+                                defaultChecked={is_department_admin}
+                                checked={is_department_admin}
+                            />
                         </div>
                 }),
                 ...(isSuper_Admin && {
                     'Super Admin':
                         <div className="mb--4">
-                            <Checkbox id={id + "_SuperAdmin"} defaultChecked={is_super_admin} checked={is_super_admin} onCheckChange={(checked) => {
-                                const params = {
-                                    is_super_admin: checked,
-                                    id: id,
-                                    name
-                                };
-                                addDesignationApiHandler(params)
-
-                            }} />
+                            <Checkbox id={id + "_SuperAdmin"}
+                                defaultChecked={is_super_admin}
+                                checked={is_super_admin}
+                            />
                         </div>
                 }),
                 ...(isHr && {
                     'HR':
                         <div className="mb--4">
-                            <Checkbox id={id + "IsHR"} defaultChecked={is_hr} checked={is_hr} onCheckChange={(checked) => {
-                                const params = {
-                                    is_hr: checked,
-                                    id: id,
-                                    name
-                                };
-                                addDesignationApiHandler(params)
-
-                            }} />
+                            <Checkbox id={id + "IsHR"}
+                                defaultChecked={is_hr}
+                                checked={is_hr}
+                            />
                         </div>
                 }),
 
                 '':
                     ((name || isHr_Admin || isDepartment_Admin || isSuper_Admin || isHr) &&
-                        <MenuBar menuData={getDesignationMenu()} onClick={(item) => {
+                        <MenuBar menuData={getDesignationMenu()}
+                            toggleIcon={icons.more}
+
+                            onClick={(item) => {
 
 
-                            if (item?.id === '0') {
-                                const { name, is_hr, is_hr_admin, is_department_admin, is_super_admin} = el
+                                if (item?.id === '0') {
+                                    const { name, is_hr, is_hr_admin, is_department_admin, is_super_admin } = el
 
-                                setSelectedDesignation(el)
-                                designationName.set(name)
-                                setIsHrAdmin(is_hr_admin)
-                                setIsDepartmentAdmin(is_department_admin)
-                                setIsSuperAdmin(is_super_admin)
-                                setIsHR(is_hr)
-                                addDesignationModal.show()
+                                    setSelectedDesignation(el)
+                                    designationName.set(name)
+                                    setIsHrAdmin(is_hr_admin)
+                                    setIsDepartmentAdmin(is_department_admin)
+                                    setIsSuperAdmin(is_super_admin)
+                                    setIsHR(is_hr)
+                                    addDesignationModal.show()
+                                }
 
-
-                            }
-                            else if (item?.id === '1') {
-                                const { name, id, is_hr, is_hr_admin, is_department_admin, is_super_admin } = el
-                                // setIsSubTask(true)
-                                setSelectedDesignation(el)
-                                designationName.set(name)
-                                setIsHrAdmin(is_hr_admin)
-                                resetValues()
-                                setIsDepartmentAdmin(is_department_admin)
-                                setIsSuperAdmin(is_super_admin)
-                                setIsHR(is_hr)
-                            }
-
-                        }} />
+                            }}
+                        />
                     )
 
             };
@@ -229,134 +201,161 @@ function EmployeeDesignation() {
 
     return (
         <>
-            <Card className={'mb-3'} style={{
-                height: showDesignations ? dynamicHeight.dynamicHeight - 35 : '5em',
-            }}>
-                <div className="row">
-                    <div className="col">
-                        <h3>{translate("auth.designation")}</h3>
-                    </div>
-
-
-
-                    <div className="text-right mr-3 ">
-
-
-                        {/* <Button
-                            className={'text-white'}
-                            text={
-                                showDesignations 
-                            }
-                            size={"sm"}
-                            onClick={() => {
-                                setShowDesignations(!showDesignations)
-                                if (!showDesignations) {
-                                    getDesignationApiHandler();
-                                }
-                            }}
-                        /> */}
-
-                        <Button
-                            className={'text-white'}
-                            text={'Add Department'}
-                            size={"sm"}
-                            onClick={() => {
-                                addDesignationModal.show()
-                                getDesignationApiHandler()
-                            }}
-                        />
-                    </div>
-                </div>
-
-
-                <div
-                    className="overflow-auto overflow-hide"
-                    style={{
-                        height: showDesignations ? dynamicHeight.dynamicHeight - 100 : '0px',
-                        marginLeft: "-23px",
-                        marginRight: "-23px"
-                    }}>
-                    {
-                        loading && (
-                            <div className='d-flex justify-content-center align-item-center' style={{ marginTop: '200px' }}>
-                                <Spinner />
-                            </div>
-                        )
-                    }
-                    {designations && designations?.length > 0 ? (
-                        <CommonTable
-                            isPagination
-                            tableDataSet={designations}
-                            displayDataSet={normalizedDesignationData(designations)}
-
-                        />
-                    ) : (
-                        <div
-                            className="h-100 d-flex justify-content-center align-items-center">
-                            <NoRecordsFound />
+            <div className='container'>
+                <div className="row justify-content-between mt-3 pl-2 mr--2 mb-3">
+                    {/* <Back /> */}
+                    <div className='d-flex align-items-center'>
+                        <div className=''>
+                            <Image
+                                onClick={() => goBack()}
+                                style={{ cursor: "pointer" }}
+                                src={icons.back}
+                                height={15}
+                            />
                         </div>
-                    )}
+                        <div className='pl-3' >
+                            <span className='headingText text-secondary'>{'Manage Designation'}</span>
+                        </div>
+                    </div>
+                    <Button
+                        className='btn btn-primary rounded-sm '
+                        size={'md'}
+                        text={'Add Designation'}
+                        onClick={() => {
+                            addDesignationModal.show()
+                            getDesignationApiHandler(designationsCurrentPage)
+                        }}
+                    />
                 </div>
-            </Card>
+                {loading && (
+                    <div className={'vh-100 d-flex justify-content-center align-items-center'}>
+                        <Spinner />
+                    </div>)
+                }
 
-            {
-                /**
-                 * add Designation Modal
-                 */
-            }
 
+                {!loading &&
+                    <div className="row px-0  mx--4">
+                        <div className='col-sm-12 px-0'>
+                            {designations && designations?.data?.length > 0 ? (
+                                <CommonTable
+                                    card
+                                    isPagination
+                                    title={'Designation'}
+                                    tableDataSet={designations}
+                                    displayDataSet={normalizedDesignationData(designations?.data)}
+                                    noOfPage={designationsNumOfPage}
+                                    currentPage={designationsCurrentPage}
+                                    paginationNumberClick={(currentPage) => {
+                      
+                                        getDesignationApiHandler(paginationHandler("current", currentPage));
+                      
+                                    }}
+                                    previousClick={() => {
+                                        getDesignationApiHandler(paginationHandler("prev", designationsCurrentPage))
+                                    }
+                                    }
+                                    nextClick={() => {
+                                        getDesignationApiHandler(paginationHandler("next", designationsCurrentPage));
+                                    }
+                                    }
+
+
+                                />
+                            ) : (
+                                <div
+                                    className="vh-100 d-flex justify-content-center align-items-center ">
+                                    <NoRecordsFound />
+                                </div>
+                            )}
+                        </div>
+                    </div>
+
+                }
+
+            </div>
             <Modal
                 isOpen={addDesignationModal.visible}
                 onClose={() => {
                     addDesignationModal.hide()
                     resetValues()
                 }}
-                title={translate("auth.designation")!}
                 size='lg'
+                style={{ padding: 0 }}
             >
-                <Input
-                    placeholder={'Enter Designation'}
-                    value={designationName.value}
-                    onChange={designationName.onChange}
-                />
+                <div className="px-md-6 px-3 ">
+                    <Heading heading={'Add Department'} style={{ fontSize: '26px', fontWeight: 800, margin: 0 }} />
+                    <div className='mt-4'>
+                        <Input
+                            placeholder={'Enter Designation'}
+                            value={designationName.value}
+                            onChange={designationName.onChange}
+                        />
+                    </div>
 
-                <div className="col">
-                    <div className='row'>
-                        {isHr_Admin && <Checkbox id={'HrAdmin'} text={'HR Admin'} defaultChecked={isHrAdmin} onCheckChange={setIsHrAdmin} />}
-                        <div className='ml-5'>
-                            {isDepartment_Admin && <Checkbox id={'Department Admin'} text={'DepartmentAdmin'} defaultChecked={isDepartmentAdmin} onCheckChange={setIsDepartmentAdmin} />}
-                        </div>
-                        <div className='ml-5'>
-                            {isSuper_Admin && <Checkbox id={'SuperAdmin'} text={'Super Admin'} defaultChecked={isSuperAdmin} onCheckChange={setIsSuperAdmin} />}
-                        </div>
-                        <div className='ml-5'>
-                            {isHr && <Checkbox id={'isHR'} text={'HR'} defaultChecked={isHR} onCheckChange={setIsHR} />}
+                    <div className="col mt-4">
+                        <div className='row'>
+                            <div className='px-2'>
+                                {isHr_Admin &&
+                                    <Checkbox id={'HrAdmin'}
+                                        text={'HR Admin'}
+                                        defaultChecked={isHrAdmin}
+                                        onCheckChange={setIsHrAdmin}
+                                    />
+                                }
+                            </div>
+                            <div className='px-5'>
+                                {isDepartment_Admin &&
+                                    <Checkbox id={'Department Admin'}
+                                        text={'DepartmentAdmin'}
+                                        defaultChecked={isDepartmentAdmin}
+                                        onCheckChange={setIsDepartmentAdmin} />
+                                }
+                            </div>
+                            <div className='px-5'>
+                                {isSuper_Admin &&
+                                    <Checkbox id={'SuperAdmin'}
+                                        text={'Super Admin'}
+                                        defaultChecked={isSuperAdmin}
+                                        onCheckChange={setIsSuperAdmin} />
+                                }
+                            </div>
+                            <div className=' px-4'>
+                                {isHr &&
+                                    <Checkbox id={'isHR'}
+                                        text={'HR'}
+                                        defaultChecked={isHR}
+                                        onCheckChange={setIsHR} />
+                                }
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div className="text-right">
-                    {/* <Button
-                        color={"secondary"}
-                        text={translate("common.cancel")}
-                        onClick={() => {
-                            addDesignationModal.hide()
-                            resetValues()
-                        }}
-                    /> */}
+                <div className="col d-flex justify-content-center py-5">
                     <Button
                         text={translate("common.submit")}
+                        className='btn btn-primary rounded-sm px-5 '
+                        style={{
+                            borderColor: "#d8dade",
+                            fontSize: "15px"
+                        }}
                         loading={loginLoader.loader}
+                        size={'lg'}
                         onClick={() => {
 
                             const params = {
                                 ...(selectDesignation && { id: selectDesignation?.id }),
                                 name: designationName.value,
-                                // isHrAdmin: isHrAdmin,
+                                is_hr_admin: isHrAdmin,
+                                is_department_admin: isDepartmentAdmin,
+                                is_super_admin: isSuperAdmin,
+                                is_hr: isHR,
                                 ...(isHrAdmin && { is_hr_admin: isHrAdmin }),
-                                ...(isDepartmentAdmin && { is_super_admin: isDepartmentAdmin }),
+                                ...(isDepartmentAdmin && { is_department_admin: isDepartmentAdmin }),
                                 ...(isSuperAdmin && { is_super_admin: isSuperAdmin }),
                                 ...(isHR && { is_hr: isHR })
                             };
+                            console.log(params, "pppppppppppp")
 
                             addDesignationApiHandler(params)
                         }}

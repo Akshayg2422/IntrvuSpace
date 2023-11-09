@@ -1,51 +1,55 @@
 import React, { Component, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { addDepartmentCorporate, getDepartmentCorporate} from '@Redux';
+import { addDepartmentCorporate, getDepartmentCorporate } from '@Redux';
 import { useInput, useLoader, useModal } from '@Hooks';
 import { translate } from "@I18n";
-import { Back, Button, Card, CommonTable,Input, MenuBar, Modal, showToast } from '@Components';
-import {  getValidateError, ifObjectExist, validate,ADD_DEPARTMENT_CORPORATE_RULES } from '@Utils';
+import { Back, Button, Card, CommonTable, Heading, Input, MenuBar, Modal, NoRecordsFound, Spinner, showToast, Image } from '@Components';
+import { getValidateError, ifObjectExist, validate, ADD_DEPARTMENT_CORPORATE_RULES, paginationHandler } from '@Utils';
 import { icons } from '@Assets';
+import { useNavigation } from '@Hooks';
 
 
 function Department() {
   const dispatch = useDispatch()
-
-  const addDepartment = useModal(false);
-
-  const name = useInput("");
+  const { goBack } = useNavigation();
+  const addDepartmentModel = useModal(false);
+  const DepartmentName = useInput("");
   const addDepartmentLoader = useLoader(false);
-  const { departmentCorporate } = useSelector((state: any) => state.DashboardReducer)
-  console.log('DepartmentCorp===========', departmentCorporate);
+  const [editId, setEditId] = useState<any>()
+  const [loading, setLoading] = useState(true);
+  const { departmentCorporate ,departmentsCorporateCurrentPages,
+    departmentCorporateNumOfPages,} = useSelector((state: any) => state.DashboardReducer)
+  // console.log('DepartmentCorp===========>', departmentCorporate);
 
-  const getDepartmentMenu = () => [
+  const getDesignationMenu = () => [
     { id: '0', name: "Edit", icon: icons.edit },
-]
-
-
+  ]
 
   useEffect(() => {
-    getDepartmentCorporateDetailsApiHandler()
+    getDepartmentCorporateDetailsApiHandler(departmentsCorporateCurrentPages)
   }, [])
 
   const addSectorCorporateDetailsApiHandler = () => {
     const params = {
-      name: name.value,
+      name: DepartmentName.value,
+      ...(editId && { id: editId })
     }
-    console.log('Department========>', params);
+    // console.log('Department========>', params);
 
     const validation = validate(ADD_DEPARTMENT_CORPORATE_RULES, params)
 
     if (ifObjectExist(validation)) {
       addDepartmentLoader.show()
+
       dispatch(
         addDepartmentCorporate({
           params,
           onSuccess: (success: any) => () => {
-            addDepartment.hide()
-            name.set('')
+            addDepartmentModel.hide()
+            DepartmentName.set('')
+            setEditId('')
             addDepartmentLoader.hide()
-            getDepartmentCorporateDetailsApiHandler()
+            getDepartmentCorporateDetailsApiHandler(departmentsCorporateCurrentPages)
             showToast(success.message, 'success')
           },
           onError: (error: any) => () => {
@@ -55,77 +59,153 @@ function Department() {
         })
       )
     } else {
-      addDepartmentLoader.hide()
+
       showToast(getValidateError(validation))
     }
   };
 
-  const getDepartmentCorporateDetailsApiHandler = () => {
-    const params = {}
+  const getDepartmentCorporateDetailsApiHandler = (page_number:number) => {
+    const params = {
+      page_number,
+    }
     dispatch(
       getDepartmentCorporate({
         params,
         onSuccess: (success: any) => () => {
-          console.log('sector====================>', JSON.stringify(success));
-
-
+          setLoading(false)
+          // console.log('sector====================>', JSON.stringify(success));
         },
         onError: (error: string) => () => {
+          setLoading(false)
         },
       })
     );
   };
 
   const normalizedTableData = (data: any) => {
-    return data?.map((el: any) => {
-      console.log('dept==========>',el);
+    return data.map((el: any) => {
+      // console.log('dept==========>', el);
+      const { name } = el
 
       return {
         Name: el.name,
+        '': ((name) &&
+          <MenuBar menuData={getDesignationMenu()} toggleIcon={icons.more} onClick={(item) => {
+
+            if (item?.id === '0') {
+              const { name, id } = el
+
+              setEditId(id)
+              DepartmentName.set(name)
+              addDepartmentModel.show()
+
+
+            }
+
+
+          }} />
+        )
       };
-    });
+    })
+
   };
 
   return (
     <>
-      <div className='container-fluid'>
-        <div className="row justify-content-between mt-2 pl-2 mr--2 mb-3">
-          <Back />
+      <div className='container'>
+        <div className="row justify-content-between mt-3 pl-2 mr--2 mb-3">
+          {/* <Back /> */}
+          <div className='d-flex align-items-center'>
+            <div className=''>
+              <Image
+                onClick={() => goBack()}
+                style={{ cursor: "pointer" }}
+                src={icons.back}
+                height={15}
+              />
+            </div>
+            <div className='pl-3' >
+            <span className='headingText text-secondary'>{'Manage Department'}</span>
+          </div>
+          </div>
+        
+
           <Button
-            className={'text-white shadow-none'}
-            size={'sm'}
+            className='btn btn-primary rounded-sm '
+            
             text={"Add Department"}
             onClick={() => {
-              addDepartment.show()
+              addDepartmentModel.show()
             }}
           />
         </div>
-        <div className='row px-0  mx--4'>
-          <div className='col-sm-12 px-0'>
-            <CommonTable
-              card
-              isPagination
-              title={'Department'}
-              displayDataSet={normalizedTableData(departmentCorporate)}
-            />
+        {loading && (
+          <div className={'vh-100 d-flex justify-content-center align-items-center'}>
+            <Spinner />
+          </div>)
+        }
+
+        {!loading &&
+          <div className='row px-0  mx--4'>
+            <div className='col-sm-12 px-0'>
+              {departmentCorporate && departmentCorporate?.data?.length > 0 ? (
+                <CommonTable
+                  card
+                  isPagination
+                  title={'Department'}
+                  displayDataSet={normalizedTableData(departmentCorporate?.data)}
+                  noOfPage={departmentCorporateNumOfPages}
+                  currentPage={departmentsCorporateCurrentPages}
+                  paginationNumberClick={(currentPage) => {
+    
+                    getDepartmentCorporateDetailsApiHandler(paginationHandler("current", currentPage));
+    
+                  }}
+                  previousClick={() => {
+                    getDepartmentCorporateDetailsApiHandler(paginationHandler("prev", departmentsCorporateCurrentPages))
+                  }
+                  }
+                  nextClick={() => {
+                    getDepartmentCorporateDetailsApiHandler(paginationHandler("next", departmentsCorporateCurrentPages));
+                  }
+                  }
+                />
+              ) : (
+                <div
+                  className="vh-100 d-flex justify-content-center align-items-center ">
+                  <NoRecordsFound />
+                </div>
+              )}
+
+            </div>
           </div>
-        </div>
+        }
+
       </div>
-      < Modal size={'lg'} title={"Add Department"} isOpen={addDepartment.visible} onClose={() => {
-        addDepartment.hide()
-        name.set("")
-      }} >
-        <div className="col-md-9">
-          <div className="mt--2">
+      < Modal size={'lg'} isOpen={addDepartmentModel.visible} onClose={() => {
+        addDepartmentModel.hide()
+        DepartmentName.set("")
+      }} style={{ padding: 0 }}>
+
+        <div className="px-md-5 ">
+
+        <div className='mt--2'>  <Heading heading={'Department'} style={{ fontSize: '25px', fontWeight: 800,}} /></div>
+          <div className="mt-3">
             <Input
               heading={"Name"}
-              value={name.value}
-              onChange={name.onChange}
+              value={DepartmentName.value}
+              onChange={DepartmentName.onChange}
             />
           </div>
         </div>
-        <div className="col text-right ">
-          <Button size={'md'}
+        <div className="col d-flex justify-content-center py-5">
+          <Button
+            size={'lg'}
+            className={'rounded-sm px-5 btn btn-primary '}
+            style={{
+              borderColor: "#d8dade",
+              fontSize: "15px"
+            }}
             loading={addDepartmentLoader.loader}
             text={"Submit"}
             onClick={addSectorCorporateDetailsApiHandler}
