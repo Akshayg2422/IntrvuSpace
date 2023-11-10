@@ -205,3 +205,13 @@ export const URL_REGISTER_AS_COMPANY = EMPLOYEE + 'registerCompanyCorporate'
 export const GRT_ONGOING_SCHEDULES= ASSISTANT +'getOngoingSchedules'
 
 
+//employee/getOtpForEmailVerification
+
+export const GET_OTP_FOR_EMAIL_VERIFICATION = EMPLOYEE +'getOtpForEmailVerification'
+
+//employee/verifyEmailUsingOtp
+export const VERIFY_EMAIL_USING_OTP = EMPLOYEE +'verifyEmailUsingOtp'
+
+
+
+

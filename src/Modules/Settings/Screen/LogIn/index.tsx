@@ -77,7 +77,12 @@ function Login() {
               })
             );
 
-            goTo(ROUTES["auth-module"].splash, true);
+            if(!details?.is_email_verified){
+              goTo(ROUTES['auth-module']['verify-email'])
+            }
+            else{
+              goTo(ROUTES["auth-module"].splash, true);
+            }
           } else {
             showToast(response.error_message, "error");
           }
@@ -89,6 +94,8 @@ function Login() {
       })
     );
   };
+
+
 
   return (
     <>

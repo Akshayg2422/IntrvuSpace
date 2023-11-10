@@ -204,5 +204,11 @@ export const registerAsCompanyAPi = payload => post(URL.URL_REGISTER_AS_COMPANY,
 export const getOngoingSchedulesApi =payload =>post(URL.GRT_ONGOING_SCHEDULES,payload,{})
 
 
+export const getOtpForEmailVerificationAPi = payload => post(URL.GET_OTP_FOR_EMAIL_VERIFICATION, payload, {});
+
+
+export const verifyEmailUsingOtpApi =payload =>post(URL.VERIFY_EMAIL_USING_OTP,payload,{})
+
+
 
 
