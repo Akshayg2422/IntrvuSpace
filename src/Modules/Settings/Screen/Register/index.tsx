@@ -62,7 +62,7 @@ function Register() {
       showToast('Please enter a valid email address', 'error');
     } else if (mobileNumber.value.length === 0) {
       showToast("Mobile Number Cannot be empty", "error");
-    }else if (!mobileNumberPattern.test(mobileNumber.value)) {
+    } else if (!mobileNumberPattern.test(mobileNumber.value)) {
       showToast("Mobile Number should be a valid 10-digit number", "error");
     } else if (password.value.length === 0) {
       showToast("Password Cannot be empty", "error");
