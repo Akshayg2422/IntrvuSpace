@@ -1,3 +1,57 @@
+export const NAME_RULES = {
+  first_name: {
+    presence: { allowEmpty: false, message: "First name cannot be empty" },
+    length: { minimum: 3, message: "First name minimum 3 chars" },
+  },
+}
+
+export const MOBILE_NUMBER_RULES = {
+  mobile_number: {
+    presence: { allowEmpty: false, message: "Mobile number cannot be empty" },
+    length: { is: 10, message: "Mobile number should be 10 number" },
+  }
+}
+
+export const EMAIL_RULES = {
+  email: {
+    presence: { allowEmpty: false, message: "Email is required" },
+    format: {
+      pattern: /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/,
+      message: "Please enter a valid email address"
+    }
+  }
+};
+
+export const ADDRESS = {
+  communication_address: {
+    presence: { allowEmpty: false, message: "Address cannot be empty" },
+  }
+}
+
+export const REGISTER_COMPANY_RULES = {
+  logo: {
+    presence: { allowEmpty: false, message: "Upload Company logo" }
+  },
+  brand_name: {
+    presence: { allowEmpty: false, message: "Brand Name cannot be empty" },
+  },
+  ...ADDRESS,
+  ...MOBILE_NUMBER_RULES,
+  pincode: {
+    presence: { allowEmpty: false, message: "Pincode cannot be empty" }
+  },
+  sector: {
+    presence: { allowEmpty: false, message: "Sector cannot be empty" },
+  },
+  ...NAME_RULES,
+  ...EMAIL_RULES,
+  ...ADDRESS,
+  password: {
+    presence: { allowEmpty: false, message: "Password cannot be empty" },
+    length: { minimum: 8, message: "Password minimum 8 chars" },
+  }
+}
+
 export const CREATE_QUESTION_FORM_RULES = {
   name: {
     length: { minimum: 3, message: "Name minimum 3 chars" },
@@ -33,9 +87,7 @@ export const REGISTER_AS_MEMBER_RULES = {
     presence: { message: "Mobile number cannot be empty" },
     length: { is: 10, message: "Mobile number should be 10 number" },
   },
-
 }
-
 
 export const LOGIN_WITH_EMAIL_RULES = {
 
@@ -45,8 +97,6 @@ export const LOGIN_WITH_EMAIL_RULES = {
   password: {
     presence: { message: "password cannot be empty" }
   },
-
-
 }
 
 export const LOGIN_WITH_MOBILE_NO_RULES = {
@@ -148,10 +198,7 @@ export const GENERATE_QUESTION_COUNT_RULES = {
 }
 
 export const FROM_JD_RULES = {
-  // sector_name: {
-  //   presence: { message: "Sector name cannot be empty" },
-  //   length: { minimum: 3, message: "Sector name minimum 3 chars" },
-  // },
+
   position: {
     presence: { message: "Position name cannot be empty" },
     length: { minimum: 3, message: "Position minimum 3 chars" },
@@ -164,6 +211,10 @@ export const FROM_JD_RULES = {
   // },
   jd: {
     presence: { allowEmpty: false, message: "Job Description cannot be empty" },
+  },
+  sector_name: {
+    presence: { message: "Sector name cannot be empty" },
+    length: { minimum: 3, message: "Sector name minimum 3 chars" },
   },
 }
 
@@ -194,28 +245,19 @@ export const CREATE_KNOWLEDGE_GROUP_VARIANT_RULES = {
 }
 
 export const VALIDATE_ADD_NEW_CANDIDATES_RULES = {
-  first_name: {
-    presence: { message: "First name cannot be empty" },
-    length: { minimum: 3, message: "First name minimum 3 chars" },
-  },
+  ...NAME_RULES,
   last_name: {
     presence: { message: "Last name cannot be empty" },
-    length: { minimum: 1, message: "First name minimum 3 chars" },
+    length: { minimum: 1, message: "Last name minimum 3 chars" },
   },
-  email: {
-    email: { message: "Doesn't look like a valid email" },
-  },
-  mobile_number: {
-    presence: { message: "Mobile number cannot be empty" },
-    length: { is: 10, message: "Mobile number should be 10 number" },
-  },
-
+  ...MOBILE_NUMBER_RULES,
+  ...EMAIL_RULES,
 }
 
 export const CREATE_CORPORATE_SCHEDULE_RULES = {
   role: {
-    presence: { message: "Role name cannot be empty" },
-    length: { minimum: 3, message: "Role minimum 3 chars" },
+    presence: { allowEmpty: false, message: "Position cannot be empty" },
+    length: { minimum: 3, message: "Minimum 3 chars in Position" },
   },
   experience: {
     presence: { allowEmpty: false, message: "Experience cannot be empty" },
@@ -223,12 +265,12 @@ export const CREATE_CORPORATE_SCHEDULE_RULES = {
   jd: {
     presence: { allowEmpty: false, message: "Job Description cannot be empty" },
   },
+  sector_id: {
+    presence: { allowEmpty: false, message: "Sector cannot be empty" },
+  },
   department_id: {
     presence: { allowEmpty: false, message: "Department cannot be empty" },
   },
-  sector_id: {
-    presence: { allowEmpty: false, message: "Sector cannot be empty" },
-  }
 }
 
 export const CREATE_FOR_OTHERS_RULES = {
@@ -258,9 +300,9 @@ export const CREATE_FOR_OTHERS_RULES = {
     presence: { message: "Role name cannot be empty" },
     length: { minimum: 3, message: "Role name should be at least 3 characters" },
   },
-  // jd: {
-  //   presence: { allowEmpty: false, message: "Job Details cannot be empty" },
-  // },
+  jd: {
+    presence: { allowEmpty: false, message: "Job Details cannot be empty" },
+  },
   // is_notify_interview: {
   //   inclusion: { within: [true, false], message: "Invalid value for is_notify_interview" },
   // },

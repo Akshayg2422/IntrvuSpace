@@ -1,4 +1,4 @@
-import { icons } from "@Assets";
+import { icons, image } from "@Assets";
 import {
   Badge,
   Button,
@@ -13,7 +13,8 @@ import {
   InputHeading,
   MenuBar,
   Modal,
-  NoRecordsFound,
+  NoDataFound,
+  Spinner,
   showToast,
 } from "@Components";
 import {
@@ -40,6 +41,7 @@ import {
   convertToUpperCase,
   displayFormatDate,
   downloadFile,
+  getBrowserInfo,
   getDateFromServer,
   getDisplayDateFromMoment,
   getDisplayTime,
@@ -53,6 +55,8 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./index.css";
 import moment from "moment";
+import { UncontrolledTooltip } from "reactstrap";
+import { SERVER } from "@Services";
 
 const OPTIONS = [
   { id: 1, name: "Approve Manually" },
@@ -77,6 +81,7 @@ export const CANDIDATE_STATUS = [
 function VariantInfo() {
   const { goBack } = useNavigation();
   const enterPress = useKeyPress("Enter");
+
   const {
     selectedRole,
     corporateScheduleDetails,
@@ -85,9 +90,7 @@ function VariantInfo() {
     candidatesListCurrentPages,
   } = useSelector((state: any) => state.DashboardReducer);
 
-
   const VIEW_MORE_LENGTH = 300;
-
 
   const { goTo } = useNavigation();
   const addNewCandidateModal = useModal(false);
@@ -107,7 +110,6 @@ function VariantInfo() {
   const candidateStatus = useDropDown(CANDIDATE_STATUS[0]);
   const modifyDeadlineModal = useModal(false);
 
-  const preparingInterviewModal = useModal(false);
   const [jdMore, setJdMore] = useState<any>(false);
   const statusList = [
     { id: "ALL", text: "All" },
@@ -125,11 +127,16 @@ function VariantInfo() {
 
   const closeCandidateModal = useModal(false);
   const [closeCandidateData, setCloseCandidateData] = useState<any>();
-  const [jdDetails, setJdDetails] = useState<any>();
+  const addCandidateLoader = useLoader(false);
+  const [loading, setLoading] = useState(false);
+  const closeJdModal = useModal(false);
+
+  const [watchInterviewUrl, setWatchInterviewUrl] = useState<any>();
+  const openWatchInterviewModal = useModal(false);
+  const [displayDeadlineDate, setDisplayDeadlineDate] = useState("")
 
   useEffect(() => {
     getCorporateScheduleDetailsHandler();
-    getCandidatesCorporate(candidatesListCurrentPages);
   }, []);
 
   useEffect(() => {
@@ -141,7 +148,6 @@ function VariantInfo() {
       getCandidatesCorporate(candidatesListCurrentPages);
     }
   }, [enterPress]);
-
   const Refresh = () => {
     const refresh = () => window.location.reload();
 
@@ -152,11 +158,16 @@ function VariantInfo() {
     const params = {
       corporate_openings_details_id: selectedRole?.id,
     };
+    setLoading(true);
     dispatch(
       getCorporateScheduleDetails({
         params,
-        onSuccess: (response: any) => () => { },
-        onError: (error: any) => () => { },
+        onSuccess: (response: any) => () => {
+          setLoading(false);
+        },
+        onError: (error: any) => () => {
+          setLoading(false);
+        },
       })
     );
   };
@@ -166,7 +177,7 @@ function VariantInfo() {
   const getCandidatesCorporate = (page_number: number) => {
     const params = {
       corporate_openings_details_id: selectedRole?.id,
-      ...(searchCandidate && { q: searchCandidate }),
+      ...(searchCandidate ? { q: searchCandidate } : {}),
       ...(statusNote.value.text === "Selected" && { is_approved: true }),
       ...(statusNote.value.text === "Rejected" && { is_rejected: true }),
       ...(statusNote.value.text === "Yet to Start" && {
@@ -178,16 +189,9 @@ function VariantInfo() {
       fetchCandidatesCorporate({
         params,
         onSuccess: (response: any) => () => {
-          if (
-            statusNote.value.text === "Selected" ||
-            statusNote.value.text === "Rejected" ||
-            statusNote.value.text === "Yet to Start" ||
-            searchCandidate
-          )
-            setIsCandidatesExist(true);
-          // console.log("response candidtae===>", response);
+          setIsCandidatesExist(false);
         },
-        onError: (error: any) => () => { },
+        onError: (error: any) => () => {},
       })
     );
   };
@@ -199,33 +203,29 @@ function VariantInfo() {
       corporate_openings_details_id: selectedRole?.id,
       first_name: firstName.value,
       last_name: lastName.value,
-      email: email.value,
       mobile_number: mobileNumber.value,
+      email: email.value,
     };
 
     const validation = validate(VALIDATE_ADD_NEW_CANDIDATES_RULES, params);
 
     if (ifObjectExist(validation)) {
-      preparingInterviewModal.show();
-      addNewCandidateModal.hide();
-      loader.show();
+      addCandidateLoader.show();
       dispatch(
         createSchedule({
           params,
           onSuccess: (response: any) => () => {
             resetValues();
             showToast("Candidate added successfully", "success");
-            loader.hide();
-            preparingInterviewModal.hide();
+            addCandidateLoader.hide();
+            addNewCandidateModal.hide();
             getCorporateScheduleDetailsHandler();
             getCandidatesCorporate(candidatesListCurrentPages);
-            setIsCandidatesExist(true);
           },
           onError: (error: any) => () => {
             showToast(error.error_message, "error");
-            preparingInterviewModal.hide();
-            addNewCandidateModal.show();
-            loader.hide();
+            addNewCandidateModal.hide();
+            addCandidateLoader.hide();
           },
         })
       );
@@ -250,7 +250,6 @@ function VariantInfo() {
 
   const { schedules } = corporateScheduleDetails || {};
 
-  // console.log(schedules, "schedulessssssssssss");
 
   const getIconColor = (iconType: any) => {
     switch (iconType) {
@@ -281,7 +280,10 @@ function VariantInfo() {
           status_note,
           status_note_colour,
           status_icon_type,
+          is_completed,
           is_report_completed,
+          recording_url,
+          interview_duration,
         } = el;
         return {
           "   ": <Image src={getIconColor(status_icon_type)} height={20} />,
@@ -317,6 +319,43 @@ function VariantInfo() {
             </div>
           ),
 
+          "  ": (
+            <>
+              {is_report_completed && recording_url && (
+                <>
+                  <UncontrolledTooltip
+                    delay={0}
+                    placement="top"
+                    target={`tooltip1000`}
+                  >
+                    {"Watch Interview"}
+                  </UncontrolledTooltip>
+                  <div className="d-flex align-items-center mr-3">
+                    <i
+                      id={"tooltip1000"}
+                      className="bi bi-eye-fill text-primary fa-lg pointer"
+                      onClick={() => {
+                        setWatchInterviewUrl({
+                          recording_url,
+                          interview_duration,
+                        });
+                        if (
+                          getBrowserInfo().browserName !== "Mozilla Firefox"
+                        ) {
+                          openWatchInterviewModal.show();
+                        } else {
+                          showToast(
+                            "Screen recording is not supported in this browser",
+                            "info"
+                          );
+                        }
+                      }}
+                    ></i>
+                  </div>
+                </>
+              )}
+            </>
+          ),
           " ": (
             <>
               {is_report_completed && (
@@ -336,10 +375,17 @@ function VariantInfo() {
               )}
             </>
           ),
-          "  ": (
+          "     ": (
             <>
               {!corporateScheduleDetails?.is_closed && (
-                <div className={`${candidatesList?.corporate_candidate_details?.data.length === 1 ? "pb-4" : "pb-0"}`}>
+                <div
+                  className={`${
+                    candidatesList?.corporate_candidate_details?.data.length ===
+                    1
+                      ? "pb-4"
+                      : "pb-0"
+                  }`}
+                >
                   <MenuBar
                     menuData={OPTIONS}
                     onClick={(action) => {
@@ -387,7 +433,6 @@ function VariantInfo() {
           bulkUploadLoader.hide();
           getCorporateScheduleDetailsHandler();
           getCandidatesCorporate(candidatesListCurrentPages);
-          setIsCandidatesExist(true);
         },
         onError: (error: any) => () => {
           showToast(error.error_message, "error");
@@ -399,7 +444,7 @@ function VariantInfo() {
 
   // download csv file
   const downloadCSVTemplate = () => {
-    downloadFile(corporateScheduleDetails?.bulk_upload_template);
+    downloadFile(corporateScheduleDetails?.bulk_upload_template?.slice(1));
   };
 
   // manual approval on candidate
@@ -418,9 +463,6 @@ function VariantInfo() {
         params,
         onSuccess: (response: any) => () => {
           showToast(response.message, "success");
-          if(action.id === 3 && candidatesList?.corporate_candidate_details?.data.length === 1){
-            setIsCandidatesExist(false)
-          }
           getCandidatesCorporate(candidatesListCurrentPages);
           getCorporateScheduleDetailsHandler();
           removeCandidateModal.hide();
@@ -435,22 +477,21 @@ function VariantInfo() {
 
   // validation for deadline fields
 
-  const validateDeadlineField = (action) => {
+  const validateDeadlineField = (action: any) => {
     if (!scheduleDate) {
-      showToast("Please select Schedule date", "info");
+      showToast("Please select Deadline date", "info");
       return;
     } else if (!endTime) {
-      showToast("Please select end time", "info");
+      showToast("Please select Deadline time", "info");
       return;
     } else {
       corporateScheduleActionsHandler(action);
     }
   };
 
-
   // corporateScheduleActions Api
 
-  const corporateScheduleActionsHandler = (action) => {
+  const corporateScheduleActionsHandler = (action: any) => {
     const params = {
       corporate_openings_details_id: corporateScheduleDetails?.id,
       ...(action === "Close JD" && { is_closed: true }),
@@ -469,6 +510,7 @@ function VariantInfo() {
           showToast(response.message, "success");
           getCandidatesCorporate(candidatesListCurrentPages);
           modifyDeadlineModal.hide();
+          closeJdModal.hide();
           resetValues();
         },
         onError: (error: any) => () => {
@@ -478,557 +520,572 @@ function VariantInfo() {
     );
   };
 
+  // modify deadline handler
+
+  const modifyDeadlineHandler = () => {
+    modifyDeadlineModal.show();
+    setScheduleDate(
+      getDateFromServer(corporateScheduleDetails?.candidate_deadline)
+    );
+    setDisplayDeadlineDate(
+      getDateFromServer(corporateScheduleDetails?.candidate_deadline)
+    );
+    setEndTime(getDisplayTime(corporateScheduleDetails?.candidate_deadline));
+  };
+
   return (
     <>
       <div>
-        <div className={"mx-lg-6 mx-4 mt-4"}>
-          <div className="row justify-content-between">
-            <div>
-              <div className="d-flex align-items-center">
-                <div>
-                  <Image
-                    onClick={() => goBack()}
-                    style={{ cursor: "pointer" }}
-                    src={icons.back}
-                    height={15}
-                  />
-                </div>
-                <div className="pl-3">
-                  <span className="headingText text-secondary">
-                    {convertToUpperCase(
-                      corporateScheduleDetails?.job_description?.position
-                    )}
-                  </span>
-                </div>
-              </div>
-              <div className="pl-4">
-                <span className="text-secondary">
-                  {corporateScheduleDetails?.job_description?.experience}
-                </span>
-              </div>
-            </div>
-            <div className="d-flex align-items-center">
-              <div className="pl-3 pl-sm-0">
-                <span className="headingText text-secondary">
-                  {`${corporateScheduleDetails?.vacancies ?? ""} ${corporateScheduleDetails?.vacancies > 1
-                    ? "Vacancies"
-                    : "Vacancy"
-                    }`}
-                </span>
-              </div>
-              {!corporateScheduleDetails?.is_closed && (
-                <div className="pl-3">
-                  <MenuBar
-                    menuData={MODIFY_OPTION}
-                    onClick={(action) => {
-                      setSelectedModifyOption(action);
-                      if (action.name === "Modify Deadlines") {
-                        modifyDeadlineModal.show();
-                        setScheduleDate(
-                          getDateFromServer(
-                            corporateScheduleDetails?.candidate_deadline
-                          )
-                        );
-                        setEndTime(
-                          getDisplayTime(
-                            corporateScheduleDetails?.candidate_deadline
-                          )
-                        );
-                      } else if (action.name === "Close JD") {
-                        corporateScheduleActionsHandler(action.name);
-                      }
-                    }}
-                    toggleIcon={icons.more}
-                  />
-                </div>
-              )}
-            </div>
+        {loading ? (
+          <div
+            className={
+              "vh-100 d-flex justify-content-center align-items-center"
+            }
+          >
+            <Spinner />
           </div>
-
-          {candidatesList &&
-            candidatesList?.corporate_candidate_details &&
-            candidatesList?.corporate_candidate_details?.data &&
-            candidatesList?.corporate_candidate_details?.data.length === 0 &&
-            !corporateScheduleDetails?.is_closed &&
-            // !statusNote.value.text &&
-            !isCandidatesExist &&
-            !searchCandidate ? (
-            <div className="mt-5 text-center">
+        ) : corporateScheduleDetails ? (
+          <div className={"mx-lg-6 mx-4 mt-4"}>
+            <div className="row justify-content-between">
               <div>
-                <span className="titleText text-secondary">
-                  {"Start adding your Candidates Now !"}
-                </span>
-              </div>
-              <div className="pt-2 px-xl-3 px-0">
-                <span className="text-default" style={{ fontSize: 16 }}>
-                  {
-                    "Start adding the candidates with their email and phone number. intrvu SPACE instantly schedules interviews and sends the interview invite link over email and message with the deadlines before which they can join anytime of their preference"
-                  }
-                </span>
-              </div>
-              <div className="row mt-5 justify-content-center">
-                <Button
-                  text={"Add Manually"}
-                  size="lg"
-                  style={{ borderRadius: 4, paddingLeft: 70, paddingRight: 70 }}
-                  onClick={addNewCandidateModal.show}
-                />
-                <div className="mt-5 mt-sm-0 mr-3 mr-sm-0 pl-2 pl-sm-2">
-                  <DropzoneFilePicker
-                    bulkButtonSize={"lg"}
-                    title={"Upload Candidates"}
-                    onSelect={(data) => {
-                      let eventPickers = [data]
-                        ?.toString()
-                        .replace(/^data:(.*,)?/, "");
-                      setCandidateBulkUploadData(eventPickers);
-                    }}
-                    onSubmitClick={() => {
-                      bulkUploadCandidatesHandler();
-                    }}
-                    onTemplateClick={() => downloadCSVTemplate()}
-                  />
-                </div>
-              </div>
-            </div>
-          ) : (
-            <>
-              {!corporateScheduleDetails?.is_closed && (
-                <div className="mt-6 row">
-                  <div className="col-md-6 col-xl-3">
-                    <Card
-                      style={{
-                        borderWidth: 1.5,
-                        borderColor: "#e8edff",
-                        backgroundColor: "transparent",
-                      }}
-                    >
-                      <div className="pl-0">
-                        <div>
-                          <span className="selectionText text-secondary">
-                            {"Total Candidates"}
-                          </span>
-                        </div>
-
-                        <div className="">
-                          <span className="titleText text-secondary">
-                            {
-                              corporateScheduleDetails?.candidate_details
-                                ?.total_candidates
-                            }
-                          </span>
-                        </div>
-                      </div>
-                    </Card>
+                <div className="d-flex align-items-center">
+                  <div>
+                    <Image
+                      onClick={() => goBack()}
+                      style={{ cursor: "pointer" }}
+                      src={icons.back}
+                      height={15}
+                    />
                   </div>
-
-                  <div className="col-md-6 col-xl-3">
-                    <Card
-                      style={{
-                        borderWidth: 1.5,
-                        borderColor: "#e8edff",
-                        backgroundColor: "transparent",
-                      }}
-                    >
-                      <div className="">
-                        <div>
-                          <span className="selectionText text-secondary">
-                            {"Selected Candidates"}
-                          </span>
-                        </div>
-
-                        <div>
-                          <span
-                            className={`${corporateScheduleDetails?.candidate_details
-                              ?.selected_candidates
-                              ? "text-primary"
-                              : "text-secondary"
-                              } titleText`}
-                          >
-                            {
-                              corporateScheduleDetails?.candidate_details
-                                ?.selected_candidates
-                            }
-                          </span>
-                          {corporateScheduleDetails?.vacancies && (
-                            <span className="selectionText text-secondary">
-                              {"/"}
-                              {corporateScheduleDetails?.vacancies}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    </Card>
-                  </div>
-
-                  <div className="col-md-6 col-xl-3">
-                    <Card
-                      style={{
-                        borderWidth: 1.5,
-                        borderColor: "#e8edff",
-                        backgroundColor: "transparent",
-                      }}
-                    >
-                      <div className="">
-                        <div>
-                          <span className="selectionText text-secondary">
-                            {"Rejected Candidates"}
-                          </span>
-                        </div>
-
-                        <div>
-                          <span className="titleText text-secondary">
-                            {
-                              corporateScheduleDetails?.candidate_details
-                                ?.rejected_candidates
-                            }
-                          </span>
-                        </div>
-                      </div>
-                    </Card>
-                  </div>
-
-                  <div className="col-md-6 col-xl-3">
-                    <Card
-                      style={{
-                        borderWidth: 1.5,
-                        borderColor: "#e8edff",
-                        backgroundColor: "transparent",
-                      }}
-                    >
-                      <div className="">
-                        <div>
-                          <span className="selectionText text-secondary">
-                            {"Yet to Start"}
-                          </span>
-                        </div>
-
-                        <div>
-                          <span className="titleText text-secondary">
-                            {
-                              corporateScheduleDetails?.candidate_details
-                                ?.yet_to_attend_candidates
-                            }
-                          </span>
-                        </div>
-                      </div>
-                    </Card>
-                  </div>
-                </div>
-              )}
-
-              {(candidatesList &&
-                candidatesList?.corporate_candidate_details &&
-                candidatesList?.corporate_candidate_details?.data &&
-                candidatesList?.corporate_candidate_details?.data.length > 0) ||
-                isCandidatesExist ||
-                searchCandidate ? (
-                <div className="mt-5">
-                  <Card
-                    style={{
-                      borderWidth: 1.5,
-                      borderColor: "#e8edff",
-                      backgroundColor: "transparent",
-                    }}
-                  >
-                    <div>
-                      <div className="p-sm-3 p-0">
-                        <div className="d-flex flex-sm-row flex-column">
-                          <div className="">
-                            <span className="headingText text-secondary">
-                              {"Candidates"}
-                            </span>
-                          </div>
-                          <div>
-                            <Badge
-                              className="text-primary text-lowercase mt-1 font-weight-800 ml-sm-4"
-                              style={{
-                                backgroundColor: "#ebe4ff",
-                                borderRadius: 40,
-                                fontSize: 16,
-                                borderWidth: 0,
-                              }}
-                              text={
-                                corporateScheduleDetails?.candidate_details
-                                  ?.selected_candidates
-                                  ? `${corporateScheduleDetails?.candidate_details?.selected_candidates} selected`
-                                  : ""
-                              }
-                            />
-                          </div>
-                        </div>
-                        <div
-                          className="px-2 d-flex flex-wrap justify-content-between align-items-center"
-                          style={{ marginTop: 35 }}
-                        >
-                          <div className="col-sm-4">
-                            <Input
-                              placeHolder={"Name, Email, Phone..."}
-                              onChange={(e) => {
-                                setSearchCandidate(e.target.value);
-                              }}
-                              value={searchCandidate}
-                              onFocus={() => {
-                                setIsCandidatesExist(true);
-                              }}
-                              onBlur={() => {
-                                setIsCandidatesExist(false);
-                              }}
-                            />
-                          </div>
-                          <div className="col-sm-3 col mr-3">
-                            <DropDown
-                              id="StatusNote"
-                              className={"form-control-md rounded-sm"}
-                              data={statusList}
-                              selected={statusNote.value}
-                              onChange={statusNote.onChange}
-                            />
-                          </div>
-
-                          {!corporateScheduleDetails?.is_closed && (
-                            <div className="row pr-md-5 pr-0 pl-sm-0 pl-4">
-                              <div className="pl-sm-0">
-                                <DropzoneFilePicker
-                                  bulkButtonSize={"lg"}
-                                  title={"Upload Candidates"}
-                                  onSelect={(data) => {
-                                    let eventPickers = [data]
-                                      ?.toString()
-                                      .replace(/^data:(.*,)?/, "");
-                                    setCandidateBulkUploadData(eventPickers);
-                                  }}
-                                  onSubmitClick={() => {
-                                    bulkUploadCandidatesHandler();
-                                  }}
-                                  onTemplateClick={downloadCSVTemplate}
-                                  bulkButtonStyle={{
-                                    paddingLeft: 20,
-                                    paddingRight: 20,
-                                    paddingTop: 12,
-                                    paddingBottom: 12,
-                                  }}
-                                  outline
-                                />
-                              </div>
-                              <div>
-                                <Button
-                                  className="ml-sm-0 ml-2 ml-md-4"
-                                  text={"Add"}
-                                  size="lg"
-                                  style={{
-                                    borderRadius: 4,
-                                    paddingLeft: 45,
-                                    paddingRight: 45,
-                                    marginBottom: 30,
-                                    paddingTop: 11,
-                                    paddingBottom: 11,
-                                  }}
-                                  onClick={addNewCandidateModal.show}
-                                />
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-
-                      {candidatesList &&
-                        candidatesList?.corporate_candidate_details &&
-                        candidatesList?.corporate_candidate_details?.data &&
-                        candidatesList?.corporate_candidate_details?.data.length >
-                        0 ? (
-                        <div className={"row px-0 mx--4"}>
-                          <div
-                            className={
-                              "col-sm-12 px-0 overflow-auto overflow-hide"
-                            }
-                          >
-                            <CommonTable
-                              isPagination={candidatesListNumOfPages > 1}
-                              tableDataSet={
-                                candidatesList?.corporate_candidate_details
-                              }
-                              displayDataSet={normalizedTableData(
-                                candidatesList
-                              )}
-                              noOfPage={candidatesListNumOfPages}
-                              currentPage={candidatesListCurrentPages}
-                              paginationNumberClick={(currentPage) => {
-                                getCandidatesCorporate(
-                                  paginationHandler("current", currentPage)
-                                );
-                              }}
-                              previousClick={() => {
-                                getCandidatesCorporate(
-                                  paginationHandler(
-                                    "prev",
-                                    candidatesListCurrentPages
-                                  )
-                                );
-                              }}
-                              nextClick={() => {
-                                getCandidatesCorporate(
-                                  paginationHandler(
-                                    "next",
-                                    candidatesListCurrentPages
-                                  )
-                                );
-                              }}
-                            />
-                          </div>
-                        </div>
-                      ) : (
-                        <div
-                          className={
-                            "d-flex  justify-content-center align-items-center mx-auto my-9 "
-                          }
-                        >
-                          <NoRecordsFound />
-                        </div>
+                  <div className="pl-3">
+                    <span className="headingText text-secondary">
+                      {convertToUpperCase(
+                        corporateScheduleDetails?.job_description?.position
                       )}
-                    </div>
-                  </Card>
+                    </span>
+                  </div>
                 </div>
-              ) : (
-                <div></div>
-              )}
-            </>
-          )}
-
-          <div className="mt-6">
-            <div>
-              <span className="headingText text-secondary">
-                {"Job Details"}
-              </span>
-            </div>
-            {corporateScheduleDetails?.job_description?.details.length <
-              VIEW_MORE_LENGTH || jdMore ? (
-              <div className="pt-3">
-                <span>
-                  {corporateScheduleDetails?.job_description?.details}
-                </span>
-
-                {jdMore && (
-                  <span
-                    className="text-primary font-weight-800 pointer"
-                    onClick={() => setJdMore(false)}
-                  >
-                    {"  View Less"}
+                <div className="pl-4">
+                  <span className="text-secondary">
+                    {corporateScheduleDetails?.job_description?.experience}
                   </span>
+                </div>
+              </div>
+              <div className="d-flex align-items-center">
+                <div className="pl-3 pl-sm-0">
+                  <span className="headingText text-secondary">
+                    {`${corporateScheduleDetails?.vacancies ?? ""} ${
+                      corporateScheduleDetails?.vacancies > 1
+                        ? "Vacancies"
+                        : "Vacancy"
+                    }`}
+                  </span>
+                </div>
+                {!corporateScheduleDetails?.is_closed && (
+                  <div className="pl-3">
+                    <MenuBar
+                      menuData={MODIFY_OPTION}
+                      onClick={(action) => {
+                        setSelectedModifyOption(action);
+                        if (action.name === "Modify Deadlines") {
+                          modifyDeadlineHandler();
+                        } else if (action.name === "Close JD") {
+                          closeJdModal.show();
+                        }
+                      }}
+                      toggleIcon={icons.more}
+                    />
+                  </div>
                 )}
               </div>
-            ) : (
-              <div>
-                <span>
-                  {corporateScheduleDetails?.job_description?.details.slice(
-                    0,
-                    VIEW_MORE_LENGTH
-                  ) + " ... "}
-                </span>
-                <span
-                  className="text-primary font-weight-800 pointer"
-                  onClick={() => setJdMore(true)}
-                >
-                  View More
-                </span>
-              </div>
-            )}
-          </div>
-
-          <div className="mt-6">
-            <div>
-              <span className="headingText text-secondary">
-                {"Other Information"}
-              </span>
             </div>
-            <div className="pt-3">
-              <Card
-                style={{
-                  borderWidth: 1.5,
-                  borderColor: "#e8edff",
-                  backgroundColor: "transparent",
-                }}
-              >
-                <div className="row p-lg-5 p-2">
-                  <div className="col-sm-4">
-                    <div className="text-secondary">
-                      <span>Department</span>
-                    </div>
-                    <div className="text-secondary">
-                      <span
-                        className="font-weight-bolder"
-                        style={{ fontSize: 18 }}
-                      >
-                        {corporateScheduleDetails?.department}
-                      </span>
-                    </div>
-                  </div>
 
-                  <div className="col-sm-4 pt-4 pt-sm-0">
-                    <div className="text-secondary">
-                      <span>Interview Duration</span>
-                    </div>
-                    <div className="text-secondary">
-                      <span
-                        className="font-weight-bolder"
-                        style={{ fontSize: 18 }}
-                      >
-                        {`${corporateScheduleDetails?.interview_duration || 0
-                          } minutes`}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="col-sm-4 pt-4 pt-sm-0">
-                    <div className="text-secondary">
-                      <span>Candidate Deadline</span>
-                    </div>
-                    <div className="text-secondary">
-                      <span
-                        className="font-weight-bolder"
-                        style={{ fontSize: 18 }}
-                      >
-                        {displayFormatDate(
-                          corporateScheduleDetails?.candidate_deadline
-                        )}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="col-sm-4 mt-sm-5 pt-4 pt-sm-0">
-                    <div className="text-secondary">
-                      <span>Created By</span>
-                    </div>
-                    <div className="text-secondary">
-                      <span
-                        className="font-weight-bolder"
-                        style={{ fontSize: 18 }}
-                      >
-                        {corporateScheduleDetails?.created_by}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="col-sm-4 mt-sm-5 pt-4 pt-sm-0">
-                    <div className="text-secondary">
-                      <span>Created At</span>
-                    </div>
-                    <div className="text-secondary">
-                      <span
-                        className="font-weight-bolder"
-                        style={{ fontSize: 18 }}
-                      >
-                        {displayFormatDate(
-                          corporateScheduleDetails?.created_at
-                        )}
-                      </span>
-                    </div>
+            {candidatesList &&
+            candidatesList?.candidate_count === 0 &&
+            !corporateScheduleDetails?.is_closed ? (
+              <div className="mt-5 text-center">
+                <div>
+                  <span className="titleText text-secondary">
+                    {"Start adding your Candidates Now !"}
+                  </span>
+                </div>
+                <div className="pt-2 px-xl-3 px-0">
+                  <span className="text-default" style={{ fontSize: 16 }}>
+                    {
+                      "Start adding the candidates with their email and phone number. intrvu SPACE instantly schedules interviews and sends the interview invite link over email and message with the deadlines before which they can join anytime of their preference"
+                    }
+                  </span>
+                </div>
+                <div className="row mt-5 justify-content-center">
+                  <Button
+                    text={"Add Manually"}
+                    size="lg"
+                    style={{
+                      borderRadius: 4,
+                      paddingLeft: 70,
+                      paddingRight: 70,
+                    }}
+                    onClick={addNewCandidateModal.show}
+                  />
+                  <div className="mt-5 mt-sm-0 mr-3 mr-sm-0 pl-2 pl-sm-2">
+                    <DropzoneFilePicker
+                      bulkButtonSize={"lg"}
+                      title={"Upload Candidates"}
+                      onSelect={(data) => {
+                        let eventPickers = [data]
+                          ?.toString()
+                          .replace(/^data:(.*,)?/, "");
+                        setCandidateBulkUploadData(eventPickers);
+                      }}
+                      onSubmitClick={() => {
+                        bulkUploadCandidatesHandler();
+                      }}
+                      onTemplateClick={() => downloadCSVTemplate()}
+                    />
                   </div>
                 </div>
-              </Card>
+              </div>
+            ) : (
+              <>
+                {candidatesList && candidatesList?.candidate_count > 0 && (
+                  <div className="mt-6 row">
+                    <div className="col-md-6 col-xl-3">
+                      <Card
+                        style={{
+                          borderWidth: 1.5,
+                          borderColor: "#e8edff",
+                          backgroundColor: "transparent",
+                        }}
+                      >
+                        <div className="pl-0">
+                          <div>
+                            <span className="selectionText text-secondary">
+                              {"Total Candidates"}
+                            </span>
+                          </div>
+
+                          <div className="">
+                            <span className="titleText text-secondary">
+                              {
+                                corporateScheduleDetails?.candidate_details
+                                  ?.total_candidates
+                              }
+                            </span>
+                          </div>
+                        </div>
+                      </Card>
+                    </div>
+
+                    <div className="col-md-6 col-xl-3">
+                      <Card
+                        style={{
+                          borderWidth: 1.5,
+                          borderColor: "#e8edff",
+                          backgroundColor: "transparent",
+                        }}
+                      >
+                        <div className="">
+                          <div>
+                            <span className="selectionText text-secondary">
+                              {"Selected Candidates"}
+                            </span>
+                          </div>
+
+                          <div>
+                            <span
+                              className={`${
+                                corporateScheduleDetails?.candidate_details
+                                  ?.selected_candidates
+                                  ? "text-primary"
+                                  : "text-secondary"
+                              } titleText`}
+                            >
+                              {
+                                corporateScheduleDetails?.candidate_details
+                                  ?.selected_candidates
+                              }
+                            </span>
+                            {corporateScheduleDetails?.vacancies && (
+                              <span className="selectionText text-secondary">
+                                {"/"}
+                                {corporateScheduleDetails?.vacancies}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      </Card>
+                    </div>
+
+                    <div className="col-md-6 col-xl-3">
+                      <Card
+                        style={{
+                          borderWidth: 1.5,
+                          borderColor: "#e8edff",
+                          backgroundColor: "transparent",
+                        }}
+                      >
+                        <div className="">
+                          <div>
+                            <span className="selectionText text-secondary">
+                              {"Rejected Candidates"}
+                            </span>
+                          </div>
+
+                          <div>
+                            <span className="titleText text-secondary">
+                              {
+                                corporateScheduleDetails?.candidate_details
+                                  ?.rejected_candidates
+                              }
+                            </span>
+                          </div>
+                        </div>
+                      </Card>
+                    </div>
+
+                    <div className="col-md-6 col-xl-3">
+                      <Card
+                        style={{
+                          borderWidth: 1.5,
+                          borderColor: "#e8edff",
+                          backgroundColor: "transparent",
+                        }}
+                      >
+                        <div className="">
+                          <div>
+                            <span className="selectionText text-secondary">
+                              {"Yet to Start"}
+                            </span>
+                          </div>
+
+                          <div>
+                            <span className="titleText text-secondary">
+                              {
+                                corporateScheduleDetails?.candidate_details
+                                  ?.yet_to_attend_candidates
+                              }
+                            </span>
+                          </div>
+                        </div>
+                      </Card>
+                    </div>
+                  </div>
+                )}
+
+                {candidatesList && candidatesList?.candidate_count > 0 ? (
+                  <div className="mt-5">
+                    <Card
+                      style={{
+                        borderWidth: 1.5,
+                        borderColor: "#e8edff",
+                        backgroundColor: "transparent",
+                      }}
+                    >
+                      <div>
+                        <div className="p-sm-3 p-0">
+                          <div className="d-flex flex-sm-row flex-column align-items-center">
+                            <div className="">
+                              <span className="headingText text-secondary">
+                                {"Candidates"}
+                              </span>
+                            </div>
+                            <div>
+                              <Badge
+                                className="text-primary text-lowercase font-weight-800 ml-sm-4"
+                                style={{
+                                  backgroundColor: "#ebe4ff",
+                                  borderRadius: 40,
+                                  fontSize: 16,
+                                  borderWidth: 0,
+                                }}
+                                text={
+                                  corporateScheduleDetails?.candidate_details
+                                    ?.selected_candidates
+                                    ? `${corporateScheduleDetails?.candidate_details?.selected_candidates} selected`
+                                    : ""
+                                }
+                              />
+                            </div>
+                          </div>
+                          <div
+                            className="px-2 d-flex flex-wrap justify-content-between align-items-center"
+                            style={{ marginTop: 35 }}
+                          >
+                            <div className="col-sm-4">
+                              <Input
+                                placeHolder={"Name, Email, Phone..."}
+                                onChange={(e) => {
+                                  setSearchCandidate(e.target.value);
+                                }}
+                                value={searchCandidate}
+                                onFocus={() => {
+                                  setIsCandidatesExist(true);
+                                }}
+                                onBlur={() => {
+                                  setIsCandidatesExist(false);
+                                }}
+                              />
+                            </div>
+                            <div className="col-sm-4 col mr-3">
+                              <DropDown
+                                id="StatusNote"
+                                className={"form-control-md rounded-sm"}
+                                data={statusList}
+                                selected={statusNote.value}
+                                onChange={statusNote.onChange}
+                              />
+                            </div>
+
+                            {!corporateScheduleDetails?.is_closed && (
+                              <div className="row pr-md-5 pr-0 pl-sm-0 pl-4">
+                                <div className="pl-sm-0">
+                                  <DropzoneFilePicker
+                                    bulkButtonSize={"lg"}
+                                    title={"Upload Candidates"}
+                                    onSelect={(data) => {
+                                      let eventPickers = [data]
+                                        ?.toString()
+                                        .replace(/^data:(.*,)?/, "");
+                                      setCandidateBulkUploadData(eventPickers);
+                                    }}
+                                    onSubmitClick={() => {
+                                      bulkUploadCandidatesHandler();
+                                    }}
+                                    onTemplateClick={downloadCSVTemplate}
+                                    bulkButtonStyle={{
+                                      paddingLeft: 20,
+                                      paddingRight: 20,
+                                      paddingTop: 12,
+                                      paddingBottom: 12,
+                                    }}
+                                    outline
+                                  />
+                                </div>
+                                <div>
+                                  <Button
+                                    className="ml-sm-0 ml-2 ml-md-4"
+                                    text={"Add"}
+                                    size="lg"
+                                    style={{
+                                      borderRadius: 4,
+                                      paddingLeft: 45,
+                                      paddingRight: 45,
+                                      marginBottom: 30,
+                                      paddingTop: 11,
+                                      paddingBottom: 11,
+                                    }}
+                                    onClick={addNewCandidateModal.show}
+                                  />
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+
+                        {candidatesList &&
+                        candidatesList?.candidate_count > 0 ? (
+                          <div className={"row px-0 mx--4"}>
+                            <div
+                              className={
+                                "col-sm-12 px-0 overflow-auto overflow-hide"
+                              }
+                            >
+                              <CommonTable
+                                isPagination={candidatesListNumOfPages > 1}
+                                tableDataSet={
+                                  candidatesList?.corporate_candidate_details
+                                }
+                                displayDataSet={normalizedTableData(
+                                  candidatesList
+                                )}
+                                noOfPage={candidatesListNumOfPages}
+                                currentPage={candidatesListCurrentPages}
+                                paginationNumberClick={(currentPage) => {
+                                  getCandidatesCorporate(
+                                    paginationHandler("current", currentPage)
+                                  );
+                                }}
+                                previousClick={() => {
+                                  getCandidatesCorporate(
+                                    paginationHandler(
+                                      "prev",
+                                      candidatesListCurrentPages
+                                    )
+                                  );
+                                }}
+                                nextClick={() => {
+                                  getCandidatesCorporate(
+                                    paginationHandler(
+                                      "next",
+                                      candidatesListCurrentPages
+                                    )
+                                  );
+                                }}
+                              />
+                            </div>
+                          </div>
+                        ) : (
+                          <div
+                            className={
+                              "d-flex  justify-content-center align-items-center mx-auto my-9 "
+                            }
+                          >
+                            <NoDataFound />
+                          </div>
+                        )}
+                      </div>
+                    </Card>
+                  </div>
+                ) : (
+                  <div></div>
+                )}
+              </>
+            )}
+
+            <div className="mt-6">
+              <div>
+                <span className="headingText text-secondary">
+                  {"Job Details"}
+                </span>
+              </div>
+              {corporateScheduleDetails?.job_description?.details.length <
+                VIEW_MORE_LENGTH || jdMore ? (
+                <div className="pt-3">
+                  <span>
+                    {corporateScheduleDetails?.job_description?.details}
+                  </span>
+
+                  {jdMore && (
+                    <span
+                      className="text-primary font-weight-800 pointer"
+                      onClick={() => setJdMore(false)}
+                    >
+                      {"  View Less"}
+                    </span>
+                  )}
+                </div>
+              ) : (
+                <div>
+                  <span>
+                    {corporateScheduleDetails?.job_description?.details.slice(
+                      0,
+                      VIEW_MORE_LENGTH
+                    ) + " ... "}
+                  </span>
+                  <span
+                    className="text-primary font-weight-800 pointer"
+                    onClick={() => setJdMore(true)}
+                  >
+                    View More
+                  </span>
+                </div>
+              )}
+            </div>
+
+            <div className="mt-6">
+              <div>
+                <span className="headingText text-secondary">
+                  {"Other Information"}
+                </span>
+              </div>
+              <div className="pt-3">
+                <Card
+                  style={{
+                    borderWidth: 1.5,
+                    borderColor: "#e8edff",
+                    backgroundColor: "transparent",
+                  }}
+                >
+                  <div className="row p-lg-5 p-2">
+                    <div className="col-sm-4">
+                      <div className="text-secondary">
+                        <span>Department</span>
+                      </div>
+                      <div className="text-secondary">
+                        <span
+                          className="font-weight-bolder"
+                          style={{ fontSize: 18 }}
+                        >
+                          {corporateScheduleDetails?.department}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="col-sm-4 pt-4 pt-sm-0">
+                      <div className="text-secondary">
+                        <span>Interview Duration</span>
+                      </div>
+                      <div className="text-secondary">
+                        <span
+                          className="font-weight-bolder"
+                          style={{ fontSize: 18 }}
+                        >
+                          {`${
+                            corporateScheduleDetails?.interview_duration || 0
+                          } minutes`}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="col-sm-4 pt-4 pt-sm-0">
+                      <div className="text-secondary">
+                        <span>Candidate Deadline</span>
+                      </div>
+                      <div className="text-secondary">
+                        <span
+                          className="font-weight-bolder"
+                          style={{ fontSize: 18 }}
+                        >
+                          {displayFormatDate(
+                            corporateScheduleDetails?.candidate_deadline
+                          )}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="col-sm-4 mt-sm-5 pt-4 pt-sm-0">
+                      <div className="text-secondary">
+                        <span>Created By</span>
+                      </div>
+                      <div className="text-secondary">
+                        <span
+                          className="font-weight-bolder"
+                          style={{ fontSize: 18 }}
+                        >
+                          {corporateScheduleDetails?.created_by}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="col-sm-4 mt-sm-5 pt-4 pt-sm-0">
+                      <div className="text-secondary">
+                        <span>Created At</span>
+                      </div>
+                      <div className="text-secondary">
+                        <span
+                          className="font-weight-bolder"
+                          style={{ fontSize: 18 }}
+                        >
+                          {displayFormatDate(
+                            corporateScheduleDetails?.created_at
+                          )}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </Card>
+              </div>
             </div>
           </div>
-        </div>
+        ) : (
+          <div
+            className={
+              "d-flex h-100vh justify-content-center align-items-center mx-auto"
+            }
+          >
+            <NoDataFound />
+          </div>
+        )}
       </div>
       <Modal
         isOpen={addNewCandidateModal.visible}
@@ -1037,7 +1094,7 @@ function VariantInfo() {
           resetValues();
         }}
       >
-        <div className="row  m-0 p-0">
+        <div className="row  m-0 p-0 mt--5">
           <div className="col-xl-12 d-flex bg-white align-items-center justify-content-center  my-sm-0 my-4">
             <div className="col-12 col-md-12 col-lg-12">
               <Heading
@@ -1082,6 +1139,7 @@ function VariantInfo() {
                 <Button
                   size={"md"}
                   text={"Submit"}
+                  loading={addCandidateLoader.loader}
                   onClick={generateNewCandidateHandler}
                   style={{ borderRadius: 4, paddingLeft: 70, paddingRight: 70 }}
                 />
@@ -1097,27 +1155,28 @@ function VariantInfo() {
           resetValues();
         }}
       >
-        <div className="px-md-5 px-3 text-secondary mb-3">
+        <div className="px-md-5 px-3 text-secondary mb-3 mt--5">
           <Heading
             heading={"Modify Deadline"}
-            style={{ fontSize: 26, color: "#2f1c6a" }}
+            className={"text-secondary display-4"}
           />
-          <div className="d-flex flex-sm-row flex-column justify-content-between mt-4">
-            <div className="col-sm-6">
+          <div className="d-flex flex-column justify-content-between mt-4">
+            <div className="col">
               <DateTimePicker
                 disableFuture={true}
-                heading={"Schedule Date"}
-                placeholder={"Schedule Date"}
-                value={scheduleDate}
+                heading={"Deadline Date"}
+                placeholder={"Deadline Date"}
+                value={displayFormatDate(displayDeadlineDate).split(",")[0]}
                 onChange={(e) => {
                   setScheduleDate(e);
+                  setDisplayDeadlineDate(e)
                 }}
               />
             </div>
-            <div className="col-sm-6">
-              <InputHeading id={"End Time"} heading={"End Time"} />
+            <div className="col">
+              <InputHeading id={"Deadline Time"} heading={"Deadline Time"} />
               <Input
-                id="End Time"
+                id="Deadline Time"
                 type="time"
                 value={endTime}
                 onChange={(e) => {
@@ -1137,13 +1196,6 @@ function VariantInfo() {
         </div>
       </Modal>
 
-      <Modal
-        isOpen={preparingInterviewModal.visible}
-        onClose={preparingInterviewModal.hide}
-      >
-        <PreparingYourInterview />
-      </Modal>
-
       {/* remove candidate modal */}
 
       <Modal
@@ -1153,7 +1205,7 @@ function VariantInfo() {
           setRemoveCandidateData(undefined);
         }}
       >
-        <div className="mt--3 mx-4 mb-2">
+        <div className="mt--5 mx-4 mb-2">
           <Heading
             heading={`Remove Candidate`}
             style={{ fontSize: 26, color: "#2f1c6a" }}
@@ -1165,7 +1217,7 @@ function VariantInfo() {
             </span>
           </div>
 
-          <div className="d-flex justify-content-end mt-5">
+          <div className="d-flex justify-content-end mt-4">
             <div>
               <Button
                 className={"rounded-sm btn-white"}
@@ -1202,7 +1254,7 @@ function VariantInfo() {
           setCloseCandidateData(undefined);
         }}
       >
-        <div className="mt--3 mx-4 mb-2">
+        <div className="mt--5 mx-4 mb-2">
           <Heading
             heading={`Disable Candidate`}
             style={{ fontSize: 26, color: "#2f1c6a" }}
@@ -1215,7 +1267,7 @@ function VariantInfo() {
             </span>
           </div>
 
-          <div className="d-flex justify-content-end mt-5">
+          <div className="d-flex justify-content-end mt-4">
             <div>
               <Button
                 className={"rounded-sm btn-white"}
@@ -1240,6 +1292,96 @@ function VariantInfo() {
               />
             </div>
           </div>
+        </div>
+      </Modal>
+
+      {/* close JD modal */}
+
+      <Modal
+        isOpen={closeJdModal.visible}
+        onClose={() => {
+          closeJdModal.hide();
+          setCloseCandidateData(undefined);
+        }}
+      >
+        <div className="mt--5 mx-4 mb-2">
+          <Heading
+            heading={`Close JD`}
+            style={{ fontSize: 26, color: "#2f1c6a" }}
+          />
+
+          <div>
+            <span className="text-default">
+              {"Are you sure, want to close this JD?"}
+              <br />
+            </span>
+          </div>
+
+          <div className="d-flex justify-content-end mt-4">
+            <div>
+              <Button
+                className={"rounded-sm btn-white"}
+                text={"Cancel"}
+                onClick={() => {
+                  closeJdModal.hide();
+                  setCloseCandidateData(undefined);
+                }}
+              />
+            </div>
+
+            <div className="ml-3">
+              <Button
+                className={"rounded-sm"}
+                text={"Confirm"}
+                onClick={() => {
+                  corporateScheduleActionsHandler(selectedModifyOption.name);
+                }}
+              />
+            </div>
+          </div>
+        </div>
+      </Modal>
+
+      {/** watch interview modal */}
+
+      <Modal
+        isOpen={openWatchInterviewModal.visible}
+        size="lg"
+        onClose={() => {
+          openWatchInterviewModal.hide();
+          setWatchInterviewUrl(undefined);
+        }}
+      >
+        <div className="mt--5 mx-4 mb-2">
+          <Heading
+            className={"display-4 text-secondary"}
+            heading={`Interview Video (${watchInterviewUrl?.interview_duration} minutes)`}
+          />
+
+          {watchInterviewUrl && watchInterviewUrl?.recording_url ? (
+            <video controls className="d-flex col pt--3">
+              <source
+                src={
+                  SERVER +
+                  (watchInterviewUrl.recording_url.charAt(0) === "/"
+                    ? watchInterviewUrl.recording_url.slice(1)
+                    : watchInterviewUrl.recording_url)
+                }
+                type="video/mp4"
+              />
+            </video>
+          ) : (
+            <div className="d-flex justify-content-center">
+              <div className="mt-5 mb-5">
+                <div className="align-self-center">
+                  <Image src={image.noVideo} />
+                </div>
+                <div className="mt-2" style={{ color: "#e3e5e8" }}>
+                  {"No Video Found"}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </Modal>
     </>

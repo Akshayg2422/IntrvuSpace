@@ -210,5 +210,13 @@ export const URL_ADD_TEAM_MATE_DATA = EMPLOYEE + 'addTeamMate'
 // GETTeamMate
 
 export const URL_GET_TEAM_MATE_DATA = EMPLOYEE + 'getTeamMate'
+// registerAsCompany
+
+export const URL_REGISTER_AS_COMPANY = EMPLOYEE + 'registerCompanyCorporate'
+
+
+//getOngoingSchedules
+
+export const GRT_ONGOING_SCHEDULES= ASSISTANT +'getOngoingSchedules'
 
 

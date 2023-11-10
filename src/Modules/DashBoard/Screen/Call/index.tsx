@@ -1,15 +1,31 @@
 import { icons } from "@Assets";
-import { AnimatedImage, Back, Button, Image, Modal, Spinner } from "@Components";
+import {
+  AnimatedImage,
+  Back,
+  Button,
+  Heading,
+  Image,
+  Modal,
+  Spinner,
+} from "@Components";
 import { useLoader, useModal, useNavigation } from "@Hooks";
 import { CallHeader, CallHeaderMobile, Guidelines, Report } from "@Modules";
 import {
   canStartInterview,
   closeInterview,
+  getJdItemList,
   getScheduleBasicInfo,
 } from "@Redux";
 import { CALL_WEBSOCKET } from "@Services";
 import { color } from "@Themes";
-import { capitalizeFirstLetter, getOperatingSystem, getShortName, gotoPermissionSetting, hasMicrophonePermission } from "@Utils";
+import {
+  capitalizeFirstLetter,
+  getOperatingSystem,
+  getShortName,
+  gotoPermissionSetting,
+  hasCameraPermission,
+  hasMicrophonePermission,
+} from "@Utils";
 import type { Harker } from "hark";
 import type { Encoder } from "lamejs";
 import moment from "moment";
@@ -17,6 +33,7 @@ import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { RecordRTCPromisesHandler, StereoAudioRecorder } from "recordrtc";
+import { useScreenRecorder } from "./useScreenRecorder";
 
 const compare_moment_format = "YYYY-MM-DDHH:mm:ss";
 
@@ -51,20 +68,12 @@ const NETWORK_DESIGN = [
 ];
 
 function Call() {
-
-
-
-  const SPEECH_VOICE_UP = 47
-
-
-
-
+  const SPEECH_VOICE_UP = 47;
 
   const intervalIdRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const socketInterviewRef = useRef<ReturnType<typeof setInterval> | null>(null);
-
-
-
+  const socketInterviewRef = useRef<ReturnType<typeof setInterval> | null>(
+    null
+  );
 
   const speakingShouldProcess = useRef<any>(false);
 
@@ -112,6 +121,9 @@ function Call() {
   const [isTtfSpeaking, setIsTtfSpeaking] = useState<boolean>(false);
 
   const [networkError, setNetworkError] = useState(false);
+  const [networkErrorResponse, setNetworkErrorResponse] =
+    useState<any>(undefined);
+
   const [websocketError, setWebSocketError] = useState(false);
 
   const lastAiResponseTime = useRef<any>(undefined);
@@ -123,24 +135,19 @@ function Call() {
 
   // microphone permission states
 
-
-  const micPermissionModal = useModal(false)
-
-
+  const micPermissionModal = useModal(false);
 
   const WEBSOCKET_PROCESSING = 1;
   const WEBSOCKET_IDLE = -1;
   const websocketStatus = useRef(WEBSOCKET_IDLE);
 
-
   /**
    * permission modal
-   * 
+   *
    */
 
   const browserSpeakPermission = useModal(false);
-  const [aiResponse, setAiResponse] = useState(undefined)
-
+  const [aiResponse, setAiResponse] = useState(undefined);
 
   function generateRandomID() {
     const min = 100000;
@@ -151,7 +158,6 @@ function Call() {
 
   const speak = (ttsBase64) => {
     setIsTtfSpeaking(true);
-
 
     const ttsData = Array.from(atob(ttsBase64));
     const audioBlob = new Blob(
@@ -170,8 +176,7 @@ function Call() {
       setIsTtfSpeaking(false);
     };
 
-    audioElementRef.current.onloadstart = function () {
-    };
+    audioElementRef.current.onloadstart = function () {};
     audioElementRef.current.onended = function () {
       setIsTtfSpeaking(false);
       if (closeCall.current === true) {
@@ -185,16 +190,16 @@ function Call() {
     audioElementRef.current.play().catch((error) => {
       browserSpeakPermission.show();
     });
-
   };
 
   function onEndCallHandler() {
     proceedStopListening();
     setButtonConditional("end");
-    if (audioElementRef.current)
-      audioElementRef.current.pause();
+    if (audioElementRef.current) audioElementRef.current.pause();
     getBasicInfo();
-    window.location.reload();
+    setTimeout(() => {
+      window.location.reload();
+    }, 500);
   }
 
   const activeResponseText = useRef<any>("start");
@@ -227,6 +232,49 @@ function Call() {
   const socketRef = useRef<any>(null);
   const videoRecorderRef = useRef(null);
 
+  const interviewLimitModal = useModal(false);
+  const camPermissionModal = useModal(false);
+
+  const {
+    startScreenRecording,
+    stopScreenRecording,
+    isScreenRecording,
+    recordStatus,
+    setRecordStatus,
+    recordedAudioData,
+    setRecordedAudioData,
+    recordedVideoData,
+    isScreenRecordingReady,
+    setIsScreenRecordingReady,
+  } = useScreenRecorder();
+
+  console.log("recordSttaus==>", recordStatus);
+
+  {
+    /** screen recording */
+  }
+
+  const [isConfirmRecordingModalOpen, setIsConfirmRecordingModalOpen] =
+    useState(false);
+  const [isCancelRecording, setIsCancelRecording] = useState(false);
+  const [isEnableRecording, setIsEnableRecording] = useState(false);
+
+  const [isForceRecord, setIsForceRecord] = useState(true); // static state to force record by default setting false
+
+  {
+    /** interview recording useEffect */
+  }
+
+  useEffect(() => {
+    if (recordStatus) {
+      console.log("9999999999999");
+      startInterviewHandler();
+    } else if (recordStatus === false) {
+      setIsConfirmRecordingModalOpen(true);
+      setRecordStatus(undefined);
+    }
+  }, [recordStatus, isConfirmRecordingModalOpen]);
+
   const proceedHandleResponseV1 = (response) => {
     setProcessCallInprogress(false);
     //// console.log("SpeakText01", response);
@@ -234,7 +282,7 @@ function Call() {
       lastAiResponseTime.current = undefined;
       setNetworkBreakTime(0);
       const { data, rt, uu_action, mapId } = response.next_step[0];
-      setAiResponse(data)
+      setAiResponse(data);
       //// console.log("response.next_step[0]", response.next_step[0]);
 
       if (
@@ -270,18 +318,15 @@ function Call() {
     }
   };
 
-
   function initiateSocket() {
-
     createWebSocket();
     socketInterviewRef.current = setInterval(() => {
-      createWebSocket(true)
+      createWebSocket(true);
       if (proceedOpenCallView.current && socketRef.current) {
-        openCallView()
-        proceedOpenCallView.current = false
+        openCallView();
+        proceedOpenCallView.current = false;
       }
-    }, 3000)
-
+    }, 3000);
   }
 
   const stopIntervalSocket = () => {
@@ -291,42 +336,29 @@ function Call() {
     }
   };
 
-
-
   useEffect(() => {
-
-
     return () => {
       stopIntervalSocket();
 
       if (socketRef.current) {
         try {
-          canConnect.current = false
+          canConnect.current = false;
           socketRef.current.close();
           socketRef.current = null;
-        } catch (e) {
-
-        }
+        } catch (e) {}
         clearInterval(reconnectInterval);
-
       }
     };
-
-  }, [])
+  }, []);
 
   // Create the WebSocket connection only if it's not already established
 
   function createWebSocket(showError = true) {
-
     if (!socketRef.current && canConnect.current) {
-
-
       socketRef.current = new WebSocket(CALL_WEBSOCKET);
       websocketStatus.current = WEBSOCKET_PROCESSING;
 
-
       socketRef.current.addEventListener("open", () => {
-
         //// console.log('Web Socket Opened');
 
         websocketStatus.current = WEBSOCKET_IDLE;
@@ -339,11 +371,11 @@ function Call() {
       });
 
       socketRef.current.addEventListener("onerror", () => {
-        socketRef.current = undefined
-      })
+        socketRef.current = undefined;
+      });
 
       socketRef.current.addEventListener("close", () => {
-        socketRef.current = undefined
+        socketRef.current = undefined;
       });
 
       // Listen for messages
@@ -351,13 +383,8 @@ function Call() {
         const response = JSON.parse(event.data);
         proceedHandleResponseV1(response);
       };
-
-
     }
-
   }
-
-
 
   const sendDataToSocket = async (
     blob: Blob,
@@ -447,21 +474,21 @@ function Call() {
         onSuccess: () => () => {
           loader.hide();
           setNetworkError(false);
+          setNetworkErrorResponse(undefined);
+          interviewLimitModal.hide();
         },
-        onError: () => () => {
+        onError: (response: any) => () => {
+          setNetworkErrorResponse(response);
           setNetworkError(true);
+          interviewLimitModal.show();
           loader.hide();
         },
       })
     );
   };
 
-
-
-
   useEffect(() => {
     return () => {
-
       stopInterval();
 
       if (chunks.current) {
@@ -481,7 +508,6 @@ function Call() {
         listener.current.off("stopped_speaking", onStopSpeaking);
         listener.current.off("volume_change");
         listener.current = null;
-
       }
       if (stream.current) {
         stream.current.getTracks().forEach((track) => track.stop());
@@ -546,9 +572,8 @@ function Call() {
             if (voiceUpSaturation.current === 1)
               isVoiceUpCurrentChunk.current = true;
             else {
-              voiceUpSaturation.current = voiceUpSaturation.current + 1
+              voiceUpSaturation.current = voiceUpSaturation.current + 1;
             }
-
 
             /**
              * extend waiting time if decibile is of talking size
@@ -701,15 +726,15 @@ function Call() {
   };
 
   const onStartSpeaking = () => {
-    console.log('start speaking')
-    isSpeakingRef.current = true
+    console.log("start speaking");
+    isSpeakingRef.current = true;
     setSpeaking(true);
   };
 
   const onStopSpeaking = () => {
-    console.log('stop speaking')
+    console.log("stop speaking");
     setSpeaking(false);
-    isSpeakingRef.current = false
+    isSpeakingRef.current = false;
   };
 
   /**
@@ -741,7 +766,7 @@ function Call() {
 
     sendDataToSocket(blob, isVoiceUpCurrentChunk.current);
     isVoiceUpCurrentChunk.current = false;
-    voiceUpSaturation.current = 0
+    voiceUpSaturation.current = 0;
     //// console.log("calledTTF Data Rec", ttsRef.current, speakingShouldProcess.current)
 
     // if (!ttsRef.current && speakingShouldProcess.current === true) {
@@ -760,6 +785,7 @@ function Call() {
   const validateProceedStartListening = async () => {
     if (!isRecording) {
       startRecording();
+
       setIsRecording(true);
       setMute(false);
     }
@@ -782,13 +808,12 @@ function Call() {
     setMute(!mute);
   }
 
-
   const openCallView = () => {
+    //call screen recording boolean
+    // setIsScreenRecordingReady(true);
 
-    setNetworkError(false)
-
+    setNetworkError(false);
     startInterviewLoader.hide();
-
     startStreamTime.current = moment().add(1, "seconds");
     transcriptionReferenceId.current = generateRandomID();
     // proceedgetChatDetailsApiHandler({ message: "start" }, transcriptionReferenceId.current)
@@ -798,42 +823,52 @@ function Call() {
     setInterviewStarted(true);
     // setTimeout(() => {
     validateProceedStartListening();
-  }
-
+  };
 
   async function startInterviewHandler() {
+    const hasCamPermission = await hasCameraPermission();
+    if (hasCamPermission) {
+      camPermissionModal.hide();
 
-    const hasMicPermission = await hasMicrophonePermission();
+      const hasMicPermission = await hasMicrophonePermission();
+      if (hasMicPermission) {
+        micPermissionModal.hide();
 
-    if (hasMicPermission) {
-      micPermissionModal.hide()
-      const canStartParams = { schedule_id };
+        const canStartParams = { schedule_id };
 
-      startInterviewLoader.show();
+        if (!recordStatus) {
+          await startScreenRecording();
+        } else if (recordStatus) {
+          startInterviewLoader.show();
 
-      intervalIdRef.current = setInterval(() => {
-        dispatch(
-          canStartInterview({
-            params: canStartParams,
-            onSuccess: (res: any) => () => {
+          intervalIdRef.current = setInterval(() => {
+            dispatch(
+              canStartInterview({
+                params: canStartParams,
+                onSuccess: (res: any) => () => {
+                  initiateSocket();
 
-              initiateSocket();
+                  proceedOpenCallView.current = true;
 
-              proceedOpenCallView.current = true
-
-              if (intervalIdRef.current) {
-                clearInterval(intervalIdRef.current);
-              }
-
-            },
-            onError: (error: any) => () => {
-              //// console.log(error);
-            },
-          })
-        );
-      }, INTERVAL_TIME);
+                  if (intervalIdRef.current) {
+                    clearInterval(intervalIdRef.current);
+                  }
+                },
+                onError: (error: any) => () => {
+                  startInterviewLoader.hide();
+                  setNetworkError(true);
+                },
+              })
+            );
+          }, INTERVAL_TIME);
+        } else {
+          startScreenRecording();
+        }
+      } else {
+        micPermissionModal.show();
+      }
     } else {
-      micPermissionModal.show()
+      camPermissionModal.show();
     }
   }
 
@@ -841,9 +876,8 @@ function Call() {
     // isScreenRecording && stopScreenRecording();
     closeCall.current = true;
     onEndCallHandler();
-
-    goBack()
-
+    stopScreenRecording();
+    goBack();
   }
 
   function closeInterviewAPiHandler() {
@@ -854,7 +888,7 @@ function Call() {
         onSuccess: () => () => {
           endInterviewHandler();
         },
-        onError: () => () => { },
+        onError: () => () => {},
       })
     );
   }
@@ -900,22 +934,56 @@ function Call() {
   const IE_IDLE = 2;
 
   // const interviewee_state = voiceUp && !mute ? IE_SPEAKING : IE_IDLE
-  const interviewee_state = !mute && isSpeakingRef.current === true
-    ? IE_SPEAKING
-    : IE_IDLE;
-  // isVoiceUpCurrentChunk.current && 
+  const interviewee_state =
+    !mute && isSpeakingRef.current === true ? IE_SPEAKING : IE_IDLE;
+  // isVoiceUpCurrentChunk.current &&
   let interviewer_state = IV_IDLE;
 
   if (isTtfSpeaking) interviewer_state = IV_SPEAKING;
   else if (!voiceUp && !mute) interviewer_state = IV_PROCESSING;
 
+  {
+    /**screen recording */
+  }
+
+  const closeRecordingModal = () => {
+    setIsConfirmRecordingModalOpen(false);
+    setIsCancelRecording(false);
+    setIsEnableRecording(false);
+  };
+
+  const confirmForceRecord = () => {
+    setIsConfirmRecordingModalOpen(false);
+    setIsCancelRecording(false);
+    startScreenRecording();
+  };
+
+  const cancelRecording = () => {
+    setIsCancelRecording(true);
+    setIsConfirmRecordingModalOpen(true);
+    setRecordStatus(undefined);
+  };
+
+  const enableRecording = () => {
+    setIsConfirmRecordingModalOpen(false);
+    setIsCancelRecording(false);
+    startScreenRecording();
+    setRecordStatus(undefined);
+    setIsEnableRecording(true);
+  };
+
+  const confirmRecording = () => {
+    setIsConfirmRecordingModalOpen(false);
+    setIsCancelRecording(false);
+    startInterviewHandler();
+  };
 
   return (
     <>
       <div
         className="h-100vh"
         style={{
-          backgroundColor: "#FFFFFF"
+          backgroundColor: "#FFFFFF",
         }}
       >
         {!networkError && !websocketError && scheduleInfo && (
@@ -924,13 +992,18 @@ function Call() {
               <>
                 <div className="d-none d-md-block d-lg-block d-xl-block">
                   <div className="d-flex flex-column h-100vh d-none d-md-block">
-                    <div className="position-absolute" style={{
-                      top: '3%',
-                      left: '3%'
-                    }}
+                    <div
+                      className="position-absolute"
+                      style={{
+                        top: "3%",
+                        left: "3%",
+                      }}
                     >
-                      <div className="row align-items-center d-flex flex-column flex-md-row" >
-                        <Back variant={'override'} onClick={endInterviewHandler} />
+                      <div className="row align-items-center d-flex flex-column flex-md-row">
+                        <Back
+                          variant={"override"}
+                          onClick={endInterviewHandler}
+                        />
                         <h4 className="display-4 mb-0 font-weight-bolder text-primary ml-3 d-none d-md-block">{`Interview for the role of ${scheduleInfo?.interviewee_expected_role}`}</h4>
                         <h4 className="mb-0 font-weight-bolder text-primary ml-3 d-block d-md-none">{`Interview for the role of ${scheduleInfo?.interviewee_expected_role}`}</h4>
                       </div>
@@ -943,11 +1016,14 @@ function Call() {
                           shouldBlink={interviewer_state === IV_SPEAKING}
                         />
                         <h3 className="display-3 mb-4 text-primary mt-3">
-                          {capitalizeFirstLetter(scheduleInfo?.interviewer_name)}
+                          {capitalizeFirstLetter(
+                            scheduleInfo?.interviewer_name
+                          )}
                         </h3>
                       </div>
                       <div className="d-flex flex-column align-items-center justify-content-center col-md-6">
                         <AnimatedImage
+                          device={"web"}
                           show={false}
                           showWebCam={showCam}
                           name={getShortName(scheduleInfo?.interviewee_name)}
@@ -960,7 +1036,7 @@ function Call() {
                         </h3>
                       </div>
                     </div>
-                    <div className="position-absolute d-flex align-items-center justify-content-center bottom-0 w-100 mb-5" >
+                    <div className="position-absolute d-flex align-items-center justify-content-center bottom-0 w-100 mb-5">
                       <div className="col-md-6">
                         <CallHeader
                           webcam={showCam}
@@ -987,26 +1063,27 @@ function Call() {
                   </div>
                 </div>
 
-                {
-
-                  /**
-                   * for mobile responsive screen
-                   */
-
-                }
+                {/**
+                 * for mobile responsive screen
+                 */}
 
                 <div className="d-block d-md-none d-lg-none d-xl-none h-100vh">
-                  <div className="d-flex flex-column" >
-                    <div style={{
-                      position: 'fixed',
-                      width: '100%',
-                      height: '90%',
-                    }}>
+                  <div className="d-flex flex-column">
+                    <div
+                      style={{
+                        position: "fixed",
+                        width: "100%",
+                        height: "90%",
+                      }}
+                    >
                       <div className="h-100">
-                        <div className="position-absolute" >
+                        <div className="position-absolute">
                           <div className="col">
                             <div className="d-flex m-2 align-items-center">
-                              <Back variant={'override'} onClick={endInterviewHandler} />
+                              <Back
+                                variant={"override"}
+                                onClick={endInterviewHandler}
+                              />
                               <h4 className="mb-0 font-weight-bolder text-primary ml-3">{`Interview for the role of ${scheduleInfo?.interviewee_expected_role}`}</h4>
                             </div>
                           </div>
@@ -1015,8 +1092,11 @@ function Call() {
                           <div>
                             <AnimatedImage
                               show={false}
+                              device={"mobile"}
                               showWebCam={showCam}
-                              name={getShortName(scheduleInfo?.interviewee_name)}
+                              name={getShortName(
+                                scheduleInfo?.interviewee_name
+                              )}
                               shouldBlink={interviewee_state === IE_SPEAKING}
                             />
                             <h3 className="display-3 mb-4  mt-3 text-center">
@@ -1027,48 +1107,57 @@ function Call() {
                           </div>
                         </div>
                         <div>
-                          <div className="position-absolute" style={{
-                            bottom: "3%",
-                            right: "5%"
-                          }}>
+                          <div
+                            className="position-absolute"
+                            style={{
+                              bottom: "3%",
+                              right: "5%",
+                            }}
+                          >
                             <div>
                               <AnimatedImage
-                                variant={'sm'}
+                                variant={"sm"}
                                 show={interviewer_state === IV_PROCESSING}
-                                name={getShortName(scheduleInfo?.interviewer_name)}
+                                name={getShortName(
+                                  scheduleInfo?.interviewer_name
+                                )}
                                 shouldBlink={interviewer_state === IV_SPEAKING}
                               />
-                              <h3 className="font-weight-600 mt-2 text-primary"> {capitalizeFirstLetter(scheduleInfo?.interviewer_name)}</h3>
+                              <h3 className="font-weight-600 mt-2 text-primary">
+                                {" "}
+                                {capitalizeFirstLetter(
+                                  scheduleInfo?.interviewer_name
+                                )}
+                              </h3>
                             </div>
                           </div>
-
                         </div>
                       </div>
-
                     </div>
 
-                    <div style={{
-                      position: 'fixed',
-                      bottom: 0,
-                      width: '100%',
-                      height: '10%',
-                      backgroundColor: color.callFooter,
-                    }}>
+                    <div
+                      style={{
+                        position: "fixed",
+                        bottom: 0,
+                        width: "100%",
+                        height: "10%",
+                        backgroundColor: color.callFooter,
+                      }}
+                    >
                       <CallHeaderMobile
                         webcam={showCam}
                         mic={!mute}
                         onWebCamChange={webCamHandler}
                         onMicChange={micMuteHandler}
                         onEndClick={endInterviewHandler}
-                        onEndInterViewClick={closeInterviewAPiHandler} />
+                        onEndInterViewClick={closeInterviewAPiHandler}
+                      />
                     </div>
-
                   </div>
                 </div>
               </>
             )}
             {!interviewStarted ? (
-
               <Guidelines
                 scheduleInfo={scheduleInfo}
                 loading={startInterviewLoader.loader}
@@ -1078,57 +1167,207 @@ function Call() {
             ) : (
               <></>
             )}
-            {
-              scheduleInfo?.is_report_complete && <Report />
-            }
+            {scheduleInfo?.is_report_complete && <Report />}
           </>
-        )
-        }
-        {
-          loader.loader && (
-            <div className="d-flex align-items-center justify-content-center h-100">
-              <Spinner />
+        )}
+        {loader.loader && (
+          <div className="d-flex align-items-center justify-content-center h-100">
+            <Spinner />
+          </div>
+        )}
+        {websocketError && (
+          <div className="d-flex align-items-center justify-content-center h-100 ">
+            <div className="text-center ">
+              <h4 className="display-4 mb-0">
+                Technical breakdown please try again
+              </h4>
+              <div className="my-3"></div>
+              <Button
+                className="rounded-sm"
+                text={"Try Again"}
+                onClick={refreshScreen}
+              />
             </div>
-          )
-        }
-        {
-          (networkError || websocketError) && (
-            <div className="d-flex align-items-center justify-content-center h-100 ">
-              <div className="text-center ">
-                <h4 className="display-4 mb-0">
-                  Technical breakdown please try again
-                </h4>
-                <div className="my-3"></div>
-                <Button text={"Try Again"} onClick={refreshScreen} />
-              </div>
-            </div>
-          )
-        }
-      </div >
+          </div>
+        )}
+      </div>
+
+      {/** Microphone access modal */}
       <Modal
         isOpen={micPermissionModal.visible}
         onClose={micPermissionModal.hide}
-        title={'Microphone Access Required'}
+        title={"Microphone Access Required"}
       >
         <div>
-          <h3 className="text-gray-dark font-weight-500">To continue, grant microphone access:</h3>
+          <h3 className="text-gray-dark font-weight-500">
+            To continue, grant microphone access:
+          </h3>
           <p className="mb-0">{"1. Check browser settings."}</p>
-          <p className="mb-0">{'2. Enable microphone access in system settings. '}<span className="pointer text-primary font-weight-700" onClick={gotoPermissionSetting}>{`(${getOperatingSystem()})`}</span></p>
+          <p className="mb-0">
+            {"2. Enable microphone access in system settings. "}
+            <span
+              className="pointer text-primary font-weight-700"
+              onClick={gotoPermissionSetting}
+            >{`(${getOperatingSystem()})`}</span>
+          </p>
         </div>
         <div className="d-flex float-right">
           <Button text={"OK"} onClick={micPermissionModal.hide} />
         </div>
       </Modal>
 
+      {/** Browser permission denied modal */}
+
       <Modal
         isOpen={browserSpeakPermission.visible}
-        title={'Permission Denied!'}>
-        <h3 className='m-0'>{'The interview is blocked of the browser permission issue, Please tap on continue to Proceed.'}</h3>
+        title={"Permission Denied!"}
+      >
+        <h3 className="m-0">
+          {
+            "The interview is blocked of the browser permission issue, Please tap on continue to Proceed."
+          }
+        </h3>
         <div className="d-flex align-items-center justify-content-center mt-3">
-          <Button className="rounded" text={'Continue'} onClick={() => {
-            browserSpeakPermission.hide();
-            speak(aiResponse);
-          }} />
+          <Button
+            className="rounded"
+            text={"Continue"}
+            onClick={() => {
+              browserSpeakPermission.hide();
+              speak(aiResponse);
+            }}
+          />
+        </div>
+      </Modal>
+
+      {/** confirm or cancel video recording modal*/}
+
+      <Modal
+        isOpen={isConfirmRecordingModalOpen}
+        onClose={closeRecordingModal}
+        size="lg"
+      >
+        <div className="mt--5">
+          <div>
+            <Heading
+              className={"text-secondary display-4"}
+              heading={
+                isForceRecord
+                  ? "Confirm Recording"
+                  : isCancelRecording
+                  ? "Confirm without Recording"
+                  : "Cancel Recording"
+              }
+            />
+          </div>
+          <div className="text-default">
+            {isForceRecord ? (
+              <p className="mt-3">
+                {
+                  "Please confirm to record this interview and select entire screen to share to your interviewer"
+                }
+              </p>
+            ) : isCancelRecording ? (
+              <p className="mt-3">
+                {"Please confirm to proceed the interview without recording"}
+              </p>
+            ) : (
+              <p className="mt-3">
+                {"Are you sure, want to cancel the interview recording"}
+              </p>
+            )}
+          </div>
+          <div className="text-center mt-4 mb-3">
+            {isForceRecord ? (
+              <Button
+                className="rounded-sm"
+                text={"Confirm"}
+                onClick={confirmForceRecord}
+              />
+            ) : !isCancelRecording && !isEnableRecording ? (
+              <>
+                <Button
+                  className="rounded-sm"
+                  text={"Cancel Recording"}
+                  onClick={cancelRecording}
+                  color="white"
+                />
+                <Button
+                  className="rounded-sm"
+                  text={"Enable Recording"}
+                  onClick={enableRecording}
+                />
+              </>
+            ) : (
+              <Button
+                className="rounded-sm"
+                text={"Confirm"}
+                onClick={confirmRecording}
+              />
+            )}
+          </div>
+        </div>
+      </Modal>
+
+      {/**
+       * nerowork error
+       */}
+
+      <Modal
+        isOpen={interviewLimitModal.visible}
+        title={
+          networkErrorResponse?.status_code === 3
+            ? "Server Full"
+            : "Network Error"
+        }
+      >
+        <h3 className="m-0">
+          {networkErrorResponse?.status_code === 3
+            ? networkErrorResponse?.error_message
+            : " Technical breakdown please try again"}
+        </h3>
+        <div className="d-flex align-items-center justify-content-center mt-3">
+          <Button
+            className="rounded"
+            text={"Try Again"}
+            onClick={() => {
+              interviewLimitModal.hide();
+              getBasicInfo();
+            }}
+          />
+        </div>
+      </Modal>
+
+      {/**
+       * Camera permission modal
+       */}
+
+      <Modal
+        isOpen={camPermissionModal.visible}
+        onClose={camPermissionModal.hide}
+      >
+        <div className="mt--5">
+          <Heading
+            className={"text-secondary display-4"}
+            heading={"Camera Permission"}
+          />
+          <div className="text-default">
+            <p className="mt-3">
+              {
+                "Please provide access to your web camera to start the interview"
+              }
+            </p>
+          </div>
+
+          <div className="d-flex align-items-center justify-content-center mt-4 mb-3">
+            <Button
+              className="rounded-sm"
+              text={"OK"}
+              onClick={async () => {
+                camPermissionModal.hide();
+                // await hasCameraPermission()
+              }}
+            />
+          </div>
         </div>
       </Modal>
     </>
@@ -1136,4 +1375,3 @@ function Call() {
 }
 
 export { Call };
-

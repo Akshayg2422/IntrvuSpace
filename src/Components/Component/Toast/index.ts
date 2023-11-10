@@ -17,6 +17,7 @@ import 'react-toastify/dist/ReactToastify.css';
     theme: "colored",
   };
 
+  console.log(message,"message====")
   let toastElement;
   switch (type) {
     case "success":
@@ -32,7 +33,7 @@ import 'react-toastify/dist/ReactToastify.css';
       toastElement = toast(message, style);
       break;
   }
-
+console.log(toastElement,"toastElement")
   return toastElement;
 };
 

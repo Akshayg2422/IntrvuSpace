@@ -11,7 +11,9 @@ export interface DashboardProp {
   selectedQuestionForm: any
   formSectionQuestions: any
   basicReport: any
-  myPastInterviews: any
+  onGoingScheduleMessage :any,
+  myPastInterviews: any,
+  onGoingSelectedId:any,
   scheduleId: any
   generateQuestionSections: any
   generateSectionsAndQuestions: any
@@ -56,4 +58,6 @@ export interface DashboardProp {
   sectorsCorporate: any;
   sectorsCorporateNumOfPages: any,
   sectorsCorporateCurrentPages: any,
+  interviewUserScheduleDetails:any,
+  onGoingMessage:any,
 }

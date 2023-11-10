@@ -211,6 +211,12 @@ export const addTeamMateDataApi = payload => post (URL.URL_ADD_TEAM_MATE_DATA,pa
 // getTeamMate
 
 export const getTeamMateDataApi = payload => post (URL.URL_GET_TEAM_MATE_DATA,payload,{});
+//register as member
+
+export const registerAsCompanyAPi = payload => post(URL.URL_REGISTER_AS_COMPANY, payload, {});
+
+
+export const getOngoingSchedulesApi =payload =>post(URL.GRT_ONGOING_SCHEDULES,payload,{})
 
 
 

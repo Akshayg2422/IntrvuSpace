@@ -1,6 +1,5 @@
 import { icons } from '@Assets'
-import { Designation, WeightageCountForm, CreateQuestionForm, Clients, Sector, Questions, Call, Report, QuestionSections, AnalyzingAnimation, Schedules, Login, Otp, Splash, Register, LoginWithOtp, AdminLogin, VariantInfo, PrivacyPolicy, TermsAndConditions, ReturnAndRefund, Reports, HowItWorks, Introduction, Settings, Response, CreateNewPassword, ForgotPassword, PreparingYourInterview, UploadCorporateOpeningsCard, UploadJdCard, Department, Designations, ManageTeamMate, Sectors, EmployeeDesignation, } from '@Modules';
-
+import { Designation, WeightageCountForm, CreateQuestionForm, Clients, Sector, Questions, Call, Report, QuestionSections, AnalyzingAnimation, Schedules, Login, Otp, Splash, Register, LoginWithOtp, AdminLogin, VariantInfo, PrivacyPolicy, TermsAndConditions, ReturnAndRefund, Reports, HowItWorks, Introduction, Settings, Response, CreateNewPassword, ForgotPassword, PreparingYourInterview, UploadCorporateOpeningsCard, UploadJdCard, Department, Designations, ManageTeamMate, Sectors, EmployeeDesignation, Scheduling ,RegisterCompany } from '@Modules';
 
 
 export const ROUTES = {
@@ -17,8 +16,9 @@ export const ROUTES = {
     reports: '/reports',
     'how-it-works': '/how-it-works',
     introduction: '/introduction',
-    forgotPassword:'/forgotPassword',
-    createNewPassword: '/createNewPassword'
+    forgotPassword: '/forgotPassword',
+    createNewPassword: '/createNewPassword',
+    'register-company': '/register-company'
   },
   'designation-module': {
     Dashboard: "/dashboard",
@@ -42,6 +42,7 @@ export const ROUTES = {
     'employeeDesignations':'/employeeDesignations',
     'ManageTeamMate':'/ManageTeamMate',
     // 'Sectors':'/Sectors'
+    'scheduling-interview':'/scheduling-interview',
   }
 }
 
@@ -117,6 +118,11 @@ export const AUTH_ROUTES = [
     path: ROUTES['auth-module'].createNewPassword,
     component: <CreateNewPassword />
   },
+  {
+    key: 15,
+    path: ROUTES['auth-module']['register-company'],
+    component: <RegisterCompany />
+  },
 
 
 ]
@@ -175,7 +181,12 @@ export const DASHBOARD_ROUTES = [
   {
     id: 11,
     path: ROUTES['designation-module']['preparing-your-interview'],
-    component: <PreparingYourInterview/>
+    component: <PreparingYourInterview />
+  },
+  {
+    id: 12,
+    path: ROUTES['designation-module']['scheduling-interview'],
+    component: <Scheduling/>
   },
 ]
 
@@ -229,6 +240,8 @@ export const HOME_ROUTES = [
     layout: "",
     component: <Clients />
   },
+
+
   // {
   //   path: ROUTES['designation-module'].report,
   //   name: "Report",

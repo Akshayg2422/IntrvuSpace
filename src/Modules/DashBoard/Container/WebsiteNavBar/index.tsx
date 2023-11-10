@@ -25,7 +25,7 @@ function WebsiteNavBar() {
       <Container>
         <NavbarBrand to="/" tag={Link}>
           <div className="d-flex justify-content-between">
-            <img className={'d-none d-lg-block d-md-block d-xl-block'} src={icons.logoText} alt="Logo" style={{ height: '20%', width: '20%' }} />
+            <img className={'d-none d-lg-block d-md-block d-xl-block bg-red'} src={icons.logoText} alt="Logo" style={{ height: '20%', width: '20%' }} />
             <img className={'d-block d-md-none d-lg-none d-xl-none'} src={icons.logoText} alt="Logo" style={{ height: '30%', width: '30%' }} />
             <button
               aria-controls="navbar-collapse"

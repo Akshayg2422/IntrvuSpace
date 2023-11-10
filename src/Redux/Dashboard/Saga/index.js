@@ -936,6 +936,25 @@ function* getTeamMateDataSaga(action){
   }
 
 
+// fetchONGOING
+
+function* fetchOnGoingSchedulesSaga(action) {
+  try {
+    const response = yield call(Api.getOngoingSchedulesApi, action.payload.params);
+    if (response.success) {
+      yield put(Action.getOngoingSchedulesSuccess(response));
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield put(Action.getOngoingSchedulesFailure(response.error_message));
+      yield call(action.payload.onError(response));
+    }
+  } catch (error) {
+    yield put(Action.getOngoingSchedulesFailure(error));
+    yield call(action.payload.onError(error));
+  }
+}
+
+
 
 function* DashboardSaga() {
   yield takeLatest(Action.GET_START_CHAT, getChatSaga);
@@ -989,6 +1008,9 @@ function* DashboardSaga() {
   yield takeLatest(Action.POST_CORPORATE_SCHEUDULE_ACTIONS, postCorporateScheduleActionsSaga);
   yield takeLatest(Action.ADD_TEAM_MATE_DATA, addTeamMateDataSaga);
   yield takeLatest(Action.GET_TEAM_MATE_DATA, getTeamMateDataSaga);
+
+  yield takeLatest(Action.FETCH_ONGOING_SCHEDULES, fetchOnGoingSchedulesSaga);
+
 
 
 

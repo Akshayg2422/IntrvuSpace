@@ -49,6 +49,7 @@ const initialState: DashboardProp = {
   corporateSchedules: undefined,
   createForOthersJdModal: false,
   interviewScheduleDetails: undefined,
+  interviewUserScheduleDetails:undefined,
   retrieveEmail: undefined,
   createOpening: false,
   corporateScheduleNumOfPages: undefined,
@@ -67,9 +68,14 @@ const initialState: DashboardProp = {
   sectorsCorporate: undefined,
   sectorsCorporateNumOfPages: undefined,
   sectorsCorporateCurrentPages: 1,
+  onGoingScheduleMessage :undefined,
+  onGoingSelectedId:undefined,
+  onGoingMessage:undefined,
 };
 
 const DashboardReducer = (state = initialState, action: any) => {
+
+
   switch (action.type) {
     case ActionTypes.GET_START_CHAT:
       state = {
@@ -697,6 +703,19 @@ const DashboardReducer = (state = initialState, action: any) => {
       state = { ...state, interviewScheduleDetails: undefined };
       break;
 
+
+          /**createScheduleSuperAdmin
+createScheduleSuperAdmin
+ */
+
+
+
+  
+    case ActionTypes.GET_INTERVIEW_SCHEDULE_DETAILS_FAILURE:
+      state = { ...state, 
+        interviewScheduleDetails: undefined ,
+        interviewUserScheduleDetails:undefined};
+      break;
     // resetPassword
 
     case ActionTypes.RESET_PASSWORD:
@@ -781,6 +800,37 @@ const DashboardReducer = (state = initialState, action: any) => {
       state = { ...state, candidatesList: undefined };
       break;
 
+
+      ///onGoing schedule
+
+      case ActionTypes.FETCH_ONGOING_SCHEDULES:
+        state = {
+          ...state,
+          onGoingScheduleMessage: undefined,
+         
+        };
+        break;
+      case ActionTypes.FETCH_ONGOING_SCHEDULES_SUCCESS:
+        state = {
+          ...state,
+          onGoingScheduleMessage: action.payload?.details,
+      
+        };
+        break;
+      case ActionTypes.FETCH_ONGOING_SCHEDULES_FAILURE:
+        state = { ...state, onGoingScheduleMessage: undefined };
+        break;
+
+
+        //ongoing selected id
+        case ActionTypes.ON_GOING_SELECTED_ID:
+          state = {
+            ...state,
+            onGoingSelectedId: action.payload,
+           
+          };
+          break;
+
     // corporateScheduleActions
 
     case ActionTypes.POST_CORPORATE_SCHEUDULE_ACTIONS:
@@ -792,6 +842,8 @@ const DashboardReducer = (state = initialState, action: any) => {
     case ActionTypes.POST_CORPORATE_SCHEUDULE_ACTIONS_FAILURE:
       state = { ...state };
       break;
+      
+
 
 
     // case ActionTypes.GET_TEAM_MATE_DATA:
