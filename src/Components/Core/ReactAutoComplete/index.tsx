@@ -36,7 +36,7 @@ function ReactAutoComplete({ selected, isMandatory, heading, placeholder, data, 
         const isValueExist = data && data.length > 0 && data.some(each => each.name.trim().toLowerCase() === value.trim().toLowerCase());
 
         if (!isValueExist) {
-            suggestions = [...suggestions, { isAddNew: true }]
+            suggestions = suggestions ? [...suggestions, { isAddNew: true }] : [{ isAddNew: true }]
         }
 
         return suggestions;
