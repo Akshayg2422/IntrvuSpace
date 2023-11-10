@@ -1,6 +1,5 @@
 import { icons } from '@Assets'
-import { Designation, WeightageCountForm, CreateQuestionForm, Clients, Sector, Questions, Call, Report, QuestionSections, AnalyzingAnimation, Schedules, Login, Otp, Splash, Register, LoginWithOtp, AdminLogin, VariantInfo, PrivacyPolicy, TermsAndConditions, ReturnAndRefund, Reports, HowItWorks, Introduction, Settings, Response, CreateNewPassword, ForgotPassword, PreparingYourInterview, UploadCorporateOpeningsCard, UploadJdCard, Department, Designations, ManageTeamMate, Sectors, EmployeeDesignation, Scheduling ,RegisterCompany } from '@Modules';
-
+import { Designation, WeightageCountForm, CreateQuestionForm, Clients, Sector, Questions, Call, Report, QuestionSections, AnalyzingAnimation, Schedules, Login, Otp, Splash, Register, LoginWithOtp, AdminLogin, VariantInfo, PrivacyPolicy, TermsAndConditions, ReturnAndRefund, Reports, HowItWorks, Introduction, Settings, Response, CreateNewPassword, ForgotPassword, PreparingYourInterview, UploadCorporateOpeningsCard, UploadJdCard, Scheduling ,RegisterCompany,VerifyEmail,ManageTeamMate, Sectors, EmployeeDesignation, Department} from '@Modules';
 
 export const ROUTES = {
   'auth-module': {
@@ -18,7 +17,8 @@ export const ROUTES = {
     introduction: '/introduction',
     forgotPassword: '/forgotPassword',
     createNewPassword: '/createNewPassword',
-    'register-company': '/register-company'
+    'register-company': '/register-company',
+    'verify-email':'/verify-email'
   },
   'designation-module': {
     Dashboard: "/dashboard",
@@ -123,6 +123,12 @@ export const AUTH_ROUTES = [
     path: ROUTES['auth-module']['register-company'],
     component: <RegisterCompany />
   },
+
+  {
+    key:16,
+    path: ROUTES['auth-module']['verify-email'],
+    component:<VerifyEmail/>
+  }
 
 
 ]
@@ -257,8 +263,6 @@ export const HOME_ROUTES = [
   //   component: <Dashboard />
   // },
 ];
-
-
 
 
 

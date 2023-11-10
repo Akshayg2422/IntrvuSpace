@@ -95,6 +95,44 @@ function* registerAsCompanySaga(action) {
     }
 }
 
+
+//verify email
+
+function* getVerifyEmailSaga(action) {
+    try {
+        const response = yield call(Api.getOtpForEmailVerificationAPi, action.payload.params);
+        if (response) {
+            yield put(Action.getOtpForEmailVerificationSuccess(response));
+            yield call(action.payload.onSuccess(response));
+        } else {
+            yield put(Action.getOtpForEmailVerificationFailure(response.error_message));
+            yield call(action.payload.onError(response));
+        }
+    } catch (error) {
+        yield put(Action.getOtpForEmailVerificationFailure(error));
+        yield call(action.payload.onError(error));
+    }
+}
+
+// registerAsCompany
+
+function* getVerifyOtpSaga(action) {
+    try {
+        const response = yield call(Api.verifyEmailUsingOtpApi, action.payload.params);
+        if (response.success) {
+            yield put(Action.verifyEmailUsingOtpSuccess(response));
+            yield call(action.payload.onSuccess(response));
+        } else {
+            yield put(Action.verifyEmailUsingOtpFailure(response.error_message));
+            yield call(action.payload.onError(response));
+        }
+    } catch (error) {
+        yield put(Action.verifyEmailUsingOtpFailure(error));
+        yield call(action.payload.onError(error));
+    }
+}
+
+
 function* AuthSaga() {
 
     yield takeLatest(Action.MEMBER_LOGIN_USING_PASSWORD, memberLoginUsingPasswordSaga);
@@ -102,6 +140,8 @@ function* AuthSaga() {
     yield takeLatest(Action.FETCH_OTP, fetchOtpSaga);
     yield takeLatest(Action.FETCH_MEMBER_USING_LOGIN_OTP, fetchMemberLoginUsingOtpSaga);
     yield takeLatest(Action.REGISTER_AS_COMPANY, registerAsCompanySaga);
+    yield takeLatest(Action.GET_OTP_FOR_EMAIL_VERIFICATION, getVerifyEmailSaga);
+    yield takeLatest(Action.VERIFY_EMAIL_USING_OTP, getVerifyOtpSaga);
 }
 
 export default AuthSaga;

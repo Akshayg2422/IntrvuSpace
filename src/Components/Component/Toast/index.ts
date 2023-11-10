@@ -17,7 +17,6 @@ import 'react-toastify/dist/ReactToastify.css';
     theme: "colored",
   };
 
-  console.log(message,"message====")
   let toastElement;
   switch (type) {
     case "success":
