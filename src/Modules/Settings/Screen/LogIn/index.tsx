@@ -69,14 +69,13 @@ function Login() {
 
           if (response.success) {
             localStorage.setItem(USER_TOKEN, response.details.token);
-            dispatch(
-              userLoginDetails({
-                ...loginDetails,
-                isLoggedIn: true,
-                ...details,
-              })
-            );
-
+            // dispatch(
+            //   userLoginDetails({
+            //     ...loginDetails,
+            //     isLoggedIn: true,
+            //     ...details,
+            //   })
+            // );
             if(!details?.is_email_verified){
               goTo(ROUTES['auth-module']['verify-email'])
             }
