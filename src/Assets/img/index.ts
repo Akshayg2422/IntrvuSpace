@@ -14,7 +14,6 @@ export const image = {
     Benefits: require('./brand/benefits.png'),
     EaseOfUse: require('./brand/Ease of use.png'),
     Rev: require('./brand/revolution image.png'),
-
     TMS_Logo: require('./brand/TMS_Logo.png'),
     TMS_Img1: require('./brand/TMS_Img1.png'),
     TMS_Img2: require('./brand/TMS_Img2.png'),

@@ -1,5 +1,6 @@
 import { icons } from '@Assets'
-import { Designation, WeightageCountForm, CreateQuestionForm, Clients, Sector, Questions, Call, Report, QuestionSections, AnalyzingAnimation, Schedules, Login, Otp, Splash, Register, LoginWithOtp, AdminLogin, VariantInfo, PrivacyPolicy, TermsAndConditions, ReturnAndRefund, Reports, HowItWorks, Introduction, Settings, Response, CreateNewPassword, ForgotPassword, PreparingYourInterview, UploadCorporateOpeningsCard, UploadJdCard, Scheduling ,RegisterCompany} from '@Modules';
+import { Designation, WeightageCountForm, CreateQuestionForm, Clients, Sector, Questions, Call, Report, QuestionSections, AnalyzingAnimation, Schedules, Login, Otp, Splash, Register, LoginWithOtp, AdminLogin, VariantInfo, PrivacyPolicy, TermsAndConditions, ReturnAndRefund, Reports, HowItWorks, Introduction, Settings, Response, CreateNewPassword, ForgotPassword, PreparingYourInterview, UploadCorporateOpeningsCard, UploadJdCard, Department, Designations, ManageTeamMate, Sectors, EmployeeDesignation, Scheduling ,RegisterCompany } from '@Modules';
+
 
 export const ROUTES = {
   'auth-module': {
@@ -37,6 +38,10 @@ export const ROUTES = {
     settings: '/settings',
     'response': '/response',
     'preparing-your-interview':'/preparing-your-interview',
+    'department':'/department',
+    'employeeDesignations':'/employeeDesignations',
+    'ManageTeamMate':'/ManageTeamMate',
+    // 'Sectors':'/Sectors'
     'scheduling-interview':'/scheduling-interview',
   }
 }
@@ -200,6 +205,34 @@ export const HOME_ROUTES = [
     layout: "",
     component: <Settings />
   },
+  {
+    path: ROUTES['designation-module'].department,
+    name: "Department",
+    // icon: icons.settings,
+    layout: "",
+    component: <Department />
+  },
+  {
+    path: ROUTES['designation-module'].employeeDesignations,
+    name: "Designations",
+    // icon: icons.settings,
+    layout: "",
+    component:<EmployeeDesignation/>
+  },
+  {
+    path: ROUTES['designation-module'].ManageTeamMate,
+    name: "ManageTeamMate",
+    // icon: icons.settings,
+    layout: "",
+    component:<ManageTeamMate/>
+  },
+  // {
+  //   path: ROUTES['designation-module'].Sectors,
+  //   name: "Sectors",
+  //   // icon: icons.settings,
+  //   layout: "",
+  //   component: <Sectors/>
+  // },
   {
     path: ROUTES['designation-module'].client,
     name: "View as Member",

@@ -32,7 +32,7 @@ function Modal({ isOpen, children, title, size = "lg", style, onClose, ...rest }
       <div className="modal-content"  >
         <div className={"modal-header mb-0"} style={{
         }} >
-          {title && <div className='display-3 text-secondary font-weight-700'>
+          {title && <div className='display-3 text-secondary'>
             {title}
           </div>}
           {onClose &&
