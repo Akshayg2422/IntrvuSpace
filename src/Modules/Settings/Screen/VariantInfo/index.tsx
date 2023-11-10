@@ -133,7 +133,7 @@ function VariantInfo() {
 
   const [watchInterviewUrl, setWatchInterviewUrl] = useState<any>();
   const openWatchInterviewModal = useModal(false);
-  const [displayDeadlineDate, setDisplayDeadlineDate] = useState("")
+  const [displayDeadlineDate, setDisplayDeadlineDate] = useState("");
 
   useEffect(() => {
     getCorporateScheduleDetailsHandler();
@@ -249,7 +249,6 @@ function VariantInfo() {
     corporateScheduleDetails?.job_description || {};
 
   const { schedules } = corporateScheduleDetails || {};
-
 
   const getIconColor = (iconType: any) => {
     switch (iconType) {
@@ -496,9 +495,11 @@ function VariantInfo() {
       corporate_openings_details_id: corporateScheduleDetails?.id,
       ...(action === "Close JD" && { is_closed: true }),
       ...(action === "Modify Deadlines" && {
-        deadline: moment(scheduleDate + "T" + endTime).format(
-          "YYYY-MM-DDTHH:mm:ss"
-        ),
+        deadline: moment(
+          moment(scheduleDate, "MMM D YYYY").format("YYYY-MM-DD") +
+            "T" +
+            endTime
+        ).format("YYYY-MM-DDTHH:mm:ss"),
       }),
     };
 
@@ -532,6 +533,8 @@ function VariantInfo() {
     );
     setEndTime(getDisplayTime(corporateScheduleDetails?.candidate_deadline));
   };
+
+  console.log("deadlineee===>", displayDeadlineDate);
 
   return (
     <>
@@ -826,7 +829,7 @@ function VariantInfo() {
                                 }}
                               />
                             </div>
-                            <div className="col-sm-4 col mr-3">
+                            <div className="col-sm-3 col mr-3">
                               <DropDown
                                 id="StatusNote"
                                 className={"form-control-md rounded-sm"}
@@ -997,7 +1000,7 @@ function VariantInfo() {
                   }}
                 >
                   <div className="row p-lg-5 p-2">
-                    <div className="col-sm-4">
+                    <div className="col-sm-6 col-md-6 col-lg-4 ">
                       <div className="text-secondary">
                         <span>Department</span>
                       </div>
@@ -1011,7 +1014,7 @@ function VariantInfo() {
                       </div>
                     </div>
 
-                    <div className="col-sm-4 pt-4 pt-sm-0">
+                    <div className="col-sm-6 col-md-6 col-lg-4 pt-5 pt-sm-0">
                       <div className="text-secondary">
                         <span>Interview Duration</span>
                       </div>
@@ -1027,7 +1030,7 @@ function VariantInfo() {
                       </div>
                     </div>
 
-                    <div className="col-sm-4 pt-4 pt-sm-0">
+                    <div className="col-sm-6 col-md-6 col-lg-4 pt-5 pt-lg-0">
                       <div className="text-secondary">
                         <span>Candidate Deadline</span>
                       </div>
@@ -1043,7 +1046,7 @@ function VariantInfo() {
                       </div>
                     </div>
 
-                    <div className="col-sm-4 mt-sm-5 pt-4 pt-sm-0">
+                    <div className="col-sm-6 col-md-6 col-lg-4 mt-lg-5 mt-0 pt-5 pt-lg-0">
                       <div className="text-secondary">
                         <span>Created By</span>
                       </div>
@@ -1057,7 +1060,7 @@ function VariantInfo() {
                       </div>
                     </div>
 
-                    <div className="col-sm-4 mt-sm-5 pt-4 pt-sm-0">
+                    <div className="col-sm-6 col-md-6 col-lg-4 mt-lg-5 mt-0 pt-5 pt-lg-0">
                       <div className="text-secondary">
                         <span>Created At</span>
                       </div>
@@ -1166,10 +1169,10 @@ function VariantInfo() {
                 disableFuture={true}
                 heading={"Deadline Date"}
                 placeholder={"Deadline Date"}
-                value={displayFormatDate(displayDeadlineDate).split(",")[0]}
+                value={displayFormatDate(displayDeadlineDate)?.split(",")[0]}
                 onChange={(e) => {
                   setScheduleDate(e);
-                  setDisplayDeadlineDate(e)
+                  setDisplayDeadlineDate(e);
                 }}
               />
             </div>
