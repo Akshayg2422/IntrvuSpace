@@ -19,7 +19,6 @@ import {
   PrivacyPolicy,
   QuestionSections,
   Questions, Register,
-  RegisterCompany,
   Report,
   Reports,
   Response,
@@ -30,9 +29,9 @@ import {
   Settings,
   TermsAndConditions,
   VariantInfo,
-  VerifyEmail,
   WeightageCountForm,
-  EmailVerification
+  EmailVerification,
+  CorporateRegister
 } from '@Modules';
 
 export const ROUTES = {
@@ -150,7 +149,7 @@ export const AUTH_ROUTES = [
   {
     key: 15,
     path: ROUTES['auth-module']['register-company'],
-    component: <RegisterCompany />
+    component: <CorporateRegister />
   },
 
   {

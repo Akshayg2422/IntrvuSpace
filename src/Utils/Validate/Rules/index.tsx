@@ -28,29 +28,14 @@ export const ADDRESS = {
   }
 }
 
-export const REGISTER_COMPANY_RULES = {
-  logo: {
-    presence: { allowEmpty: false, message: "Upload Company logo" }
-  },
-  brand_name: {
-    presence: { allowEmpty: false, message: "Brand Name cannot be empty" },
-  },
-  ...ADDRESS,
-  ...MOBILE_NUMBER_RULES,
+export const PINCODE = {
   pincode: {
-    presence: { allowEmpty: false, message: "Pincode cannot be empty" }
-  },
-  sector: {
-    presence: { allowEmpty: false, message: "Sector cannot be empty" },
-  },
-  ...NAME_RULES,
-  ...EMAIL_RULES,
-  ...ADDRESS,
-  password: {
-    presence: { allowEmpty: false, message: "Password cannot be empty" },
-    length: { minimum: 8, message: "Password minimum 8 chars" },
+    presence: { allowEmpty: false, message: "Address cannot be empty" },
+    length: { is: 6, message: "Pincode should be 6 number" },
   }
 }
+
+
 
 export const CREATE_QUESTION_FORM_RULES = {
   name: {
@@ -95,6 +80,19 @@ export const REGISTER_RULES = {
     presence: { message: "Password cannot be empty" },
     length: { minimum: 8, message: "Password minimum 8 chars" },
   }
+}
+
+
+export const REGISTER_COMPANY_RULES = {
+  brand_name: {
+    presence: { allowEmpty: false, message: "Brand Name cannot be empty" },
+  },
+  ...ADDRESS,
+  ...MOBILE_NUMBER_RULES,
+  ...PINCODE,
+  sector: {
+    presence: { allowEmpty: false, message: "sector cannot be empty" },
+  },
 }
 
 export const CREATE_QUESTION_SECTION_RULES = {
