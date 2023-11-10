@@ -33,14 +33,14 @@ function Settings() {
         <div className="" style={{ paddingTop: 30 }}>
 
           <Card
-            className=" font-weight-bolder text-secondary rounded-sm"
+            className=" font-weight-bolder text-secondary rounded-sm pointer"
             style={{
               borderWidth: 1.5,
               borderColor: "#e8edff",
               // backgroundColor: "transparent",
-            }}
+            }}onClick={() => goTo(ROUTES['designation-module'].department)}
           >
-            <div className="d-flex justify-content-between pointer" onClick={() => goTo(ROUTES['designation-module'].department)}>
+            <div className="d-flex justify-content-between " >
               <span
                 className="text-secondary"
                 style={{ fontSize: 10 }}
@@ -53,14 +53,15 @@ function Settings() {
           </Card>
 
           <Card
-            className=" font-weight-bolder text-secondary rounded-sm"
+            className=" font-weight-bolder text-secondary rounded-sm pointer"
             style={{
               borderWidth: 1.5,
               borderColor: "#e8edff",
               // backgroundColor: "transparent",
             }}
+            onClick={() => goTo(ROUTES['designation-module'].employeeDesignations)}
           >
-            <div className="d-flex justify-content-between pointer" onClick={() => goTo(ROUTES['designation-module'].employeeDesignations)}>
+            <div className="d-flex justify-content-between ">
               <span
                 className="text-secondary"
                 style={{ fontSize: 10 }}
@@ -73,14 +74,16 @@ function Settings() {
           </Card>
 
           <Card
-            className=" font-weight-bolder text-secondary rounded-sm"
+            className=" font-weight-bolder text-secondary rounded-sm pointer"
             style={{
               borderWidth: 1.5,
               borderColor: "#e8edff",
               // backgroundColor: "transparent",
+
             }}
+            onClick={() => goTo(ROUTES['designation-module'].ManageTeamMate)}
           >
-            <div className="d-flex justify-content-between pointer" onClick={() => goTo(ROUTES['designation-module'].ManageTeamMate)}>
+            <div className="d-flex justify-content-between " >
               <span
                 className="text-secondary"
                 style={{ fontSize: 10 }}
@@ -92,14 +95,15 @@ function Settings() {
 
           </Card>
           <Card
-            className=" font-weight-bolder text-secondary rounded-sm"
+            className=" font-weight-bolder text-secondary rounded-sm pointer"
             style={{
               borderWidth: 1.5,
               borderColor: "#e8edff",
               // backgroundColor: "transparent",
             }}
+            onClick={() => goTo(ROUTES['designation-module']['sector'])}
           >
-            <div className="d-flex justify-content-between pointer" onClick={() => goTo(ROUTES['designation-module']['sector'])}>
+            <div className="d-flex justify-content-between " >
               <span
                 className="text-secondary"
                 style={{ fontSize: 10 }}
