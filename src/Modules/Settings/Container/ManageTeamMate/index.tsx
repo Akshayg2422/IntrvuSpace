@@ -22,7 +22,7 @@ function ManageTeamMate() {
   const isDesignation = useDropDown({})
   const [selectTeamMate, setSelectTeamMate] = useState<any>('')
   const [loading, setLoading] = useState(true)
-  const { departmentCorporate, designations, getTeamMateDatas,getTeamMateDatasNumOfPages,getTeamMateDatasCurrentPages } = useSelector((state: any) => state.DashboardReducer)
+  const { departmentCorporate, designations, getTeamMateDatas, getTeamMateDatasNumOfPages, getTeamMateDatasCurrentPages } = useSelector((state: any) => state.DashboardReducer)
 
   console.log('departmentCorporate===========>>>>>', JSON.stringify(getTeamMateDatas));
   console.log('designations===========>>>', designations);
@@ -45,8 +45,6 @@ function ManageTeamMate() {
       email: isEmail.value,
       department_id: departments.value?.id,
       designation_id: isDesignation.value?.id,
-      // ...(departments?.value?.id &&{department_id:departments?.value?.id}),
-      // ...(isDesignation?.value?.id &&{designation_id:isDesignation?.value?.id}),
       ...(editId && { id: editId })
     }
 
@@ -60,12 +58,7 @@ function ManageTeamMate() {
           params,
           onSuccess: (success: any) => () => {
             addTeamMateModel.hide()
-            firstName.set('')
-            lastName.set('')
-            isEmail.set('')
-            contactNumber.set('')
-            departments.set('')
-            isDesignation.set('')
+            TeamDatas()
             setEditId('')
             addTeamMateLoader.hide()
             getTeamMateDataHandler(getTeamMateDatasCurrentPages)
@@ -83,12 +76,12 @@ function ManageTeamMate() {
     }
   };
 
-  const getTeamMateDataHandler = (page_number:number) => {
+  const getTeamMateDataHandler = (page_number: number) => {
     const params = {
       page_number,
     }
     // console.log('parammmmmmmmmmmmmm',params);
-    
+
     dispatch(
       getTeamMateData({
         params,
@@ -105,7 +98,7 @@ function ManageTeamMate() {
   const getDepartmentCorporateDetailsApiHandler = () => {
     const params = {
     }
-    console.log('pppp',params)
+    console.log('pppp', params)
     dispatch(
       getDepartmentCorporate({
         params,
@@ -119,26 +112,26 @@ function ManageTeamMate() {
 
   const getDesignationApiHandler = () => {
     const params = {
-       
-    };
-   
-    dispatch(
-        getDesignations({
-            params,
-            onSuccess: (response: any) => () => {
 
-            },
-            onError: (error: string) => () => {
-              
-            },
-        })
+    };
+
+    dispatch(
+      getDesignations({
+        params,
+        onSuccess: (response: any) => () => {
+
+        },
+        onError: (error: string) => () => {
+
+        },
+      })
     );
-};
+  };
 
   const normalizedTableData = (data: any) => {
 
-// console.log(data,"ddddddddddddddddd")
-    return data?.map((el: any) => {
+    // console.log(data,"ddddddddddddddddd")
+    return data && data.length > 0 && data.map((el: any) => {
       // console.log('oooooooooo',data);
       const { first_name, last_name, mobile_number, email, department, designation } = el
 
@@ -165,7 +158,6 @@ function ManageTeamMate() {
                 isEmail.set(email)
                 departments.set(department)
                 isDesignation.set(designation)
-
                 addTeamMateModel.show()
               }
 
@@ -175,6 +167,16 @@ function ManageTeamMate() {
       };
     });
   };
+
+ function TeamDatas(){
+  firstName.set('')
+  lastName.set('')
+  isEmail.set('')
+  contactNumber.set('')
+  departments.set('')
+  isDesignation.set('')
+ }
+  
 
   return (
     <>
@@ -252,15 +254,11 @@ function ManageTeamMate() {
       </div>
       < Modal size={'lg'} isOpen={addTeamMateModel.visible} onClose={() => {
         addTeamMateModel.hide()
-        firstName.set('')
-        lastName.set('')
-        isEmail.set('')
-        contactNumber.set('')
-        departments.set('')
-        isDesignation.set('')
+        TeamDatas()
+        setEditId("")
       }} style={{ padding: 0 }}>
         <div className='px-md-6'>
-          <div className='mt--2'>  <Heading heading={'TeamMate'} style={{ fontSize: '25px', fontWeight: 800, }} /></div>
+          <div className='mt--2'>  <Heading heading={`${editId ? "Edit" : "Add"} TeamMate`} style={{ fontSize: '25px', fontWeight: 800, }} /></div>
 
           <div className="mt-5">
 

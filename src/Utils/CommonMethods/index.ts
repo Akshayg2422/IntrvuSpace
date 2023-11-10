@@ -142,7 +142,7 @@ export async function imagePickerConvertBase64(array) {
 
 
 export function getDropDownCompanyDisplayData(data: any, key: 'name' | 'title' = 'name') {
-  return data && data?.map((item: any) => {
+  return data && data.length > 0 && data.map((item: any) => {
     return {
       ...item,
       text: item[key].charAt(0).toUpperCase() + item[key].slice(1)
@@ -152,7 +152,7 @@ export function getDropDownCompanyDisplayData(data: any, key: 'name' | 'title' =
 
 export function getDropDownDisplayData(data: any) {
 
-  return data && data?.map((item: any) => {
+  return data && data.length > 0 && data.map((item: any) => {
     return {
       ...item,
       text: item.name

@@ -38,6 +38,7 @@ function EmployeeDesignation() {
     const { goBack } = useNavigation();
     const addDesignationModal = useModal(false);
     const designationName = useInput('')
+    const [editId, setEditId] = useState<any>()
     const [isHrAdmin, setIsHrAdmin] = useState(false);
     const [isDepartmentAdmin, setIsDepartmentAdmin] = useState(false);
     const [isSuperAdmin, setIsSuperAdmin] = useState(false);
@@ -71,6 +72,7 @@ function EmployeeDesignation() {
                         loginLoader.hide()
                         getDesignationApiHandler(designationsCurrentPage)
                         resetValues()
+                        setEditId('')
                         setSelectedDesignation('')
                         showToast(success.message, 'success')
                     },
@@ -96,13 +98,8 @@ function EmployeeDesignation() {
             getDesignations({
                 params,
                 onSuccess: (response: any) => () => {
-                    console.log('response=======>>', JSON.stringify(response));
-
-                    // setDesignationDetails(response?.details)
                     setLoading(false)
                     loginLoader.hide()
-                    // console.log('getDesignations=====----', response);
-
                 },
                 onError: (error: string) => () => {
                     setLoading(false)
@@ -177,6 +174,7 @@ function EmployeeDesignation() {
                                     setIsDepartmentAdmin(is_department_admin)
                                     setIsSuperAdmin(is_super_admin)
                                     setIsHR(is_hr)
+                                    setEditId(id)
                                     addDesignationModal.show()
                                 }
 
@@ -279,12 +277,13 @@ function EmployeeDesignation() {
                 onClose={() => {
                     addDesignationModal.hide()
                     resetValues()
+                    setEditId("")
                 }}
                 size='lg'
                 style={{ padding: 0 }}
             >
                 <div className="px-md-6 px-3 ">
-                    <Heading heading={'Add Department'} style={{ fontSize: '26px', fontWeight: 800, margin: 0 }} />
+                    <Heading heading={`${editId ? "Edit" : "Add"} Designation`} style={{ fontSize: '26px', fontWeight: 800, margin: 0 }} />
                     <div className='mt-4'>
                         <Input
                             placeholder={'Enter Designation'}
@@ -353,7 +352,8 @@ function EmployeeDesignation() {
                                 ...(isHrAdmin && { is_hr_admin: isHrAdmin }),
                                 ...(isDepartmentAdmin && { is_department_admin: isDepartmentAdmin }),
                                 ...(isSuperAdmin && { is_super_admin: isSuperAdmin }),
-                                ...(isHR && { is_hr: isHR })
+                                ...(isHR && { is_hr: isHR }),
+                                ...(editId && { id: editId })
                             };
                             console.log(params, "pppppppppppp")
 

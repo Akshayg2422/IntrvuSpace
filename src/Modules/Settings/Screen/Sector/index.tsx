@@ -18,14 +18,15 @@ function Sector() {
   const addSectorLoader = useLoader(false);
   const [loading, setLoading] = useState(true)
   const { sectorsCorporate, sectorsCorporateNumOfPages, sectorsCorporateCurrentPages } = useSelector((state: any) => state.DashboardReducer)
-  console.log('sectorsCorporate===========>>>>', sectorsCorporate);
+  // console.log('sectorsCorporate===========>>>>', sectorsCorporate);
+  console.log("sectorsCorporateCurrentPages===>", sectorsCorporateCurrentPages)
 
   const getDesignationMenu = () => [
     { id: '0', name: "Edit", icon: icons.edit },
   ]
 
   useEffect(() => {
-    getSectorCorporateDetailsApiHandler(sectorsCorporateCurrentPages)
+    getSectorCorporateDetailsApiHandler(1)
   }, [])
 
   const addSectorCorporateDetailsApiHandler = () => {
@@ -34,8 +35,6 @@ function Sector() {
       description: descriptions.value,
       ...(editId && { id: editId })
     }
-    // console.log('Corporate========>', params);
-
     const validation = validate(ADD_SECTOR_CORPORATE_RULES, params)
 
     if (ifObjectExist(validation)) {
@@ -68,14 +67,12 @@ function Sector() {
     const params = {
       page_number,
     }
-    console.log('Corporate========>', params); 
+    // console.log('Corporate========>', params); 
     dispatch(
       getSectorCorporate({
         params,
         onSuccess: (success: any) => () => {
           setLoading(false)
-          // console.log('sector====================>', JSON.stringify(success));
-
         },
         onError: (error: string) => () => {
           setLoading(false)
@@ -89,7 +86,7 @@ function Sector() {
       const { name, description } = el
 
       return {
-        Name: el.name,
+        Name: el?.name,
         description: el?.description,
         // description: filteredName(el?.description, 90),
 
@@ -98,13 +95,10 @@ function Sector() {
 
             if (item?.id === '0') {
               const { name, id, description } = el
-              console.log('description=====', description);
 
               setEditId(id)
               sectorName.set(name)
               descriptions.set(description)
-              // }
-
               addSector.show()
 
 
@@ -157,15 +151,15 @@ function Sector() {
               {sectorsCorporate && sectorsCorporate?.data?.length > 0 ? (
                 <CommonTable
                   card
-                  isPagination
+                  isPagination={sectorsCorporateNumOfPages>1}
                   title={'Sector'}
                   displayDataSet={normalizedTableData(sectorsCorporate?.data)}
                   noOfPage={sectorsCorporateNumOfPages}
                   currentPage={sectorsCorporateCurrentPages}
                   paginationNumberClick={(currentPage) => {
-
+    
                     getSectorCorporateDetailsApiHandler(paginationHandler("current", currentPage));
-
+    
                   }}
                   previousClick={() => {
                     getSectorCorporateDetailsApiHandler(paginationHandler("prev", sectorsCorporateCurrentPages))
@@ -180,7 +174,6 @@ function Sector() {
                 <div
                   className="vh-100 d-flex justify-content-center align-items-center ">
                   <NoRecordsFound />
-                  {/* <NoDataFound type={'action'} buttonText={'Add TeamMate'}  isButton /> */}
                 </div>
 
               )}
@@ -196,9 +189,10 @@ function Sector() {
         addSector.hide()
         sectorName.set("")
         descriptions.set("")
+        setEditId('')
       }} >
         <div className="px-md-6">
-          <div className='mt--2'>  <Heading heading={'Sector'} style={{ fontSize: '25px', fontWeight: 800, }} /></div>
+          <div className='mt--2'>  <Heading heading={`${editId ? "Edit" : "Add"} Sector`} style={{ fontSize: '25px', fontWeight: 800, }} /></div>
           <div className='mt-4'>
             <div className='row'>
               <div className="mt--2 col">

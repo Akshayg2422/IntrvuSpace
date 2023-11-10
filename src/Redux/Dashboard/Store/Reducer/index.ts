@@ -612,17 +612,17 @@ const DashboardReducer = (state = initialState, action: any) => {
     case ActionTypes.GET_SECTORS_CORPORATE_SUCCESS:
       state = {
         ...state,
-        sectorsCorporate: action.payload?.details?.knowledege_groups,
-        sectorsCorporateNumOfPages: action.payload?.details?.num_pages,
+        sectorsCorporate: action.payload?.details.knowledege_groups,
+        sectorsCorporateNumOfPages: action.payload?.details?.knowledege_groups?.num_pages,
         sectorsCorporateCurrentPages:
-          action.payload?.details.next_page === -1
-            ? action?.payload?.details.num_pages
-            : action?.payload?.details?.next_page - 1,
+          action.payload.details?.knowledege_groups?.next_page === -1
+            ? action?.payload?.details?.knowledege_groups?.num_pages
+            : action?.payload?.details?.knowledege_groups?.next_page - 1,
       };
       break;
 
     case ActionTypes.GET_SECTORS_CORPORATE_FAILURE:
-      state = { ...state, sectorsCorporate: undefined };
+      state = { ...state, sectorsCorporate: undefined,loading: false };
       break;
 
     /**createCorporateSchedule */

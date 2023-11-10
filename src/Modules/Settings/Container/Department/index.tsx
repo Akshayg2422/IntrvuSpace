@@ -19,14 +19,14 @@ function Department() {
   const [loading, setLoading] = useState(true);
   const { departmentCorporate ,departmentsCorporateCurrentPages,
     departmentCorporateNumOfPages,} = useSelector((state: any) => state.DashboardReducer)
-  // console.log('DepartmentCorp===========>', departmentCorporate);
+  console.log('departmentsCorporateCurrentPages===========>', departmentsCorporateCurrentPages);
 
   const getDesignationMenu = () => [
     { id: '0', name: "Edit", icon: icons.edit },
   ]
 
   useEffect(() => {
-    getDepartmentCorporateDetailsApiHandler(departmentsCorporateCurrentPages)
+    getDepartmentCorporateDetailsApiHandler(1)
   }, [])
 
   const addSectorCorporateDetailsApiHandler = () => {
@@ -151,7 +151,7 @@ function Department() {
               {departmentCorporate && departmentCorporate?.data?.length > 0 ? (
                 <CommonTable
                   card
-                  isPagination
+                  isPagination = {departmentCorporateNumOfPages>1}
                   title={'Department'}
                   displayDataSet={normalizedTableData(departmentCorporate?.data)}
                   noOfPage={departmentCorporateNumOfPages}
@@ -185,11 +185,12 @@ function Department() {
       < Modal size={'lg'} isOpen={addDepartmentModel.visible} onClose={() => {
         addDepartmentModel.hide()
         DepartmentName.set("")
+        setEditId('')
       }} style={{ padding: 0 }}>
 
         <div className="px-md-5 ">
 
-        <div className='mt--2'>  <Heading heading={'Department'} style={{ fontSize: '25px', fontWeight: 800,}} /></div>
+        <div className='mt--2'>  <Heading heading={`${editId ? "Edit" : "Add"} Department`} style={{ fontSize: '25px', fontWeight: 800,}} /></div>
           <div className="mt-3">
             <Input
               heading={"Name"}
