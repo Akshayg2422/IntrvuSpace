@@ -42,7 +42,9 @@ function App() {
 
 
   const getRoutes = (routes, type?: any) => {
+
     return routes.map((prop, key) => {
+
       if (prop.collapse) {
         return getRoutes(prop.views);
       }

@@ -53,7 +53,6 @@ function Otp() {
                                 ...details
                             }),
                         );
-
                         localStorage.setItem(USER_TOKEN, response.details.token);
                         goTo(ROUTES['auth-module'].splash)
                         dispatch(settingRegisterData(undefined))

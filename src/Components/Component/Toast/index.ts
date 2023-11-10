@@ -32,7 +32,7 @@ import 'react-toastify/dist/ReactToastify.css';
       toastElement = toast(message, style);
       break;
   }
-
+console.log(toastElement,"toastElement")
   return toastElement;
 };
 

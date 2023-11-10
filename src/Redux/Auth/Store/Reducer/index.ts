@@ -10,6 +10,9 @@ const initialState: AuthProps = {
     OTP: undefined,
     memberUsingLoginOtp: undefined,
     registerCompanyDetails: undefined,
+    verifyEmail:undefined,
+    verifyOtp:undefined,
+    VerificationEmail:undefined
 };
 
 
@@ -78,9 +81,44 @@ const AuthReducer = (state = initialState, action: any) => {
             state = { ...state, registerCompanyDetails: undefined };
             break;
 
+
+
+            
+        //getOtpVerifyEmail member using login otp
+
+        case ActionTypes.GET_OTP_FOR_EMAIL_VERIFICATION:
+            state = { ...state, verifyEmail: undefined };
+            break;
+        case ActionTypes.GET_OTP_FOR_EMAIL_VERIFICATION_SUCCESS:
+            state = { ...state, verifyEmail: action.payload };
+            break;
+        case ActionTypes.GET_OTP_FOR_EMAIL_VERIFICATION_FAILURE:
+            state = { ...state, verifyEmail: undefined };
+            break;
+
+        // registerAsCompany
+
+        case ActionTypes.VERIFY_EMAIL_USING_OTP:
+            state = { ...state, verifyOtp: undefined };
+            break;
+        case ActionTypes.VERIFY_EMAIL_USING_OTP_SUCCESS:
+            state = { ...state, verifyOtp: action.payload };
+            break;
+        case ActionTypes.VERIFY_EMAIL_USING_OTP_FAILURE:
+            state = { ...state, verifyOtp: undefined };
+            break;
+
+            case ActionTypes.FETCH_EMAIL_VERIFY:
+                state = { ...state, VerificationEmail: action.payload };
+                break;
+
+
+
         default:
             state = state;
             break;
+
+
 
     }
 
