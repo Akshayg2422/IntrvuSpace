@@ -156,10 +156,10 @@ function TopNavbar() {
                     <NavbarBrand tag={Link}>
                         <div className="d-flex justify-content-between">
                             <img className={'d-none d-lg-block d-md-block d-xl-block '} src={icons.logoText} alt="Logo"
-                            //  height={'!00%'} width={'70%'}
+                             height={'!00%'} width={'70%'}
                              style={{
-                               height: "20%", width: "20%" 
-                                // objectFit:'contain'
+                           
+                                objectFit:'contain'
                             }}/>
                             <img className={'d-block d-md-none d-lg-none d-xl-none'} src={icons.logoText} alt="Logo" style={{ height: '30%', width: '30%' }} />
                             <button
