@@ -14,7 +14,6 @@ export const image = {
     Benefits: require('./brand/benefits.png'),
     EaseOfUse: require('./brand/Ease of use.png'),
     Rev: require('./brand/revolution image.png'),
-
     TMS_Logo: require('./brand/TMS_Logo.png'),
     TMS_Img1: require('./brand/TMS_Img1.png'),
     TMS_Img2: require('./brand/TMS_Img2.png'),
@@ -56,7 +55,7 @@ export const image = {
     Guideline: require('./theme/guideline.jpg'),
     IntrvuSpace: require('./theme/intrvuSpace.jpg'),
     CreateIntrvu: require('./theme/createIntrvu.png'),
-    AccessReportsAndInsights: require('./theme/AccessReportsAndInsights.png'),
+    AccessReportsAndInsights: require('./theme/accessReportsAndInsights.png'),
     ScheduleAndNotification: require('./theme/ScheduleAndNotification.png'),
     CandidatesAttendInterview: require('./theme/candidatesAttendInterview.png'),
     CreateJdAddCandidates: require('./theme/createJdAddCandidates.png'),
