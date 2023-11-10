@@ -13,6 +13,7 @@ import { CallHeader, CallHeaderMobile, Guidelines, Report } from "@Modules";
 import {
   canStartInterview,
   closeInterview,
+  getJdItemList,
   getScheduleBasicInfo,
 } from "@Redux";
 import { CALL_WEBSOCKET } from "@Services";
@@ -22,6 +23,7 @@ import {
   getOperatingSystem,
   getShortName,
   gotoPermissionSetting,
+  hasCameraPermission,
   hasMicrophonePermission,
 } from "@Utils";
 import type { Harker } from "hark";
@@ -119,6 +121,9 @@ function Call() {
   const [isTtfSpeaking, setIsTtfSpeaking] = useState<boolean>(false);
 
   const [networkError, setNetworkError] = useState(false);
+  const [networkErrorResponse, setNetworkErrorResponse] =
+    useState<any>(undefined);
+
   const [websocketError, setWebSocketError] = useState(false);
 
   const lastAiResponseTime = useRef<any>(undefined);
@@ -227,6 +232,9 @@ function Call() {
   const socketRef = useRef<any>(null);
   const videoRecorderRef = useRef(null);
 
+  const interviewLimitModal = useModal(false);
+  const camPermissionModal = useModal(false);
+
   const {
     startScreenRecording,
     stopScreenRecording,
@@ -237,7 +245,7 @@ function Call() {
     setRecordedAudioData,
     recordedVideoData,
     isScreenRecordingReady,
-    setIsScreenRecordingReady
+    setIsScreenRecordingReady,
   } = useScreenRecorder();
 
   console.log("recordSttaus==>", recordStatus);
@@ -253,15 +261,13 @@ function Call() {
 
   const [isForceRecord, setIsForceRecord] = useState(true); // static state to force record by default setting false
 
-  // console.log("recordStatus--->", recordStatus);
-  // console.log("video blobbbbsss====>", recordedVideoData);
-
   {
     /** interview recording useEffect */
   }
 
   useEffect(() => {
     if (recordStatus) {
+      console.log("9999999999999");
       startInterviewHandler();
     } else if (recordStatus === false) {
       setIsConfirmRecordingModalOpen(true);
@@ -468,9 +474,13 @@ function Call() {
         onSuccess: () => () => {
           loader.hide();
           setNetworkError(false);
+          setNetworkErrorResponse(undefined);
+          interviewLimitModal.hide();
         },
-        onError: () => () => {
+        onError: (response: any) => () => {
+          setNetworkErrorResponse(response);
           setNetworkError(true);
+          interviewLimitModal.show();
           loader.hide();
         },
       })
@@ -776,9 +786,6 @@ function Call() {
     if (!isRecording) {
       startRecording();
 
-      //call screen recording boolean
-      setIsScreenRecordingReady(true);
-
       setIsRecording(true);
       setMute(false);
     }
@@ -802,6 +809,9 @@ function Call() {
   }
 
   const openCallView = () => {
+    //call screen recording boolean
+    // setIsScreenRecordingReady(true);
+
     setNetworkError(false);
     startInterviewLoader.hide();
     startStreamTime.current = moment().add(1, "seconds");
@@ -816,36 +826,49 @@ function Call() {
   };
 
   async function startInterviewHandler() {
-    const hasMicPermission = await hasMicrophonePermission();
+    const hasCamPermission = await hasCameraPermission();
+    if (hasCamPermission) {
+      camPermissionModal.hide();
 
-    if (hasMicPermission) {
-      micPermissionModal.hide();
-      const canStartParams = { schedule_id };
+      const hasMicPermission = await hasMicrophonePermission();
+      if (hasMicPermission) {
+        micPermissionModal.hide();
 
-      startInterviewLoader.show();
+        const canStartParams = { schedule_id };
 
-      intervalIdRef.current = setInterval(() => {
-        dispatch(
-          canStartInterview({
-            params: canStartParams,
-            onSuccess: (res: any) => () => {
-              initiateSocket();
+        if (!recordStatus) {
+          await startScreenRecording();
+        } else if (recordStatus) {
+          startInterviewLoader.show();
 
-              proceedOpenCallView.current = true;
+          intervalIdRef.current = setInterval(() => {
+            dispatch(
+              canStartInterview({
+                params: canStartParams,
+                onSuccess: (res: any) => () => {
+                  initiateSocket();
 
-              if (intervalIdRef.current) {
-                clearInterval(intervalIdRef.current);
-              }
-            },
-            onError: (error: any) => () => {
-              startInterviewLoader.hide();
-              setNetworkError(true)
-            },
-          })
-        );
-      }, INTERVAL_TIME);
+                  proceedOpenCallView.current = true;
+
+                  if (intervalIdRef.current) {
+                    clearInterval(intervalIdRef.current);
+                  }
+                },
+                onError: (error: any) => () => {
+                  startInterviewLoader.hide();
+                  setNetworkError(true);
+                },
+              })
+            );
+          }, INTERVAL_TIME);
+        } else {
+          startScreenRecording();
+        }
+      } else {
+        micPermissionModal.show();
+      }
     } else {
-      micPermissionModal.show();
+      camPermissionModal.show();
     }
   }
 
@@ -924,29 +947,24 @@ function Call() {
   }
 
   const closeRecordingModal = () => {
-    console.log("11111111111111111111")
     setIsConfirmRecordingModalOpen(false);
     setIsCancelRecording(false);
     setIsEnableRecording(false);
   };
 
   const confirmForceRecord = () => {
-    console.log("2222222222222")
     setIsConfirmRecordingModalOpen(false);
     setIsCancelRecording(false);
     startScreenRecording();
   };
 
   const cancelRecording = () => {
-    console.log("3333333333333333")
     setIsCancelRecording(true);
     setIsConfirmRecordingModalOpen(true);
     setRecordStatus(undefined);
   };
 
   const enableRecording = () => {
-    console.log("44444444444444444");
-
     setIsConfirmRecordingModalOpen(false);
     setIsCancelRecording(false);
     startScreenRecording();
@@ -955,8 +973,6 @@ function Call() {
   };
 
   const confirmRecording = () => {
-    console.log("555555555555555555555");
-
     setIsConfirmRecordingModalOpen(false);
     setIsCancelRecording(false);
     startInterviewHandler();
@@ -1147,7 +1163,7 @@ function Call() {
                 scheduleInfo={scheduleInfo}
                 loading={startInterviewLoader.loader}
                 heading={scheduleInfo?.interviewee_expected_designation}
-                onClick={startScreenRecording}
+                onClick={startInterviewHandler}
               />
             ) : (
               <></>
@@ -1160,14 +1176,18 @@ function Call() {
             <Spinner />
           </div>
         )}
-        {(networkError || websocketError) && (
+        {websocketError && (
           <div className="d-flex align-items-center justify-content-center h-100 ">
             <div className="text-center ">
               <h4 className="display-4 mb-0">
                 Technical breakdown please try again
               </h4>
               <div className="my-3"></div>
-              <Button className="rounded-sm" text={"Try Again"} onClick={refreshScreen} />
+              <Button
+                className="rounded-sm"
+                text={"Try Again"}
+                onClick={refreshScreen}
+              />
             </div>
           </div>
         )}
@@ -1229,7 +1249,8 @@ function Call() {
       >
         <div className="mt--5">
           <div>
-            <Heading className={"text-secondary display-4"}
+            <Heading
+              className={"text-secondary display-4"}
               heading={
                 isForceRecord
                   ? "Confirm Recording"
@@ -1258,19 +1279,95 @@ function Call() {
           </div>
           <div className="text-center mt-4 mb-3">
             {isForceRecord ? (
-              <Button className="rounded-sm" text={"Confirm"} onClick={confirmForceRecord} />
+              <Button
+                className="rounded-sm"
+                text={"Confirm"}
+                onClick={confirmForceRecord}
+              />
             ) : !isCancelRecording && !isEnableRecording ? (
               <>
-                <Button className="rounded-sm"
+                <Button
+                  className="rounded-sm"
                   text={"Cancel Recording"}
                   onClick={cancelRecording}
                   color="white"
                 />
-                <Button className="rounded-sm" text={"Enable Recording"} onClick={enableRecording} />
+                <Button
+                  className="rounded-sm"
+                  text={"Enable Recording"}
+                  onClick={enableRecording}
+                />
               </>
             ) : (
-              <Button className="rounded-sm" text={"Confirm"} onClick={confirmRecording} />
+              <Button
+                className="rounded-sm"
+                text={"Confirm"}
+                onClick={confirmRecording}
+              />
             )}
+          </div>
+        </div>
+      </Modal>
+
+      {/**
+       * nerowork error
+       */}
+
+      <Modal
+        isOpen={interviewLimitModal.visible}
+        title={
+          networkErrorResponse?.status_code === 3
+            ? "Server Full"
+            : "Network Error"
+        }
+      >
+        <h3 className="m-0">
+          {networkErrorResponse?.status_code === 3
+            ? networkErrorResponse?.error_message
+            : " Technical breakdown please try again"}
+        </h3>
+        <div className="d-flex align-items-center justify-content-center mt-3">
+          <Button
+            className="rounded"
+            text={"Try Again"}
+            onClick={() => {
+              interviewLimitModal.hide();
+              getBasicInfo();
+            }}
+          />
+        </div>
+      </Modal>
+
+      {/**
+       * Camera permission modal
+       */}
+
+      <Modal
+        isOpen={camPermissionModal.visible}
+        onClose={camPermissionModal.hide}
+      >
+        <div className="mt--5">
+          <Heading
+            className={"text-secondary display-4"}
+            heading={"Camera Permission"}
+          />
+          <div className="text-default">
+            <p className="mt-3">
+              {
+                "Please provide access to your web camera to start the interview"
+              }
+            </p>
+          </div>
+
+          <div className="d-flex align-items-center justify-content-center mt-4 mb-3">
+            <Button
+              className="rounded-sm"
+              text={"OK"}
+              onClick={async () => {
+                camPermissionModal.hide();
+                // await hasCameraPermission()
+              }}
+            />
           </div>
         </div>
       </Modal>

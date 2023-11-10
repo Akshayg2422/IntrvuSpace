@@ -123,3 +123,43 @@ export const registerAsCompanyFailure = (error: any) => {
         payload: error
     }
 }
+
+
+export const saveUserEmail = (params: any) => {
+    return {
+        type: ActionTypes.SAVE_USER_EMAIL,
+        payload: params
+    }
+}
+
+
+
+/**
+ *  get oto from email verification
+ * @param params 
+ * @returns 
+ */
+
+export const getOtpForEmailVerification = (params: any) => {
+    return {
+        type: ActionTypes.GET_OTP_FOR_EMAIL_VERIFICATION,
+        payload: params,
+    };
+};
+
+
+
+
+/**
+ *  verify email using otp
+ */
+
+export const verifyEmailUsingOtp = (params: any) => {
+    return {
+        type: ActionTypes.VERIFY_EMAIL_USING_OTP,
+        payload: params,
+    };
+};
+
+
+

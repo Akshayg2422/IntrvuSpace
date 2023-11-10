@@ -73,7 +73,10 @@ export const OTP_NUMBER_RULES = {
 
 
 
-
+export const EMAIL_VERIFICATION_RULES = {
+  ...EMAIL_RULES,
+  ...OTP_NUMBER_RULES,
+}
 
 export const RESET_PASSWORD_RULES = {
   ...EMAIL_RULES,
@@ -164,6 +167,30 @@ export const ADD_SECTOR_RULES = {
   },
   photo: {
     presence: { allowEmpty: false, message: 'Please upload an image for your sector' }
+  }
+}
+
+export const ADD_SECTOR_CORPORATE_RULES = {
+  name: {
+    length: { minimum: 3, message: 'Name minimum 3 chars' },
+  },
+  description: {
+    presence: { allowEmpty: false, message: 'Description cannot be empty' },
+  },
+  // photo: {
+  //   presence: { allowEmpty: false, message: 'Please upload an image for your sector' }
+  // }
+}
+
+export const ADD_DEPARTMENT_CORPORATE_RULES = {
+  name: {
+    length: { minimum: 3, message: 'Name minimum 3 chars' },
+  },
+}
+
+export const ADD_DESIGNATION = {
+  name: {
+    presence: { allowEmpty: false, message: "Designation name cannot be empty" },
   }
 }
 
@@ -337,3 +364,37 @@ export const CREATE_NEW_PASSWORD_RULES = {
     presence: { allowEmpty: false, message: "Confirm password cannot be empty" }
   }
 }
+
+export const USER_FORM_RULES = {
+  first_name: {
+    presence: { message: "Name cannot be empty." },
+    length: { minimum: 3, message: "Fast Name should have a minimum of 3 characters." },
+  },
+  last_name: {
+    presence: { message: "Last name cannot be empty" },
+    length: { minimum: 1, message: "Last name minimum 1 chars" },
+  },
+
+  mobile_number: {
+    presence: { message: "Mobile number cannot be empty" },
+    length: { is: 10, message: "Mobile number should be 10 number" },
+  },
+
+  email: {
+    email: {
+      message: "Email doesn't look like a valid email.",
+    },
+  },
+  department_id: {
+    presence: { allowEmpty: false, message: "Department cannot be empty" },
+  },
+  designation_id: {
+    presence: { allowEmpty: false, message: "Designation cannot be empty" },
+  },
+  // gender: {
+  //   presence: { message: "Please select a gender." },
+  // },
+};
+
+
+

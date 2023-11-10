@@ -1,51 +1,54 @@
 import React, { Component, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { createSector, getSectors, getStartChat } from '@Redux';
-import { useInput, useLoader, useModal } from '@Hooks';
+import { addSectorCorporate, createSector, getSectorCorporate, getSectors, getStartChat } from '@Redux';
+import { useInput, useLoader, useModal, useNavigation } from '@Hooks';
 import { translate } from "@I18n";
-import { Back, Button, Card, CommonTable, Image, ImagePicker, Input, Modal, showToast } from '@Components';
-import { ADD_SECTOR_RULES, getPhoto, getValidateError, ifObjectExist, validate, filteredName } from '@Utils';
+import { Button, Card, CommonTable, Heading, Image, Input, MenuBar, Modal, NoRecordsFound, Spinner, showToast } from '@Components';
+import { getValidateError, ifObjectExist, validate, filteredName, ADD_SECTOR_CORPORATE_RULES, paginationHandler } from '@Utils';
+import { icons } from '@Assets';
 
 
 function Sector() {
   const dispatch = useDispatch()
-
+  const { goBack } = useNavigation();
   const addSector = useModal(false);
-
-  const name = useInput("");
-  const description = useInput("");
-  const [image, setImage] = useState("");
+  const [editId, setEditId] = useState<any>()
+  const sectorName = useInput("");
+  const descriptions = useInput("");
   const addSectorLoader = useLoader(false);
+  const [loading, setLoading] = useState(true)
+  const { sectorsCorporate, sectorsCorporateNumOfPages, sectorsCorporateCurrentPages } = useSelector((state: any) => state.DashboardReducer)
+  // console.log('sectorsCorporate===========>>>>', sectorsCorporate);
+  console.log("sectorsCorporateCurrentPages===>", sectorsCorporateCurrentPages)
 
-  const [photo, setPhoto] = useState<any>("");
-  const { sectors } = useSelector((state: any) => state.DashboardReducer)
-
+  const getDesignationMenu = () => [
+    { id: '0', name: "Edit", icon: icons.edit },
+  ]
 
   useEffect(() => {
-    getSectorDetailsApiHandler()
+    getSectorCorporateDetailsApiHandler(1)
   }, [])
 
-  const addSectorDetailsApiHandler = () => {
+  const addSectorCorporateDetailsApiHandler = () => {
     const params = {
-      name: name.value,
-      description: description.value,
-      photo: photo
+      name: sectorName.value,
+      description: descriptions.value,
+      ...(editId && { id: editId })
     }
-
-    const validation = validate(ADD_SECTOR_RULES, params)
+    const validation = validate(ADD_SECTOR_CORPORATE_RULES, params)
 
     if (ifObjectExist(validation)) {
       addSectorLoader.show()
       dispatch(
-        createSector({
+        addSectorCorporate({
           params,
           onSuccess: (success: any) => () => {
             addSector.hide()
-            description.set('')
-            name.set('')
-            setPhoto('')
+            descriptions.set('')
+            setEditId('')
+            sectorName.set('')
             addSectorLoader.hide()
-            getSectorDetailsApiHandler()
+            getSectorCorporateDetailsApiHandler(sectorsCorporateCurrentPages)
             showToast(success.message, 'success')
           },
           onError: (error: any) => () => {
@@ -60,14 +63,19 @@ function Sector() {
     }
   };
 
-  const getSectorDetailsApiHandler = () => {
-    const params = {}
+  const getSectorCorporateDetailsApiHandler = (page_number: number) => {
+    const params = {
+      page_number,
+    }
+    // console.log('Corporate========>', params); 
     dispatch(
-      getSectors({
+      getSectorCorporate({
         params,
         onSuccess: (success: any) => () => {
+          setLoading(false)
         },
         onError: (error: string) => () => {
+          setLoading(false)
         },
       })
     );
@@ -75,80 +83,145 @@ function Sector() {
 
   const normalizedTableData = (data: any) => {
     return data?.map((el: any) => {
+      const { name, description } = el
+
       return {
-        '': <Image variant={'rounded'} src={getPhoto(el?.photo)} />,
-        Name: el.name,
-        description: filteredName(el?.description, 90),
+        Name: el?.name,
+        description: el?.description,
+        // description: filteredName(el?.description, 90),
+
+        '': ((name || description) &&
+          <MenuBar menuData={getDesignationMenu()} icon={icons.more} onClick={(item) => {
+
+            if (item?.id === '0') {
+              const { name, id, description } = el
+
+              setEditId(id)
+              sectorName.set(name)
+              descriptions.set(description)
+              addSector.show()
+
+
+            }
+
+
+          }} />
+        )
       };
     });
   };
 
   return (
     <>
-      <div className='container-fluid'>
-        <div className="row justify-content-between mt-2 pl-2 mr--2 mb-3">
-          <Back />
+      <div className='container'>
+        <div className="row justify-content-between mt-3 pl-2 mr--2 mb-3">
+          {/* <Back /> */}
+          <div className='d-flex align-items-center'>
+            <div className=''>
+              <Image
+                onClick={() => goBack()}
+                style={{ cursor: "pointer" }}
+                src={icons.back}
+                height={15}
+              />
+            </div>
+            <div className='pl-3' >
+              <span className='headingText text-secondary'>{'Manage Sector'}</span>
+            </div>
+          </div>
           <Button
-            className={'text-white shadow-none'}
-            size={'sm'}
+            size={'md'}
+            className={'btn btn-primary rounded-sm'}
             text={"Add Sector"}
             onClick={() => {
               addSector.show()
             }}
           />
         </div>
-        <div className='row px-0  mx--4'>
-          <div className='col-sm-12 px-0'>
-            <CommonTable
-              card
-              isPagination
-              title={'Sectors'}
-              displayDataSet={normalizedTableData(sectors)}
-            />
+
+        {loading && (
+          <div className={'vh-100 d-flex justify-content-center align-items-center'}>
+            <Spinner />
+          </div>)
+        }
+        {!loading &&
+          <div className='row px-0  mx--4'>
+            <div className='col-sm-12 px-0'>
+
+              {sectorsCorporate && sectorsCorporate?.data?.length > 0 ? (
+                <CommonTable
+                  card
+                  isPagination={sectorsCorporateNumOfPages > 1}
+                  title={'Sector'}
+                  displayDataSet={normalizedTableData(sectorsCorporate?.data)}
+                  noOfPage={sectorsCorporateNumOfPages}
+                  currentPage={sectorsCorporateCurrentPages}
+                  paginationNumberClick={(currentPage) => {
+
+                    getSectorCorporateDetailsApiHandler(paginationHandler("current", currentPage));
+
+                  }}
+                  previousClick={() => {
+                    getSectorCorporateDetailsApiHandler(paginationHandler("prev", sectorsCorporateCurrentPages))
+                  }
+                  }
+                  nextClick={() => {
+                    getSectorCorporateDetailsApiHandler(paginationHandler("next", sectorsCorporateCurrentPages));
+                  }
+                  }
+                />
+              ) : (
+                <div
+                  className="vh-100 d-flex justify-content-center align-items-center ">
+                  <NoRecordsFound />
+                </div>
+
+              )}
+
+            </div>
           </div>
-        </div>
+
+        }
+
+
       </div>
-      < Modal size={'lg'} title={"Add Sector"} isOpen={addSector.visible} onClose={()=>{
+      < Modal size={'lg'} isOpen={addSector.visible} onClose={() => {
         addSector.hide()
-        name.set("")
-        description.set("")
-        setPhoto("")
+        sectorName.set("")
+        descriptions.set("")
+        setEditId('')
       }} >
-        <div className="col-md-9">
-          <div className="mt--2">
-            <Input
-              heading={"Name"}
-              value={name.value}
-              onChange={name.onChange}
-            />
-          </div>
-          <div className="mt--2">
-            <Input
-              heading={"Description"}
-              value={description.value}
-              onChange={description.onChange}
-            />
-          </div>
-          <div className=" pb-4 mt--4">
-            <div className="row">
-              <ImagePicker
-                icon={image}
-                size='xl'
-                heading={translate("common.addAttachment")!}
-                noOfFileImagePickers={1}
-                onSelect={(image) => {
-                  let file = image.toString().replace(/^data:(.*,)?/, "")
-                  setPhoto(file)
-                }}
-              />
+        <div className="px-md-6">
+          <div className='mt--2'>  <Heading heading={`${editId ? "Edit" : "Add"} Sector`} style={{ fontSize: '25px', fontWeight: 800, }} /></div>
+          <div className='mt-4'>
+            <div className='row'>
+              <div className="mt--2 col">
+                <Input
+                  heading={"Name"}
+                  value={sectorName.value}
+                  onChange={sectorName.onChange}
+                />
+              </div>
+              <div className="mt--2 col">
+                <Input
+                  heading={"Description"}
+                  value={descriptions.value}
+                  onChange={descriptions.onChange}
+                />
+              </div>
             </div>
           </div>
         </div>
-        <div className="col text-right ">
+        <div className="col d-flex justify-content-center py-5">
           <Button size={'md'}
+            className={'rounded-sm px-5 btn btn-primary '}
+            style={{
+              borderColor: "#d8dade",
+              fontSize: "15px"
+            }}
             loading={addSectorLoader.loader}
             text={"Submit"}
-            onClick={addSectorDetailsApiHandler}
+            onClick={addSectorCorporateDetailsApiHandler}
           />
         </div>
       </Modal >

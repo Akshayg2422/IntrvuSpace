@@ -10,6 +10,9 @@ const initialState: AuthProps = {
     OTP: undefined,
     memberUsingLoginOtp: undefined,
     registerCompanyDetails: undefined,
+    verifyOtp: undefined,
+    VerificationEmail: undefined,
+    userEmail: undefined
 };
 
 
@@ -78,9 +81,24 @@ const AuthReducer = (state = initialState, action: any) => {
             state = { ...state, registerCompanyDetails: undefined };
             break;
 
+        // registerAsCompany
+
+
+        /**
+         * save user email
+         */
+
+        case ActionTypes.SAVE_USER_EMAIL:
+
+            state = { ...state, userEmail: action.payload };
+            break;
+
+
         default:
             state = state;
             break;
+
+
 
     }
 

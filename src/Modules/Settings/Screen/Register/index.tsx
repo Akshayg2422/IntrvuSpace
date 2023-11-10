@@ -1,16 +1,18 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { Back, Button, Input, InputPassword, Logo, showToast } from "@Components";
 import { useInput, useKeyPress, useLoader, useNavigation } from "@Hooks";
-import { registerAsMember, settingRegisterData } from "@Redux";
+import { registerAsMember, saveUserEmail, userLoginDetails } from "@Redux";
 import { ROUTES } from "@Routes";
+import { REGISTER_RULES, getValidateError, ifObjectExist, validate, USER_TOKEN } from '@Utils';
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { ifObjectExist, validate, getValidateError, REGISTER_RULES } from '@Utils'
+import { useDispatch, useSelector } from "react-redux";
 import './index.css';
 
 function Register() {
 
   const { goTo } = useNavigation();
+
+  const { loginDetails } = useSelector((state: any) => state.AppReducer);
 
 
   const dispatch = useDispatch();
@@ -55,11 +57,32 @@ function Register() {
           registerAsMember({
             params,
             onSuccess: (response: any) => () => {
+
+              const { details } = response;
+              const { is_email_verified } = details;
+              loader.hide();
+
+
+
               if (response.success) {
-                dispatch(settingRegisterData(params));
                 goTo(ROUTES["auth-module"].login);
                 showToast(response.message, "success");
-                loader.hide();
+
+                localStorage.setItem(USER_TOKEN, '');
+
+                dispatch(
+                  userLoginDetails({
+                    ...loginDetails,
+                    isLoggedIn: is_email_verified,
+                  })
+                );
+
+                if (is_email_verified) {
+                  goTo(ROUTES["auth-module"].splash, true);
+                } else {
+                  dispatch(saveUserEmail(email?.value))
+                  goTo(ROUTES["auth-module"]["mail-verification"]);
+                }
               } else {
                 showToast(response.error_message, "error");
               }

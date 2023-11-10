@@ -358,15 +358,15 @@ function Report() {
               </div>
             )}
 
-            <div className="mt-3 px-0">
-              <div>
-                <span
-                  className="font-weight-bolder text-secondary "
-                  style={{ fontSize: 26 }}
-                >
-                  {"Job Description Key Areas"}
-                </span>
-              </div>
+          <div className="mt-3 px-0">
+            <div>
+              <span
+                className="font-weight-bolder text-secondary "
+                style={{ fontSize: 26 }}
+              >
+                {"Job Description Key Areas"}
+              </span>
+            </div>
 
               <div>
                 <div className="" style={{ paddingTop: 30 }}>

@@ -27,12 +27,12 @@ function DateTimePicker({ id, heading, noSpace, placeholder, type = 'date', date
         }
         closeOnSelect={true}
         timeFormat={type !== 'date' && true}
-        dateFormat={type === 'time' ? false : 'YYYY-MM-DD'}
+        dateFormat={type === 'time' ? false : 'MMM D YYYY'}
         onChange={
           (date: any) => {
             if (onChange)
               if (isMoment(date))
-                onChange(type === 'time' ? date.format('LT') : type === 'both' ? date.format() : date.format('YYYY-MM-DD'))
+                onChange(type === 'time' ? date.format('LT') : type === 'both' ? date.format() : date.format('MMM D YYYY'))
               else
                 onChange(date)
           }

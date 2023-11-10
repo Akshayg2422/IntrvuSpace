@@ -868,6 +868,94 @@ export const getDepartmentCorporateFailure = (error: any) => {
   };
 };
 
+// addDesignation
+
+export const addDesignation = (params: any) => {
+  return {
+    type: ActionTypes.ADD_DESIGNATION,
+    payload: params,
+  };
+};
+export const addDesignationSuccess = (response: any) => {
+  return {
+    type: ActionTypes.ADD_DESIGNATION_SUCCESS,
+    payload: response,
+  };
+};
+export const addDesignationFailure = (error: any) => {
+  return {
+    type: ActionTypes.ADD_DESIGNATION_FAILURE,
+    payload: error,
+  };
+};
+
+// getDesignation
+
+export const getDesignations = (params: any) => {
+  return {
+    type: ActionTypes.GET_FETCH_DESIGNATION,
+    payload: params,
+  };
+};
+export const getDesignationsSuccess = (response: any) => {
+  return {
+    type: ActionTypes.GET_FETCH_DESIGNATION_SUCCESS,
+    payload: response,
+  };
+};
+export const getDesignationsFailure = (error: any) => {
+  return {
+    type: ActionTypes.GET_FETCH_DESIGNATION_FAILURE,
+    payload: error,
+  };
+};
+
+// Add TeamMate Data
+
+export const addTeamMateData = (params: any) => {
+  return {
+    type: ActionTypes.ADD_TEAM_MATE_DATA,
+    payload: params,
+  }
+}
+
+export const addTeamMateDataSuccess = (response: any) => {
+  return {
+    type: ActionTypes.ADD_TEAM_MATE_DATA_SUCCESS,
+    payload: response,
+  }
+}
+
+export const addTeamMateDataFailure = (error: any) => {
+  return {
+    type: ActionTypes.ADD_TEAM_MATE_DATA_FAILURE,
+    payload: error
+  }
+}
+
+// grt TeamMate Data
+
+export const getTeamMateData = (params: any) => {
+  return {
+    type: ActionTypes.GET_TEAM_MATE_DATA,
+    payload: params,
+  }
+}
+
+export const getTeamMateDataSuccess = (response: any) => {
+  return {
+    type: ActionTypes.GET_TEAM_MATE_DATA_SUCCESS,
+    payload: response,
+  }
+}
+
+export const getTeamMateDataFailure = (error: any) => {
+  return {
+    type: ActionTypes.GET_TEAM_MATE_DATA_FAILURE,
+    payload: error
+  }
+}
+
 // createCorporateSchedule
 
 export const createCorporateSchedules = (params: any) => {
@@ -1150,6 +1238,39 @@ export const postCorporateScheduleActionsFailure = (error: any) => {
   return {
     type: ActionTypes.POST_CORPORATE_SCHEUDULE_ACTIONS_FAILURE,
     payload: error,
+  };
+};
+
+
+
+// ONGOING SCHEDULE
+
+export const getOngoingSchedules = (params: any) => {
+  return {
+    type: ActionTypes.FETCH_ONGOING_SCHEDULES,
+    payload: params,
+  };
+};
+export const getOngoingSchedulesSuccess = (response: any) => {
+  return {
+    type: ActionTypes.FETCH_ONGOING_SCHEDULES_SUCCESS,
+    payload: response,
+  };
+};
+export const getOngoingSchedulesFailure = (error: any) => {
+  return {
+    type: ActionTypes.FETCH_ONGOING_SCHEDULES_FAILURE,
+    payload: error,
+  };
+};
+
+
+
+export const onGoingSelectedIIds = (params: any) => {
+  console.log('parasmaaasssss,', params)
+  return {
+    type: ActionTypes.ON_GOING_SELECTED_ID,
+    payload: params,
   };
 };
 

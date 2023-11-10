@@ -35,29 +35,28 @@ function TopNavbarCorporateFlow() {
   const dispatch = useDispatch();
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
-  const HEADER_MENU = [
-    // { id: '1', name: 'Schedule', value: 'SC', icon: 'ni ni-badge' },
-    // { id: '2', name: 'Setting', value: 'ST', icon: 'ni ni-settings-gear-65' },
-    // { id: '3', name: 'View as member', value: 'VAM', icon: 'ni ni-single-02', },
-    { id: "4", name: "Logout", value: "LG", icon: "ni ni-button-power" },
-  ];
+    const HEADER_MENU = [
+        // { id: '1', name: 'Schedule', value: 'SC', icon: 'ni ni-badge' },
+        { id: '1', name: 'Setting', value: 'ST', icon: 'ni ni-settings-gear-65' },
+        // { id: '3', name: 'View as member', value: 'VAM', icon: 'ni ni-single-02', },
+        { id: '2', name: 'Logout', value: 'LG', icon: 'ni ni-button-power' },
+    ]
 
-  const dropdownHandler = (item: any) => {
-    if (loginDetails?.is_admin) {
-      if (item.value === "SC") {
-        goTo(ROUTES["designation-module"].schedule);
-      }
-      if (item.value === "ST") {
-        goTo(ROUTES["designation-module"].settings);
-      }
-      if (item.value === "VAM") {
-        goTo(ROUTES["designation-module"].client);
-      }
-    }
-    if (item.value === "LG") {
-      logoutModal.show();
-    }
-  };
+
+    const dropdownHandler = (item: any) => {
+        if (loginDetails?.is_admin) {
+            if (item.value === 'ST') {
+                goTo(ROUTES['designation-module'].settings);
+            }
+            if (item.value === 'VAM') {
+                goTo(ROUTES['designation-module'].client);
+            }
+        }
+        if (item.value === 'LG') {
+            logoutModal.show()
+        }
+    };
+
 
   function proceedLogout() {
     try {

@@ -1,7 +1,39 @@
-import { icons } from '@Assets'
-import { Designation, WeightageCountForm, CreateQuestionForm, Clients, Sector, Questions, Call, Report, QuestionSections, AnalyzingAnimation, Schedules, Login, Otp, Splash, Register, LoginWithOtp, AdminLogin, VariantInfo, PrivacyPolicy, TermsAndConditions, ReturnAndRefund, Reports, HowItWorks, Introduction, Settings, Response, CreateNewPassword, ForgotPassword, PreparingYourInterview, UploadCorporateOpeningsCard, UploadJdCard, RegisterCompany } from '@Modules';
-
-
+import { icons } from '@Assets';
+import {
+  AdminLogin,
+  AnalyzingAnimation,
+  Clients,
+  CreateNewPassword,
+  CreateQuestionForm,
+  Department,
+  Designation,
+  EmployeeDesignation,
+  ForgotPassword,
+  HowItWorks,
+  Introduction,
+  Login,
+  LoginWithOtp,
+  ManageTeamMate,
+  Otp,
+  PreparingYourInterview,
+  PrivacyPolicy,
+  QuestionSections,
+  Questions, Register,
+  RegisterCompany,
+  Report,
+  Reports,
+  Response,
+  ReturnAndRefund,
+  Schedules,
+  Scheduling,
+  Sector,
+  Settings,
+  TermsAndConditions,
+  VariantInfo,
+  VerifyEmail,
+  WeightageCountForm,
+  EmailVerification
+} from '@Modules';
 
 export const ROUTES = {
   'auth-module': {
@@ -19,7 +51,8 @@ export const ROUTES = {
     introduction: '/introduction',
     forgotPassword: '/forgotPassword',
     createNewPassword: '/createNewPassword',
-    'register-company': '/register-company'
+    'register-company': '/register-company',
+    'mail-verification': '/mail-verification'
   },
   'designation-module': {
     Dashboard: "/dashboard",
@@ -39,6 +72,11 @@ export const ROUTES = {
     settings: '/settings',
     'response': '/response',
     'preparing-your-interview': '/preparing-your-interview',
+    'department': '/department',
+    'employeeDesignations': '/employeeDesignations',
+    'ManageTeamMate': '/ManageTeamMate',
+    // 'Sectors':'/Sectors'
+    'scheduling-interview': '/scheduling-interview',
   }
 }
 
@@ -115,6 +153,12 @@ export const AUTH_ROUTES = [
     component: <RegisterCompany />
   },
 
+  {
+    key: 16,
+    path: ROUTES['auth-module']['mail-verification'],
+    component: <EmailVerification />
+  }
+
 
 ]
 
@@ -174,6 +218,11 @@ export const DASHBOARD_ROUTES = [
     path: ROUTES['designation-module']['preparing-your-interview'],
     component: <PreparingYourInterview />
   },
+  {
+    id: 12,
+    path: ROUTES['designation-module']['scheduling-interview'],
+    component: <Scheduling />
+  },
 ]
 
 export const HOME_ROUTES = [
@@ -192,12 +241,42 @@ export const HOME_ROUTES = [
     component: <Settings />
   },
   {
+    path: ROUTES['designation-module'].department,
+    name: "Department",
+    // icon: icons.settings,
+    layout: "",
+    component: <Department />
+  },
+  {
+    path: ROUTES['designation-module'].employeeDesignations,
+    name: "Designations",
+    // icon: icons.settings,
+    layout: "",
+    component: <EmployeeDesignation />
+  },
+  {
+    path: ROUTES['designation-module'].ManageTeamMate,
+    name: "ManageTeamMate",
+    // icon: icons.settings,
+    layout: "",
+    component: <ManageTeamMate />
+  },
+  // {
+  //   path: ROUTES['designation-module'].Sectors,
+  //   name: "Sectors",
+  //   // icon: icons.settings,
+  //   layout: "",
+  //   component: <Sectors/>
+  // },
+  {
     path: ROUTES['designation-module'].client,
     name: "View as Member",
     icon: icons.viewAsMember,
     layout: "",
     component: <Clients />
   },
+
+
   // {
   //   path: ROUTES['designation-module'].report,
   //   name: "Report",
@@ -213,8 +292,6 @@ export const HOME_ROUTES = [
   //   component: <Dashboard />
   // },
 ];
-
-
 
 
 

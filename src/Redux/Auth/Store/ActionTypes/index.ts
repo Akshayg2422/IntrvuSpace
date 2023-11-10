@@ -27,3 +27,26 @@ export const FETCH_MEMBER_USING_LOGIN_OTP_FAILURE = 'FETCH_MEMBER_USING_LOGIN_OT
 export const REGISTER_AS_COMPANY = 'REGISTER_AS_COMPANY'
 export const REGISTER_AS_COMPANY_SUCCESS = 'REGISTER_AS_COMPANY_SUCCESS'
 export const REGISTER_AS_COMPANY_FAILURE = 'REGISTER_AS_COMPANY_FAILURE'
+
+
+/**
+ *  verify email using otp
+ */
+
+
+export const VERIFY_EMAIL_USING_OTP = 'VERIFY_EMAIL_USING_OTP'
+
+
+/**
+ * save user email
+ */
+
+export const SAVE_USER_EMAIL = 'SAVE_USER_EMAIL'
+
+/**
+ *  get otp for email verification
+ */
+
+
+export const GET_OTP_FOR_EMAIL_VERIFICATION = 'GET_OTP_FOR_EMAIL_VERIFICATION'
+

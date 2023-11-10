@@ -1,6 +1,6 @@
 import { Button, Input, InputPassword, Logo, showToast } from "@Components";
 import { useInput, useKeyPress, useLoader, useNavigation } from "@Hooks";
-import { memberLoginUsingPassword, userLoginDetails } from "@Redux";
+import { memberLoginUsingPassword, userLoginDetails, saveUserEmail } from "@Redux";
 import { ROUTES } from "@Routes";
 import { LOGIN_WITH_EMAIL_RULES, USER_TOKEN, getValidateError, ifObjectExist, validate } from "@Utils";
 import { useEffect } from "react";
@@ -20,6 +20,8 @@ function Login() {
   const enterPress = useKeyPress("Enter");
   const { loginDetails } = useSelector((state: any) => state.AppReducer);
 
+
+
   useEffect(() => {
     if (enterPress) {
       loginApiHandler();
@@ -28,7 +30,6 @@ function Login() {
 
 
   const loginApiHandler = () => {
-    //  loginLoader.show();
 
     const params = {
       ...(email.value && { email: email.value }),
@@ -47,19 +48,28 @@ function Login() {
           params,
           onSuccess: (response: any) => () => {
             const { details } = response;
+            const { is_email_verified, token } = details;
 
             loginLoader.hide();
 
             if (response.success) {
-              localStorage.setItem(USER_TOKEN, response.details.token);
+              localStorage.setItem(USER_TOKEN, token);
+
               dispatch(
                 userLoginDetails({
                   ...loginDetails,
-                  isLoggedIn: true,
+                  isLoggedIn: is_email_verified,
                   ...details,
                 })
               );
-              goTo(ROUTES["auth-module"].splash, true);
+
+              if (is_email_verified) {
+                goTo(ROUTES["auth-module"].splash, true);
+              } else {
+                dispatch(saveUserEmail(email?.value))
+                goTo(ROUTES["auth-module"]["mail-verification"]);
+              }
+
             } else {
               showToast(response.error_message, "error");
             }
@@ -119,7 +129,9 @@ function Login() {
 
         <div className="text-center font-size-md register">
           <span className="text-secondary font-weight-700"> {"Not a member yet?"}</span>
-          <span className="text-primary font-weight-700 pointer ml-1" onClick={goToRegisterScreen}> {"Register now "}</span>
+          <span className="text-primary font-weight-700 pointer ml-1" onClick={goToRegisterScreen}> {"Sign Up"}</span>
+          <span className="text-secondary font-weight-700 ml-1"> {"/"}</span>
+          <span className="text-primary font-weight-700 pointer ml-1" onClick={goToRegisterScreen}> {"Corporate"}</span>
         </div>
       </div>
 
