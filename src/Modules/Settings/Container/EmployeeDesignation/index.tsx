@@ -238,7 +238,7 @@ function EmployeeDesignation() {
                             {designations && designations?.data?.length > 0 ? (
                                 <CommonTable
                                     card
-                                    isPagination
+                                    isPagination = {designationsNumOfPage>1}
                                     title={'Designation'}
                                     tableDataSet={designations}
                                     displayDataSet={normalizedDesignationData(designations?.data)}

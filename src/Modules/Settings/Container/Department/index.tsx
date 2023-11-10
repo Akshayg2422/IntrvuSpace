@@ -19,7 +19,8 @@ function Department() {
   const [loading, setLoading] = useState(true);
   const { departmentCorporate ,departmentsCorporateCurrentPages,
     departmentCorporateNumOfPages,} = useSelector((state: any) => state.DashboardReducer)
-  console.log('departmentsCorporateCurrentPages===========>', departmentsCorporateCurrentPages);
+
+  // console.log('departmentCorporate===========>', departmentCorporate);
 
   const getDesignationMenu = () => [
     { id: '0', name: "Edit", icon: icons.edit },
@@ -34,7 +35,6 @@ function Department() {
       name: DepartmentName.value,
       ...(editId && { id: editId })
     }
-    // console.log('Department========>', params);
 
     const validation = validate(ADD_DEPARTMENT_CORPORATE_RULES, params)
 
@@ -73,7 +73,6 @@ function Department() {
         params,
         onSuccess: (success: any) => () => {
           setLoading(false)
-          // console.log('sector====================>', JSON.stringify(success));
         },
         onError: (error: string) => () => {
           setLoading(false)
@@ -84,7 +83,6 @@ function Department() {
 
   const normalizedTableData = (data: any) => {
     return data.map((el: any) => {
-      // console.log('dept==========>', el);
       const { name } = el
 
       return {
@@ -98,10 +96,7 @@ function Department() {
               setEditId(id)
               DepartmentName.set(name)
               addDepartmentModel.show()
-
-
             }
-
 
           }} />
         )
@@ -114,7 +109,7 @@ function Department() {
     <>
       <div className='container'>
         <div className="row justify-content-between mt-3 pl-2 mr--2 mb-3">
-          {/* <Back /> */}
+
           <div className='d-flex align-items-center'>
             <div className=''>
               <Image
@@ -129,7 +124,6 @@ function Department() {
           </div>
           </div>
         
-
           <Button
             className='btn btn-primary rounded-sm '
             

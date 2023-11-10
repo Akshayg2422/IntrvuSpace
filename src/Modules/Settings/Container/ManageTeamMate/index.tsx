@@ -32,7 +32,7 @@ function ManageTeamMate() {
   ]
 
   useEffect(() => {
-    getTeamMateDataHandler(getTeamMateDatasCurrentPages)
+    getTeamMateDataHandler(1)
     getDepartmentCorporateDetailsApiHandler()
     getDesignationApiHandler()
   }, [])
@@ -130,9 +130,7 @@ function ManageTeamMate() {
 
   const normalizedTableData = (data: any) => {
 
-    // console.log(data,"ddddddddddddddddd")
     return data && data.length > 0 && data.map((el: any) => {
-      // console.log('oooooooooo',data);
       const { first_name, last_name, mobile_number, email, department, designation } = el
 
       return {
@@ -218,8 +216,8 @@ function ManageTeamMate() {
               {getTeamMateDatas && getTeamMateDatas?.data?.length > 0 ? (
                 <CommonTable
                   card
-                  isPagination
-                  title={'Add TeamMate'}
+                  title={'TeamMate'}
+                  isPagination = {getTeamMateDatasNumOfPages>1}
                   tableDataSet={getTeamMateDatas}
                   displayDataSet={normalizedTableData(getTeamMateDatas?.data)}
                   noOfPage={getTeamMateDatasNumOfPages}

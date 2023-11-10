@@ -297,7 +297,7 @@ export const USER_FORM_RULES = {
   },
   last_name: {
     presence: { message: "Last name cannot be empty" },
-    length: { minimum: 3, message: "Last name minimum 3 chars" },
+    length: { minimum: 1, message: "Last name minimum 1 chars" },
   },
 
   mobile_number: {
