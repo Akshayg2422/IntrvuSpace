@@ -49,6 +49,7 @@ import {
   ifObjectExist,
   validate,
   CREATE_FOR_ADD_ANOTHER_RULES,
+  getBrowserInfo,
 } from "@Utils";
 import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -739,7 +740,7 @@ function AdminSchedules() {
                                   </h5>
                                   <div className="col m-0 p-0 d-flex justify-content-end">
                                     <div className="row mr-lg-3 mr-sm-0 mr-0">
-                                      {is_complete && is_report_complete && (
+                                      {is_complete && recording_url && (
                                         <>
                                           <UncontrolledTooltip
                                             delay={0}
@@ -757,23 +758,36 @@ function AdminSchedules() {
                                                   recording_url,
                                                   interview_duration,
                                                 });
-                                                openWatchInterviewModal.show();
+                                                if (
+                                                  getBrowserInfo()
+                                                    .browserName !==
+                                                  "Mozilla Firefox"
+                                                ) {
+                                                  openWatchInterviewModal.show();
+                                                } else {
+                                                  showToast(
+                                                    "Watch Interview is not supported in this browser",
+                                                    "info"
+                                                  );
+                                                }
                                               }}
                                             ></i>
                                           </div>
-                                          <div>
-                                            <Button
-                                              className="rounded-sm"
-                                              text={"View Report"}
-                                              onClick={() => {
-                                                proceedReport(id);
-                                              }}
-                                            />
-                                          </div>
                                         </>
                                       )}
-                                      {is_complete && !is_report_complete && (
+                                      {is_complete && is_report_complete && (
                                         <div>
+                                          <Button
+                                            className="rounded-sm"
+                                            text={"View Report"}
+                                            onClick={() => {
+                                              proceedReport(id);
+                                            }}
+                                          />
+                                        </div>
+                                      )}
+                                      {is_complete && !is_report_complete && (
+                                        <div className="d-flex align-items-center">
                                           <span className="name mb-0 text-sm">
                                             Generating Report ...
                                           </span>
@@ -1308,6 +1322,7 @@ function AdminSchedules() {
 
       <Modal
         isOpen={openWatchInterviewModal.visible}
+        size="lg"
         onClose={() => {
           openWatchInterviewModal.hide();
           setWatchInterviewUrl(undefined);
@@ -1328,7 +1343,7 @@ function AdminSchedules() {
                     ? watchInterviewUrl.recording_url.slice(1)
                     : watchInterviewUrl.recording_url)
                 }
-                type="video/mp4"
+                type={"video/webm"}
               />
             </video>
           ) : (

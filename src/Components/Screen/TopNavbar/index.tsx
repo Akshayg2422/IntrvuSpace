@@ -47,8 +47,6 @@ function TopNavbar() {
   const pathName = location.pathname
 
 
-
-
   const dropdownHandler = (item: any) => {
     if (item.value === 'ST') {
       goTo(ROUTES['designation-module'].settings)
@@ -86,6 +84,8 @@ function TopNavbar() {
   const toggleDropdownHandler = () => {
     setIsOpenDropdown(!isOpenDropdown)
   }
+
+
 
   return (
     <>
@@ -208,7 +208,6 @@ function TopNavbar() {
                 </NavItem>
               }
 
-
               <NavItem className="d-none d-lg-block ml-lg-4">
                 <div className='row align-items-center m-auto'>
                   <span className='mb-0 text-black font-weight-400 pointer' onClick={toggleDropdownHandler}>
@@ -291,7 +290,9 @@ function TopNavbar() {
         </div>
       </Modal>
     </>
-  );
+
+  )
 }
 
-export { TopNavbar };
+export { TopNavbar }
+

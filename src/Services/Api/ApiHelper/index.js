@@ -21,7 +21,7 @@ export const SERVER =
     : BUILD_TYPE === BUILD_TYPE_PRE_PROD_IP
       ? PRE_PROD_IP
       : BUILD_TYPE === BUILD_TYPE_LIVE_DEMO
-        ? 'https://8471-103-118-191-250.ngrok-free.app/'
+        ? 'https://2807-103-118-190-6.ngrok-free.app/'
         : BUILD_TYPE === BUILD_TYPE_LOCAL
           ? LOCAL_IP
           : BUILD_TYPE === BUILD_TYPE_STAGING

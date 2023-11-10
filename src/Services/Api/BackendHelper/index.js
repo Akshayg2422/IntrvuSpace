@@ -138,6 +138,14 @@ export const addDepartmentCorporateApi = payload => post(URL.URL_ADD_DEPARTMENT,
 
 export const getDepartmentCorporateApi = payload => post(URL.URL_GET_DEPARTMENT, payload, {});
 
+// addDesignation
+
+export const addDesignationApi = payload => post(URL.URL_ADD_DESIGNATION, payload, {});
+
+// getDepartments
+
+export const getDesignationApi = payload => post(URL.URL_GET_FETCH_DESIGNATION, payload, {});
+
 // createCorporateSchedule
 
 export const createCorporateScheduleApi = payload => post(URL.URL_CREATE_CORPORATE_SCHEDULE, payload, {});
@@ -196,6 +204,13 @@ export const syncVideoApi = payload => post(URL.URL_SYNC_VIDEO, payload, {});
 
 export const postCorporateScheduleActionsApi = payload => post(URL.POST_CORPORATE_SCHEUDULE_ACTIONS, payload, {});
 
+// addTeamMate
+
+export const addTeamMateDataApi = payload => post (URL.URL_ADD_TEAM_MATE_DATA,payload,{});
+
+// getTeamMate
+
+export const getTeamMateDataApi = payload => post (URL.URL_GET_TEAM_MATE_DATA,payload,{});
 //register as member
 
 export const registerAsCompanyAPi = payload => post(URL.URL_REGISTER_AS_COMPANY, payload, {});

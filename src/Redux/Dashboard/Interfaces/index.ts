@@ -34,8 +34,6 @@ export interface DashboardProp {
   selectedSectionId?: any;
   canStartInterview?: any;
   createJdModal?: boolean;
-  sectorsCorporate: any;
-  departmentCorporate: any;
   corporateSchedules: any,
   createForOthersJdModal: boolean,
   interviewScheduleDetails: any,
@@ -46,6 +44,20 @@ export interface DashboardProp {
   candidatesList?: boolean;
   candidatesListNumOfPages: any,
   candidatesListCurrentPages: number,
+  error?: string;
+  departmentCorporate: any;
+  departmentCorporateNumOfPages:any
+  departmentsCorporateCurrentPages:any,
+  designations:any;
+  designationsNumOfPage:any,
+  designationsCurrentPage:any,
+  addTeamMates:any,
+  getTeamMateDatas:any,
+  getTeamMateDatasNumOfPages:any,
+  getTeamMateDatasCurrentPages:any,
+  sectorsCorporate: any;
+  sectorsCorporateNumOfPages: any,
+  sectorsCorporateCurrentPages: any,
   interviewUserScheduleDetails:any,
   onGoingMessage:any,
 }
