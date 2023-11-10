@@ -4,10 +4,11 @@ import React, { useEffect, useState } from "react";
 import { LoginSideContent } from "../../Container";
 import { useInput, useKeyPress, useLoader, useNavigation } from "@Hooks";
 import { ROUTES } from "@Routes";
-import { useDispatch } from "react-redux";
-import { registerAsMember, settingRegisterData } from "@Redux";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchEmailVerify, registerAsMember, settingRegisterData } from "@Redux";
 import {
   REGISTER_AS_MEMBER_RULES,
+  USER_TOKEN,
   getValidateError,
   ifObjectExist,
   validate,
@@ -91,11 +92,29 @@ function Register() {
       registerAsMember({
         params,
         onSuccess: (response: any) => () => {
+          const {details}=response
+       
           if (response.success) {
+  
             dispatch(settingRegisterData(params));
-            goTo(ROUTES["auth-module"].login);
-            showToast(response.message, "success");
-            loginLoader.hide();
+            if(!details?.is_email_verified){
+              dispatch(
+                fetchEmailVerify(
+                  {
+                      ...params,
+                      }
+                )
+              )
+              goTo(ROUTES["auth-module"]['verify-email'],true);
+              showToast(response.message, "success");
+              loginLoader.hide();
+            }
+            else{
+  goTo(ROUTES["auth-module"].login);
+  showToast(response.message, "success");
+  loginLoader.hide();
+            }
+          
           } else {
             showToast(response.error_message, "error");
           }

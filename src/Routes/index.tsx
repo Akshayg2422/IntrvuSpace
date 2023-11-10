@@ -19,7 +19,7 @@ export const ROUTES = {
     forgotPassword: '/forgotPassword',
     createNewPassword: '/createNewPassword',
     'register-company': '/register-company',
-    'verify-email':'verify-email'
+    'verify-email':'/verify-email'
   },
   'designation-module': {
     Dashboard: "/dashboard",
