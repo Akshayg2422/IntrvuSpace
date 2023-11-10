@@ -60,6 +60,10 @@ export const getObjectFromArrayByKey = (
   });
 };
 
+export function ifObjectKeyExist(object: any, key: string) {
+  return object["key"] !== undefined
+}
+
 export function paginationHandler(
   type: "next" | "prev" | "current",
   position: number
@@ -134,6 +138,21 @@ export async function imagePickerConvertBase64(array) {
 
   return Promise.all(promises);
 }
+
+
+
+
+
+export function getDropDownDisplayData(data: any) {
+
+  return data && data.length > 0 && data.map((item: any) => {
+    return {
+      ...item,
+      text: item.name
+    }
+  })
+}
+
 
 export function getDropDownCompanyDisplayData(
   data: any,

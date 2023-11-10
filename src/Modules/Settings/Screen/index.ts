@@ -17,6 +17,7 @@ export * from './Settings'
 export * from './CreateNewPassword'
 export * from './ForgotPassword'
 export * from './RegisterCompany'
+export * from './VerifyEmail'
 
 
 

@@ -1,6 +1,6 @@
 import { Button, Image, Input, showToast } from "@Components";
 import { useInput, useKeyPress, useLoader, useNavigation } from "@Hooks";
-import { memberLoginUsingPassword, userLoginDetails } from "@Redux";
+import { fetchEmailVerify, memberLoginUsingPassword, userLoginDetails } from "@Redux";
 import { ROUTES } from "@Routes";
 import { USER_TOKEN } from "@Utils";
 import React, { useEffect, useState } from "react";
@@ -21,6 +21,9 @@ function Login() {
 
   const enterPress = useKeyPress("Enter");
   const { loginDetails } = useSelector((state: any) => state.AppReducer);
+  const myButton = document.getElementById("myButton");
+
+
 
   useEffect(() => {
     if (enterPress) {
@@ -68,16 +71,33 @@ function Login() {
           loginLoader.hide();
 
           if (response.success) {
+            
             localStorage.setItem(USER_TOKEN, response.details.token);
-            dispatch(
-              userLoginDetails({
-                ...loginDetails,
-                isLoggedIn: true,
-                ...details,
-              })
-            );
+            if(!details?.is_email_verified){
+              dispatch(
+                fetchEmailVerify(
+                  {
+                        ...loginDetails,
+                        isLoggedIn: true,
+                        ...(email.value && { email: email.value }),
+                        ...details,
 
-            goTo(ROUTES["auth-module"].splash, true);
+                      }
+                )
+              )
+              goTo(ROUTES["auth-module"]['verify-email']);
+            }
+            else{
+              
+              dispatch(
+                userLoginDetails({
+                  ...loginDetails,
+                  isLoggedIn: true,
+                  ...details,
+                })
+              );
+              goTo(ROUTES["auth-module"].splash, true);
+            }
           } else {
             showToast(response.error_message, "error");
           }
@@ -89,6 +109,8 @@ function Login() {
       })
     );
   };
+
+
 
   return (
     <>

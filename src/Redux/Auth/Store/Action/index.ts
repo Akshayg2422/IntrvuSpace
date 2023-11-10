@@ -123,3 +123,62 @@ export const registerAsCompanyFailure = (error: any) => {
         payload: error
     }
 }
+
+
+//GET_OTP_FOR_EMAIL_VERIFICATION
+
+export const getOtpForEmailVerification = (params: any) => {
+    return {
+        type: ActionTypes.GET_OTP_FOR_EMAIL_VERIFICATION,
+        payload: params,
+    };
+};
+
+export const getOtpForEmailVerificationSuccess = (response: any) => {
+
+    return {
+        type: ActionTypes.GET_OTP_FOR_EMAIL_VERIFICATION_SUCCESS,
+        payload: response
+    }
+}
+
+export const getOtpForEmailVerificationFailure = (error: any) => {
+    return {
+        type: ActionTypes.GET_OTP_FOR_EMAIL_VERIFICATION_FAILURE,
+        payload: error
+    }
+}
+
+
+
+//GEMAIL_VERIFICATION
+
+export const verifyEmailUsingOtp = (params: any) => {
+    return {
+        type: ActionTypes.VERIFY_EMAIL_USING_OTP,
+        payload: params,
+    };
+};
+
+export const verifyEmailUsingOtpSuccess = (response: any) => {
+
+    return {
+        type: ActionTypes.VERIFY_EMAIL_USING_OTP_SUCCESS,
+        payload: response
+    }
+}
+
+export const verifyEmailUsingOtpFailure = (error: any) => {
+    return {
+        type: ActionTypes.VERIFY_EMAIL_USING_OTP_FAILURE,
+        payload: error
+    }
+}
+
+
+export const fetchEmailVerify = (params: any) => {
+    return {
+        type: ActionTypes.FETCH_EMAIL_VERIFY,
+        payload: params
+    }
+}
