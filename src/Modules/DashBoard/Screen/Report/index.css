@@ -9,5 +9,23 @@
 }
 
 .screen-padding {
-  padding: 4%;
+  padding: 5%;
+}
+
+.report-dropdown-container {
+  display: flex;
+  position: absolute;
+  top: 5%;
+  left: 4%;
+  right: 0;
+  z-index: 1;
+}
+
+@media(max-width: 768px) {
+  .report-dropdown-container {
+    display: flex;
+    position: relative;
+    width: 100%;
+
+  }
 }

@@ -1,0 +1,75 @@
+.detailed-report-container {
+    margin-top: 60px;
+}
+
+.detailed-report-card-container {
+    height: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid var(--card-border);
+    border-radius: var(--border-radius);
+    padding: 5% 8%;
+    margin: 0% 5%;
+}
+
+.detailed-report-title {
+    color: var(--secondary);
+    font-size: 18px;
+    font-weight: 600;
+    text-transform: capitalize;
+    margin-top: 5px;
+}
+
+.heading-font {
+    color: var(--secondary);
+    font-size: 48px !important;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.detailed-job-description-container {
+    margin-top: 80px;
+}
+
+.detailed-job-description-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 25px;
+    margin-top: 40px;
+    width: 100%;
+}
+
+.detailed-job-description-title {
+    font-size: 20px;
+    color: var(--secondary);
+    font-weight: 600;
+}
+
+.skill-matrix-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.skill-matrix-heading-container {
+    margin-top: 80px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.note-container {
+    margin-top: 25px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.note-list-container {
+    margin-top: 25px;
+}
+
+.note-list-item {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 8px;
+}

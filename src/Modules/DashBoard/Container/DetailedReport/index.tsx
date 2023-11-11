@@ -1,254 +1,85 @@
-import { icons } from "@Assets";
-import { Card, Image } from "@Components";
-import { capitalizeFirstLetter } from "@Utils";
+import React from 'react'
+import { DetailedReportProps } from './interfaces'
+import { createNewObjectWithoutNullOrNaNValues } from '@Utils';
+import { Image } from '@Components';
+import { icons } from '@Assets'
+import './index.css'
 
-const NOTE = [
-    { id: 1, icon: icons.check, text: "Completely Covered" },
-    { id: 2, icon: icons.checkBlack, text: "Partially Covered" },
-    { id: 3, icon: icons.frame, text: "Covered by invalid" },
+function DetailedReport({ details }: DetailedReportProps) {
+  const { skill_matrix_overal_percent, report_other_analytics, skill_matrix } = details || {}
+
+  const { hlv_r } = report_other_analytics || {}
+  const { sections } = skill_matrix || {};
+
+  const modifiedAnalytics = createNewObjectWithoutNullOrNaNValues(hlv_r)
+
+  const NOTE = [
+    { id: 1, icon: icons.check, text: "Completely Covered", h: 8 },
+    { id: 2, icon: icons.checkBlack, text: "Partially Covered", h: 20 },
+    { id: 3, icon: icons.frame, text: "Covered by invalid", h: 20 },
   ];
 
-const DetailedReport = ({reportData}) => {
-return (
-    <>
-                <div className="pt-5 text-secondary d-flex justify-content-between align-items-center font-weight-bolder">
-                  <span style={{ fontSize: 26 }}>{"Skill Matrix Report"}</span>
-                  <span
-                    style={{ fontSize: 36 }}
-                  >{`${reportData.skill_matrix_overal_percent}%`}</span>
-                </div>
 
-                <div className="d-flex justify-content-end mt-4">
-                  <div>
-                    <div>
-                      <span className="font-weight-bolder">{"Note"}</span>
+
+  return (
+    <div className={'detailed-report-container'}>
+      <div className={'detailed-report-card-container'}>
+        <div className='text-center'>
+          <div className={'heading-font'}>{skill_matrix_overal_percent}%</div>
+          <div className={'detailed-report-title'}>{'Skill Matrix'}</div>
+        </div>
+        {
+          modifiedAnalytics && Object.keys(modifiedAnalytics).map((key, index, array) => {
+            return (
+              <div className={'text-center'} >
+                <div className={'heading-font'}>{modifiedAnalytics[key]}%</div>
+                <div className={'detailed-report-title'}>{key.replace(/_/g, ' ')}</div>
+              </div>
+            )
+          })
+        }
+      </div>
+      <div className={'detailed-job-description-container'}>
+        <div className={'text-heading'}>{'Job Description Key Areas'}</div>
+        {sections && sections.length > 0 && sections.map((each => {
+          const { id, name, rating } = each
+          return (
+            <div key={id} className={'detailed-job-description-item border'}>
+              <div className={'detailed-job-description-title'}>{name}</div>
+              <div className={'detailed-job-description-title font-weight-700'}>{rating}</div>
+            </div>
+          )
+        }))}
+      </div>
+
+      <div className={'skill-matrix-container'}>
+        <div className={'skill-matrix-heading-container'}>
+          <div className={'text-heading'}>{'Skill Matrix Report'}</div>
+          <div className={'text-heading'}>{skill_matrix_overal_percent}%</div>
+        </div>
+        <div className={'note-container'}>
+          <div>
+            <div className={'screen-des text-secondary font-weight-bold'}>{'Note'}</div>
+            <div className={'note-list-container'}>
+              {
+                NOTE.map(each => {
+                  const { id, icon, text, h } = each
+                  return (
+                    <div className={'note-list-item'} key={id}>
+                      <Image src={icon} height={h} style={{
+                        objectFit: 'contain'
+                      }} />
+                      <div className={'screen-des ml-2'}>{text}</div>
                     </div>
-                    <div className="">
-                      {NOTE.map((item) => {
-                        return (
-                          <>
-                            <div>
-                              <Image src={item.icon} height={20} />
-                              <span
-                                style={{ fontSize: 14 }}
-                                className="text-default ml-2 font-weight-500"
-                              >
-                                {item.text}
-                              </span>
-                            </div>
-                          </>
-                        );
-                      })}
-                    </div>
-                  </div>
-                </div>
-
-                <div className="">
-                  {reportData &&
-                    reportData?.skill_matrix &&
-                    reportData.skill_matrix?.sections.length > 0 &&
-                    reportData.skill_matrix.sections.map((skill: any) => {
-                      return (
-                        <div className="mt-5">
-                          <Card
-                            className="p-4"
-                            style={{
-                              borderWidth: 1.5,
-                              borderColor: "#e8edff",
-                              backgroundColor: "transparent",
-                            }}
-                          >
-                            <>
-                              <div className="d-flex justify-content-between">
-                                <div>
-                                  <div>
-                                    <h2 className="text-secondary font-weight-bolder">
-                                      {skill.name}
-                                    </h2>
-                                  </div>
-                                </div>
-                                <h2 className="text-secondary font-weight-bolder">
-                                  {skill.rating}
-                                </h2>
-                              </div>
-
-                              <div>
-                                {skill?.questions &&
-                                  skill?.questions.length > 0 &&
-                                  skill?.questions.map((que: any) => {
-                                    return (
-                                      <>
-                                        <div className="mt-3">
-                                          <b className="text-secondary font-weight-500">
-                                            {que.question}
-                                          </b>
-                                        </div>
-
-                                        <div className="mt-3">
-                                          {que?.suggestions &&
-                                            que.suggestions?.covered &&
-                                            que.suggestions?.covered.length >
-                                              0 &&
-                                            que.suggestions.covered.map(
-                                              (ans: any) => {
-                                                return (
-                                                  <div>
-                                                    <Image
-                                                      src={icons.check}
-                                                      height={20}
-                                                    />
-                                                    <small className="text-default ml-2 font-weight-500">
-                                                      {ans}
-                                                    </small>
-                                                  </div>
-                                                );
-                                              }
-                                            )}
-
-                                          {que?.suggestions &&
-                                            que.suggestions?.covered_partial &&
-                                            que.suggestions?.covered_partial
-                                              .length > 0 &&
-                                            que.suggestions.covered_partial.map(
-                                              (ans: any) => {
-                                                return (
-                                                  <div>
-                                                    <Image
-                                                      src={icons.checkBlack}
-                                                      height={20}
-                                                    />
-                                                    <small className="text-default ml-2 font-weight-500">
-                                                      {ans}
-                                                    </small>
-                                                  </div>
-                                                );
-                                              }
-                                            )}
-
-                                          {que?.suggestions &&
-                                            que.suggestions
-                                              ?.covered_not_valid &&
-                                            que.suggestions?.covered_not_valid
-                                              .length > 0 &&
-                                            que.suggestions.covered_not_valid.map(
-                                              (ans: any) => {
-                                                return (
-                                                  <div>
-                                                    <Image
-                                                      src={icons.frame}
-                                                      height={20}
-                                                    />
-                                                    <small className="text-default ml-2 font-weight-500">
-                                                      {ans}
-                                                    </small>
-                                                  </div>
-                                                );
-                                              }
-                                            )}
-
-                                          {que.suggestions?.covered_not_valid
-                                            .length === 0 &&
-                                            que.suggestions?.covered.length ===
-                                              0 &&
-                                            que.suggestions?.covered_partial
-                                              .length === 0 && (
-                                              <div>
-                                                <Image
-                                                  src={icons.frame}
-                                                  height={20}
-                                                />
-                                                <small className="text-default ml-2 font-weight-500">
-                                                  {"Not Answered"}
-                                                </small>
-                                              </div>
-                                            )}
-                                        </div>
-                                      </>
-                                    );
-                                  })}
-                              </div>
-                            </>
-                          </Card>
-                        </div>
-                      );
-                    })}
-                </div>
-
-                {reportData &&
-                  reportData?.report_other_analytics &&
-                  reportData.report_other_analytics?.llv_r &&
-                  reportData.report_other_analytics?.hlv_r &&
-                  Object.keys(
-                    reportData.report_other_analytics?.hlv_r
-                  ).map((heading) => {
-                    return (
-                      <>
-                        <div className="pt-5 text-secondary d-flex justify-content-between align-items-center font-weight-bolder">
-                          <span style={{ fontSize: 26 }}>
-                            {capitalizeFirstLetter(heading).replace("_", " ")}
-                          </span>
-                          <span style={{ fontSize: 36 }}>
-                            {`${reportData.report_other_analytics.hlv_r[heading]} %`}
-                          </span>
-                        </div>
-
-                        <div>
-                          <div className="" style={{ paddingTop: 20 }}>
-                            <div>
-                              {reportData.report_other_analytics.llv_r[
-                                heading
-                              ] &&
-                              reportData.report_other_analytics.llv_r[
-                                  heading
-                                ].map((item) => {
-                                  return (
-                                    <div>
-                                      <Card
-                                        className="p-4"
-                                        style={{
-                                          borderWidth: 1.5,
-                                          borderColor: "#e8edff",
-                                          backgroundColor: "transparent",
-                                        }}
-                                      >
-                                        <div className="d-flex justify-content-between align-items-start">
-                                          <div>
-                                            <div>
-                                              <span
-                                                className="text-secondary font-weight-bolder"
-                                                style={{ fontSize: 16 }}
-                                              >
-                                                {item.metrics_name}
-                                              </span>
-                                            </div>
-                                            <span
-                                              className="text-default"
-                                              style={{ fontSize: 14 }}
-                                            >
-                                              {item.description}
-                                            </span>
-                                          </div>
-                                          <div>
-                                            <span
-                                              className="text-secondary font-weight-bolder"
-                                              style={{ fontSize: 16 }}
-                                            >
-                                              {item.rating}
-                                            </span>
-                                          </div>
-                                        </div>
-                                      </Card>
-                                    </div>
-                                  );
-                                })}
-                            </div>
-                          </div>
-                        </div>
-                      </>
-                    );
-                  })}
-              </>
-)
+                  )
+                })
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
 }
 
-export {DetailedReport}
+export { DetailedReport }

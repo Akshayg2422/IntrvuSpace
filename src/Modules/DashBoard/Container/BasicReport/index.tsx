@@ -31,7 +31,7 @@ function BasicReport({ details }: BasicReportProps) {
                         return (
                             <div className={`report-card-container report-card-spacing${additionalClass}`}>
                                 <div className={'report-title'}>{key.replace(/_/g, ' ')}</div>
-                                <div className={'text-heading'}>{report_other_analytics[key]}</div>
+                                <div className={'text-heading'}>{modifiedAnalytics[key]}</div>
                             </div>
                         )
                     })
