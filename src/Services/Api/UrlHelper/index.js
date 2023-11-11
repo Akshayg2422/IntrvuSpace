@@ -210,7 +210,11 @@ export const URL_ADD_TEAM_MATE_DATA = EMPLOYEE + 'addTeamMate'
 // GETTeamMate
 
 export const URL_GET_TEAM_MATE_DATA = EMPLOYEE + 'getTeamMate'
-// registerAsCompany
+
+
+/**
+ *  register company corporate
+ */
 
 export const URL_REGISTER_AS_COMPANY = EMPLOYEE + 'registerCompanyCorporate'
 
@@ -220,8 +224,6 @@ export const URL_REGISTER_AS_COMPANY = EMPLOYEE + 'registerCompanyCorporate'
  */
 
 export const URL_GET_OTP_FOR_EMAIL_VERIFICATION = EMPLOYEE + 'getOtpForEmailVerification'
-
-
 
 
 /**

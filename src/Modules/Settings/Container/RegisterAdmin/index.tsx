@@ -1,61 +1,19 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { Back, Button, Input, InputPassword, showToast } from "@Components";
-import { useInput } from "@Hooks";
 import { REGISTER_RULES, getValidateError, ifObjectExist, validate } from '@Utils';
-import { RegisterAdminProps } from './interfaces'
 import './index.css';
-import { useEffect } from "react";
+import { RegisterAdminProps } from './interfaces';
 
-function RegisterAdmin({ params, onParams }: RegisterAdminProps) {
+function RegisterAdmin({ params, onParams, onSubmit }: RegisterAdminProps) {
 
-    const NEXT_REGISTER_COMPANY = 2
-
-
-
-    const firstName = useInput("");
-    const lastName = useInput("");
-    const email = useInput("");
-    const mobileNumber = useInput("");
-    const password = useInput("");
-    const confirmPassword = useInput("");
-
-
-    useEffect(() => {
-        updatedRegisterAdmin();
-    }, [params])
-
-
-    function updatedRegisterAdmin() {
-
-        if (params) {
-            const { first_name, mobile_number } = params;
-            firstName.set(first_name)
-            email.set(params?.email)
-            mobileNumber.set(mobile_number)
-            password.set(params?.password)
-            confirmPassword.set(params?.password)
-
-        }
-
-    }
 
     const validateCompanyAdminDetailsHandler = () => {
 
-        const params = {
-            first_name: firstName.value,
-            last_name: lastName.value,
-            email: email.value,
-            mobile_number: mobileNumber.value,
-            password: password.value,
-        };
-
-
         const validation = validate(REGISTER_RULES, params)
-
         if (ifObjectExist(validation)) {
-            if (password?.value === confirmPassword?.value) {
-                if (params) {
-                    onParams(NEXT_REGISTER_COMPANY, params)
+            if (params?.password === params?.confirm_password) {
+                if (onSubmit) {
+                    onSubmit()
                 }
             } else {
                 showToast('Passwords do not match', 'error')
@@ -64,6 +22,38 @@ function RegisterAdmin({ params, onParams }: RegisterAdminProps) {
             showToast(getValidateError(validation))
         }
     };
+
+    function updatedParamsHandler(currentParams: any) {
+        const updatedParams = { ...params, ...currentParams }
+
+
+        if (onParams) {
+            onParams(updatedParams);
+        }
+    }
+
+
+    const registerAdminOnChange = (e: any) => {
+        const key = e.target.id;
+        let value = e.target.value;
+        const maxLength = e.target.maxLength
+
+        let final_value = undefined;
+
+        if (maxLength !== -1) {
+            if (maxLength >= value.length) {
+
+                final_value = value.slice(0, maxLength);
+                const currentParams = { [key]: final_value }
+                updatedParamsHandler(currentParams)
+            }
+        } else {
+            final_value = value
+            const currentParams = { [key]: final_value }
+            updatedParamsHandler(currentParams)
+        }
+    }
+
 
     return (
         <>
@@ -75,37 +65,44 @@ function RegisterAdmin({ params, onParams }: RegisterAdminProps) {
             </div>
 
             <Input
-                value={firstName?.value}
+                id={'first_name'}
+                value={params?.first_name}
                 placeholder={'Full Name'}
-                onChange={firstName.onChange}
+                onChange={registerAdminOnChange}
             />
             <Input
-                value={email?.value}
+                id={'email'}
+                value={params?.email}
                 placeholder={'Email'}
-                onChange={email.onChange}
+                onChange={registerAdminOnChange}
             />
             <Input
+                id={'mobile_number'}
                 type={'number'}
                 placeholder={"Phone"}
                 maxLength={10}
-                onChange={mobileNumber.onChange}
-                value={mobileNumber.value}
+                value={params.mobile_number}
+                onChange={registerAdminOnChange}
+
             />
             <InputPassword
-                value={password.value}
+                id={'password'}
+                value={params.password}
                 placeholder={'Enter your password'}
-                onChange={password.onChange}
+                onChange={registerAdminOnChange}
             />
             <InputPassword
-                value={confirmPassword.value}
+                id={'confirm_password'}
+                value={params.confirm_password}
                 placeholder={'Confirm your password'}
-                onChange={confirmPassword.onChange}
+                onChange={registerAdminOnChange}
             />
 
             <Button
                 block
                 text={"Next Step"}
-                onClick={validateCompanyAdminDetailsHandler} />
+                onClick={validateCompanyAdminDetailsHandler}
+            />
 
         </>
     );

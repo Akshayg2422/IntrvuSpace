@@ -109,30 +109,12 @@ export const registerAsCompany = (params: any) => {
     };
 };
 
-export const registerAsCompanySuccess = (response: any) => {
-
-    return {
-        type: ActionTypes.REGISTER_AS_COMPANY_SUCCESS,
-        payload: response
-    }
-}
-
-export const registerAsCompanyFailure = (error: any) => {
-    return {
-        type: ActionTypes.REGISTER_AS_COMPANY_FAILURE,
-        payload: error
-    }
-}
-
-
 export const saveUserEmail = (params: any) => {
     return {
         type: ActionTypes.SAVE_USER_EMAIL,
         payload: params
     }
 }
-
-
 
 /**
  *  get oto from email verification

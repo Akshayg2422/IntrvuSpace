@@ -1,59 +1,54 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { useEffect } from 'react'
-import { Back, Button, Input, InputPassword, showToast } from "@Components";
-import { useInput } from "@Hooks";
+import { Back, Button, ImagePicker, Input, showToast } from "@Components";
 import { REGISTER_COMPANY_RULES, getValidateError, ifObjectExist, validate } from '@Utils';
-import { RegisterAdminProps } from './interfaces'
 import './index.css';
+import { RegisterAdminProps } from './interfaces';
 
-function RegisterCompany({ params, onParams, onBackPress }: RegisterAdminProps) {
-
-
-
-    const brandName = useInput("");
-    const address = useInput("");
-    const mobileNumber = useInput("");
-    const pincode = useInput("");
-    const sector = useInput("");
-
-    useEffect(() => {
-        updatedRegisterCompany();
-    }, [params])
+function RegisterCompany({ loading, params, onParams, onBackPress, onSubmit }: RegisterAdminProps) {
 
 
-    function updatedRegisterCompany() {
-        if (params) {
-            const { mobile_number, brand_name, communication_address } = params;
-            mobileNumber.set(mobile_number)
-            brandName.set(brand_name)
-            pincode.set(params?.pincode)
-            sector.set(params?.sector)
-            address.set(communication_address)
-        }
-    }
+
 
     const validateCompanyAdminDetailsHandler = () => {
-
-        const params = {
-            brand_name: brandName.value,
-            communication_address: address.value,
-            pincode: pincode.value,
-            mobile_number: mobileNumber.value,
-            sector: sector.value,
-        };
-
-
         const validation = validate(REGISTER_COMPANY_RULES, params)
 
         if (ifObjectExist(validation)) {
-            if (params) {
-                onParams(params)
+            if (onSubmit) {
+                onSubmit();
             }
-
         } else {
             showToast(getValidateError(validation))
         }
     };
+
+    const registerCompanyOnChange = (e: any) => {
+        const key = e.target.id;
+        const value = e.target.value;
+        const maxLength = e.target.maxLength
+
+        let final_value = undefined;
+
+
+        if (maxLength !== -1) {
+            if (maxLength >= value.length) {
+                final_value = value.slice(0, maxLength);
+                const currentParams = { [key]: final_value }
+                registerCompanyParamsHandler(currentParams)
+            }
+        } else {
+            final_value = value
+            const currentParams = { [key]: final_value }
+            registerCompanyParamsHandler(currentParams)
+        }
+
+    }
+
+    const registerCompanyParamsHandler = (currentParams: any) => {
+        const updatedParams = { ...params, ...currentParams }
+        if (onParams) {
+            onParams(updatedParams);
+        }
+    }
 
     return (
         <>
@@ -64,19 +59,27 @@ function RegisterCompany({ params, onParams, onBackPress }: RegisterAdminProps) 
                     }
                 }} />
                 <div className={'admin-heading-txt'}>
-                    <div className="text-sub-heading m-0 p-0 text-center">{'Register Company'}</div>
+                    <div className="text-sub-heading m-0 p-0 text-center">{'Company Details'}</div>
                 </div>
             </div>
 
-            <Input
-                value={brandName?.value}
-                placeholder={'Brand Name'}
-                onChange={brandName.onChange}
+            <ImagePicker
+                defaultPhotos={params?.photo}
+                onSelect={(images) => {
+                    registerCompanyParamsHandler({ photo: [images] })
+                }}
             />
             <Input
-                value={address?.value}
+                id={'brand_name'}
+                value={params?.brand_name}
+                placeholder={'Brand Name'}
+                onChange={registerCompanyOnChange}
+            />
+            <Input
+                id={'communication_address'}
+                value={params?.communication_address}
                 placeholder={'Address'}
-                onChange={address.onChange}
+                onChange={registerCompanyOnChange}
             />
             <Input
                 className={'bg-white'}
@@ -84,26 +87,30 @@ function RegisterCompany({ params, onParams, onBackPress }: RegisterAdminProps) 
                 type={'number'}
                 placeholder={"Phone"}
                 maxLength={10}
-                onChange={mobileNumber.onChange}
-                value={mobileNumber.value}
+                value={params?.mobile_number}
             />
 
             <Input
+                id={'pincode'}
+                value={params?.pincode}
                 type={'number'}
                 placeholder={"Pincode"}
                 maxLength={6}
-                onChange={pincode.onChange}
-                value={pincode.value}
+                onChange={registerCompanyOnChange}
+
             />
             <Input
-                value={sector?.value}
+                id={'sector'}
+                value={params?.sector}
                 placeholder={'Sector'}
-                onChange={sector.onChange}
+                onChange={registerCompanyOnChange}
             />
             <Button
+                loading={loading}
                 block
                 text={"Submit"}
-                onClick={validateCompanyAdminDetailsHandler} />
+                onClick={validateCompanyAdminDetailsHandler}
+            />
 
         </>
     );

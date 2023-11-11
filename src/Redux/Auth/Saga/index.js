@@ -77,20 +77,20 @@ function* fetchMemberLoginUsingOtpSaga(action) {
     }
 }
 
-// registerAsCompany
+/**
+ * register company
+ * @param {} action 
+ */
 
 function* registerAsCompanySaga(action) {
     try {
-        const response = yield call(Api.registerAsCompanyAPi, action.payload.params);
+        const response = yield call(Api.registerAsCompanyApi, action.payload.params);
         if (response.success) {
-            yield put(Action.registerAsCompanySuccess(response));
             yield call(action.payload.onSuccess(response));
         } else {
-            yield put(Action.registerAsCompanyFailure(response.error_message));
             yield call(action.payload.onError(response));
         }
     } catch (error) {
-        yield put(Action.registerAsCompanyFailure(error));
         yield call(action.payload.onError(error));
     }
 }

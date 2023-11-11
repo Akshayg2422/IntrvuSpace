@@ -6,7 +6,9 @@ import { ROUTES } from "@Routes";
 import { REGISTER_RULES, REGISTER_COMPANY_RULES, getValidateError, ifObjectExist, validate } from '@Utils';
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { registerAsCompany, userLoginDetails } from '@Redux'
 import './index.css';
+
 
 function CorporateRegister() {
 
@@ -30,19 +32,53 @@ function CorporateRegister() {
 
 
 
-  const registerCorporateApiHandler = (registerCompanyParams: any) => {
+  const proceedRegisterCorporateApiHandler = () => {
 
-    const updatedParams = { ...params, ...registerCompanyParams }
-    setParams(updatedParams);
+    const validation = validate({ ...REGISTER_RULES, ...REGISTER_COMPANY_RULES }, params)
 
-    const validation = validate({ ...REGISTER_RULES, ...REGISTER_COMPANY_RULES }, updatedParams)
 
+    const {
+      first_name,
+      email,
+      password,
+      mobile_number,
+      brand_name,
+      communication_address,
+      pincode,
+      sector,
+      photo
+    } = params as any;
+
+    const base64Photo = photo && photo.length > 0 ? photo[0].base64 : "";
+
+    const updatedParams = {
+      first_name,
+      email,
+      password,
+      mobile_number,
+      brand_name,
+      communication_address,
+      pincode,
+      sector,
+      logo: base64Photo,
+    };
+    loader.show()
     if (ifObjectExist(validation)) {
+      dispatch(
+        registerAsCompany({
+          params: updatedParams,
+          onSuccess: (response: any) => () => {
+            console.log(response);
 
-      console.log(JSON.stringify(updatedParams));
+            loader.hide()
+          },
+          onError: (error) => () => {
+            loader.hide()
+            showToast(error.error_message, 'error');
+          },
+        })
+      );
 
-
-      console.log('proceed-api');
 
     } else {
       showToast(getValidateError(validation))
@@ -50,19 +86,18 @@ function CorporateRegister() {
   };
 
 
-  function updatedParamsHandler(next: any, updatedParams: any) {
-
-    setFormType(next);
-
-    setParams({
-      ...params,
-      ...updatedParams
-    })
-
+  function updatedParamsHandler(updatedParams: any) {
+    setParams(updatedParams)
   }
+
+
 
   function setRegisterAdminHandler() {
     setFormType(REGISTER_ADMIN);
+  }
+
+  function setRegisterCompanyHandler() {
+    setFormType(REGISTER_COMPANY);
   }
 
   function goToLogin() {
@@ -79,13 +114,16 @@ function CorporateRegister() {
           <RegisterAdmin
             params={params}
             onParams={updatedParamsHandler}
+            onSubmit={setRegisterCompanyHandler}
           />
         }
         {formType === REGISTER_COMPANY &&
           <RegisterCompany
+            loading={loader.loader}
             params={params}
             onBackPress={setRegisterAdminHandler}
-            onParams={registerCorporateApiHandler} />
+            onParams={updatedParamsHandler}
+            onSubmit={proceedRegisterCorporateApiHandler} />
         }
 
         <div className="text-center font-size-md bottom-text">

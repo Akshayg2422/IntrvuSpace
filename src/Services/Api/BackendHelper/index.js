@@ -215,6 +215,13 @@ export const getOtpForEmailVerificationAPi = payload => post(URL.URL_GET_OTP_FOR
 export const verifyEmailUsingOtpApi = payload => post(URL.URL_VERIFY_EMAIL_USING_OTP, payload, {})
 
 
+/**
+ *  register as corporate
+ */
+
+export const registerAsCompanyApi = payload => post(URL.URL_REGISTER_AS_COMPANY, payload, {});
+
+
 //corporateScheduleActions
 
 export const postCorporateScheduleActionsApi = payload => post(URL.POST_CORPORATE_SCHEUDULE_ACTIONS, payload, {});
@@ -226,9 +233,6 @@ export const addTeamMateDataApi = payload => post(URL.URL_ADD_TEAM_MATE_DATA, pa
 // getTeamMate
 
 export const getTeamMateDataApi = payload => post(URL.URL_GET_TEAM_MATE_DATA, payload, {});
-//register as member
-
-export const registerAsCompanyAPi = payload => post(URL.URL_REGISTER_AS_COMPANY, payload, {});
 
 
 export const getOngoingSchedulesApi = payload => post(URL.GRT_ONGOING_SCHEDULES, payload, {})

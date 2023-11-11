@@ -55,6 +55,11 @@ input[type=number] {
     position: relative;
 }
 
+.border {
+    border: 1px solid #DADCE0;
+    border-radius: var(--border-radius);
+}
+
 .screen-container {
     padding: 4%;
 }

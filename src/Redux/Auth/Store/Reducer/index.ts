@@ -69,20 +69,6 @@ const AuthReducer = (state = initialState, action: any) => {
             state = { ...state, memberUsingLoginOtp: undefined };
             break;
 
-        // registerAsCompany
-
-        case ActionTypes.REGISTER_AS_COMPANY:
-            state = { ...state, registerCompanyDetails: undefined };
-            break;
-        case ActionTypes.REGISTER_AS_COMPANY_SUCCESS:
-            state = { ...state, registerCompanyDetails: action.payload };
-            break;
-        case ActionTypes.REGISTER_AS_COMPANY_FAILURE:
-            state = { ...state, registerCompanyDetails: undefined };
-            break;
-
-        // registerAsCompany
-
 
         /**
          * save user email

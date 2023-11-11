@@ -30,11 +30,10 @@ export const ADDRESS = {
 
 export const PINCODE = {
   pincode: {
-    presence: { allowEmpty: false, message: "Address cannot be empty" },
+    presence: { allowEmpty: false, message: "Pincode cannot be empty" },
     length: { is: 6, message: "Pincode should be 6 number" },
   }
 }
-
 
 
 export const CREATE_QUESTION_FORM_RULES = {
@@ -73,9 +72,9 @@ export const RESET_PASSWORD_RULES = {
 }
 
 export const REGISTER_RULES = {
+  ...NAME_RULES,
   ...EMAIL_RULES,
   ...MOBILE_NUMBER_RULES,
-  ...NAME_RULES,
   password: {
     presence: { message: "Password cannot be empty" },
     length: { minimum: 8, message: "Password minimum 8 chars" },
@@ -92,6 +91,9 @@ export const REGISTER_COMPANY_RULES = {
   ...PINCODE,
   sector: {
     presence: { allowEmpty: false, message: "sector cannot be empty" },
+  },
+  photo: {
+    presence: { allowEmpty: false, message: "photo cannot be empty" },
   },
 }
 
