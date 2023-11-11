@@ -34,20 +34,6 @@ export const memberLoginUsingPassword = (params: any) => {
     };
 };
 
-export const memberLoginUsingPasswordSuccess = (response: any) => {
-
-    return {
-        type: ActionTypes.MEMBER_LOGIN_USING_PASSWORD_SUCCESS,
-        payload: response
-    }
-}
-
-export const memberLoginUsingPasswordFailure = (error: any) => {
-    return {
-        type: ActionTypes.MEMBER_LOGIN_USING_PASSWORD_FAILURE,
-        payload: error
-    }
-}
 
 
 

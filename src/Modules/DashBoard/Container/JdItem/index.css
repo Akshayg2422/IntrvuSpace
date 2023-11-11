@@ -91,15 +91,13 @@
 .complete-schedule-container {
   margin-top: 40px;
   background-color: #FAFBFF;
-  padding: 50px;
-
+  padding: 40px;
 }
 
 .completed-item-container {
   display: flex;
   flex-direction: row;
   align-items: center;
-
 }
 
 .completed-item-heading {
@@ -112,7 +110,7 @@
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  padding: 20px 20px;
+  padding: 0px 20px 20px 20px;
 
 }
 

@@ -59,7 +59,7 @@ function Register() {
             onSuccess: (response: any) => () => {
 
               const { details } = response;
-              const { is_email_verified } = details;
+              const { is_email_verified } = details || {};
               loader.hide();
 
 

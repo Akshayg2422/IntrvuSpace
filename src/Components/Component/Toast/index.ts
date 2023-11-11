@@ -32,7 +32,6 @@ const showToast = (
       toastElement = toast(message, style);
       break;
   }
-  console.log(toastElement, "toastElement")
   return toastElement;
 };
 

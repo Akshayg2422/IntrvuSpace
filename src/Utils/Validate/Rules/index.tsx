@@ -36,6 +36,12 @@ export const PINCODE = {
 }
 
 
+export const PASSWORD = {
+  password: {
+    presence: { allowEmpty: false, message: "Password cannot be empty" },
+  }
+}
+
 export const CREATE_QUESTION_FORM_RULES = {
   name: {
     length: { minimum: 3, message: "Name minimum 3 chars" },
@@ -126,13 +132,8 @@ export const REGISTER_AS_MEMBER_RULES = {
 }
 
 export const LOGIN_WITH_EMAIL_RULES = {
-  email: {
-    email: { message: "doesn't look like a valid email" },
-  },
-  password: {
-    presence: { message: "password cannot be empty" }
-  },
-
+  ...EMAIL_RULES,
+  ...PASSWORD
 }
 
 export const LOGIN_WITH_MOBILE_NO_RULES = {

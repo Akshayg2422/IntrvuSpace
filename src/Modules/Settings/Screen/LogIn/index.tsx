@@ -36,7 +36,6 @@ function Login() {
       password: password.value,
     };
 
-
     const validation = validate(LOGIN_WITH_EMAIL_RULES, params)
 
     if (ifObjectExist(validation)) {
@@ -48,7 +47,7 @@ function Login() {
           params,
           onSuccess: (response: any) => () => {
             const { details } = response;
-            const { is_email_verified, token } = details;
+            const { is_email_verified, token } = details || {};
 
             loginLoader.hide();
 
@@ -71,10 +70,15 @@ function Login() {
               }
 
             } else {
-              showToast(response.error_message, "error");
+              console.log('came');
+
+              showToast(response.error_message, 'error');
             }
           },
-          onError: (error) => () => {
+          onError: (error: any) => () => {
+            console.log('came');
+            console.log(error);
+
             loginLoader.hide();
             showToast(error.error_message, "error");
           },

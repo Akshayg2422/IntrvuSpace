@@ -220,10 +220,10 @@ function Designation() {
       }
 
       {
-        !listLoader.loader && corporateScheduleCount <= 1000 && <UploadCorporateOpeningsCard />
+        !listLoader.loader && corporateScheduleCount <= 0 && <UploadCorporateOpeningsCard />
       }
       {
-        corporateScheduleCount > 100 &&
+        corporateScheduleCount > 0 &&
         <div className={'screen-container'}>
           <div className='row'>
             <div className='col-sm-3'>

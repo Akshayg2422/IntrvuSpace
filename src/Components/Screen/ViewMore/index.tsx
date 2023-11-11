@@ -37,7 +37,13 @@ function ViewMore({ text, isViewMore = false, onViewMore }: ViewMoreProps) {
                                     <span className={'screen-des'}>
                                         {
                                             text
-                                        }
+                                                .split("\n\n")
+                                                .map((paragraph, index) => (
+                                                    <React.Fragment key={index}>
+                                                        {index > 0 && <br />}{" "}
+                                                        {paragraph}
+                                                    </React.Fragment>
+                                                ))}
                                     </span>
                                     <span
                                         className='view-more-text'

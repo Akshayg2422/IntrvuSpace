@@ -30,19 +30,6 @@ const AuthReducer = (state = initialState, action: any) => {
             state = { ...state, registerDetails: undefined };
             break;
 
-        //memberLoginUsingPassword
-
-        case ActionTypes.MEMBER_LOGIN_USING_PASSWORD:
-            state = { ...state, };
-            break;
-        case ActionTypes.MEMBER_LOGIN_USING_PASSWORD_SUCCESS:
-            state = { ...state };
-            break;
-        case ActionTypes.MEMBER_LOGIN_USING_PASSWORD_FAILURE:
-            state = { ...state, };
-            break;
-
-
 
         //get otp
 

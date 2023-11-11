@@ -27,15 +27,19 @@ function* registerAsMemberSaga(action) {
 function* memberLoginUsingPasswordSaga(action) {
     try {
         const response = yield call(Api.memberLoginUsingPasswordApi, action.payload.params);
+
+        console.log(response);
         if (response) {
-            yield put(Action.memberLoginUsingPasswordSuccess(response));
+            console.log('response');
             yield call(action.payload.onSuccess(response));
         } else {
-            yield put(Action.memberLoginUsingPasswordFailure(response.error_message));
+            console.log('failure');
+
             yield call(action.payload.onError(response));
         }
     } catch (error) {
-        yield put(Action.memberLoginUsingPasswordFailure(error));
+        console.log('failure111');
+        console.log(error);
         yield call(action.payload.onError(error));
     }
 }

@@ -14,7 +14,7 @@ function Clients() {
 
     return (
         <div className={'screen'}>
-            <TopNavbar />
+            {/* <TopNavbar /> */}
             {
                 renderComponent()
             }
