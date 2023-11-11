@@ -397,3 +397,14 @@ export function getBrowserInfo() {
 
   return { browserName, browserVersion };
 }
+
+
+export function createNewObjectWithoutNullOrNaNValues(obj: any) {
+  const newObj = {};
+  for (let key in obj) {
+    if (obj[key] !== null && !isNaN(obj[key])) {
+      newObj[key] = obj[key];
+    }
+  }
+  return newObj;
+}

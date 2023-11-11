@@ -16,7 +16,7 @@ import { useParams } from "react-router-dom";
 import ReactToPrint from "react-to-print";
 import { Card } from "reactstrap";
 import { ReportHeader, BasicReport } from '@Modules'
-
+import './index.css'
 
 
 
@@ -83,17 +83,11 @@ function Report() {
     );
   };
 
-  const colorVariant = (percentage: any) => {
-    if (percentage <= 20) return "red";
-    if (percentage <= 40) return "orange";
-    if (percentage <= 60) return "#ebeb1b";
-    if (percentage <= 80) return "green";
-    return "#FFD700";
-  };
 
 
   return (
-    <div className={'screen'}>
+    <div className={'screen screen-padding'}>
+
       {/* <div className="position-relative ml-sm-6">
         <div className="col-sm-3 position-absolute top-3 left-0 p-0">
           <DropDown
@@ -134,9 +128,10 @@ function Report() {
       {
         <>
           <ReportHeader details={report} />
-          <BasicReport />
+          <BasicReport details={report} />
         </>
       }
+
       {/* {loader.loader ? <div
         className={
           "vh-100 d-flex justify-content-center align-items-center"
