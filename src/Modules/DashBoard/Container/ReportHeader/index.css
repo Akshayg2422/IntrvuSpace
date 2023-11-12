@@ -44,6 +44,7 @@
 
 @media(max-width: 768px) {
     .user-heading {
+        margin-top: 10px;
         font-size: 24px;
         font-weight: 700;
         line-height: 1;

@@ -28,14 +28,14 @@ function DetailedReport({ details }: DetailedReportProps) {
   return (
     <div className={'detailed-report-container'}>
       <div className={'detailed-report-card-container'}>
-        <div className='text-center'>
+        <div className='detailed-each-container'>
           <div className={'heading-font'}>{skill_matrix_overal_percent}%</div>
           <div className={'detailed-report-title'}>{'Skill Matrix'}</div>
         </div>
         {
           modifiedHlv_r && Object.keys(modifiedHlv_r).map((key, index, array) => {
             return (
-              <div className={'text-center'} >
+              <div className={'detailed-each-container'} >
                 <div className={'heading-font'}>{modifiedHlv_r[key]}%</div>
                 <div className={'detailed-report-title'}>{key.replace(/_/g, ' ')}</div>
               </div>

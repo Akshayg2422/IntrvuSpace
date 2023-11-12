@@ -81,8 +81,17 @@
     .job-description-item {
         display: flex;
         justify-content: space-between;
-        padding: 20px;
+        padding: 15px;
         margin-top: 20px;
         width: 100%;
     }
+
+    .job-description-title {
+        font-size: 18px;
+    }
+
+    .job-description-item {
+        padding: 15px;
+    }
+
 }

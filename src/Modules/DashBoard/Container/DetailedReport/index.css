@@ -122,3 +122,57 @@
     display: flex;
     align-items: center;
 }
+
+.detailed-each-container {
+    align-items: center;
+}
+
+@media(max-width: 768px) {
+
+
+    .detailed-report-card-container {
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        margin: 0px;
+    }
+
+    .detailed-each-container {
+        display: flex;
+        justify-content: space-between;
+        flex-direction: row-reverse;
+        align-items: center;
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .heading-font {
+        color: var(--secondary);
+        font-size: 24px !important;
+        font-weight: 700;
+        line-height: 1;
+    }
+
+    .detailed-job-description-title {
+        font-size: 18px;
+        color: var(--secondary);
+        font-weight: 600;
+    }
+
+
+    .detailed-job-description-item {
+        padding: 15px;
+    }
+
+    .detailed-report-card-container {
+        padding: 15px;
+    }
+
+    .note-container {
+        margin-top: 25px;
+        margin-left: 5px;
+        display: flex;
+        justify-content: flex-start;
+    }
+
+}
