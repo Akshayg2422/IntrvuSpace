@@ -38,6 +38,7 @@
     padding: 25px;
     margin-top: 40px;
     width: 100%;
+    align-items: center;
 }
 
 .detailed-job-description-title {
@@ -64,7 +65,7 @@
 }
 
 .note-list-container {
-    margin-top: 25px;
+    margin-top: 15px;
 }
 
 .note-list-item {
@@ -72,4 +73,52 @@
     align-items: center;
     justify-content: flex-start;
     margin-top: 8px;
+}
+
+
+.note-text {
+    font-size: 14px;
+    color: var(--description);
+    font-weight: 400;
+    margin-left: 8px;
+}
+
+.questions-container {
+    margin-top: 30px;
+    width: 100%;
+}
+
+
+.sector-card-container {
+    height: auto;
+    display: flex;
+    padding: 25px;
+    margin-top: 40px;
+    flex-direction: column;
+}
+
+.sector-heading-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.question-container {
+    margin-top: 15px;
+}
+
+.question-text {
+    font-size: 14px;
+    color: var(--secondary);
+    font-weight: 400;
+}
+
+.answer-container {
+    margin-top: 15px;
+}
+
+.answer-item-container {
+    display: flex;
+    align-items: center;
 }

@@ -15,7 +15,7 @@
 .report-dropdown-container {
   display: flex;
   position: absolute;
-  top: 5%;
+  top: 60px;
   left: 4%;
   right: 0;
   z-index: 1;
@@ -26,6 +26,5 @@
     display: flex;
     position: relative;
     width: 100%;
-
   }
 }

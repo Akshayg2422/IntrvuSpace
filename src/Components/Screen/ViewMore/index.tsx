@@ -10,7 +10,7 @@ function ViewMore({ text, isViewMore = false, onViewMore }: ViewMoreProps) {
         <>
             {
                 text.length < VIEW_MORE_LENGTH ?
-                    <div className={'screen-des'}>{text}</div> :
+                    <span className={'screen-des'}>{text}</span> :
                     <>
                         {
                             !isViewMore ?
