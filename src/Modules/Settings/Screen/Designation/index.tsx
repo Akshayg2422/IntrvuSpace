@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
-import { Button, DesignationItem, DropDown, Input, InputHeading, Modal, NoDataFound, PageNation, ReactAutoComplete, Spinner, TextArea, showToast } from '@Components';
+import { Button, DesignationItem, DropDown, Input, InputHeading, Modal, NoDataFound, PageNation, ReactAutoComplete, Spinner, TextArea, showToast, TopNavbarCorporateFlow } from '@Components';
 import { useDropDown, useInput, useLoader, useNavigation } from '@Hooks';
 import { UploadCorporateOpeningsCard, } from '@Modules';
 import { addDepartmentCorporate, addSectorCorporate, createCorporateSchedules, getCorporateSchedules, getDepartmentCorporate, getSectorCorporate, hideCreateOpeningsModal, setSelectedRole, updateCorporateSchedules } from '@Redux';
@@ -214,7 +214,7 @@ function Designation() {
 
   return (
     <div className={'screen'}>
-      {/* <TopNavbarCorporateFlow /> */}
+      <TopNavbarCorporateFlow />
       {
         listLoader.loader && <div className={'loader-container'}><Spinner /></div>
       }
