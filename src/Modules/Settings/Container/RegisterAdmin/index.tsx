@@ -100,7 +100,7 @@ function RegisterAdmin({ params, onParams, onSubmit }: RegisterAdminProps) {
 
             <Button
                 block
-                text={"Next Step"}
+                text={"Next"}
                 onClick={validateCompanyAdminDetailsHandler}
             />
 

@@ -1004,7 +1004,7 @@ function Call() {
                           variant={"override"}
                           onClick={endInterviewHandler}
                         />
-                        <h4 className="display-4 mb-0 font-weight-bolder text-primary ml-3 d-none d-md-block">{`Interview for the role of ${scheduleInfo?.interviewee_expected_role}`}</h4>
+                        <h4 className="screen-heading mb-0  ml-3 d-none d-md-block">{`Interview for the role of ${scheduleInfo?.interviewee_expected_role}`}</h4>
                         <h4 className="mb-0 font-weight-bolder text-primary ml-3 d-block d-md-none">{`Interview for the role of ${scheduleInfo?.interviewee_expected_role}`}</h4>
                       </div>
                     </div>

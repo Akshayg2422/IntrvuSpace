@@ -66,7 +66,9 @@ function WebsiteHeader() {
                     return (
                       <>
                         <div className="pt-2">
-                          <Image src={icons.check} height={20} />
+                          <Image src={icons.check} height={12} width={12} style={{
+                            objectFit: 'contain'
+                          }} />
                           <span
                             className="ml-2 text-secondary"
                             style={{ fontSize: 12.5, fontWeight: 800 }}

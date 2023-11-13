@@ -65,6 +65,7 @@ export * from './AdvancedReport'
 export * from './BasicReport'
 export * from './CreateNew'
 export * from './JdItem'
+export * from './BulkUpload'
 
 
 

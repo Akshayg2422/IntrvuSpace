@@ -39,6 +39,7 @@ export const PINCODE = {
 export const PASSWORD = {
   password: {
     presence: { allowEmpty: false, message: "Password cannot be empty" },
+    length: { minimum: 8, message: "Password minimum 8 chars" },
   }
 }
 

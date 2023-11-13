@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { CandidatesProps } from './interfaces'
 import { Input, Button, DropDown, CommonTable, Image, MenuBar, Modal, showToast, NoDataFound, Alert } from '@Components'
-import { fetchCandidatesCorporate, createSchedule, refreshCorporateSchedule, postManualApprovalOnCandidate } from '@Redux'
+import { fetchCandidatesCorporate, createSchedule, refreshCorporateSchedule, postManualApprovalOnCandidate, bulkUploadCandidates } from '@Redux'
 import { useSelector, useDispatch } from 'react-redux';
 import { paginationHandler, capitalizeFirstLetter, validate, VALIDATE_ADD_NEW_CANDIDATES_RULES, ifObjectExist, getValidateError } from '@Utils';
 import { icons } from '@Assets';
 import { useModal, useInput, useLoader, useDropDown, useNavigation } from '@Hooks'
 import { ROUTES } from '@Routes'
+import { BulkUpload } from '@Modules'
 import './index.css'
 
 
@@ -81,6 +82,19 @@ function Candidates({ id, details }: CandidatesProps) {
     const closeCandidateModal = useModal(false);
 
 
+    /**
+  * bulk upload state
+  */
+
+    const bulkUploadModal = useModal(false)
+    const bulkUploadLoader = useLoader(false)
+
+
+
+
+    function openBulkUploadHandler() {
+        bulkUploadModal.show();
+    }
 
 
     useEffect(() => {
@@ -321,6 +335,38 @@ function Candidates({ id, details }: CandidatesProps) {
     }
 
 
+    /**
+     * bulk upload
+     */
+
+    // bulk upload candidates
+
+    function bulkUploadCandidatesHandler(file: any) {
+        const params = {
+            corporate_openings_details_id: details?.id,
+            csv_file: file,
+        };
+
+        bulkUploadLoader.show();
+
+        dispatch(
+            bulkUploadCandidates({
+                params,
+                onSuccess: (response: any) => () => {
+                    showToast(response.message, "success");
+                    bulkUploadLoader.hide();
+                    dispatch(refreshCorporateSchedule());
+                    getCandidatesCorporate(candidatesListCurrentPages);
+                },
+                onError: (error: any) => () => {
+                    showToast(error.error_message, "error");
+                    bulkUploadLoader.hide();
+                },
+            })
+        );
+    }
+
+
     return (
         <>
 
@@ -341,112 +387,115 @@ function Candidates({ id, details }: CandidatesProps) {
                             <Button block text={'Add Manually'} onClick={addCandidateModal.show} />
                         </div>
                         <div className={'empty-btn-container bulk-btn-container'}>
-                            <Button block text={'Bulk Import'} />
+                            <Button block text={'Bulk Import'} onClick={openBulkUploadHandler} />
                         </div>
                     </div>
                 </div>
             }
 
-            <div>
-                <div className={'candidate-dashboard-container'}>
-                    <div className={'dashboard-card-container dashboard-card-spacing  dashboard-card-left-spacing'}>
-                        <div className={'dashboard-title'}>{'Total Candidates'}</div>
-                        <div className={'text-heading'}>{total_candidates}</div>
-                    </div>
-                    <div className={'dashboard-card-container dashboard-card-spacing'}>
-                        <div className={'dashboard-title'}>{'Selected Candidates'}</div>
-                        <div>
-                            <span className={`text-heading ${selected_candidates > 0 && 'text-primary'}`}>{selected_candidates}</span>
-                            <span className={'selected-sub-text'}>{`/${vacancies}`}</span>
+            {
+                candidatesCount > 0 &&
+                <div>
+                    <div className={'candidate-dashboard-container'}>
+                        <div className={'dashboard-card-container dashboard-card-spacing  dashboard-card-left-spacing'}>
+                            <div className={'dashboard-title'}>{'Total Candidates'}</div>
+                            <div className={'text-heading'}>{total_candidates}</div>
+                        </div>
+                        <div className={'dashboard-card-container dashboard-card-spacing'}>
+                            <div className={'dashboard-title'}>{'Selected Candidates'}</div>
+                            <div>
+                                <span className={`text-heading ${selected_candidates > 0 && 'text-primary'}`}>{selected_candidates}</span>
+                                <span className={'selected-sub-text'}>{`/${vacancies}`}</span>
+                            </div>
+
+                        </div>
+                        <div className={'dashboard-card-container dashboard-card-spacing '}>
+                            <div className={'dashboard-title'}>{'Rejected Candidates'}</div>
+                            <div className={'text-heading'}>{rejected_candidates}</div>
+
+                        </div>
+                        <div className={'dashboard-card-container dashboard-card-spacing dashboard-card-right-spacing'}>
+                            <div className={'dashboard-title'}>{'Yet to Start '}</div>
+                            <div className={'text-heading'}>{yet_to_attend_candidates}</div>
                         </div>
 
                     </div>
-                    <div className={'dashboard-card-container dashboard-card-spacing '}>
-                        <div className={'dashboard-title'}>{'Rejected Candidates'}</div>
-                        <div className={'text-heading'}>{rejected_candidates}</div>
 
-                    </div>
-                    <div className={'dashboard-card-container dashboard-card-spacing dashboard-card-right-spacing'}>
-                        <div className={'dashboard-title'}>{'Yet to Start '}</div>
-                        <div className={'text-heading'}>{yet_to_attend_candidates}</div>
-                    </div>
+                    <div className={'card-container'}>
+                        <div className={'table-heading'}>
+                            <span className={'screen-heading'}>{'Candidates'}</span>
+                            <div className={'badge-schedule'}>
+                                <span className={'badge-text'}>{`${selected_candidates} Selected`}</span>
+                            </div>
+                        </div>
 
+                        <div className={'table-search-container'}>
+                            <div className={'col-sm-4 input-container'}>
+                                <Input
+                                    noSpace
+                                    placeHolder={'Name, Email, ...'}
+                                    value={searchCandidate?.value}
+                                    onChange={searchCandidate?.onChange}
+                                />
+                            </div>
+
+                            <div className={'col-sm-3 input-container'}>
+                                <DropDown noSpace id={'status'}
+                                    data={USER_STATUS_FILTER}
+                                    selected={candidateStatus.value}
+                                    onChange={candidateStatus.onChange}
+                                />
+                            </div>
+
+                            <div className={'add-candidate-container'}>
+                                <div className={'add-button-container'}>
+                                    <Button block text={'Add'} onClick={addCandidateModal.show} />
+                                </div>
+                                <div className={'add-button-container'}>
+                                    <Button block outline text={'Bulk Import'} onClick={openBulkUploadHandler} />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className={'table-container'}>
+                            {candidatesList?.length > 0 ?
+                                <CommonTable
+                                    isPagination={candidatesListNumOfPages > 1}
+                                    tableDataSet={candidatesList}
+                                    displayDataSet={normalizedTableData(candidatesList)}
+                                    noOfPage={candidatesListNumOfPages}
+                                    currentPage={candidatesListCurrentPages}
+                                    paginationNumberClick={(currentPage) => {
+                                        getCandidatesCorporate(
+                                            paginationHandler('current', currentPage)
+                                        );
+                                    }}
+                                    previousClick={() => {
+                                        getCandidatesCorporate(
+                                            paginationHandler(
+                                                'prev',
+                                                candidatesListCurrentPages
+                                            )
+                                        );
+                                    }}
+                                    nextClick={() => {
+                                        getCandidatesCorporate(
+                                            paginationHandler(
+                                                'next',
+                                                candidatesListCurrentPages
+                                            )
+                                        );
+                                    }}
+                                />
+                                :
+                                <div className={'no-data-found'}>
+                                    <NoDataFound />
+                                </div>
+                            }
+                        </div>
+                    </div>
                 </div>
-
-                <div className={'card-container'}>
-                    <div className={'table-heading'}>
-                        <span className={'screen-heading'}>{'Candidates'}</span>
-                        <div className={'badge-schedule'}>
-                            <span className={'badge-text'}>{`${selected_candidates} Selected`}</span>
-                        </div>
-                    </div>
-
-                    <div className={'table-search-container'}>
-                        <div className={'col-sm-4 input-container'}>
-                            <Input
-                                noSpace
-                                placeHolder={'Name, Email, ...'}
-                                value={searchCandidate?.value}
-                                onChange={searchCandidate?.onChange}
-                            />
-                        </div>
-
-                        <div className={'col-sm-3 input-container'}>
-                            <DropDown noSpace id={'status'}
-                                data={USER_STATUS_FILTER}
-                                selected={candidateStatus.value}
-                                onChange={candidateStatus.onChange}
-                            />
-                        </div>
-
-                        <div className={'add-candidate-container'}>
-                            <div className={'add-button-container'}>
-                                <Button block text={'Add'} onClick={addCandidateModal.show} />
-                            </div>
-                            <div className={'add-button-container'}>
-                                <Button block outline text={'Bulk Import'} />
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className={'table-container'}>
-                        {candidatesList?.length > 0 ?
-                            <CommonTable
-                                isPagination={candidatesListNumOfPages > 1}
-                                tableDataSet={candidatesList}
-                                displayDataSet={normalizedTableData(candidatesList)}
-                                noOfPage={candidatesListNumOfPages}
-                                currentPage={candidatesListCurrentPages}
-                                paginationNumberClick={(currentPage) => {
-                                    getCandidatesCorporate(
-                                        paginationHandler('current', currentPage)
-                                    );
-                                }}
-                                previousClick={() => {
-                                    getCandidatesCorporate(
-                                        paginationHandler(
-                                            'prev',
-                                            candidatesListCurrentPages
-                                        )
-                                    );
-                                }}
-                                nextClick={() => {
-                                    getCandidatesCorporate(
-                                        paginationHandler(
-                                            'next',
-                                            candidatesListCurrentPages
-                                        )
-                                    );
-                                }}
-                            />
-                            :
-                            <div className={'no-data-found'}>
-                                <NoDataFound />
-                            </div>
-                        }
-                    </div>
-                </div>
-            </div>
+            }
 
 
             {
@@ -530,6 +579,14 @@ function Candidates({ id, details }: CandidatesProps) {
                 primaryOnClick={closeCandidateApiHandler}
                 secondaryOnClick={closeCandidateModal.hide}
 
+            />
+
+            <BulkUpload
+                loading={addCandidateLoader.loader}
+                tempFile={details?.bulk_upload_template}
+                isOpen={bulkUploadModal.visible}
+                onClose={bulkUploadModal.hide}
+                onUpload={bulkUploadCandidatesHandler}
             />
         </>
     )

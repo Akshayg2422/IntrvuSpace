@@ -807,15 +807,11 @@ function* bulkUploadCandidatesCpSaga(action) {
   try {
     const response = yield call(Api.bulkUploadCandidatesCpApi, action.payload.params);
     if (response.success) {
-
-      yield put(Action.bulkUploadCandidatesSuccess(response?.details));
       yield call(action.payload.onSuccess(response));
     } else {
-      yield put(Action.bulkUploadCandidatesFailure(response.error_message));
       yield call(action.payload.onError(response));
     }
   } catch (error) {
-    yield put(Action.bulkUploadCandidatesFailure(error));
     yield call(action.payload.onError(error));
   }
 }

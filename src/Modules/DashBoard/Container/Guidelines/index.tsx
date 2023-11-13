@@ -5,46 +5,46 @@ import { useSelector } from "react-redux";
 import { GuidelinesProps } from "./interfaces";
 
 const START_INTERVIEW_GUIDELINES = [
-  { icon: icons.check, title: "Use of headphones for better quality" },
-  { icon: icons.check, title: "Attend from an quiet and secluded space" },
-  {
-    icon: icons.check,
-    title: "Verify the stability of your internet connection",
-  },
-  {
-    icon: icons.check,
-    title: "Keep the video function enabled throughout the session",
-  },
-  {
-    icon: icons.check,
-    title:
-      "After completing the interview, check back in a couple of minutes to view the report",
-  },
+    { icon: icons.check, title: "Use of headphones for better quality" },
+    { icon: icons.check, title: "Attend from an quiet and secluded space" },
+    {
+        icon: icons.check,
+        title: "Verify the stability of your internet connection",
+    },
+    {
+        icon: icons.check,
+        title: "Keep the video function enabled throughout the session",
+    },
+    {
+        icon: icons.check,
+        title:
+            "After completing the interview, check back in a couple of minutes to view the report",
+    },
 ];
 
 const GO_TO_DASHBOARD_GUIDELINES = [
-  { icon: icons.check, title: "Your interview is complete" },
-  { icon: icons.check, title: "Report is being generated" },
-  {
-    icon: icons.check,
-    title: "Upon completion of report, you will be notified over email",
-  },
+    { icon: icons.check, title: "Your interview is complete" },
+    { icon: icons.check, title: "Report is being generated" },
+    {
+        icon: icons.check,
+        title: "Upon completion of report, you will be notified over email",
+    },
 ];
 
 function Guidelines({
-  scheduleInfo = undefined,
-  loading,
-  heading,
-  onClick,
+    scheduleInfo = undefined,
+    loading,
+    heading,
+    onClick,
 }: GuidelinesProps) {
-  const { goBack } = useNavigation();
-  const { loginDetails } = useSelector((state: any) => state.AppReducer);
-  const startInterviewModal = useModal(true);
-  const goToDashboardModal = useModal(true);
+    const { goBack } = useNavigation();
+    const { loginDetails } = useSelector((state: any) => state.AppReducer);
+    const startInterviewModal = useModal(true);
+    const goToDashboardModal = useModal(true);
 
     const { interviewee_expected_designation, interviewee_experience, interview_duration } = scheduleInfo
 
-  console.log("scheduleinfooo==>", scheduleInfo);
+    console.log("scheduleinfooo==>", scheduleInfo);
 
     return (
         <>
@@ -64,7 +64,9 @@ function Guidelines({
                         <div className="pt-4 text-secondary col-12">
                             {START_INTERVIEW_GUIDELINES.map((step, index) => (
                                 <div key={index} className="flex-row align-items-center pb-3">
-                                    <img src={step.icon} height={22} />
+                                    <img src={step.icon} height={12} width={12} style={{
+                                        objectFit: 'contain'
+                                    }} />
                                     <small className="pl-2 m-0 font-weight-500 text-secondary">{step.title}</small>
                                 </div>
                             ))}

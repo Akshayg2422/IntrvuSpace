@@ -1093,18 +1093,7 @@ export const bulkUploadCandidates = (params: any) => {
     payload: params,
   };
 };
-export const bulkUploadCandidatesSuccess = (response: any) => {
-  return {
-    type: ActionTypes.BULK_UPLOAD_CANDIDATES_CP_SUCCESS,
-    payload: response,
-  };
-};
-export const bulkUploadCandidatesFailure = (error: any) => {
-  return {
-    type: ActionTypes.BULK_UPLOAD_CANDIDATES_CP_FAILURE,
-    payload: error,
-  };
-};
+
 
 // showCreateOpeningsModal
 

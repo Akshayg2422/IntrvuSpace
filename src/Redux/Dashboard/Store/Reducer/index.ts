@@ -725,17 +725,7 @@ createScheduleSuperAdmin
       state = { ...state, retrieveEmail: action.payload };
       break;
 
-    // bulkUploadCandidatesCP
 
-    case ActionTypes.BULK_UPLOAD_CANDIDATES_CP:
-      state = { ...state };
-      break;
-    case ActionTypes.BULK_UPLOAD_CANDIDATES_CP_SUCCESS:
-      state = { ...state };
-      break;
-    case ActionTypes.BULK_UPLOAD_CANDIDATES_CP_FAILURE:
-      state = { ...state };
-      break;
 
     // showCreateOpeningsModal
 

@@ -7,7 +7,7 @@ import {
   showToast
 } from "@Components";
 import { useLoader, useModal } from '@Hooks';
-import { Candidates, } from '@Modules';
+import { Candidates, BulkUpload } from '@Modules';
 import { getCorporateScheduleDetails, postCorporateScheduleActions } from '@Redux';
 import { capitalizeFirstLetter, displayFormatDate, getDateFromServer, getDisplayTime } from '@Utils';
 import moment from "moment";
@@ -35,7 +35,7 @@ function VariantInfo() {
     refreshCorporateSchedules
   } = useSelector((state: any) => state.DashboardReducer);
 
-  const { id } = selectedRole
+  const { id } = selectedRole || {}
 
   const { job_description, department, interview_duration, candidate_deadline, created_by, created_at, vacancies, is_closed, candidate_details } = corporateScheduleDetails || {};
   const { position, experience, details } = job_description || {};
@@ -66,6 +66,9 @@ function VariantInfo() {
   const modifyDeadlineModal = useModal(false)
   const [scheduleEndDate, setScheduleEndDate] = useState<any>("");
   const [scheduleEndTime, setScheduleEndTime] = useState<any>("");
+
+
+
 
 
   useEffect(() => {
@@ -155,6 +158,13 @@ function VariantInfo() {
     corporateScheduleActionsHandler(params);
 
   }
+
+
+
+
+
+
+
 
   return (
     <>
@@ -293,6 +303,7 @@ function VariantInfo() {
           </div>
         </div>
       </Modal>
+
     </>
   );
 }
