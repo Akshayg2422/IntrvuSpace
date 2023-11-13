@@ -1,4 +1,4 @@
-export const NAME_RULES = {
+export const FIRST_NAME_RULES = {
   first_name: {
     presence: { allowEmpty: false, message: "First name cannot be empty" },
     length: { minimum: 3, message: "First name minimum 3 chars" },
@@ -78,7 +78,7 @@ export const RESET_PASSWORD_RULES = {
 }
 
 export const REGISTER_RULES = {
-  ...NAME_RULES,
+  ...FIRST_NAME_RULES,
   ...EMAIL_RULES,
   ...MOBILE_NUMBER_RULES,
   password: {
@@ -183,15 +183,21 @@ export const ADD_SECTOR_CORPORATE_RULES = {
   // }
 }
 
-export const ADD_DEPARTMENT_CORPORATE_RULES = {
+const NAME_RULES = {
   name: {
-    length: { minimum: 3, message: 'Name minimum 3 chars' },
-  },
+    presence: { allowEmpty: false, message: "Name cannot be empty" },
+    length: { minimum: 3, message: 'Name minimum 3 chars' }
+  }
+}
+
+export const ADD_DEPARTMENT_CORPORATE_RULES = {
+  ...NAME_RULES
 }
 
 export const ADD_DESIGNATION = {
   name: {
     presence: { allowEmpty: false, message: "Designation name cannot be empty" },
+    length: { minimum: 3, message: 'Name minimum 3 chars' }
   }
 }
 
@@ -279,7 +285,7 @@ export const CREATE_KNOWLEDGE_GROUP_VARIANT_RULES = {
 }
 
 export const VALIDATE_ADD_NEW_CANDIDATES_RULES = {
-  ...NAME_RULES,
+  ...FIRST_NAME_RULES,
   last_name: {
     presence: { message: "Last name cannot be empty" },
     length: { minimum: 1, message: "Last name minimum 3 chars" },

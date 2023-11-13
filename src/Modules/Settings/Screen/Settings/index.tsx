@@ -1,6 +1,6 @@
-import { Back } from '@Components';
-import { ROUTES } from '@Routes';
 import { useNavigation } from '@Hooks';
+import { SettingHeader } from '@Modules';
+import { ROUTES } from '@Routes';
 import './index.css';
 
 function Settings() {
@@ -25,10 +25,7 @@ function Settings() {
   return (
     <div className={'screen-padding'}>
 
-      <div className={'d-flex align-items-center'}>
-        <Back />
-        <div className={'screen-heading ml-2'}>{'Settings'}</div>
-      </div>
+      <SettingHeader title={'Settings'} />
 
 
       <div className={'setting-container'}>

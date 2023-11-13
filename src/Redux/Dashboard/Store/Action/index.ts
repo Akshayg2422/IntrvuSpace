@@ -826,24 +826,16 @@ export const addSectorCorporateFailure = (error: any) => {
   };
 };
 
-// addDepartment
+
+/** 
+ * Add department
+ */
+
 
 export const addDepartmentCorporate = (params: any) => {
   return {
     type: ActionTypes.ADD_DEPARTMENT_CORPORATE,
     payload: params,
-  };
-};
-export const addDepartmentCorporateSuccess = (response: any) => {
-  return {
-    type: ActionTypes.ADD_DEPARTMENT_CORPORATE_SUCCESS,
-    payload: response,
-  };
-};
-export const addDepartmentCorporateFailure = (error: any) => {
-  return {
-    type: ActionTypes.ADD_DEPARTMENT_CORPORATE_FAILURE,
-    payload: error,
   };
 };
 

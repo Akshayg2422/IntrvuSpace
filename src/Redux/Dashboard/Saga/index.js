@@ -565,20 +565,20 @@ function* addSectorsCorporateSaga(action) {
   }
 }
 
-// addDepartment
+/**
+ * Add department
+ */
+
 function* addDepartmentCorporateSaga(action) {
   try {
     const response = yield call(Api.addDepartmentCorporateApi, action.payload.params);
     if (response.success) {
-      yield put(Action.addDepartmentCorporateSuccess(response));
       yield call(action.payload.onSuccess(response));
     } else {
-      yield put(Action.addDepartmentCorporateFailure(response.error_message));
       yield call(action.payload.onError(response));
     }
 
   } catch (error) {
-    yield put(Action.addDepartmentCorporateFailure(error));
     yield call(action.payload.onError(error));
   }
 }
@@ -902,10 +902,10 @@ function* postCorporateScheduleActionsSaga(action) {
 
 //Add teamMate
 
-function* addTeamMateDataSaga(action){
-  try{
-    const response=yield call(Api.addTeamMateDataApi,action.payload.params);
-    if(response.success){
+function* addTeamMateDataSaga(action) {
+  try {
+    const response = yield call(Api.addTeamMateDataApi, action.payload.params);
+    if (response.success) {
       yield put(Action.addTeamMateDataSuccess(response));
       yield call(action.payload.onSuccess(response))
     } else {
@@ -916,14 +916,14 @@ function* addTeamMateDataSaga(action){
     yield put(Action.addTeamMateDataFailure(error));
     yield call(action.payload.onError(error));
   }
-  }
+}
 
-  //Get teamMate
+//Get teamMate
 
-function* getTeamMateDataSaga(action){
-  try{
-    const response=yield call(Api.getTeamMateDataApi,action.payload.params);
-    if(response.success){
+function* getTeamMateDataSaga(action) {
+  try {
+    const response = yield call(Api.getTeamMateDataApi, action.payload.params);
+    if (response.success) {
       yield put(Action.getTeamMateDataSuccess(response));
       yield call(action.payload.onSuccess(response))
     } else {
@@ -934,7 +934,7 @@ function* getTeamMateDataSaga(action){
     yield put(Action.getTeamMateDataFailure(error));
     yield call(action.payload.onError(error));
   }
-  }
+}
 
 
 // fetchONGOING
@@ -991,7 +991,7 @@ function* DashboardSaga() {
   yield takeLatest(Action.ADD_SECTORS_CORPORATE, addSectorsCorporateSaga);
   yield takeLatest(Action.ADD_DEPARTMENT_CORPORATE, addDepartmentCorporateSaga);
   yield takeLatest(Action.GET_DEPARTMENT_CORPORATE, getDepartmentCorporateSaga);
-  yield takeLatest(Action.ADD_DESIGNATION,addDesignationSaga)
+  yield takeLatest(Action.ADD_DESIGNATION, addDesignationSaga)
   yield takeLatest(Action.GET_FETCH_DESIGNATION, getDesignationsSaga);
   yield takeLatest(Action.CREATE_CORPORATE_SCHEDULES, createCorporateSchedulesSaga);
   yield takeLatest(Action.GET_CORPORATE_SCHEDULES, getCorporateSchedulesSaga);

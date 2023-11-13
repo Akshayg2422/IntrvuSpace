@@ -469,19 +469,6 @@ const DashboardReducer = (state = initialState, action: any) => {
       break;
 
 
-
-    /** addDepartment */
-
-    case ActionTypes.ADD_DEPARTMENT_CORPORATE:
-      state = { ...state };
-      break;
-    case ActionTypes.ADD_DEPARTMENT_CORPORATE_SUCCESS:
-      state = { ...state };
-      break;
-    case ActionTypes.ADD_DEPARTMENT_CORPORATE_FAILURE:
-      state = { ...state };
-      break;
-
     /**getDepartments */
 
     case ActionTypes.GET_DEPARTMENT_CORPORATE:
@@ -497,7 +484,7 @@ const DashboardReducer = (state = initialState, action: any) => {
     case ActionTypes.GET_DEPARTMENT_CORPORATE_SUCCESS:
       state = {
         ...state,
-        departmentCorporate: action.payload?.details,
+        departmentCorporate: action.payload?.details?.data,
         departmentCorporateNumOfPages: action.payload?.details?.num_pages,
         departmentsCorporateCurrentPages:
           action.payload?.details.next_page === -1
