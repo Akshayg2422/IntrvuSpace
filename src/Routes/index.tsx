@@ -7,7 +7,6 @@ import {
   CreateQuestionForm,
   Department,
   Designation,
-  EmployeeDesignation,
   ForgotPassword,
   HowItWorks,
   Introduction,
@@ -31,7 +30,8 @@ import {
   VariantInfo,
   WeightageCountForm,
   EmailVerification,
-  CorporateRegister
+  CorporateRegister,
+  SettingDesignation
 } from '@Modules';
 
 export const ROUTES = {
@@ -251,7 +251,7 @@ export const HOME_ROUTES = [
     name: "Designations",
     // icon: icons.settings,
     layout: "",
-    component: <EmployeeDesignation />
+    component: <SettingDesignation />
   },
   {
     path: ROUTES['designation-module'].ManageTeamMate,

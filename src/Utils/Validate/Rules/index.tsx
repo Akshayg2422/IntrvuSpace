@@ -194,12 +194,11 @@ export const ADD_DEPARTMENT_CORPORATE_RULES = {
   ...NAME_RULES
 }
 
-export const ADD_DESIGNATION = {
-  name: {
-    presence: { allowEmpty: false, message: "Designation name cannot be empty" },
-    length: { minimum: 3, message: 'Name minimum 3 chars' }
-  }
+export const ADD_DESIGNATION_CORPORATE_RULES = {
+  ...NAME_RULES
 }
+
+
 
 export const GENERATE_USING_AI_RULES = {
   name: {

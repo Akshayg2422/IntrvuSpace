@@ -1,25 +1,23 @@
-import { addDesignation, getDesignations } from '@Redux';
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { convertToUpperCase, paginationHandler, ADD_DESIGNATION, ifObjectExist, validate, getValidateError, INITIAL_PAGE, } from "@Utils";
-import { useDynamicHeight, useModal, useInput, useLoader, useDropDown, useNavigation } from "@Hooks";
+import { icons } from '@Assets';
 import {
     Button,
-    Card,
+    Checkbox,
     CommonTable,
+    Heading, Image,
     Input,
+    MenuBar,
     Modal,
     NoRecordsFound,
-    showToast,
-    Checkbox,
     Spinner,
-    MenuBar,
-    NoDataFound,
-    Back,
-    Heading, Image
+    showToast
 } from "@Components";
+import { useInput, useLoader, useModal, useNavigation } from "@Hooks";
 import { translate } from "@I18n";
-import { icons } from '@Assets';
+import { addDesignation, getDesignations } from '@Redux';
+import { ADD_DESIGNATION_CORPORATE_RULES, getValidateError, ifObjectExist, paginationHandler, validate } from "@Utils";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import './index.css'
 
 function EmployeeDesignation() {
 
@@ -46,7 +44,6 @@ function EmployeeDesignation() {
     const [loading, setLoading] = useState(true)
     const loginLoader = useLoader(false)
     const [selectDesignation, setSelectedDesignation] = useState<any>()
-    console.log(isHrAdmin, "isHrAdmin=====", isDepartmentAdmin, isSuperAdmin, isHR)
 
 
     useEffect(() => {
@@ -60,7 +57,7 @@ function EmployeeDesignation() {
 
     const addDesignationApiHandler = (params: any) => {
 
-        const validation = validate(ADD_DESIGNATION, params)
+        const validation = validate(ADD_DESIGNATION_CORPORATE_RULES, params)
 
         if (ifObjectExist(validation)) {
             loginLoader.show()
@@ -367,4 +364,4 @@ function EmployeeDesignation() {
     )
 }
 
-export { EmployeeDesignation }
+export { EmployeeDesignation };

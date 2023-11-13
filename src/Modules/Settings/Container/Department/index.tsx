@@ -116,6 +116,7 @@ function Department() {
   function modalCloseHandler() {
     addDepartmentModel.hide();
     departmentName.set('');
+    setEditId('')
   }
 
   return (

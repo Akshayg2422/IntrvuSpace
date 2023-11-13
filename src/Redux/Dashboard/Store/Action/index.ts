@@ -868,18 +868,7 @@ export const addDesignation = (params: any) => {
     payload: params,
   };
 };
-export const addDesignationSuccess = (response: any) => {
-  return {
-    type: ActionTypes.ADD_DESIGNATION_SUCCESS,
-    payload: response,
-  };
-};
-export const addDesignationFailure = (error: any) => {
-  return {
-    type: ActionTypes.ADD_DESIGNATION_FAILURE,
-    payload: error,
-  };
-};
+
 
 // getDesignation
 

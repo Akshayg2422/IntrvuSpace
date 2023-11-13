@@ -608,15 +608,12 @@ function* addDesignationSaga(action) {
   try {
     const response = yield call(Api.addDesignationApi, action.payload.params);
     if (response.success) {
-      yield put(Action.addDesignationSuccess(response));
       yield call(action.payload.onSuccess(response));
     } else {
-      yield put(Action.addDesignationFailure(response.error_message));
       yield call(action.payload.onError(response));
     }
 
   } catch (error) {
-    yield put(Action.addDesignationFailure(error));
     yield call(action.payload.onError(error));
   }
 }

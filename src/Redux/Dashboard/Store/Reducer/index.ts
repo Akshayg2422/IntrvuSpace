@@ -499,18 +499,6 @@ const DashboardReducer = (state = initialState, action: any) => {
       };
       break;
 
-    /** addDesignation */
-
-    case ActionTypes.ADD_DESIGNATION:
-      state = { ...state };
-      break;
-    case ActionTypes.ADD_DESIGNATION_SUCCESS:
-      state = { ...state };
-      break;
-    case ActionTypes.ADD_DESIGNATION_FAILURE:
-      state = { ...state };
-      break;
-
     /**getDesignation */
 
     case ActionTypes.GET_FETCH_DESIGNATION:
@@ -520,14 +508,12 @@ const DashboardReducer = (state = initialState, action: any) => {
         designations: undefined,
         designationsNumOfPage: 0,
         designationsCurrentPage: 1,
-        loading: true
       };
       break;
     case ActionTypes.GET_FETCH_DESIGNATION_SUCCESS:
       state = {
         ...state,
-        loading: false,
-        designations: action.payload?.details,
+        designations: action.payload?.details?.data,
         designationsNumOfPage: action.payload?.details?.num_pages,
         designationsCurrentPage:
           action.payload.details.next_page === -1 ?
@@ -539,7 +525,6 @@ const DashboardReducer = (state = initialState, action: any) => {
       state = {
         ...state,
         error: action.payload,
-        loading: false,
       };
       break;
 
