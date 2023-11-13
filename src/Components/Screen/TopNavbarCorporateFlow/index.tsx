@@ -18,7 +18,7 @@ import {
   UncontrolledDropdown,
 } from "reactstrap";
 import { icons } from "@Assets";
-import { Image, Modal, Button, Heading } from "@Components";
+import { Image, Modal, Button, Heading, Alert } from "@Components";
 import { useModal, useNavigation } from "@Hooks";
 import { ROUTES } from "@Routes";
 import { showCreateOpeningsModal, userLogout } from "@Redux";
@@ -35,27 +35,27 @@ function TopNavbarCorporateFlow() {
   const dispatch = useDispatch();
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
-    const HEADER_MENU = [
-        // { id: '1', name: 'Schedule', value: 'SC', icon: 'ni ni-badge' },
-        { id: '1', name: 'Setting', value: 'ST', icon: 'ni ni-settings-gear-65' },
-        // { id: '3', name: 'View as member', value: 'VAM', icon: 'ni ni-single-02', },
-        { id: '2', name: 'Logout', value: 'LG', icon: 'ni ni-button-power' },
-    ]
+  const HEADER_MENU = [
+    // { id: '1', name: 'Schedule', value: 'SC', icon: 'ni ni-badge' },
+    { id: '1', name: 'Setting', value: 'ST', icon: 'ni ni-settings-gear-65' },
+    // { id: '3', name: 'View as member', value: 'VAM', icon: 'ni ni-single-02', },
+    { id: '2', name: 'Logout', value: 'LG', icon: 'ni ni-button-power' },
+  ]
 
 
-    const dropdownHandler = (item: any) => {
-        if (loginDetails?.is_admin) {
-            if (item.value === 'ST') {
-                goTo(ROUTES['designation-module'].settings);
-            }
-            if (item.value === 'VAM') {
-                goTo(ROUTES['designation-module'].client);
-            }
-        }
-        if (item.value === 'LG') {
-            logoutModal.show()
-        }
-    };
+  const dropdownHandler = (item: any) => {
+    if (loginDetails?.is_admin) {
+      if (item.value === 'ST') {
+        goTo(ROUTES['designation-module'].settings);
+      }
+      if (item.value === 'VAM') {
+        goTo(ROUTES['designation-module'].client);
+      }
+    }
+    if (item.value === 'LG') {
+      logoutModal.show()
+    }
+  };
 
 
   function proceedLogout() {
@@ -88,7 +88,7 @@ function TopNavbarCorporateFlow() {
         expand="lg"
         id="navbar-main"
       >
-        <div className="container-fluid mx-md-3 mx-sm-0 mx-2">
+        <div className="container-fluid mx-md-3 mx-sm-0 mx-2 my-3">
           <NavbarBrand tag={Link}>
             <div className="d-flex justify-content-between">
               <img
@@ -147,8 +147,6 @@ function TopNavbarCorporateFlow() {
               </Row>
             </div>
 
-            {/* <hr className="d-lg-none" /> */}
-
             <Nav
               className="align-items-lg-center ml-lg-auto mr--4 justify-content-end"
               navbar
@@ -157,16 +155,13 @@ function TopNavbarCorporateFlow() {
                 0 && (
                   <NavItem>
                     <NavLink to="/schedule" tag={Link}>
-                      <Button
-                        size="md"
-                        className="btn btn-primary rounded-sm mr--3"
-                        style={{
-                          borderColor: "#d8dade",
-                          fontSize: "15px",
-                        }}
-                        text={"Create Openings"}
-                        onClick={handleCreateOpeningsClick}
-                      />
+                      <div className={'btn-wrapper'}>
+                        <Button
+                          block
+                          text={"Create Openings"}
+                          onClick={handleCreateOpeningsClick}
+                        />
+                      </div>
                     </NavLink>
                   </NavItem>
                 )}
@@ -248,27 +243,15 @@ function TopNavbarCorporateFlow() {
         </div>
       </Navbar>
 
-      <Modal isOpen={logoutModal.visible} onClose={logoutModal.hide}>
-        <div className={"mx-sm-4 mb-sm-3 mx-1 mb-1 mt--5"}>
-          <Heading
-            className={"text-secondary font-weight-900 display-4"}
-            heading={`Logout User`}
-          />
-          <span>{"Please click on proceed to logout user"}</span>
-          <div className="d-flex justify-content-end mt-4">
-            <Button
-              color="white"
-              text={"Cancel"}
-              onClick={() => logoutModal.hide()}
-            />
-            <Button
-              className="rounded-sm"
-              text={"Proceed"}
-              onClick={proceedLogout}
-            />
-          </div>
-        </div>
-      </Modal>
+      <Alert
+        title={'Logout User'}
+        subTitle={'Please click on proceed to logout user'}
+        isOpen={logoutModal.visible}
+        onClose={logoutModal.hide}
+        primary={"Logout"}
+        secondaryOnClick={logoutModal.hide}
+        primaryOnClick={proceedLogout}
+      />
     </>
   );
 }

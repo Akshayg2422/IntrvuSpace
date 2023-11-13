@@ -56,12 +56,16 @@ input[type=number] {
     flex-direction: column;
 }
 
+.home-wrapper {
+    margin-top: 100px;
+}
+
 .screen-padding {
     min-height: 100dvh;
     width: 100%;
     position: relative;
     flex-direction: column;
-    padding: 5% 8%;
+    padding: 4% 7%;
 }
 
 .border {
@@ -70,8 +74,10 @@ input[type=number] {
 }
 
 .screen-container {
-    padding: 4%;
+    margin-top: 80px;
+    padding: 4% 7%;
 }
+
 
 .card-container {
     width: 100%;

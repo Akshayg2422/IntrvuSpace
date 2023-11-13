@@ -48,6 +48,7 @@ function Designation() {
   const [duration, setDuration] = useState<any>(INTERVIEW_DURATIONS[0])
   const [selectSector, setSelectedSector] = useState<any>('')
   const [selectDepartment, setSelectedDepartment] = useState<any>('')
+  const referenceId = useInput("");
 
 
   /**
@@ -133,6 +134,7 @@ function Designation() {
       role: position.value,
       experience: parseInt(experience.value?.id),
       jd: jd.value,
+      reference_id: referenceId.value,
       vacancies: vacancies?.value,
       interview_duration: duration?.value,
     }
@@ -209,12 +211,12 @@ function Designation() {
     dispatch(updateCorporateSchedules(updateData))
   }
 
-  console.log("sectorsCorporate", sectorsCorporate);
 
 
   return (
     <div className={'screen'}>
       <TopNavbarCorporateFlow />
+
       {
         listLoader.loader && <div className={'loader-container'}><Spinner /></div>
       }
@@ -332,101 +334,108 @@ function Designation() {
         onClick={createCorporateScheduleApiHandler}
 
       >
-        <div className={'create-opening-container'}>
-          <div className='row m-0 p-0'>
-            <div className={'col-sm-5 m-0 p-0'}>
-              <Input
-                heading={'Position'}
-                type={'text'}
-                placeHolder={"HR Executive, QA Manager..."}
-                value={position.value}
-                onChange={position.onChange} />
-            </div>
 
-            <div className={'col-sm-4 m-0 p-0'}>
-              <div className={'opening-form-container'}>
-                <DropDown
-                  heading={'Experience'}
-                  id={'experience'}
-                  data={EXPERIENCE_LIST}
-                  selected={experience.value}
-                  onChange={experience.onChange}
-                />
-              </div>
-            </div>
-            <div className={'col-sm-3 m-0 p-0 opening-form-container'}>
-              <div className={'opening-form-container'}>
-                <Input
-                  heading={'Vacancies'}
-                  type={'number'}
-                  placeHolder={"0"}
-                  value={vacancies.value}
-                  onChange={vacancies.onChange}
-                  maxLength={4}
-                />
-              </div>
-            </div>
+        <div className={'row'}>
+          <div className={'col-sm-6'}>
+            <Input
+              heading={'Position'}
+              type={'text'}
+              placeHolder={"HR Executive, QA Manager..."}
+              value={position.value}
+              onChange={position.onChange} />
           </div>
 
-
-          <TextArea
-            heading='Job Description'
-            value={jd.value}
-            placeholder={PLACEHOLDER_ROLES}
-            className={"p-4"}
-            onChange={jd.onChange} />
-
-          <div className={'duration-container'}>
-            <InputHeading heading={'Duration'} />
-            <div className={'duration-content-container'}>
-              {
-                INTERVIEW_DURATIONS.map((item: any, index: number) => {
-                  const { id, subText } = item
-                  return (
-                    <div className={index === 0 ? 'each-duration' : 'each-duration each-duration-space'}>
-                      <Button
-                        block
-                        outline
-                        className={`${duration?.id === id ? 'btn-outline-primary-active' : 'btn-outline-primary-inactive'}`}
-                        text={subText}
-                        onClick={() => {
-                          setDuration(item)
-                        }}
-                      />
-                    </div>
-                  )
-                })
-              }
-            </div>
-          </div>
-          <div className='group-container row'>
-            <div className={'col-sm-6'}>
-              <ReactAutoComplete
-                selected={selectDepartment?.name}
-                data={departmentCorporate}
-                heading={"Department"}
-                placeholder={'Department, Account...'}
-                onAdd={(value: string) => {
-                  addDepartmentApiHandler(value)
-                }}
-                onSelected={setSelectedDepartment}
-              />
-            </div>
-            <div className={'col-sm-6'}>
-              <ReactAutoComplete
-                selected={selectSector?.name}
-                data={sectorsCorporate}
-                placeholder={'Software, Healthcare...'}
-                heading={"Sector"}
-                onAdd={(value: any) => {
-                  addSectorCorporateApiHandler(value)
-                }}
-                onSelected={setSelectedSector}
-              />
-            </div>
-
+          <div className={'col-sm-6'}>
+            <DropDown
+              id={'experience'}
+              heading={'Experience'}
+              data={EXPERIENCE_LIST}
+              selected={experience.value}
+              onChange={experience.onChange}
+            />
           </div>
         </div>
+
+        <div className={'row'}>
+          <div className={'col-sm-6'}>
+            <Input
+              heading={'Vacancies'}
+              type={'number'}
+              placeHolder={"0"}
+              value={vacancies.value}
+              onChange={vacancies.onChange}
+              maxLength={4}
+            />
+          </div>
+
+          <div className={'col-sm-6'}>
+            <Input
+              heading={'Reference'}
+              placeHolder={"Reference"}
+              value={referenceId.value}
+              onChange={referenceId.onChange}
+            />
+          </div>
+        </div>
+
+        <TextArea
+          heading='Job Description'
+          value={jd.value}
+          placeholder={PLACEHOLDER_ROLES}
+          className={"p-4"}
+          onChange={jd.onChange} />
+
+        <div className={'duration-container'}>
+          <InputHeading heading={'Duration'} />
+          <div className={'duration-content-container'}>
+            {
+              INTERVIEW_DURATIONS.map((item: any, index: number) => {
+                const { id, subText } = item
+                return (
+                  <div className={index === 0 ? 'each-duration' : 'each-duration each-duration-space'}>
+                    <Button
+                      block
+                      outline
+                      className={`${duration?.id === id ? 'btn-outline-primary-active' : 'btn-outline-primary-inactive'}`}
+                      text={subText}
+                      onClick={() => {
+                        setDuration(item)
+                      }}
+                    />
+                  </div>
+                )
+              })
+            }
+          </div>
+        </div>
+        <div className='group-container row'>
+          <div className={'col-sm-6'}>
+            <ReactAutoComplete
+              selected={selectDepartment?.name}
+              data={departmentCorporate}
+              heading={"Department"}
+              placeholder={'Department, Account...'}
+              onAdd={(value: string) => {
+                addDepartmentApiHandler(value)
+              }}
+              onSelected={setSelectedDepartment}
+            />
+          </div>
+          <div className={'col-sm-6'}>
+            <ReactAutoComplete
+              selected={selectSector?.name}
+              data={sectorsCorporate}
+              placeholder={'Software, Healthcare...'}
+              heading={"Sector"}
+              onAdd={(value: any) => {
+                addSectorCorporateApiHandler(value)
+              }}
+              onSelected={setSelectedSector}
+            />
+          </div>
+
+        </div>
+
       </Modal >
     </div >
   )

@@ -338,10 +338,10 @@ function Candidates({ id, details }: CandidatesProps) {
                     </div>
                     <div className={'empty-candidates-btn-container'}>
                         <div className={'empty-btn-container'}>
-                            <Button block text={'Bulk Import'} />
+                            <Button block text={'Add Manually'} onClick={addCandidateModal.show} />
                         </div>
                         <div className={'empty-btn-container bulk-btn-container'}>
-                            <Button block text={'Add Manually'} onClick={addCandidateModal.show} />
+                            <Button block text={'Bulk Import'} />
                         </div>
                     </div>
                 </div>
@@ -401,10 +401,10 @@ function Candidates({ id, details }: CandidatesProps) {
 
                         <div className={'add-candidate-container'}>
                             <div className={'add-button-container'}>
-                                <Button block outline text={'Bulk Import'} />
+                                <Button block text={'Add'} onClick={addCandidateModal.show} />
                             </div>
                             <div className={'add-button-container'}>
-                                <Button block text={'Add'} onClick={addCandidateModal.show} />
+                                <Button block outline text={'Bulk Import'} />
                             </div>
                         </div>
                     </div>

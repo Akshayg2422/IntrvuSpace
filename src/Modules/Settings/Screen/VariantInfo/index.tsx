@@ -4,13 +4,12 @@ import {
   MenuBar,
   Modal,
   ViewMore,
-  showToast,
-  DropzoneFilePicker
+  showToast
 } from "@Components";
 import { useLoader, useModal } from '@Hooks';
 import { Candidates, } from '@Modules';
 import { getCorporateScheduleDetails, postCorporateScheduleActions } from '@Redux';
-import { displayFormatDate, getDateFromServer, getDisplayTime, capitalizeFirstLetter } from '@Utils';
+import { capitalizeFirstLetter, displayFormatDate, getDateFromServer, getDisplayTime } from '@Utils';
 import moment from "moment";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -158,93 +157,94 @@ function VariantInfo() {
   }
 
   return (
-    <div className={'screen'}>
-      <div className={'screen-variant-info'}>
-        <div className={'variant-header'}>
-          <div>
-            <div className={'screen-heading'}>{capitalizeFirstLetter(position)}</div>
-            <div className={'experience'}>
-              {capitalizeFirstLetter(experience)}
+    <>
+      <div className={'screen-padding'}>
+        <div>
+          <div className={'variant-header'}>
+            <div>
+              <div className={'screen-heading'}>{capitalizeFirstLetter(position)}</div>
+              <div className={'experience'}>
+                {capitalizeFirstLetter(experience)}
+              </div>
+            </div>
+
+            <div className={'vacancies-container'}>
+              <div className={'screen-heading'}>{`${vacancies}  ${vacancies > 1 ? 'Vacancies' : 'Vacancy'}`}</div>
+              {!is_closed &&
+                <div className={'menu-container'}>
+                  <MenuBar menuData={MODIFY_OPTION} onClick={onScheduleMenuHandler} />
+                </div>
+              }
+            </div>
+
+          </div>
+
+          <Candidates id={id} details={corporateScheduleDetails} />
+
+          <div className={'jd-details-container'}>
+            <div className={'screen-heading heading-space'}>{'Job Details'}</div>
+            <div>
+              {details && <ViewMore text={details} isViewMore={viewMore} onViewMore={setViewMore} />}
             </div>
           </div>
 
-          <div className={'vacancies-container'}>
-            <div className={'screen-heading'}>{`${vacancies}  ${vacancies > 1 ? 'Vacancies' : 'Vacancy'}`}</div>
-            {!is_closed &&
-              <div className={'menu-container'}>
-                <MenuBar menuData={MODIFY_OPTION} onClick={onScheduleMenuHandler} />
-              </div>
-            }
-          </div>
-
-        </div>
-
-        <Candidates id={id} details={corporateScheduleDetails} />
-
-        <div className={'jd-details-container'}>
-          <div className={'screen-heading heading-space'}>{'Job Details'}</div>
-          <div>
-            {details && <ViewMore text={details} isViewMore={viewMore} onViewMore={setViewMore} />}
-          </div>
-        </div>
-
-        <div className={'other-info-container'}>
-          <div className={'screen-heading heading-space'}>{'Other Information'}</div>
-          <div className={'card-container'}>
-            <div className={'other-info-details-container'}>
-              <div className={'info-container '}>
-                <div className={'info-title'}>
-                  {'Department'}
+          <div className={'other-info-container'}>
+            <div className={'screen-heading heading-space'}>{'Other Information'}</div>
+            <div className={'card-container'}>
+              <div className={'other-info-details-container'}>
+                <div className={'info-container '}>
+                  <div className={'info-title'}>
+                    {'Department'}
+                  </div>
+                  <div className={'info-content'}>
+                    {department}
+                  </div>
                 </div>
-                <div className={'info-content'}>
-                  {department}
+                <div className={'info-container '}>
+                  <div className={'info-title'}>
+                    {'Interview Duration'}
+                  </div>
+                  <div className={'info-content'}>
+                    {interview_duration + ' Mins'}
+                  </div>
                 </div>
-              </div>
-              <div className={'info-container '}>
-                <div className={'info-title'}>
-                  {'Interview Duration'}
-                </div>
-                <div className={'info-content'}>
-                  {interview_duration + ' Mins'}
+                <div className={'info-container'}>
+                  <div className={'info-title'}>
+                    {'Candidate Deadline'}
+                  </div>
+                  <div className={'info-content'}>
+                    {displayFormatDate(
+                      candidate_deadline
+                    )}
+                  </div>
                 </div>
               </div>
-              <div className={'info-container'}>
-                <div className={'info-title'}>
-                  {'Candidate Deadline'}
+              <div className={'other-info-details-container'}>
+                <div className={'info-container '}>
+                  <div className={'info-title'}>
+                    {'Created By'}
+                  </div>
+                  <div className={'info-content'}>
+                    {created_by}
+                  </div>
                 </div>
-                <div className={'info-content'}>
-                  {displayFormatDate(
-                    candidate_deadline
-                  )}
+                <div className={'info-container'}>
+                  <div className={'info-title'}>
+                    {'Candidate Deadline'}
+                  </div>
+                  <div className={'info-content'}>
+                    {displayFormatDate(
+                      created_at
+                    )}
+                  </div>
                 </div>
-              </div>
-            </div>
-            <div className={'other-info-details-container'}>
-              <div className={'info-container '}>
-                <div className={'info-title'}>
-                  {'Created By'}
+                <div className={'info-container'}>
                 </div>
-                <div className={'info-content'}>
-                  {created_by}
-                </div>
-              </div>
-              <div className={'info-container'}>
-                <div className={'info-title'}>
-                  {'Candidate Deadline'}
-                </div>
-                <div className={'info-content'}>
-                  {displayFormatDate(
-                    created_at
-                  )}
-                </div>
-              </div>
-              <div className={'info-container'}>
               </div>
             </div>
           </div>
         </div>
-      </div>
-
+      </div >
 
       {
         /**
@@ -292,8 +292,8 @@ function VariantInfo() {
             />
           </div>
         </div>
-      </Modal >
-    </div >
+      </Modal>
+    </>
   );
 }
 
