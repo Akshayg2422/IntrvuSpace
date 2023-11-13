@@ -65,9 +65,9 @@ const initialState: DashboardProp = {
   designationsCurrentPage: 1,
   error: '',
   addTeamMates: undefined,
-  getTeamMateDatas: undefined,
-  getTeamMateDatasNumOfPages: undefined,
-  getTeamMateDatasCurrentPages: 1,
+  teams: undefined,
+  teamNumOfPages: undefined,
+  teamCurrentPages: 1,
   sectorsCorporate: undefined,
   sectorsCorporateNumOfPages: undefined,
   sectorsCorporateCurrentPages: 1,
@@ -482,9 +482,12 @@ const DashboardReducer = (state = initialState, action: any) => {
       };
       break;
     case ActionTypes.GET_DEPARTMENT_CORPORATE_SUCCESS:
+
+      const data = action.payload?.details?.data || action.payload?.details;
+
       state = {
         ...state,
-        departmentCorporate: action.payload?.details?.data,
+        departmentCorporate: data,
         departmentCorporateNumOfPages: action.payload?.details?.num_pages,
         departmentsCorporateCurrentPages:
           action.payload?.details.next_page === -1
@@ -511,9 +514,11 @@ const DashboardReducer = (state = initialState, action: any) => {
       };
       break;
     case ActionTypes.GET_FETCH_DESIGNATION_SUCCESS:
+
+      const designations = action.payload?.details?.data || action.payload?.details;
       state = {
         ...state,
-        designations: action.payload?.details?.data,
+        designations: designations,
         designationsNumOfPage: action.payload?.details?.num_pages,
         designationsCurrentPage:
           action.payload.details.next_page === -1 ?
@@ -528,35 +533,22 @@ const DashboardReducer = (state = initialState, action: any) => {
       };
       break;
 
-    //Add TeamMate
-
-    case ActionTypes.ADD_TEAM_MATE_DATA:
-      state = { ...state };
-      break;
-    case ActionTypes.ADD_TEAM_MATE_DATA_SUCCESS:
-      state = { ...state, loading: false, addTeamMates: action.payload };
-      break;
-    case ActionTypes.ADD_TEAM_MATE_DATA_FAILURE:
-      state = { ...state };
-      break;
-
     //get TeamMate
 
     case ActionTypes.GET_TEAM_MATE_DATA:
       state = {
         ...state,
-        getTeamMateDatas: undefined,
-        getTeamMateDatasNumOfPages: 0,
-        getTeamMateDatasCurrentPages: 1,
-        loading: true
+        teams: undefined,
+        teamNumOfPages: 0,
+        teamCurrentPages: 1,
       };
       break;
     case ActionTypes.GET_TEAM_MATE_DATA_SUCCESS:
       state = {
         ...state,
-        getTeamMateDatas: action.payload?.details,
-        getTeamMateDatasNumOfPages: action.payload?.details?.num_pages,
-        getTeamMateDatasCurrentPages:
+        teams: action.payload?.details?.data,
+        teamNumOfPages: action.payload?.details?.num_pages,
+        teamCurrentPages:
           action.payload?.details.next_page === -1
             ? action?.payload?.details.num_pages
             : action?.payload?.details?.next_page - 1,
@@ -565,7 +557,6 @@ const DashboardReducer = (state = initialState, action: any) => {
     case ActionTypes.GET_TEAM_MATE_DATA_FAILURE:
       state = {
         ...state, error: action.payload,
-        loading: false
       };
       break;
 
@@ -842,18 +833,6 @@ createScheduleSuperAdmin
       state = { ...state };
       break;
 
-
-
-
-    // case ActionTypes.GET_TEAM_MATE_DATA:
-    //   state = { ...state, getTeamMateDatas: undefined };
-    //   break;
-    // case ActionTypes.GET_TEAM_MATE_DATA_SUCCESS:
-    //   state = { ...state, getTeamMateDatas: action.payload.details };
-    //   break;
-    // case ActionTypes.GET_TEAM_MATE_DATA_FAILURE:
-    //   state = { ...state, getTeamMateDatas: undefined };
-    //   break;
 
     default:
       state = state;

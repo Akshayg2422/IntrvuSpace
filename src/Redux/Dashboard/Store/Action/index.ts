@@ -887,19 +887,6 @@ export const addTeamMateData = (params: any) => {
   }
 }
 
-export const addTeamMateDataSuccess = (response: any) => {
-  return {
-    type: ActionTypes.ADD_TEAM_MATE_DATA_SUCCESS,
-    payload: response,
-  }
-}
-
-export const addTeamMateDataFailure = (error: any) => {
-  return {
-    type: ActionTypes.ADD_TEAM_MATE_DATA_FAILURE,
-    payload: error
-  }
-}
 
 // grt TeamMate Data
 

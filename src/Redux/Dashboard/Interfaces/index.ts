@@ -52,9 +52,9 @@ export interface DashboardProp {
   designationsNumOfPage: any,
   designationsCurrentPage: any,
   addTeamMates: any,
-  getTeamMateDatas: any,
-  getTeamMateDatasNumOfPages: any,
-  getTeamMateDatasCurrentPages: any,
+  teams: any,
+  teamNumOfPages: any,
+  teamCurrentPages: any,
   sectorsCorporate: any;
   sectorsCorporateNumOfPages: any,
   sectorsCorporateCurrentPages: any,

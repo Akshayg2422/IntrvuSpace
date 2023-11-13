@@ -900,14 +900,11 @@ function* addTeamMateDataSaga(action) {
   try {
     const response = yield call(Api.addTeamMateDataApi, action.payload.params);
     if (response.success) {
-      yield put(Action.addTeamMateDataSuccess(response));
       yield call(action.payload.onSuccess(response))
     } else {
-      yield put(Action.addTeamMateDataFailure(response.error_message));
       yield call(action.payload.onError(response));
     }
   } catch (error) {
-    yield put(Action.addTeamMateDataFailure(error));
     yield call(action.payload.onError(error));
   }
 }
