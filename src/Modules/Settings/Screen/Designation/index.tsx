@@ -209,7 +209,7 @@ function Designation() {
     dispatch(updateCorporateSchedules(updateData))
   }
 
-  console.log(corporateScheduleCount);
+  console.log("sectorsCorporate", sectorsCorporate);
 
 
   return (

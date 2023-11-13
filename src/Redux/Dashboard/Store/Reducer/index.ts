@@ -578,7 +578,7 @@ const DashboardReducer = (state = initialState, action: any) => {
 
       state = {
         ...state,
-        sectorsCorporate: action.payload?.details.knowledege_groups?.data,
+        sectorsCorporate: action.payload?.details.knowledege_groups,
         sectorsCorporateNumOfPages: action.payload?.details?.knowledege_groups?.num_pages,
         sectorsCorporateCurrentPages:
           action.payload.details?.knowledege_groups?.next_page === -1
@@ -615,9 +615,11 @@ const DashboardReducer = (state = initialState, action: any) => {
       };
       break;
     case ActionTypes.GET_CORPORATE_SCHEDULES_SUCCESS:
+
+      console.log(action.payload?.details);
+
       const { corporate_jd_items, schedule_count } = action.payload?.details
 
-      console.log(JSON.stringify(action.payload) + '===');
 
       state = {
         ...state,
