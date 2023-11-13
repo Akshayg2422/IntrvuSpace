@@ -171,17 +171,6 @@ export const ADD_SECTOR_RULES = {
   }
 }
 
-export const ADD_SECTOR_CORPORATE_RULES = {
-  name: {
-    length: { minimum: 3, message: 'Name minimum 3 chars' },
-  },
-  description: {
-    presence: { allowEmpty: false, message: 'Description cannot be empty' },
-  },
-  // photo: {
-  //   presence: { allowEmpty: false, message: 'Please upload an image for your sector' }
-  // }
-}
 
 const NAME_RULES = {
   name: {
@@ -189,6 +178,14 @@ const NAME_RULES = {
     length: { minimum: 3, message: 'Name minimum 3 chars' }
   }
 }
+
+export const ADD_SECTOR_CORPORATE_RULES = {
+  ...NAME_RULES,
+  description: {
+    presence: { allowEmpty: false, message: 'Description cannot be empty' },
+  },
+}
+
 
 export const ADD_DEPARTMENT_CORPORATE_RULES = {
   ...NAME_RULES

@@ -6,7 +6,6 @@ import { addDepartmentCorporate, getDepartmentCorporate } from '@Redux';
 import { ADD_DEPARTMENT_CORPORATE_RULES, INITIAL_PAGE, capitalizeFirstLetter, getValidateError, ifObjectExist, paginationHandler, validate } from '@Utils';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import './index.css';
 
 
 function Department() {

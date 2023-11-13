@@ -552,15 +552,12 @@ function* addSectorsCorporateSaga(action) {
   try {
     const response = yield call(Api.addCorporateSectorApi, action.payload.params);
     if (response.success) {
-      yield put(Action.addSectorCorporateSuccess(response));
       yield call(action.payload.onSuccess(response));
     } else {
-      yield put(Action.addSectorCorporateFailure(response.error_message));
       yield call(action.payload.onError(response));
     }
 
   } catch (error) {
-    yield put(Action.addSectorCorporateFailure(error));
     yield call(action.payload.onError(error));
   }
 }

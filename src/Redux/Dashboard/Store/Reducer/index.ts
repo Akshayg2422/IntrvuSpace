@@ -570,17 +570,6 @@ const DashboardReducer = (state = initialState, action: any) => {
       break;
 
 
-    case ActionTypes.ADD_SECTORS_CORPORATE:
-      state = { ...state };
-      break;
-    case ActionTypes.ADD_SECTORS_CORPORATE_SUCCESS:
-      state = { ...state };
-      break;
-    case ActionTypes.ADD_SECTORS_CORPORATE_FAILURE:
-      state = { ...state };
-      break;
-
-
     /**
      * getSectorsCorporate
      */
@@ -591,14 +580,14 @@ const DashboardReducer = (state = initialState, action: any) => {
         sectorsCorporate: undefined,
         sectorsCorporateNumOfPages: 0,
         sectorsCorporateCurrentPages: 1,
-        loading: true
       };
       break;
 
     case ActionTypes.GET_SECTORS_CORPORATE_SUCCESS:
+
       state = {
         ...state,
-        sectorsCorporate: action.payload?.details.knowledege_groups,
+        sectorsCorporate: action.payload?.details.knowledege_groups?.data,
         sectorsCorporateNumOfPages: action.payload?.details?.knowledege_groups?.num_pages,
         sectorsCorporateCurrentPages:
           action.payload.details?.knowledege_groups?.next_page === -1
@@ -608,7 +597,7 @@ const DashboardReducer = (state = initialState, action: any) => {
       break;
 
     case ActionTypes.GET_SECTORS_CORPORATE_FAILURE:
-      state = { ...state, sectorsCorporate: undefined, loading: false };
+      state = { ...state, sectorsCorporate: undefined };
       break;
 
     /**createCorporateSchedule */

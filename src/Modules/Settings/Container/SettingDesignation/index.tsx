@@ -227,6 +227,7 @@ function SettingDesignation() {
             </div>
 
             <Modal
+                loading={addLoader.loader}
                 title={'Designation'}
                 isOpen={addDesignationModal.visible}
                 onClose={resetValue}
