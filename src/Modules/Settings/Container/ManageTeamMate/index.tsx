@@ -65,13 +65,18 @@ function ManageTeamMate() {
     const params = {
       page_number,
     }
+
+    loader.show();
+
     dispatch(
       getTeamMateData({
         params,
         onSuccess: (success: any) => () => {
+          loader.hide();
 
         },
         onError: (error: string) => () => {
+          loader.hide();
         },
       })
     );
@@ -257,8 +262,7 @@ function ManageTeamMate() {
           />
         }
         {
-          !loader.loader &&
-          teams?.length <= 0 &&
+          !loader.loader && teams?.length <= 0 &&
           <div className={'no-data-container'}>
             <NoDataFound />
           </div>

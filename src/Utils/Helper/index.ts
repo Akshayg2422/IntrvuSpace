@@ -2,7 +2,6 @@ import { SERVER } from '@Services'
 import moment from 'moment'
 
 export const getPhoto = (photo: any) => (SERVER + photo)
-// SERVER === 'https://9ce0-2401-4900-338f-b561-b6d5-db6d-d51c-aa91.ngrok-free.app/' ? (SERVER + photo) : (SERVER + photo);
 
 export const handleEmailClick = (email: any) => {
   return (

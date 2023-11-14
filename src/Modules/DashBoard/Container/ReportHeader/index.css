@@ -7,10 +7,36 @@
 
 .user-info-container {
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
     color: var(--secondary);
+}
+
+.user-auth-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.user-address-container {
+    margin-top: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.user-photo-container {
+    display: flex;
+    width: 125px;
+    height: 125px;
+    align-items: center;
+    justify-content: center;
+}
+
+.user-details-container {
+    margin-left: 20px;
 }
 
 .user-mark-container {

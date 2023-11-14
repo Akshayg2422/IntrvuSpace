@@ -576,9 +576,11 @@ const DashboardReducer = (state = initialState, action: any) => {
 
     case ActionTypes.GET_SECTORS_CORPORATE_SUCCESS:
 
+      const sectors = action.payload?.details?.knowledege_groups?.data || action.payload?.details?.knowledege_groups;
+
       state = {
         ...state,
-        sectorsCorporate: action.payload?.details.knowledege_groups,
+        sectorsCorporate: sectors,
         sectorsCorporateNumOfPages: action.payload?.details?.knowledege_groups?.num_pages,
         sectorsCorporateCurrentPages:
           action.payload.details?.knowledege_groups?.next_page === -1
