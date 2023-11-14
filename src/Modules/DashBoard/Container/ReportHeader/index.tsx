@@ -1,10 +1,9 @@
-import React from 'react'
-import { Image } from '@Components';
 import { icons } from '@Assets';
-import { getPhoto, capitalizeFirstLetter, COUNTRY_ISO_CODE } from '@Utils'
-import { ReportHeaderProps } from './interfaces'
+import { Image } from '@Components';
+import { COUNTRY_ISO_CODE, capitalizeFirstLetter, getPhoto } from '@Utils';
+import { ReportHeaderProps } from './interfaces';
 
-import './index.css'
+import './index.css';
 
 const ReportHeader = ({ details }: ReportHeaderProps) => {
 
@@ -64,7 +63,7 @@ const ReportHeader = ({ details }: ReportHeaderProps) => {
                             <div className={'user-address-container'}>
                                 <div>
                                     <span className={'screen-des'}>{city}</span>
-                                    <span className={'screen-des'}>{region}</span>
+                                    {region ? <span className={'screen-des'}>, {region}</span> : <></>}
                                 </div>
                                 <span className={'screen-des'}>{country === '-' ? "" : getCountryName(country)}</span>
                             </div>
@@ -96,4 +95,4 @@ const ReportHeader = ({ details }: ReportHeaderProps) => {
     )
 }
 
-export { ReportHeader }
+export { ReportHeader };

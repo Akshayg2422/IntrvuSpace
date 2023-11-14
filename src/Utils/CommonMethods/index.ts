@@ -318,16 +318,33 @@ export function formatDateTime(dateTimeString: any) {
   return formattedDate;
 }
 
-export function displayFormatDate(inputDate: any) {
+export function displayFormatDate(inputDate: any, variant: 'date' | 'time' | 'both' = 'both') {
   const date = new Date(inputDate);
-  const options: any = {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: true,
-  };
+  let options: any;
+
+  if (variant === 'date') {
+    options = {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    };
+  } else if (variant === 'time') {
+    options = {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    };
+  } else {
+    options = {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    };
+  }
+
   return date.toLocaleString("en-US", options).replace(",", "");
 }
 
