@@ -356,6 +356,7 @@ function Candidates({ id, details }: CandidatesProps) {
                     showToast(response.message, "success");
                     bulkUploadLoader.hide();
                     dispatch(refreshCorporateSchedule());
+                    bulkUploadModal.hide()
                     getCandidatesCorporate(candidatesListCurrentPages);
                 },
                 onError: (error: any) => () => {

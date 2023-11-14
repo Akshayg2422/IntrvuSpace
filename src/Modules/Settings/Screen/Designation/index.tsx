@@ -170,7 +170,7 @@ function Designation() {
     position.set("")
     experience.set(EXPERIENCE_LIST[0])
     jd.set("")
-    vacancies.set('')
+    vacancies.set('1')
     setDuration(INTERVIEW_DURATIONS[0]);
     referenceId.set("")
   }
