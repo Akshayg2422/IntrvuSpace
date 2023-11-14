@@ -416,7 +416,7 @@ function Candidates({ id, details }: CandidatesProps) {
             }
 
             {
-                candidatesCount > 0 &&
+                (candidatesCount > 0 || searchCandidate.value) &&
                 <div>
                     <div className={'candidate-dashboard-container'}>
                         <div className={'dashboard-card-container dashboard-card-spacing  dashboard-card-left-spacing'}>
