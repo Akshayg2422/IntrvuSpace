@@ -33,6 +33,7 @@ function TopNavbar() {
   const [isOpenDropdown, setIsOpenDropdown] = useState(false)
 
 
+
   const dispatch = useDispatch();
 
 
@@ -190,7 +191,9 @@ function TopNavbar() {
                   </span>
 
                   <Nav navbar>
-                    <UncontrolledDropdown nav>
+                    <UncontrolledDropdown nav
+                      isOpen={isOpenDropdown}
+                      toggle={toggleDropdownHandler}>
                       <DropdownToggle className="nav-link pr-0" color="" tag="a">
                         <Media className="align-items-center">
                           <Media className="d-none d-lg-block ml--2 mr-2 pointer">

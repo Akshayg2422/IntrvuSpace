@@ -136,7 +136,7 @@ function JdItem({
 
               const { id, report_analytics, is_report_complete, is_complete, interview_end_time } = item
 
-              const { skill_matrix, other_analytics } = report_analytics;
+              const { skill_matrix, other_analytics } = report_analytics || {};
               return (
                 <div className={'completed-item-container'}>
                   <div className={'completed-item-heading'}>
