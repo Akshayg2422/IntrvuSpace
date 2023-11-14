@@ -63,11 +63,14 @@ function Report() {
         onSuccess: (response: any) => () => {
           loader.hide();
           setReport(response.details);
-          const {
-            name,
-            sub_text,
-          } = response.details;
-          setFileName(name + "_" + sub_text + "_" + reportType)
+
+          const { interview_meta_info } = response.details
+
+          // const {
+          //   name,
+          //   sub_text,
+          // } = response.details;
+          // setFileName(name + "_" + sub_text + "_" + reportType)
         },
         onError: (error: any) => () => {
           loader.hide();
@@ -78,7 +81,7 @@ function Report() {
   };
 
   return (
-    <div className={'screen screen-padding'}>
+    <div className={'screen'}>
       <div className={'report-dropdown-container'}>
         <div className="col-sm-3">
           <DropDown
@@ -90,17 +93,31 @@ function Report() {
           />
         </div>
       </div>
+
+      <div className={'print-container'}>
+        <ReactToPrint
+          documentTitle={fileName}
+          trigger={() => (
+            <Button
+              variant={'icon-rounded'}
+              color={'primary'}
+              icons={"bi bi-printer-fill fa-lg"}
+            />
+          )}
+          content={() => componentRef.current}
+        />
+      </div>
       {
         loader.loader && <div className={'loader-container'}> <Spinner /></div>
       }
       {
         !loader.loader && report &&
-        <>
+        <div ref={componentRef} className={'screen-padding'}>
           <ReportHeader details={report} />
           {reportType?.value?.id === REPORT_TYPE[0].id && <BasicReport details={report} />}
           {reportType?.value?.id === REPORT_TYPE[1].id && <DetailedReport details={report} />}
 
-        </>
+        </div>
       }
     </div>
   );
