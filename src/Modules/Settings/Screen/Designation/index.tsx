@@ -328,7 +328,7 @@ function Designation() {
         title={'Create Opening'}
         subTitle={'Input job details, specifying qualifications, requirements, interview duration'}
         buttonText={'Create Opening'}
-        onClose={()=>{
+        onClose={() => {
           hideCreateOpeningModal()
           resetValues()
         }}
