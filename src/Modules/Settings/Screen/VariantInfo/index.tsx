@@ -66,6 +66,7 @@ function VariantInfo() {
   const modifyDeadlineModal = useModal(false)
   const [scheduleEndDate, setScheduleEndDate] = useState<any>("");
   const [scheduleEndTime, setScheduleEndTime] = useState<any>("");
+  const [displayDeadlineDate, setDisplayDeadlineDate] = useState("");
 
 
 
@@ -142,7 +143,9 @@ function VariantInfo() {
     setScheduleEndDate(
       getDateFromServer(candidate_deadline)
     );
-    setScheduleEndTime(displayTime);
+    setDisplayDeadlineDate(
+      getDateFromServer(corporateScheduleDetails?.candidate_deadline)
+    );
 
     modifyDeadlineModal.show();
   };
@@ -284,10 +287,13 @@ function VariantInfo() {
             <DateTimePicker
               noSpace
               disableFuture={true}
-              heading={'Schedule Date'}
-              placeholder={'Schedule Date'}
-              value={scheduleEndDate}
-              onChange={setScheduleEndDate}
+              heading={'Deadline Date'}
+              placeholder={'Deadline Date'}
+              value={displayFormatDate(displayDeadlineDate)?.split(",")[0]}
+              onChange={(e)=> {
+                setScheduleEndDate(e)
+                setDisplayDeadlineDate(e);
+              }}
             />
           </div>
           <div className="col-sm-6">
@@ -295,8 +301,8 @@ function VariantInfo() {
               noSpace
               type={'time'}
               dateFormat={'HH:mm:ss'}
-              heading={'Schedule Date'}
-              placeholder={'Schedule Date'}
+              heading={'Deadline Time'}
+              placeholder={'Deadline Time'}
               value={scheduleEndTime}
               onChange={setScheduleEndTime}
             />
