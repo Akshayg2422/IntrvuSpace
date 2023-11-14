@@ -210,22 +210,36 @@ export const URL_ADD_TEAM_MATE_DATA = EMPLOYEE + 'addTeamMate'
 // GETTeamMate
 
 export const URL_GET_TEAM_MATE_DATA = EMPLOYEE + 'getTeamMate'
-// registerAsCompany
+
+
+/**
+ *  register company corporate
+ */
 
 export const URL_REGISTER_AS_COMPANY = EMPLOYEE + 'registerCompanyCorporate'
 
 
+/**
+ * get otp for email verification
+ */
+
+export const URL_GET_OTP_FOR_EMAIL_VERIFICATION = EMPLOYEE + 'getOtpForEmailVerification'
+
+
+/**
+ * verify email using otp
+ */
+
+export const URL_VERIFY_EMAIL_USING_OTP = EMPLOYEE + 'verifyEmailUsingOtp'
+
 //getOngoingSchedules
 
-export const GRT_ONGOING_SCHEDULES= ASSISTANT +'getOngoingSchedules'
+export const GRT_ONGOING_SCHEDULES = ASSISTANT + 'getOngoingSchedules'
 
 
 //employee/getOtpForEmailVerification
 
-export const GET_OTP_FOR_EMAIL_VERIFICATION = EMPLOYEE +'getOtpForEmailVerification'
 
-//employee/verifyEmailUsingOtp
-export const VERIFY_EMAIL_USING_OTP = EMPLOYEE +'verifyEmailUsingOtp'
 
 
 

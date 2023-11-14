@@ -1,36 +1,29 @@
 
-import React, { useState } from "react";
-// react library for routing
+import { icons } from '@Assets';
+import { Alert, Button, Image } from '@Components';
+import { useModal, useNavigation } from '@Hooks';
+import { showCreateForOthersJdModal, showCreateJddModal, userLogout } from "@Redux";
+import { ROUTES } from '@Routes';
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-// reactstrap components
 import {
-  UncontrolledCollapse,
-  NavbarBrand,
-  Navbar,
+  Col,
+  DropdownItem, DropdownMenu, DropdownToggle, Media,
+  Nav,
   NavItem,
   NavLink,
-  Nav,
+  Navbar,
+  NavbarBrand,
   Row,
-  Col,
-  DropdownItem, DropdownMenu, DropdownToggle, Media
-  , UncontrolledDropdown,
-  Container
+  UncontrolledCollapse,
+  UncontrolledDropdown
 } from "reactstrap";
-import { icons } from '@Assets'
-import { Image, Modal, Button } from '@Components'
-import { Profile } from '@Modules'
-import { getPhoto, } from '@Utils'
-import { useModal, useNavigation } from '@Hooks';
-import { ROUTES } from '@Routes';
-import { useLocation } from 'react-router-dom'
-import { showCreateForOthersJdModal, showCreateJddModal, userLogout } from "@Redux";
-import { useDispatch, useSelector } from "react-redux";
 
 function TopNavbar() {
 
   const HEADER_MENU = [
-    // { id: '1', name: 'Setting', value: 'ST', icon: 'ni ni-badge' },
-    { id: '2', name: 'Logout', value: 'LG', icon: 'ni ni-button-power' },
+    { id: '1', name: 'Logout', value: 'LG', icon: 'ni ni-button-power' },
   ]
 
   const logoutModal = useModal(false);
@@ -41,10 +34,8 @@ function TopNavbar() {
 
 
 
-  const location = useLocation()
   const dispatch = useDispatch();
 
-  const pathName = location.pathname
 
 
   const dropdownHandler = (item: any) => {
@@ -67,10 +58,9 @@ function TopNavbar() {
           onError: () => {
 
           },
-        }),
+        })
       );
-    } catch (error) {
-    }
+    } catch (error) { }
   }
 
   const handleCreateInterviewClick = () => {
@@ -90,11 +80,11 @@ function TopNavbar() {
   return (
     <>
       <Navbar
-        className="navbar-horizontal navbar-main navbar-dark navbar-transparent bg-white position-fixed py-xl-0 py-sm-0 py-2"
+        className="navbar-horizontal navbar-main navbar-dark navbar-transparent bg-white position-fixed  py-xl-0 py-sm-0 py-2"
         expand="lg"
         id="navbar-main"
       >
-        <div className="container-fluid mx-md-3 mx-sm-0 mx-2">
+        <div className="container-fluid mx-md-3 mx-sm-0 mx-2 my-3">
           <NavbarBrand tag={Link}>
             <div className="d-flex justify-content-between">
               <img className={'d-none d-lg-block d-md-block d-xl-block'} src={icons.logoText} alt="Logo"
@@ -147,64 +137,50 @@ function TopNavbar() {
 
               </Row>
             </div>
-
-            {/* <hr className="d-lg-none" /> */}
-
-            <Nav className="align-items-lg-center ml-lg-auto mr--4 justify-content-end" navbar>
-              {loginDetails?.is_super_admin && <NavItem>
-                <NavLink to="/home" tag={Link}>
-                  <Button
-                    className='btn btn-outline-primary rounded-sm px-0'
-                    style={{
-                      borderColor: "#d8dade",
-                      fontSize: "15px",
-                      width: '150px'
-                    }}
-                    text={'Create For Others'}
-                    onClick={handleCreateForOthersInterviewClick}
-                  />
-                </NavLink>
-              </NavItem>
-              }
-              {jdItem && jdItem.length > 0 &&
+            <Nav
+              className="align-items-lg-center ml-lg-auto mr--4 justify-content-end"
+              navbar
+            >
+              {loginDetails?.is_super_admin && (
                 <NavItem>
                   <NavLink to="/home" tag={Link}>
-                    <Button
-                      size='md'
-                      className={'btn btn-outline-primary rounded-sm mr--3 px-0 '}
-                      style={{
-                        borderColor: "#d8dade",
-                        fontSize: "15px",
-                        width: '150px'
-                      }}
-                      text={'Create Interview'}
-                      onClick={handleCreateInterviewClick}
-                    />
+                    <div className={'btn-wrapper'}>
+                      <Button
+                        block
+                        text={"Create For Others"}
+                        onClick={handleCreateForOthersInterviewClick}
+                      />
+                    </div>
                   </NavLink>
                 </NavItem>
-              }
+              )}
+
+              {jdItem && jdItem.length > 0 && (
+                <NavItem>
+                  <NavLink to="/home" tag={Link}>
+                    <div className={'btn-wrapper'}>
+                      <Button
+                        block
+                        text={"Create Interview"}
+                        onClick={handleCreateInterviewClick}
+                      />
+                    </div>
+                  </NavLink>
+                </NavItem>
+              )}
 
               {loginDetails?.is_super_admin &&
                 <NavItem>
-
-                  <Button
-                    size='md'
-                    className={'btn btn-outline-primary rounded-sm mr--3 px-0 '}
-                    style={{
-                      borderColor: "#d8dade",
-                      fontSize: "15px",
-                      width: '150px'
-                    }}
-                    text={'On Going Schedule'}
-
-                    onClick={() => {
-
-                      goTo(ROUTES['designation-module']['scheduling-interview'])
-                    }
-                    }
-                  />
-
-
+                  <div className={'btn-wrapper'}>
+                    <Button
+                      block
+                      text={'On Going Schedule'}
+                      onClick={() => {
+                        goTo(ROUTES['designation-module']['scheduling-interview'])
+                      }
+                      }
+                    />
+                  </div>
                 </NavItem>
               }
 
@@ -215,7 +191,9 @@ function TopNavbar() {
                   </span>
 
                   <Nav navbar>
-                    <UncontrolledDropdown nav>
+                    <UncontrolledDropdown nav
+                      isOpen={isOpenDropdown}
+                      toggle={toggleDropdownHandler}>
                       <DropdownToggle className="nav-link pr-0" color="" tag="a">
                         <Media className="align-items-center">
                           <Media className="d-none d-lg-block ml--2 mr-2 pointer">
@@ -255,7 +233,6 @@ function TopNavbar() {
                           dropdownHandler(item);
                         }}
                       >
-                        {/* <i className={item.icon}></i> */}
                         <span className={`nav-link-inner--text text-black`} >{item.name}</span>
                       </NavLink>
                     </NavItem>
@@ -267,32 +244,19 @@ function TopNavbar() {
         </div>
       </Navbar >
 
-      <Modal isOpen={logoutModal.visible} onClose={logoutModal.hide}>
-
-        <div className={'mx-sm-4 mb-sm-3 mx-1 mb-1 mt--4'}>
-          <div className='display-4 text-secondary font-weight-900 mb-2'>{'Logout User'}
-          </div>
-          <span>{"Please click on proceed to logout user"}</span>
-          <div
-            className='d-flex justify-content-end mt-2'
-          >
-            <Button
-              color='white'
-              text={'Cancel'}
-              onClick={() => logoutModal.hide()}
-            />
-            <Button
-              className={'rounded-sm'}
-              text={'Proceed'}
-              onClick={proceedLogout}
-            />
-          </div>
-        </div>
-      </Modal>
+      <Alert
+        title={'Logout User'}
+        subTitle={'Please click on proceed to logout user'}
+        isOpen={logoutModal.visible}
+        onClose={logoutModal.hide}
+        primary={"Logout"}
+        secondaryOnClick={logoutModal.hide}
+        primaryOnClick={proceedLogout}
+      />
     </>
 
   )
 }
 
-export { TopNavbar }
+export { TopNavbar };
 

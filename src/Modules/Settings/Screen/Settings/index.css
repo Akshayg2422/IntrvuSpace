@@ -1,0 +1,26 @@
+.setting-container {
+    display: flex;
+    gap: 25px;
+    margin-top: 25px;
+
+}
+
+.setting-container-item {
+    padding: 25px;
+    cursor: pointer;
+}
+
+.setting-container:first-child {
+    margin-bottom: 25px;
+}
+
+.setting-container+.setting-container {
+    margin-top: 25px;
+
+}
+
+.setting-heading {
+    font-size: 18px;
+    color: var(--secondary);
+    font-weight: 600;
+}

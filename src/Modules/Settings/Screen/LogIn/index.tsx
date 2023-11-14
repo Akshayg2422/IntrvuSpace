@@ -1,263 +1,150 @@
-import { Button, Image, Input, showToast } from "@Components";
+import { Button, Input, InputPassword, Logo, showToast } from "@Components";
 import { useInput, useKeyPress, useLoader, useNavigation } from "@Hooks";
-import { fetchEmailVerify, memberLoginUsingPassword, userLoginDetails } from "@Redux";
+import { memberLoginUsingPassword, userLoginDetails, saveUserEmail } from "@Redux";
 import { ROUTES } from "@Routes";
-import { USER_TOKEN } from "@Utils";
-import React, { useEffect, useState } from "react";
+import { LOGIN_WITH_EMAIL_RULES, USER_TOKEN, getValidateError, ifObjectExist, validate } from "@Utils";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { LoginSideContent } from "../../Container";
-import { icons } from "@Assets";
+import './index.css';
 
 function Login() {
+
   const { goTo } = useNavigation();
   const dispatch = useDispatch();
+
   const password = useInput("");
-  const mobileNumber = useInput("");
   const email = useInput("");
   const loginLoader = useLoader(false);
-  const [showPassword, setShowPassword] = useState(false);
-  const [toggleInput, setToggleInput] = useState(false);
-  const [loginWithOtp, setLoginWithOtp] = useState(false);
+
 
   const enterPress = useKeyPress("Enter");
   const { loginDetails } = useSelector((state: any) => state.AppReducer);
-  const myButton = document.getElementById("myButton");
 
 
 
   useEffect(() => {
     if (enterPress) {
-      onSubmit();
+      loginApiHandler();
     }
   }, [enterPress]);
 
-  const reset = () => {
-    password.set("");
-    mobileNumber.set("");
-    email.set("");
-  };
 
-  const onSubmit = () => {
-    if (loginWithOtp === false) {
-      if (email.value.length === 0) {
-        showToast("Email ID  Cannot be empty", "error");
-      } else if (password.value.length === 0) {
-        showToast("Password  Cannot be empty", "error");
-      } else {
-        memberLoginHandler();
-      }
-    } else {
-      if (mobileNumber.value.length === 0) {
-        showToast("Mobile Number  Cannot be empty", "error");
-      } else {
-        memberLoginHandler();
-      }
-    }
-  };
+  const loginApiHandler = () => {
 
-  const memberLoginHandler = () => {
-    loginLoader.show();
     const params = {
       ...(email.value && { email: email.value }),
       password: password.value,
     };
 
-    dispatch(
-      memberLoginUsingPassword({
-        params,
-        onSuccess: (response: any) => () => {
-          const { details } = response;
+    const validation = validate(LOGIN_WITH_EMAIL_RULES, params)
 
-          loginLoader.hide();
+    if (ifObjectExist(validation)) {
 
-          if (response.success) {
-            
-            localStorage.setItem(USER_TOKEN, response.details.token);
-            if(!details?.is_email_verified){
-              dispatch(
-                fetchEmailVerify(
-                  {
-                        ...loginDetails,
-                        isLoggedIn: true,
-                        ...(email.value && { email: email.value }),
-                        ...details,
+      loginLoader.show();
 
-                      }
-                )
-              )
-              goTo(ROUTES["auth-module"]['verify-email']);
-            }
-            else{
-              
+      dispatch(
+        memberLoginUsingPassword({
+          params,
+          onSuccess: (response: any) => () => {
+            const { details } = response;
+            const { is_email_verified, token } = details || {};
+
+            loginLoader.hide();
+
+            if (response.success) {
+              localStorage.setItem(USER_TOKEN, token);
+
               dispatch(
                 userLoginDetails({
                   ...loginDetails,
-                  isLoggedIn: true,
+                  isLoggedIn: is_email_verified,
                   ...details,
                 })
               );
-              goTo(ROUTES["auth-module"].splash, true);
+
+              if (is_email_verified) {
+                goTo(ROUTES["auth-module"].splash, true);
+              } else {
+                dispatch(saveUserEmail(email?.value))
+                goTo(ROUTES["auth-module"]["mail-verification"]);
+              }
+
+            } else {
+              console.log('came');
+
+              showToast(response.error_message, 'error');
             }
-          } else {
-            showToast(response.error_message, "error");
-          }
-        },
-        onError: (error) => () => {
-          loginLoader.hide();
-          showToast(error.error_message, "error");
-        },
-      })
-    );
+          },
+          onError: (error: any) => () => {
+            console.log('came');
+            console.log(error);
+
+            loginLoader.hide();
+            showToast(error.error_message, "error");
+          },
+        })
+      );
+    } else {
+      showToast(getValidateError(validation))
+    }
+
+
   };
 
 
+  function goToForgotPasswordScreen() {
+    goTo(ROUTES["auth-module"].forgotPassword);
+  }
+
+  function goToRegisterScreen() {
+    goTo(ROUTES["auth-module"].register);
+
+  }
+
+
+  function goToRegisterCompanyScreen() {
+    goTo(ROUTES["auth-module"]["register-company"]);
+
+  }
 
   return (
-    <>
-      <div className="row  m-0 p-0 h-100vh">
-        <div className="col-xl-12 d-flex bg-white align-items-center justify-content-center  my-sm-0 my-4">
-          <div className="col-12 col-md-6 col-lg-4  text-center align-items-center">
-            <div className="mb--2">
-              <div className="">
-                <Image src={icons.logoText} height={22} />
-              </div>
-              <div className="pt-4">
-                <span
-                  className="text-secondary"
-                  style={{ fontSize: 22, fontWeight: 800 }}
-                >
-                  Log in
-                </span>
-              </div>
-            </div>
-            <div
-              className="pt-2 mx-md-3 mx-0"
-              style={{
-                scale: "0.9",
-              }}
-            >
-              <div>
-                <Input
-                  className="form-control"
-                  value={email.value}
-                  placeholder="Email"
-                  onChange={email.onChange}
-                />
-              </div>
-              <div>
-                <div className="input-group mb-3">
-                  <input
-                    style={{
-                      borderRight: 0,
-                      borderRadius: '4px 0 0 4px',
-                      borderColor: toggleInput ? "#673de6" : "#d0d0d0"
-                    }}
-                    value={password.value}
-                    type={showPassword ? "text" : "password"}
-                    className="form-control"
-                    placeholder="Password"
-                    aria-label="Recipient's username"
-                    aria-describedby="basic-addon2"
-                    onFocus={() => {
-                      setToggleInput(true);
-                    }}
-                    onBlur={() => {
-                      setToggleInput(false);
-                    }}
-                    onChange={password.onChange}
-                  />
-                  <span
-                    className="input-group-text"
-                    id="basic-addon2"
-                    style={{
-                      borderTopLeftRadius: 0,
-                      borderBottomLeftRadius: 0,
-                      borderLeft: 0,
-                      borderRadius: '0 4px 4px 0',
-                      borderColor: toggleInput ? "#673de6" : "#d0d0d0",
-                    }}
-                    onClick={() => {
-                      setShowPassword(!showPassword);
-                    }}
-                  >
-                    {showPassword ? (
-                      <i
-                        className="bi bi-eye-fill text-default mt--1"
-                        style={{
-                          fontSize: "20px",
-                          marginBottom: "-5px",
-                        }}
-                      ></i>
-                    ) : (
-                      <i
-                        className="bi bi-eye-slash-fill text-default mt--1 pb-0"
-                        style={{
-                          fontSize: "20px",
-                          marginBottom: "-5px",
-                        }}
-                      ></i>
-                    )}
-                  </span>
-                </div>
-              </div>
-              <div className="pt-2">
-                <Button
-                  className={"text-white font-weight-bold py-3 bg-primary rounded-sm"}
-                  loading={loginLoader.loader}
-                  block
-                  size="md"
-                  text={"Log in"}
+    <div className={'auth-screen'}>
+      <div className={'auth-logo'}>
+        <Logo />
+      </div>
+      <div className={'auth-container'}>
+        <div className="text-sub-heading heading-text">Log in</div>
+        <Input
+          value={email.value}
+          placeholder="Email"
+          onChange={email.onChange}
+        />
+        <InputPassword
+          value={password?.value}
+          onChange={password.onChange}
+        />
+        <Button
+          loading={loginLoader.loader}
+          block
+          text={"Log in"}
+          onClick={loginApiHandler}
+        />
 
-                  onClick={() => onSubmit()}
-                />
-              </div>
+        <h5
+          className={"forgot-password font-weight-700"}
+          onClick={goToForgotPasswordScreen}>
+          {'Forgot password?'}
+        </h5>
 
-              <div className="pt-4">
-                <span
-                  className="text-primary pointer"
-                  style={{ fontWeight: 800, fontSize: 14 }}
-                  onClick={() => {
-                    goTo(ROUTES["auth-module"].forgotPassword);
-                  }}
-                >
-                  Forgot password?
-                </span>
-              </div>
-              <div className="" style={{ paddingTop: 35 }}>
-                <b
-                  className="font-weight-900 display-5 text-secondary mt-0"
-                  style={{ fontSize: 17 }}
-                >
-                  Not a member yet?{" "}
-                  <div
-                    className="text-primary pointer pl-1"
-                    onClick={() => {
-                      goTo(ROUTES['auth-module']['register-company']);
-                    }}
-                    style={{
-                      fontSize: "17px",
-                    }}
-                  >
-                    <b> Register now</b>
-                  </div>
-                  <div
-                    className="text-primary pointer"
-                    onClick={() => {
-                      goTo(ROUTES["auth-module"].register);
-                    }}
-                    style={{
-                      fontSize: "17px",
-                    }}
-                  >
-                    <b> Register as student</b>
-                  </div>
-                </b>
-              </div>
-            </div>
-          </div>
+        <div className="text-center font-size-md register">
+          <span className="text-secondary font-weight-700"> {"Not a member yet?"}</span>
+          <span className="text-primary font-weight-700 pointer ml-1" onClick={goToRegisterScreen}> {"Sign Up"}</span>
+          <span className="text-secondary font-weight-700 ml-1"> {"/"}</span>
+          <span className="text-primary font-weight-700 pointer ml-1" onClick={goToRegisterCompanyScreen}> {"Corporate"}</span>
         </div>
       </div>
-    </>
+
+    </div>
   );
 }
 

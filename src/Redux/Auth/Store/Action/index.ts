@@ -34,20 +34,6 @@ export const memberLoginUsingPassword = (params: any) => {
     };
 };
 
-export const memberLoginUsingPasswordSuccess = (response: any) => {
-
-    return {
-        type: ActionTypes.MEMBER_LOGIN_USING_PASSWORD_SUCCESS,
-        payload: response
-    }
-}
-
-export const memberLoginUsingPasswordFailure = (error: any) => {
-    return {
-        type: ActionTypes.MEMBER_LOGIN_USING_PASSWORD_FAILURE,
-        payload: error
-    }
-}
 
 
 
@@ -109,23 +95,18 @@ export const registerAsCompany = (params: any) => {
     };
 };
 
-export const registerAsCompanySuccess = (response: any) => {
-
+export const saveUserEmail = (params: any) => {
     return {
-        type: ActionTypes.REGISTER_AS_COMPANY_SUCCESS,
-        payload: response
+        type: ActionTypes.SAVE_USER_EMAIL,
+        payload: params
     }
 }
 
-export const registerAsCompanyFailure = (error: any) => {
-    return {
-        type: ActionTypes.REGISTER_AS_COMPANY_FAILURE,
-        payload: error
-    }
-}
-
-
-//GET_OTP_FOR_EMAIL_VERIFICATION
+/**
+ *  get oto from email verification
+ * @param params 
+ * @returns 
+ */
 
 export const getOtpForEmailVerification = (params: any) => {
     return {
@@ -134,24 +115,12 @@ export const getOtpForEmailVerification = (params: any) => {
     };
 };
 
-export const getOtpForEmailVerificationSuccess = (response: any) => {
-
-    return {
-        type: ActionTypes.GET_OTP_FOR_EMAIL_VERIFICATION_SUCCESS,
-        payload: response
-    }
-}
-
-export const getOtpForEmailVerificationFailure = (error: any) => {
-    return {
-        type: ActionTypes.GET_OTP_FOR_EMAIL_VERIFICATION_FAILURE,
-        payload: error
-    }
-}
 
 
 
-//GEMAIL_VERIFICATION
+/**
+ *  verify email using otp
+ */
 
 export const verifyEmailUsingOtp = (params: any) => {
     return {
@@ -160,25 +129,5 @@ export const verifyEmailUsingOtp = (params: any) => {
     };
 };
 
-export const verifyEmailUsingOtpSuccess = (response: any) => {
-
-    return {
-        type: ActionTypes.VERIFY_EMAIL_USING_OTP_SUCCESS,
-        payload: response
-    }
-}
-
-export const verifyEmailUsingOtpFailure = (error: any) => {
-    return {
-        type: ActionTypes.VERIFY_EMAIL_USING_OTP_FAILURE,
-        payload: error
-    }
-}
 
 
-export const fetchEmailVerify = (params: any) => {
-    return {
-        type: ActionTypes.FETCH_EMAIL_VERIFY,
-        payload: params
-    }
-}

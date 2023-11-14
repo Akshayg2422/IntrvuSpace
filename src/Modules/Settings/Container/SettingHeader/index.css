@@ -1,0 +1,13 @@
+.setting-header-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 40px;
+}
+
+.btn-wrapper {
+    display: flex;
+}
+
+/* @media(max-width: 768px) {
+    .btn-wrapper {}
+} */

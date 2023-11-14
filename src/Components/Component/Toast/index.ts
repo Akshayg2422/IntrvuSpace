@@ -1,10 +1,10 @@
 import { toast } from "react-toastify";
-import {ToastVariant} from './interfaces'
+import { ToastVariant } from './interfaces'
 import 'react-toastify/dist/ReactToastify.css';
 
- const showToast = (
+const showToast = (
   message: string,
-  type:  ToastVariant ='info',
+  type: ToastVariant = 'info',
 ) => {
   const style: object = {
     position: "top-center",
@@ -32,8 +32,7 @@ import 'react-toastify/dist/ReactToastify.css';
       toastElement = toast(message, style);
       break;
   }
-console.log(toastElement,"toastElement")
   return toastElement;
 };
 
-export {showToast}
+export { showToast }

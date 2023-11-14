@@ -12,7 +12,8 @@ import classnames from "classnames";
 import './index.css'
 import { InputPasswordProps } from './interfaces'
 
-function InputPassword({ id, className, heading, variant = 'default', isMandatory, textColor, noSpace, ...rest }: InputPasswordProps) {
+
+function InputPassword({ id, className, heading, placeholder = 'Password', variant = 'default', isMandatory, textColor, noSpace, ...rest }: InputPasswordProps) {
 
     const [focus, setFocus] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
@@ -30,7 +31,7 @@ function InputPassword({ id, className, heading, variant = 'default', isMandator
                     className={`${className} ${variant !== 'default' && 'form-control-' + variant} form-control-md`}
                     id={id}
                     {...rest}
-                    placeholder="Password"
+                    placeholder={placeholder}
                     type={showPassword ? "text" : "password"}
                     onFocus={(e) => setFocus(true)}
                     onBlur={(e) => setFocus(false)}

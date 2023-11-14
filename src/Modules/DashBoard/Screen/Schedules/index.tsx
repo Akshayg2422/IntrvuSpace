@@ -13,7 +13,7 @@ function Schedules() {
     const dispatch = useDispatch()
     const { myPastInterviews } = useSelector((state: any) => state.DashboardReducer)
     const showVideoModal = useModal(false);
-    const { goBack } = useNavigation();
+
     const { goTo } = useNavigation();
     const [videoDetails, setVideoDetails] = useState<any>()
 

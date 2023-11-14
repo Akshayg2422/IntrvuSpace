@@ -1,54 +1,72 @@
-import React, { Component, useEffect, useRef, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
-import { addSectorCorporate, createSector, getSectorCorporate, getSectors, getStartChat } from '@Redux';
-import { useInput, useLoader, useModal, useNavigation } from '@Hooks';
-import { translate } from "@I18n";
-import { Button, Card, CommonTable, Heading, Image, Input, MenuBar, Modal, NoRecordsFound, Spinner, showToast } from '@Components';
-import { getValidateError, ifObjectExist, validate, filteredName, ADD_SECTOR_CORPORATE_RULES, paginationHandler } from '@Utils';
 import { icons } from '@Assets';
+import { CommonTable, Input, MenuBar, Modal, NoDataFound, Spinner, TextArea, showToast } from '@Components';
+import { useInput, useLoader, useModal } from '@Hooks';
+import { SettingHeader } from '@Modules';
+import { addSectorCorporate, getSectorCorporate } from '@Redux';
+import { ADD_SECTOR_CORPORATE_RULES, INITIAL_PAGE, capitalizeFirstLetter, getValidateError, ifObjectExist, paginationHandler, validate } from '@Utils';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 
 function Sector() {
-  const dispatch = useDispatch()
-  const { goBack } = useNavigation();
-  const addSector = useModal(false);
-  const [editId, setEditId] = useState<any>()
-  const sectorName = useInput("");
-  const descriptions = useInput("");
-  const addSectorLoader = useLoader(false);
-  const [loading, setLoading] = useState(true)
-  const { sectorsCorporate, sectorsCorporateNumOfPages, sectorsCorporateCurrentPages } = useSelector((state: any) => state.DashboardReducer)
-  // console.log('sectorsCorporate===========>>>>', sectorsCorporate);
-  console.log("sectorsCorporateCurrentPages===>", sectorsCorporateCurrentPages)
 
-  const getDesignationMenu = () => [
+
+  const dispatch = useDispatch()
+
+  const { sectorsCorporate,
+    sectorsCorporateNumOfPages,
+    sectorsCorporateCurrentPages
+  } = useSelector((state: any) => state.DashboardReducer)
+
+
+  const loader = useLoader(false);
+
+  /**
+   * add sector state
+   */
+  const addSectorLoader = useLoader(false);
+  const addSectorModal = useModal(false);
+
+  const sectorName = useInput("");
+  const sectorDescription = useInput("");
+
+  const [selectedSector, setSelectedSector] = useState<any>(undefined)
+
+
+  const MENU = [
     { id: '0', name: "Edit", icon: icons.edit },
   ]
 
   useEffect(() => {
-    getSectorCorporateDetailsApiHandler(1)
+    getSectorCorporateApiHandler(INITIAL_PAGE)
   }, [])
 
-  const addSectorCorporateDetailsApiHandler = () => {
+
+  /**
+   * add sector api
+   */
+
+  const addSectorApiHandler = () => {
+
+
     const params = {
       name: sectorName.value,
-      description: descriptions.value,
-      ...(editId && { id: editId })
+      description: sectorDescription.value,
+      ...(selectedSector && { id: selectedSector?.id })
     }
+
     const validation = validate(ADD_SECTOR_CORPORATE_RULES, params)
 
     if (ifObjectExist(validation)) {
       addSectorLoader.show()
+
       dispatch(
         addSectorCorporate({
           params,
           onSuccess: (success: any) => () => {
-            addSector.hide()
-            descriptions.set('')
-            setEditId('')
-            sectorName.set('')
+            resetValues();
             addSectorLoader.hide()
-            getSectorCorporateDetailsApiHandler(sectorsCorporateCurrentPages)
+            getSectorCorporateApiHandler(sectorsCorporateCurrentPages)
             showToast(success.message, 'success')
           },
           onError: (error: any) => () => {
@@ -57,25 +75,31 @@ function Sector() {
           },
         })
       )
+
     } else {
-      addSectorLoader.hide()
       showToast(getValidateError(validation))
     }
   };
 
-  const getSectorCorporateDetailsApiHandler = (page_number: number) => {
+  /**
+   * get sector api
+   */
+  const getSectorCorporateApiHandler = (page_number: number) => {
+
     const params = {
       page_number,
     }
-    // console.log('Corporate========>', params); 
+
+    loader.show();
+
     dispatch(
       getSectorCorporate({
         params,
-        onSuccess: (success: any) => () => {
-          setLoading(false)
+        onSuccess: () => () => {
+          loader.hide();
         },
-        onError: (error: string) => () => {
-          setLoading(false)
+        onError: () => () => {
+          loader.hide();
         },
       })
     );
@@ -86,147 +110,118 @@ function Sector() {
       const { name, description } = el
 
       return {
-        Name: el?.name,
-        description: el?.description,
-        // description: filteredName(el?.description, 90),
+        Name: capitalizeFirstLetter(name),
+        description: capitalizeFirstLetter(description),
+        '':
+          <MenuBar
+            menuData={MENU}
+            onClick={(item) => {
+              if (item?.id === MENU[0].id) {
 
-        '': ((name || description) &&
-          <MenuBar menuData={getDesignationMenu()} toggleIcon={icons.more} onClick={(item) => {
+                addSectorModal.show();
 
-            if (item?.id === '0') {
-              const { name, id, description } = el
+                /**
+                 * prefill the sector modal
+                 */
 
-              setEditId(id)
-              sectorName.set(name)
-              descriptions.set(description)
-              addSector.show()
+                setSelectedSector(el)
+                sectorName.set(name)
+                sectorDescription.set(description)
 
-
-            }
+              }
 
 
-          }} />
-        )
+            }} />
       };
     });
   };
 
+
+  /**
+   * reset Value
+   */
+
+  function resetValues() {
+    sectorName.set('');
+    sectorDescription.set('');
+    addSectorModal.hide();
+    setSelectedSector(undefined);
+
+  }
+
   return (
     <>
-      <div className='container'>
-        <div className="row justify-content-between mt-3 pl-2 mr--2 mb-3">
-          {/* <Back /> */}
-          <div className='d-flex align-items-center'>
-            <div className=''>
-              <Image
-                onClick={() => goBack()}
-                style={{ cursor: "pointer" }}
-                src={icons.back}
-                height={15}
-              />
-            </div>
-            <div className='pl-3' >
-              <span className='headingText text-secondary'>{'Manage Sector'}</span>
-            </div>
-          </div>
-          <Button
-            size={'md'}
-            className={'btn btn-primary rounded-sm'}
-            text={"Add Sector"}
-            onClick={() => {
-              addSector.show()
+      <div className={'screen-padding'}>
+
+        <SettingHeader
+          title={'Sector'}
+          buttonText={'Add'}
+          onClick={addSectorModal.show}
+        />
+
+        {
+          loader.loader && <div className={'loader-container'}><Spinner /></div>
+        }
+
+        {
+          !loader.loader &&
+          sectorsCorporate?.length > 0
+          &&
+          <CommonTable
+            isPagination={sectorsCorporateNumOfPages > 1}
+            displayDataSet={normalizedTableData(sectorsCorporate)}
+            noOfPage={sectorsCorporateNumOfPages}
+            currentPage={sectorsCorporateCurrentPages}
+            paginationNumberClick={(currentPage) => {
+              getSectorCorporateApiHandler(paginationHandler("current", currentPage));
+
             }}
+            previousClick={() => {
+              getSectorCorporateApiHandler(paginationHandler("prev", sectorsCorporateCurrentPages))
+            }
+            }
+            nextClick={() => {
+              getSectorCorporateApiHandler(paginationHandler("next", sectorsCorporateCurrentPages));
+            }
+            }
           />
-        </div>
-
-        {loading && (
-          <div className={'vh-100 d-flex justify-content-center align-items-center'}>
-            <Spinner />
-          </div>)
         }
-        {!loading &&
-          <div className='row px-0  mx--4'>
-            <div className='col-sm-12 px-0'>
-
-              {sectorsCorporate && sectorsCorporate?.data?.length > 0 ? (
-                <CommonTable
-                  card
-                  isPagination={sectorsCorporateNumOfPages>1}
-                  title={'Sector'}
-                  displayDataSet={normalizedTableData(sectorsCorporate?.data)}
-                  noOfPage={sectorsCorporateNumOfPages}
-                  currentPage={sectorsCorporateCurrentPages}
-                  paginationNumberClick={(currentPage) => {
-    
-                    getSectorCorporateDetailsApiHandler(paginationHandler("current", currentPage));
-    
-                  }}
-                  previousClick={() => {
-                    getSectorCorporateDetailsApiHandler(paginationHandler("prev", sectorsCorporateCurrentPages))
-                  }
-                  }
-                  nextClick={() => {
-                    getSectorCorporateDetailsApiHandler(paginationHandler("next", sectorsCorporateCurrentPages));
-                  }
-                  }
-                />
-              ) : (
-                <div
-                  className="vh-100 d-flex justify-content-center align-items-center ">
-                  <NoRecordsFound />
-                </div>
-
-              )}
-
-            </div>
+        {
+          !loader.loader &&
+          sectorsCorporate?.length <= 0 &&
+          <div className={'no-data-container'}>
+            <NoDataFound />
           </div>
-
         }
-
-
       </div>
-      < Modal size={'lg'} isOpen={addSector.visible} onClose={() => {
-        addSector.hide()
-        sectorName.set("")
-        descriptions.set("")
-        setEditId('')
-      }} >
-        <div className="px-md-6">
-          <div className='mt--2'>  <Heading heading={`${editId ? "Edit" : "Add"} Sector`} style={{ fontSize: '25px', fontWeight: 800, }} /></div>
-          <div className='mt-4'>
-            <div className='row'>
-              <div className="mt--2 col">
-                <Input
-                  heading={"Name"}
-                  value={sectorName.value}
-                  onChange={sectorName.onChange}
-                />
-              </div>
-              <div className="mt--2 col">
-                <Input
-                  heading={"Description"}
-                  value={descriptions.value}
-                  onChange={descriptions.onChange}
-                />
-              </div>
-            </div>
+
+
+      <Modal
+        loading={addSectorLoader.loader}
+        title={'Sector'}
+        isOpen={addSectorModal.visible}
+        onClose={resetValues}
+        onClick={addSectorApiHandler}
+      >
+        <div className='row'>
+          <div className='col-sm-6'>
+            <Input
+              heading={"Name"}
+              value={sectorName.value}
+              onChange={sectorName.onChange}
+            />
           </div>
         </div>
-        <div className="col d-flex justify-content-center py-5">
-          <Button size={'md'}
-            className={'rounded-sm px-5 btn btn-primary '}
-            style={{
-              borderColor: "#d8dade",
-              fontSize: "15px"
-            }}
-            loading={addSectorLoader.loader}
-            text={"Submit"}
-            onClick={addSectorCorporateDetailsApiHandler}
-          />
-        </div>
+        <TextArea
+          heading={'Description'}
+          height={"200px"}
+          value={sectorDescription.value}
+          onChange={sectorDescription.onChange}
+        />
+
       </Modal >
     </>
   )
 }
 
-export { Sector }
+export { Sector };

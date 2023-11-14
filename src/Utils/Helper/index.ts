@@ -31,3 +31,23 @@ export function arrayOrderbyCreatedAt(array: any) {
     return modifiedArray;
   }
 }
+
+
+export function arrayOrderbyDate(array: any, key: string, isReverse: boolean = false) {
+  let modifiedArray = [];
+  if (array && array.length > 0) {
+    modifiedArray = array.sort((a: any, b: any) => {
+      return a[key] < b[key]
+        ? -1
+        : a[key] > b[key]
+          ? 1
+          : 0;
+    });
+    if (isReverse) {
+      modifiedArray = modifiedArray.reverse();
+    }
+    return modifiedArray;
+
+
+  }
+}

@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { syncVideo } from '@Redux/';
+import { syncVideo } from '@Redux';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams } from "react-router-dom";
@@ -12,6 +12,7 @@ const VideoStream = (props) => {
     const { schedule_id } = useParams();
     const [mediaStream, setMediaStream] = useState(null);
 
+    console.log('rendered');
 
     useEffect(() => {
         if (props.isRecording) {
@@ -50,7 +51,7 @@ const VideoStream = (props) => {
                 reader.onload = function () {
                     syncVideoApiHelper(reader.result)
                 };
-                reader.readAsDataURL(blob);  
+                reader.readAsDataURL(blob);
             }
         };
 
@@ -60,7 +61,7 @@ const VideoStream = (props) => {
         // Start capturing data every 5000ms (5 seconds)
         recordInterval.current = setInterval(() => {
             mediaRecorder.current.requestData();
-        }, 1000);
+        }, 5000);
     };
 
     const stopRecording = () => {

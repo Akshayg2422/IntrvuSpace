@@ -7,7 +7,7 @@ import { icons } from '@Assets'
 
 import { Select2Type } from 'react-select2-wrapper';
 
-function DropDown({ id, heading, disabled, placeHolder, selected, data, onChange, className = 'form-control', Class }: DropDownProps) {
+function DropDown({ id, heading, disabled, placeHolder, selected, data, onChange, className = 'form-control', Class, noSpace }: DropDownProps) {
 
     const select2Ref = useRef<Select2Type | null>(null); // Create a ref for the Select2 component
 
@@ -32,7 +32,7 @@ function DropDown({ id, heading, disabled, placeHolder, selected, data, onChange
         }
     }
     return (
-        <FormGroup>
+        <FormGroup className={noSpace ? 'm-0 b-0' : ""}>
             <InputHeading heading={heading} Class={Class} id={id} />
             <div style={{
                 position: "relative",

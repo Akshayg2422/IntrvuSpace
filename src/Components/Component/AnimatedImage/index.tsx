@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import { AnimatedLoader } from "@Components";
 import classNames from "classnames";
 import "./AnimatedImageFrame.scss";
@@ -6,6 +7,9 @@ import { VideoStream } from "@Modules";
 const AnimatedImage = ({ name, shouldBlink, show, showWebCam = false, isMuted = false, variant = 'lg', device = "web" }) => {
   const imageClasses = classNames(!isMuted ? variant === 'sm' ? "animated-image-small" : "animated-image" : "", { blink: shouldBlink });
 
+  // const videoStreamComponent = useMemo(() => <VideoStream isRecording={showWebCam} />, []);
+
+  console.log(showWebCam + '==showWebCam');
 
   return (
     <div className={`${imageClasses}`} >

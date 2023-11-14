@@ -2,7 +2,7 @@ import { icons } from '@Assets'
 import { Button, Image, Input, showToast } from '@Components'
 import { useInput, useLoader, useNavigation } from '@Hooks'
 import { useDispatch } from 'react-redux'
-import { getOtpForEmailVerification, userLoginDetails, verifyEmailUsingOtp, fetchEmailVerify } from '@Redux'
+import { getOtpForEmailVerification, userLoginDetails, verifyEmailUsingOtp, } from '@Redux'
 import { useEffect, useState } from 'react'
 import { EMAIL_RULES, getValidateError, ifObjectExist, validate } from '@Utils'
 import { useSelector } from 'react-redux'
@@ -88,7 +88,7 @@ function VerifyEmail() {
                             goTo(ROUTES["auth-module"].splash, true);
                         }
                         else {
-                            goTo(ROUTES["auth-module"].login,true);
+                            goTo(ROUTES["auth-module"].login, true);
                             showToast(response.message, "success");
                             loginLoader.hide();
                         }
@@ -114,22 +114,22 @@ function VerifyEmail() {
                 <div className="col-xl-12 d-flex bg-white align-items-center justify-content-center  my-sm-0 my-4 ">
 
                     <div className="col-12 col-md-6 col-lg-4  align-items-center ">
-                     <div className='position-absolute pointer top-0 left-sm-9'
+                        <div className='position-absolute pointer top-0 left-sm-9'
                             onClick={() => {
-                                if(VerificationEmail?.isLoggedIn){
+                                if (VerificationEmail?.isLoggedIn) {
                                     goBack()
-                                    dispatch(fetchEmailVerify(''))
+                                    // dispatch(fetchEmailVerify(''))
                                 }
-                                else{
+                                else {
                                     goTo(ROUTES["auth-module"].login);
-                                    dispatch(fetchEmailVerify(''))
+                                    // dispatch(fetchEmailVerify(''))
                                 }
-                             
+
                             }}
                         >
                             <i className="bi bi-arrow-left text-black fa-lg font-weight-bolder"></i>
                         </div>
-                        
+
                         <div className="mb--2">
                             <div className="align-items-center text-center">
                                 <Image src={icons.logoText} height={22} />

@@ -10,9 +10,9 @@ const initialState: AuthProps = {
     OTP: undefined,
     memberUsingLoginOtp: undefined,
     registerCompanyDetails: undefined,
-    verifyEmail:undefined,
-    verifyOtp:undefined,
-    VerificationEmail:undefined
+    verifyOtp: undefined,
+    VerificationEmail: undefined,
+    userEmail: undefined
 };
 
 
@@ -29,19 +29,6 @@ const AuthReducer = (state = initialState, action: any) => {
         case ActionTypes.REGISTER_AS_MEMBER_FAILURE:
             state = { ...state, registerDetails: undefined };
             break;
-
-        //memberLoginUsingPassword
-
-        case ActionTypes.MEMBER_LOGIN_USING_PASSWORD:
-            state = { ...state, };
-            break;
-        case ActionTypes.MEMBER_LOGIN_USING_PASSWORD_SUCCESS:
-            state = { ...state };
-            break;
-        case ActionTypes.MEMBER_LOGIN_USING_PASSWORD_FAILURE:
-            state = { ...state, };
-            break;
-
 
 
         //get otp
@@ -69,49 +56,15 @@ const AuthReducer = (state = initialState, action: any) => {
             state = { ...state, memberUsingLoginOtp: undefined };
             break;
 
-        // registerAsCompany
 
-        case ActionTypes.REGISTER_AS_COMPANY:
-            state = { ...state, registerCompanyDetails: undefined };
-            break;
-        case ActionTypes.REGISTER_AS_COMPANY_SUCCESS:
-            state = { ...state, registerCompanyDetails: action.payload };
-            break;
-        case ActionTypes.REGISTER_AS_COMPANY_FAILURE:
-            state = { ...state, registerCompanyDetails: undefined };
-            break;
+        /**
+         * save user email
+         */
 
+        case ActionTypes.SAVE_USER_EMAIL:
 
-
-            
-        //getOtpVerifyEmail member using login otp
-
-        case ActionTypes.GET_OTP_FOR_EMAIL_VERIFICATION:
-            state = { ...state, verifyEmail: undefined };
+            state = { ...state, userEmail: action.payload };
             break;
-        case ActionTypes.GET_OTP_FOR_EMAIL_VERIFICATION_SUCCESS:
-            state = { ...state, verifyEmail: action.payload };
-            break;
-        case ActionTypes.GET_OTP_FOR_EMAIL_VERIFICATION_FAILURE:
-            state = { ...state, verifyEmail: undefined };
-            break;
-
-        // registerAsCompany
-
-        case ActionTypes.VERIFY_EMAIL_USING_OTP:
-            state = { ...state, verifyOtp: undefined };
-            break;
-        case ActionTypes.VERIFY_EMAIL_USING_OTP_SUCCESS:
-            state = { ...state, verifyOtp: action.payload };
-            break;
-        case ActionTypes.VERIFY_EMAIL_USING_OTP_FAILURE:
-            state = { ...state, verifyOtp: undefined };
-            break;
-
-            case ActionTypes.FETCH_EMAIL_VERIFY:
-                state = { ...state, VerificationEmail: action.payload };
-                break;
-
 
 
         default:

@@ -11,9 +11,9 @@ export interface DashboardProp {
   selectedQuestionForm: any
   formSectionQuestions: any
   basicReport: any
-  onGoingScheduleMessage :any,
+  onGoingScheduleMessage: any,
   myPastInterviews: any,
-  onGoingSelectedId:any,
+  onGoingSelectedId: any,
   scheduleId: any
   generateQuestionSections: any
   generateSectionsAndQuestions: any
@@ -40,24 +40,27 @@ export interface DashboardProp {
   retrieveEmail: any,
   corporateScheduleNumOfPages: any,
   corporateScheduleCurrentPages: number,
-  createOpening?:boolean;
-  candidatesList?: boolean;
+  isCreateOpening?: boolean;
+  candidatesList?: any;
   candidatesListNumOfPages: any,
   candidatesListCurrentPages: number,
   error?: string;
   departmentCorporate: any;
-  departmentCorporateNumOfPages:any
-  departmentsCorporateCurrentPages:any,
-  designations:any;
-  designationsNumOfPage:any,
-  designationsCurrentPage:any,
-  addTeamMates:any,
-  getTeamMateDatas:any,
-  getTeamMateDatasNumOfPages:any,
-  getTeamMateDatasCurrentPages:any,
+  departmentCorporateNumOfPages: any
+  departmentsCorporateCurrentPages: any,
+  designations: any;
+  designationsNumOfPage: any,
+  designationsCurrentPage: any,
+  addTeamMates: any,
+  teams: any,
+  teamNumOfPages: any,
+  teamCurrentPages: any,
   sectorsCorporate: any;
   sectorsCorporateNumOfPages: any,
   sectorsCorporateCurrentPages: any,
-  interviewUserScheduleDetails:any,
-  onGoingMessage:any,
+  interviewUserScheduleDetails: any,
+  onGoingMessage: any,
+  corporateScheduleCount?: number;
+  refreshCorporateSchedules?: boolean;
+  candidatesCount?: number
 }

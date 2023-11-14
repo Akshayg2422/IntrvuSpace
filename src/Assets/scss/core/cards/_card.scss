@@ -4,10 +4,9 @@
 
 .card {
     margin-bottom: $grid-gutter-width;
-    border-radius: 0;
 
     @if $enable-shadows {
-        // box-shadow: $card-box-shadow;
+        box-shadow: $card-box-shadow;
         border: 0;
     }
 }
@@ -17,7 +16,7 @@
 }
 
 .card-img-top {
-    @if ($enable-shadows ==false) {
+    @if ($enable-shadows == false) {
         width: calc(100% + 2px);
         margin-left: -1px;
         margin-top: -1px;
@@ -25,7 +24,7 @@
 }
 
 .card-img-bottom {
-    @if ($enable-shadows ==false) {
+    @if ($enable-shadows == false) {
         width: calc(100% + 2px);
         margin-left: -1px;
         margin-bottom: -1px;
@@ -34,7 +33,7 @@
 
 // Card decks
 
-.card-deck {
+.card-deck  {
     .card {
         margin-bottom: $grid-gutter-width;
     }

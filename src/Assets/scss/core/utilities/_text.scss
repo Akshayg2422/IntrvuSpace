@@ -42,6 +42,8 @@
 
 // Text size
 
+
+
 .text-xs {
 	font-size: $font-size-xs !important;
 }
@@ -58,16 +60,11 @@
 	font-size: $font-size-xl !important;
 }
 
-.text-xxs {
-	font-size: $font-size-xxs !important;
-}
-
-.text-xxs {
-	font-size: $font-size-xxs !important;
-}
-
-.text-details {
-	font-size: 18
+.screen-heading {
+	font-size: 1.5rem !important;
+	font-weight: 700;
+	color: $secondary;
+	line-height: 1;
 }
 
 .text-sub-heading {
@@ -77,6 +74,77 @@
 }
 
 
+.text-heading {
+	font-size: 2.25rem !important;
+	font-weight: 700 !important;
+	color: $secondary;
+	line-height: 1;
+}
+
+
+.text-sub-heading {
+	font-size: 1.5rem !important;
+	font-weight: 700 !important;
+	color: $secondary !important;
+}
+
+
+
+.text-des {
+	font-size: 1rem !important;
+	color: #727586 !important;
+	font-weight: 400 !important;
+}
+
+
+.screen-des {
+	font-size: 0.938rem !important;
+	color: #5A5D73;
+	font-weight: 400;
+	line-height: 1;
+}
+
+.view-more-text {
+	margin-left: 5px;
+	font-size: 0.938rem !important;
+	color: $primary !important;
+	font-weight: 700 !important;
+	cursor: pointer;
+}
+
+.point-heading {
+	font-weight: 700 !important;
+	font-size: 0.875rem !important;
+	color: $secondary;
+}
+
+.point-sub-heading {
+	font-weight: 400 !important;
+	font-size: 0.875rem !important;
+	color: $secondary;
+	margin-left: 5px;
+}
+
+.badge-text {
+	font-size: 0.875rem !important;
+	color: $primary;
+	font-weight: 600;
+	letter-spacing: 1.1;
+}
+
+
+.th-bold {
+	font-size: 14px;
+	font-weight: 600;
+	color: var(--secondary);
+}
+
+
+.th-regular {
+	font-size: 14px;
+	font-weight: 400;
+	color: var(--secondary);
+}
 
 
 // Line heights
@@ -134,7 +202,22 @@
 
 // Color variations
 
-@each $color,
-$value in $colors {
+@each $color, $value in $colors {
 	@include text-emphasis-variant(".text-#{$color}", $value, $ignore-warning: true);
+}
+
+@media(max-width: 768px) {
+
+	.text-heading {
+		font-size: 1.25rem !important;
+		font-weight: 700 !important;
+		color: $secondary;
+	}
+
+
+	.screen-heading {
+		font-size: 1rem !important;
+		font-weight: 700 !important;
+		color: $secondary;
+	}
 }

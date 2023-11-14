@@ -100,7 +100,7 @@ function CommonTable({ card = false, title, displayDataSet, tableDataSet, isPagi
       }
 
       return (
-        <div className="card-footer">
+        <div>
           <ul className="pagination col justify-content-end mb-0">
             <li className={`${currentPage === 1 ? 'disabled' : ''} page-item `} onClick={currentPage === 1 ? undefined : previousClick}>
               <a className="page-link">
@@ -126,7 +126,7 @@ function CommonTable({ card = false, title, displayDataSet, tableDataSet, isPagi
   }
   return (
     <CommonHeader>
-      {displayDataSet && displayDataSet.length > 0 ? <Table tableDataSet={tableDataSet} displayDataSet={displayDataSet} tableOnClick={tableOnClick}  /> : <div className='mb-4'><NoRecordsFound /></div>}
+      {displayDataSet && displayDataSet.length > 0 ? <Table tableDataSet={tableDataSet} displayDataSet={displayDataSet} tableOnClick={tableOnClick} /> : <div className='mb-4'><NoRecordsFound /></div>}
       {isPagination && <GetPaginatorSet currentPage={currentPage} totalPages={noOfPage} />}
     </CommonHeader >
 

@@ -1,174 +1,56 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Image, InputHeading } from "@Components";
-import { icons } from "@Assets";
-import { DropZoneImageProps } from "./interfaces";
+import React, { useEffect, useRef, useState } from 'react';
+import { Image } from '@Components'
+import { ImagePickerProps } from './interfaces'
 import Compressor from "compressorjs";
-import { imagePickerConvertBase64 } from "@Utils";
-const ImagePicker = ({
-  onSelect,
-  size = "lg",
-  imageVariant = 'avatar',
-  noOfFileImagePickers,
-  defaultValue,
-  className = 'row',
-  heading,
-  onSelectImagePickers,
-  onSelectImagePicker,
-  defaultPicker = false,
-  trashIcons = false,
-}: DropZoneImageProps) => {
-  const fileInputRef = useRef<HTMLInputElement>(null)
-  const [count, setCount] = useState(1)
-  const initialValue = { id: 0, base64: icons.addFillSquare, base111: icons.addFillSquare }
-  const [photo, setPhoto] = useState<any>()
+import './index.css';
 
-  const updatedProfile = photo && photo.filter((element: any) => element.id !== 0)
-  if (onSelectImagePicker && onSelectImagePicker) {
-    onSelectImagePicker(updatedProfile)
-  }
-  // if( onSelectImagePickers && onSelectImagePickers){
-  //   onSelectImagePickers(updatedProfile)
-  //   }
+function ImagePicker({ defaultPhotos, variant = 'single', max = 3, onSelect }: ImagePickerProps) {
+
+  const fileInputRef = useRef<HTMLInputElement>(null)
+  const [photos, setPhotos] = useState<any>([])
+
 
   useEffect(() => {
-
-    if (defaultValue && defaultPicker) {
-      imagePickerConvertBase64(defaultValue)
-        .then((result) => {
-
-          if (defaultValue > 1) {
-            setPhoto([...result, initialValue])
-
-          }
-          else {
-            setPhoto([...result])
-            if (onSelectImagePickers && onSelectImagePickers) {
-              onSelectImagePickers(result)
-            }
-
-
-
-          }
-        })
-        .catch((error) => {
-          // console.error(error);
-        });
+    if (defaultPhotos && defaultPhotos.length > 0) {
+      setPhotos(defaultPhotos)
     }
-    else {
-      setPhoto([initialValue])
-    }
+  }, [defaultPhotos])
 
-  }, []);
-
-
-
-  const handleRefClick = (el) => {
-
-    fileInputRef?.current?.click();
-
-    if (el.id > 0) {
-      setCount(el.id)
-    }
+  const handleFilePickerHandler = () => {
+    if (fileInputRef.current)
+      fileInputRef.current?.click();
   }
 
-  //we have to this for edit
-  const imagePickers = (value: any) => {
-    const updatedSelectedImage = [...photo];
-    const updatedImageArray: any = updatedSelectedImage.filter((filterItem: any) => filterItem.id !== value.id);
-    setCount(value.id)
-    const isSelected = updatedSelectedImage.some((filterItem: any) => filterItem.id === 0);
-    if (isSelected) {
-      setPhoto(updatedImageArray)
-
-    }
-    else {
-      setPhoto([...updatedImageArray, { id: 0, base64: icons.addFillSquare, base111: icons.addFillSquare }]);
-
-    }
-
-
-    // test creation
-
-    if (onSelectImagePickers && onSelectImagePickers) {
-      const updatedProfile = updatedImageArray && updatedImageArray.filter((element: any) => element.id !== 0)
-      onSelectImagePickers(updatedProfile)
-    }
-
-
-  };
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const imagePickerHandleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 
     if (event.target.files && event.target.files.length > 0) {
       const file = event.target.files[0];
-      // const reader = new FileReader();
-      let updatedPhoto
-
       new Compressor(file, {
-        quality: 0.6,
+        quality: 0.1,
         success: (file) => {
           const reader = new FileReader();
-          reader.onload = (e) => {
+          reader.onload = (composeEvent) => {
+            const { target } = composeEvent
+            if (target) {
+              const id = photos.length + 1
+              const currentImage = { id, file: file, base64: target?.result }
+              let updatedPhotos: any = [...photos];
 
-            if (onSelect && e.target) {
-              onSelect(e.target?.result);
+              if (variant === 'single') {
+                updatedPhotos = [currentImage]
+                setPhotos(updatedPhotos)
+                if (onSelect) {
+                  onSelect(currentImage)
+                }
+              } else {
 
-              updatedPhoto = { id: count, base64: e.target?.result }
 
-              let updatedSelectedPhotos: any = [...photo];
-
-              //no of length=-
-              if (updatedSelectedPhotos.length > noOfFileImagePickers) {
-                updatedSelectedPhotos = updatedSelectedPhotos.filter(
-                  (filterItem: any) => filterItem.id !== 0
-                );
-                setPhoto(updatedSelectedPhotos)
-                //test creation
-                if (onSelectImagePickers && onSelectImagePickers) {
-
-                  const updatedProfile = updatedSelectedPhotos && updatedSelectedPhotos.filter((element: any) => element.id !== 0)
-                  onSelectImagePickers(updatedProfile)
+                if (updatedPhotos.length < max) {
+                  updatedPhotos = [...updatedPhotos, currentImage]
+                  setPhotos(updatedPhotos)
                 }
 
               }
-
-              const ifExist = updatedSelectedPhotos.some(
-                (el: any) => el.id === updatedPhoto?.id
-              );
-
-              ///remove the edit image  entre fixe new image
-              if (ifExist) {
-
-                updatedSelectedPhotos = updatedSelectedPhotos.filter(
-                  (filterItem: any) => filterItem.id !== updatedPhoto?.id
-                );
-                updatedSelectedPhotos = [{ id: updatedPhoto?.id, base64: e.target?.result }, ...updatedSelectedPhotos]
-                setCount(photo.length + 1 - 1)
-
-                //this we not to use because is react some bucke
-                // if(  onSelectImagePickers  && onSelectImagePickers){
-                // onSelectImagePickers(updatedSelectedPhotos)
-                // }
-
-              }
-
-              ///without add new image
-              else {
-                setCount(count + 1)
-                updatedSelectedPhotos = [updatedPhoto, ...updatedSelectedPhotos]
-
-              }
-              ///we have use this on elseout
-
-              setPhoto(updatedSelectedPhotos)
-
-              if (onSelectImagePickers && onSelectImagePickers) {
-                const updatedProfile = updatedSelectedPhotos && updatedSelectedPhotos.filter((element: any) => element.id !== 0)
-                onSelectImagePickers(updatedProfile)
-              }
-
-
-
             }
           };
           reader.readAsDataURL(file);
@@ -177,61 +59,46 @@ const ImagePicker = ({
       });
     }
   };
+
   return (
-    <>
+    <div>
       <input
         type="file"
         ref={fileInputRef}
         style={{ display: "none" }}
-        onChange={handleChange}
+        onChange={imagePickerHandleChange}
         accept="image/*"
       />
-      <div className="col-12 pt-2">
-        <InputHeading heading={heading} />
-      </div>
-      {photo && photo.map((el, index) => {
-        return (
-
-          <div className={`${className} col-auto ml-0  pr-3`}>
-            <div >
-              <div >
+      <div className={'d-flex flex-wrap'}>
+        {photos && photos.length > 0
+          && photos.map((el: any, index: number) => {
+            return (
+              <div className={`picker-container border overflow-hidden ${index === 0 ? '' : 'picker-margin-left'}`} onClick={handleFilePickerHandler}>
                 <Image
-                  src={photo[index]?.base64}
-                  variant={imageVariant}
-                  onClick={() => handleRefClick(el)}
-                  size={size}
-                  style={{ backgroundColor: "#e3e5e8" }}
+                  height={'100%'}
+                  width={'100%'}
+                  src={photos[index]?.base64}
+                  variant={'default'}
+                  style={{
+                    objectFit: 'cover',
+                  }}
                 />
               </div>
-            </div>
-            {/* index !== photo.length - 1 */}
-            {trashIcons === true ? index !== photo.length - 1 : el.id !== 0 && (
-              <div
-                className="justify-content-top"
-                style={{ marginLeft: "-13px", marginTop: "-7px" }}
-                onClick={() => imagePickers(el)}
-              >
-                <div className="text-center pointer">
-                  <Image src={icons.delete} width={14} height={14} />
-                </div>
-              </div>
-            )}
+            )
 
+          })
 
+        }
+        {
+          photos.length <= 0 &&
+          <div className={`picker-container border pointer ${photos.length > 0 ? 'picker-margin-left' : ''}`} onClick={handleFilePickerHandler}>
+            <div className={'picker-placeholder'}>{'Logo'}</div>
           </div>
+        }
+      </div>
 
-        )
+    </div>
+  )
+}
 
-      })
-
-      }
-
-    </>
-
-
-  );
-};
-
-export { ImagePicker };
-
-
+export { ImagePicker }
