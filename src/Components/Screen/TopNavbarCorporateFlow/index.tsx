@@ -76,9 +76,7 @@ function TopNavbarCorporateFlow() {
   };
 
   const toggleDropdown = () => {
-    console.log("Before Toggle: dropdownOpen =", dropdownOpen);
     setDropdownOpen(!dropdownOpen);
-    console.log("After Toggle: dropdownOpen =", !dropdownOpen);
   };
 
   return (

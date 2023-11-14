@@ -211,9 +211,6 @@ function Designation() {
     updateData[index] = { ...updateData[index], is_view_more: status }
     dispatch(updateCorporateSchedules(updateData))
   }
-
-
-
   return (
     <div className={'screen'}>
       <TopNavbarCorporateFlow />
@@ -443,6 +440,7 @@ function Designation() {
       </Modal >
     </div >
   )
+
 }
 
 export { Designation };
