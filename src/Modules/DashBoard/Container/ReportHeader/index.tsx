@@ -1,8 +1,9 @@
 import React from 'react'
 import { Image } from '@Components';
 import { icons } from '@Assets';
-import { getPhoto } from '@Utils'
+import { getPhoto, capitalizeFirstLetter, COUNTRY_ISO_CODE } from '@Utils'
 import { ReportHeaderProps } from './interfaces'
+
 import './index.css'
 
 const ReportHeader = ({ details }: ReportHeaderProps) => {
@@ -20,6 +21,13 @@ const ReportHeader = ({ details }: ReportHeaderProps) => {
         if (percentage <= 80) return "green";
         return "#FFD700";
     };
+
+    function getCountryName(code: string) {
+        return COUNTRY_ISO_CODE.find((country) => country.code === code)?.name
+            ? COUNTRY_ISO_CODE.find((country) => country.code === code)?.name
+            : code;
+    }
+
 
 
     return (
@@ -51,15 +59,14 @@ const ReportHeader = ({ details }: ReportHeaderProps) => {
 
                         }
                     </div>
-
                     {
                         user_location_info ?
                             <div className={'user-address-container'}>
                                 <div>
-                                    <span className={'screen-des'}>{region}</span>
                                     <span className={'screen-des'}>{city}</span>
+                                    <span className={'screen-des'}>{region}</span>
                                 </div>
-                                <span className={'screen-des'}>{country}</span>
+                                <span className={'screen-des'}>{country === '-' ? "" : getCountryName(country)}</span>
                             </div>
                             :
                             <>
@@ -67,7 +74,7 @@ const ReportHeader = ({ details }: ReportHeaderProps) => {
                     }
                 </div>
                 <div className={'user-details-container'}>
-                    <div className={'user-heading'}>{name}</div>
+                    <div className={'user-heading'}>{capitalizeFirstLetter(name)}</div>
                     <div className={'user-role'}> {`${role} - ${experience_txt}`}</div>
                     <div className={'badge-schedule'}>
                         <div className={'badge-text'}>{interview_duration + " min Interview"}</div>

@@ -152,20 +152,20 @@ function VariantInfo() {
 
   function proceedModifyDeadlineApiHandler() {
 
+    console.log(scheduleEndTime);
+
+
     const convertedTime = moment(scheduleEndTime, 'hh:mm A').format('HH:mm:ss')
     const date = moment(scheduleEndDate + "T" + convertedTime).format(
       "YYYY-MM-DDTHH:mm:ss");
 
     const params = { deadline: date }
 
+    console.log("params", params);
+
     corporateScheduleActionsHandler(params);
 
   }
-
-
-
-
-
 
 
 
@@ -290,7 +290,7 @@ function VariantInfo() {
               heading={'Deadline Date'}
               placeholder={'Deadline Date'}
               value={displayFormatDate(displayDeadlineDate)?.split(",")[0]}
-              onChange={(e)=> {
+              onChange={(e) => {
                 setScheduleEndDate(e)
                 setDisplayDeadlineDate(e);
               }}

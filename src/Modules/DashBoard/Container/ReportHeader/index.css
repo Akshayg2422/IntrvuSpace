@@ -29,8 +29,8 @@
 
 .user-photo-container {
     display: flex;
-    width: 125px;
-    height: 125px;
+    width: 115px;
+    height: 115px;
     align-items: center;
     justify-content: center;
 }
