@@ -94,6 +94,7 @@ function Report() {
         loader.loader && <div className={'loader-container'}> <Spinner /></div>
       }
       {
+        !loader.loader && report &&
         <>
           <ReportHeader details={report} />
           {reportType?.value?.id === REPORT_TYPE[0].id && <BasicReport details={report} />}

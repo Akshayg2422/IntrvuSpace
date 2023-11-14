@@ -52,15 +52,18 @@ const ReportHeader = ({ details }: ReportHeaderProps) => {
                         }
                     </div>
 
-                    {user_location_info ?
-                        <div className={'user-address-container'}>
-                            <div>
-                                <span className={'screen-des'}>{region}</span>
-                                <span className={'screen-des'}>{city}</span>
+                    {
+                        user_location_info ?
+                            <div className={'user-address-container'}>
+                                <div>
+                                    <span className={'screen-des'}>{region}</span>
+                                    <span className={'screen-des'}>{city}</span>
+                                </div>
+                                <span className={'screen-des'}>{country}</span>
                             </div>
-                            <span className={'screen-des'}>{country}</span>
-                        </div> :
-                        <></>
+                            :
+                            <>
+                            </>
                     }
                 </div>
                 <div className={'user-details-container'}>
