@@ -173,6 +173,8 @@ function Designation() {
     vacancies.set('1')
     setDuration(INTERVIEW_DURATIONS[0]);
     referenceId.set("")
+    setSelectedDepartment("")
+    setSelectedSector("")
   }
 
 
