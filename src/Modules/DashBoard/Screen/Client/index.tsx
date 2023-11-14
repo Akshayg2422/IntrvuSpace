@@ -12,16 +12,13 @@ function Clients() {
         return component;
     }
 
-
     return (
-        <>
+        <div className={'screen'}>
             <TopNavbar />
-            <div className={`container-fluid mt-7`}>
-                {
-                    renderComponent()
-                }
-            </div >
-        </>
+            {
+                renderComponent()
+            }
+        </div>
     )
 }
 

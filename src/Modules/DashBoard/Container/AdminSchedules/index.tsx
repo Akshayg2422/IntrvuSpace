@@ -481,7 +481,7 @@ function AdminSchedules() {
 
   return (
     <>
-  
+
       {loading ? (
         <div className={"d-flex justify-content-center my-9"}>
           <Spinner />
@@ -564,7 +564,7 @@ function AdminSchedules() {
                               onClick={(action) =>
                                 proceedJDMenuClickHandler(action, id)
                               }
-                              toggleIcon={icons.more}
+                              icon={icons.more}
                             />
                           </div>
                         </div>
@@ -820,7 +820,7 @@ function AdminSchedules() {
                                           onClick={(action) =>
                                             proceedMenuClickHandler(action, id)
                                           }
-                                          toggleIcon={icons.more}
+                                          icon={icons.more}
                                         />
                                       </div>
                                     </div>

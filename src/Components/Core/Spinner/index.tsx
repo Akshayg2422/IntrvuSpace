@@ -5,7 +5,7 @@ import './style.scss'
 
 function Spinner({ color = 'primary', spinner = true, className, size = 'sm' }: SpinnerProps) {
     return (
-        <>
+        <div>
             {spinner ?
 
                 <RsSpinner className={className} color={color} size={size} >
@@ -15,7 +15,7 @@ function Spinner({ color = 'primary', spinner = true, className, size = 'sm' }: 
                 <span className="loader"></span>
 
             }
-        </>
+        </div>
     )
 }
 

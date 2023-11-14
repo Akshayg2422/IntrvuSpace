@@ -5,7 +5,7 @@ export interface AuthProps {
   OTP: any,
   memberUsingLoginOtp: any,
   registerCompanyDetails: any,
-  verifyEmail:any,
-  verifyOtp:any,
-  VerificationEmail:any
+  verifyOtp: any,
+  VerificationEmail: any,
+  userEmail: string | undefined;
 }

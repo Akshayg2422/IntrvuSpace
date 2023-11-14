@@ -1,40 +1,28 @@
-import React, { useEffect, useRef } from "react";
 import {
-  AuthenticationAndDashboardModule,
-  ContactUs,
-  Data,
-  Footer,
-  From,
-  HowItWorks,
-  Pricing,
-  Reports,
-  WebsiteNavBar,
-  WebsiteHeader,
-  EffortlessInterviews,
-  InsightsAndReports,
-  AutoApprovalSystem,
   AllInOnePlatform,
-  WebsiteCreateJdAndAddCandidates,
-  WebsiteScheduleAndNotification,
-  WebsiteReportsAndInsights,
   WebsiteAutoApprovalForCandidatesPerformance,
   WebsiteCandidateAttendsInterview,
   WebsiteContactUs,
+  WebsiteCreateJdAndAddCandidates,
   WebsiteFooter,
+  WebsiteHeader,
+  WebsiteNavBar,
+  WebsiteReportsAndInsights,
+  WebsiteScheduleAndNotification
 } from "@Modules";
 
 function Website() {
   return (
-    <div style={{backgroundColor: "#fafbff"}}>
+    <div style={{ backgroundColor: "#fafbff" }}>
       <div className="main-content" >
         <WebsiteNavBar />
         <WebsiteHeader />
         <AllInOnePlatform />
-        <WebsiteCreateJdAndAddCandidates/>
-        <WebsiteScheduleAndNotification/>
-        <WebsiteCandidateAttendsInterview/>
-        <WebsiteReportsAndInsights/>
-        <WebsiteAutoApprovalForCandidatesPerformance/>
+        <WebsiteCreateJdAndAddCandidates />
+        <WebsiteScheduleAndNotification />
+        <WebsiteCandidateAttendsInterview />
+        <WebsiteReportsAndInsights />
+        <WebsiteAutoApprovalForCandidatesPerformance />
 
         {/* <EffortlessInterviews /> */}
 
@@ -47,7 +35,7 @@ function Website() {
         {/* <AuthenticationAndDashboardModule />
         <Pricing /> */}
         <WebsiteContactUs />
-        <WebsiteFooter /> 
+        <WebsiteFooter />
       </div>
     </div>
   );

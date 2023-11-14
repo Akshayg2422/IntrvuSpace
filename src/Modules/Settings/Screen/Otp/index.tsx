@@ -6,7 +6,7 @@ import { OTP_RESEND_DEFAULT_TIME, USER_TOKEN } from '@Utils';
 import { useInput, useKeyPress, useLoader, useNavigation, useTimer } from '@Hooks';
 import { ROUTES } from '@Routes';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchMemberUsingLoginOtp, memberLoginUsingPasswordSuccess, settingRegisterData, userLoginDetails } from '@Redux';
+import { fetchMemberUsingLoginOtp, settingRegisterData, userLoginDetails } from '@Redux';
 
 function Otp() {
     const { seconds, setSeconds } = useTimer(OTP_RESEND_DEFAULT_TIME);

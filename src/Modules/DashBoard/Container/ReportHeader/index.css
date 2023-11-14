@@ -1,0 +1,61 @@
+.base-info-container {
+    display: flex;
+    position: relative;
+    justify-content: center;
+    width: 100%;
+}
+
+.user-info-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: var(--secondary);
+}
+
+.user-mark-container {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+}
+
+.user-heading {
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.user-role {
+    font-size: 16px;
+    font-weight: 700;
+    margin-top: 10px;
+    text-transform: capitalize;
+    margin-bottom: 10px;
+}
+
+.mark-text {
+    font-size: 70px;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--secondary);
+
+}
+
+@media(max-width: 768px) {
+    .user-heading {
+        margin-top: 10px;
+        font-size: 24px;
+        font-weight: 700;
+        line-height: 1;
+    }
+
+    .mark-text {
+        font-size: 40px;
+        font-weight: 700;
+        line-height: 1;
+        color: var(--secondary);
+    }
+
+
+}

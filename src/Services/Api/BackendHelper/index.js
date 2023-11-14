@@ -200,29 +200,45 @@ export const fetchCandidatesCorporateApi = payload => post(URL.FETCH_CANDIDATES_
 
 export const syncVideoApi = payload => post(URL.URL_SYNC_VIDEO, payload, {});
 
+
+/**
+ * get otp for email verification
+ */
+
+export const getOtpForEmailVerificationAPi = payload => post(URL.URL_GET_OTP_FOR_EMAIL_VERIFICATION, payload, {});
+
+
+/**
+ *  verify email using otp
+ */
+
+export const verifyEmailUsingOtpApi = payload => post(URL.URL_VERIFY_EMAIL_USING_OTP, payload, {})
+
+
+/**
+ *  register as corporate
+ */
+
+export const registerAsCompanyApi = payload => post(URL.URL_REGISTER_AS_COMPANY, payload, {});
+
+
 //corporateScheduleActions
 
 export const postCorporateScheduleActionsApi = payload => post(URL.POST_CORPORATE_SCHEUDULE_ACTIONS, payload, {});
 
 // addTeamMate
 
-export const addTeamMateDataApi = payload => post (URL.URL_ADD_TEAM_MATE_DATA,payload,{});
+export const addTeamMateDataApi = payload => post(URL.URL_ADD_TEAM_MATE_DATA, payload, {});
 
 // getTeamMate
 
-export const getTeamMateDataApi = payload => post (URL.URL_GET_TEAM_MATE_DATA,payload,{});
-//register as member
-
-export const registerAsCompanyAPi = payload => post(URL.URL_REGISTER_AS_COMPANY, payload, {});
+export const getTeamMateDataApi = payload => post(URL.URL_GET_TEAM_MATE_DATA, payload, {});
 
 
-export const getOngoingSchedulesApi =payload =>post(URL.GRT_ONGOING_SCHEDULES,payload,{})
+export const getOngoingSchedulesApi = payload => post(URL.GRT_ONGOING_SCHEDULES, payload, {})
 
 
-export const getOtpForEmailVerificationAPi = payload => post(URL.GET_OTP_FOR_EMAIL_VERIFICATION, payload, {});
 
-
-export const verifyEmailUsingOtpApi =payload =>post(URL.VERIFY_EMAIL_USING_OTP,payload,{})
 
 
 

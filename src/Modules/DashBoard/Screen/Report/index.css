@@ -1,6 +1,32 @@
+.loader-container {
+  height: 100dvp;
+}
+
 .image-container {
-    width: 35mm;
-    height: 45mm;
-    overflow: hidden;
+  width: 35mm;
+  height: 45mm;
+  overflow: hidden;
+}
+
+.screen-padding {
+  padding: 5%;
+}
+
+.report-dropdown-container {
+  display: flex;
+  position: absolute;
+  top: 60px;
+  left: 4%;
+  right: 0;
+  z-index: 1;
+}
+
+@media(max-width: 768px) {
+  .report-dropdown-container {
+    display: flex;
+    position: relative;
+    width: 100%;
+    margin: 0;
+    top: 0px;
   }
-  
+}

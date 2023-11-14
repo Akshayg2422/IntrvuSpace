@@ -1,5 +1,20 @@
-.btn-hover-primary:hover {
-    background-color: #ffffff; /* Change this to your primary color */
-    color: #fff; /* Change this to your desired text color */
-  }
-  
+.jd-container-top {
+  margin-top: 55px;
+}
+
+.duration-content-container {
+  display: flex;
+}
+
+.each-duration {
+  width: 25%;
+}
+
+.each-duration-space {
+  margin-left: 25px;
+}
+
+.group-container {
+  margin-top: 25px;
+  margin-bottom: 50px;
+}

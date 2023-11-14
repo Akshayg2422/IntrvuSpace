@@ -1,4 +1,4 @@
-export const NAME_RULES = {
+export const FIRST_NAME_RULES = {
   first_name: {
     presence: { allowEmpty: false, message: "First name cannot be empty" },
     length: { minimum: 3, message: "First name minimum 3 chars" },
@@ -28,24 +28,15 @@ export const ADDRESS = {
   }
 }
 
-export const REGISTER_COMPANY_RULES = {
-  logo: {
-    presence: { allowEmpty: false, message: "Upload Company logo" }
-  },
-  brand_name: {
-    presence: { allowEmpty: false, message: "Brand Name cannot be empty" },
-  },
-  ...ADDRESS,
-  ...MOBILE_NUMBER_RULES,
+export const PINCODE = {
   pincode: {
-    presence: { allowEmpty: false, message: "Pincode cannot be empty" }
-  },
-  sector: {
-    presence: { allowEmpty: false, message: "Sector cannot be empty" },
-  },
-  ...NAME_RULES,
-  ...EMAIL_RULES,
-  ...ADDRESS,
+    presence: { allowEmpty: false, message: "Pincode cannot be empty" },
+    length: { is: 6, message: "Pincode should be 6 number" },
+  }
+}
+
+
+export const PASSWORD = {
   password: {
     presence: { allowEmpty: false, message: "Password cannot be empty" },
     length: { minimum: 8, message: "Password minimum 8 chars" },
@@ -60,6 +51,58 @@ export const CREATE_QUESTION_FORM_RULES = {
     presence: { allowEmpty: false, message: "description cannot be empty" },
   }
 };
+
+
+
+export const OTP_NUMBER_RULES = {
+  otp: {
+    presence: { message: "Otp cannot be empty" },
+    length: { is: 4, message: "Otp should be 4 number" },
+  }
+}
+
+
+
+
+export const EMAIL_VERIFICATION_RULES = {
+  ...EMAIL_RULES,
+  ...OTP_NUMBER_RULES,
+}
+
+export const RESET_PASSWORD_RULES = {
+  ...EMAIL_RULES,
+  ...OTP_NUMBER_RULES,
+  password: {
+    presence: { message: "Password cannot be empty" },
+    length: { minimum: 8, message: "Password minimum 8 chars" },
+  }
+}
+
+export const REGISTER_RULES = {
+  ...FIRST_NAME_RULES,
+  ...EMAIL_RULES,
+  ...MOBILE_NUMBER_RULES,
+  password: {
+    presence: { message: "Password cannot be empty" },
+    length: { minimum: 8, message: "Password minimum 8 chars" },
+  }
+}
+
+
+export const REGISTER_COMPANY_RULES = {
+  brand_name: {
+    presence: { allowEmpty: false, message: "Brand Name cannot be empty" },
+  },
+  ...ADDRESS,
+  ...MOBILE_NUMBER_RULES,
+  ...PINCODE,
+  sector: {
+    presence: { allowEmpty: false, message: "sector cannot be empty" },
+  },
+  photo: {
+    presence: { allowEmpty: false, message: "photo cannot be empty" },
+  },
+}
 
 export const CREATE_QUESTION_SECTION_RULES = {
   name: CREATE_QUESTION_FORM_RULES.name,
@@ -90,13 +133,8 @@ export const REGISTER_AS_MEMBER_RULES = {
 }
 
 export const LOGIN_WITH_EMAIL_RULES = {
-
-  email: {
-    email: { message: "doesn't look like a valid email" },
-  },
-  password: {
-    presence: { message: "password cannot be empty" }
-  },
+  ...EMAIL_RULES,
+  ...PASSWORD
 }
 
 export const LOGIN_WITH_MOBILE_NO_RULES = {
@@ -134,29 +172,31 @@ export const ADD_SECTOR_RULES = {
   }
 }
 
-export const ADD_SECTOR_CORPORATE_RULES = {
+
+const NAME_RULES = {
   name: {
-    length: { minimum: 3, message: 'Name minimum 3 chars' },
-  },
+    presence: { allowEmpty: false, message: "Name cannot be empty" },
+    length: { minimum: 3, message: 'Name minimum 3 chars' }
+  }
+}
+
+export const ADD_SECTOR_CORPORATE_RULES = {
+  ...NAME_RULES,
   description: {
     presence: { allowEmpty: false, message: 'Description cannot be empty' },
   },
-  // photo: {
-  //   presence: { allowEmpty: false, message: 'Please upload an image for your sector' }
-  // }
 }
+
 
 export const ADD_DEPARTMENT_CORPORATE_RULES = {
-  name: {
-    length: { minimum: 3, message: 'Name minimum 3 chars' },
-  },
+  ...NAME_RULES
 }
 
-export const ADD_DESIGNATION = {
-  name: {
-    presence: { allowEmpty: false, message: "Designation name cannot be empty" },
-  }
+export const ADD_DESIGNATION_CORPORATE_RULES = {
+  ...NAME_RULES
 }
+
+
 
 export const GENERATE_USING_AI_RULES = {
   name: {
@@ -206,9 +246,6 @@ export const FROM_JD_RULES = {
   experience: {
     presence: { allowEmpty: false, message: "Experience cannot be empty" },
   },
-  // reference_link: {
-  //   presence: { allowEmpty: true, message: "Reference Link cannot be empty" },
-  // },
   jd: {
     presence: { allowEmpty: false, message: "Job Description cannot be empty" },
   },
@@ -245,7 +282,7 @@ export const CREATE_KNOWLEDGE_GROUP_VARIANT_RULES = {
 }
 
 export const VALIDATE_ADD_NEW_CANDIDATES_RULES = {
-  ...NAME_RULES,
+  ...FIRST_NAME_RULES,
   last_name: {
     presence: { message: "Last name cannot be empty" },
     length: { minimum: 1, message: "Last name minimum 3 chars" },

@@ -11,11 +11,11 @@
     letter-spacing: $btn-letter-spacing;
     font-size: $input-btn-font-size;
     will-change: transform;
-    box-shadow: none;
-    border-radius: 0;
+    border-radius: $border-radius;
+    padding: 12px 18px;
 
     &:hover {
-        // @include box-shadow($btn-hover-box-shadow);
+        @include box-shadow($btn-hover-box-shadow);
         transform: translateY($btn-hover-translate-y);
     }
 
@@ -66,6 +66,40 @@
     border-width: 1px;
 }
 
+.btn-outline-primary {
+    padding: 12px 18px;
+    border-color: $border-color;
+    cursor: pointer;
+
+    &:hover {
+        background: none;
+        color: $primary; // Change the text color on hover
+    }
+}
+
+.btn-outline-primary-active {
+    padding: 12px 18px;
+    border-color: $primary;
+    cursor: pointer;
+
+    &:hover {
+        background: none;
+        color: $primary; // Change the text color on hover
+    }
+}
+
+.btn-outline-primary-inactive {
+    padding: 12px 18px;
+    border-color: $border-color;
+    cursor: pointer;
+    color: #727586;
+
+    &:hover {
+        background: none;
+        color: $primary; // Change the text color on hover
+    }
+}
+
 .btn-outline-secondary {
     color: darken(theme-color("secondary"), 50%);
 }
@@ -89,9 +123,4 @@
 
 .btn-neutral {
     color: theme-color("primary");
-}
-
-
-.pointer {
-    cursor: pointer;
 }

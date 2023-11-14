@@ -1,9 +1,8 @@
-import { Container, Row, Col } from "reactstrap";
-import { videos, image, icons } from "@Assets";
-import "./index.css";
-import { Badge, Button, Card, Divider, Image } from "@Components";
-import { useEffect, useRef, useState } from "react";
+import { icons } from "@Assets";
+import { Badge, Button, Card, Image } from "@Components";
 import { useDynamicHeight, useGrowingTitleLine } from "@Hooks";
+import { Col, Container, Row } from "reactstrap";
+import "./index.css";
 
 const CREATE_JD_AND_ADD_CANDIDATE = [
   { id: 1, mainText: "Interview", subText: " with different duration" },
@@ -48,7 +47,7 @@ function AllInOnePlatform() {
               <Col className={`text-black  text-center mt-6`}>
                 <span
                   className={"display-3 font-weight-bolder text-secondary "}
-                  // style={{ fontSize: 45 }}
+                // style={{ fontSize: 45 }}
                 >
                   All-In-One Platform For Interview
                 </span>
@@ -116,7 +115,9 @@ function AllInOnePlatform() {
                         return (
                           <>
                             <div className="mt-2">
-                              <Image src={icons.check} height={20} />
+                              <Image src={icons.check} height={12} width={12} style={{
+                                objectFit: 'contain'
+                              }} />
                               <span
                                 className="ml-2 text-secondary"
                                 style={{ fontSize: 12.5, fontWeight: 800 }}
@@ -239,7 +240,9 @@ function AllInOnePlatform() {
                         return (
                           <>
                             <div className="mt-2">
-                              <Image src={icons.check} height={20} />
+                              <Image src={icons.check} height={12} width={12} style={{
+                                objectFit: 'contain'
+                              }} />
                               <span
                                 className="ml-2 text-secondary"
                                 style={{ fontSize: 12.5, fontWeight: 800 }}

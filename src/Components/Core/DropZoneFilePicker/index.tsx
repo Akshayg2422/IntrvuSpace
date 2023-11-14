@@ -1,14 +1,10 @@
 import { icons } from "@Assets";
-import { Modal, Image, Button, showToast, Card, Heading } from "@Components";
-import { translate } from "@I18n";
-import { imagePickerConvertBase64 } from "@Utils";
-import React, { useEffect, useRef, useState } from "react";
+import { Button, Card, Heading, Modal, showToast } from "@Components";
+import { useEffect, useState } from "react";
 import {
   Col,
-  ListGroup,
-  ListGroupItem,
-  Row,
   Button as RSButton,
+  Row
 } from "reactstrap";
 
 interface UploadProps {
@@ -114,11 +110,11 @@ function DropzoneFilePicker({
           />
           <div className="mb-3 mt--1">
             <span className="text-decoration-underline-hover pointer" onClick={onTemplateClick}>
-          <i className="bi bi-file-arrow-down-fill text-primary "></i>
+              <i className="bi bi-file-arrow-down-fill text-primary "></i>
 
-            <a role={"button"} className="font-weight-600 text-primary ml-1" >
-              {"Download templete"}
-            </a>
+              <a role={"button"} className="font-weight-600 text-primary ml-1" >
+                {"Download templete"}
+              </a>
             </span>
           </div>
           <div

@@ -3,7 +3,7 @@
 //
 
 .custom-radio {
-    .custom-control-input~.custom-control-label {
+    .custom-control-input ~ .custom-control-label {
         cursor: pointer;
         font-size: $font-size-sm;
         height: $custom-control-indicator-size;
@@ -11,11 +11,10 @@
 
     .custom-control-input {
         &:checked {
-            ~.custom-control-label {
+            ~ .custom-control-label {
                 &::before {
                     border-color: $custom-control-indicator-checked-border-color;
                 }
-
                 &::after {
                     background-image: $custom-radio-indicator-icon-checked;
                 }
@@ -23,7 +22,7 @@
         }
 
         &:disabled {
-            ~.custom-control-label {
+            ~ .custom-control-label {
                 &::before {
                     border-color: $custom-control-indicator-disabled-bg;
                 }

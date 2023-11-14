@@ -29,12 +29,14 @@ function WebsiteAutoApprovalForCandidatesPerformance() {
                                         <>
                                             <div className="row ml-md-1 ml-sm-0 ml-1">
                                                 <div>
-                                                    <Image src={icons.check} height={20} />
+                                                    <Image src={icons.check} height={12} width={12} style={{
+                                                        objectFit: 'contain'
+                                                    }} />
                                                 </div>
                                                 <span
                                                     className="col-11 text-default"
                                                 >
-                                                    <p style={{fontSize:'15px',fontWeight:400}}>{item.description}</p>
+                                                    <p style={{ fontSize: '15px', fontWeight: 400 }}>{item.description}</p>
                                                 </span>
                                             </div>
                                         </>

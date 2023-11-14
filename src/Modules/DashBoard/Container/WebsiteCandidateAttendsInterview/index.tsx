@@ -18,7 +18,7 @@ function WebsiteCandidateAttendsInterview() {
                     <Col lg="5">
                         <div className="mt-5">
                             <div>
-                                <span style={{lineHeight:'35px'}} className="display-3 text-secondary font-weight-bolder mb-0 ls-1">
+                                <span style={{ lineHeight: '35px' }} className="display-3 text-secondary font-weight-bolder mb-0 ls-1">
                                     Candidate Attends the interview
                                 </span>
                             </div>
@@ -29,7 +29,9 @@ function WebsiteCandidateAttendsInterview() {
                                         <>
                                             <div className="row ml-md-1 ml-sm-0 ml-1">
                                                 <div>
-                                                    <Image src={icons.check} height={20} />
+                                                    <Image src={icons.check} height={12} width={12} style={{
+                                                        objectFit: 'contain'
+                                                    }} />
                                                 </div>
                                                 <span
                                                     className="col-11 text-default"

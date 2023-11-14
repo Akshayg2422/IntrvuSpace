@@ -37,7 +37,7 @@ import { useScreenRecorder } from "./useScreenRecorder";
 
 const compare_moment_format = "YYYY-MM-DDHH:mm:ss";
 
-const INTERVAL_TIME = 5000;
+let INTERVAL_TIME = 5000;
 
 const NETWORK_DESIGN = [
   {
@@ -176,7 +176,7 @@ function Call() {
       setIsTtfSpeaking(false);
     };
 
-    audioElementRef.current.onloadstart = function () {};
+    audioElementRef.current.onloadstart = function () { };
     audioElementRef.current.onended = function () {
       setIsTtfSpeaking(false);
       if (closeCall.current === true) {
@@ -345,7 +345,7 @@ function Call() {
           canConnect.current = false;
           socketRef.current.close();
           socketRef.current = null;
-        } catch (e) {}
+        } catch (e) { }
         clearInterval(reconnectInterval);
       }
     };
@@ -888,7 +888,7 @@ function Call() {
         onSuccess: () => () => {
           endInterviewHandler();
         },
-        onError: () => () => {},
+        onError: () => () => { },
       })
     );
   }
@@ -1004,7 +1004,7 @@ function Call() {
                           variant={"override"}
                           onClick={endInterviewHandler}
                         />
-                        <h4 className="display-4 mb-0 font-weight-bolder text-primary ml-3 d-none d-md-block">{`Interview for the role of ${scheduleInfo?.interviewee_expected_role}`}</h4>
+                        <h4 className="screen-heading mb-0  ml-3 d-none d-md-block">{`Interview for the role of ${scheduleInfo?.interviewee_expected_role}`}</h4>
                         <h4 className="mb-0 font-weight-bolder text-primary ml-3 d-block d-md-none">{`Interview for the role of ${scheduleInfo?.interviewee_expected_role}`}</h4>
                       </div>
                     </div>
@@ -1155,6 +1155,7 @@ function Call() {
                     </div>
                   </div>
                 </div>
+
               </>
             )}
             {!interviewStarted ? (
@@ -1254,8 +1255,8 @@ function Call() {
                 isForceRecord
                   ? "Confirm Recording"
                   : isCancelRecording
-                  ? "Confirm without Recording"
-                  : "Cancel Recording"
+                    ? "Confirm without Recording"
+                    : "Cancel Recording"
               }
             />
           </div>

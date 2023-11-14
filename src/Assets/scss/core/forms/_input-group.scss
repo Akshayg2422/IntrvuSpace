@@ -2,7 +2,7 @@
 // Input group
 //
 
-.custom-control {
+.custom-control{
 	padding-left: $custom-control-gutter + $custom-control-indicator-size - 1rem;
 
 }
@@ -22,7 +22,7 @@
 }
 
 .input-group-text {
-	@include transition($input-transition);
+    @include transition($input-transition);
 
 	i {
 		font-size: $font-size-sm;
@@ -56,8 +56,8 @@
 .input-group-merge {
 	.form-control {
 		&:not(:first-child) {
-			border-left: 0;
-			padding-left: 0;
+		    border-left: 0;
+		    padding-left: 0;
 		}
 
 		&:not(:last-child) {
@@ -70,21 +70,21 @@
 // Alternative input groups related to .form-control-alternative
 
 .input-group-alternative {
-	box-shadow: $input-alternative-box-shadow;
-	border: 0;
-	transition: box-shadow .15s ease;
+    box-shadow: $input-alternative-box-shadow;
+    border: 0;
+    transition: box-shadow .15s ease;
 
-	.form-control,
-	.input-group-text {
-		border: 0;
-		box-shadow: none;
-	}
+    .form-control,
+    .input-group-text {
+        border: 0;
+        box-shadow: none;
+    }
 }
 
 .focused {
 	.input-group-alternative {
-		box-shadow: $input-focus-alternative-box-shadow !important;
-	}
+        box-shadow: $input-focus-alternative-box-shadow !important;
+    }
 }
 
 
@@ -93,17 +93,17 @@
 .input-group-flush {
 	box-shadow: none;
 
-	>.form-control {
+	> .form-control {
 		padding: 0;
 		border-width: 0;
 		background-color: transparent;
 
 	}
 
-	>.input-group-prepend,
-	>.input-group-append {
+	> .input-group-prepend,
+	> .input-group-append {
 
-		>.input-group-text {
+		> .input-group-text {
 			padding: 0;
 			padding-right: 1rem;
 			border-width: 0;
@@ -121,9 +121,9 @@
 	}
 
 	.input-group-text {
-		color: $input-group-addon-focus-color;
-		background-color: $input-group-addon-focus-bg;
-		border-color: $input-group-addon-focus-border-color;
+	    color: $input-group-addon-focus-color;
+	    background-color: $input-group-addon-focus-bg;
+	    border-color: $input-group-addon-focus-border-color;
 	}
 
 	.form-control {

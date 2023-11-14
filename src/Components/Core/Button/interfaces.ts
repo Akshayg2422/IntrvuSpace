@@ -10,6 +10,5 @@ export interface ButtonProps extends RsButtonProps {
     icons?: any
     height?: number;
     width?: number;
-    buttonOutline?:string
-    loading?:any;
+    outline?: boolean
 }

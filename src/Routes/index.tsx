@@ -1,5 +1,38 @@
-import { icons } from '@Assets'
-import { Designation, WeightageCountForm, CreateQuestionForm, Clients, Sector, Questions, Call, Report, QuestionSections, AnalyzingAnimation, Schedules, Login, Otp, Splash, Register, LoginWithOtp, AdminLogin, VariantInfo, PrivacyPolicy, TermsAndConditions, ReturnAndRefund, Reports, HowItWorks, Introduction, Settings, Response, CreateNewPassword, ForgotPassword, PreparingYourInterview, UploadCorporateOpeningsCard, UploadJdCard, Scheduling ,RegisterCompany,VerifyEmail,ManageTeamMate, Sectors, EmployeeDesignation, Department} from '@Modules';
+import { icons } from '@Assets';
+import {
+  AdminLogin,
+  AnalyzingAnimation,
+  Clients,
+  CreateNewPassword,
+  CreateQuestionForm,
+  Department,
+  Designation,
+  ForgotPassword,
+  HowItWorks,
+  Introduction,
+  Login,
+  LoginWithOtp,
+  ManageTeamMate,
+  Otp,
+  PreparingYourInterview,
+  PrivacyPolicy,
+  QuestionSections,
+  Questions, Register,
+  Report,
+  Reports,
+  Response,
+  ReturnAndRefund,
+  Schedules,
+  Scheduling,
+  Sector,
+  Settings,
+  TermsAndConditions,
+  VariantInfo,
+  WeightageCountForm,
+  EmailVerification,
+  CorporateRegister,
+  SettingDesignation
+} from '@Modules';
 
 export const ROUTES = {
   'auth-module': {
@@ -18,7 +51,7 @@ export const ROUTES = {
     forgotPassword: '/forgotPassword',
     createNewPassword: '/createNewPassword',
     'register-company': '/register-company',
-    'verify-email':'/verify-email'
+    'mail-verification': '/mail-verification'
   },
   'designation-module': {
     Dashboard: "/dashboard",
@@ -37,12 +70,12 @@ export const ROUTES = {
     'variant-info': '/variant-info',
     settings: '/settings',
     'response': '/response',
-    'preparing-your-interview':'/preparing-your-interview',
-    'department':'/department',
-    'employeeDesignations':'/employeeDesignations',
-    'ManageTeamMate':'/ManageTeamMate',
+    'preparing-your-interview': '/preparing-your-interview',
+    'department': '/department',
+    'employeeDesignations': '/employeeDesignations',
+    'ManageTeamMate': '/ManageTeamMate',
     // 'Sectors':'/Sectors'
-    'scheduling-interview':'/scheduling-interview',
+    'scheduling-interview': '/scheduling-interview',
   }
 }
 
@@ -58,76 +91,71 @@ export const AUTH_ROUTES = [
     path: ROUTES['auth-module'].otp,
     component: <Otp />
   },
-  // {
-  //   id: 3,
-  //   path: ROUTES['auth-module'].splash,
-  //   component: <Splash />
-  // },
   {
-    id: 4,
+    id: 3,
     path: ROUTES['auth-module'].register,
     component: <Register />
   },
   {
-    id: 5,
+    id: 4,
     path: ROUTES['auth-module'].loginWithOtp,
     component: <LoginWithOtp />
   },
   {
-    id: 6,
+    id: 5,
     path: ROUTES['auth-module'].admin_login,
     component: <AdminLogin />
   },
   {
-    key: 7,
+    key: 6,
     path: ROUTES['auth-module'].privacy,
     component: <PrivacyPolicy />
   },
   {
-    key: 8,
+    key: 7,
     path: ROUTES['auth-module'].TermsAndConditions,
     component: <TermsAndConditions />
   },
   {
-    key: 9,
+    key: 8,
     path: ROUTES['auth-module'].ReturnAndRefund,
     component: <ReturnAndRefund />
   },
   {
-    key: 10,
+    key: 9,
     path: ROUTES['auth-module'].reports,
     component: <Reports />
   },
   {
-    key: 11,
+    key: 10,
     path: ROUTES['auth-module']['how-it-works'],
     component: <HowItWorks />
   },
   {
-    key: 12,
+    key: 11,
     path: ROUTES['auth-module'].introduction,
     component: <Introduction />
   },
   {
-    key: 13,
+    key: 12,
     path: ROUTES['auth-module'].forgotPassword,
     component: <ForgotPassword />
   },
   {
-    key: 14,
+    key: 13,
     path: ROUTES['auth-module'].createNewPassword,
     component: <CreateNewPassword />
   },
   {
     key: 15,
     path: ROUTES['auth-module']['register-company'],
-    component: <RegisterCompany />
+    component: <CorporateRegister />
   },
 
   {
-    key:16,
-    path: ROUTES['auth-module']['verify-email'],
-    component:<VerifyEmail/>
+    key: 16,
+    path: ROUTES['auth-module']['mail-verification'],
+    component: <EmailVerification />
   }
 
 
@@ -192,7 +220,7 @@ export const DASHBOARD_ROUTES = [
   {
     id: 12,
     path: ROUTES['designation-module']['scheduling-interview'],
-    component: <Scheduling/>
+    component: <Scheduling />
   },
 ]
 
@@ -223,14 +251,14 @@ export const HOME_ROUTES = [
     name: "Designations",
     // icon: icons.settings,
     layout: "",
-    component:<EmployeeDesignation/>
+    component: <SettingDesignation />
   },
   {
     path: ROUTES['designation-module'].ManageTeamMate,
     name: "ManageTeamMate",
     // icon: icons.settings,
     layout: "",
-    component:<ManageTeamMate/>
+    component: <ManageTeamMate />
   },
   // {
   //   path: ROUTES['designation-module'].Sectors,
