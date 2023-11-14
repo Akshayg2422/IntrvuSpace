@@ -1,5 +1,6 @@
 import { icons } from "@Assets";
 import {
+  Alert,
   AnimatedImage,
   Back,
   Button,
@@ -33,7 +34,7 @@ import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { RecordRTCPromisesHandler, StereoAudioRecorder } from "recordrtc";
-import { useScreenRecorder } from "./useScreenRecorder";
+import { useScreenRecorder } from "@Hooks";
 
 const compare_moment_format = "YYYY-MM-DDHH:mm:ss";
 
@@ -176,7 +177,7 @@ function Call() {
       setIsTtfSpeaking(false);
     };
 
-    audioElementRef.current.onloadstart = function () { };
+    audioElementRef.current.onloadstart = function () {};
     audioElementRef.current.onended = function () {
       setIsTtfSpeaking(false);
       if (closeCall.current === true) {
@@ -267,12 +268,16 @@ function Call() {
 
   useEffect(() => {
     if (recordStatus) {
-      console.log("9999999999999");
       startInterviewHandler();
     } else if (recordStatus === false) {
       setIsConfirmRecordingModalOpen(true);
       setRecordStatus(undefined);
     }
+    return () => {
+      if (recordStatus) {
+        onEndCallHandler();
+      }
+    };
   }, [recordStatus, isConfirmRecordingModalOpen]);
 
   const proceedHandleResponseV1 = (response) => {
@@ -345,7 +350,7 @@ function Call() {
           canConnect.current = false;
           socketRef.current.close();
           socketRef.current = null;
-        } catch (e) { }
+        } catch (e) {}
         clearInterval(reconnectInterval);
       }
     };
@@ -888,7 +893,7 @@ function Call() {
         onSuccess: () => () => {
           endInterviewHandler();
         },
-        onError: () => () => { },
+        onError: () => () => {},
       })
     );
   }
@@ -1155,7 +1160,6 @@ function Call() {
                     </div>
                   </div>
                 </div>
-
               </>
             )}
             {!interviewStarted ? (
@@ -1243,71 +1247,29 @@ function Call() {
       {/** confirm or cancel video recording modal*/}
 
       <Modal
+        title={
+          isForceRecord
+            ? "Confirm Recording"
+            : isCancelRecording
+            ? "Confirm without Recording"
+            : "Cancel Recording"
+        }
         isOpen={isConfirmRecordingModalOpen}
         onClose={closeRecordingModal}
-        size="lg"
-      >
-        <div className="mt--5">
-          <div>
-            <Heading
-              className={"text-secondary display-4"}
-              heading={
-                isForceRecord
-                  ? "Confirm Recording"
-                  : isCancelRecording
-                    ? "Confirm without Recording"
-                    : "Cancel Recording"
-              }
-            />
-          </div>
-          <div className="text-default">
-            {isForceRecord ? (
-              <p className="mt-3">
-                {
-                  "Please confirm to record this interview and select entire screen to share to your interviewer"
-                }
-              </p>
-            ) : isCancelRecording ? (
-              <p className="mt-3">
-                {"Please confirm to proceed the interview without recording"}
-              </p>
-            ) : (
-              <p className="mt-3">
-                {"Are you sure, want to cancel the interview recording"}
-              </p>
-            )}
-          </div>
-          <div className="text-center mt-4 mb-3">
-            {isForceRecord ? (
-              <Button
-                className="rounded-sm"
-                text={"Confirm"}
-                onClick={confirmForceRecord}
-              />
-            ) : !isCancelRecording && !isEnableRecording ? (
-              <>
-                <Button
-                  className="rounded-sm"
-                  text={"Cancel Recording"}
-                  onClick={cancelRecording}
-                  color="white"
-                />
-                <Button
-                  className="rounded-sm"
-                  text={"Enable Recording"}
-                  onClick={enableRecording}
-                />
-              </>
-            ) : (
-              <Button
-                className="rounded-sm"
-                text={"Confirm"}
-                onClick={confirmRecording}
-              />
-            )}
-          </div>
-        </div>
-      </Modal>
+        subTitle={
+          isForceRecord
+            ? "Please confirm to record this interview and select entire screen to share to your interviewer"
+            : isCancelRecording
+            ? "Please confirm to proceed the interview without recording"
+            : "Are you sure, want to cancel the interview recording"
+        }
+        buttonText="Confirm"
+        onClick={() => {
+          if (isForceRecord) {
+            confirmForceRecord();
+          }
+        }}
+      />
 
       {/**
        * nerowork error
@@ -1320,23 +1282,17 @@ function Call() {
             ? "Server Full"
             : "Network Error"
         }
-      >
-        <h3 className="m-0">
-          {networkErrorResponse?.status_code === 3
+        subTitle={
+          networkErrorResponse?.status_code === 3
             ? networkErrorResponse?.error_message
-            : " Technical breakdown please try again"}
-        </h3>
-        <div className="d-flex align-items-center justify-content-center mt-3">
-          <Button
-            className="rounded"
-            text={"Try Again"}
-            onClick={() => {
-              interviewLimitModal.hide();
-              getBasicInfo();
-            }}
-          />
-        </div>
-      </Modal>
+            : "Technical breakdown please try again"
+        }
+        buttonText="Try Again"
+        onClick={() => {
+          interviewLimitModal.hide();
+          getBasicInfo();
+        }}
+      />
 
       {/**
        * Camera permission modal
@@ -1345,32 +1301,13 @@ function Call() {
       <Modal
         isOpen={camPermissionModal.visible}
         onClose={camPermissionModal.hide}
-      >
-        <div className="mt--5">
-          <Heading
-            className={"text-secondary display-4"}
-            heading={"Camera Permission"}
-          />
-          <div className="text-default">
-            <p className="mt-3">
-              {
-                "Please provide access to your web camera to start the interview"
-              }
-            </p>
-          </div>
-
-          <div className="d-flex align-items-center justify-content-center mt-4 mb-3">
-            <Button
-              className="rounded-sm"
-              text={"OK"}
-              onClick={async () => {
-                camPermissionModal.hide();
-                // await hasCameraPermission()
-              }}
-            />
-          </div>
-        </div>
-      </Modal>
+        title={"Camera Permission"}
+        subTitle={
+          "Please provide access to your web camera to start the interview"
+        }
+        buttonText="Close"
+        onClick={camPermissionModal.hide}
+      />
     </>
   );
 }
