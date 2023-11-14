@@ -301,6 +301,7 @@ function FromJD() {
         onClick={submitJdApiHandler}
         buttonText={'Create Interview'}
         onClose={() => {
+          resetValues()
           dispatch(hideCreateJdModal());
         }}
       >

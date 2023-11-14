@@ -285,7 +285,7 @@ export const VALIDATE_ADD_NEW_CANDIDATES_RULES = {
   ...FIRST_NAME_RULES,
   last_name: {
     presence: { message: "Last name cannot be empty" },
-    length: { minimum: 1, message: "Last name minimum 3 chars" },
+    length: { minimum: 1, message: "Last name minimum 1 chars" },
   },
   ...MOBILE_NUMBER_RULES,
   ...EMAIL_RULES,

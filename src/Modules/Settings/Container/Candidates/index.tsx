@@ -5,7 +5,7 @@ import { fetchCandidatesCorporate, createSchedule, refreshCorporateSchedule, pos
 import { useSelector, useDispatch } from 'react-redux';
 import { paginationHandler, capitalizeFirstLetter, validate, VALIDATE_ADD_NEW_CANDIDATES_RULES, ifObjectExist, getValidateError } from '@Utils';
 import { icons } from '@Assets';
-import { useModal, useInput, useLoader, useDropDown, useNavigation } from '@Hooks'
+import { useModal, useInput, useLoader, useDropDown, useNavigation, useKeyPress } from '@Hooks'
 import { ROUTES } from '@Routes'
 import { BulkUpload } from '@Modules'
 import './index.css'
@@ -14,6 +14,7 @@ import './index.css'
 function Candidates({ id, details }: CandidatesProps) {
 
     const { goTo } = useNavigation()
+    const enterPress = useKeyPress('Enter')
 
     const CANDIDATE_MENU_OPTIONS = [
         { id: 1, name: "Approve Manually" },
@@ -41,8 +42,11 @@ function Candidates({ id, details }: CandidatesProps) {
 
     const dispatch = useDispatch();
 
-    const { candidate_details = {}, vacancies = 0 } = details || {}
+    const { candidate_details = {}, vacancies = 0, } = details || {}
     const { total_candidates = 0, yet_to_attend_candidates = 0, selected_candidates = 0, rejected_candidates = 0 } = candidate_details
+
+
+    const isJdClosed = details?.is_closed
 
     const {
         candidatesList,
@@ -99,8 +103,15 @@ function Candidates({ id, details }: CandidatesProps) {
 
     useEffect(() => {
         getCandidatesCorporate(candidatesListCurrentPages);
-    }, [candidateStatus?.value?.id, searchCandidate?.value]);
+    }, [candidateStatus?.value?.id]);
 
+
+
+    useEffect(() => {
+        if (enterPress) {
+            getCandidatesCorporate(candidatesListCurrentPages);
+        }
+    }, [enterPress])
 
     const getCandidatesCorporate = (page_number: number) => {
 
@@ -142,7 +153,6 @@ function Candidates({ id, details }: CandidatesProps) {
                     is_closed
                 } = item;
 
-
                 const status = getIcon(status_icon_type)
                 return {
                     "": (
@@ -182,7 +192,6 @@ function Candidates({ id, details }: CandidatesProps) {
                             {status_note}
                         </div>
                     ),
-
                     " ":
                         <div className={'d-flex align-items-center'}>
                             {is_report_completed &&
@@ -199,15 +208,22 @@ function Candidates({ id, details }: CandidatesProps) {
                                     />
                                 </div>
                             }
-                            {!is_closed &&
-                                <div className={'th-menu-container'}>
-                                    <MenuBar
-                                        menuData={CANDIDATE_MENU_OPTIONS}
-                                        onClick={(action) => onCandidateMenuHandler(action, item)}
-                                    />
-                                </div>
-                            }
-                        </div >
+                        </div >,
+                    ...(!isJdClosed &&
+                    {
+                        "  ":
+                            <div className={'d-flex align-items-center'}>
+                                {!is_closed &&
+                                    <div className={'th-menu-container'}>
+                                        <MenuBar
+                                            menuData={CANDIDATE_MENU_OPTIONS}
+                                            onClick={(action) => onCandidateMenuHandler(action, item)}
+                                        />
+                                    </div>
+                                }
+                            </div>
+                    }
+                    )
                 };
             });
     };
@@ -239,7 +255,6 @@ function Candidates({ id, details }: CandidatesProps) {
                     },
                     onError: (error: any) => () => {
                         showToast(error.error_message, "error");
-                        addCandidateModal.hide();
                         addCandidateLoader.hide();
                     },
                 })
@@ -284,7 +299,6 @@ function Candidates({ id, details }: CandidatesProps) {
         };
 
 
-        console.log(JSON.stringify(params) + '=====');
 
         dispatch(
             postManualApprovalOnCandidate({
@@ -328,6 +342,10 @@ function Candidates({ id, details }: CandidatesProps) {
 
 
     function resetValues() {
+
+
+        addCandidateModal.hide();
+
         firstName.set("");
         lastName.set("");
         email.set("");
@@ -356,6 +374,7 @@ function Candidates({ id, details }: CandidatesProps) {
                     showToast(response.message, "success");
                     bulkUploadLoader.hide();
                     dispatch(refreshCorporateSchedule());
+                    bulkUploadModal.hide()
                     getCandidatesCorporate(candidatesListCurrentPages);
                 },
                 onError: (error: any) => () => {
@@ -364,6 +383,7 @@ function Candidates({ id, details }: CandidatesProps) {
                 },
             })
         );
+
     }
 
 
@@ -382,14 +402,16 @@ function Candidates({ id, details }: CandidatesProps) {
                             {'invite link over email and message with the deadlines before which they can join anytime of their preference'}
                         </div>
                     </div>
-                    <div className={'empty-candidates-btn-container'}>
-                        <div className={'empty-btn-container'}>
-                            <Button block text={'Add Manually'} onClick={addCandidateModal.show} />
+                    {!isJdClosed &&
+                        <div className={'empty-candidates-btn-container'}>
+                            <div className={'empty-btn-container'}>
+                                <Button block text={'Add Manually'} onClick={addCandidateModal.show} />
+                            </div>
+                            <div className={'empty-btn-container bulk-btn-container'}>
+                                <Button block text={'Bulk Import'} onClick={openBulkUploadHandler} />
+                            </div>
                         </div>
-                        <div className={'empty-btn-container bulk-btn-container'}>
-                            <Button block text={'Bulk Import'} onClick={openBulkUploadHandler} />
-                        </div>
-                    </div>
+                    }
                 </div>
             }
 
@@ -447,14 +469,16 @@ function Candidates({ id, details }: CandidatesProps) {
                                 />
                             </div>
 
-                            <div className={'add-candidate-container'}>
-                                <div className={'add-button-container'}>
-                                    <Button block text={'Add'} onClick={addCandidateModal.show} />
+                            {!isJdClosed &&
+                                <div className={'add-candidate-container'}>
+                                    <div className={'add-button-container'}>
+                                        <Button block text={'Add'} onClick={addCandidateModal.show} />
+                                    </div>
+                                    <div className={'add-button-container'}>
+                                        <Button block outline text={'Bulk Import'} onClick={openBulkUploadHandler} />
+                                    </div>
                                 </div>
-                                <div className={'add-button-container'}>
-                                    <Button block outline text={'Bulk Import'} onClick={openBulkUploadHandler} />
-                                </div>
-                            </div>
+                            }
                         </div>
 
                         <div className={'table-container'}>
@@ -494,7 +518,7 @@ function Candidates({ id, details }: CandidatesProps) {
                             }
                         </div>
                     </div>
-                </div>
+                </div >
             }
 
 
@@ -507,7 +531,7 @@ function Candidates({ id, details }: CandidatesProps) {
                 loading={addCandidateLoader.loader}
                 title={'Add Candidate'}
                 isOpen={addCandidateModal.visible}
-                onClose={addCandidateModal.hide}
+                onClose={resetValues}
                 onClick={generateNewCandidateHandler}
             >
                 <div className={'row'}>
@@ -571,8 +595,8 @@ function Candidates({ id, details }: CandidatesProps) {
 
             <Alert
                 isOpen={closeCandidateModal.visible}
-                title={'Remove Candidate'}
-                subTitle={'Are you sure, want to remove this candidate?'}
+                title={'Close Candidate'}
+                subTitle={'Are you sure, want to close this candidate?'}
                 onClose={() => {
                     closeCandidateModal.hide();
                 }}

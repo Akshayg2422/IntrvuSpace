@@ -4,12 +4,13 @@ import {
   MenuBar,
   Modal,
   ViewMore,
-  showToast
+  showToast,
+  Back
 } from "@Components";
 import { useLoader, useModal } from '@Hooks';
-import { Candidates, BulkUpload } from '@Modules';
+import { Candidates } from '@Modules';
 import { getCorporateScheduleDetails, postCorporateScheduleActions } from '@Redux';
-import { capitalizeFirstLetter, displayFormatDate, getDateFromServer, getDisplayTime } from '@Utils';
+import { capitalizeFirstLetter, displayFormatDate, getDisplayTime } from '@Utils';
 import moment from "moment";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -66,9 +67,6 @@ function VariantInfo() {
   const modifyDeadlineModal = useModal(false)
   const [scheduleEndDate, setScheduleEndDate] = useState<any>("");
   const [scheduleEndTime, setScheduleEndTime] = useState<any>("");
-
-
-
 
 
   useEffect(() => {
@@ -140,17 +138,18 @@ function VariantInfo() {
 
     const displayTime = moment(getDisplayTime(candidate_deadline), 'HH:mm:ss').format('hh:mm A');
     setScheduleEndDate(
-      getDateFromServer(candidate_deadline)
+      displayFormatDate(candidate_deadline, 'date')
     );
-    setScheduleEndTime(displayTime);
-
+    setScheduleEndTime(displayTime)
     modifyDeadlineModal.show();
   };
 
   function proceedModifyDeadlineApiHandler() {
 
     const convertedTime = moment(scheduleEndTime, 'hh:mm A').format('HH:mm:ss')
-    const date = moment(scheduleEndDate + "T" + convertedTime).format(
+    const formattedDate = moment(scheduleEndDate, "MMM DD YYYY").format("YYYY-MM-DD");
+
+    const date = moment(formattedDate + "T" + convertedTime).format(
       "YYYY-MM-DDTHH:mm:ss");
 
     const params = { deadline: date }
@@ -161,20 +160,20 @@ function VariantInfo() {
 
 
 
-
-
-
-
-
   return (
     <>
       <div className={'screen-padding'}>
         <div>
           <div className={'variant-header'}>
-            <div>
-              <div className={'screen-heading'}>{capitalizeFirstLetter(position)}</div>
-              <div className={'experience'}>
-                {capitalizeFirstLetter(experience)}
+            <div className="d-flex align-items-start">
+              <div className="mt-1">
+                <Back />
+              </div>
+              <div className="ml-2">
+                <div className={'screen-heading'}>{capitalizeFirstLetter(position)}</div>
+                <div className={'experience'}>
+                  {capitalizeFirstLetter(experience)}
+                </div>
               </div>
             </div>
 
@@ -240,7 +239,7 @@ function VariantInfo() {
                 </div>
                 <div className={'info-container'}>
                   <div className={'info-title'}>
-                    {'Candidate Deadline'}
+                    {'Created At'}
                   </div>
                   <div className={'info-content'}>
                     {displayFormatDate(
@@ -284,8 +283,8 @@ function VariantInfo() {
             <DateTimePicker
               noSpace
               disableFuture={true}
-              heading={'Schedule Date'}
-              placeholder={'Schedule Date'}
+              heading={'Deadline Date'}
+              placeholder={'Deadline Date'}
               value={scheduleEndDate}
               onChange={setScheduleEndDate}
             />
@@ -295,8 +294,8 @@ function VariantInfo() {
               noSpace
               type={'time'}
               dateFormat={'HH:mm:ss'}
-              heading={'Schedule Date'}
-              placeholder={'Schedule Date'}
+              heading={'Deadline Time'}
+              placeholder={'Deadline Time'}
               value={scheduleEndTime}
               onChange={setScheduleEndTime}
             />

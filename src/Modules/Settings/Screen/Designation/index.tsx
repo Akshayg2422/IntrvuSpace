@@ -168,10 +168,11 @@ function Designation() {
 
   function resetValues() {
     position.set("")
-    experience.set({})
+    experience.set(EXPERIENCE_LIST[0])
     jd.set("")
-    vacancies.set('')
+    vacancies.set('1')
     setDuration(INTERVIEW_DURATIONS[0]);
+    referenceId.set("")
   }
 
 
@@ -327,7 +328,10 @@ function Designation() {
         title={'Create Opening'}
         subTitle={'Input job details, specifying qualifications, requirements, interview duration'}
         buttonText={'Create Opening'}
-        onClose={hideCreateOpeningModal}
+        onClose={()=>{
+          hideCreateOpeningModal()
+          resetValues()
+        }}
         onClick={createCorporateScheduleApiHandler}
 
       >
