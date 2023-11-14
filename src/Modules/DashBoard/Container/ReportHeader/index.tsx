@@ -1,6 +1,7 @@
 import React from 'react'
 import { Image } from '@Components';
 import { icons } from '@Assets';
+import { getPhoto } from '@Utils'
 import { ReportHeaderProps } from './interfaces'
 import './index.css'
 
@@ -10,7 +11,7 @@ const ReportHeader = ({ details }: ReportHeaderProps) => {
     const { name, role, experience, interview_duration, user_location_info } = interview_meta_info || {}
 
     const experience_txt = !experience ? "Fresher" : `${experience} ${experience > 1 ? "years" : experience === 1 ? "year" : ""}`
-
+    const { region, city, country } = user_location_info || {}
 
     const colorVariant = (percentage: any) => {
         if (percentage <= 20) return "red";
@@ -28,7 +29,7 @@ const ReportHeader = ({ details }: ReportHeaderProps) => {
                     <div className={'user-photo-container border'}>
                         {candidate_photo ?
                             <Image
-                                src={candidate_photo}
+                                src={getPhoto(candidate_photo)}
                                 height={'100%'}
                                 width={'100%'}
                                 style={{
@@ -51,9 +52,16 @@ const ReportHeader = ({ details }: ReportHeaderProps) => {
                         }
                     </div>
 
-                    <div className={'user-address-container'}>
-
-                    </div>
+                    {user_location_info ?
+                        <div className={'user-address-container'}>
+                            <div>
+                                <span className={'screen-des'}>{region}</span>
+                                <span className={'screen-des'}>{city}</span>
+                            </div>
+                            <span className={'screen-des'}>{country}</span>
+                        </div> :
+                        <></>
+                    }
                 </div>
                 <div className={'user-details-container'}>
                     <div className={'user-heading'}>{name}</div>
@@ -74,7 +82,7 @@ const ReportHeader = ({ details }: ReportHeaderProps) => {
                     {candidate_score}
                 </span>
             </div>
-        </div>
+        </div >
     )
 }
 

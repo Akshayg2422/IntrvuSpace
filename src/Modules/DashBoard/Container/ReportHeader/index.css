@@ -12,8 +12,20 @@
     color: var(--secondary);
 }
 
-.user-auth-container {}
+.user-auth-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 
+.user-address-container {
+    margin-top: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 
 .user-photo-container {
     display: flex;
