@@ -38,7 +38,6 @@ function Splash() {
                     }
                 }
 
-
             }
 
         }, SPLASH_STAY_TIME_MILE_SECONDS);
