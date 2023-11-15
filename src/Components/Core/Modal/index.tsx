@@ -7,8 +7,21 @@ import './index.css'
 
 function Modal({ loading, isOpen, children, title, subTitle, buttonText = 'Submit', size = 'lg', style, onClose, onClick, ...rest }: ModalProps) {
 
-  return (
+  useEffect(() => {
+    // Add and remove the "overflow-hidden" class to the body based on modal's open state
+    if (isOpen) {
+      document.body.classList.add('overflow-hidden');
+    } else {
+      document.body.classList.remove('overflow-hidden');
+    }
 
+    // Cleanup the class when the component unmounts
+    return () => {
+      document.body.classList.remove('overflow-hidden');
+    };
+  }, [isOpen]);
+
+  return (
     <RsModal
       fade={false}
       className={`modal-dialog-centered modal-${size}`}
@@ -34,9 +47,7 @@ function Modal({ loading, isOpen, children, title, subTitle, buttonText = 'Submi
           </div>
         </div>
         <div className={'modal-child-container'}>
-          {
-            children
-          }
+          {children}
         </div>
         {onClick &&
           <div className={'modal-bottom-container'}>
@@ -52,4 +63,3 @@ function Modal({ loading, isOpen, children, title, subTitle, buttonText = 'Submi
 
 export { Modal };
 export type { ModalProps };
-

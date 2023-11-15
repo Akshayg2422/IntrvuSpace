@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
 import { Button, DesignationItem, DropDown, Input, InputHeading, Modal, NoDataFound, PageNation, ReactAutoComplete, Spinner, TextArea, showToast, TopNavbarCorporateFlow } from '@Components';
-import { useDropDown, useInput, useLoader, useNavigation } from '@Hooks';
+import { useDropDown, useInput, useLoader, useNavigation, useKeyPress } from '@Hooks';
 import { UploadCorporateOpeningsCard, } from '@Modules';
 import { addDepartmentCorporate, addSectorCorporate, createCorporateSchedules, getCorporateSchedules, getDepartmentCorporate, getSectorCorporate, hideCreateOpeningsModal, setSelectedRole, updateCorporateSchedules } from '@Redux';
 import { ROUTES } from '@Routes';
@@ -25,6 +25,8 @@ function Designation() {
 
   const { goTo } = useNavigation()
   const dispatch = useDispatch()
+
+  const enterPress = useKeyPress('Enter')
 
   const DEFAULT_VALUE = { id: '-1', text: "All" }
 
@@ -57,13 +59,16 @@ function Designation() {
   const listLoader = useLoader(false);
   const createOpeningLoader = useLoader(false);
 
-
-
-
-
   useEffect(() => {
     getCorporateScheduleApiHandler(corporateScheduleCurrentPages);
   }, [filterSector.value, filterDepartment.value, status.value]);
+
+
+  useEffect(() => {
+    if (enterPress) {
+      getCorporateScheduleApiHandler(corporateScheduleCurrentPages);
+    }
+  }, [enterPress])
 
 
 
@@ -167,14 +172,18 @@ function Designation() {
 
 
   function resetValues() {
+
+    hideCreateOpeningModal()
+
     position.set("")
     experience.set(EXPERIENCE_LIST[0])
     jd.set("")
     vacancies.set('1')
     setDuration(INTERVIEW_DURATIONS[0]);
     referenceId.set("")
-    setSelectedDepartment("")
-    setSelectedSector("")
+    setSelectedSector('');
+    setSelectedDepartment('');
+
   }
 
 
@@ -330,10 +339,7 @@ function Designation() {
         title={'Create Opening'}
         subTitle={'Input job details, specifying qualifications, requirements, interview duration'}
         buttonText={'Create Opening'}
-        onClose={()=>{
-          hideCreateOpeningModal()
-          resetValues()
-        }}
+        onClose={resetValues}
         onClick={createCorporateScheduleApiHandler}
 
       >

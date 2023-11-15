@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { CandidatesProps } from './interfaces'
-import { Input, Button, DropDown, CommonTable, Image, MenuBar, Modal, showToast, NoDataFound, Alert } from '@Components'
+import { Input, Button, DropDown, CommonTable, Image, MenuBar, Modal, showToast, NoDataFound, Alert, Spinner } from '@Components'
 import { fetchCandidatesCorporate, createSchedule, refreshCorporateSchedule, postManualApprovalOnCandidate, bulkUploadCandidates } from '@Redux'
 import { useSelector, useDispatch } from 'react-redux';
 import { paginationHandler, capitalizeFirstLetter, validate, VALIDATE_ADD_NEW_CANDIDATES_RULES, ifObjectExist, getValidateError } from '@Utils';
@@ -55,6 +55,8 @@ function Candidates({ id, details }: CandidatesProps) {
         candidatesListCurrentPages,
     } = useSelector((state: any) => state.DashboardReducer);
 
+
+    const loader = useLoader(false);
 
     /**
      * add candidate state
@@ -126,13 +128,17 @@ function Candidates({ id, details }: CandidatesProps) {
             page_number,
         };
 
+        loader.show();
 
         dispatch(
             fetchCandidatesCorporate({
                 params,
                 onSuccess: () => () => {
+                    loader.hide();
                 },
-                onError: () => () => { },
+                onError: () => () => {
+                    loader.hide();
+                },
             })
         );
     };
@@ -481,42 +487,49 @@ function Candidates({ id, details }: CandidatesProps) {
                             }
                         </div>
 
-                        <div className={'table-container'}>
-                            {candidatesList?.length > 0 ?
-                                <CommonTable
-                                    isPagination={candidatesListNumOfPages > 1}
-                                    tableDataSet={candidatesList}
-                                    displayDataSet={normalizedTableData(candidatesList)}
-                                    noOfPage={candidatesListNumOfPages}
-                                    currentPage={candidatesListCurrentPages}
-                                    paginationNumberClick={(currentPage) => {
-                                        getCandidatesCorporate(
-                                            paginationHandler('current', currentPage)
-                                        );
-                                    }}
-                                    previousClick={() => {
-                                        getCandidatesCorporate(
-                                            paginationHandler(
-                                                'prev',
-                                                candidatesListCurrentPages
-                                            )
-                                        );
-                                    }}
-                                    nextClick={() => {
-                                        getCandidatesCorporate(
-                                            paginationHandler(
-                                                'next',
-                                                candidatesListCurrentPages
-                                            )
-                                        );
-                                    }}
-                                />
-                                :
-                                <div className={'no-data-found'}>
-                                    <NoDataFound />
+                        {
+                            !loader.loader ?
+                                <div className={'table-container'}>
+                                    {candidatesList?.length > 0 ?
+                                        <CommonTable
+                                            isPagination={candidatesListNumOfPages > 1}
+                                            tableDataSet={candidatesList}
+                                            displayDataSet={normalizedTableData(candidatesList)}
+                                            noOfPage={candidatesListNumOfPages}
+                                            currentPage={candidatesListCurrentPages}
+                                            paginationNumberClick={(currentPage) => {
+                                                getCandidatesCorporate(
+                                                    paginationHandler('current', currentPage)
+                                                );
+                                            }}
+                                            previousClick={() => {
+                                                getCandidatesCorporate(
+                                                    paginationHandler(
+                                                        'prev',
+                                                        candidatesListCurrentPages
+                                                    )
+                                                );
+                                            }}
+                                            nextClick={() => {
+                                                getCandidatesCorporate(
+                                                    paginationHandler(
+                                                        'next',
+                                                        candidatesListCurrentPages
+                                                    )
+                                                );
+                                            }}
+                                        />
+                                        :
+                                        <div className={'no-data-found'}>
+                                            <NoDataFound />
+                                        </div>
+                                    }
                                 </div>
-                            }
-                        </div>
+                                :
+                                <div className={'loader-container'}>
+                                    <Spinner />
+                                </div>
+                        }
                     </div>
                 </div >
             }
