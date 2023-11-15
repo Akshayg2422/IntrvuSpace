@@ -3,10 +3,10 @@ import { Logo, showToast } from "@Components";
 import { useLoader, useNavigation } from "@Hooks";
 import { RegisterAdmin, RegisterCompany } from '@Modules';
 import { ROUTES } from "@Routes";
-import { REGISTER_RULES, REGISTER_COMPANY_RULES, getValidateError, ifObjectExist, validate } from '@Utils';
+import { REGISTER_RULES, REGISTER_COMPANY_RULES, getValidateError, ifObjectExist, validate, USER_TOKEN } from '@Utils';
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { registerAsCompany, userLoginDetails } from '@Redux'
+import { registerAsCompany, userLoginDetails, saveUserEmail } from '@Redux'
 import './index.css';
 
 
@@ -36,7 +36,6 @@ function CorporateRegister() {
 
     const validation = validate({ ...REGISTER_RULES, ...REGISTER_COMPANY_RULES }, params)
 
-
     const {
       first_name,
       email,
@@ -51,6 +50,11 @@ function CorporateRegister() {
 
     const base64Photo = photo && photo.length > 0 ? photo[0].base64 : "";
 
+    const cleanBase64 = (base64String: string) => base64String.replace(/^data:(.*,)?/, '');
+
+    const cleanedBase64Photo = cleanBase64(base64Photo);
+
+
     const updatedParams = {
       first_name,
       email,
@@ -60,23 +64,54 @@ function CorporateRegister() {
       communication_address,
       pincode,
       sector,
-      logo: base64Photo,
+      logo: cleanedBase64Photo,
     };
+
     loader.show()
+
     if (ifObjectExist(validation)) {
+
       dispatch(
         registerAsCompany({
           params: updatedParams,
           onSuccess: (response: any) => () => {
-            console.log(response);
-
             loader.hide()
+
+            const { details } = response;
+            const { is_email_verified, token } = details || {};
+
+            if (response.success) {
+
+              showToast(response.message, 'success');
+              localStorage.setItem(USER_TOKEN, token);
+
+              dispatch(
+                userLoginDetails({
+                  ...loginDetails,
+                  isLoggedIn: is_email_verified,
+                  ...details,
+                })
+
+              );
+
+              if (is_email_verified) {
+                goTo(ROUTES["auth-module"].splash, true);
+              } else {
+                dispatch(saveUserEmail(email))
+                goTo(ROUTES["auth-module"]["mail-verification"], true);
+              }
+
+            } else {
+              showToast(response.error_message, "error");
+            }
+
           },
           onError: (error) => () => {
             loader.hide()
             showToast(error.error_message, 'error');
           },
         })
+
       );
 
 

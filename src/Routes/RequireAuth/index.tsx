@@ -1,10 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { Navigate, useLocation } from 'react-router-dom'
-import { useSelector, useDispatch } from "react-redux";
-import { HOME_ROUTES, ROUTES } from '@Routes'
-import { Sidebar } from '@Components'
-import { icons } from '@Assets'
-import { FCM_TOKEN, getDeviceInfo } from '@Utils'
+import { ROUTES } from '@Routes';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from "react-redux";
+import { Navigate, useLocation } from 'react-router-dom';
 
 
 
@@ -19,9 +16,6 @@ export const RequireAuth = ({ children }: RequireAuthProps) => {
     const mainContentRef = React.useRef<HTMLDivElement | null>(null);
     const location = useLocation();
     const { loginDetails } = useSelector((state: any) => state.AppReducer);
-    const { removeSideNav } = useSelector((state: any) => state.DashboardReducer)
-
-
 
     useEffect(() => {
         document.documentElement.scrollTop = 0;
@@ -39,8 +33,6 @@ export const RequireAuth = ({ children }: RequireAuthProps) => {
     }
 
 
-
-
     const toggleSideNav = () => {
         if (document.body.classList.contains("g-sidenav-pinned")) {
             document.body.classList.remove("g-sidenav-pinned");
@@ -54,27 +46,13 @@ export const RequireAuth = ({ children }: RequireAuthProps) => {
 
     return (
         <>
-            {loginDetails?.is_admin && !removeSideNav && ''
-        //     <Sidebar
-        //     routes={HOME_ROUTES}
-        //     toggleSideNav={toggleSideNav}
-        //     sideNavOpen={sideNavOpen}
-        //     logo={{
-        //         innerLink: "/",
-        //         imgSrc: icons.logoIcon,
-        //         imgAlt: "...",
-        //     }}
-        // />
-            }
             <div className='main-content' ref={mainContentRef}>
-                {/* <PushNotification /> */}
                 {children}
             </div>
 
-
-            {sideNavOpen ? (
-                <div className={"backdrop d-xl-none"} onClick={toggleSideNav} />
-            ) : null}
+            {
+                sideNavOpen ? <div className={'backdrop d-xl-none'} onClick={toggleSideNav} /> : null
+            }
         </>
     )
 }
