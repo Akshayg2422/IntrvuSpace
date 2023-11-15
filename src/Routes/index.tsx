@@ -79,6 +79,56 @@ export const ROUTES = {
   }
 }
 
+export const OLD_ROUTES = [
+  {
+    id: 4,
+    path: ROUTES['designation-module']['questions'],
+    component: <Questions />
+  },
+  {
+    id: 5,
+    path: ROUTES['designation-module']['question-sections'],
+    component: <QuestionSections />
+  },
+  {
+    id: 1,
+    path: ROUTES['designation-module']['weightage-count-form'],
+    component: <WeightageCountForm />
+  },
+  {
+    id: 2,
+    path: ROUTES['designation-module']['create-question-form'],
+    component: <CreateQuestionForm />
+  }
+  ,
+  {
+    id: 7,
+    path: ROUTES['designation-module']['schedules'],
+    component: <Schedules />
+  },
+  {
+    id: 6,
+    path: ROUTES['designation-module']['analyzing-animation'],
+    component: <AnalyzingAnimation />
+  },
+  {
+    id: 12,
+    path: ROUTES['designation-module']['scheduling-interview'],
+    component: <Scheduling />
+  },
+  {
+    id: 11,
+    path: ROUTES['designation-module']['preparing-your-interview'],
+    component: <PreparingYourInterview />
+  }
+  ,
+  {
+    id: 10,
+    path: ROUTES['designation-module'].response + '/:schedule_id',
+    component: <Response />
+  },
+]
+
 
 export const AUTH_ROUTES = [
   {
@@ -161,61 +211,26 @@ export const AUTH_ROUTES = [
 
 ]
 
-export const DASHBOARD_ROUTES = [
-  {
-    id: 1,
-    path: ROUTES['designation-module']['weightage-count-form'],
-    component: <WeightageCountForm />
-  },
-  {
-    id: 2,
-    path: ROUTES['designation-module']['create-question-form'],
-    component: <CreateQuestionForm />
-  },
-  {
-    id: 3,
-    path: ROUTES['designation-module']['sector'],
-    component: <Sector />
-  },
-  {
-    id: 4,
-    path: ROUTES['designation-module']['questions'],
-    component: <Questions />
-  },
-  {
-    id: 5,
-    path: ROUTES['designation-module']['question-sections'],
-    component: <QuestionSections />
-  },
-  {
-    id: 6,
-    path: ROUTES['designation-module']['analyzing-animation'],
-    component: <AnalyzingAnimation />
-  },
-  {
-    id: 7,
-    path: ROUTES['designation-module']['schedules'],
-    component: <Schedules />
-  },
+export const JOB_SEEKER_ROUTES = [
   {
     id: 8,
     path: ROUTES['designation-module'].report + '/:schedule_id',
     component: <Report />
   },
   {
-    id: 9,
-    path: ROUTES['designation-module']['variant-info'],
-    component: <VariantInfo />
+    path: ROUTES['designation-module'].client,
+    name: "View as Member",
+    icon: icons.viewAsMember,
+    layout: "",
+    component: <Clients />
   },
+]
+
+export const SUPER_ADMIN_ROUTES = [
   {
     id: 10,
     path: ROUTES['designation-module'].response + '/:schedule_id',
     component: <Response />
-  },
-  {
-    id: 11,
-    path: ROUTES['designation-module']['preparing-your-interview'],
-    component: <PreparingYourInterview />
   },
   {
     id: 12,
@@ -224,8 +239,9 @@ export const DASHBOARD_ROUTES = [
   },
 ]
 
-export const HOME_ROUTES = [
+export const ADMIN_ROUTES = [
   {
+    id: 1,
     path: ROUTES['designation-module'].schedule,
     name: "Schedule",
     icon: icons.schedule,
@@ -233,6 +249,7 @@ export const HOME_ROUTES = [
     component: <Designation />
   },
   {
+    id: 2,
     path: ROUTES['designation-module'].settings,
     name: "Settings",
     icon: icons.settings,
@@ -240,6 +257,7 @@ export const HOME_ROUTES = [
     component: <Settings />
   },
   {
+    id: 3,
     path: ROUTES['designation-module'].department,
     name: "Department",
     // icon: icons.settings,
@@ -247,6 +265,7 @@ export const HOME_ROUTES = [
     component: <Department />
   },
   {
+    id: 4,
     path: ROUTES['designation-module'].employeeDesignations,
     name: "Designations",
     // icon: icons.settings,
@@ -254,42 +273,28 @@ export const HOME_ROUTES = [
     component: <SettingDesignation />
   },
   {
+    id: 5,
     path: ROUTES['designation-module'].ManageTeamMate,
     name: "ManageTeamMate",
     // icon: icons.settings,
     layout: "",
     component: <ManageTeamMate />
   },
-  // {
-  //   path: ROUTES['designation-module'].Sectors,
-  //   name: "Sectors",
-  //   // icon: icons.settings,
-  //   layout: "",
-  //   component: <Sectors/>
-  // },
   {
-    path: ROUTES['designation-module'].client,
-    name: "View as Member",
-    icon: icons.viewAsMember,
-    layout: "",
-    component: <Clients />
+    id: 6,
+    path: ROUTES['designation-module'].report + '/:schedule_id',
+    component: <Report />
   },
-
-
-  // {
-  //   path: ROUTES['designation-module'].report,
-  //   name: "Report",
-  //   icon: icons.company,
-  //   layout: "",
-  //   component: <Report />
-  // },
-  // {
-  //   path: ROUTES['designation-module'].Dashboard,
-  //   name: "Dashboard",
-  //   icon: icons.issue,
-  //   layout: "",
-  //   component: <Dashboard />
-  // },
+  {
+    id: 7,
+    path: ROUTES['designation-module']['sector'],
+    component: <Sector />
+  },
+  {
+    id: 8,
+    path: ROUTES['designation-module']['variant-info'],
+    component: <VariantInfo />
+  },
 ];
 
 

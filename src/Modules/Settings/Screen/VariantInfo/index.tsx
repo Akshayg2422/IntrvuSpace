@@ -5,21 +5,27 @@ import {
   Modal,
   ViewMore,
   showToast,
-  Back
+  Back,
+  Spinner,
 } from "@Components";
-import { useLoader, useModal } from '@Hooks';
-import { Candidates } from '@Modules';
-import { getCorporateScheduleDetails, postCorporateScheduleActions } from '@Redux';
-import { capitalizeFirstLetter, displayFormatDate, getDisplayTime } from '@Utils';
+import { useLoader, useModal } from "@Hooks";
+import { Candidates } from "@Modules";
+import {
+  getCorporateScheduleDetails,
+  postCorporateScheduleActions,
+} from "@Redux";
+import {
+  capitalizeFirstLetter,
+  displayFormatDate,
+  getDisplayTime,
+} from "@Utils";
 import moment from "moment";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./index.css";
 
 function VariantInfo() {
-
-  const dispatch = useDispatch()
-
+  const dispatch = useDispatch();
 
   /**
    * screen constants
@@ -30,68 +36,68 @@ function VariantInfo() {
     { id: 2, name: "Modify Deadlines" },
   ];
 
+  const { selectedRole, corporateScheduleDetails, refreshCorporateSchedules } =
+    useSelector((state: any) => state.DashboardReducer);
+
+  const { id } = selectedRole || {};
+
   const {
-    selectedRole,
-    corporateScheduleDetails,
-    refreshCorporateSchedules
-  } = useSelector((state: any) => state.DashboardReducer);
-
-  const { id } = selectedRole || {}
-
-  const { job_description, department, interview_duration, candidate_deadline, created_by, created_at, vacancies, is_closed, candidate_details } = corporateScheduleDetails || {};
+    job_description,
+    department,
+    interview_duration,
+    candidate_deadline,
+    created_by,
+    created_at,
+    vacancies,
+    is_closed,
+    candidate_details,
+  } = corporateScheduleDetails || {};
   const { position, experience, details } = job_description || {};
 
   const loader = useModal(false);
 
-
-
   /**
    * view more details
    */
-  const [viewMore, setViewMore] = useState(false)
-
+  const [viewMore, setViewMore] = useState(false);
 
   /**
    * close modal state
    */
 
-  const closeJdModal = useModal(false)
-
+  const closeJdModal = useModal(false);
 
   const scheduleActionLoader = useLoader(false);
 
   /**
- * modify deadline
- */
+   * modify deadline
+   */
 
-  const modifyDeadlineModal = useModal(false)
+  const modifyDeadlineModal = useModal(false);
   const [scheduleEndDate, setScheduleEndDate] = useState<any>("");
   const [scheduleEndTime, setScheduleEndTime] = useState<any>("");
-
 
   useEffect(() => {
     getCorporateScheduleDetailsHandler();
   }, [refreshCorporateSchedules]);
 
-
   const getCorporateScheduleDetailsHandler = () => {
     const params = {
       corporate_openings_details_id: id,
     };
-    loader.show()
+    loader.show();
     dispatch(
       getCorporateScheduleDetails({
         params,
         onSuccess: (response: any) => () => {
-          loader.hide()
+          loader.hide();
         },
         onError: (error: any) => () => {
-          loader.hide()
+          loader.hide();
         },
       })
     );
   };
-
 
   function onScheduleMenuHandler(action: any) {
     if (action.id === MODIFY_OPTION[0].id) {
@@ -101,16 +107,15 @@ function VariantInfo() {
     }
   }
 
-
   function proceedCloseJdApiHandler() {
-    const params = { is_closed: true }
+    const params = { is_closed: true };
     corporateScheduleActionsHandler(params);
   }
 
   const corporateScheduleActionsHandler = (updatedParams: any) => {
     const params = {
       corporate_openings_details_id: corporateScheduleDetails?.id,
-      ...updatedParams
+      ...updatedParams,
     };
 
     scheduleActionLoader.show();
@@ -131,139 +136,142 @@ function VariantInfo() {
         },
       })
     );
-
   };
 
   const modifyDeadlineHandler = () => {
-
-    const displayTime = moment(getDisplayTime(candidate_deadline), 'HH:mm:ss').format('hh:mm A');
-    setScheduleEndDate(
-      displayFormatDate(candidate_deadline, 'date')
-    );
-    setScheduleEndTime(displayTime)
+    const displayTime = moment(
+      getDisplayTime(candidate_deadline),
+      "HH:mm:ss"
+    ).format("hh:mm A");
+    setScheduleEndDate(displayFormatDate(candidate_deadline, "date"));
+    setScheduleEndTime(displayTime);
     modifyDeadlineModal.show();
   };
 
   function proceedModifyDeadlineApiHandler() {
-
-    const convertedTime = moment(scheduleEndTime, 'hh:mm A').format('HH:mm:ss')
-    const formattedDate = moment(scheduleEndDate, "MMM DD YYYY").format("YYYY-MM-DD");
+    const convertedTime = moment(scheduleEndTime, "hh:mm A").format("HH:mm:ss");
+    const formattedDate = moment(scheduleEndDate, "MMM DD YYYY").format(
+      "YYYY-MM-DD"
+    );
 
     const date = moment(formattedDate + "T" + convertedTime).format(
-      "YYYY-MM-DDTHH:mm:ss");
+      "YYYY-MM-DDTHH:mm:ss"
+    );
 
-    const params = { deadline: date }
+    const params = { deadline: date };
 
     corporateScheduleActionsHandler(params);
-
   }
-
-
 
   return (
     <>
-      <div className={'screen-padding'}>
-        <div>
-          <div className={'variant-header'}>
-            <div className="d-flex align-items-start">
-              <div className="mt-1">
-                <Back />
-              </div>
-              <div className="ml-2">
-                <div className={'screen-heading'}>{capitalizeFirstLetter(position)}</div>
-                <div className={'experience'}>
-                  {capitalizeFirstLetter(experience)}
-                </div>
-              </div>
-            </div>
-
-            <div className={'vacancies-container'}>
-              <div className={'screen-heading'}>{`${vacancies}  ${vacancies > 1 ? 'Vacancies' : 'Vacancy'}`}</div>
-              {!is_closed &&
-                <div className={'menu-container'}>
-                  <MenuBar menuData={MODIFY_OPTION} onClick={onScheduleMenuHandler} />
-                </div>
-              }
-            </div>
-
+      <div className={"screen-padding"}>
+        {!corporateScheduleDetails ? (
+          <div
+            className={
+              "vh-100 d-flex justify-content-center align-items-center"
+            }
+          >
+            <Spinner />
           </div>
-
-          <Candidates id={id} details={corporateScheduleDetails} />
-
-          <div className={'jd-details-container'}>
-            <div className={'screen-heading heading-space'}>{'Job Details'}</div>
-            <div>
-              {details && <ViewMore text={details} isViewMore={viewMore} onViewMore={setViewMore} />}
-            </div>
-          </div>
-
-          <div className={'other-info-container'}>
-            <div className={'screen-heading heading-space'}>{'Other Information'}</div>
-            <div className={'card-container'}>
-              <div className={'other-info-details-container'}>
-                <div className={'info-container '}>
-                  <div className={'info-title'}>
-                    {'Department'}
-                  </div>
-                  <div className={'info-content'}>
-                    {department}
-                  </div>
+        ) : (
+          <div>
+            <div className={"variant-header"}>
+              <div className="d-flex align-items-start">
+                <div className="mt-1">
+                  <Back />
                 </div>
-                <div className={'info-container '}>
-                  <div className={'info-title'}>
-                    {'Interview Duration'}
+                <div className="ml-2">
+                  <div className={"screen-heading"}>
+                    {capitalizeFirstLetter(position)}
                   </div>
-                  <div className={'info-content'}>
-                    {interview_duration + ' Mins'}
-                  </div>
-                </div>
-                <div className={'info-container'}>
-                  <div className={'info-title'}>
-                    {'Candidate Deadline'}
-                  </div>
-                  <div className={'info-content'}>
-                    {displayFormatDate(
-                      candidate_deadline
-                    )}
+                  <div className={"experience"}>
+                    {capitalizeFirstLetter(experience)}
                   </div>
                 </div>
               </div>
-              <div className={'other-info-details-container'}>
-                <div className={'info-container '}>
-                  <div className={'info-title'}>
-                    {'Created By'}
+
+              <div className={"vacancies-container"}>
+                <div className={"screen-heading"}>{`${vacancies}  ${
+                  vacancies > 1 ? "Vacancies" : "Vacancy"
+                }`}</div>
+                {!is_closed && (
+                  <div className={"menu-container"}>
+                    <MenuBar
+                      menuData={MODIFY_OPTION}
+                      onClick={onScheduleMenuHandler}
+                    />
                   </div>
-                  <div className={'info-content'}>
-                    {created_by}
+                )}
+              </div>
+            </div>
+
+            <Candidates id={id} details={corporateScheduleDetails} />
+
+            <div className={"jd-details-container"}>
+              <div className={"screen-heading heading-space"}>
+                {"Job Details"}
+              </div>
+              <div>
+                {details && (
+                  <ViewMore
+                    text={details}
+                    isViewMore={viewMore}
+                    onViewMore={setViewMore}
+                  />
+                )}
+              </div>
+            </div>
+
+            <div className={"other-info-container"}>
+              <div className={"screen-heading heading-space"}>
+                {"Other Information"}
+              </div>
+              <div className={"card-container"}>
+                <div className={"other-info-details-container"}>
+                  <div className={"info-container "}>
+                    <div className={"info-title"}>{"Department"}</div>
+                    <div className={"info-content"}>{department}</div>
+                  </div>
+                  <div className={"info-container "}>
+                    <div className={"info-title"}>{"Interview Duration"}</div>
+                    <div className={"info-content"}>
+                      {interview_duration + " Mins"}
+                    </div>
+                  </div>
+                  <div className={"info-container"}>
+                    <div className={"info-title"}>{"Candidate Deadline"}</div>
+                    <div className={"info-content"}>
+                      {displayFormatDate(candidate_deadline)}
+                    </div>
                   </div>
                 </div>
-                <div className={'info-container'}>
-                  <div className={'info-title'}>
-                    {'Created At'}
+                <div className={"other-info-details-container"}>
+                  <div className={"info-container "}>
+                    <div className={"info-title"}>{"Created By"}</div>
+                    <div className={"info-content"}>{created_by}</div>
                   </div>
-                  <div className={'info-content'}>
-                    {displayFormatDate(
-                      created_at
-                    )}
+                  <div className={"info-container"}>
+                    <div className={"info-title"}>{"Created At"}</div>
+                    <div className={"info-content"}>
+                      {displayFormatDate(created_at)}
+                    </div>
                   </div>
-                </div>
-                <div className={'info-container'}>
+                  <div className={"info-container"}></div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </div >
+        )}
+      </div>
 
-      {
-        /**
-         * close js modal
-         */
-      }
+      {/**
+       * close js modal
+       */}
       <Alert
         loading={scheduleActionLoader.loader}
-        title={'Close JD'}
-        subTitle={'Are you sure, want to close this JD?'}
+        title={"Close JD"}
+        subTitle={"Are you sure, want to close this JD?"}
         isOpen={closeJdModal.visible}
         onClose={closeJdModal.hide}
         primaryOnClick={proceedCloseJdApiHandler}
@@ -272,19 +280,19 @@ function VariantInfo() {
 
       <Modal
         loading={scheduleActionLoader.loader}
-        title={'Modify Deadline'}
+        title={"Modify Deadline"}
         isOpen={modifyDeadlineModal.visible}
         onClose={modifyDeadlineModal.hide}
-        buttonText={'Submit'}
+        buttonText={"Submit"}
         onClick={proceedModifyDeadlineApiHandler}
       >
-        <div className={'row'}>
-          <div className={'col-sm-6'}>
+        <div className={"row"}>
+          <div className={"col-sm-6"}>
             <DateTimePicker
               noSpace
               disableFuture={true}
-              heading={'Deadline Date'}
-              placeholder={'Deadline Date'}
+              heading={"Deadline Date"}
+              placeholder={"Deadline Date"}
               value={scheduleEndDate}
               onChange={setScheduleEndDate}
             />
@@ -292,17 +300,16 @@ function VariantInfo() {
           <div className="col-sm-6">
             <DateTimePicker
               noSpace
-              type={'time'}
-              dateFormat={'HH:mm:ss'}
-              heading={'Deadline Time'}
-              placeholder={'Deadline Time'}
+              type={"time"}
+              dateFormat={"HH:mm:ss"}
+              heading={"Deadline Time"}
+              placeholder={"Deadline Time"}
               value={scheduleEndTime}
               onChange={setScheduleEndTime}
             />
           </div>
         </div>
       </Modal>
-
     </>
   );
 }

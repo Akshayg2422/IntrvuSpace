@@ -61,16 +61,24 @@ function Report() {
       fetchBasicReport({
         params,
         onSuccess: (response: any) => () => {
+
+
           loader.hide();
           setReport(response.details);
 
-          const { interview_meta_info } = response.details
 
-          // const {
-          //   name,
-          //   sub_text,
-          // } = response.details;
-          // setFileName(name + "_" + sub_text + "_" + reportType)
+
+          /**
+           * report
+           */
+          const { interview_meta_info } = response.details
+          const { name, role } = interview_meta_info || {};
+
+          const file_name = role + "_" + name + "_" + (reportType.value.id === 'DR' ? 'detailed_report' : 'report')
+
+          console.log(file_name);
+
+          setFileName(file_name);
         },
         onError: (error: any) => () => {
           loader.hide();
@@ -112,7 +120,10 @@ function Report() {
       }
       {
         !loader.loader && report &&
-        <div ref={componentRef} className={'screen-padding'}>
+        <div
+          ref={componentRef}
+          className={'screen-padding'}
+        >
           <ReportHeader details={report} />
           {reportType?.value?.id === REPORT_TYPE[0].id && <BasicReport details={report} />}
           {reportType?.value?.id === REPORT_TYPE[1].id && <DetailedReport details={report} />}

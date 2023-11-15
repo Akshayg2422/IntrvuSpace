@@ -1,25 +1,25 @@
 /* eslint-disable no-empty-pattern */
 /* eslint-disable react-hooks/rules-of-hooks */
 import {
-  Spinner,
-  showToast,
-  Modal,
   Button,
-  Input,
   DropDown,
-  TextArea,
+  Input,
   InputHeading,
-  Alert
+  Modal,
+  Spinner,
+  TextArea,
+  showToast
 } from "@Components";
 
 import {
   useDropDown,
   useInput,
+  useKeyPress,
   useLoader,
   useModal,
-  useNavigation,
+  useNavigation
 } from "@Hooks";
-import { JdItem, UploadJdCard, PreparingYourInterview } from '@Modules';
+import { JdItem, PreparingYourInterview, UploadJdCard } from '@Modules';
 import {
   canStartInterview,
   createNewJdSchedule,
@@ -43,11 +43,7 @@ import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./index.css";
 
-const interviewDurations: any = [
-  { id: 1, text: "Quick", subText: "5 mins", value: 5, isActive: false },
-  { id: 3, text: "Medium", subText: "15 mins", value: 15, isActive: false },
-  { id: 4, text: "Long", subText: "30 mins", value: 30, isActive: false },
-];
+
 
 const PLACE_HOLDER = {
   sector: "Software, Banking...",
@@ -59,6 +55,9 @@ const PLACE_HOLDER = {
 const INTERVAL_TIME = 5000;
 
 function FromJD() {
+
+  const enterPress = useKeyPress('Enter')
+
 
   const CHAR_LENGTH = 5000;
   const intervalIdRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -110,6 +109,9 @@ function FromJD() {
       stopInterval();
     };
   }, []);
+
+
+
 
   const dispatch = useDispatch();
 

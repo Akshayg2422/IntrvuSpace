@@ -76,7 +76,6 @@ function EmailVerification() {
         const validation = validate(EMAIL_VERIFICATION_RULES, params)
 
         if (ifObjectExist(validation)) {
-            console.log(JSON.stringify(params));
 
             loader.show()
             dispatch(

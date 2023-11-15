@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/no-redeclare */
-import { PageNotFound, ScreenWrapper, ReactAutoComplete, DropDown } from "@Components";
+import { PageNotFound, ScreenWrapper } from "@Components";
 import { Call, Splash } from '@Modules';
-import { AUTH_ROUTES, DASHBOARD_ROUTES, HOME_ROUTES, ROUTES, RequireAuth, RequireHome } from "@Routes";
+import { AUTH_ROUTES, JOB_SEEKER_ROUTES, ADMIN_ROUTES, ROUTES, RequireAuth, RequireHome, SUPER_ADMIN_ROUTES } from "@Routes";
 import { Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
+import { useSelector } from 'react-redux';
+
 /**
  *  select-react  - important need to add this app.js
  */
@@ -11,37 +13,25 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import "@fullcalendar/common/main.min.css";
 import "@fullcalendar/daygrid/main.min.css";
 import "quill/dist/quill.core.css";
-import { useEffect, useState } from "react";
 import "react-notification-alert/dist/animate.css";
 import "react-perfect-scrollbar/dist/css/styles.css";
-import { useDispatch, useSelector } from "react-redux";
 import "select2/dist/css/select2.min.css";
 import "sweetalert2/dist/sweetalert2.min.css";
-import { settingSideNavRemove } from "./Redux";
-import './App.css'
+import './App.css';
 
 
 
 
 function App() {
 
+
+  const { loginDetails } = useSelector((state: any) => state.AppReducer);
+
+  const { is_admin, is_super_admin } = loginDetails || {}
+
   const AUTH = 1
 
-  const { removeSideNav } = useSelector((state: any) => state.DashboardReducer)
-  const [pathName, setPathName] = useState<any>('/home')
-  const dispatch = useDispatch()
-
-  useEffect(() => {
-    if (window.location.pathname !== pathName && window.location.pathname !== '/schedules' && window.location.pathname !== '/call') {
-      dispatch(settingSideNavRemove(false))
-    }
-    else if (window.location.pathname === pathName || window.location.pathname === '/schedules' || window.location.pathname === '/call') {
-      dispatch(settingSideNavRemove(true))
-    }
-  }, [window.location.pathname])
-
-
-  const getRoutes = (routes, type?: any) => {
+  const getRoutes = (routes: any, type?: any) => {
 
     return routes.map((prop, key) => {
 
@@ -72,12 +62,14 @@ function App() {
 
   return (
     <ScreenWrapper>
-
       <Routes>
         <Route path="/" element={<Splash />} />
         {getRoutes(AUTH_ROUTES, AUTH)}
-        {getRoutes(HOME_ROUTES)}
-        {getRoutes(DASHBOARD_ROUTES)}
+
+        {is_admin && getRoutes(ADMIN_ROUTES)}
+        {!is_admin && getRoutes(JOB_SEEKER_ROUTES)}
+        {is_super_admin && getRoutes(SUPER_ADMIN_ROUTES)}
+
         <Route path={ROUTES['designation-module'].interview + '/:schedule_id'} element={<Call />} />
         <Route path={"*"} element={<PageNotFound />} />
       </Routes>
