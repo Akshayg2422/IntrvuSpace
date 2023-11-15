@@ -51,7 +51,7 @@ function WebsiteContactUs() {
                   </div>
                 </div>
               </div>
-              <div className="col  d-flex justify-content-start mt-lg-0 mt-5 " style={{marginLeft:'50px'}}>
+              <div className="col-lg-2  d-flex justify-content-start mt-lg-0 mt-5 " style={{marginLeft:'50px'}}>
                 <div className="">
                   <h3 className="text-secondary font-weight-800">COMPANY</h3>
                   <div className="mt-4 text-secondary" style={{ fontSize: '15px', fontWeight: 400 }}>
@@ -67,7 +67,7 @@ function WebsiteContactUs() {
                   </div>
                 </div>
               </div>
-              <div className="col d-flex justify-content-start mt-lg-0 mt-5">
+              <div className="col-lg-2 d-flex justify-content-start mt-lg-0 mt-5">
                 <div className="">
                   <h3 className="font-weight-800 text-secondary">LEGAL</h3>
                   <div className="text-secondary">
@@ -93,7 +93,7 @@ function WebsiteContactUs() {
                   </div>
                 </div>
               </div>
-              <div className="col d-flex justify-content-start mt-lg-0 mt-5" >
+              <div className="col-lg-3 d-flex justify-content-start mt-lg-0 mt-5" >
                 <div className="">
                   <h3 className="text-seconary font-weight-800">CONTACT US</h3>
                   <div className="text-secondary">
@@ -109,10 +109,10 @@ function WebsiteContactUs() {
                       <Image src={icons.mark} height={16} />
 
                       <span className="ml-2" style={{ fontSize: '15px', fontWeight: 400 }}>
-                        No:03, Prithiv Nagar, G.N.T,
+                        No:03, Prithiv Nagar, G.N.T Road,
                         <br />{" "}
-                        <span className="ml-4" style={{ fontSize: '15px', fontWeight: 400 }}> Road</span>
-                        <br />{" "}
+                        {/* <span className="ml-4" style={{ fontSize: '15px', fontWeight: 400 }}> Road</span>
+                        <br />{" "} */}
                         <span className="ml-4" style={{ fontSize: '15px', fontWeight: 400 }}> Gummidipoondi - 601 201</span>
                       </span>
                     </div>
