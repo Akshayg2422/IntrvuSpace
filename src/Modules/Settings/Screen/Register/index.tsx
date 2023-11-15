@@ -47,6 +47,7 @@ function Register() {
       mobile_number: mobileNumber.value,
       password: password.value,
     };
+
     const validation = validate(REGISTER_RULES, params)
 
     if (ifObjectExist(validation)) {
@@ -59,21 +60,20 @@ function Register() {
             onSuccess: (response: any) => () => {
 
               const { details } = response;
-              const { is_email_verified } = details || {};
+              const { is_email_verified, token } = details || {};
+
               loader.hide();
 
-
-
               if (response.success) {
-                goTo(ROUTES["auth-module"].login);
-                showToast(response.message, "success");
 
-                localStorage.setItem(USER_TOKEN, '');
+                showToast(response.message, 'success');
+                localStorage.setItem(USER_TOKEN, token);
 
                 dispatch(
                   userLoginDetails({
                     ...loginDetails,
                     isLoggedIn: is_email_verified,
+                    ...details,
                   })
                 );
 
@@ -81,15 +81,16 @@ function Register() {
                   goTo(ROUTES["auth-module"].splash, true);
                 } else {
                   dispatch(saveUserEmail(email?.value))
-                  goTo(ROUTES["auth-module"]["mail-verification"]);
+                  goTo(ROUTES["auth-module"]["mail-verification"], true);
                 }
+
               } else {
-                showToast(response.error_message, "error");
+                showToast(response.error_message, 'error');
               }
             },
             onError: (error) => () => {
               loader.hide();
-              showToast(error.error_message, "error");
+              showToast(error.error_message, 'error');
             },
           })
         );

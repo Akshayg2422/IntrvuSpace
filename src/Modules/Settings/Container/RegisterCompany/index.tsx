@@ -1,11 +1,11 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { Back, Button, ImagePicker, Input, showToast } from "@Components";
 import { REGISTER_COMPANY_RULES, getValidateError, ifObjectExist, validate } from '@Utils';
-import './index.css';
 import { RegisterAdminProps } from './interfaces';
+import './index.css';
+
 
 function RegisterCompany({ loading, params, onParams, onBackPress, onSubmit }: RegisterAdminProps) {
-
 
 
 

@@ -33,7 +33,7 @@ function ImagePicker({ defaultPhotos, variant = 'single', max = 3, onSelect }: I
             const { target } = composeEvent
             if (target) {
               const id = photos.length + 1
-              const base64 = target?.result ? target.result.toString().replace(/^data:(.*,)?/, '') : '';
+              const base64 = target?.result;
               const currentImage = { id, file: file, base64 }
               let updatedPhotos: any = [...photos];
 
