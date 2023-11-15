@@ -59,10 +59,6 @@ function Designation() {
   const listLoader = useLoader(false);
   const createOpeningLoader = useLoader(false);
 
-
-
-
-
   useEffect(() => {
     getCorporateScheduleApiHandler(corporateScheduleCurrentPages);
   }, [filterSector.value, filterDepartment.value, status.value]);
@@ -73,6 +69,7 @@ function Designation() {
       getCorporateScheduleApiHandler(corporateScheduleCurrentPages);
     }
   }, [enterPress])
+
 
 
   useEffect(() => {

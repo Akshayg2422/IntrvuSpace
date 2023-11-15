@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react'
-import { CheckboxProps } from './interfaces'
+import React from 'react'
 import { FormGroup } from 'reactstrap'
-import { color } from '@Themes'
+import { CheckboxProps } from './interfaces'
 
 
 function Checkbox({ id = '0', text, defaultChecked, variant = 'primary', onCheckChange, ...rest }: CheckboxProps) {
@@ -28,10 +27,9 @@ function Checkbox({ id = '0', text, defaultChecked, variant = 'primary', onCheck
                     {...rest}
                     id={id}
                     checked={defaultChecked}
-                    className={'custom-control-input '}
+                    className={'custom-control-input border'}
                     type={'checkbox'}
                     onChange={onChangeHandler}
-                    // style={{borderBlockColor:'darkgray',backgroundColor:'darkgray'}}
                 />
                 <label
                     className={'custom-control-label'}
@@ -45,5 +43,5 @@ function Checkbox({ id = '0', text, defaultChecked, variant = 'primary', onCheck
     )
 }
 
-export { Checkbox };
-export type { CheckboxProps };
+export { Checkbox }
+export type { CheckboxProps }
