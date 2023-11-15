@@ -109,7 +109,6 @@ s
                     borderWidth: 1.5,
                     borderColor: "#e8edff",
                     backgroundColor: "transparent",
-                    
                   }}
                 >
                   <div className="row">

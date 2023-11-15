@@ -55,9 +55,11 @@ function WebsiteContactUs() {
                 <div className="">
                   <h3 className="text-secondary font-weight-800">COMPANY</h3>
                   <div className="mt-4 text-secondary" style={{ fontSize: '15px', fontWeight: 400 }}>
-                    <a className="text-secondary"  href="#home" >
+                    <div className=""  >
+                      <a className="text-secondary"  href="#home">
                       <span className="pointer" > Home</span>
-                    </a>
+                      </a>
+                    </div>
                     <div className="mt-1 " >
                       <a className="text-secondary pointer" href="#Automated Interviews">Pricing</a>
                     </div>
