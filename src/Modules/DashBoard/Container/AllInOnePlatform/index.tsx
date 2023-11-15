@@ -37,6 +37,7 @@ function AllInOnePlatform() {
       className=""
       ref={effortlessInterviewsRef}
       style={{ backgroundColor: "#ffffff" }}
+      
     >
       <section className={`pt-3`}>
         <Container>
@@ -103,10 +104,12 @@ s
                 </div>
                 <Card
                   className="text-left mt-6 mx-4"
+                  id="Automated Interviews"
                   style={{
                     borderWidth: 1.5,
                     borderColor: "#e8edff",
                     backgroundColor: "transparent",
+                    
                   }}
                 >
                   <div className="row">

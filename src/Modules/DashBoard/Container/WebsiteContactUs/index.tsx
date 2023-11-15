@@ -51,15 +51,15 @@ function WebsiteContactUs() {
                   </div>
                 </div>
               </div>
-              <div className="col-lg-2  d-flex justify-content-start mt-lg-0 mt-5 " style={{marginLeft:'50px'}}>
+              <div className="col  d-flex justify-content-start mt-lg-0 mt-5 " style={{marginLeft:'50px'}}>
                 <div className="">
                   <h3 className="text-secondary font-weight-800">COMPANY</h3>
                   <div className="mt-4 text-secondary" style={{ fontSize: '15px', fontWeight: 400 }}>
-                    <div className="">
-                      <span className="" > Home</span>
-                    </div>
-                    <div className="mt-1">
-                      <span className="">Pricing</span>
+                    <a className="text-secondary"  href="#home" >
+                      <span className="pointer" > Home</span>
+                    </a>
+                    <div className="mt-1 " >
+                      <a className="text-secondary pointer" href="#Automated Interviews">Pricing</a>
                     </div>
                     <div className="mt-1">
                       <span>Contact Us</span>
@@ -67,7 +67,7 @@ function WebsiteContactUs() {
                   </div>
                 </div>
               </div>
-              <div className="col-lg-2 d-flex justify-content-start mt-lg-0 mt-5">
+              <div className="col d-flex justify-content-start mt-lg-0 mt-5">
                 <div className="">
                   <h3 className="font-weight-800 text-secondary">LEGAL</h3>
                   <div className="text-secondary">
