@@ -33,7 +33,7 @@ function App() {
 
   const getRoutes = (routes: any, type?: any) => {
 
-    return routes.map((prop, key) => {
+    return routes && routes.length > 0 && routes.map((prop, key) => {
 
       if (prop.collapse) {
         return getRoutes(prop.views);
