@@ -20,7 +20,7 @@ function DetailedReport({ details }: DetailedReportProps) {
   const NOTE = [
     { id: 1, icon: icons.check, text: "Completely Covered", h: 8 },
     { id: 2, icon: icons.checkBlack, text: "Partially Covered", h: 20 },
-    { id: 3, icon: icons.frame, text: "Invalid Statement", h: 18 },
+    { id: 3, icon: icons.frame, text: "Covered but Invalid", h: 18 },
   ];
 
 
