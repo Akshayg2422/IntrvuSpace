@@ -103,8 +103,8 @@ s
                   </div>
                 </div>
                 <Card
-                  className="text-left mt-6 mx-4"
-                  id="Automated Interviews"
+                  className="text-left mt-6 mx-4"  id="Automated Interviews"
+                  
                   style={{
                     borderWidth: 1.5,
                     borderColor: "#e8edff",
