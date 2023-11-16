@@ -64,7 +64,7 @@ function Candidates({ id, details }: CandidatesProps) {
   function getCandidateMenu(isClose: boolean) {
     return [
       ...CANDIDATE_MENU_OPTIONS,
-      ...(isClose ? [{ id: 5, name: "Watch Interview" }] : [])
+      ...(isClose ? CANDIDATE_MENU_OPTIONS_COMPLETE_INTERVIEW : [])
     ] as never[];
   }
 
