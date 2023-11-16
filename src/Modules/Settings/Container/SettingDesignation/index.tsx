@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Spinner, Modal, Input, CommonTable, NoDataFound, Image, MenuBar, Checkbox, showToast } from '@Components';
 import { SettingHeader } from '@Modules';
 import { useInput, useLoader, useModal } from '@Hooks';
@@ -41,7 +41,7 @@ function SettingDesignation() {
     const [isSuperAdmin, setIsSuperAdmin] = useState(false);
     const [editId, setEditId] = useState<any>()
     const addLoader = useLoader(false);
-
+    const inputRef = useRef<any>()
 
 
     useEffect(() => {
@@ -242,6 +242,7 @@ function SettingDesignation() {
                             heading={"Name"}
                             value={designationName.value}
                             onChange={designationName.onChange}
+                            ref={inputRef}
                         />
                     </div>
                 </div>

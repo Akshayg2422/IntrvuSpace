@@ -1,9 +1,8 @@
-
 import { RsInputProps, InputVariants, InputHeadingProps } from '@Components'
-export interface InputProps extends RsInputProps, InputHeadingProps {
+export interface AutoFocusInputProps extends RsInputProps, InputHeadingProps {
     heading?: string | undefined | null;
     id?: string
     variant?: InputVariants;
     noSpace?: boolean
-    innerRef?:React.Ref<HTMLInputElement | HTMLTextAreaElement>;
+    
 }   
