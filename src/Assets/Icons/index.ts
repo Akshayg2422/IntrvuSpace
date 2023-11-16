@@ -222,7 +222,6 @@ export const icons = {
   email: require('./Email/icon.png'),
   mark: require('./Mark/icon.png'),
   play: require('./Play/icon.png'),
-  pause: require('./Pause/icon.png')
-
-
+  pause: require('./Pause/icon.png'),
+  moneyDefalt: require('./MoneyDefalt/icon.png')
 };

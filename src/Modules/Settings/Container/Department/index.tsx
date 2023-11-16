@@ -4,7 +4,7 @@ import { useInput, useLoader, useModal } from '@Hooks';
 import { SettingHeader } from '@Modules';
 import { addDepartmentCorporate, getDepartmentCorporate } from '@Redux';
 import { ADD_DEPARTMENT_CORPORATE_RULES, INITIAL_PAGE, capitalizeFirstLetter, getValidateError, ifObjectExist, paginationHandler, validate } from '@Utils';
-import { useEffect, useState } from 'react';
+import { useEffect, useState} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 
@@ -25,13 +25,14 @@ function Department() {
   const [editId, setEditId] = useState<any>()
   const loader = useLoader(true)
   const addLoader = useLoader(false);
-
   const departmentName = useInput("");
 
 
   useEffect(() => {
     getDepartmentApiHandler(INITIAL_PAGE)
   }, [])
+
+
 
 
   const getDepartmentApiHandler = (page_number: number) => {
@@ -122,7 +123,7 @@ function Department() {
     <>
       <div className={'screen-padding'}>
         <SettingHeader
-          title={'Department'}
+          title={'Departments'}
           buttonText={'Add'}
           onClick={addDepartmentModel.show}
         />
@@ -135,7 +136,7 @@ function Department() {
           &&
           <CommonTable
             isPagination={departmentCorporateNumOfPages > 1}
-            title={'Department'}
+            title={'Departments'}
             displayDataSet={normalizedTableData(departmentCorporate)}
             noOfPage={departmentCorporateNumOfPages}
             currentPage={departmentsCorporateCurrentPages}
@@ -164,7 +165,7 @@ function Department() {
 
       <Modal
         loading={addLoader.loader}
-        title={'Department'}
+        title={`${editId ? "Edit" : "Create"} Department`}
         isOpen={addDepartmentModel.visible}
         onClose={modalCloseHandler}
         onClick={addDepartmentApiHandler}

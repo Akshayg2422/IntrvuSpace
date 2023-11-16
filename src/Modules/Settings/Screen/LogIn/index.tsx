@@ -108,6 +108,7 @@ function Login() {
   }
 
   return (
+    <>
     <div className={'auth-screen'}>
       <div className={'auth-logo'}>
         <Logo />
@@ -145,6 +146,7 @@ function Login() {
       </div>
 
     </div>
+    </>
   );
 }
 

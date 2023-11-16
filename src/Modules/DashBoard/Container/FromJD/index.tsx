@@ -56,8 +56,6 @@ const INTERVAL_TIME = 5000;
 
 function FromJD() {
 
-  const enterPress = useKeyPress('Enter')
-
 
   const CHAR_LENGTH = 5000;
   const intervalIdRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -92,7 +90,6 @@ function FromJD() {
     INTERVIEW_DURATIONS[0]
   );
   const sector = useInput("");
-
   const [jdDescriptionError, setJdDescriptionError] = useState<any>(undefined);
 
 
@@ -100,6 +97,8 @@ function FromJD() {
   const [scheduleId, setScheduleId] = useState(undefined);
   const jdScheduleModal = useModal(false);
   const startInterviewLoader = useLoader(false);
+
+
   const [isQuestionGenerated, setIsQuestionGenerated] = useState(false);
 
   useEffect(() => {
@@ -131,6 +130,41 @@ function FromJD() {
     );
   };
 
+
+
+  /**
+   * can start interview
+   */
+
+
+  const handleCanStartInterview = (params: any) => {
+
+    dispatch(
+      canStartInterview({
+        params,
+        onSuccess: (res: any) => () => {
+          setIsQuestionGenerated(true);
+          getKnowledgeGroupFromJdHandler();
+          resetValues();
+          showToast(res.status, "success");
+
+          // Clear the interval only after a successful response
+          stopInterval();
+
+        },
+        onError: (error: any) => () => {
+          setIsQuestionGenerated(false);
+        },
+      })
+    );
+
+  };
+
+
+  /**
+ * Api for create new interview
+ */
+
   function submitJdApiHandler() {
     const params = {
       sector_name: sector.value,
@@ -154,28 +188,22 @@ function FromJD() {
             if (details?.schedule_id) {
               const canStartParams = { schedule_id: details?.schedule_id };
               setScheduleId(details?.schedule_id);
-              intervalIdRef.current = setInterval(() => {
-                dispatch(
-                  canStartInterview({
-                    params: canStartParams,
-                    onSuccess: (res: any) => () => {
-                      setIsQuestionGenerated(true);
-                      getKnowledgeGroupFromJdHandler();
 
-                      resetValues();
-                      if (intervalIdRef.current) {
-                        clearInterval(intervalIdRef.current);
-                      }
-                    },
-                    onError: (error: any) => () => {
-                      setIsQuestionGenerated(false);
-                    },
-                  })
-                );
+              /**
+               * first Time call api after on success
+               */
+
+              handleCanStartInterview(canStartParams);
+
+
+              intervalIdRef.current = setInterval(() => {
+                handleCanStartInterview(canStartParams)
               }, INTERVAL_TIME);
+
+
             }
           },
-          onError: (error) => () => {
+          onError: (error: any) => () => {
             generateJdModal.hide();
             dispatch(showCreateJddModal());
             showToast(error.error_message, "error");
@@ -187,13 +215,9 @@ function FromJD() {
     }
   }
 
-  function resetValues() {
-    position.set("");
-    experience.set(EXPERIENCE_LIST[0]);
-    jd.set("");
-    sector.set("");
-    setDuration(INTERVIEW_DURATIONS[0]);
-  }
+  /**
+   * Api for TryAnother interview
+   */
 
   function createNewJdScheduleApiHandler(id: string) {
     const params = {
@@ -208,24 +232,20 @@ function FromJD() {
 
           if (details?.schedule_id) {
             const canStartParams = { schedule_id: details?.schedule_id };
+
             setScheduleId(details?.schedule_id);
-            const intervalId = setInterval(() => {
-              dispatch(
-                canStartInterview({
-                  params: canStartParams,
-                  onSuccess: (res: any) => () => {
-                    setIsQuestionGenerated(true);
-                    getKnowledgeGroupFromJdHandler();
-                    resetValues();
-                    showToast(res.status, "success");
-                    clearInterval(intervalId);
-                  },
-                  onError: (error: any) => () => {
-                    setIsQuestionGenerated(false);
-                  },
-                })
-              );
+
+            /**
+             * first Time call api after on success
+             */
+
+            handleCanStartInterview(canStartParams);
+
+            intervalIdRef.current = setInterval(() => {
+              handleCanStartInterview(canStartParams)
             }, INTERVAL_TIME);
+
+
           }
         },
         onError: () => () => {
@@ -233,7 +253,6 @@ function FromJD() {
         },
       })
     );
-
   }
 
   function proceedInterviewHandler(id: string) {
@@ -269,12 +288,28 @@ function FromJD() {
   }
 
 
+  function proceedInterviewModalHandler() {
+    if (scheduleId) {
+      proceedInterviewHandler(scheduleId);
+    }
+  }
+
+
+  function resetValues() {
+    position.set("");
+    experience.set(EXPERIENCE_LIST[0]);
+    jd.set("");
+    sector.set("");
+    setDuration(INTERVIEW_DURATIONS[0]);
+  }
+
   return (
     <>
       {
         loading.loader && <div className={'loader-container'}><Spinner /></div>
       }
       {!loading.loader && jdItem?.length <= 0 && <UploadJdCard />}
+
       {
         !loading.loader && jdItem?.length > 0 &&
         <div className={'screen-container'}>
@@ -295,17 +330,16 @@ function FromJD() {
           }
         </div>
       }
-
       <Modal
         isOpen={createJdModal}
         title={'Create Interview'}
         subTitle={'Input job details, specifying qualifications, requirements, interview duration'}
-        onClick={submitJdApiHandler}
         buttonText={'Create Interview'}
         onClose={() => {
           resetValues()
           dispatch(hideCreateJdModal());
         }}
+        onClick={submitJdApiHandler}
       >
 
         <div className={'row'}>
@@ -334,7 +368,7 @@ function FromJD() {
           placeholder={PLACE_HOLDER.jd}
           heading={'Job Description'}
           value={jd.value.slice(0, CHAR_LENGTH)}
-          onChange={(e) => {
+          onChange={(e: any) => {
             let value = e.target.value;
             if (value.length > CHAR_LENGTH) {
               setJdDescriptionError(ERROR_MESSAGE);
@@ -385,15 +419,10 @@ function FromJD() {
         isOpen={generateJdModal.visible}
         title={'Preparing your Interview...'}
         subTitle={'It will take a couple of minutes. You can wait and join using the link that will be sent to your email once the interview is ready.'}
-        onClose={generateJdModal.hide}>
-        <PreparingYourInterview
-          showStart={isQuestionGenerated}
-          onClick={() => {
-            if (scheduleId) {
-              proceedInterviewHandler(scheduleId);
-            }
-          }}
-        />
+        onClose={generateJdModal.hide}
+        buttonText={'Start Interview'}
+        onClick={isQuestionGenerated ? proceedInterviewModalHandler : undefined}>
+        <PreparingYourInterview isCompleted={isQuestionGenerated} />
       </Modal>
 
       <Modal
