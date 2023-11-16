@@ -34,6 +34,7 @@ function ManageTeamMate() {
   const mobileNumber = useInput('');
   const teamDepartment = useDropDown({});
   const teamDesignation = useDropDown({});
+  const [editId, setEditId] = useState<any>()
 
 
   const [selectedTeam, setSelectedTeam] = useState<any>(undefined)
@@ -194,7 +195,7 @@ function ManageTeamMate() {
 
                 addTeamMateModal.show();
 
-
+                setEditId(el)
                 setSelectedTeam(el);
                 firstName.set(first_name)
                 lastName.set(last_name)
@@ -270,7 +271,7 @@ function ManageTeamMate() {
       </div>
       <Modal
         loading={addTeammateLoader.loader}
-        title={'Team'}
+        title={`${editId ? "Edit" : "Add"} `}
         isOpen={addTeamMateModal.visible}
         onClose={resetValues}
         onClick={addTeamMAteDataApiHandler}

@@ -83,7 +83,7 @@ input[type=number] {
     width: 100%;
     border: 1px solid var(--card-border);
     border-radius: var(--border-radius);
-    padding: 3% 3%;
+    padding: 3% 4%;
 }
 
 .card-container-no-padding {
