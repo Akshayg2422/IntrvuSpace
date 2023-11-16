@@ -71,6 +71,7 @@ function Candidates({ id, details }: CandidatesProps) {
     };
     return iconsMap[key];
   };
+  const [candidateCountDetails,setCandidateCountDetails]=useState<any>(0)
 
   const dispatch = useDispatch();
 
@@ -90,6 +91,14 @@ function Candidates({ id, details }: CandidatesProps) {
     candidatesListNumOfPages,
     candidatesListCurrentPages,
   } = useSelector((state: any) => state.DashboardReducer);
+  
+  useEffect(()=>{
+   
+    if(candidatesCount>candidateCountDetails){
+    setCandidateCountDetails(candidatesCount)
+    }
+
+  },[candidatesCount])
 
   const loader = useLoader(false);
 
@@ -464,7 +473,7 @@ function Candidates({ id, details }: CandidatesProps) {
         </div>
       )}
 
-      {(candidatesCount > 0 || searchCandidate.value) && (
+      {(candidateCountDetails > 0 ) && (
         <div>
           <div className={"candidate-dashboard-container"}>
             <div
@@ -588,13 +597,13 @@ function Candidates({ id, details }: CandidatesProps) {
                 )}
               </div>
             ) : (
-              <div className={"loader-container"}>
+              <div className={"loader-containers"}>
                 <Spinner />
               </div>
             )}
           </div>
         </div>
-      )}
+       )} 
 
       {/**
        * add candidate Modal
