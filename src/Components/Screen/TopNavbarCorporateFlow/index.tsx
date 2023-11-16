@@ -245,8 +245,8 @@ function TopNavbarCorporateFlow() {
       </Navbar>
 
       <Alert
-        title={'Logout'}
-        subTitle={'Please click on proceed to logout'}
+        title={'Logout User'}
+        subTitle={'Please click on proceed to logout user'}
         isOpen={logoutModal.visible}
         onClose={logoutModal.hide}
         primary={"Logout"}
