@@ -2,7 +2,7 @@
 import { icons } from '@Assets';
 import { Alert, Button, Image } from '@Components';
 import { useModal, useNavigation } from '@Hooks';
-import { showCreateForOthersJdModal, showCreateJddModal, userLogout } from "@Redux";
+import { showCreateJddModal, userLogout } from "@Redux";
 import { ROUTES } from '@Routes';
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -67,9 +67,6 @@ function TopNavbar() {
     dispatch(showCreateJddModal());
   };
 
-  const handleCreateForOthersInterviewClick = () => {
-    dispatch(showCreateForOthersJdModal());
-  };
 
   const toggleDropdownHandler = () => {
     setIsOpenDropdown(!isOpenDropdown)
@@ -144,19 +141,6 @@ function TopNavbar() {
               className="align-items-lg-center ml-lg-auto mr--4 justify-content-end"
               navbar
             >
-              {loginDetails?.is_super_admin && (
-                <NavItem>
-                  <NavLink to="/home" tag={Link}>
-                    <div className={'btn-wrapper'}>
-                      <Button
-                        block
-                        text={"Create For Others"}
-                        onClick={handleCreateForOthersInterviewClick}
-                      />
-                    </div>
-                  </NavLink>
-                </NavItem>
-              )}
 
               {jdItem && jdItem.length > 0 && (
                 <NavItem>
@@ -171,21 +155,6 @@ function TopNavbar() {
                   </NavLink>
                 </NavItem>
               )}
-
-              {loginDetails?.is_super_admin &&
-                <NavItem>
-                  <div className={'btn-wrapper'}>
-                    <Button
-                      block
-                      text={'On Going Schedule'}
-                      onClick={() => {
-                        goTo(ROUTES['designation-module']['scheduling-interview'])
-                      }
-                      }
-                    />
-                  </div>
-                </NavItem>
-              }
 
               <NavItem className="d-none d-lg-block ml-lg-4">
                 <div className='row align-items-center m-auto'>
@@ -214,7 +183,7 @@ function TopNavbar() {
 
                               }}
                             >
-                              <i className={item.icon}></i>
+                              {/* <i className={item.icon}></i> */}
                               <span>{item.name}</span>
 
                             </DropdownItem>

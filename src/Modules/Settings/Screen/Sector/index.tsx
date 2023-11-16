@@ -29,7 +29,7 @@ function Sector() {
 
   const sectorName = useInput("");
   const sectorDescription = useInput("");
-
+  const [editId, setEditId] = useState<any>()
   const [selectedSector, setSelectedSector] = useState<any>(undefined)
 
 
@@ -117,14 +117,15 @@ function Sector() {
             menuData={MENU}
             onClick={(item) => {
               if (item?.id === MENU[0].id) {
-
+                
                 addSectorModal.show();
-
+                
                 /**
                  * prefill the sector modal
                  */
 
                 setSelectedSector(el)
+                setEditId(el)
                 sectorName.set(name)
                 sectorDescription.set(description)
 
@@ -154,7 +155,7 @@ function Sector() {
       <div className={'screen-padding'}>
 
         <SettingHeader
-          title={'Sector'}
+          title={'Sectors'}
           buttonText={'Add'}
           onClick={addSectorModal.show}
         />
@@ -198,7 +199,7 @@ function Sector() {
 
       <Modal
         loading={addSectorLoader.loader}
-        title={'Sector'}
+        title={`${editId ? "Edit" : "Create"} Sector`}
         isOpen={addSectorModal.visible}
         onClose={resetValues}
         onClick={addSectorApiHandler}

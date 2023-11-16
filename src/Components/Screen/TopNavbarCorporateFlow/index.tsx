@@ -21,9 +21,9 @@ import { icons } from "@Assets";
 import { Image, Modal, Button, Heading, Alert } from "@Components";
 import { useModal, useNavigation } from "@Hooks";
 import { ROUTES } from "@Routes";
-import { showCreateOpeningsModal, userLogout } from "@Redux";
+import { showCreateForOthersJdModal, showCreateOpeningsModal, userLogout } from "@Redux";
 import { useDispatch, useSelector } from "react-redux";
-import { filteredName } from "@Utils";
+import { capitalizeFirstLetter, filteredName } from "@Utils";
 
 function TopNavbarCorporateFlow() {
   const logoutModal = useModal(false);
@@ -35,26 +35,31 @@ function TopNavbarCorporateFlow() {
   const dispatch = useDispatch();
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
+  const {is_super_admin} = loginDetails || {}
+
   const HEADER_MENU = [
-    // { id: '1', name: 'Schedule', value: 'SC', icon: 'ni ni-badge' },
-    { id: '1', name: 'Setting', value: 'ST', icon: 'ni ni-settings-gear-65' },
-    // { id: '3', name: 'View as member', value: 'VAM', icon: 'ni ni-single-02', },
-    { id: '2', name: 'Logout', value: 'LG', icon: 'ni ni-button-power' },
-  ]
+    { id: '1', name: 'Home', value: 'HM', route: ROUTES['designation-module']['admin-schedule'] },
+    { id: '2', name: 'Ongoing Schedule', value: 'OGS', route:  ROUTES['designation-module']['scheduling-interview']},
+    { id: '3', name: 'Setting', value: 'ST', route: ROUTES['designation-module'].settings },
+   ]
+
+  function getCandidateMenu() {
+    return [
+      ...(is_super_admin ? HEADER_MENU : []),
+      ...[ { id: '4', name: 'Logout', value: 'LG', route:"" }],
+    ] as never[];
+  }
 
 
   const dropdownHandler = (item: any) => {
-    if (loginDetails?.is_admin) {
-      if (item.value === 'ST') {
-        goTo(ROUTES['designation-module'].settings);
-      }
-      if (item.value === 'VAM') {
-        goTo(ROUTES['designation-module'].client);
-      }
-    }
+
+    const {route} = item
     if (item.value === 'LG') {
       logoutModal.show()
+    }else{
+      goTo(route);
     }
+
   };
 
 
@@ -77,6 +82,10 @@ function TopNavbarCorporateFlow() {
 
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
+  };
+
+  const handleCreateForOthersInterviewClick = () => {
+    dispatch(showCreateForOthersJdModal());
   };
 
   return (
@@ -152,6 +161,20 @@ function TopNavbarCorporateFlow() {
               className="align-items-lg-center ml-lg-auto mr--4 justify-content-end"
               navbar
             >
+              {loginDetails?.is_super_admin && (
+                <NavItem>
+                  <NavLink to="/admin-schedule" tag={Link}>
+                    <div className={'btn-wrapper ml-md--9'}>
+                      <Button
+                        block
+                        text={"Create For Others"}
+                        onClick={handleCreateForOthersInterviewClick}
+                      />
+                    </div>
+                  </NavLink>
+                </NavItem>
+              )}
+
               {corporateScheduleCount >
                 0 && (
                   <NavItem>
@@ -159,20 +182,20 @@ function TopNavbarCorporateFlow() {
                       <div className={'btn-wrapper'}>
                         <Button
                           block
-                          text={"Create Openings"}
+                          text={"Create Opening"}
                           onClick={handleCreateOpeningsClick}
                         />
                       </div>
                     </NavLink>
                   </NavItem>
                 )}
-              <NavItem className="d-none d-lg-block ml-lg-4">
+              <NavItem className="d-none d-lg-block ml-lg-2">
                 <div className="row align-items-center m-auto">
                   <span
                     className="mb-0 text-secondary font-weight-400 pointer"
                     onClick={toggleDropdown}
                   >
-                    {filteredName(loginDetails?.user, 20)}
+                    {filteredName(capitalizeFirstLetter(loginDetails?.user), 20)}
                   </span>
                   <Nav navbar>
                     <UncontrolledDropdown
@@ -196,22 +219,21 @@ function TopNavbarCorporateFlow() {
                         </Media>
                       </DropdownToggle>
                       <DropdownMenu right>
-                        {HEADER_MENU.map((item) => {
-                          if (loginDetails?.is_admin || item.value === "LG") {
+                        {getCandidateMenu().map((item: any) => {
+             
                             return (
                               <DropdownItem
                                 onClick={(e) => {
                                   e.preventDefault();
                                   dropdownHandler(item);
                                   setDropdownOpen(false);
+                                  console.log('333333333333333333333')
                                 }}
                               >
-                                <i className={item.icon}></i>
+                                {/* <i className={item.icon}></i> */}
                                 <span>{item.name}</span>
                               </DropdownItem>
                             );
-                          }
-                          return null;
                         })}
                       </DropdownMenu>
                     </UncontrolledDropdown>
@@ -219,10 +241,12 @@ function TopNavbarCorporateFlow() {
                 </div>
               </NavItem>
               <div className="d-xl-none d-lg-none">
-                {HEADER_MENU.map((item) => {
-                  if (loginDetails?.is_admin || item.value === "LG") {
+                {getCandidateMenu().map((item: any) => {
+
+                  const {id, name} = item;
+             
                     return (
-                      <NavItem key={item.id}>
+                      <NavItem key={id}>
                         <NavLink
                           onClick={(e) => {
                             e.preventDefault();
@@ -230,13 +254,12 @@ function TopNavbarCorporateFlow() {
                           }}
                         >
                           <span className={`nav-link-inner--text text-black`}>
-                            {item.name}
+                            {name}
                           </span>
                         </NavLink>
                       </NavItem>
                     );
-                  }
-                  return null;
+                 
                 })}
               </div>
             </Nav>

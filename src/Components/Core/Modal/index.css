@@ -51,3 +51,8 @@
 .modal-child-container {
     margin: 50px 0px;
 }
+
+.sub-text {
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+}

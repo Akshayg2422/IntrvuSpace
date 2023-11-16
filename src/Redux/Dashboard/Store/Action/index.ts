@@ -1231,3 +1231,17 @@ export const updateCorporateSchedules = (response: any) => {
     payload: response,
   };
 };
+
+
+/**
+ *  watch inteview video
+ */
+
+
+export const watchInterviewVideoUrl = (response: any) => {
+  
+  return {
+    type: ActionTypes.WATCH_INTERVIEW_VIDEO_URL,
+    payload: response,
+  };
+};
