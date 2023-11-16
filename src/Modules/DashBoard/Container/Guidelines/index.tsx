@@ -1,5 +1,5 @@
 import { icons } from "@Assets";
-import { Button, Modal } from "@Components";
+import { Button, Modal, Image } from "@Components";
 import { useModal, useNavigation } from "@Hooks";
 import { useSelector } from "react-redux";
 import { GuidelinesProps } from "./interfaces";
@@ -37,6 +37,8 @@ function Guidelines({
     heading,
     onClick,
 }: GuidelinesProps) {
+
+
     const { goBack } = useNavigation();
     const { loginDetails } = useSelector((state: any) => state.AppReducer);
     const startInterviewModal = useModal(true);
@@ -44,83 +46,91 @@ function Guidelines({
 
     const { interviewee_expected_designation, interviewee_experience, interview_duration } = scheduleInfo
 
-    console.log("scheduleinfooo==>", scheduleInfo);
+    const experience = interviewee_experience === 0 ? "Fresher" : `${interviewee_experience} ${(interviewee_experience === 1 ? " year " : " years ") + "of experience"}`
+
+
+
+    function ModalHeading() {
+        return (
+            <div className={'text-secondary col-md-9 mb-md-4 m-0 p-0'}>
+                <span className="screen-heading m-0 p-0 lh-120">{`Interview for the role of ${heading}`}<span className={'text-secondary text-des ml-2'}>{experience}</span></span>
+                <div
+                    className='text-secondary text-des font-weight-700' style={{
+                        marginTop: '15px'
+                    }}>
+                    {`${interview_duration} mins`}
+                    <span className={'font-weight-400 ml-1'}>{'Duration'}</span>
+                </div>
+            </div>
+        )
+    }
 
     return (
         <>
             {!scheduleInfo?.is_complete &&
-
-                <Modal isOpen={startInterviewModal.visible} onClose={() => { goBack() }}>
-                    <div className="col-md-12 rounded-sm px-md-4 mt--3">
-                        <div className="text-secondary col-md-9 mb-md-4">
-                            <span style={{ lineHeight: '1rem' }} className="m-0 display-4 font-weight-800">{`Interview for the role of ${heading}`}<a className={'text-secondary h4 font-weight-400 ml-2'}>{scheduleInfo?.interviewee_experience === 0 ? "Fresher" : "" + scheduleInfo?.interviewee_experience + (scheduleInfo?.interviewee_experience === 1 ? " year " : " years ") + "of experience"}</a></span>
-                            {scheduleInfo?.interview_duration &&
-                                <div className='mb-0 text-secondary font-weight-bolder'>
-                                    {`${scheduleInfo?.interview_duration} mins`}
-                                    <span className={'text-secondary font-weight-400 ml-1'}>{'Duration'}</span>
+                <Modal
+                    loading={loading}
+                    title={<ModalHeading />}
+                    isOpen={startInterviewModal.visible}
+                    onClose={() => { goBack() }}
+                    buttonText={'Join Now'}
+                    onClick={onClick}
+                >
+                    <div>
+                        {
+                            START_INTERVIEW_GUIDELINES.map((step, index) => (
+                                <div>
+                                    <div key={index} className="d-flex align-items-center pb-2">
+                                        <Image
+                                            src={step.icon}
+                                            height={12}
+                                            width={12}
+                                            style={{
+                                                objectFit: 'contain'
+                                            }} />
+                                        <small className="pl-2 m-0 bullet-key-point font-weight-400 text-secondary">{step.title}</small>
+                                    </div>
                                 </div>
-                            }
-                        </div>
-                        <div className="pt-4 text-secondary col-12">
-                            {START_INTERVIEW_GUIDELINES.map((step, index) => (
-                                <div key={index} className="flex-row align-items-center pb-3">
-                                    <img src={step.icon} height={12} width={12} style={{
-                                        objectFit: 'contain'
-                                    }} />
-                                    <small className="pl-2 m-0 font-weight-500 text-secondary">{step.title}</small>
-                                </div>
-                            ))}
-
-                            <div className="d-flex justify-content-center pr-sm-0 pr-5 mt-md-5 mt-sm-0 mt-2">
-                                <Button className={'px-5 border border-primary rounded-sm mb-3'}
-                                    loading={loading}
-                                    text={'Join Now'}
-                                    onClick={() => {
-                                        if (onClick) {
-                                            onClick()
-                                        }
-                                    }}
-                                />
-                            </div>
-
-                        </div>
+                            ))
+                        }
                     </div>
                 </Modal>
 
             }
 
-            {scheduleInfo?.is_complete && !scheduleInfo?.is_report_complete ?
-                (
-                    <Modal isOpen={goToDashboardModal.visible} onClose={() => { goBack() }}>
+            {
+                scheduleInfo?.is_complete && !scheduleInfo?.is_report_complete ?
+                    (
+                        <Modal isOpen={goToDashboardModal.visible} onClose={() => { goBack() }}>
 
-                        <div className="col-md-12 rounded-sm px-md-4 mt--4 mb-3">
-                            <div className="text-secondary col-md-12 mb-md-4">
-                                <h2 className='m-0'>Wola! You have successfully completed your interview</h2>
-                                {/* <small className='text-default'>React Native Developer | Fresher | 30 mins duration</small> */}
-                                <small>{interviewee_expected_designation && interviewee_expected_designation + " "}</small> |
-                                <small>{interviewee_experience === 0 ? " Fresher" : " " + interviewee_experience + (interviewee_experience > 1 ? " years of experience" : " year of experience")}</small> |
-                                <small>{`${interview_duration && " " + interview_duration} mins duration`}</small>
+                            <div className="col-md-12 rounded-sm px-md-4 mt--4 mb-3">
+                                <div className="text-secondary col-md-12 mb-md-4">
+                                    <h2 className='m-0'>Wola! You have successfully completed your interview</h2>
+                                    {/* <small className='text-default'>React Native Developer | Fresher | 30 mins duration</small> */}
+                                    <small>{interviewee_expected_designation && interviewee_expected_designation + " "}</small> |
+                                    <small>{interviewee_experience === 0 ? " Fresher" : " " + interviewee_experience + (interviewee_experience > 1 ? " years of experience" : " year of experience")}</small> |
+                                    <small>{`${interview_duration && " " + interview_duration} mins duration`}</small>
 
+                                </div>
+                                <div className="pt-4 text-secondary col-12">
+                                    {GO_TO_DASHBOARD_GUIDELINES.map((step, index) => (
+                                        <span key={index} className="d-flex align-items-center pb-3">
+                                            {index === 2 ? <span><img className={'mb-sm-0 mb-3'} src={step.icon} height={22} /></span> : <img src={step.icon} height={22} />}
+                                            <small className="pl-2 m-0 font-weight-500 text-secondary">{step.title}</small>
+                                        </span>
+                                    ))}
+                                    {loginDetails?.isLoggedIn && (
+                                        <div className="d-flex justify-content-center pr-sm-0 pr-5 mt-md-5 mt-sm-0 mt-2 mb-sm-0 mb-4">
+                                            <Button className={'px-5 border border-primary rounded'} text={'Go to Dashboard'} onClick={() => { goBack() }} />
+                                        </div>
+                                    )}
+                                </div>
                             </div>
-                            <div className="pt-4 text-secondary col-12">
-                                {GO_TO_DASHBOARD_GUIDELINES.map((step, index) => (
-                                    <span key={index} className="d-flex align-items-center pb-3">
-                                        {index === 2 ? <span><img className={'mb-sm-0 mb-3'} src={step.icon} height={22} /></span> : <img src={step.icon} height={22} />}
-                                        <small className="pl-2 m-0 font-weight-500 text-secondary">{step.title}</small>
-                                    </span>
-                                ))}
-                                {loginDetails?.isLoggedIn && (
-                                    <div className="d-flex justify-content-center pr-sm-0 pr-5 mt-md-5 mt-sm-0 mt-2 mb-sm-0 mb-4">
-                                        <Button className={'px-5 border border-primary rounded'} text={'Go to Dashboard'} onClick={() => { goBack() }} />
-                                    </div>
-                                )}
-                            </div>
-                        </div>
 
-                    </Modal>
-                ) : (
-                    <></>
-                )
+                        </Modal>
+                    ) : (
+                        <></>
+                    )
             }
 
         </>

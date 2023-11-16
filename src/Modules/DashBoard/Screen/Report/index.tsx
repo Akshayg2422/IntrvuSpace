@@ -1,22 +1,16 @@
-import { icons } from "@Assets";
 import {
-  Badge,
   Button,
   DropDown,
-  Image,
-  NoDataFound,
   Spinner
 } from "@Components";
 import { useDropDown, useLoader } from "@Hooks";
+import { BasicReport, DetailedReport, ReportHeader } from '@Modules';
 import { fetchBasicReport } from "@Redux";
-import { capitalizeFirstLetter } from "@Utils";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import ReactToPrint from "react-to-print";
-import { Card } from "reactstrap";
-import { ReportHeader, BasicReport, DetailedReport } from '@Modules'
-import './index.css'
+import './index.css';
 
 
 
@@ -66,8 +60,6 @@ function Report() {
           loader.hide();
           setReport(response.details);
 
-
-
           /**
            * report
            */
@@ -79,10 +71,10 @@ function Report() {
           console.log(file_name);
 
           setFileName(file_name);
+
         },
         onError: (error: any) => () => {
           loader.hide();
-          console.log(error, "error");
         },
       })
     );

@@ -359,7 +359,7 @@ function Candidates({ id, details }: CandidatesProps) {
             closeCandidateModal.hide();
             removeCandidateModal.hide();
             setSelectedCandidates(undefined);
-          } catch (e) {}
+          } catch (e) { }
         },
         onError: (error: any) => () => {
           showToast(error.error_message, "error");
@@ -479,9 +479,8 @@ function Candidates({ id, details }: CandidatesProps) {
               <div className={"dashboard-title"}>{"Selected Candidates"}</div>
               <div>
                 <span
-                  className={`text-heading ${
-                    selected_candidates > 0 && "text-primary"
-                  }`}
+                  className={`text-heading ${selected_candidates > 0 && "text-primary"
+                    }`}
                 >
                   {selected_candidates}
                 </span>

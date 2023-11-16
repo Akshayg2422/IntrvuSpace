@@ -3,7 +3,7 @@ import { ModalProps as RsModalProps } from 'reactstrap'
 
 export interface ModalProps extends RsModalProps {
     children?: React.ReactNode;
-    title?: string;
+    title?: any;
     subTitle?: any
     size?: 'lg' | 'sm' | 'xl' | 'md' | 'xll';
     onClose?: () => void

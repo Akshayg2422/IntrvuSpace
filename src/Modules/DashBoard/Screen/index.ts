@@ -5,5 +5,5 @@ export * from './Schedules'
 export * from './Landing'
 export * from './Response'
 export * from './Website'
-export *from './Scheduling'
+export * from './Scheduling'
 

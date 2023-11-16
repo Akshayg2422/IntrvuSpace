@@ -41,9 +41,6 @@ const ReportHeader = ({ details }: ReportHeaderProps) => {
                                 width={'100%'}
                                 style={{
                                     objectFit: 'cover',
-                                    overflow: 'hidden',
-                                    padding: '1px',
-                                    borderRadius: '4px'
                                 }}
                             />
                             :
