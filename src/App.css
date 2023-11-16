@@ -4,14 +4,14 @@ body {
 } */
 
 :root {
-    --primary: #641df2;
-    --secondary: #2f1c6a;
+    --primary: #3ddc57;
+    --secondary: #0c4c15;
     --placeholder: #727586;
     --border: #DADCE0;
     --border-radius: 4px;
-    --badge: #EBE4FF;
+    --badge: #e7f6ee;
     --description: #5A5D73;
-    --card-border: #D5DFFF;
+    --card-border: #dff3e9;
 }
 
 
