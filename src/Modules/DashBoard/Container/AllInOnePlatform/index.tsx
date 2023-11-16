@@ -44,15 +44,14 @@ function AllInOnePlatform() {
             <Row className="">
               {" "}
               {/**h-100vh */}
-              <Col className={`text-black  text-center mt-6`}>
+              <Col className={`text-black  text-center mt-6`} >
                 <span
                   className={"display-3 font-weight-bolder text-secondary "}
                 // style={{ fontSize: 45 }}
                 >
                   All-In-One Platform For Interview
                 </span>
-
-                <div className="mt-3 text-align-center">
+                <div className="mt-3 text-align-center" >
                   <span
                     className="text-secondary"
                     style={{ fontSize: 14.5, fontWeight: 500 }}
@@ -65,6 +64,7 @@ function AllInOnePlatform() {
                   <div
                     className="text-secondary pt-6 row row-cols-1 boldText"
                     style={{ fontSize: 21 }}
+                    id="Automated Interviews"
                   >
                     <div className="col-md-4">
                       <div>
@@ -101,20 +101,22 @@ function AllInOnePlatform() {
                     </div>
                   </div>
                 </div>
+                <div >
                 <Card
-                  className="text-left mt-6 mx-4"
+                  className="text-left mt-6 mx-4"  
+                  
                   style={{
                     borderWidth: 1.5,
                     borderColor: "#e8edff",
                     backgroundColor: "transparent",
                   }}
                 >
-                  <div className="row">
+                  <div className="row "  >
                     <div className="col-md-4 d-flex flex-column justify-content-center">
                       {CREATE_JD_AND_ADD_CANDIDATE.map((item) => {
                         return (
                           <>
-                            <div className="mt-2">
+                            <div className="mt-2 " >
                               <Image src={icons.check} height={12} width={12} style={{
                                 objectFit: 'contain'
                               }} />
@@ -164,7 +166,10 @@ function AllInOnePlatform() {
                               className="text-gray"
                               style={{ fontSize: 13, fontFamily: "cursive" }}
                             >
-                              <s>{`₹ 700.00`}</s>
+                              {/* <s>{`₹ 700.00`}</s> */}
+                              <Image src={icons.moneyDefalt} height={50} width={60} style={{
+                                objectFit: 'contain'
+                              }} />
                             </span>
                             <Badge
                               className="text-primary ml-2"
@@ -190,7 +195,7 @@ function AllInOnePlatform() {
                               {"₹"}
                             </span>
                             <span className="text-secondary display-2 ml-1">
-                              300
+                              700
                             </span>
                             <span
                               className="text-secondary ml-1"
@@ -218,7 +223,7 @@ function AllInOnePlatform() {
                               className="text-gray"
                               style={{ fontSize: 13 }}
                             >
-                              {"250.00/interview for 1000+"}
+                              {"600.00/interview for 1000+"}
                             </span>
                           </div>
                         </div>
@@ -262,6 +267,9 @@ function AllInOnePlatform() {
                     </div>
                   </div>
                 </Card>
+                  
+                </div>
+              
 
                 <div className="pt-6">
                   <span className="display-3 font-weight-bolder text-secondary">

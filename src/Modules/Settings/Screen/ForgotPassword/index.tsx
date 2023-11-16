@@ -58,7 +58,7 @@ function ForgotPassword() {
     }
 
     return (
-
+<>
         <div className={'auth-screen'}>
             <div className={'auth-logo'}>
                 <Logo />
@@ -90,6 +90,7 @@ function ForgotPassword() {
                 </div>
             </div>
         </div >
+        </>
     )
 }
 
