@@ -56,6 +56,8 @@ function VariantInfo() {
 
   const loader = useModal(false);
 
+  console.log(corporateScheduleDetails,"corporateScheduleDetails======///")
+
   /**
    * view more details
    */
@@ -163,6 +165,7 @@ function VariantInfo() {
     corporateScheduleActionsHandler(params);
   }
 
+  // getCorporateScheduleDetails
   return (
     <>
       <div className={"screen-padding"}>
