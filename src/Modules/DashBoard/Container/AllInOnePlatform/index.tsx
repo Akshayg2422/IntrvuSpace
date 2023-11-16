@@ -37,7 +37,6 @@ function AllInOnePlatform() {
       className=""
       ref={effortlessInterviewsRef}
       style={{ backgroundColor: "#ffffff" }}
-      
     >
       <section className={`pt-3`}>
         <Container>
@@ -45,15 +44,14 @@ function AllInOnePlatform() {
             <Row className="">
               {" "}
               {/**h-100vh */}
-              <Col className={`text-black  text-center mt-6`}>
+              <Col className={`text-black  text-center mt-6`} >
                 <span
                   className={"display-3 font-weight-bolder text-secondary "}
                 // style={{ fontSize: 45 }}
                 >
                   All-In-One Platform For Interview
                 </span>
-s
-                <div className="mt-3 text-align-center">
+                <div className="mt-3 text-align-center" >
                   <span
                     className="text-secondary"
                     style={{ fontSize: 14.5, fontWeight: 500 }}
@@ -66,6 +64,7 @@ s
                   <div
                     className="text-secondary pt-6 row row-cols-1 boldText"
                     style={{ fontSize: 21 }}
+                    id="Automated Interviews"
                   >
                     <div className="col-md-4">
                       <div>
@@ -102,8 +101,9 @@ s
                     </div>
                   </div>
                 </div>
+                <div >
                 <Card
-                  className="text-left mt-6 mx-4"  id="Automated Interviews"
+                  className="text-left mt-6 mx-4"  
                   
                   style={{
                     borderWidth: 1.5,
@@ -111,12 +111,12 @@ s
                     backgroundColor: "transparent",
                   }}
                 >
-                  <div className="row">
+                  <div className="row "  >
                     <div className="col-md-4 d-flex flex-column justify-content-center">
                       {CREATE_JD_AND_ADD_CANDIDATE.map((item) => {
                         return (
                           <>
-                            <div className="mt-2">
+                            <div className="mt-2 " >
                               <Image src={icons.check} height={12} width={12} style={{
                                 objectFit: 'contain'
                               }} />
@@ -267,6 +267,9 @@ s
                     </div>
                   </div>
                 </Card>
+                  
+                </div>
+              
 
                 <div className="pt-6">
                   <span className="display-3 font-weight-bolder text-secondary">
