@@ -42,7 +42,7 @@ function Modal({ loading, isOpen, children, title, subTitle, buttonText = 'Submi
       <div className={'section-modal-container'}>
         <div>
           <div className={'screen-heading'}>{title}</div>
-          <div className="sub-text">{subText}</div>
+          {/* <div className="sub-text">{subText}</div> */}
           <div className={'sub-title-space'}>
             <small className={'text-des'}>{subTitle}</small>
           </div>

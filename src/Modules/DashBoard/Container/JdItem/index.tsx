@@ -274,7 +274,7 @@ function JdItem({
           dispatch(watchInterviewVideoUrl(undefined));
         }}
         name={interviewUrl?.interviewee_name?.trim()}
-        subText={interviewUrl?.interview_duration}
+        subTitle={interviewUrl?.interview_duration}
         urlData = {interviewUrl}
       />
     </>

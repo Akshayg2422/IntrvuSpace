@@ -10,8 +10,9 @@ const WatchInterviewModal = ({
   isOpen,
   onClose,
   name,
-  subText,
+  subTitle,
   urlData,
+  
 }: WatchInterviewModalProps) => {
   const [playVideoUrlIndex, setPlayVideoUrlIndex] = useState(0);
 
@@ -30,7 +31,7 @@ const WatchInterviewModal = ({
         title={`Watch ${name}'s Interview ${
           recording_url && recording_url.length > 1 ? ` - Part ${playVideoUrlIndex + 1}` : ""
         }`}
-        subText={`(${subText} minutes)`}
+        subTitle={`(${subTitle} minutes)`}
         size="xl"
       >
         <>
