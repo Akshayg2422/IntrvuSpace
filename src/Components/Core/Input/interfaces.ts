@@ -5,5 +5,4 @@ export interface InputProps extends RsInputProps, InputHeadingProps {
     id?: string
     variant?: InputVariants;
     noSpace?: boolean
-    innerRef?:React.Ref<HTMLInputElement | HTMLTextAreaElement>;
 }   
