@@ -35,30 +35,29 @@ function TopNavbarCorporateFlow() {
   const dispatch = useDispatch();
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
+  const {is_super_admin} = loginDetails || {}
 
   const HEADER_MENU = [
-    { id: '1', name: 'Home', value: 'HM' },
-    { id: '2', name: 'OnGoingSchedule', value: 'OGS' },
-    { id: '3', name: 'Setting', value: 'ST' },
-    { id: '4', name: 'Logout', value: 'LG' },
-  ]
+    { id: '1', name: 'Home', value: 'HM', route: ROUTES['designation-module']['admin-schedule'] },
+    { id: '2', name: 'Ongoing Schedule', value: 'OGS', route:  ROUTES['designation-module']['scheduling-interview']},
+    { id: '3', name: 'Setting', value: 'ST', route: ROUTES['designation-module'].settings },
+   ]
+
+  function getCandidateMenu() {
+    return [
+      ...(is_super_admin ? HEADER_MENU : []),
+      ...[ { id: '4', name: 'Logout', value: 'LG', route:"" }],
+    ] as never[];
+  }
 
 
   const dropdownHandler = (item: any) => {
 
-    if (loginDetails?.is_super_admin) {
-      if (item.value === 'HM') {
-        goTo(ROUTES['designation-module']['admin-schedule']);
-      }
-      if (item.value === 'OGS') {
-        goTo(ROUTES['designation-module']['scheduling-interview']);
-      }
-      if (item.value === 'ST') {
-        goTo(ROUTES['designation-module'].settings);
-      }
-    }
+    const {route} = item
     if (item.value === 'LG') {
       logoutModal.show()
+    }else{
+      goTo(route);
     }
 
   };
@@ -220,8 +219,8 @@ function TopNavbarCorporateFlow() {
                         </Media>
                       </DropdownToggle>
                       <DropdownMenu right>
-                        {HEADER_MENU.map((item) => {
-                          if (loginDetails?.is_super_admin || item.value === "LG") {
+                        {getCandidateMenu().map((item: any) => {
+             
                             return (
                               <DropdownItem
                                 onClick={(e) => {
@@ -235,8 +234,6 @@ function TopNavbarCorporateFlow() {
                                 <span>{item.name}</span>
                               </DropdownItem>
                             );
-                          }
-                          return null;
                         })}
                       </DropdownMenu>
                     </UncontrolledDropdown>
@@ -244,10 +241,12 @@ function TopNavbarCorporateFlow() {
                 </div>
               </NavItem>
               <div className="d-xl-none d-lg-none">
-                {HEADER_MENU.map((item) => {
-                  if (loginDetails?.is_super_admin || item.value === "LG") {
+                {getCandidateMenu().map((item: any) => {
+
+                  const {id, name} = item;
+             
                     return (
-                      <NavItem key={item.id}>
+                      <NavItem key={id}>
                         <NavLink
                           onClick={(e) => {
                             e.preventDefault();
@@ -255,13 +254,12 @@ function TopNavbarCorporateFlow() {
                           }}
                         >
                           <span className={`nav-link-inner--text text-black`}>
-                            {item.name}
+                            {name}
                           </span>
                         </NavLink>
                       </NavItem>
                     );
-                  }
-                  return null;
+                 
                 })}
               </div>
             </Nav>
