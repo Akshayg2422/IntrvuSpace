@@ -36,14 +36,14 @@ function WebsiteContactUs() {
       >
         <div>
           <div className="container">
-            <div className="row mt-5">
+            <div className="row mt-7">
               <div className="col-lg-4 d-flex justify-content-start mt--2">
                 <div className="">
                   <div className="mr-3 ">
                     <NavbarBrand to="/" tag={Link}>
-                      <Image src={icons.logoText} height={26} />
+                      <Image src={icons.logoText} height={20} />
                     </NavbarBrand>
-                    <span className="text-secondary mt-4 mb-3 d-flex justify-content-start text-justify">
+                    <span className="text-secondary mt-4 mb-3 d-flex justify-content-start text-justify" style={{ fontSize: '15px', fontWeight: 400 }}>
                       intrvu SPACE is your dedicated companion in the pursuit of
                       interview success. Prepare effectively, outshine the
                       competition, and unlock the job you deserve!
@@ -51,37 +51,39 @@ function WebsiteContactUs() {
                   </div>
                 </div>
               </div>
-              <div className="col-6 col-lg-2 col-md-4 d-flex justify-content-start mt-lg-0 mt-5 ">
+              <div className="col  d-flex justify-content-start mt-lg-0 mt-5 " style={{marginLeft:'50px'}}>
                 <div className="">
                   <h3 className="text-secondary font-weight-800">COMPANY</h3>
-                  <div className="mt-4 text-secondary">
-                    <div className="">
-                      <span className=""> Home</span>
+                  <div className="mt-4 text-secondary" style={{ fontSize: '15px', fontWeight: 400 }}>
+                    <div className=""  >
+                      <a className="text-secondary"  href="#home">
+                      <span className="pointer" > Home</span>
+                      </a>
                     </div>
-                    <div className="mt-2">
-                      <span className="mt-4">Pricing</span>
+                    <div className="mt-1 " >
+                      <a className="text-secondary pointer" href="#Automated Interviews">Pricing</a>
                     </div>
-                    <div className="mt-2">
+                    <div className="mt-1">
                       <span>Contact Us</span>
                     </div>
                   </div>
                 </div>
               </div>
-              <div className="col-6 col-lg-2 col-md-4 d-flex justify-content-start mt-lg-0 mt-5">
+              <div className="col d-flex justify-content-start mt-lg-0 mt-5">
                 <div className="">
                   <h3 className="font-weight-800 text-secondary">LEGAL</h3>
                   <div className="text-secondary">
                     <div className="mt-4">
                       <a
-                        className="text-secondary pointer text-decoration-underline-hover"
+                        className="text-secondary pointer text-decoration-underline-hover" style={{ fontSize: '15px', fontWeight: 400 }}
                         // onClick={() => goTo(ROUTES["auth-module"].privacy)}
                       >
                         Privacy Policy
                       </a>
                     </div>
-                    <div className="mt-2">
+                    <div className="mt-1">
                       <a
-                        className="text-secondary pointer text-decoration-underline-hover"
+                        className="text-secondary pointer text-decoration-underline-hover" style={{ fontSize: '15px', fontWeight: 400 }}
                         onClick={
                           () => {}
                           // goTo(ROUTES["auth-module"].TermsAndConditions)
@@ -93,25 +95,27 @@ function WebsiteContactUs() {
                   </div>
                 </div>
               </div>
-              <div className="col-sm-8 col-md-8 col-lg-4 d-flex justify-content-start mt-lg-0 mt-5">
+              <div className="col-lg-3 d-flex justify-content-start mt-lg-0 mt-5" >
                 <div className="">
                   <h3 className="text-seconary font-weight-800">CONTACT US</h3>
                   <div className="text-secondary">
                     <div className="mt-4 d-flex align-items-center">
                       <Image src={icons.email} height={16} />
-                      <span className="ml-2">contact@leorainfotech.in</span>
+                      <span className="ml-2" style={{ fontSize: '15px', fontWeight: 400 }}>contact@leorainfotech.in</span>
                     </div>
-                    <div className="mt-2">
+                    <div className="mt-1">
                       <Image src={icons.phoneCall} height={16} />
-                      <span className="ml-2">+91 9445092211</span>
+                      <span className="ml-2" style={{ fontSize: '15px', fontWeight: 400 }}>+91 9445092211</span>
                     </div>
-                    <div className="mt-2">
+                    <div className="mt-1">
                       <Image src={icons.mark} height={16} />
 
-                      <span className="ml-2">
+                      <span className="ml-2" style={{ fontSize: '15px', fontWeight: 400 }}>
                         No:03, Prithiv Nagar, G.N.T Road,
                         <br />{" "}
-                        <span className="ml-4"> Gummidipoondi - 601 201</span>
+                        {/* <span className="ml-4" style={{ fontSize: '15px', fontWeight: 400 }}> Road</span>
+                        <br />{" "} */}
+                        <span className="ml-4" style={{ fontSize: '15px', fontWeight: 400 }}> Gummidipoondi - 601 201</span>
                       </span>
                     </div>
                   </div>

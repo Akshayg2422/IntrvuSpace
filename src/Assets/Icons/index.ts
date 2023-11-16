@@ -220,5 +220,6 @@ export const icons = {
   rupees:require('./Rupees/icon.png'),
   phoneCall: require('./PhoneCall/icon.png'),
   email: require('./Email/icon.png'),
-  mark: require('./Mark/icon.png')
+  mark: require('./Mark/icon.png'),
+  moneyDefalt: require('./MoneyDefalt/icon.png')
 };
