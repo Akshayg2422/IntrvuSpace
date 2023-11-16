@@ -8,9 +8,6 @@ const Input = React.forwardRef(({ id, className, heading, variant = 'default', i
 
     const inputRef = useRef<any>(null)
 
-    // useEffect(() => {
-    //     inputRef.current.focus()
-    // })
     
     useEffect(() => {
         if (ref) {
