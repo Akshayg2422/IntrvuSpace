@@ -7,7 +7,7 @@ function Clients() {
     return (
         <div className={'screen'}>
             <TopNavbar />
-             <FromJD />
+            <FromJD />
         </div>
     )
 }

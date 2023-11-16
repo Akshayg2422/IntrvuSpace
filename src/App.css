@@ -104,6 +104,8 @@ input[type=number] {
     margin-left: 20px;
 }
 
+
+
 @media(max-width: 768px) {
     .card-container {
         width: 100%;

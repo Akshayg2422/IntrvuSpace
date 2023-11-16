@@ -98,25 +98,26 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+  padding: 25px 10px;
 }
 
 .completed-item-heading {
   max-width: 300px;
   flex: 1;
+
 }
 
 .completed-item-content {
   flex: 1;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: center;
   align-items: center;
-  padding: 0px 20px 20px 20px;
-
 }
 
 .completed-item-content-border {
   border-bottom: 1px solid #D5DFFF;
-  margin-bottom: 20px;
+  margin-left: 25%;
+  margin-right: 8%;
 }
 
 
@@ -140,7 +141,6 @@
 
 .skill-empty {
   flex: 0.5;
-
 }
 
 @media (max-width: 768px) {

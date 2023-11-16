@@ -29,8 +29,9 @@
 
 .user-photo-container {
     display: flex;
-    width: 115px;
-    height: 115px;
+    width: 3.5cm;
+    /* or 35mm */
+    height: 4.5cm;
     align-items: center;
     justify-content: center;
 }
@@ -43,12 +44,18 @@
     justify-content: center;
 }
 
-.user-details-container {
-    margin-left: 20px;
+.user-details-container-center {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+}
+
+.user-details-container-left {
+    margin-left: 20px;
+    display: flex;
+    flex-direction: column;
+
 }
 
 .user-mark-container {

@@ -35,28 +35,28 @@ function TopNavbarCorporateFlow() {
   const dispatch = useDispatch();
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
-  const {is_super_admin} = loginDetails || {}
+  const { is_super_admin } = loginDetails || {}
 
   const HEADER_MENU = [
     { id: '1', name: 'Home', value: 'HM', route: ROUTES['designation-module']['admin-schedule'] },
-    { id: '2', name: 'Ongoing Schedule', value: 'OGS', route:  ROUTES['designation-module']['scheduling-interview']},
+    { id: '2', name: 'Ongoing Schedule', value: 'OGS', route: ROUTES['designation-module']['scheduling-interview'] },
     { id: '3', name: 'Setting', value: 'ST', route: ROUTES['designation-module'].settings },
-   ]
+  ]
 
   function getCandidateMenu() {
     return [
       ...(is_super_admin ? HEADER_MENU : []),
-      ...[ { id: '4', name: 'Logout', value: 'LG', route:"" }],
+      ...[{ id: '4', name: 'Logout', value: 'LG', route: "" }],
     ] as never[];
   }
 
 
   const dropdownHandler = (item: any) => {
 
-    const {route} = item
+    const { route } = item
     if (item.value === 'LG') {
       logoutModal.show()
-    }else{
+    } else {
       goTo(route);
     }
 
@@ -220,20 +220,20 @@ function TopNavbarCorporateFlow() {
                       </DropdownToggle>
                       <DropdownMenu right>
                         {getCandidateMenu().map((item: any) => {
-             
-                            return (
-                              <DropdownItem
-                                onClick={(e) => {
-                                  e.preventDefault();
-                                  dropdownHandler(item);
-                                  setDropdownOpen(false);
-                                  console.log('333333333333333333333')
-                                }}
-                              >
-                                {/* <i className={item.icon}></i> */}
-                                <span>{item.name}</span>
-                              </DropdownItem>
-                            );
+
+                          return (
+                            <DropdownItem
+                              onClick={(e) => {
+                                e.preventDefault();
+                                dropdownHandler(item);
+                                setDropdownOpen(false);
+                                console.log('333333333333333333333')
+                              }}
+                            >
+                              {/* <i className={item.icon}></i> */}
+                              <span>{item.name}</span>
+                            </DropdownItem>
+                          );
                         })}
                       </DropdownMenu>
                     </UncontrolledDropdown>
@@ -243,23 +243,23 @@ function TopNavbarCorporateFlow() {
               <div className="d-xl-none d-lg-none">
                 {getCandidateMenu().map((item: any) => {
 
-                  const {id, name} = item;
-             
-                    return (
-                      <NavItem key={id}>
-                        <NavLink
-                          onClick={(e) => {
-                            e.preventDefault();
-                            dropdownHandler(item);
-                          }}
-                        >
-                          <span className={`nav-link-inner--text text-black`}>
-                            {name}
-                          </span>
-                        </NavLink>
-                      </NavItem>
-                    );
-                 
+                  const { id, name } = item;
+
+                  return (
+                    <NavItem key={id}>
+                      <NavLink
+                        onClick={(e) => {
+                          e.preventDefault();
+                          dropdownHandler(item);
+                        }}
+                      >
+                        <span className={`nav-link-inner--text text-black`}>
+                          {name}
+                        </span>
+                      </NavLink>
+                    </NavItem>
+                  );
+
                 })}
               </div>
             </Nav>
