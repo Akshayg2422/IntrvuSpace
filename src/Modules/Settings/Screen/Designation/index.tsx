@@ -281,9 +281,9 @@ function Designation() {
           <div className="row">
             <div className="col-sm-3">
               <Input
-                heading={"Position"}
+                heading={"Search"}
                 type={"text"}
-                placeHolder={"HR Executive, QA Manager..."}
+                placeHolder={"Job Title, Reference No..."}
                 value={positionSearch?.value}
                 onChange={positionSearch.onChange}
                 onFocus={() => setIsPositionSearch(true)}
@@ -437,8 +437,8 @@ function Designation() {
 
           <div className={"col-sm-6"}>
             <Input
-              heading={"Reference"}
-              placeHolder={"Reference"}
+              heading={"Reference No"}
+              placeHolder={"Reference No"}
               value={referenceId.value}
               onChange={referenceId.onChange}
             />
