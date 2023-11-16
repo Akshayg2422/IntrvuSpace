@@ -31,7 +31,8 @@ import {
   WeightageCountForm,
   EmailVerification,
   CorporateRegister,
-  SettingDesignation
+  SettingDesignation,
+  AdminSchedules
 } from '@Modules';
 
 export const ROUTES = {
@@ -76,6 +77,7 @@ export const ROUTES = {
     'ManageTeamMate': '/ManageTeamMate',
     // 'Sectors':'/Sectors'
     'scheduling-interview': '/scheduling-interview',
+    'admin-schedule': '/admin-schedule'
   }
 }
 
@@ -228,14 +230,24 @@ export const JOB_SEEKER_ROUTES = [
 
 export const SUPER_ADMIN_ROUTES = [
   {
-    id: 10,
+    id: 1,
+    path: ROUTES['designation-module']['admin-schedule'],
+    component: <AdminSchedules />
+  },
+  {
+    id: 2,
+    path: ROUTES['designation-module']['scheduling-interview'],
+    component: <Scheduling />
+  },
+  {
+    id: 3,
     path: ROUTES['designation-module'].response + '/:schedule_id',
     component: <Response />
   },
   {
-    id: 12,
-    path: ROUTES['designation-module']['scheduling-interview'],
-    component: <Scheduling />
+    id: 4,
+    path: ROUTES['designation-module'].settings,
+    component: <Settings />
   },
 ]
 
