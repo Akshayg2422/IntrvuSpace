@@ -604,7 +604,7 @@ function Candidates({ id, details }: CandidatesProps) {
           </div>
         </div>
        )} 
-
+  
       {/**
        * add candidate Modal
        */}
