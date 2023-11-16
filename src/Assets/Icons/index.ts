@@ -221,5 +221,5 @@ export const icons = {
   phoneCall: require('./PhoneCall/icon.png'),
   email: require('./Email/icon.png'),
   mark: require('./Mark/icon.png'),
-  moneyDefalt: require('./MoneyDefalt/Group 237610 (1).png')
+  moneyDefalt: require('./MoneyDefalt/icon.png')
 };
