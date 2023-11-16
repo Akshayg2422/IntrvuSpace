@@ -5,7 +5,7 @@ import { Image, Button } from '@Components'
 import { icons } from "@Assets";
 import './index.css'
 
-function Modal({ loading, isOpen, children, title, subTitle, buttonText = 'Submit', size = 'lg', style, onClose, onClick, ...rest }: ModalProps) {
+function Modal({ loading, isOpen, children, title, subTitle, buttonText = 'Submit', size = 'lg', style, onClose, onClick, subText, ...rest }: ModalProps) {
 
   useEffect(() => {
     // Add and remove the "overflow-hidden" class to the body based on modal's open state
@@ -42,6 +42,7 @@ function Modal({ loading, isOpen, children, title, subTitle, buttonText = 'Submi
       <div className={'section-modal-container'}>
         <div>
           <div className={'screen-heading'}>{title}</div>
+          <div className="sub-text">{subText}</div>
           <div className={'sub-title-space'}>
             <small className={'text-des'}>{subTitle}</small>
           </div>

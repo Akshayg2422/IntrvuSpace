@@ -11,5 +11,6 @@ export interface ModalProps extends RsModalProps {
     variant?: 'bg-white' | 'bg-primary'
     buttonText?: string
     onClick?: () => void
-    loading?: boolean
+    loading?: boolean;
+    subText?: string;
 } 
