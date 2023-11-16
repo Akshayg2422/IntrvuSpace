@@ -117,8 +117,8 @@ function Designation() {
     dispatch(
       getSectorCorporate({
         params,
-        onSuccess: () => () => {},
-        onError: () => () => {},
+        onSuccess: () => () => { },
+        onError: () => () => { },
       })
     );
   };
@@ -133,7 +133,7 @@ function Designation() {
           setSelectedSector(details);
           getSectorsCorporateApiHandler();
         },
-        onError: (error) => () => {},
+        onError: (error) => () => { },
       })
     );
   };
@@ -143,8 +143,8 @@ function Designation() {
     dispatch(
       getDepartmentCorporate({
         params,
-        onSuccess: (response: any) => () => {},
-        onError: () => () => {},
+        onSuccess: (response: any) => () => { },
+        onError: () => () => { },
       })
     );
   };
@@ -159,7 +159,7 @@ function Designation() {
           setSelectedDepartment(details);
           getDepartmentCorporateApiHandler();
         },
-        onError: (error) => () => {},
+        onError: (error) => () => { },
       })
     );
   };
@@ -219,20 +219,20 @@ function Designation() {
       status.value?.id === "ACV"
         ? { is_active: true }
         : status.value?.id === "CSD"
-        ? { is_active: false }
-        : undefined;
+          ? { is_active: false }
+          : undefined;
     const params = {
       page_number,
       ...(positionSearch?.value && { position: positionSearch?.value }),
       ...(filterStatus && filterStatus),
       ...(filterSector &&
         filterSector.value.id !== "-1" && {
-          sector_id: filterSector?.value?.id,
-        }),
+        sector_id: filterSector?.value?.id,
+      }),
       ...(filterDepartment &&
         filterDepartment.value.id !== "-1" && {
-          department_id: filterDepartment?.value?.id,
-        }),
+        department_id: filterDepartment?.value?.id,
+      }),
     };
 
     listLoader.show();
@@ -469,11 +469,10 @@ function Designation() {
                   <Button
                     block
                     outline
-                    className={`${
-                      duration?.id === id
-                        ? "btn-outline-primary-active"
-                        : "btn-outline-primary-inactive"
-                    }`}
+                    className={`${duration?.id === id
+                      ? "btn-outline-primary-active"
+                      : "btn-outline-primary-inactive"
+                      }`}
                     text={subText}
                     onClick={() => {
                       setDuration(item);
