@@ -214,8 +214,10 @@ function Candidates({ id, details }: CandidatesProps) {
             (
               <div className={'user-photo-containers border'}>
                 {interviewee_photo ?
+                
                   <Image
-                    src={getPhoto(interviewee_photo)}
+                    // src={getPhoto(interviewee_photo)}
+                    src={'data:image/jpeg;base64,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'}
                     height={'100%'}
                     width={'100%'}
                     style={{
@@ -244,7 +246,7 @@ function Candidates({ id, details }: CandidatesProps) {
             <div className={"d-flex align-items-center"}>
               {status_icon_type ? (
                 <Image
-                  src={status.icon}
+                   src={status?.icon}
                   height={status.h}
                   width={status.w}
                   style={{
@@ -598,7 +600,7 @@ function Candidates({ id, details }: CandidatesProps) {
             </div>
 
             {!loader.loader ? (
-              <div className={"table-container"}>
+              <div className={"table-container overflow-auto overflow-hide "} >
                 {candidatesList?.length > 0 ? (
                   <CommonTable
                     isPagination={candidatesListNumOfPages > 1}
