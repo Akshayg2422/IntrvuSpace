@@ -159,7 +159,7 @@ function TopNavbarCorporateFlow() {
                       <div className={'btn-wrapper'}>
                         <Button
                           block
-                          text={"Create Openings"}
+                          text={"Create Opening"}
                           onClick={handleCreateOpeningsClick}
                         />
                       </div>

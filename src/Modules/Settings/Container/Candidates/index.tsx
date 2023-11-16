@@ -29,6 +29,7 @@ import {
   ifObjectExist,
   getValidateError,
   getBrowserInfo,
+  getPhoto,
 } from "@Utils";
 import { icons, image } from "@Assets";
 import {
@@ -52,8 +53,14 @@ function Candidates({ id, details }: CandidatesProps) {
     { id: 1, name: "Approve Manually" },
     { id: 2, name: "Reject Manually" },
     { id: 3, name: "Remove Candidate" },
-    { id: 4, name: "Close Candidate" },
-    { id: 5, name: "Watch Interview" },
+    { id: 4, name: "Block Interview" },
+  ];
+  const CANDIDATE_MENU_OPTIONS_COMPLETE_INTERVIEW = [
+    { id: 1, name: "Approve Manually" },
+    { id: 2, name: "Reject Manually" },
+    { id: 3, name: "Remove Candidate" },
+    { id: 4, name: "Block Interview" },
+    { id: 5, name: "Watch Interview" }
   ];
 
   const USER_STATUS_FILTER = [
@@ -92,6 +99,8 @@ function Candidates({ id, details }: CandidatesProps) {
   } = useSelector((state: any) => state.DashboardReducer);
 
   const loader = useLoader(false);
+
+
 
   /**
    * add candidate state
@@ -195,10 +204,42 @@ function Candidates({ id, details }: CandidatesProps) {
           is_report_completed,
           status_icon_type,
           is_closed,
+          is_complete,
+          interviewee_photo
         } = item;
 
         const status = getIcon(status_icon_type);
         return {
+         "     ":
+            (
+              <div className={'user-photo-containers border'}>
+                {interviewee_photo ?
+                  <Image
+                    src={getPhoto(interviewee_photo)}
+                    height={'100%'}
+                    width={'100%'}
+                    style={{
+                      objectFit: 'cover',
+                      overflow: 'hidden',
+                      padding: '1px',
+                      borderRadius: '4px'
+                    }}
+                  />
+                  :
+                  <Image
+                    src={icons.profile}
+                    height={27}
+                    width={27}
+                    style={{
+                      objectFit: 'contain'
+                    }}
+                  />
+
+                }
+              </div>
+            ),
+
+
           "": (
             <div className={"d-flex align-items-center"}>
               {status_icon_type ? (
@@ -228,7 +269,7 @@ function Candidates({ id, details }: CandidatesProps) {
 
           Email: <div className={"th-regular"}>{interviewee_email}</div>,
 
-          "status Note": (
+          "Status": (
             <div className={`text-${status_note_colour} font-weight-400`}>
               {status_note}
             </div>
@@ -255,7 +296,7 @@ function Candidates({ id, details }: CandidatesProps) {
                 {!is_closed && (
                   <div className={"th-menu-container"}>
                     <MenuBar
-                      menuData={CANDIDATE_MENU_OPTIONS}
+                      menuData={is_complete ? CANDIDATE_MENU_OPTIONS_COMPLETE_INTERVIEW : CANDIDATE_MENU_OPTIONS}
                       onClick={(action) => onCandidateMenuHandler(action, item)}
                     />
                   </div>
@@ -359,7 +400,7 @@ function Candidates({ id, details }: CandidatesProps) {
             closeCandidateModal.hide();
             removeCandidateModal.hide();
             setSelectedCandidates(undefined);
-          } catch (e) {}
+          } catch (e) { }
         },
         onError: (error: any) => () => {
           showToast(error.error_message, "error");
@@ -479,9 +520,8 @@ function Candidates({ id, details }: CandidatesProps) {
               <div className={"dashboard-title"}>{"Selected Candidates"}</div>
               <div>
                 <span
-                  className={`text-heading ${
-                    selected_candidates > 0 && "text-primary"
-                  }`}
+                  className={`text-heading ${selected_candidates > 0 && "text-primary"
+                    }`}
                 >
                   {selected_candidates}
                 </span>
@@ -505,11 +545,12 @@ function Candidates({ id, details }: CandidatesProps) {
           <div className={"card-container"}>
             <div className={"table-heading"}>
               <span className={"screen-heading"}>{"Candidates"}</span>
-              <div className={"badge-schedule"}>
+              {selected_candidates > 0 && <div className={"badge-schedule"}>
                 <span
                   className={"badge-text"}
                 >{`${selected_candidates} Selected`}</span>
               </div>
+              }
             </div>
 
             <div className={"table-search-container"}>

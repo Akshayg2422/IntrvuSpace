@@ -35,6 +35,14 @@
     justify-content: center;
 }
 
+.user-photo-containers {
+    display: flex;
+    width: 32px;
+    height: 32px;
+    align-items: center;
+    justify-content: center;
+}
+
 .user-details-container {
     margin-left: 20px;
     display: flex;
