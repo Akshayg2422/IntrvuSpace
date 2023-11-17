@@ -108,7 +108,6 @@ function DetailedReport({ details }: DetailedReportProps) {
                           <span className={'question-text'}>{question}</span>
 
                           <div className={'answer-container'}>
-
                             {
                               covered && covered?.length > 0 &&
                               covered.map(
@@ -117,8 +116,8 @@ function DetailedReport({ details }: DetailedReportProps) {
                                     <div className={'answer-item-container'}>
                                       <Image
                                         src={icons.check}
-                                        height={12}
-                                        width={12}
+                                        height={11}
+                                        width={11}
                                         style={{
                                           objectFit: 'contain'
                                         }}
@@ -220,7 +219,7 @@ function DetailedReport({ details }: DetailedReportProps) {
                             <div className={'detailed-job-description-title'}>{metrics_name}</div>
                             <div className={'note-text ml-0'}>{description}</div>
                           </div>
-                          <div className={'detailed-job-description-title font-weight-700'}>{rating}</div>
+                          <div className={'detailed-job-description-title font-weight-700 ml-5'}>{rating}</div>
                         </div>
                       </div>
                     )

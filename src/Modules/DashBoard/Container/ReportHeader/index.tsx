@@ -28,38 +28,61 @@ const ReportHeader = ({ details }: ReportHeaderProps) => {
     }
 
 
+    function userAuthCheck() {
+        return !!(candidate_photo || city !== '-' && city !== '' && region !== '-' && region !== '' && country !== '-' && country !== '');
+    }
+
+    function userLocationCheck() {
+        return !!(city !== '-' && city !== '' || region !== '-' && region !== '' || country !== '-' && country !== '');
+    }
+    console.log(city + '===city' + region);
 
     return (
         <div className={'base-info-container'}>
             <div className={'user-info-container'}>
-                <div className={'user-auth-container'}>
-                    {
-                        candidate_photo && <div className={'user-photo-container border'}>
-                            <Image
-                                src={getPhoto(candidate_photo)}
-                                height={'100%'}
-                                width={'100%'}
-                                style={{
-                                    objectFit: 'cover',
-                                }}
-                            />
+                {
+                    userAuthCheck() &&
+                    <div className={'user-auth-container'}>
+
+                        <div className={'user-photo-container border'}>
+                            {
+                                candidate_photo ?
+                                    <Image
+                                        src={getPhoto(candidate_photo)}
+                                        height={'100%'}
+                                        width={'100%'}
+                                        style={{
+                                            objectFit: 'cover',
+                                        }}
+                                    />
+                                    :
+                                    <Image
+                                        src={icons.profile}
+                                        width={70}
+                                        height={70}
+                                        style={{
+                                            objectFit: 'contain'
+                                        }}
+                                    />
+                            }
                         </div>
-                    }
-                    {
-                        user_location_info ?
-                            <div className={'user-address-container'}>
-                                <div>
-                                    {city === '-' ? <></> : <span className={'screen-des'}>{city}</span>}
-                                    {region === '-' ? <></> : <span className={'screen-des'}>, {region}</span>}
+
+                        {
+                            user_location_info ?
+                                <div className={'user-address-container'}>
+                                    <div>
+                                        {city && city !== '-' ? <span className={'screen-des'}>{city}</span> : <></>}
+                                        {region && region !== '-' ? <span className={'screen-des'}>, {region}</span> : <></>}
+                                    </div>
+                                    {country && country !== '-' ? <span className={'screen-des'}>{getCountryName(country)}</span> : <></>}
                                 </div>
-                                {country === '-' ? <></> : <span className={'screen-des'}>{getCountryName(country)}</span>}
-                            </div>
-                            :
-                            <>
-                            </>
-                    }
-                </div>
-                <div className={candidate_photo ? 'user-details-container-left' : 'user-details-container-center'}>
+                                :
+                                <>
+                                </>
+                        }
+                    </div>
+                }
+                <div className={userAuthCheck() ? 'user-details-container-left' : 'user-details-container-center'}>
                     <div className={'user-heading'}>{capitalizeFirstLetter(name)}</div>
                     <div className={'user-role'}> {`${role} - ${experience_txt}`}</div>
                     <div className={'badge-schedule m-0 w-75'}>
