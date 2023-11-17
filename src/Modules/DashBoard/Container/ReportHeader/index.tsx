@@ -32,10 +32,6 @@ const ReportHeader = ({ details }: ReportHeaderProps) => {
         return !!(candidate_photo || city !== '-' && city !== '' && region !== '-' && region !== '' && country !== '-' && country !== '');
     }
 
-    function userLocationCheck() {
-        return !!(city !== '-' && city !== '' || region !== '-' && region !== '' || country !== '-' && country !== '');
-    }
-    console.log(city + '===city' + region);
 
     return (
         <div className={'base-info-container'}>
@@ -53,6 +49,8 @@ const ReportHeader = ({ details }: ReportHeaderProps) => {
                                         width={'100%'}
                                         style={{
                                             objectFit: 'cover',
+                                            overflow: 'hidden',
+                                            borderRadius: '4px'
                                         }}
                                     />
                                     :
