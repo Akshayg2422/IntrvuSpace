@@ -63,7 +63,7 @@ function BulkUpload({ loading, tempFile, isOpen, onClose, onUpload }: BulkUpload
 
 
   const downloadCSVTemplate = () => {
-    downloadFile(tempFile?.slice(1));
+    downloadFile(tempFile);
   };
 
 
