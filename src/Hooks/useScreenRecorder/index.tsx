@@ -7,8 +7,13 @@ import {
 import { getBrowserInfo } from "@Utils";
 import { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+
 
 const useScreenRecorder = () => {
+  let { schedule_id } = useParams();
+
+  
   const [mediaStream, setMediaStream] = useState<any>(null);
   const [recorder, setRecorder] = useState<any>(null);
   const [isScreenRecording, setIsScreenRecording] = useState(false);
@@ -23,7 +28,10 @@ const useScreenRecorder = () => {
 
   const dispatch = useDispatch();
 
+ 
+
   const startScreenRecording = async () => {
+
     try {
       if (getBrowserInfo().browserName !== "Mozilla Firefox") {
         const audioStream = await navigator.mediaDevices.getUserMedia({
@@ -109,7 +117,7 @@ const useScreenRecorder = () => {
   const sendBlobToServer = (videoBlob: any, isRecordingDone: any) => {
     const formData = new FormData();
     formData.append("video_data", videoBlob);
-    formData.append("schedule_id", scheduleId);
+    formData.append("schedule_id", schedule_id as never);
 
     // if (VideoSessionDetails) {
     //   formData.append("video_id", VideoSessionDetails?.id);
