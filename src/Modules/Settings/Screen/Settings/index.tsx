@@ -34,7 +34,7 @@ function Settings() {
           onClick={() => {
             gotoScreen(DEPARTMENT)
           }}>
-          <div className={'setting-heading'}>{'Department'}</div>
+          <div className={'setting-heading'}>{'Departments'}</div>
         </div>
         <div
           className={'card-container-no-padding setting-container-item'}
@@ -42,7 +42,7 @@ function Settings() {
             gotoScreen(DESIGNATION)
           }}
         >
-          <div className={'setting-heading'}>{'Designation'}</div>
+          <div className={'setting-heading'}>{'Designations'}</div>
         </div>
       </div>
 
@@ -61,7 +61,7 @@ function Settings() {
             gotoScreen(SECTOR)
           }}
         >
-          <div className={'setting-heading'}>{'Sector'}</div>
+          <div className={'setting-heading'}>{'Sectors'}</div>
         </div>
       </div>
 

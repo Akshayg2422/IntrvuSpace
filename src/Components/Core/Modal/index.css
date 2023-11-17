@@ -1,5 +1,5 @@
 .sub-title-space {
-    margin-top: 15px;
+    margin-top: 8px;
 }
 
 .cancel-container {
@@ -50,4 +50,9 @@
 
 .modal-child-container {
     margin: 50px 0px;
+}
+
+.sub-text {
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
 }

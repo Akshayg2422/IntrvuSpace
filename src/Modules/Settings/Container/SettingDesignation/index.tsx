@@ -39,7 +39,7 @@ function SettingDesignation() {
     const [isHrAdmin, setIsHrAdmin] = useState(false);
     const [isDepartmentAdmin, setIsDepartmentAdmin] = useState(false);
     const [isSuperAdmin, setIsSuperAdmin] = useState(false);
-
+    const [editId, setEditId] = useState<any>()
     const addLoader = useLoader(false);
 
 
@@ -142,15 +142,18 @@ function SettingDesignation() {
 
             return {
                 name: capitalizeFirstLetter(name),
-                "HR Admin": getActiveStatus(is_hr_admin),
-                "Department Admin": getActiveStatus(is_department_admin),
-                "Super Admin": getActiveStatus(is_super_admin),
                 "HR": getActiveStatus(is_hr),
+                "HR Admin": getActiveStatus(is_hr_admin),
+                "Super Admin": getActiveStatus(is_super_admin),
+                // "Department Admin": getActiveStatus(is_department_admin),
+                
+                
                 " ": <MenuBar
                     menuData={MENU}
                     onClick={(item) => {
                         const { id } = item;
                         if (id === MENU[0].id) {
+                            setEditId(id)
                             setSelectedDesignation(el)
                             designationName.set(name)
                             setIsHrAdmin(is_hr_admin)
@@ -186,7 +189,7 @@ function SettingDesignation() {
         <>
             <div className={'screen-padding'}>
                 <SettingHeader
-                    title={'Designation'}
+                    title={'Designations'}
                     buttonText={'Add'}
                     onClick={addDesignationModal.show}
                 />
@@ -228,7 +231,7 @@ function SettingDesignation() {
 
             <Modal
                 loading={addLoader.loader}
-                title={'Designation'}
+                title={`${editId ? "Edit" : "Create"} Designation`}
                 isOpen={addDesignationModal.visible}
                 onClose={resetValue}
                 onClick={addDesignationApiHandler}
@@ -244,16 +247,17 @@ function SettingDesignation() {
                 </div>
                 <div className={'admin-check-container'}>
                     <Checkbox
+                        id={'ht'}
+                        text={'HR'}
+                        defaultChecked={isHr}
+                        onCheckChange={setIsHr}
+                    />
+
+                    <Checkbox
                         id={'hr-admin'}
                         text={'HR Admin'}
                         defaultChecked={isHrAdmin}
                         onCheckChange={setIsHrAdmin}
-                    />
-                    <Checkbox
-                        id={'department-admin'}
-                        text={'Department Admin'}
-                        defaultChecked={isDepartmentAdmin}
-                        onCheckChange={setIsDepartmentAdmin}
                     />
                     <Checkbox
                         id={'super-admin'}
@@ -261,13 +265,15 @@ function SettingDesignation() {
                         defaultChecked={isSuperAdmin}
                         onCheckChange={setIsSuperAdmin}
                     />
+                    {/* <Checkbox
+                        id={'department-admin'}
+                        text={'Department Admin'}
+                        defaultChecked={isDepartmentAdmin}
+                        onCheckChange={setIsDepartmentAdmin}
+                    /> */}
+                    
 
-                    <Checkbox
-                        id={'ht'}
-                        text={'HR'}
-                        defaultChecked={isHr}
-                        onCheckChange={setIsHr}
-                    />
+
                 </div>
             </Modal >
         </>

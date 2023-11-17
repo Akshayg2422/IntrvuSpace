@@ -12,6 +12,7 @@ import {
   NoDataFound,
   Alert,
   Spinner,
+  WatchInterviewModal,
 } from "@Components";
 import {
   fetchCandidatesCorporate,
@@ -19,6 +20,7 @@ import {
   refreshCorporateSchedule,
   postManualApprovalOnCandidate,
   bulkUploadCandidates,
+  watchInterviewVideoUrl,
 } from "@Redux";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -29,6 +31,7 @@ import {
   ifObjectExist,
   getValidateError,
   getBrowserInfo,
+  getPhoto,
 } from "@Utils";
 import { icons, image } from "@Assets";
 import {
@@ -52,9 +55,20 @@ function Candidates({ id, details }: CandidatesProps) {
     { id: 1, name: "Approve Manually" },
     { id: 2, name: "Reject Manually" },
     { id: 3, name: "Remove Candidate" },
-    { id: 4, name: "Close Candidate" },
-    { id: 5, name: "Watch Interview" },
+    { id: 4, name: "Block Interview" },
   ];
+  const CANDIDATE_MENU_OPTIONS_COMPLETE_INTERVIEW = [
+    { id: 5, name: "Watch Interview" }
+  ];
+
+
+  
+  function getCandidateMenu(isClose: boolean) {
+    return [
+      ...CANDIDATE_MENU_OPTIONS,
+      ...(isClose ? CANDIDATE_MENU_OPTIONS_COMPLETE_INTERVIEW : [])
+    ] as never[];
+  }
 
   const USER_STATUS_FILTER = [
     { id: "ALL", text: "All" },
@@ -71,6 +85,7 @@ function Candidates({ id, details }: CandidatesProps) {
     };
     return iconsMap[key];
   };
+  const [candidateCountDetails,setCandidateCountDetails]=useState<any>(0)
 
   const dispatch = useDispatch();
 
@@ -89,9 +104,20 @@ function Candidates({ id, details }: CandidatesProps) {
     candidatesCount,
     candidatesListNumOfPages,
     candidatesListCurrentPages,
+    interviewUrl
   } = useSelector((state: any) => state.DashboardReducer);
+  
+  useEffect(()=>{
+   
+    if(candidatesCount>candidateCountDetails){
+    setCandidateCountDetails(candidatesCount)
+    }
+
+  },[candidatesCount])
 
   const loader = useLoader(false);
+
+
 
   /**
    * add candidate state
@@ -134,7 +160,6 @@ function Candidates({ id, details }: CandidatesProps) {
    *  watch interview
    */
 
-  const [watchInterviewUrl, setWatchInterviewUrl] = useState<any>();
   const openWatchInterviewModal = useModal(false);
 
   function openBulkUploadHandler() {
@@ -195,15 +220,47 @@ function Candidates({ id, details }: CandidatesProps) {
           is_report_completed,
           status_icon_type,
           is_closed,
+          is_complete,
+          interviewee_photo
         } = item;
 
         const status = getIcon(status_icon_type);
         return {
+         "     ":
+            (
+              <div className={'user-photo-containers border'}>
+                {interviewee_photo ?
+                  <Image
+                    src={getPhoto(interviewee_photo)}
+                  height={'100%'}
+                    width={'100%'}
+                    style={{
+                      objectFit: 'cover',
+                      overflow: 'hidden',
+                      padding: '1px',
+                      borderRadius: '4px'
+                    }}
+                  />
+                  :
+                  <Image
+                    src={icons.profile}
+                    height={27}
+                    width={27}
+                    style={{
+                      objectFit: 'contain'
+                    }}
+                  />
+
+                }
+              </div>
+            ),
+
+
           "": (
             <div className={"d-flex align-items-center"}>
               {status_icon_type ? (
                 <Image
-                  src={status.icon}
+                   src={status?.icon}
                   height={status.h}
                   width={status.w}
                   style={{
@@ -228,7 +285,7 @@ function Candidates({ id, details }: CandidatesProps) {
 
           Email: <div className={"th-regular"}>{interviewee_email}</div>,
 
-          "status Note": (
+          "Status": (
             <div className={`text-${status_note_colour} font-weight-400`}>
               {status_note}
             </div>
@@ -255,7 +312,7 @@ function Candidates({ id, details }: CandidatesProps) {
                 {!is_closed && (
                   <div className={"th-menu-container"}>
                     <MenuBar
-                      menuData={CANDIDATE_MENU_OPTIONS}
+                      menuData={getCandidateMenu(is_complete)}
                       onClick={(action) => onCandidateMenuHandler(action, item)}
                     />
                   </div>
@@ -307,7 +364,7 @@ function Candidates({ id, details }: CandidatesProps) {
    */
 
   function onCandidateMenuHandler(action: any, item: any) {
-    const { id, recording_url, interview_duration } = item;
+    const { id, recording_url, interview_duration, interviewee_name, interviewee_email } = item;
 
     setSelectedCandidates(id);
 
@@ -322,18 +379,20 @@ function Candidates({ id, details }: CandidatesProps) {
     } else if (action.id === CANDIDATE_MENU_OPTIONS[3].id) {
       closeCandidateModal.show();
     } else if (action.id === CANDIDATE_MENU_OPTIONS[4].id) {
-      if (recording_url && interview_duration) {
-        setWatchInterviewUrl({
+      if (recording_url && recording_url.length > 0 && interview_duration) {
+        dispatch(watchInterviewVideoUrl({
           recording_url,
           interview_duration,
-        });
+          interviewee_name,
+          interviewee_email
+        }));
         if (getBrowserInfo().browserName !== "Mozilla Firefox") {
           openWatchInterviewModal.show();
         } else {
           showToast("Watch Video is not supported in this browser", "info");
         }
       } else {
-        showToast("Interview Video unavailable", "info");
+        showToast("Interview video unavailable", "info");
       }
     }
   }
@@ -359,7 +418,7 @@ function Candidates({ id, details }: CandidatesProps) {
             closeCandidateModal.hide();
             removeCandidateModal.hide();
             setSelectedCandidates(undefined);
-          } catch (e) {}
+          } catch (e) { }
         },
         onError: (error: any) => () => {
           showToast(error.error_message, "error");
@@ -464,7 +523,7 @@ function Candidates({ id, details }: CandidatesProps) {
         </div>
       )}
 
-      {(candidatesCount > 0 || searchCandidate.value) && (
+      {(candidateCountDetails > 0 ) && (
         <div>
           <div className={"candidate-dashboard-container"}>
             <div
@@ -479,9 +538,8 @@ function Candidates({ id, details }: CandidatesProps) {
               <div className={"dashboard-title"}>{"Selected Candidates"}</div>
               <div>
                 <span
-                  className={`text-heading ${
-                    selected_candidates > 0 && "text-primary"
-                  }`}
+                  className={`text-heading ${selected_candidates > 0 && "text-primary"
+                    }`}
                 >
                   {selected_candidates}
                 </span>
@@ -505,11 +563,12 @@ function Candidates({ id, details }: CandidatesProps) {
           <div className={"card-container"}>
             <div className={"table-heading"}>
               <span className={"screen-heading"}>{"Candidates"}</span>
-              <div className={"badge-schedule"}>
+              {selected_candidates > 0 && <div className={"badge-schedule"}>
                 <span
                   className={"badge-text"}
                 >{`${selected_candidates} Selected`}</span>
               </div>
+              }
             </div>
 
             <div className={"table-search-container"}>
@@ -557,7 +616,7 @@ function Candidates({ id, details }: CandidatesProps) {
             </div>
 
             {!loader.loader ? (
-              <div className={"table-container"}>
+              <div className={"table-container overflow-auto overflow-hide "} >
                 {candidatesList?.length > 0 ? (
                   <CommonTable
                     isPagination={candidatesListNumOfPages > 1}
@@ -588,14 +647,14 @@ function Candidates({ id, details }: CandidatesProps) {
                 )}
               </div>
             ) : (
-              <div className={"loader-container"}>
+              <div className={"loader-containers"}>
                 <Spinner />
               </div>
             )}
           </div>
         </div>
-      )}
-
+       )} 
+  
       {/**
        * add candidate Modal
        */}
@@ -684,7 +743,7 @@ function Candidates({ id, details }: CandidatesProps) {
        * Watch Inteview
        */}
 
-      <Modal
+      {/* <Modal
         isOpen={openWatchInterviewModal.visible}
         onClose={() => {
           openWatchInterviewModal.hide();
@@ -719,7 +778,18 @@ function Candidates({ id, details }: CandidatesProps) {
             </div>
           )}
         </>
-      </Modal>
+      </Modal> */}
+
+      <WatchInterviewModal
+      isOpen={openWatchInterviewModal.visible}
+      onClose={() => {
+        openWatchInterviewModal.hide();
+        dispatch(watchInterviewVideoUrl(undefined));
+      }}
+      name={interviewUrl?.interviewee_name?.trim()}
+      subTitle={interviewUrl?.interview_duration}
+      urlData = {interviewUrl}
+      />
     </>
   );
 }
