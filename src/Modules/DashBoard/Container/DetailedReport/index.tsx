@@ -108,6 +108,7 @@ function DetailedReport({ details }: DetailedReportProps) {
                           <span className={'question-text'}>{question}</span>
 
                           <div className={'answer-container'}>
+
                             {
                               covered && covered?.length > 0 &&
                               covered.map(
@@ -116,7 +117,11 @@ function DetailedReport({ details }: DetailedReportProps) {
                                     <div className={'answer-item-container'}>
                                       <Image
                                         src={icons.check}
-                                        height={20}
+                                        height={12}
+                                        width={12}
+                                        style={{
+                                          objectFit: 'contain'
+                                        }}
                                       />
                                       <small className={'note-text'}>
                                         {ans}
