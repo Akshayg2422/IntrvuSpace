@@ -138,12 +138,12 @@ function Register() {
         />
         <InputPassword
           value={password.value}
-          placeholder={'Enter your password'}
+          placeholder={'Password'}
           onChange={password.onChange}
         />
         <InputPassword
           value={confirmPassword.value}
-          placeholder={'Confirm your password'}
+          placeholder={'Confirm Password'}
           onChange={confirmPassword.onChange}
         />
 

@@ -35,7 +35,7 @@
 .detailed-job-description-item {
     display: flex;
     justify-content: space-between;
-    padding: 25px;
+    padding: 50px;
     margin-top: 40px;
     width: 100%;
     align-items: center;
@@ -92,7 +92,7 @@
 .sector-card-container {
     height: auto;
     display: flex;
-    padding: 25px;
+    padding: 25px 30px;
     margin-top: 40px;
     flex-direction: column;
 }
@@ -105,7 +105,7 @@
 }
 
 .question-container {
-    margin-top: 15px;
+    margin-top: 20px;
 }
 
 .question-text {
@@ -115,19 +115,23 @@
 }
 
 .answer-container {
-    margin-top: 15px;
+    margin-top: 20px;
 }
 
 .answer-item-container {
     display: flex;
     align-items: center;
+    margin-top: 5px;
 }
 
 .detailed-each-container {
+    display: flex;
+    flex-direction: column;
     align-items: center;
+    justify-content: center;
 }
 
-@media(max-width: 768px) {
+/* @media(max-width: 768px) {
 
 
     .detailed-report-card-container {
@@ -175,4 +179,4 @@
         justify-content: flex-start;
     }
 
-}
+} */

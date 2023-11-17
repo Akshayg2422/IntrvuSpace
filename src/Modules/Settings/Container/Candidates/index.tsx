@@ -378,7 +378,7 @@ function Candidates({ id, details }: CandidatesProps) {
       removeCandidateModal.show();
     } else if (action.id === CANDIDATE_MENU_OPTIONS[3].id) {
       closeCandidateModal.show();
-    } else if (action.id === CANDIDATE_MENU_OPTIONS[4].id) {
+    } else if (action.id === CANDIDATE_MENU_OPTIONS_COMPLETE_INTERVIEW[0].id) {
       if (recording_url && recording_url.length > 0 && interview_duration) {
         dispatch(watchInterviewVideoUrl({
           recording_url,
@@ -742,43 +742,6 @@ function Candidates({ id, details }: CandidatesProps) {
       {/**
        * Watch Inteview
        */}
-
-      {/* <Modal
-        isOpen={openWatchInterviewModal.visible}
-        onClose={() => {
-          openWatchInterviewModal.hide();
-          setWatchInterviewUrl(undefined);
-        }}
-        title="Watch Interview"
-        subTitle={`(${watchInterviewUrl?.interview_duration} minutes)`}
-      >
-        <>
-          {watchInterviewUrl && watchInterviewUrl?.recording_url ? (
-            <video controls className="d-flex col pt--3">
-              <source
-                src={
-                  SERVER +
-                  (watchInterviewUrl.recording_url.charAt(0) === "/"
-                    ? watchInterviewUrl.recording_url.slice(1)
-                    : watchInterviewUrl.recording_url)
-                }
-                type="video/mp4"
-              />
-            </video>
-          ) : (
-            <div className="d-flex justify-content-center">
-              <div className="mt-5 mb-5">
-                <div className="align-self-center">
-                  <Image src={image.noVideo} />
-                </div>
-                <div className="mt-2" style={{ color: "#e3e5e8" }}>
-                  {"No Video Found"}
-                </div>
-              </div>
-            </div>
-          )}
-        </>
-      </Modal> */}
 
       <WatchInterviewModal
       isOpen={openWatchInterviewModal.visible}

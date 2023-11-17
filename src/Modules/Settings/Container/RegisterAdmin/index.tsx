@@ -88,13 +88,13 @@ function RegisterAdmin({ params, onParams, onSubmit }: RegisterAdminProps) {
             <InputPassword
                 id={'password'}
                 value={params.password}
-                placeholder={'Enter your password'}
+                placeholder={'Password'}
                 onChange={registerAdminOnChange}
             />
             <InputPassword
                 id={'confirm_password'}
                 value={params.confirm_password}
-                placeholder={'Confirm your password'}
+                placeholder={'Confirm Password'}
                 onChange={registerAdminOnChange}
             />
 

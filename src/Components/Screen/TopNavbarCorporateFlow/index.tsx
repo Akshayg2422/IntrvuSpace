@@ -90,15 +90,16 @@ function TopNavbarCorporateFlow() {
 
   return (
     <>
+
       <Navbar
-        className="navbar-horizontal navbar-main navbar-dark navbar-transparent bg-white position-fixed py-xl-0 py-sm-0 py-2"
+        className="navbar-horizontal navbar-main navbar-dark navbar-transparent bg-white position-fixed py-xl-0 py-sm-0"
         expand="lg"
         id="navbar-main"
         style={{
           zIndex: 999
         }}
       >
-        <div className="container-fluid mx-md-3 mx-sm-0 mx-2 my-3">
+        <div className="container-fluid mx-md-3 mx-sm-0">
           <NavbarBrand tag={Link}>
             <div className="d-flex justify-content-between">
               <img
