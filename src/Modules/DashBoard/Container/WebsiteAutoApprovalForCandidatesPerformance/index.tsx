@@ -12,7 +12,7 @@ function WebsiteAutoApprovalForCandidatesPerformance() {
     return (
 
         <Container>
-            <div className={'pb-5'}>
+            <div className={'pb-md-5'}>
                 <Row>
                     <Col lg="6">
                         <div className="mt-5">
