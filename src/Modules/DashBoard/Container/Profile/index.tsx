@@ -74,26 +74,6 @@ function Profile() {
                     </DropdownMenu>
                 </UncontrolledDropdown>
             </Nav>
-            {/* <Modal title={'Logout User'} isOpen={logoutModal.visible} onClose={logoutModal.hide}>
-                <div>
-                    <span className='ml-3'>{"Please click on Proceed to Logout user"}</span>
-                    <div
-                        className='d-flex justify-content-end m-3'
-                    >
-                        <Button
-                            size='lg'
-                            color='white'
-                            text={'Cancel'}
-                            onClick={() => logoutModal.hide()}
-                        />
-                        <Button
-                            size='lg'
-                            text={'Proceed'}
-                            onClick={proceedLogout}
-                        />
-                    </div>
-                </div>
-            </Modal> */}
         </div>
     )
 }

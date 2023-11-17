@@ -20,6 +20,7 @@ import {
   UncontrolledDropdown
 } from "reactstrap";
 
+
 function TopNavbar() {
 
   const HEADER_MENU = [
@@ -156,7 +157,7 @@ function TopNavbar() {
                 </NavItem>
               )}
 
-              <NavItem className="d-none d-lg-block ml-lg-4">
+              <NavItem className="d-none d-lg-block ml-2">
                 <div className='row align-items-center m-auto'>
                   <span className='mb-0 text-black font-weight-400 pointer' onClick={toggleDropdownHandler}>
                     {loginDetails?.user}
@@ -217,8 +218,8 @@ function TopNavbar() {
       </Navbar >
 
       <Alert
-        title={'Logout User'}
-        subTitle={'Please click on proceed to logout user'}
+        title={'Logout'}
+        subTitle={'Please click on proceed to logout'}
         isOpen={logoutModal.visible}
         onClose={logoutModal.hide}
         primary={"Logout"}

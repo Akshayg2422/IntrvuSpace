@@ -1,26 +1,23 @@
+import { icons } from "@Assets";
 import {
   Button,
-  ViewMore,
   Image,
-  showToast,
-  Modal,
+  ViewMore,
   WatchInterviewModal,
+  showToast
 } from "@Components";
-import {
-  capitalizeFirstLetter,
-  arrayOrderbyDate,
-  formatDateTime,
-  getDisplayTimeAgoFromMoment,
-  getBrowserInfo,
-} from "@Utils";
-import { JdItemProps } from "./interfaces";
-import { icons } from "@Assets";
-import "./index.css";
 import { useModal } from "@Hooks";
-import { useDispatch, useSelector } from "react-redux";
 import { watchInterviewVideoUrl } from "@Redux";
-import { SERVER } from "@Services";
-import { useEffect, useState } from "react";
+import {
+  arrayOrderbyDate,
+  capitalizeFirstLetter,
+  formatDateTime,
+  getBrowserInfo,
+  getDisplayTimeAgoFromMoment,
+} from "@Utils";
+import { useDispatch, useSelector } from "react-redux";
+import "./index.css";
+import { JdItemProps } from "./interfaces";
 
 function JdItem({
   item,
@@ -34,7 +31,6 @@ function JdItem({
   const dispatch = useDispatch();
 
   const openWatchInterviewModal = useModal(false);
-  const [playVideoUrlIndex, setPlayVideoUrlIndex] = useState<any>(0);
 
   const {
     id,
@@ -158,15 +154,16 @@ function JdItem({
               <div className={"completed-item-content"}>
                 <div className={"skill-empty"}>{""}</div>
                 <div className={"skill-value font-weight-bold"}>
-                  {"Skill Matrix"}
+                  {'Skill Matrix'}
                 </div>
                 <div className={"skill-value font-weight-bold"}>
-                  {"Communication"}
+                  {'Communication'}
                 </div>
                 <div className={"skill-value font-weight-bold"}>
-                  {"Aptitude"}
+                  {'Aptitude'}
                 </div>
                 <div className={"skill-value"}>{""}</div>
+                <div className={"skill-empty"}>{""}</div>
               </div>
             </div>
             {completedSchedules.map((item: any, index: number) => {
@@ -183,99 +180,99 @@ function JdItem({
 
               const { skill_matrix, other_analytics } = report_analytics || {};
               return (
-                <div className={"completed-item-container"}>
-                  <div className={"completed-item-heading"}>
-                    <span className={"point-heading"}>
-                      {"Interview " + (index + 1)}
-                    </span>
-                    <div className={"completed-at"}>
-                      {`Completed at ${getDisplayTimeAgoFromMoment(
-                        interview_end_time
-                      )}`}
+                <>
+                  <div className={"completed-item-container"}>
+                    <div className={"completed-item-heading"}>
+                      <span className={"point-heading"}>
+                        {"Interview " + (index + 1)}
+                      </span>
+                      <div className={"completed-at"}>
+                        {`Completed at ${getDisplayTimeAgoFromMoment(
+                          interview_end_time
+                        )}`}
+                      </div>
                     </div>
-                  </div>
-                  <div
-                    className={
-                      "completed-item-content completed-item-content-border"
-                    }
-                  >
-                    <div className={"skill-empty"}>{""}</div>
-                    <div className={"skill-value "}>{skill_matrix}</div>
-                    <div className={"skill-value"}>
-                      {other_analytics?.communication}
-                    </div>
-                    <div className={"skill-value "}>
-                      {other_analytics?.aptitude}
-                    </div>
-                    <div className={"skill-value "}>
-                      {is_report_complete && (
-                        <div className={"report-btn-container"}>
-                          <Button
-                            block
-                            outline
-                            text={"View Report"}
+                    <div className={"completed-item-content"}>
+                      <div className={"skill-empty"}>{""}</div>
+                      <div className={"skill-value"}>{skill_matrix}</div>
+                      <div className={"skill-value ml-1"}>
+                        {other_analytics?.communication}
+                      </div>
+                      <div className={"skill-value"}>
+                        {other_analytics?.aptitude}
+                      </div>
+                      <div className={"skill-value"}>
+                        {is_report_complete && (
+                          <div className={"report-btn-container"}>
+                            <Button
+                              block
+                              outline
+                              text={"View Report"}
+                              onClick={() => {
+                                if (onViewReport) {
+                                  onViewReport(id);
+                                }
+                              }}
+                            />
+                          </div>
+                        )}
+                        {is_complete && !is_report_complete && (
+                          <div>
+                            <span className="name text-sm">
+                              Generating Report ...
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                      <div className={'skill-empty text-center'}>
+                        {recording_url && (
+                          <i
+                            className="bi bi-eye-fill text-primary fa-lg pointer"
                             onClick={() => {
-                              if (onViewReport) {
-                                onViewReport(id);
+                              if (
+                                getBrowserInfo().browserName !== "Mozilla Firefox"
+                              ) {
+                                openWatchInterviewModal.show();
+                                dispatch(
+                                  watchInterviewVideoUrl({
+                                    recording_url: recording_url.reverse(),
+                                    interview_duration,
+                                    interviewee_name,
+                                    interviewee_email,
+                                  })
+                                );
+                              } else {
+                                showToast(
+                                  "Watch Interview is not supported in this browser",
+                                  "info"
+                                );
                               }
                             }}
                           />
-                        </div>
-                      )}
-                      {is_complete && !is_report_complete && (
-                        <div>
-                          <span className="name text-sm">
-                            Generating Report ...
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                    {recording_url && (
-                      <div className="ml-2">
-                        <i
-                          className="bi bi-eye-fill text-primary fa-lg pointer"
-                          onClick={() => {
-                            if (
-                              getBrowserInfo().browserName !== "Mozilla Firefox"
-                            ) {
-                              openWatchInterviewModal.show();
-                              dispatch(
-                                watchInterviewVideoUrl({
-                                  recording_url: recording_url.reverse(),
-                                  interview_duration,
-                                  interviewee_name,
-                                  interviewee_email,
-                                })
-                              );
-                            } else {
-                              showToast(
-                                "Watch Interview is not supported in this browser",
-                                "info"
-                              );
-                            }
-                          }}
-                        />
+                        )}
                       </div>
-                    )}
+                    </div>
                   </div>
-                </div>
+                  <div className={"completed-item-content-border"}></div>
+                </>
               );
             })}
           </div>
         )}
-      </div>
+      </div >
 
       {/** watch Interview */}
 
-      <WatchInterviewModal
+      < WatchInterviewModal
         isOpen={openWatchInterviewModal.visible}
         onClose={() => {
           openWatchInterviewModal.hide();
           dispatch(watchInterviewVideoUrl(undefined));
-        }}
+        }
+        }
         name={interviewUrl?.interviewee_name?.trim()}
         subTitle={interviewUrl?.interview_duration}
-        urlData = {interviewUrl}
+        urlData={interviewUrl}
       />
     </>
   );
