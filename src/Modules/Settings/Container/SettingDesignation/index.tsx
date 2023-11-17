@@ -32,7 +32,6 @@ function SettingDesignation() {
      */
 
     const [selectedDesignation, setSelectedDesignation] = useState<any>(undefined);
-
     const addDesignationModal = useModal(false);
     const designationName = useInput('')
     const [isHr, setIsHr] = useState(false);
@@ -174,7 +173,6 @@ function SettingDesignation() {
     function resetValue() {
 
         addDesignationModal.hide();
-
         designationName.set('')
         setIsHrAdmin(false);
         setIsHr(false);

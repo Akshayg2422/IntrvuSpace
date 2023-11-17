@@ -8,14 +8,14 @@ const Input = React.forwardRef(({ id, className, heading, variant = 'default', i
 
     const inputRef = useRef<any>(null)
 
-    
+
     useEffect(() => {
         if (ref) {
-          inputRef.current.focus();
+            inputRef.current.focus();
         }
-      }, [ref]);
+    }, [ref]);
 
-    
+
 
     return (
         <FormGroup className={noSpace ? 'm-0 b-0' : ""}>
