@@ -59,7 +59,7 @@ function RegisterCompany({ loading, params, onParams, onBackPress, onSubmit }: R
                     }
                 }} />
                 <div className={'admin-heading-txt'}>
-                    <div className="text-sub-heading m-0 p-0 text-center">{'Company Details'}</div>
+                    <div className="text-sub-heading m-0 p-0 text-center">{'Register Company'}</div>
                 </div>
             </div>
 
@@ -72,7 +72,7 @@ function RegisterCompany({ loading, params, onParams, onBackPress, onSubmit }: R
             <Input
                 id={'brand_name'}
                 value={params?.brand_name}
-                placeholder={'Brand Name'}
+                placeholder={'Company Name'}
                 onChange={registerCompanyOnChange}
             />
             <Input
