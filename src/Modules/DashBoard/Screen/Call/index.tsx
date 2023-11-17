@@ -1,18 +1,21 @@
 import { icons } from "@Assets";
 import {
+  Alert,
   AnimatedImage,
   Back,
   Button,
+  Heading,
   Image,
   Modal,
-  Spinner
+  Spinner,
 } from "@Components";
-import { useLoader, useModal, useNavigation, useScreenRecorder } from "@Hooks";
+import { useLoader, useModal, useNavigation } from "@Hooks";
 import { CallHeader, CallHeaderMobile, Guidelines, Report } from "@Modules";
 import {
   canStartInterview,
   closeInterview,
-  getScheduleBasicInfo
+  getJdItemList,
+  getScheduleBasicInfo,
 } from "@Redux";
 import { CALL_WEBSOCKET } from "@Services";
 import { color } from "@Themes";
@@ -22,7 +25,7 @@ import {
   getShortName,
   gotoPermissionSetting,
   hasCameraPermission,
-  hasMicrophonePermission
+  hasMicrophonePermission,
 } from "@Utils";
 import type { Harker } from "hark";
 import type { Encoder } from "lamejs";
@@ -31,6 +34,7 @@ import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { RecordRTCPromisesHandler, StereoAudioRecorder } from "recordrtc";
+import { useScreenRecorder } from "@Hooks";
 
 const compare_moment_format = "YYYY-MM-DDHH:mm:ss";
 
@@ -209,16 +213,9 @@ function Call() {
   const dispatch = useDispatch();
   let { schedule_id } = useParams();
   let callModel = useModal(true);
-
-
   const { scheduleInfo, recordingPermission } = useSelector(
     (state: any) => state.DashboardReducer
   );
-
-
-
-  const { can_start_interview } = scheduleInfo || {}
-
   const [processCallInprogress, setProcessCallInprogress] = useState(false);
 
   const responseDelayTimeOutRef = useRef<any>(undefined);
@@ -252,18 +249,28 @@ function Call() {
     setIsScreenRecordingReady,
   } = useScreenRecorder();
 
+  console.log("recordSttaus==>", recordStatus);
 
-  /** 
-   * screen recording variable and state and methods start and useEfftect
-   */
+  {
+    /** screen recording */
+  }
 
-  const cancelRecordingModal = useModal(false);
+  const [isConfirmRecordingModalOpen, setIsConfirmRecordingModalOpen] =
+    useState(false);
+  const [isCancelRecording, setIsCancelRecording] = useState(false);
+  const [isEnableRecording, setIsEnableRecording] = useState(false);
+
+  const [isForceRecord, setIsForceRecord] = useState(true); // static state to force record by default setting false
+
+  {
+    /** interview recording useEffect */
+  }
 
   useEffect(() => {
     if (recordStatus) {
       startInterviewHandler();
     } else if (recordStatus === false) {
-      cancelRecordingModal.show();
+      setIsConfirmRecordingModalOpen(true);
       setRecordStatus(undefined);
     }
     return () => {
@@ -271,26 +278,7 @@ function Call() {
         onEndCallHandler();
       }
     };
-  }, [recordStatus, cancelRecordingModal?.visible]);
-
-
-
-
-  const closeRecordingModal = () => {
-    cancelRecordingModal.hide()
-
-  };
-
-  const confirmForceRecord = () => {
-    cancelRecordingModal.hide()
-    startScreenRecording();
-  };
-
-
-  /** 
-  * screen recording variable and state and methods end
-  */
-
+  }, [recordStatus, isConfirmRecordingModalOpen]);
 
   const proceedHandleResponseV1 = (response) => {
     setProcessCallInprogress(false);
@@ -532,6 +520,21 @@ function Call() {
       }
     };
   }, []);
+
+  function addToDecibleCollection(receivedData) {
+    decibleCollection.current.push(receivedData);
+    // if (decibleCollection.current.length > 30) {
+    //     decibleCollection.current.shift();
+    // }
+    // if (decibleCollection.current.length >= 25 and is) {
+    //    const lastIt = decibleCollection.current[decibleCollection.current.length -1]
+    //     const decibleCollectionIngorIngnoice =  decibleCollection.current.map((it)=>{
+    //         lastIt
+    //         decibleCollectionIngorIngnoice
+
+    //     })
+    // }
+  }
 
   /**
    * get user media stream event
@@ -828,81 +831,51 @@ function Call() {
   };
 
   async function startInterviewHandler() {
-
     const hasCamPermission = await hasCameraPermission();
-    const hasMicPermission = await hasMicrophonePermission();
+    if (hasCamPermission) {
+      camPermissionModal.hide();
 
+      const hasMicPermission = await hasMicrophonePermission();
+      if (hasMicPermission) {
+        micPermissionModal.hide();
 
+        const canStartParams = { schedule_id };
 
-    if (hasCamPermission && hasMicPermission) {
+        if (!recordStatus) {
+          await startScreenRecording();
+        } else if (recordStatus) {
+          startInterviewLoader.show();
 
-      if (recordStatus) {
-        initiateSocket();
-        proceedOpenCallView.current = true;
-      }
-      else {
-        startScreenRecording();
-      }
+          intervalIdRef.current = setInterval(() => {
+            dispatch(
+              canStartInterview({
+                params: canStartParams,
+                onSuccess: (res: any) => () => {
+                  initiateSocket();
 
-      if (intervalIdRef.current) {
-        clearInterval(intervalIdRef.current);
-      }
+                  proceedOpenCallView.current = true;
 
-    } else {
-
-      if (!hasMicPermission) {
+                  if (intervalIdRef.current) {
+                    clearInterval(intervalIdRef.current);
+                  }
+                },
+                onError: (error: any) => () => {
+                  startInterviewLoader.hide();
+                  setNetworkError(true);
+                },
+              })
+            );
+          }, INTERVAL_TIME);
+        } else {
+          startScreenRecording();
+        }
+      } else {
         micPermissionModal.show();
-      } else if (!hasCamPermission) {
-        camPermissionModal.show();
       }
-    }
-
-  }
-
-
-  const handleCanStartInterview = () => {
-
-    const canStartParams = { schedule_id };
-    startInterviewLoader.show();
-    dispatch(
-      canStartInterview({
-        params: canStartParams,
-        onSuccess: (res: any) => () => {
-          startInterviewLoader.hide();
-          startInterviewHandler();
-
-          // Clear the interval only after a successful response
-          stopInterval();
-
-        },
-        onError: (error: any) => () => {
-          setNetworkError(true);
-        },
-      })
-    );
-
-  };
-
-  /**
-   * check is Question is generated or not
-   */
-
-  function canStartInterviewCheckHandler() {
-
-    if (can_start_interview) {
-      startInterviewHandler();
     } else {
-
-      handleCanStartInterview();
-
-      intervalIdRef.current = setInterval(() => {
-        handleCanStartInterview()
-      }, INTERVAL_TIME);
-
+      camPermissionModal.show();
     }
   }
-
-
 
   function endInterviewHandler() {
     // isScreenRecording && stopScreenRecording();
@@ -974,8 +947,41 @@ function Call() {
   if (isTtfSpeaking) interviewer_state = IV_SPEAKING;
   else if (!voiceUp && !mute) interviewer_state = IV_PROCESSING;
 
+  {
+    /**screen recording */
+  }
 
+  const closeRecordingModal = () => {
+    setIsConfirmRecordingModalOpen(false);
+    setIsCancelRecording(false);
+    setIsEnableRecording(false);
+  };
 
+  const confirmForceRecord = () => {
+    setIsConfirmRecordingModalOpen(false);
+    setIsCancelRecording(false);
+    startScreenRecording();
+  };
+
+  const cancelRecording = () => {
+    setIsCancelRecording(true);
+    setIsConfirmRecordingModalOpen(true);
+    setRecordStatus(undefined);
+  };
+
+  const enableRecording = () => {
+    setIsConfirmRecordingModalOpen(false);
+    setIsCancelRecording(false);
+    startScreenRecording();
+    setRecordStatus(undefined);
+    setIsEnableRecording(true);
+  };
+
+  const confirmRecording = () => {
+    setIsConfirmRecordingModalOpen(false);
+    setIsCancelRecording(false);
+    startInterviewHandler();
+  };
 
   return (
     <>
@@ -1161,7 +1167,7 @@ function Call() {
                 scheduleInfo={scheduleInfo}
                 loading={startInterviewLoader.loader}
                 heading={scheduleInfo?.interviewee_expected_designation}
-                onClick={canStartInterviewCheckHandler}
+                onClick={startInterviewHandler}
               />
             ) : (
               <></>
@@ -1191,6 +1197,29 @@ function Call() {
         )}
       </div>
 
+      {/** Microphone access modal */}
+      <Modal
+        isOpen={micPermissionModal.visible}
+        onClose={micPermissionModal.hide}
+        title={"Microphone Access Required"}
+      >
+        <div>
+          <h3 className="text-gray-dark font-weight-500">
+            To continue, grant microphone access:
+          </h3>
+          <p className="mb-0">{"1. Check browser settings."}</p>
+          <p className="mb-0">
+            {"2. Enable microphone access in system settings. "}
+            <span
+              className="pointer text-primary font-weight-700"
+            // onClick={gotoPermissionSetting}
+            >{`(${getOperatingSystem()})`}</span>
+          </p>
+        </div>
+        <div className="d-flex float-right">
+          <Button text={"OK"} onClick={micPermissionModal.hide} />
+        </div>
+      </Modal>
 
       {/** Browser permission denied modal */}
 
@@ -1218,19 +1247,33 @@ function Call() {
       {/** confirm or cancel video recording modal*/}
 
       <Modal
-        title={'Confirm Recording'}
-        isOpen={cancelRecordingModal.visible}
+        title={
+          isForceRecord
+            ? "Confirm Recording"
+            : isCancelRecording
+              ? "Confirm without Recording"
+              : "Cancel Recording"
+        }
+        isOpen={isConfirmRecordingModalOpen}
         onClose={closeRecordingModal}
-        subTitle={'Please confirm to record this interview and select entire screen to share to your interviewer'}
-        buttonText={'Confirm'}
-        onClick={confirmForceRecord}
+        subTitle={
+          isForceRecord
+            ? "Please confirm to record this interview and select entire screen to share to your interviewer"
+            : isCancelRecording
+              ? "Please confirm to proceed the interview without recording"
+              : "Are you sure, want to cancel the interview recording"
+        }
+        buttonText="Confirm"
+        onClick={() => {
+          if (isForceRecord) {
+            confirmForceRecord();
+          }
+        }}
       />
 
-      {
-        /**
-         * network error
-         */
-      }
+      {/**
+       * nerowork error
+       */}
 
       <Modal
         isOpen={interviewLimitModal.visible}
@@ -1251,11 +1294,9 @@ function Call() {
         }}
       />
 
-      {
-        /**
-         * Camera permission modal
-         */
-      }
+      {/**
+       * Camera permission modal
+       */}
 
       <Modal
         isOpen={camPermissionModal.visible}
@@ -1264,53 +1305,9 @@ function Call() {
         subTitle={
           "Please provide access to your web camera to start the interview"
         }
-        buttonText={'Close'}
+        buttonText="Close"
         onClick={camPermissionModal.hide}
-      >
-        <div>
-          <p className={'screen-des'}>
-            {"1. Check browser settings."}
-          </p>
-          <p className={'screen-des'}>
-            {"2.Enable camera access in system settings. "}
-            <span
-              className="pointer text-primary font-weight-700"
-              onClick={() => gotoPermissionSetting('camera')}>
-              {`${getOperatingSystem()}`}
-            </span>
-          </p>
-        </div>
-      </Modal>
-
-      {
-        /** 
-         * Microphone access modal 
-         */
-      }
-
-      <Modal
-        isOpen={micPermissionModal.visible}
-        onClose={micPermissionModal.hide}
-        title={"Microphone Access Required"}
-        subTitle={'To continue, grant microphone access:'}
-        buttonText={'Cancel'}
-        onClick={micPermissionModal.hide}
-      >
-        <div>
-          <p className={'screen-des'}>
-            {"1. Check browser settings."}
-          </p>
-          <p className={'screen-des'}>
-            {"2.Enable microphone access in system settings. "}
-            <span
-              className="pointer text-primary font-weight-700"
-              onClick={() => gotoPermissionSetting('microphone')}>
-              {`${getOperatingSystem()}`}
-            </span>
-          </p>
-        </div>
-      </Modal >
-
+      />
     </>
   );
 }
