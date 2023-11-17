@@ -52,7 +52,7 @@
     font-weight: 600;
 }
 
-@media(max-width: 768px) {
+/* @media(max-width: 768px) {
     .report-dashboard-container {
         display: flex;
         flex-direction: column;
@@ -94,4 +94,4 @@
         padding: 15px;
     }
 
-}
+} */
