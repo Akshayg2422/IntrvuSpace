@@ -33,9 +33,8 @@ const ReportHeader = ({ details }: ReportHeaderProps) => {
         <div className={'base-info-container'}>
             <div className={'user-info-container'}>
                 <div className={'user-auth-container'}>
-                    <div className={'user-photo-container border'}>
-                        {
-                            candidate_photo &&
+                    {
+                        candidate_photo && <div className={'user-photo-container border'}>
                             <Image
                                 src={getPhoto(candidate_photo)}
                                 height={'100%'}
@@ -44,8 +43,8 @@ const ReportHeader = ({ details }: ReportHeaderProps) => {
                                     objectFit: 'cover',
                                 }}
                             />
-                        }
-                    </div>
+                        </div>
+                    }
                     {
                         user_location_info ?
                             <div className={'user-address-container'}>
