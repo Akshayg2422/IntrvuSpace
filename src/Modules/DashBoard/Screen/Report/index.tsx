@@ -4,7 +4,7 @@ import {
   Spinner
 } from "@Components";
 import { useDropDown, useLoader } from "@Hooks";
-import { BasicReport, DetailedReport, ReportHeader } from '@Modules';
+import { BasicReport, ReportHeader, DetailedReport } from '@Modules';
 import { fetchBasicReport } from "@Redux";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
