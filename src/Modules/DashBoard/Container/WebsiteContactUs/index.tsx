@@ -24,14 +24,10 @@ import { Button, Image } from "@Components";
 
 function WebsiteContactUs() {
   const { goTo } = useNavigation();
-  let dynamicHeight: any = useDynamicHeight();
-
-  const dynamicMarginTop = dynamicHeight.dynamicWidth <= 576 ? "mt-4" : "";
 
   return (
     <>
       <section
-        className={`${dynamicMarginTop ? "pt-5" : "pt-1"}`}
         style={{ backgroundColor: "#fafbff" }}
       >
         <div>
@@ -51,13 +47,13 @@ function WebsiteContactUs() {
                   </div>
                 </div>
               </div>
-              <div className="col  d-flex justify-content-start mt-lg-0 mt-5 " style={{marginLeft:'50px'}}>
+              <div className="col d-flex justify-content-start mt-lg-0 mt-5 ml-md-5 ">
                 <div className="">
                   <h3 className="text-secondary font-weight-800">COMPANY</h3>
                   <div className="mt-4 text-secondary" style={{ fontSize: '15px', fontWeight: 400 }}>
                     <div className=""  >
-                      <a className="text-secondary"  href="#home">
-                      <span className="pointer" > Home</span>
+                      <a className="text-secondary" href="#home">
+                        <span className="pointer" > Home</span>
                       </a>
                     </div>
                     <div className="mt-1 " >
@@ -75,17 +71,17 @@ function WebsiteContactUs() {
                   <div className="text-secondary">
                     <div className="mt-4">
                       <a
-                        className="text-secondary pointer text-decoration-underline-hover" style={{ fontSize: '15px', fontWeight: 400 }}
-                        // onClick={() => goTo(ROUTES["auth-module"].privacy)}
+                        className="text-secondary text-decoration-underline-hover" style={{ fontSize: '15px', fontWeight: 400 }}
+                      // onClick={() => goTo(ROUTES["auth-module"].privacy)}
                       >
                         Privacy Policy
                       </a>
                     </div>
                     <div className="mt-1">
                       <a
-                        className="text-secondary pointer text-decoration-underline-hover" style={{ fontSize: '15px', fontWeight: 400 }}
+                        className="text-secondary text-decoration-underline-hover" style={{ fontSize: '15px', fontWeight: 400 }}
                         onClick={
-                          () => {}
+                          () => { }
                           // goTo(ROUTES["auth-module"].TermsAndConditions)
                         }
                       >

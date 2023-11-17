@@ -57,12 +57,13 @@ export const image = {
     CreateIntrvu: require('./theme/createIntrvu.png'),
     AccessReportsAndInsights: require('./theme/AccessReportsAndInsights.png'),
     ScheduleAndNotification: require('./theme/ScheduleAndNotification.png'),
-    CandidatesAttendInterview: require('./theme/candidatesAttendInterview.png'),
+    CandidatesAttendInterview: require('./theme/candidatesAttendsInterview.png'),
     CreateJdAddCandidates: require('./theme/createJdAddCandidates.png'),
     AutoApproval: require('./theme/autoApproval.png'),
     InsightsAndReports: require('./theme/InsightsAndReports.png'),
     StreamlinedInterviewAndInsights: require('./theme/StreamlinedInterviewAndInsights.png'),
     passportImage: require('./theme/passportImage.jpg'),
-    noVideo: require('./theme/noVideo.png')
+    noVideo: require('./theme/noVideo.png'),
+    StreamlinedAutomatedInterview: require('./theme/StreamlinedAutomatedInterview.png')
 
 }
