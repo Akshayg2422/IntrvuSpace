@@ -241,7 +241,7 @@ function JdItem({
                                 openWatchInterviewModal.show();
                                 dispatch(
                                   watchInterviewVideoUrl({
-                                    recording_url: recording_url,
+                                    recording_url,
                                     interview_duration,
                                     interviewee_name,
                                     interviewee_email,
