@@ -429,3 +429,9 @@ export const ON_GOING_SELECTED_ID = 'ON_GOING_SELECTED_ID'
  * Update corporate schedule
  */
 export const UPDATE_CORPORATE_SCHEDULE = "UPDATE_CORPORATE_SCHEDULE"
+
+/** 
+ * Watch interview video
+ */
+
+export const WATCH_INTERVIEW_VIDEO_URL = "WATCH_INTERVIEW_VIDEO_URL"

@@ -12,6 +12,7 @@ import {
   NoDataFound,
   Alert,
   Spinner,
+  WatchInterviewModal,
 } from "@Components";
 import {
   fetchCandidatesCorporate,
@@ -19,6 +20,7 @@ import {
   refreshCorporateSchedule,
   postManualApprovalOnCandidate,
   bulkUploadCandidates,
+  watchInterviewVideoUrl,
 } from "@Redux";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -83,6 +85,7 @@ function Candidates({ id, details }: CandidatesProps) {
     };
     return iconsMap[key];
   };
+  const [candidateCountDetails,setCandidateCountDetails]=useState<any>(0)
 
   const dispatch = useDispatch();
 
@@ -101,7 +104,16 @@ function Candidates({ id, details }: CandidatesProps) {
     candidatesCount,
     candidatesListNumOfPages,
     candidatesListCurrentPages,
+    interviewUrl
   } = useSelector((state: any) => state.DashboardReducer);
+  
+  useEffect(()=>{
+   
+    if(candidatesCount>candidateCountDetails){
+    setCandidateCountDetails(candidatesCount)
+    }
+
+  },[candidatesCount])
 
   const loader = useLoader(false);
 
@@ -148,7 +160,6 @@ function Candidates({ id, details }: CandidatesProps) {
    *  watch interview
    */
 
-  const [watchInterviewUrl, setWatchInterviewUrl] = useState<any>();
   const openWatchInterviewModal = useModal(false);
 
   function openBulkUploadHandler() {
@@ -353,7 +364,7 @@ function Candidates({ id, details }: CandidatesProps) {
    */
 
   function onCandidateMenuHandler(action: any, item: any) {
-    const { id, recording_url, interview_duration } = item;
+    const { id, recording_url, interview_duration, interviewee_name, interviewee_email } = item;
 
     setSelectedCandidates(id);
 
@@ -368,18 +379,20 @@ function Candidates({ id, details }: CandidatesProps) {
     } else if (action.id === CANDIDATE_MENU_OPTIONS[3].id) {
       closeCandidateModal.show();
     } else if (action.id === CANDIDATE_MENU_OPTIONS[4].id) {
-      if (recording_url && interview_duration) {
-        setWatchInterviewUrl({
+      if (recording_url && recording_url.length > 0 && interview_duration) {
+        dispatch(watchInterviewVideoUrl({
           recording_url,
           interview_duration,
-        });
+          interviewee_name,
+          interviewee_email
+        }));
         if (getBrowserInfo().browserName !== "Mozilla Firefox") {
           openWatchInterviewModal.show();
         } else {
           showToast("Watch Video is not supported in this browser", "info");
         }
       } else {
-        showToast("Interview Video unavailable", "info");
+        showToast("Interview video unavailable", "info");
       }
     }
   }
@@ -510,7 +523,7 @@ function Candidates({ id, details }: CandidatesProps) {
         </div>
       )}
 
-      {(candidatesCount > 0 || searchCandidate.value) && (
+      {(candidateCountDetails > 0 ) && (
         <div>
           <div className={"candidate-dashboard-container"}>
             <div
@@ -634,14 +647,14 @@ function Candidates({ id, details }: CandidatesProps) {
                 )}
               </div>
             ) : (
-              <div className={"loader-container"}>
+              <div className={"loader-containers"}>
                 <Spinner />
               </div>
             )}
           </div>
         </div>
-      )}
-
+       )} 
+  
       {/**
        * add candidate Modal
        */}
@@ -730,7 +743,7 @@ function Candidates({ id, details }: CandidatesProps) {
        * Watch Inteview
        */}
 
-      <Modal
+      {/* <Modal
         isOpen={openWatchInterviewModal.visible}
         onClose={() => {
           openWatchInterviewModal.hide();
@@ -765,7 +778,18 @@ function Candidates({ id, details }: CandidatesProps) {
             </div>
           )}
         </>
-      </Modal>
+      </Modal> */}
+
+      <WatchInterviewModal
+      isOpen={openWatchInterviewModal.visible}
+      onClose={() => {
+        openWatchInterviewModal.hide();
+        dispatch(watchInterviewVideoUrl(undefined));
+      }}
+      name={interviewUrl?.interviewee_name?.trim()}
+      subTitle={interviewUrl?.interview_duration}
+      urlData = {interviewUrl}
+      />
     </>
   );
 }

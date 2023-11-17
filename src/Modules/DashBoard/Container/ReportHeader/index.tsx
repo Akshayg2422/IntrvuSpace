@@ -33,49 +33,36 @@ const ReportHeader = ({ details }: ReportHeaderProps) => {
         <div className={'base-info-container'}>
             <div className={'user-info-container'}>
                 <div className={'user-auth-container'}>
-                    <div className={'user-photo-container border'}>
-                        {candidate_photo ?
+                    {
+                        candidate_photo && <div className={'user-photo-container border'}>
                             <Image
                                 src={getPhoto(candidate_photo)}
                                 height={'100%'}
                                 width={'100%'}
                                 style={{
                                     objectFit: 'cover',
-                                    overflow: 'hidden',
-                                    padding: '1px',
-                                    borderRadius: '4px'
                                 }}
                             />
-                            :
-                            <Image
-                                src={icons.profile}
-                                height={80}
-                                width={80}
-                                style={{
-                                    objectFit: 'contain'
-                                }}
-                            />
-
-                        }
-                    </div>
+                        </div>
+                    }
                     {
                         user_location_info ?
                             <div className={'user-address-container'}>
                                 <div>
-                                    <span className={'screen-des'}>{city}</span>
-                                    {region ? <span className={'screen-des'}>, {region}</span> : <></>}
+                                    {city === '-' ? <></> : <span className={'screen-des'}>{city}</span>}
+                                    {region === '-' ? <></> : <span className={'screen-des'}>, {region}</span>}
                                 </div>
-                                <span className={'screen-des'}>{country === '-' ? "" : getCountryName(country)}</span>
+                                {country === '-' ? <></> : <span className={'screen-des'}>{getCountryName(country)}</span>}
                             </div>
                             :
                             <>
                             </>
                     }
                 </div>
-                <div className={'user-details-container'}>
+                <div className={candidate_photo ? 'user-details-container-left' : 'user-details-container-center'}>
                     <div className={'user-heading'}>{capitalizeFirstLetter(name)}</div>
                     <div className={'user-role'}> {`${role} - ${experience_txt}`}</div>
-                    <div className={'badge-schedule'}>
+                    <div className={'badge-schedule m-0 w-75'}>
                         <div className={'badge-text'}>{interview_duration + " min Interview"}</div>
                     </div>
                 </div>

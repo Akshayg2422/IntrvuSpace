@@ -91,9 +91,9 @@
 
 
 .text-des {
-	font-size: 1rem !important;
-	color: #727586 !important;
-	font-weight: 400 !important;
+	font-size: 1rem;
+	color: #727586;
+	font-weight: 400;
 }
 
 
@@ -146,6 +146,12 @@
 	color: var(--secondary);
 }
 
+
+.bullet-key-point {
+	font-size: 0.875rem !important;
+	color: var(--description);
+	font-weight: 400;
+}
 
 // Line heights
 
