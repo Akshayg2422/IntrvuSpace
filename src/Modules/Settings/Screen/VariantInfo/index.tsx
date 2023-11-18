@@ -56,7 +56,7 @@ function VariantInfo() {
 
   const loader = useModal(false);
 
-  console.log(corporateScheduleDetails,"corporateScheduleDetails======///")
+  console.log(corporateScheduleDetails, "corporateScheduleDetails======///")
 
   /**
    * view more details
@@ -195,9 +195,8 @@ function VariantInfo() {
               </div>
 
               <div className={"vacancies-container"}>
-                <div className={"screen-heading"}>{`${vacancies}  ${
-                  vacancies > 1 ? "Vacancies" : "Vacancy"
-                }`}</div>
+                <div className={"screen-heading"}>{`${vacancies}  ${vacancies > 1 ? "Vacancies" : "Vacancy"
+                  }`}</div>
                 {!is_closed && (
                   <div className={"menu-container"}>
                     <MenuBar
