@@ -113,3 +113,12 @@ export async function postHeader(url, data, config) {
     });
 }
 
+
+// Example using JavaScript
+let keyword = window.location.search.substr(1); // Get the query parameter
+if (keyword === 'specificKeyword') {
+    // Load or display specific content
+} else {
+    // Load default content
+}
+
