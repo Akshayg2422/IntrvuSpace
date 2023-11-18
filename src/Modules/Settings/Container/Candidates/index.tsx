@@ -616,7 +616,8 @@ function Candidates({ id, details }: CandidatesProps) {
             </div>
 
             {!loader.loader ? (
-              <div className={"table-container"} style={{ overflow: "auto" }}>
+              <div className={'table-container'}>
+
                 {candidatesList?.length > 0 ? (
                   <CommonTable
                     isPagination={candidatesListNumOfPages > 1}
@@ -652,8 +653,9 @@ function Candidates({ id, details }: CandidatesProps) {
               </div>
             )}
           </div>
-        </div>
-      )}
+        </div >
+      )
+      }
 
       {/**
        * add candidate Modal
