@@ -33,7 +33,7 @@ const GO_TO_DASHBOARD_GUIDELINES = [
 
 function Guidelines({
     scheduleInfo = undefined,
-    loading,
+    loading = false,
     heading,
     onClick,
 }: GuidelinesProps) {

@@ -264,9 +264,9 @@ function Candidates({ id, details }: CandidatesProps) {
             <div className={"d-flex align-items-center"}>
               {status_icon_type ? (
                 <Image
-                  src={status?.icon}
-                  height={status.h}
-                  width={status.w}
+                   src={status?.icon}
+                  height={status?.h}
+                  width={status?.w}
                   style={{
                     objectFit: "contain",
                   }}

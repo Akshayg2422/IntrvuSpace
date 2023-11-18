@@ -3,5 +3,5 @@ export interface GuidelinesProps {
     heading?: string;
     guidelines?: any
     scheduleInfo?: any
-    onClick?: () => void
+    onClick?: () => void;
 }
