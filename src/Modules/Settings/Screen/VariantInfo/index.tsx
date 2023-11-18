@@ -179,18 +179,17 @@ function VariantInfo() {
           </div>
         ) : (
           <div>
+
             <div className={"variant-header"}>
-              <div className="d-flex align-items-start">
-                <div className="mt-1">
+              <div>
+                <div className={'back-container'}>
                   <Back />
                 </div>
-                <div className="ml-2">
-                  <div className={"screen-heading"}>
-                    {capitalizeFirstLetter(position)}
-                  </div>
-                  <div className={"experience"}>
-                    {capitalizeFirstLetter(experience)}
-                  </div>
+                <div className={"screen-heading"}>
+                  {capitalizeFirstLetter(position)}
+                </div>
+                <div className={"experience"}>
+                  {capitalizeFirstLetter(experience)}
                 </div>
               </div>
 
