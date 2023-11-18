@@ -6,6 +6,7 @@ import {
   Input,
   InputHeading,
   Modal,
+  PageNation,
   Spinner,
   TextArea,
   showToast
@@ -37,6 +38,7 @@ import {
   INTERVIEW_DURATIONS,
   getValidateError,
   ifObjectExist,
+  paginationHandler,
   validate
 } from "@Utils";
 import { useEffect, useRef, useState } from "react";
@@ -65,7 +67,7 @@ function FromJD() {
     CHAR_LENGTH +
     " characters.";
 
-  const { createJdModal, jdItem } = useSelector(
+  const { createJdModal, jdItem ,jdItemNumOfPages,jdItemCurrentPages} = useSelector(
     (state: any) => state.DashboardReducer
   );
 
@@ -102,7 +104,7 @@ function FromJD() {
   const [isQuestionGenerated, setIsQuestionGenerated] = useState(false);
 
   useEffect(() => {
-    getKnowledgeGroupFromJdHandler();
+    getKnowledgeGroupFromJdHandler(jdItemCurrentPages);
 
     return () => {
       stopInterval();
@@ -114,8 +116,10 @@ function FromJD() {
 
   const dispatch = useDispatch();
 
-  const getKnowledgeGroupFromJdHandler = () => {
-    const params = { from_jd: true };
+  const getKnowledgeGroupFromJdHandler = (page_number:any) => {
+    const params = { from_jd: true ,
+      page_number
+  };
     loading.show();
     dispatch(
       getJdItemList({
@@ -144,7 +148,7 @@ function FromJD() {
         params,
         onSuccess: (res: any) => () => {
           setIsQuestionGenerated(true);
-          getKnowledgeGroupFromJdHandler();
+          getKnowledgeGroupFromJdHandler(jdItemCurrentPages);
           resetValues();
           showToast(res.status, "success");
 
@@ -328,8 +332,36 @@ function FromJD() {
               );
             })
           }
+          {jdItemNumOfPages > 1 && (
+            <div className="mt-3">
+              <PageNation
+                currentPage={jdItemCurrentPages}
+                noOfPage={jdItemNumOfPages}
+                isPagination={jdItemNumOfPages}
+                paginationNumberClick={(currentPage) => {
+                  getKnowledgeGroupFromJdHandler(
+                    paginationHandler("current", currentPage)
+                  );
+                }}
+                previousClick={() => {
+                  getKnowledgeGroupFromJdHandler(
+                    paginationHandler("prev", jdItemCurrentPages)
+                  );
+                }}
+                nextClick={() => {
+                  getKnowledgeGroupFromJdHandler(
+                    paginationHandler("next", jdItemCurrentPages)
+                  );
+                }}
+              />
+            </div>
+          )}
+
+
         </div>
       }
+
+
       <Modal
         isOpen={createJdModal}
         title={'Create Interview'}
