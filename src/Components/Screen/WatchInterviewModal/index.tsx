@@ -11,7 +11,6 @@ const WatchInterviewModal = ({
   name,
   subTitle,
   urlData,
-  
 }: WatchInterviewModalProps) => {
   const [playVideoUrlIndex, setPlayVideoUrlIndex] = useState(0);
 
@@ -28,19 +27,22 @@ const WatchInterviewModal = ({
           }
         }}
         title={`Watch ${name}'s Interview ${
-          recording_url && recording_url.length > 1 ? ` - Part ${playVideoUrlIndex + 1}` : ""
+          recording_url && recording_url.length > 1
+            ? ` - Part ${playVideoUrlIndex + 1}`
+            : ""
         }`}
         subTitle={`(${subTitle} minutes)`}
         size="xl"
       >
         <>
-          <div className="d-flex">
+          <div className="d-flex flex-lg-row flex-column">
             <div className="col-lg-8">
               {recording_url && recording_url.length > 0 && (
                 <video
                   key={playVideoUrlIndex}
                   controls
                   className="d-flex col pt--3"
+                  autoPlay
                 >
                   <source
                     src={getPhoto(recording_url[playVideoUrlIndex])}
@@ -49,7 +51,7 @@ const WatchInterviewModal = ({
                 </video>
               )}
             </div>
-            <div className="col-lg-4 video-list-container">
+            <div className="col-lg-4 video-list-container mt-lg-0 mt-5">
               {recording_url &&
                 recording_url.length > 0 &&
                 recording_url.map((_, index: number) => {
@@ -68,9 +70,10 @@ const WatchInterviewModal = ({
                         <Image
                           key={index}
                           src={
-                            index === playVideoUrlIndex
-                              ? icons.pause
-                              : icons.play
+                            // index === playVideoUrlIndex
+                            //   ? icons.pause
+                            //   : 
+                              icons.play
                           }
                           style={{
                             cursor: "pointer",

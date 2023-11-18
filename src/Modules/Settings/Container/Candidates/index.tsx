@@ -261,8 +261,8 @@ function Candidates({ id, details }: CandidatesProps) {
               {status_icon_type ? (
                 <Image
                    src={status?.icon}
-                  height={status.h}
-                  width={status.w}
+                  height={status?.h}
+                  width={status?.w}
                   style={{
                     objectFit: "contain",
                   }}
