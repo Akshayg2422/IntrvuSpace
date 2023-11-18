@@ -62,7 +62,7 @@ function Candidates({ id, details }: CandidatesProps) {
   ];
 
 
-  
+
   function getCandidateMenu(isClose: boolean) {
     return [
       ...CANDIDATE_MENU_OPTIONS,
@@ -85,7 +85,7 @@ function Candidates({ id, details }: CandidatesProps) {
     };
     return iconsMap[key];
   };
-  const [candidateCountDetails,setCandidateCountDetails]=useState<any>(0)
+  const [candidateCountDetails, setCandidateCountDetails] = useState<any>(0)
 
   const dispatch = useDispatch();
 
@@ -106,14 +106,14 @@ function Candidates({ id, details }: CandidatesProps) {
     candidatesListCurrentPages,
     interviewUrl
   } = useSelector((state: any) => state.DashboardReducer);
-  
-  useEffect(()=>{
-   
-    if(candidatesCount>candidateCountDetails){
-    setCandidateCountDetails(candidatesCount)
+
+  useEffect(() => {
+
+    if (candidatesCount > candidateCountDetails) {
+      setCandidateCountDetails(candidatesCount)
     }
 
-  },[candidatesCount])
+  }, [candidatesCount])
 
   const loader = useLoader(false);
 
@@ -226,13 +226,13 @@ function Candidates({ id, details }: CandidatesProps) {
 
         const status = getIcon(status_icon_type);
         return {
-         "     ":
+          "     ":
             (
               <div className={'user-photo-containers border'}>
                 {interviewee_photo ?
                   <Image
                     src={getPhoto(interviewee_photo)}
-                  height={'100%'}
+                    height={'100%'}
                     width={'100%'}
                     style={{
                       objectFit: 'cover',
@@ -260,7 +260,7 @@ function Candidates({ id, details }: CandidatesProps) {
             <div className={"d-flex align-items-center"}>
               {status_icon_type ? (
                 <Image
-                   src={status?.icon}
+                  src={status?.icon}
                   height={status.h}
                   width={status.w}
                   style={{
@@ -523,7 +523,7 @@ function Candidates({ id, details }: CandidatesProps) {
         </div>
       )}
 
-      {(candidateCountDetails > 0 ) && (
+      {(candidateCountDetails > 0) && (
         <div>
           <div className={"candidate-dashboard-container"}>
             <div
@@ -616,7 +616,7 @@ function Candidates({ id, details }: CandidatesProps) {
             </div>
 
             {!loader.loader ? (
-              <div className={"table-container overflow-auto overflow-hide "} >
+              <div className={"table-container"} style={{ overflow: "auto" }}>
                 {candidatesList?.length > 0 ? (
                   <CommonTable
                     isPagination={candidatesListNumOfPages > 1}
@@ -653,8 +653,8 @@ function Candidates({ id, details }: CandidatesProps) {
             )}
           </div>
         </div>
-       )} 
-  
+      )}
+
       {/**
        * add candidate Modal
        */}
@@ -722,8 +722,8 @@ function Candidates({ id, details }: CandidatesProps) {
 
       <Alert
         isOpen={closeCandidateModal.visible}
-        title={"Close Candidate"}
-        subTitle={"Are you sure, want to close this candidate?"}
+        title={"Block Interview"}
+        subTitle={"Are you sure, want to block this interview?"}
         onClose={() => {
           closeCandidateModal.hide();
         }}
@@ -744,15 +744,16 @@ function Candidates({ id, details }: CandidatesProps) {
        */}
 
       <WatchInterviewModal
-      isOpen={openWatchInterviewModal.visible}
-      onClose={() => {
-        openWatchInterviewModal.hide();
-        dispatch(watchInterviewVideoUrl(undefined));
-      }}
-      name={interviewUrl?.interviewee_name?.trim()}
-      subTitle={interviewUrl?.interview_duration}
-      urlData = {interviewUrl}
+        isOpen={openWatchInterviewModal.visible}
+        onClose={() => {
+          openWatchInterviewModal.hide();
+          dispatch(watchInterviewVideoUrl(undefined));
+        }}
+        name={interviewUrl?.interviewee_name?.trim()}
+        subTitle={interviewUrl?.interview_duration}
+        urlData={interviewUrl}
       />
+
     </>
   );
 }
