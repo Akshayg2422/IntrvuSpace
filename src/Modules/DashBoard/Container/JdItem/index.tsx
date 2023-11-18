@@ -4,7 +4,7 @@ import {
   Image,
   ViewMore,
   WatchInterviewModal,
-  showToast
+  showToast,
 } from "@Components";
 import { useModal } from "@Hooks";
 import { watchInterviewVideoUrl } from "@Redux";
@@ -19,6 +19,7 @@ import { useDispatch, useSelector } from "react-redux";
 import "./index.css";
 import { JdItemProps } from "./interfaces";
 
+
 function JdItem({
   item,
   onViewMore,
@@ -31,6 +32,10 @@ function JdItem({
   const dispatch = useDispatch();
 
   const openWatchInterviewModal = useModal(false);
+
+
+
+  
 
   const {
     id,
@@ -154,13 +159,13 @@ function JdItem({
               <div className={"completed-item-content"}>
                 <div className={"skill-empty"}>{""}</div>
                 <div className={"skill-value font-weight-bold"}>
-                  {'Skill Matrix'}
+                  {"Skill Matrix"}
                 </div>
                 <div className={"skill-value font-weight-bold"}>
-                  {'Communication'}
+                  {"Communication"}
                 </div>
                 <div className={"skill-value font-weight-bold"}>
-                  {'Aptitude'}
+                  {"Aptitude"}
                 </div>
                 <div className={"skill-value"}>{""}</div>
                 <div className={"skill-empty"}>{""}</div>
@@ -224,18 +229,19 @@ function JdItem({
                           </div>
                         )}
                       </div>
-                      <div className={'skill-empty text-center'}>
-                        {recording_url && (
+                      <div className={"skill-empty text-center"}>
+                        {recording_url && recording_url.length > 0 && (
                           <i
                             className="bi bi-eye-fill text-primary fa-lg pointer"
                             onClick={() => {
                               if (
-                                getBrowserInfo().browserName !== "Mozilla Firefox"
+                                getBrowserInfo().browserName !==
+                                "Mozilla Firefox"
                               ) {
                                 openWatchInterviewModal.show();
                                 dispatch(
                                   watchInterviewVideoUrl({
-                                    recording_url: recording_url.reverse(),
+                                    recording_url,
                                     interview_duration,
                                     interviewee_name,
                                     interviewee_email,
@@ -259,17 +265,16 @@ function JdItem({
             })}
           </div>
         )}
-      </div >
+      </div>
 
       {/** watch Interview */}
 
-      < WatchInterviewModal
+      <WatchInterviewModal
         isOpen={openWatchInterviewModal.visible}
         onClose={() => {
           openWatchInterviewModal.hide();
           dispatch(watchInterviewVideoUrl(undefined));
-        }
-        }
+        }}
         name={interviewUrl?.interviewee_name?.trim()}
         subTitle={interviewUrl?.interview_duration}
         urlData={interviewUrl}

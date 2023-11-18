@@ -370,7 +370,7 @@ export function displayFormatDate(inputDate: any, variant: 'date' | 'time' | 'bo
 
 export const downloadFile = (response) => {
   const fileUrl = response;
-  fetch(SERVER + fileUrl)
+  fetch(getPhoto(fileUrl))
     .then((response) => response.blob())
     .then((blob) => {
       const url = URL.createObjectURL(blob);

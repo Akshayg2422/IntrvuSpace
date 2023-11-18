@@ -2,9 +2,8 @@ import { Image, Modal } from "@Components";
 import { WatchInterviewModalProps } from "./interface";
 import { useState } from "react";
 import { icons } from "@Assets";
-import { SERVER } from "@Services";
+import { getPhoto } from "@Utils";
 import "./index.css";
-import { url } from "inspector";
 
 const WatchInterviewModal = ({
   isOpen,
@@ -23,8 +22,8 @@ const WatchInterviewModal = ({
       <Modal
         isOpen={isOpen}
         onClose={() => {
-          setPlayVideoUrlIndex(0);
           if (onClose) {
+            setPlayVideoUrlIndex(0);
             onClose();
           }
         }}
@@ -37,23 +36,23 @@ const WatchInterviewModal = ({
         <>
           <div className="d-flex">
             <div className="col-lg-8">
-              {recording_url && (
+              {recording_url && recording_url.length > 0 && (
                 <video
                   key={playVideoUrlIndex}
                   controls
                   className="d-flex col pt--3"
                 >
                   <source
-                    src={SERVER + recording_url[playVideoUrlIndex]?.slice(1)}
+                    src={getPhoto(recording_url[playVideoUrlIndex])}
                     type={"video/webm"}
                   />
                 </video>
               )}
             </div>
-            <div className="col-lg-4 overflow-auto overflow-hide h-30vh">
+            <div className="col-lg-4 video-list-container">
               {recording_url &&
                 recording_url.length > 0 &&
-                recording_url.reverse().map((_, index: number) => {
+                recording_url.map((_, index: number) => {
                   return (
                     <div>
                       <div
@@ -75,7 +74,7 @@ const WatchInterviewModal = ({
                           }
                           style={{
                             cursor: "pointer",
-                            height: index === playVideoUrlIndex ? 60 : 60,
+                            height: 60,
                           }}
                         />
 
