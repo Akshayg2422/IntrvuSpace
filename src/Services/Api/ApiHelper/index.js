@@ -11,7 +11,7 @@ export const BUILD_TYPE_PRE_PROD_IP = 5;
 
 const LIVE_IP = "https://mockeazyprimary.leorainfotech.in"
 const PRE_PROD_IP = "https://mepp.leorainfotech.in"
-const LOCAL_IP = "http://192.168.128.126:8005"
+const LOCAL_IP = "http://192.168.10.5:8004"
 
 
 
@@ -111,5 +111,14 @@ export async function postHeader(url, data, config) {
     .then(response => {
       return response;
     });
+}
+
+
+// Example using JavaScript
+let keyword = window.location.search.substr(1); // Get the query parameter
+if (keyword === 'specificKeyword') {
+    // Load or display specific content
+} else {
+    // Load default content
 }
 

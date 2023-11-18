@@ -32,6 +32,7 @@ import {
   getValidateError,
   getBrowserInfo,
   getPhoto,
+  copyToClipboard,
 } from "@Utils";
 import { icons, image } from "@Assets";
 import {
@@ -43,9 +44,9 @@ import {
   useKeyPress,
 } from "@Hooks";
 import { ROUTES } from "@Routes";
-import { BulkUpload } from "@Modules";
+import { BulkUpload, Clipboard, } from "@Modules";
 import "./index.css";
-import { SERVER } from "@Services";
+
 
 function Candidates({ id, details }: CandidatesProps) {
   const { goTo } = useNavigation();
@@ -56,13 +57,14 @@ function Candidates({ id, details }: CandidatesProps) {
     { id: 2, name: "Reject Manually" },
     { id: 3, name: "Remove Candidate" },
     { id: 4, name: "Block Interview" },
+    { id: 5, name: "Copy Interview Link" }
   ];
   const CANDIDATE_MENU_OPTIONS_COMPLETE_INTERVIEW = [
     { id: 5, name: "Watch Interview" }
   ];
 
 
-  
+
   function getCandidateMenu(isClose: boolean) {
     return [
       ...CANDIDATE_MENU_OPTIONS,
@@ -85,7 +87,7 @@ function Candidates({ id, details }: CandidatesProps) {
     };
     return iconsMap[key];
   };
-  const [candidateCountDetails,setCandidateCountDetails]=useState<any>(0)
+  const [candidateCountDetails, setCandidateCountDetails] = useState<any>(0)
 
   const dispatch = useDispatch();
 
@@ -106,14 +108,14 @@ function Candidates({ id, details }: CandidatesProps) {
     candidatesListCurrentPages,
     interviewUrl
   } = useSelector((state: any) => state.DashboardReducer);
-  
-  useEffect(()=>{
-   
-    if(candidatesCount>candidateCountDetails){
-    setCandidateCountDetails(candidatesCount)
+
+  useEffect(() => {
+
+    if (candidatesCount > candidateCountDetails) {
+      setCandidateCountDetails(candidatesCount)
     }
 
-  },[candidatesCount])
+  }, [candidatesCount])
 
   const loader = useLoader(false);
 
@@ -155,6 +157,8 @@ function Candidates({ id, details }: CandidatesProps) {
    */
 
   const [isCandidateSearch, setIsCandidateSearch] = useState(false);
+
+  const [copiedInterviewLink, setCopiedInterviewLink] = useState("");
 
   /**
    *  watch interview
@@ -221,18 +225,18 @@ function Candidates({ id, details }: CandidatesProps) {
           status_icon_type,
           is_closed,
           is_complete,
-          interviewee_photo
+          interviewee_photo,
         } = item;
 
         const status = getIcon(status_icon_type);
         return {
-         "     ":
+          "     ":
             (
               <div className={'user-photo-containers border'}>
                 {interviewee_photo ?
                   <Image
                     src={getPhoto(interviewee_photo)}
-                  height={'100%'}
+                    height={'100%'}
                     width={'100%'}
                     style={{
                       objectFit: 'cover',
@@ -363,8 +367,10 @@ function Candidates({ id, details }: CandidatesProps) {
    * candidate menu Handler
    */
 
+
   function onCandidateMenuHandler(action: any, item: any) {
-    const { id, recording_url, interview_duration, interviewee_name, interviewee_email } = item;
+    const { id, recording_url, interview_duration, interviewee_name, interviewee_email, interview_link } = item;
+    console.log('1111111111==============>', interview_link)
 
     setSelectedCandidates(id);
 
@@ -378,6 +384,9 @@ function Candidates({ id, details }: CandidatesProps) {
       removeCandidateModal.show();
     } else if (action.id === CANDIDATE_MENU_OPTIONS[3].id) {
       closeCandidateModal.show();
+    } else if (action.id === CANDIDATE_MENU_OPTIONS[4].id) {
+      copyToClipboard(interview_link);
+      showToast("Interview link copied", "success");
     } else if (action.id === CANDIDATE_MENU_OPTIONS_COMPLETE_INTERVIEW[0].id) {
       if (recording_url && recording_url.length > 0 && interview_duration) {
         dispatch(watchInterviewVideoUrl({
@@ -523,7 +532,7 @@ function Candidates({ id, details }: CandidatesProps) {
         </div>
       )}
 
-      {(candidateCountDetails > 0 ) && (
+      {(candidateCountDetails > 0) && (
         <div>
           <div className={"candidate-dashboard-container"}>
             <div
@@ -616,7 +625,8 @@ function Candidates({ id, details }: CandidatesProps) {
             </div>
 
             {!loader.loader ? (
-              <div className={"table-container overflow-auto overflow-hide "} >
+              <div className={'table-container'}>
+
                 {candidatesList?.length > 0 ? (
                   <CommonTable
                     isPagination={candidatesListNumOfPages > 1}
@@ -652,9 +662,10 @@ function Candidates({ id, details }: CandidatesProps) {
               </div>
             )}
           </div>
-        </div>
-       )} 
-  
+        </div >
+      )
+      }
+
       {/**
        * add candidate Modal
        */}
@@ -722,8 +733,8 @@ function Candidates({ id, details }: CandidatesProps) {
 
       <Alert
         isOpen={closeCandidateModal.visible}
-        title={"Close Candidate"}
-        subTitle={"Are you sure, want to close this candidate?"}
+        title={"Block Interview"}
+        subTitle={"Are you sure, want to block this interview?"}
         onClose={() => {
           closeCandidateModal.hide();
         }}
@@ -744,15 +755,16 @@ function Candidates({ id, details }: CandidatesProps) {
        */}
 
       <WatchInterviewModal
-      isOpen={openWatchInterviewModal.visible}
-      onClose={() => {
-        openWatchInterviewModal.hide();
-        dispatch(watchInterviewVideoUrl(undefined));
-      }}
-      name={interviewUrl?.interviewee_name?.trim()}
-      subTitle={interviewUrl?.interview_duration}
-      urlData = {interviewUrl}
+        isOpen={openWatchInterviewModal.visible}
+        onClose={() => {
+          openWatchInterviewModal.hide();
+          dispatch(watchInterviewVideoUrl(undefined));
+        }}
+        name={interviewUrl?.interviewee_name?.trim()}
+        subTitle={interviewUrl?.interview_duration}
+        urlData={interviewUrl}
       />
+
     </>
   );
 }

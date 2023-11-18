@@ -1,5 +1,6 @@
 import React from 'react';
-import { AuthenticationAndDashboardModule, ContactUs, Data, Footer, From, HowItWorks, Introduction, LandingHeader, LandingNavBar, Pricing, Reports } from '@Modules';
+import { LandingNavBar, LandingHeader, Introduction, HowItWorks, Reports, Data, From, AuthenticationAndDashboardModule, Pricing, ContactUs, Footer } from '@Modules'
+
 
 function Landing() {
 
@@ -45,7 +46,7 @@ function Landing() {
                 <HowItWorks />
                 <Reports />
                 <Data />
-                {/* <From /> */}
+                <From />
                 <AuthenticationAndDashboardModule />
                 <Pricing />
                 <ContactUs />

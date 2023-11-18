@@ -56,7 +56,7 @@ function VariantInfo() {
 
   const loader = useModal(false);
 
-  console.log(corporateScheduleDetails,"corporateScheduleDetails======///")
+  console.log(corporateScheduleDetails, "corporateScheduleDetails======///")
 
   /**
    * view more details
@@ -179,25 +179,23 @@ function VariantInfo() {
           </div>
         ) : (
           <div>
+
             <div className={"variant-header"}>
-              <div className="d-flex align-items-start">
-                <div className="mt-1">
+              <div>
+                <div className={'back-container'}>
                   <Back />
                 </div>
-                <div className="ml-2">
-                  <div className={"screen-heading"}>
-                    {capitalizeFirstLetter(position)}
-                  </div>
-                  <div className={"experience"}>
-                    {capitalizeFirstLetter(experience)}
-                  </div>
+                <div className={"screen-heading"}>
+                  {capitalizeFirstLetter(position)}
+                </div>
+                <div className={"experience"}>
+                  {capitalizeFirstLetter(experience)}
                 </div>
               </div>
 
               <div className={"vacancies-container"}>
-                <div className={"screen-heading"}>{`${vacancies}  ${
-                  vacancies > 1 ? "Vacancies" : "Vacancy"
-                }`}</div>
+                <div className={"screen-heading"}>{`${vacancies}  ${vacancies > 1 ? "Vacancies" : "Vacancy"
+                  }`}</div>
                 {!is_closed && (
                   <div className={"menu-container"}>
                     <MenuBar

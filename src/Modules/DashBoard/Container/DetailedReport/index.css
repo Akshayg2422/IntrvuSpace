@@ -35,7 +35,7 @@
 .detailed-job-description-item {
     display: flex;
     justify-content: space-between;
-    padding: 25px;
+    padding: 50px;
     margin-top: 40px;
     width: 100%;
     align-items: center;
@@ -92,7 +92,7 @@
 .sector-card-container {
     height: auto;
     display: flex;
-    padding: 25px;
+    padding: 25px 30px;
     margin-top: 40px;
     flex-direction: column;
 }
