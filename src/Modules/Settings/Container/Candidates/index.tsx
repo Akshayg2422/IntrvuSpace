@@ -60,7 +60,7 @@ function Candidates({ id, details }: CandidatesProps) {
     { id: 5, name: "Copy Interview Link" }
   ];
   const CANDIDATE_MENU_OPTIONS_COMPLETE_INTERVIEW = [
-    { id: 5, name: "Watch Interview" }
+    { id: 6, name: "Watch Interview" }
   ];
 
 
