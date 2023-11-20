@@ -628,7 +628,7 @@ function Candidates({ id, details }: CandidatesProps) {
 
             {!loader.loader ? (
               <div className={'table-container'} style={{
-                ...(candidatesList?.length === 1 && { height: "250px" })
+                ...(candidatesList?.length === 1 && { height: "280px" })
               }}>
 
                 {candidatesList?.length > 0 ? (
