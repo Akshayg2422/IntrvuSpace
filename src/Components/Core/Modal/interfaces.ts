@@ -12,5 +12,4 @@ export interface ModalProps extends RsModalProps {
     buttonText?: string
     onClick?: () => void
     loading?: boolean;
-    subText?: string;
 } 

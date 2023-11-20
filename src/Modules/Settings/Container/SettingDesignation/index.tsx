@@ -145,8 +145,7 @@ function SettingDesignation() {
                 "HR Admin": getActiveStatus(is_hr_admin),
                 "Super Admin": getActiveStatus(is_super_admin),
                 // "Department Admin": getActiveStatus(is_department_admin),
-                
-                
+
                 " ": <MenuBar
                     menuData={MENU}
                     onClick={(item) => {
@@ -245,6 +244,7 @@ function SettingDesignation() {
                     </div>
                 </div>
                 <div className={'admin-check-container'}>
+
                     <Checkbox
                         id={'ht'}
                         text={'HR'}
@@ -270,7 +270,7 @@ function SettingDesignation() {
                         defaultChecked={isDepartmentAdmin}
                         onCheckChange={setIsDepartmentAdmin}
                     /> */}
-                    
+
 
 
                 </div>
