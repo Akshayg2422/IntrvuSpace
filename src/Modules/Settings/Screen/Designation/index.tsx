@@ -177,7 +177,7 @@ function Designation() {
       reference_id: referenceId.value,
       vacancies: vacancies?.value,
       interview_duration: duration?.value,
-      video_recording_mandatory:videoRecordMandatory
+      video_recording_mandatory: videoRecordMandatory
 
     };
 
@@ -254,8 +254,8 @@ function Designation() {
       })
     );
   };
-  console.log('111111111111========>',videoRecordMandatory);
-  
+  console.log('111111111111========>', videoRecordMandatory);
+
 
   /**
    * close create opening modal
@@ -290,6 +290,7 @@ function Designation() {
           <div className="row">
             <div className="col-sm-3">
               <Input
+                id={'search'}
                 heading={"Search"}
                 type={"text"}
                 placeHolder={"Job Title, Reference No..."}
