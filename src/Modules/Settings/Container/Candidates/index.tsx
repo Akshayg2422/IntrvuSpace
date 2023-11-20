@@ -109,6 +109,9 @@ function Candidates({ id, details }: CandidatesProps) {
     interviewUrl
   } = useSelector((state: any) => state.DashboardReducer);
 
+  const { loginDetails } = useSelector((state: any) => state.AppReducer);
+  const { is_department_admin } = loginDetails || {}
+
   useEffect(() => {
 
     if (candidatesCount > candidateCountDetails) {
@@ -507,7 +510,7 @@ function Candidates({ id, details }: CandidatesProps) {
               }
             </div>
           </div>
-          {!isJdClosed && (
+          {is_department_admin && !isJdClosed && (
             <div className={"empty-candidates-btn-container"}>
               <div className={"empty-btn-container"}>
                 <Button
@@ -608,19 +611,23 @@ function Candidates({ id, details }: CandidatesProps) {
               {!isJdClosed && (
                 <div className={"add-candidate-container"}>
                   <div className={"add-button-container"}>
-                    <Button
-                      block
-                      text={"Add"}
-                      onClick={addCandidateModal.show}
-                    />
+                    {is_department_admin &&
+                      <Button
+                        block
+                        text={"Add"}
+                        onClick={addCandidateModal.show}
+                      />
+                    }
                   </div>
                   <div className={"add-button-container"}>
-                    <Button
-                      block
-                      outline
-                      text={"Bulk Import"}
-                      onClick={openBulkUploadHandler}
-                    />
+                    {is_department_admin &&
+                      <Button
+                        block
+                        outline
+                        text={"Bulk Import"}
+                        onClick={openBulkUploadHandler}
+                      />
+                    }
                   </div>
                 </div>
               )}

@@ -64,6 +64,8 @@ function Designation() {
     corporateScheduleNumOfPages,
     corporateScheduleCurrentPages,
   } = useSelector((state: any) => state.DashboardReducer);
+  const { loginDetails } = useSelector((state: any) => state.AppReducer);
+  const { is_department_admin } = loginDetails || {}
 
   const { goTo } = useNavigation();
   const dispatch = useDispatch();
@@ -310,7 +312,7 @@ function Designation() {
                 onChange={status.onChange}
               />
             </div>
-            <div className="col-sm-3">
+           {is_department_admin && <div className="col-sm-3">
               {departmentCorporate && departmentCorporate.length > 0 && (
                 <DropDown
                   id={"department"}
@@ -323,7 +325,7 @@ function Designation() {
                   onChange={filterDepartment.onChange}
                 />
               )}
-            </div>
+            </div>}
 
             <div className="col-sm-3">
               {sectorsCorporate && sectorsCorporate.length > 0 && (
