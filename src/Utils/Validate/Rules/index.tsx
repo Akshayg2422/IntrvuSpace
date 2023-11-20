@@ -99,9 +99,6 @@ export const REGISTER_COMPANY_RULES = {
   sector: {
     presence: { allowEmpty: false, message: "sector cannot be empty" },
   },
-  photo: {
-    presence: { allowEmpty: false, message: "photo cannot be empty" },
-  },
 }
 
 export const CREATE_QUESTION_SECTION_RULES = {
