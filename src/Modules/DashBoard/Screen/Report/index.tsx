@@ -84,10 +84,10 @@ function Report() {
   return (
     <div className={'screen'}>
 
-      <div className={'back-container'}>
+      {/* <div className={'back-container'}>
         <Back />
-      </div>
-      {/* <div className={'report-dropdown-container'}>
+      </div> */}
+      <div className={'report-dropdown-container'}>
         <div className="col-sm-3">
           <DropDown
             noSpace
@@ -97,7 +97,7 @@ function Report() {
             onChange={reportType.onChange}
           />
         </div>
-      </div> */}
+      </div>
 
       <div className={'print-container'}>
         <ReactToPrint
