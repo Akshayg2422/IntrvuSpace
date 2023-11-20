@@ -568,11 +568,17 @@ function Candidates({ id, details }: CandidatesProps) {
           <div className={"card-container"}>
             <div className={"table-heading"}>
               <span className={"screen-heading"}>{"Candidates"}</span>
-              {selected_candidates > 0 && <div className={"badge-schedule"}>
-                <span
-                  className={"badge-text"}
-                >{`${selected_candidates} Selected`}</span>
-              </div>
+              {selected_candidates > 0 &&
+                <div
+                  className={"badge-schedule"}
+                  style={{
+                    marginLeft: '20px'
+                  }}
+                >
+                  <span
+                    className={"badge-text"}
+                  >{`${selected_candidates} Selected`}</span>
+                </div>
               }
             </div>
 
