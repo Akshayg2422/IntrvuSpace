@@ -100,8 +100,8 @@ function CallHeader({
                 onClick={onEndClick}
               />
             </div>
-            <div>
-              <MenuBar menuData={CALL_MENU} onClick={proceedMenuClickHandler} />
+            <div className="">
+              <MenuBar menuData={CALL_MENU} onClick={proceedMenuClickHandler} direction="up"/>
             </div>
           </div>
         </div>
