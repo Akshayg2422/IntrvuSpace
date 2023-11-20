@@ -38,9 +38,9 @@ function TopNavbarCorporateFlow() {
   const { is_super_admin } = loginDetails || {}
 
   const HEADER_MENU = [
-    { id: '1', name: 'Home', value: 'HM', route: ROUTES['designation-module']['admin-schedule'] },
-    { id: '2', name: 'Ongoing Schedule', value: 'OGS', route: ROUTES['designation-module']['scheduling-interview'] },
-    { id: '3', name: 'Setting', value: 'ST', route: ROUTES['designation-module'].settings },
+    // { id: '1', name: 'Home', value: 'HM', route: ROUTES['designation-module']['admin-schedule'] },
+    // { id: '2', name: 'Ongoing Schedule', value: 'OGS', route: ROUTES['designation-module']['scheduling-interview'] },
+    { id: '3', name: 'Settings', value: 'ST', route: ROUTES['designation-module'].settings },
   ]
 
   function getCandidateMenu() {
@@ -162,7 +162,7 @@ function TopNavbarCorporateFlow() {
               className="align-items-lg-center ml-lg-auto mr--4 justify-content-end"
               navbar
             >
-              {loginDetails?.is_super_admin && (
+              {/* {loginDetails?.is_super_admin && (
                 <NavItem>
                   <NavLink to="/admin-schedule" tag={Link}>
                     <div className={'btn-wrapper ml-md--9'}>
@@ -174,7 +174,7 @@ function TopNavbarCorporateFlow() {
                     </div>
                   </NavLink>
                 </NavItem>
-              )}
+              )} */}
 
               {corporateScheduleCount >
                 0 && (

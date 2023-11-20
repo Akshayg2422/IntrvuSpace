@@ -85,14 +85,14 @@ function ReactAutoComplete({ selected, isMandatory, heading, placeholder, data, 
                 }
                 {
                     !isExist &&
-                    <div className='d-flex align-items-center flex-wrap'>
+                    <div className='d-flex align-items-center flex-wrap' onClick={() => {
+                        onAdd(addValue)
+                    }}>
                         <span className='text-sm text-secondary'>{value}</span>
                         <h3
                             className='text-primary ml-2 mb-0'
-                            onClick={() => {
-                                onAdd(addValue)
-                            }}>
-                            {"ADD NEW"}
+                        >
+                            {"(ADD NEW)"}
                         </h3>
                     </div>
 

@@ -80,7 +80,7 @@ const ReportHeader = ({ details }: ReportHeaderProps) => {
                         }
                     </div>
                 }
-                <div className={'user-details-container-center'}>
+                <div className={userAuthCheck() ? 'user-details-container-left' : 'user-details-container-center'}>
                     <div className={'user-heading'}>{capitalizeFirstLetter(name)}</div>
                     <div className={'user-role'}> {`${role} - ${experience_txt}`}</div>
                     <div className={'badge-schedule'}>
