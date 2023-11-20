@@ -110,6 +110,12 @@ input[type=number] {
     margin-left: 20px;
 }
 
+.back-container {
+    position: absolute;
+    left: 3%;
+    top: 65px;
+    z-index: 9999;
+}
 
 
 @media(max-width: 768px) {

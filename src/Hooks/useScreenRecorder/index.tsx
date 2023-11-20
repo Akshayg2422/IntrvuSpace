@@ -37,16 +37,25 @@ const useScreenRecorder = () => {
         const audioStream = await navigator.mediaDevices.getUserMedia({
           audio: true,
         });
+
+        console.log("1111111111", audioStream);
+        
         const videoStream = await navigator.mediaDevices.getDisplayMedia({
           video: {
             displaySurface: "monitor", // or "application" for capturing a specific application window
           },
         } as never);
 
+        console.log("222222222", videoStream);
+        
+
         const stream = new MediaStream([
           ...audioStream.getTracks(),
           ...videoStream.getTracks(),
         ]);
+
+        console.log("33333333333", stream);
+        
 
         const tracks = videoStream.getTracks();
 
