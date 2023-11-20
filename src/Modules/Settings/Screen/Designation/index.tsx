@@ -177,6 +177,8 @@ function Designation() {
       reference_id: referenceId.value,
       vacancies: vacancies?.value,
       interview_duration: duration?.value,
+      video_recording_mandatory:videoRecordMandatory
+
     };
 
     const validation = validate(CREATE_CORPORATE_SCHEDULE_RULES, params);
@@ -252,6 +254,8 @@ function Designation() {
       })
     );
   };
+  console.log('111111111111========>',videoRecordMandatory);
+  
 
   /**
    * close create opening modal
