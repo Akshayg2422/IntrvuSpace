@@ -27,8 +27,9 @@ function WebsiteContactUs() {
 
   return (
     <>
-      <section
-        style={{ backgroundColor: "#fafbff" }}
+
+      {/* <section
+        style={{ backgroundColor: "#F4F5FF" }}
       >
         <div>
           <div className="container">
@@ -72,7 +73,7 @@ function WebsiteContactUs() {
                     <div className="mt-4">
                       <a
                         className="text-secondary text-decoration-underline-hover" style={{ fontSize: '15px', fontWeight: 400 }}
-                      // onClick={() => goTo(ROUTES["auth-module"].privacy)}
+                      onClick={() => goTo(ROUTES["auth-module"].privacy)}
                       >
                         Privacy Policy
                       </a>
@@ -82,7 +83,7 @@ function WebsiteContactUs() {
                         className="text-secondary text-decoration-underline-hover" style={{ fontSize: '15px', fontWeight: 400 }}
                         onClick={
                           () => { }
-                          // goTo(ROUTES["auth-module"].TermsAndConditions)
+                          goTo(ROUTES["auth-module"].TermsAndConditions)
                         }
                       >
                         Terms of Service
@@ -109,8 +110,6 @@ function WebsiteContactUs() {
                       <span className="ml-2" style={{ fontSize: '15px', fontWeight: 400 }}>
                         No:03, Prithiv Nagar, G.N.T Road,
                         <br />{" "}
-                        {/* <span className="ml-4" style={{ fontSize: '15px', fontWeight: 400 }}> Road</span>
-                        <br />{" "} */}
                         <span className="ml-4" style={{ fontSize: '15px', fontWeight: 400 }}> Gummidipoondi - 601 201</span>
                       </span>
                     </div>
@@ -120,7 +119,8 @@ function WebsiteContactUs() {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
+
     </>
   );
 }
