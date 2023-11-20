@@ -60,7 +60,7 @@ function Candidates({ id, details }: CandidatesProps) {
     { id: 5, name: "Copy Interview Link" }
   ];
   const CANDIDATE_MENU_OPTIONS_COMPLETE_INTERVIEW = [
-    { id: 5, name: "Watch Interview" }
+    { id: 6, name: "Watch Interview" }
   ];
 
 
@@ -627,7 +627,9 @@ function Candidates({ id, details }: CandidatesProps) {
             </div>
 
             {!loader.loader ? (
-              <div className={'table-container'}>
+              <div className={'table-container'} style={{
+                ...(candidatesList?.length === 1 && { height: "280px" })
+              }}>
 
                 {candidatesList?.length > 0 ? (
                   <CommonTable

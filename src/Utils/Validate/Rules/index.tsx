@@ -84,7 +84,7 @@ export const REGISTER_RULES = {
   ...MOBILE_NUMBER_RULES,
   password: {
     presence: { message: "Password cannot be empty" },
-    length: { minimum: 8, message: "Password minimum 8 chars" },
+    length: { minimum: 6, message: "Password minimum 6 chars" },
   }
 }
 
@@ -98,9 +98,6 @@ export const REGISTER_COMPANY_RULES = {
   ...PINCODE,
   sector: {
     presence: { allowEmpty: false, message: "sector cannot be empty" },
-  },
-  photo: {
-    presence: { allowEmpty: false, message: "photo cannot be empty" },
   },
 }
 
