@@ -15,6 +15,7 @@ import {
   showToast,
   TopNavbarCorporateFlow,
   TopNavbar,
+  Checkbox,
 } from "@Components";
 import {
   useDropDown,
@@ -92,6 +93,7 @@ function Designation() {
   const referenceId = useInput("");
 
   const [isPositionSearch, setIsPositionSearch] = useState(false);
+  const [videoRecordMandatory, setVideoRecordMandatory] = useState(true)
 
   /**
    * loader state
@@ -511,6 +513,18 @@ function Designation() {
               onSelected={setSelectedSector}
             />
           </div>
+          <div className={"col-sm-6"}>
+            <Checkbox
+              id={"video-Recording"}
+              className={"text-primary"}
+              text={"Video recording mandatory"}
+              defaultChecked={videoRecordMandatory}
+              onCheckChange={(checked) => {
+                setVideoRecordMandatory(checked);
+              }}
+            />
+          </div>
+
         </div>
       </Modal>
     </div>

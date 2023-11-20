@@ -32,6 +32,7 @@ import {
   getValidateError,
   getBrowserInfo,
   getPhoto,
+  copyToClipboard,
 } from "@Utils";
 import { icons, image } from "@Assets";
 import {
@@ -56,6 +57,7 @@ function Candidates({ id, details }: CandidatesProps) {
     { id: 2, name: "Reject Manually" },
     { id: 3, name: "Remove Candidate" },
     { id: 4, name: "Block Interview" },
+    { id: 5, name: "Copy Interview Link" }
   ];
   const CANDIDATE_MENU_OPTIONS_COMPLETE_INTERVIEW = [
     { id: 5, name: "Watch Interview" }
@@ -260,7 +262,7 @@ function Candidates({ id, details }: CandidatesProps) {
             <div className={"d-flex align-items-center"}>
               {status_icon_type ? (
                 <Image
-                   src={status?.icon}
+                  src={status?.icon}
                   height={status?.h}
                   width={status?.w}
                   style={{
@@ -364,7 +366,7 @@ function Candidates({ id, details }: CandidatesProps) {
    */
 
   function onCandidateMenuHandler(action: any, item: any) {
-    const { id, recording_url, interview_duration, interviewee_name, interviewee_email } = item;
+    const { id, recording_url, interview_duration, interviewee_name, interviewee_email, interview_link } = item;
 
     setSelectedCandidates(id);
 
@@ -378,6 +380,9 @@ function Candidates({ id, details }: CandidatesProps) {
       removeCandidateModal.show();
     } else if (action.id === CANDIDATE_MENU_OPTIONS[3].id) {
       closeCandidateModal.show();
+    } else if (action.id === CANDIDATE_MENU_OPTIONS[4].id) {
+      copyToClipboard(interview_link);
+      showToast("Interview link copied", "success");
     } else if (action.id === CANDIDATE_MENU_OPTIONS_COMPLETE_INTERVIEW[0].id) {
       if (recording_url && recording_url.length > 0 && interview_duration) {
         dispatch(watchInterviewVideoUrl({
