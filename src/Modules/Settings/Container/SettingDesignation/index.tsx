@@ -171,6 +171,8 @@ function SettingDesignation() {
 
     function resetValue() {
 
+        setEditId(undefined);
+
         addDesignationModal.hide();
         designationName.set('')
         setIsHrAdmin(false);
