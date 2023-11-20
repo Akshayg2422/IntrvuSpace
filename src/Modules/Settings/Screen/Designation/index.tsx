@@ -43,6 +43,7 @@ import {
   INTERVIEW_DURATIONS,
   PLACEHOLDER_ROLES,
   STATUS_LIST,
+  capitalizeLetter,
   getDropDownCompanyDisplayData,
   getValidateError,
   ifObjectExist,
@@ -447,10 +448,9 @@ function Designation() {
 
           <div className={"col-sm-6"}>
             <Input
-              className={'text-uppercase'}
               heading={"Reference No"}
               placeHolder={"Reference No"}
-              value={referenceId.value}
+              value={capitalizeLetter(referenceId.value)}
               onChange={referenceId.onChange}
               maxLength={12}
             />
