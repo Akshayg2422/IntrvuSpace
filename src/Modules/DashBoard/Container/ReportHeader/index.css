@@ -29,9 +29,8 @@
 
 .user-photo-container {
     display: flex;
-    width: 3.5cm;
-    /* or 35mm */
-    height: 4.5cm;
+    width: 125px;
+    height: 125px;
     align-items: center;
     justify-content: center;
 }
@@ -59,9 +58,8 @@
 
 .user-mark-container {
     position: absolute;
-    top: 50%;
+    top: 0;
     right: 0;
-    transform: translateY(-50%);
 }
 
 .user-heading {
@@ -71,11 +69,11 @@
 }
 
 .user-role {
-    font-size: 16px;
-    font-weight: 700;
-    margin-top: 10px;
+    font-size: 12px;
+    font-weight: 600;
     text-transform: capitalize;
-    margin-bottom: 10px;
+    margin-top: 10px;
+    margin-bottom: 5px;
 }
 
 .mark-text {
