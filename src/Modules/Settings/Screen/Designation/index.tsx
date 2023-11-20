@@ -14,6 +14,7 @@ import {
   TextArea,
   showToast,
   TopNavbarCorporateFlow,
+  TopNavbar,
 } from "@Components";
 import {
   useDropDown,
@@ -117,8 +118,8 @@ function Designation() {
     dispatch(
       getSectorCorporate({
         params,
-        onSuccess: () => () => {},
-        onError: () => () => {},
+        onSuccess: () => () => { },
+        onError: () => () => { },
       })
     );
   };
@@ -133,7 +134,7 @@ function Designation() {
           setSelectedSector(details);
           getSectorsCorporateApiHandler();
         },
-        onError: (error) => () => {},
+        onError: (error) => () => { },
       })
     );
   };
@@ -143,8 +144,8 @@ function Designation() {
     dispatch(
       getDepartmentCorporate({
         params,
-        onSuccess: (response: any) => () => {},
-        onError: () => () => {},
+        onSuccess: (response: any) => () => { },
+        onError: () => () => { },
       })
     );
   };
@@ -159,7 +160,7 @@ function Designation() {
           setSelectedDepartment(details);
           getDepartmentCorporateApiHandler();
         },
-        onError: (error) => () => {},
+        onError: (error) => () => { },
       })
     );
   };
@@ -219,20 +220,20 @@ function Designation() {
       status.value?.id === "ACV"
         ? { is_active: true }
         : status.value?.id === "CSD"
-        ? { is_active: false }
-        : undefined;
+          ? { is_active: false }
+          : undefined;
     const params = {
       page_number,
       ...(positionSearch?.value && { position: positionSearch?.value }),
       ...(filterStatus && filterStatus),
       ...(filterSector &&
         filterSector.value.id !== "-1" && {
-          sector_id: filterSector?.value?.id,
-        }),
+        sector_id: filterSector?.value?.id,
+      }),
       ...(filterDepartment &&
         filterDepartment.value.id !== "-1" && {
-          department_id: filterDepartment?.value?.id,
-        }),
+        department_id: filterDepartment?.value?.id,
+      }),
     };
 
     listLoader.show();
@@ -266,7 +267,7 @@ function Designation() {
   return (
     <div className={"screen"}>
       <TopNavbarCorporateFlow />
-
+      {/* <TopNavbar /> */}
       {listLoader.loader && (
         <div className={"loader-container"}>
           <Spinner />
@@ -274,16 +275,18 @@ function Designation() {
       )}
 
       {!listLoader.loader && corporateScheduleCount <= 0 && (
-        <UploadCorporateOpeningsCard />
+        <div>
+          <UploadCorporateOpeningsCard />
+        </div>
       )}
       {corporateScheduleCount > 0 && (
         <div className={"screen-container"}>
           <div className="row">
             <div className="col-sm-3">
               <Input
-                heading={"Position"}
+                heading={"Search"}
                 type={"text"}
-                placeHolder={"HR Executive, QA Manager..."}
+                placeHolder={"Job Title, Reference No..."}
                 value={positionSearch?.value}
                 onChange={positionSearch.onChange}
                 onFocus={() => setIsPositionSearch(true)}
@@ -437,8 +440,8 @@ function Designation() {
 
           <div className={"col-sm-6"}>
             <Input
-              heading={"Reference"}
-              placeHolder={"Reference"}
+              heading={"Reference No"}
+              placeHolder={"Reference No"}
               value={referenceId.value}
               onChange={referenceId.onChange}
             />
@@ -469,11 +472,10 @@ function Designation() {
                   <Button
                     block
                     outline
-                    className={`${
-                      duration?.id === id
-                        ? "btn-outline-primary-active"
-                        : "btn-outline-primary-inactive"
-                    }`}
+                    className={`${duration?.id === id
+                      ? "btn-outline-primary-active"
+                      : "btn-outline-primary-inactive"
+                      }`}
                     text={subText}
                     onClick={() => {
                       setDuration(item);

@@ -62,5 +62,6 @@ export interface DashboardProp {
   onGoingMessage: any,
   corporateScheduleCount?: number;
   refreshCorporateSchedules?: boolean;
-  candidatesCount?: number
+  candidatesCount?: number;
+  interviewUrl?: any;
 }

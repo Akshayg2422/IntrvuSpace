@@ -1,190 +1,273 @@
-import { Button, ViewMore, Image } from "@Components";
-import { capitalizeFirstLetter, arrayOrderbyDate, formatDateTime, getDisplayTimeAgoFromMoment } from "@Utils";
+import { icons } from "@Assets";
+import {
+  Button,
+  Image,
+  ViewMore,
+  WatchInterviewButtonIcon,
+  WatchInterviewModal,
+  showToast,
+} from "@Components";
+import { useModal } from "@Hooks";
+import { watchInterviewVideoUrl } from "@Redux";
+import {
+  arrayOrderbyDate,
+  capitalizeFirstLetter,
+  formatDateTime,
+  getBrowserInfo,
+  getDisplayTimeAgoFromMoment,
+} from "@Utils";
+import { useDispatch, useSelector } from "react-redux";
+import "./index.css";
 import { JdItemProps } from "./interfaces";
-import { icons } from '@Assets';
-import './index.css';
-
 
 function JdItem({
   item,
   onViewMore,
   onTryAnotherClick,
   onProceedClick,
-  onViewReport
+  onViewReport,
 }: JdItemProps) {
+  const { interviewUrl } = useSelector((state: any) => state.DashboardReducer);
 
-  const { id, job_description: { position, experience, details }, is_view_more, interview_duration, schedules, } = item;
+  const dispatch = useDispatch();
 
+  const openWatchInterviewModal = useModal(false);
 
+  const {
+    id,
+    job_description: { position, experience, details },
+    is_view_more,
+    interview_duration,
+    schedules,
+  } = item;
 
   const filteredSchedules = schedules.filter((each: any) => {
     const { is_started, is_complete } = each;
     return is_started && is_complete;
   });
 
-  const completedSchedules = arrayOrderbyDate(filteredSchedules, 'interview_end_time', true);
-
+  const completedSchedules = arrayOrderbyDate(
+    filteredSchedules,
+    "interview_end_time",
+    true
+  );
 
   const pendingSchedules = schedules.find((each: any) => {
     const { is_complete } = each;
     return !is_complete;
   });
 
-
-
-
   return (
+    <>
+      <div className={"card-container"}>
+        <div className={"section-container"}>
+          <div>
+            <div className="d-flex align-items-end">
+              <span className={"screen-heading m-0 p-0"}>
+                {capitalizeFirstLetter(position)}
+              </span>
+              <div className={"experience-home"}>{experience}</div>
+            </div>
 
-    <div className={'card-container'}>
-      <div className={'section-container'}>
-        <div>
-          <div className="d-flex align-items-end">
-            <span className={'screen-heading m-0 p-0'}>
-              {capitalizeFirstLetter(position)}
-            </span>
-            <div className={'experience-home'}>
-              {experience}
+            <div>
+              {pendingSchedules ? (
+                <div className={"created-at-des"}>
+                  {`Created at ${getDisplayTimeAgoFromMoment(
+                    pendingSchedules?.created_at
+                  )}`}
+                </div>
+              ) : (
+                <>
+                  {completedSchedules && completedSchedules.length > 0 && (
+                    <div className={"completed-date-container"}>
+                      <Image
+                        src={icons.check}
+                        height={12}
+                        width={12}
+                        style={{
+                          objectFit: "contain",
+                        }}
+                      />
+                      <div className={"completed-text-container"}>
+                        <span className={"details-desc font-weight-700"}>
+                          {"Completed on "}
+                        </span>
+                        <span className={"details-desc"}>
+                          {formatDateTime(
+                            completedSchedules[0]["interview_end_time"]
+                          )}
+                        </span>
+                      </div>
+                    </div>
+                  )}
+                </>
+              )}
             </div>
           </div>
-
           <div>
-            {pendingSchedules ?
-              <div className={'created-at-des'}>
-                {
-                  `Created at ${getDisplayTimeAgoFromMoment(pendingSchedules?.created_at)}`
-                }
-              </div>
-              :
-              <>
-                {completedSchedules && completedSchedules.length > 0 &&
-                  <div className={'completed-date-container'}>
-                    < Image
-                      src={icons.check}
-                      height={12}
-                      width={12}
-                      style={{
-                        objectFit: "contain",
-                      }}
-                    />
-                    <div className={'completed-text-container'}>
-                      <span className={'details-desc font-weight-700'}>{'Completed on '}</span>
-                      <span className={'details-desc'}>{formatDateTime(completedSchedules[0]['interview_end_time'])}</span>
-                    </div>
-                  </div>
-                }
-              </>
-            }
-          </div>
-        </div>
-        <div >
-          <div className={'view-details-btn'}>
-            {
-              pendingSchedules ?
+            <div className={"view-details-btn"}>
+              {pendingSchedules ? (
                 <Button
                   block
                   text={
                     pendingSchedules.is_started
-                      ? 'Resume Interview'
-                      : 'Start Interview'
+                      ? "Resume Interview"
+                      : "Start Interview"
                   }
                   onClick={() => {
                     if (onProceedClick) {
-                      onProceedClick(pendingSchedules?.id)
+                      onProceedClick(pendingSchedules?.id);
                     }
                   }}
-                /> :
+                />
+              ) : (
                 <Button
                   block
                   outline
                   text={"Try Another"}
                   onClick={() => {
-                    if (onTryAnotherClick)
-                      onTryAnotherClick(id)
+                    if (onTryAnotherClick) onTryAnotherClick(id);
                   }}
                 />
-            }
-          </div>
-          <div className={'d-flex align-items-center justify-content-center'}>
-            <div className={'details-container'}>
-              <span className={'details-title'}>{interview_duration} mins</span>
-              <span className={'details-desc'}>{'Duration'}</span>
+              )}
+            </div>
+            <div className={"d-flex align-items-center justify-content-center"}>
+              <div className={"details-container"}>
+                <span className={"details-title"}>
+                  {interview_duration} mins
+                </span>
+                <span className={"details-desc"}>{"Duration"}</span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div className={'jd-container'}>
-        <ViewMore isViewMore={is_view_more} text={details} onViewMore={onViewMore} />
-      </div>
-      {
-        completedSchedules && completedSchedules.length > 0 &&
-        <div className={'complete-schedule-container'}>
-          <div className={'completed-item-container'}>
-            <div className={'completed-item-heading'}>
-
+        <div className={"jd-container"}>
+          <ViewMore
+            isViewMore={is_view_more}
+            text={details}
+            onViewMore={onViewMore}
+          />
+        </div>
+        {completedSchedules && completedSchedules.length > 0 && (
+          <div className={"complete-schedule-container"}>
+            <div className={"completed-item-container"}>
+              <div className={"completed-item-heading"}></div>
+              <div className={"completed-item-content"}>
+                <div className={"skill-empty"}>{""}</div>
+                <div className={"skill-value font-weight-bold"}>
+                  {"Skill Matrix"}
+                </div>
+                <div className={"skill-value font-weight-bold"}>
+                  {"Communication"}
+                </div>
+                <div className={"skill-value font-weight-bold"}>
+                  {"Aptitude"}
+                </div>
+                <div className={"skill-value"}>{""}</div>
+                <div className={"skill-empty"}>{""}</div>
+              </div>
             </div>
-            <div className={'completed-item-content'}>
-              <div className={'skill-empty'}>{''}</div>
-              <div className={'skill-value font-weight-bold'}>{'Skill Matrix'}</div>
-              <div className={'skill-value font-weight-bold'}>{'Communication'}</div>
-              <div className={'skill-value font-weight-bold'}>{'Aptitude'}</div>
-              <div className={'skill-value'}>{''}</div>
-
-            </div>
-          </div>
-          {
-            completedSchedules.map((item: any, index: number) => {
-
-              const { id, report_analytics, is_report_complete, is_complete, interview_end_time } = item
+            {completedSchedules.map((item: any, index: number) => {
+              const {
+                id,
+                report_analytics,
+                is_report_complete,
+                is_complete,
+                interview_end_time,
+                recording_url,
+                interviewee_email,
+                interviewee_name,
+              } = item;
 
               const { skill_matrix, other_analytics } = report_analytics || {};
               return (
-                <div className={'completed-item-container'}>
-                  <div className={'completed-item-heading'}>
-                    <span className={'point-heading'}>{'Interview ' + (index + 1)}</span>
-                    <div className={'completed-at'}>
-                      {
-                        `Completed at ${getDisplayTimeAgoFromMoment(interview_end_time)}`
-                      }
+                <>
+                  <div className={"completed-item-container"}>
+                    <div className={"completed-item-heading"}>
+                      <span className={"point-heading"}>
+                        {"Interview " + (index + 1)}
+                      </span>
+                      <div className={"completed-at"}>
+                        {`Completed at ${getDisplayTimeAgoFromMoment(
+                          interview_end_time
+                        )}`}
+                      </div>
                     </div>
-                  </div>
-                  <div className={'completed-item-content completed-item-content-border'}>
-                    <div className={'skill-empty'}>{''}</div>
-                    <div className={'skill-value'}>{skill_matrix}</div>
-                    <div className={'skill-value'}>{other_analytics?.aptitude}</div>
-                    <div className={'skill-value'}>{other_analytics?.communication}</div>
-                    <div className={'skill-value'}>
-                      {
-                        is_report_complete &&
-                        <div className={'report-btn-container'}>
-                          <Button
-                            block
-                            outline
-                            text={'View Report'}
-                            onClick={() => {
-                              if (onViewReport) {
-                                onViewReport(id)
-                              }
-                            }}
-                          />
-                        </div>
-                      }
-                      {is_complete &&
-                        !is_report_complete && (
+                    <div className={"completed-item-content"}>
+                      <div className={"skill-empty"}>{""}</div>
+                      <div className={"skill-value"}>{skill_matrix}</div>
+                      <div className={"skill-value ml-1"}>
+                        {other_analytics?.communication}
+                      </div>
+                      <div className={"skill-value"}>
+                        {other_analytics?.aptitude}
+                      </div>
+                      <div className={"skill-value"}>
+                        {is_report_complete && (
+                          <div className={"report-btn-container"}>
+                            <Button
+                              block
+                              outline
+                              text={"View Report"}
+                              onClick={() => {
+                                if (onViewReport) {
+                                  onViewReport(id);
+                                }
+                              }}
+                            />
+                          </div>
+                        )}
+                        {is_complete && !is_report_complete && (
                           <div>
                             <span className="name text-sm">
                               Generating Report ...
                             </span>
                           </div>
                         )}
+                      </div>
+                      <div className={"skill-empty ml-2"}>
+                        {/**
+                         * Watch interview
+                         */}
+                        {recording_url && recording_url.length > 0 && (
+                          <WatchInterviewButtonIcon
+                            id={"1000"}
+                            onClick={() => {
+                              openWatchInterviewModal.show();
+                              dispatch(
+                                watchInterviewVideoUrl({
+                                  recording_url,
+                                  interview_duration,
+                                  interviewee_name,
+                                })
+                              );
+                            }}
+                          />
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
-              )
-            })
-          }
-        </div>
-      }
-    </div >
+                  <div className={"completed-item-content-border"}></div>
+                </>
+              );
+            })}
+          </div>
+        )}
+      </div>
+
+      {/** watch Interview */}
+
+      <WatchInterviewModal
+        isOpen={openWatchInterviewModal.visible}
+        onClose={() => {
+          openWatchInterviewModal.hide();
+          dispatch(watchInterviewVideoUrl(undefined));
+        }}
+        name={interviewUrl?.interviewee_name?.trim()}
+        subTitle={interviewUrl?.interview_duration}
+        urlData={interviewUrl}
+      />
+    </>
   );
 }
 

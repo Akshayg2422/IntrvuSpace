@@ -63,7 +63,7 @@ const initialState: DashboardProp = {
   designations: undefined,
   designationsNumOfPage: undefined,
   designationsCurrentPage: 1,
-  error: '',
+  error: "",
   addTeamMates: undefined,
   teams: undefined,
   teamNumOfPages: undefined,
@@ -74,11 +74,10 @@ const initialState: DashboardProp = {
   onGoingScheduleMessage: undefined,
   onGoingSelectedId: undefined,
   onGoingMessage: undefined,
+  interviewUrl: undefined,
 };
 
 const DashboardReducer = (state = initialState, action: any) => {
-
-
   switch (action.type) {
     case ActionTypes.GET_START_CHAT:
       state = {
@@ -144,7 +143,6 @@ const DashboardReducer = (state = initialState, action: any) => {
     //selected Group Id
 
     case ActionTypes.SET_SELECTED_ROLE:
-
       state = { ...state, selectedRole: action.payload };
       break;
 
@@ -376,7 +374,6 @@ const DashboardReducer = (state = initialState, action: any) => {
       state = { ...state, jdItem: undefined };
       break;
 
-
     case ActionTypes.UPDATE_JD_ITEM:
       state = { ...state, jdItem: action.payload };
       break;
@@ -468,7 +465,6 @@ const DashboardReducer = (state = initialState, action: any) => {
       state = { ...state, createJdModal: false };
       break;
 
-
     /**getDepartments */
 
     case ActionTypes.GET_DEPARTMENT_CORPORATE:
@@ -478,11 +474,10 @@ const DashboardReducer = (state = initialState, action: any) => {
         departmentCorporateNumOfPages: 0,
         departmentsCorporateCurrentPages: 1,
 
-        loading: true
+        loading: true,
       };
       break;
     case ActionTypes.GET_DEPARTMENT_CORPORATE_SUCCESS:
-
       const data = action.payload?.details?.data || action.payload?.details;
 
       state = {
@@ -497,8 +492,9 @@ const DashboardReducer = (state = initialState, action: any) => {
       break;
     case ActionTypes.GET_DEPARTMENT_CORPORATE_FAILURE:
       state = {
-        ...state, error: action.payload,
-        loading: false
+        ...state,
+        error: action.payload,
+        loading: false,
       };
       break;
 
@@ -514,15 +510,15 @@ const DashboardReducer = (state = initialState, action: any) => {
       };
       break;
     case ActionTypes.GET_FETCH_DESIGNATION_SUCCESS:
-
-      const designations = action.payload?.details?.data || action.payload?.details;
+      const designations =
+        action.payload?.details?.data || action.payload?.details;
       state = {
         ...state,
         designations: designations,
         designationsNumOfPage: action.payload?.details?.num_pages,
         designationsCurrentPage:
-          action.payload.details.next_page === -1 ?
-            action?.payload?.details.num_pages
+          action.payload.details.next_page === -1
+            ? action?.payload?.details.num_pages
             : action?.payload?.details?.next_page - 1,
       };
       break;
@@ -556,10 +552,10 @@ const DashboardReducer = (state = initialState, action: any) => {
       break;
     case ActionTypes.GET_TEAM_MATE_DATA_FAILURE:
       state = {
-        ...state, error: action.payload,
+        ...state,
+        error: action.payload,
       };
       break;
-
 
     /**
      * getSectorsCorporate
@@ -575,13 +571,15 @@ const DashboardReducer = (state = initialState, action: any) => {
       break;
 
     case ActionTypes.GET_SECTORS_CORPORATE_SUCCESS:
-
-      const sectors = action.payload?.details?.knowledege_groups?.data || action.payload?.details?.knowledege_groups;
+      const sectors =
+        action.payload?.details?.knowledege_groups?.data ||
+        action.payload?.details?.knowledege_groups;
 
       state = {
         ...state,
         sectorsCorporate: sectors,
-        sectorsCorporateNumOfPages: action.payload?.details?.knowledege_groups?.num_pages,
+        sectorsCorporateNumOfPages:
+          action.payload?.details?.knowledege_groups?.num_pages,
         sectorsCorporateCurrentPages:
           action.payload.details?.knowledege_groups?.next_page === -1
             ? action?.payload?.details?.knowledege_groups?.num_pages
@@ -617,11 +615,9 @@ const DashboardReducer = (state = initialState, action: any) => {
       };
       break;
     case ActionTypes.GET_CORPORATE_SCHEDULES_SUCCESS:
-
       console.log(action.payload?.details);
 
-      const { corporate_jd_items, schedule_count } = action.payload?.details
-
+      const { corporate_jd_items, schedule_count } = action.payload?.details;
 
       state = {
         ...state,
@@ -636,9 +632,12 @@ const DashboardReducer = (state = initialState, action: any) => {
       break;
 
     case ActionTypes.GET_CORPORATE_SCHEDULES_FAILURE:
-      state = { ...state, corporateSchedules: [], corporateScheduleCount: undefined, };
+      state = {
+        ...state,
+        corporateSchedules: [],
+        corporateScheduleCount: undefined,
+      };
       break;
-
 
     case ActionTypes.UPDATE_CORPORATE_SCHEDULE:
       state = {
@@ -647,14 +646,12 @@ const DashboardReducer = (state = initialState, action: any) => {
       };
       break;
 
-
     case ActionTypes.REFRESH_CORPORATE_SCHEDULE_DETAILS:
       state = {
         ...state,
         refreshCorporateSchedules: !state.refreshCorporateSchedules,
       };
       break;
-
 
     case ActionTypes.SHOW_CREATE_FOR_OTHERS_JD_MODAL:
       state = { ...state, createForOthersJdModal: true };
@@ -688,19 +685,15 @@ const DashboardReducer = (state = initialState, action: any) => {
       state = { ...state, interviewScheduleDetails: undefined };
       break;
 
-
     /**createScheduleSuperAdmin
 createScheduleSuperAdmin
 */
-
-
-
 
     case ActionTypes.GET_INTERVIEW_SCHEDULE_DETAILS_FAILURE:
       state = {
         ...state,
         interviewScheduleDetails: undefined,
-        interviewUserScheduleDetails: undefined
+        interviewUserScheduleDetails: undefined,
       };
       break;
     // resetPassword
@@ -726,8 +719,6 @@ createScheduleSuperAdmin
     case ActionTypes.FORGOT_PASSWORD_FAILURE:
       state = { ...state, retrieveEmail: action.payload };
       break;
-
-
 
     // showCreateOpeningsModal
 
@@ -759,29 +750,33 @@ createScheduleSuperAdmin
         candidatesList: undefined,
         candidatesListNumOfPages: 0,
         candidatesListCurrentPages: 1,
-        candidatesCount: undefined
+        candidatesCount: undefined,
       };
       break;
 
-
     case ActionTypes.FETCH_CANDIDATES_CORPORATE_SUCCESS:
-      const { corporate_candidate_details, candidate_count } = action.payload?.details
+      const { corporate_candidate_details, candidate_count } =
+        action.payload?.details;
 
       state = {
         ...state,
         candidatesCount: candidate_count,
         candidatesList: corporate_candidate_details?.data,
         candidatesListNumOfPages: corporate_candidate_details.num_pages,
-        candidatesListCurrentPages: corporate_candidate_details.next_page === -1
-          ? corporate_candidate_details.num_pages
-          : corporate_candidate_details.next_page - 1,
+        candidatesListCurrentPages:
+          corporate_candidate_details.next_page === -1
+            ? corporate_candidate_details.num_pages
+            : corporate_candidate_details.next_page - 1,
       };
       break;
 
     case ActionTypes.FETCH_CANDIDATES_CORPORATE_FAILURE:
-      state = { ...state, candidatesList: undefined, candidatesCount: undefined };
+      state = {
+        ...state,
+        candidatesList: undefined,
+        candidatesCount: undefined,
+      };
       break;
-
 
     ///onGoing schedule
 
@@ -789,31 +784,25 @@ createScheduleSuperAdmin
       state = {
         ...state,
         onGoingScheduleMessage: undefined,
-
       };
       break;
     case ActionTypes.FETCH_ONGOING_SCHEDULES_SUCCESS:
       state = {
         ...state,
         onGoingScheduleMessage: action.payload?.details,
-
       };
       break;
     case ActionTypes.FETCH_ONGOING_SCHEDULES_FAILURE:
       state = { ...state, onGoingScheduleMessage: undefined };
       break;
 
-
     //ongoing selected id
     case ActionTypes.ON_GOING_SELECTED_ID:
       state = {
         ...state,
         onGoingSelectedId: action.payload,
-
       };
       break;
-
-
 
     // corporateScheduleActions
 
@@ -827,6 +816,14 @@ createScheduleSuperAdmin
       state = { ...state };
       break;
 
+    // watch interview video
+
+    case ActionTypes.WATCH_INTERVIEW_VIDEO_URL:
+      state = {
+        ...state,
+        interviewUrl: action.payload,
+      };
+      break;
 
     default:
       state = state;

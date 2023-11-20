@@ -268,6 +268,18 @@ export async function hasCameraPermission() {
   }
 }
 
+export async function requestVideoPermission() {
+  try {
+    // Request video permission
+    const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+
+  } catch (error: any) {
+    // Handle errors, for example, if the user denies permission
+    console.error('Error accessing video:', error.message);
+  }
+}
+
+
 export const userAgent = window.navigator.userAgent.toLowerCase();
 
 export function getOperatingSystem() {
@@ -280,26 +292,32 @@ export function getOperatingSystem() {
   }
 }
 
-export function gotoPermissionSetting() {
+export function gotoPermissionSetting(permissionType?: 'microphone' | 'camera') {
+
+  let settingsUrl = "";
+
   // Check if the user is using Windows
-  if (userAgent.includes("win")) {
-    // Open Windows microphone settings
-    window.open("ms-settings:privacy-microphone");
+  if (navigator.userAgent.includes("Win")) {
+    settingsUrl = permissionType === "microphone" ? "ms-settings:privacy-microphone" : "ms-settings:privacy-webcam";
   }
   // Check if the user is using macOS
-  else if (userAgent.includes("mac")) {
-    // Open macOS microphone settings
-    window.open(
-      "x-apple.systempreferences:com.apple.preference.security?Privacy_Microphone"
-    );
+  else if (navigator.userAgent.includes("Mac")) {
+    settingsUrl =
+      permissionType === "microphone"
+        ? "x-apple.systempreferences:com.apple.preference.security?Privacy_Microphone"
+        : "x-apple.systempreferences:com.apple.preference.security?Privacy_Camera";
   }
   // For other operating systems, provide a message
   else {
     alert(
-      "Microphone settings are not available on your current operating system."
+      `${permissionType} settings are not available on your current operating system.`
     );
+    return;
   }
+
+  window.open(settingsUrl);
 }
+
 
 // to convert server date and time  2023-10-05T19:10:15.604190+05:30 into  05 OCT 7:10 PM
 
@@ -352,7 +370,7 @@ export function displayFormatDate(inputDate: any, variant: 'date' | 'time' | 'bo
 
 export const downloadFile = (response) => {
   const fileUrl = response;
-  fetch(SERVER + fileUrl)
+  fetch(getPhoto(fileUrl))
     .then((response) => response.blob())
     .then((blob) => {
       const url = URL.createObjectURL(blob);

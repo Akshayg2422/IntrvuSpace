@@ -16,6 +16,9 @@ import {
   Radio,
   Spinner,
   TextArea,
+  TopNavbarCorporateFlow,
+  WatchInterviewButtonIcon,
+  WatchInterviewModal,
   showToast,
 } from "@Components";
 import { useInput, useLoader, useModal, useNavigation } from "@Hooks";
@@ -39,6 +42,7 @@ import {
   showCreateForOthersJdModal,
   showCreateJddModal,
   deleteJd,
+  watchInterviewVideoUrl,
 } from "@Redux";
 import { ROUTES } from "@Routes";
 import { SERVER } from "@Services";
@@ -87,9 +91,8 @@ function AdminSchedules() {
     "In beta version, you can upload only max of " +
     CHAR_LENGTH +
     " characters.";
-  const { createJdModal, jdItem, createForOthersJdModal } = useSelector(
-    (state: any) => state.DashboardReducer
-  );
+  const { createJdModal, jdItem, createForOthersJdModal, interviewUrl } =
+    useSelector((state: any) => state.DashboardReducer);
 
   const { goTo } = useNavigation();
   const position = useInput("");
@@ -481,888 +484,899 @@ function AdminSchedules() {
 
   return (
     <>
-      {loading ? (
-        <div className={"d-flex justify-content-center my-9"}>
-          <Spinner />
-        </div>
-      ) : jdItem && jdItem.length > 0 ? (
-        <div>
-          {
-            <div className={"mt-3"}>
-              {jdItem &&
-                jdItem.length > 0 &&
-                jdItem.map((item: any, index: any) => {
-                  const {
-                    job_description: { details, experience },
-                    schedules,
-                    name,
-                    id,
-                    interview_duration,
-                  } = item;
+      <div className={"screen"}>
+        <TopNavbarCorporateFlow />
+        {loading ? (
+          <div className={"loader-container"}>
+            <Spinner />
+          </div>
+        ) : jdItem && jdItem.length > 0 ? (
+          <div className={"screen-container"}>
+            {
+              <div>
+                {jdItem &&
+                  jdItem.length > 0 &&
+                  jdItem.map((item: any, index: any) => {
+                    const {
+                      job_description: { details, experience },
+                      schedules,
+                      name,
+                      id,
+                      interview_duration,
+                    } = item;
 
-                  const more = jdMore[index]?.more;
+                    const more = jdMore[index]?.more;
 
-                  return (
-                    <Card className="mt--3 " key={id}>
-                      <div className={"d-flex justify-content-between"}>
-                        <div>
-                          {name ? (
-                            <span
-                              style={{
-                                fontSize: "21px",
-                              }}
-                              className="mb-0 text-primary font-weight-bolder"
-                            >
-                              {name.charAt(0).toUpperCase() + name.slice(1)}
-                            </span>
-                          ) : (
-                            <></>
-                          )}
-
-                          {interview_duration && (
-                            <div className="col">
-                              <div className="row d-flex align-items-center mb-1">
-                                <Image
-                                  src={icons.clock}
-                                  height={17}
-                                  width={17}
-                                  style={{
-                                    objectFit: "contain",
-                                  }}
-                                />
-                                <h5
-                                  style={{
-                                    fontSize: "14px",
-                                  }}
-                                  className="mb-0 text-primary font-weight-bolder ml-2"
-                                >{`${interview_duration} mins`}</h5>
-                              </div>
-                            </div>
-                          )}
-                          <h5 className="mb-0 pointer">{experience}</h5>
-                        </div>
-                        <div className="row">
+                    return (
+                      <div className="card-container mb-5" key={id}>
+                        <div className={"d-flex justify-content-between"}>
                           <div>
-                            <Button
-                              className="rounded-sm"
-                              text={"Add Another"}
-                              onClick={() => {
-                                addAnotherModal.show();
-                                setSelectedInterviewJd(id);
-                              }}
-                            />
+                            {name ? (
+                              <span
+                                style={{
+                                  fontSize: "21px",
+                                }}
+                                className="mb-0 text-primary font-weight-bolder"
+                              >
+                                {name.charAt(0).toUpperCase() + name.slice(1)}
+                              </span>
+                            ) : (
+                              <></>
+                            )}
+
+                            {interview_duration && (
+                              <div className="col">
+                                <div className="row d-flex align-items-center mb-1">
+                                  <Image
+                                    src={icons.clock}
+                                    height={17}
+                                    width={17}
+                                    style={{
+                                      objectFit: "contain",
+                                    }}
+                                  />
+                                  <h5
+                                    style={{
+                                      fontSize: "14px",
+                                    }}
+                                    className="mb-0 text-primary font-weight-bolder ml-2"
+                                  >{`${interview_duration} mins`}</h5>
+                                </div>
+                              </div>
+                            )}
+                            <h5 className="mb-0 pointer">{experience}</h5>
                           </div>
-                          {/** For large screen */}
-                          <div
-                            className={
-                              "d-none d-lg-block d-md-block d-xl-block"
-                            }
-                          >
+                          <div className="row">
+                            <div>
+                              <Button
+                                className="rounded-sm"
+                                text={"Add Another"}
+                                onClick={() => {
+                                  addAnotherModal.show();
+                                  setSelectedInterviewJd(id);
+                                }}
+                              />
+                            </div>
+                            {/** For large screen */}
+                            <div
+                              className={
+                                "d-none d-lg-block d-md-block d-xl-block"
+                              }
+                            >
+                              <MenuBar
+                                menuData={JD_MENU}
+                                onClick={(action) =>
+                                  proceedJDMenuClickHandler(action, id)
+                                }
+                                icon={icons.more}
+                              />
+                            </div>
+                          </div>
+                          {/** For small screen */}
+                          <div className={"d-block d-sm-none pl-3"}>
                             <MenuBar
                               menuData={JD_MENU}
                               onClick={(action) =>
                                 proceedJDMenuClickHandler(action, id)
                               }
-                              icon={icons.more}
                             />
                           </div>
                         </div>
-                        {/** For small screen */}
-                        <div className={"d-block d-sm-none pl-3"}>
-                          <MenuBar
-                            menuData={JD_MENU}
-                            onClick={(action) =>
-                              proceedJDMenuClickHandler(action, id)
-                            }
-                          />
-                        </div>
-                      </div>
-                      <div className="col mt-3">
-                        <div className="row">
-                          <div className="col ml-0">
-                            {details.length < VIEW_MORE_LENGTH ? (
-                              <div className="row">
-                                <div className="text-details text-black">{`${details}`}</div>
-                              </div>
-                            ) : (
-                              <>
-                                {more ? (
-                                  <div className="row">
-                                    <div className="text-details text-black">
-                                      {details
-                                        .split("\n\n")
-                                        .map((paragraph, index) => (
-                                          <React.Fragment key={index}>
-                                            {index > 0 && <br />}
-                                            {paragraph}
-                                          </React.Fragment>
-                                        ))}
-                                      <span
-                                        className="h4 text-primary ml-3 pointer"
-                                        onClick={() => {
-                                          const updatedData: any = [...jdMore];
-                                          updatedData[index] = {
-                                            ...updatedData[index],
-                                            more: false,
-                                          };
-                                          setJdMore(updatedData);
-                                        }}
-                                      >
-                                        View Less
-                                      </span>
-                                    </div>
-                                  </div>
-                                ) : (
-                                  <div className="row">
-                                    <div className="text-details text-black">
-                                      {details.slice(0, VIEW_MORE_LENGTH) +
-                                        " ..."}
-                                      <span
-                                        className="h4 text-primary ml-1 pointer"
-                                        onClick={() => {
-                                          const updatedData: any = [...jdMore];
-                                          updatedData[index] = {
-                                            ...updatedData[index],
-                                            more: true,
-                                          };
-                                          setJdMore(updatedData);
-                                        }}
-                                      >
-                                        View More
-                                      </span>
-                                    </div>
-                                  </div>
-                                )}
-                              </>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="col mt-3">
-                        {schedules && schedules.length > 0 && (
-                          <Divider className={"row"} space={"3"} />
-                        )}
-                        {schedules &&
-                          schedules.length > 0 &&
-                          schedules.map((each: any, index: number) => {
-                            const {
-                              is_complete,
-                              is_report_complete,
-                              id,
-                              created_at,
-                              custom_interviewee_details,
-                              is_started,
-                              interview_end_time,
-                              note,
-                              q,
-                              custom_interview_link,
-                              recording_url,
-                              interview_duration,
-                            } = each;
-
-                            const basic_info =
-                              custom_interviewee_details?.basic_info;
-
-                            const basicInfo =
-                              basic_info && basic_info.first_name
-                                ? basic_info
-                                : null;
-                            let demoDisplayName: any = undefined;
-                            if (basicInfo)
-                              demoDisplayName = basicInfo?.first_name;
-
-                            const getDisplayTimeFromMoment = (
-                              timestamp: any
-                            ) => {
-                              const currentTime = new Date().getTime();
-                              const createdAt = new Date(timestamp).getTime();
-                              const timeDifference = Math.floor(
-                                (currentTime - createdAt) / (1000 * 60)
-                              );
-
-                              if (timeDifference < 60) {
-                                return `${timeDifference} mins ago`;
-                              } else if (timeDifference < 1440) {
-                                const hours = Math.floor(timeDifference / 60);
-                                return `${hours} ${
-                                  hours === 1 ? "hour" : "hours"
-                                } ago`;
-                              } else {
-                                const days = Math.floor(timeDifference / 1440);
-                                return `${days} ${
-                                  days === 1 ? "day" : "days"
-                                } ago`;
-                              }
-                            };
-
-                            const questions = `(Q -  ${q ? q : 0})`;
-
-                            return (
-                              <div>
-                                <div className="row align-items-center justify-content-between">
-                                  <div className="col m-0 p-0">
-                                    <div className="d-flex align-items-center">
-                                      <h5 className="m-0 p-0">
-                                        {demoDisplayName
-                                          ? demoDisplayName
-                                              .charAt(0)
-                                              .toUpperCase() +
-                                            demoDisplayName.slice(1)
-                                          : "Interview " + (index + 1)}
-                                      </h5>
-                                      <h5 className="m-0 p-0 ml-2">
-                                        {questions}
-                                      </h5>
-                                    </div>
-                                    {custom_interview_link ? (
-                                      <Clipboard
-                                        id={id}
-                                        copedText={copiedInterviewLink}
-                                        linkToCopy={custom_interview_link}
-                                        tooltipText={"Copy Interview Link"}
-                                        onCopy={setCopiedInterviewLink}
-                                      />
-                                    ) : null}
-                                    {note ? (
-                                      <small className="text-muted">
-                                        {note}
-                                      </small>
-                                    ) : null}
-                                  </div>
-                                  <h5 className="mb-0 text-center d-none d-lg-block d-md-block d-xl-block">
-                                    {is_complete
-                                      ? `Completed: ${getDisplayTimeFromMoment(
-                                          interview_end_time
-                                        )}`
-                                      : `Created at: ${getDisplayTimeFromMoment(
-                                          created_at
-                                        )}`}
-                                  </h5>
-                                  <div className="col m-0 p-0 d-flex justify-content-end">
-                                    <div className="row mr-lg-3 mr-sm-0 mr-0">
-                                      {is_complete && recording_url && (
-                                        <>
-                                          <UncontrolledTooltip
-                                            delay={0}
-                                            placement="top"
-                                            target={`tooltip1000`}
-                                          >
-                                            Watch Interview
-                                          </UncontrolledTooltip>
-                                          <div className="d-flex align-items-center mr-3">
-                                            <i
-                                              id={"tooltip1000"}
-                                              className="bi bi-eye-fill text-primary fa-lg pointer"
-                                              onClick={() => {
-                                                setWatchInterviewUrl({
-                                                  recording_url,
-                                                  interview_duration,
-                                                });
-                                                if (
-                                                  getBrowserInfo()
-                                                    .browserName !==
-                                                  "Mozilla Firefox"
-                                                ) {
-                                                  openWatchInterviewModal.show();
-                                                } else {
-                                                  showToast(
-                                                    "Watch Interview is not supported in this browser",
-                                                    "info"
-                                                  );
-                                                }
-                                              }}
-                                            ></i>
-                                          </div>
-                                        </>
-                                      )}
-                                      {is_complete && is_report_complete && (
-                                        <div>
-                                          <Button
-                                            className="rounded-sm"
-                                            text={"View Report"}
-                                            onClick={() => {
-                                              proceedReport(id);
-                                            }}
-                                          />
-                                        </div>
-                                      )}
-                                      {is_complete && !is_report_complete && (
-                                        <div className="d-flex align-items-center">
-                                          <span className="name mb-0 text-sm">
-                                            Generating Report ...
-                                          </span>
-                                        </div>
-                                      )}
-
-                                      {!is_complete && (
-                                        <div>
-                                          <Button
-                                            loading={
-                                              startInterviewLoader.loader
-                                            }
-                                            className={
-                                              " border border-primary rounded-sm"
-                                            }
-                                            text={
-                                              is_started
-                                                ? "Resume Interview"
-                                                : "Start Interview"
-                                            }
-                                            onClick={() => {
-                                              proceedInterviewHandler(id);
-                                            }}
-                                          />
-                                        </div>
-                                      )}
-                                      <div className={""}>
-                                        <MenuBar
-                                          menuData={SCHEDULE_MENU}
-                                          onClick={(action) =>
-                                            proceedMenuClickHandler(action, id)
-                                          }
-                                          icon={icons.more}
-                                        />
+                        <div className="col mt-3">
+                          <div className="row">
+                            <div className="col ml-0">
+                              {details.length < VIEW_MORE_LENGTH ? (
+                                <div className="row">
+                                  <div className="text-details text-black">{`${details}`}</div>
+                                </div>
+                              ) : (
+                                <>
+                                  {more ? (
+                                    <div className="row">
+                                      <div className="text-details text-black">
+                                        {details
+                                          .split("\n\n")
+                                          .map((paragraph, index) => (
+                                            <React.Fragment key={index}>
+                                              {index > 0 && <br />}
+                                              {paragraph}
+                                            </React.Fragment>
+                                          ))}
+                                        <span
+                                          className="h4 text-primary ml-3 pointer"
+                                          onClick={() => {
+                                            const updatedData: any = [
+                                              ...jdMore,
+                                            ];
+                                            updatedData[index] = {
+                                              ...updatedData[index],
+                                              more: false,
+                                            };
+                                            setJdMore(updatedData);
+                                          }}
+                                        >
+                                          View Less
+                                        </span>
                                       </div>
                                     </div>
+                                  ) : (
+                                    <div className="row">
+                                      <div className="text-details text-black">
+                                        {details.slice(0, VIEW_MORE_LENGTH) +
+                                          " ..."}
+                                        <span
+                                          className="h4 text-primary ml-1 pointer"
+                                          onClick={() => {
+                                            const updatedData: any = [
+                                              ...jdMore,
+                                            ];
+                                            updatedData[index] = {
+                                              ...updatedData[index],
+                                              more: true,
+                                            };
+                                            setJdMore(updatedData);
+                                          }}
+                                        >
+                                          View More
+                                        </span>
+                                      </div>
+                                    </div>
+                                  )}
+                                </>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="col mt-3">
+                          {schedules && schedules.length > 0 && (
+                            <Divider className={"row"} space={"3"} />
+                          )}
+                          {schedules &&
+                            schedules.length > 0 &&
+                            schedules.map((each: any, index: number) => {
+                              console.log("111", each);
+
+                              const {
+                                is_complete,
+                                is_report_complete,
+                                id,
+                                created_at,
+                                custom_interviewee_details,
+                                is_started,
+                                interview_end_time,
+                                note,
+                                q,
+                                custom_interview_link,
+                                recording_url,
+                                interview_duration,
+                                interviewee_name,
+                              } = each;
+
+                              const basic_info =
+                                custom_interviewee_details?.basic_info;
+
+                              const basicInfo =
+                                basic_info && basic_info.first_name
+                                  ? basic_info
+                                  : null;
+                              let demoDisplayName: any = undefined;
+                              if (basicInfo)
+                                demoDisplayName = basicInfo?.first_name;
+
+                              const getDisplayTimeFromMoment = (
+                                timestamp: any
+                              ) => {
+                                const currentTime = new Date().getTime();
+                                const createdAt = new Date(timestamp).getTime();
+                                const timeDifference = Math.floor(
+                                  (currentTime - createdAt) / (1000 * 60)
+                                );
+
+                                if (timeDifference < 60) {
+                                  return `${timeDifference} mins ago`;
+                                } else if (timeDifference < 1440) {
+                                  const hours = Math.floor(timeDifference / 60);
+                                  return `${hours} ${
+                                    hours === 1 ? "hour" : "hours"
+                                  } ago`;
+                                } else {
+                                  const days = Math.floor(
+                                    timeDifference / 1440
+                                  );
+                                  return `${days} ${
+                                    days === 1 ? "day" : "days"
+                                  } ago`;
+                                }
+                              };
+
+                              const questions = `(Q -  ${q ? q : 0})`;
+
+                              return (
+                                <div>
+                                  <div className="row align-items-center justify-content-between">
+                                    <div className="col m-0 p-0">
+                                      <div className="d-flex align-items-center">
+                                        <h5 className="m-0 p-0">
+                                          {demoDisplayName
+                                            ? demoDisplayName
+                                                .charAt(0)
+                                                .toUpperCase() +
+                                              demoDisplayName.slice(1)
+                                            : "Interview " + (index + 1)}
+                                        </h5>
+                                        <h5 className="m-0 p-0 ml-2">
+                                          {questions}
+                                        </h5>
+                                      </div>
+                                      {custom_interview_link ? (
+                                        <Clipboard
+                                          id={id}
+                                          copedText={copiedInterviewLink}
+                                          linkToCopy={custom_interview_link}
+                                          tooltipText={"Copy Interview Link"}
+                                          onCopy={setCopiedInterviewLink}
+                                        />
+                                      ) : null}
+                                      {note ? (
+                                        <small className="text-muted">
+                                          {note}
+                                        </small>
+                                      ) : null}
+                                    </div>
+                                    <h5 className="mb-0 text-center d-none d-lg-block d-md-block d-xl-block">
+                                      {is_complete
+                                        ? `Completed: ${getDisplayTimeFromMoment(
+                                            interview_end_time
+                                          )}`
+                                        : `Created at: ${getDisplayTimeFromMoment(
+                                            created_at
+                                          )}`}
+                                    </h5>
+                                    <div className="col m-0 p-0 d-flex justify-content-end">
+                                      <div className="row mr-lg-3 mr-sm-0 mr-0">
+                                        {/**
+                                         * Watch interview 
+                                         */}
+                                        {recording_url &&
+                                          recording_url.length > 0 && (
+
+                                            <WatchInterviewButtonIcon
+                                              id={"1000"}
+                                              onClick={() => {
+                                                openWatchInterviewModal.show();
+                                                dispatch(
+                                                  watchInterviewVideoUrl({
+                                                    recording_url,
+                                                    interview_duration,
+                                                    interviewee_name,
+                                                  })
+                                                );
+                                              }}
+                                            />
+                                          )}
+                                        {is_complete && is_report_complete && (
+                                          <div>
+                                            <Button
+                                              className="rounded-sm"
+                                              text={"View Report"}
+                                              onClick={() => {
+                                                proceedReport(id);
+                                              }}
+                                            />
+                                          </div>
+                                        )}
+                                        {is_complete && !is_report_complete && (
+                                          <div className="d-flex align-items-center">
+                                            <span className="name mb-0 text-sm">
+                                              Generating Report ...
+                                            </span>
+                                          </div>
+                                        )}
+
+                                        {!is_complete && (
+                                          <div>
+                                            <Button
+                                              loading={
+                                                startInterviewLoader.loader
+                                              }
+                                              className={
+                                                " border border-primary rounded-sm"
+                                              }
+                                              text={
+                                                is_started
+                                                  ? "Resume Interview"
+                                                  : "Start Interview"
+                                              }
+                                              onClick={() => {
+                                                proceedInterviewHandler(id);
+                                              }}
+                                            />
+                                          </div>
+                                        )}
+                                        <div className={""}>
+                                          <MenuBar
+                                            menuData={SCHEDULE_MENU}
+                                            onClick={(action) =>
+                                              proceedMenuClickHandler(
+                                                action,
+                                                id
+                                              )
+                                            }
+                                            icon={icons.more}
+                                          />
+                                        </div>
+                                      </div>
+                                    </div>
+                                    {/** for small screen */}
+                                    <h5 className="mb-0 text-center d-block d-sm-none">
+                                      {is_complete
+                                        ? `Completed: ${getDisplayTimeFromMoment(
+                                            interview_end_time
+                                          )}`
+                                        : `Created at: ${getDisplayTimeFromMoment(
+                                            created_at
+                                          )}`}
+                                    </h5>
                                   </div>
-                                  {/** for small screen */}
-                                  <h5 className="mb-0 text-center d-block d-sm-none">
-                                    {is_complete
-                                      ? `Completed: ${getDisplayTimeFromMoment(
-                                          interview_end_time
-                                        )}`
-                                      : `Created at: ${getDisplayTimeFromMoment(
-                                          created_at
-                                        )}`}
-                                  </h5>
+                                  {index !== schedules.length - 1 && (
+                                    <Divider className={"row"} space={"3"} />
+                                  )}
                                 </div>
-                                {index !== schedules.length - 1 && (
-                                  <Divider className={"row"} space={"3"} />
-                                )}
-                              </div>
-                            );
-                          })}
+                              );
+                            })}
+                        </div>
                       </div>
-                    </Card>
-                  );
-                })}
-            </div>
-          }
-        </div>
-      ) : (
-        <UploadJdCard />
-      )}
-
-      <Modal
-        title={"Create Interview"}
-        isOpen={createJdModal}
-        onClose={() => {
-          dispatch(hideCreateJdModal());
-        }}
-      >
-        <div className={"row"}>
-          <div className={"col-sm-6"}>
-            <Input
-              isMandatory
-              heading={"Sector"}
-              placeHolder={PLACE_HOLDER.sector}
-              value={sector.value}
-              onChange={sector.onChange}
-            />
-          </div>
-          <div className={"col-sm-6"}>
-            <Input
-              isMandatory
-              heading={"Role"}
-              placeHolder={PLACE_HOLDER.role}
-              value={position.value}
-              onChange={position.onChange}
-            />
-          </div>
-        </div>
-
-        <div className={"row"}>
-          <div className={"col-sm-6"}>
-            {fresherChecked ? (
-              <div className="ml-2">
-                <Input
-                  isMandatory
-                  heading={"Years of experience"}
-                  type={"text"}
-                  placeHolder={"Fresher"}
-                  value={"Fresher"}
-                  disabled
-                />
+                    );
+                  })}
               </div>
-            ) : (
-              <div>
-                <Input
-                  isMandatory
-                  heading={"Years of experience"}
-                  type={"number"}
-                  placeHolder={"Experience"}
-                  value={experience.value}
-                  onChange={experience.onChange}
-                />
-              </div>
-            )}
-            <span className={"position-absolute left-9 pl-5 top-0"}>
-              <Checkbox
-                id={"fresher"}
-                className={"text-primary"}
-                text={"Fresher"}
-                defaultChecked={fresherChecked}
-                onCheckChange={(checked) => {
-                  setFresherChecked(checked);
-                }}
-              />
-            </span>
-          </div>
-
-          <div className={"col-sm-6 mt-1"}>
-            <InputHeading
-              Class={"mb-0"}
-              heading={"Interview Duration"}
-              isMandatory
-            />
-            <Radio
-              selected={selectedDuration}
-              selectItem={selectedDuration}
-              data={interviewDurations}
-              onRadioChange={(selected) => {
-                if (selected) {
-                  setSelectedDuration(selected);
-                }
-              }}
-            />
-          </div>
-        </div>
-
-        <TextArea
-          isMandatory
-          error={jdDescriptionError}
-          placeholder={PLACE_HOLDER.jd}
-          heading="Job Description"
-          value={jd.value.slice(0, CHAR_LENGTH)}
-          onChange={(e) => {
-            let value = e.target.value;
-            if (value.length > CHAR_LENGTH) {
-              setJdDescriptionError(ERROR_MESSAGE);
-            } else {
-              setJdDescriptionError(undefined);
             }
-            jd.set(value);
-          }}
-        />
-
-        <div className="text-center">
-          <Button
-            block
-            size="md"
-            text={"Submit"}
-            onClick={submitJdApiHandler}
-          />
-        </div>
-      </Modal>
-
-      <Modal isOpen={generateJdModal.visible} onClose={generateJdModal.hide}>
-        <PreparingYourInterview />
-      </Modal>
-
-      <Modal isOpen={completedModal.visible} onClose={completedModal.hide}>
-        <div className="text-center m-0 p-0">
-          <div className="display-1 text-black m-0 p-0">
-            Your Interview is Ready!
           </div>
-        </div>
-        <div className="text-center mb-5 mt-3">
-          <small className="text-black text-sm">
-            Click below to start Interview
-          </small>
-          <div className="row justify-content-center pt-1">
-            <div className="col-4">
-              <Button
-                loading={startInterviewLoader.loader}
-                block
-                size="md"
-                text={"Start Now"}
-                onClick={() => {
-                  if (scheduleId) {
-                    proceedInterviewHandler(scheduleId);
+        ) : (
+          <UploadJdCard />
+        )}
+
+        <Modal
+          title={"Create Interview"}
+          isOpen={createJdModal}
+          onClose={() => {
+            dispatch(hideCreateJdModal());
+          }}
+        >
+          <div className={"row"}>
+            <div className={"col-sm-6"}>
+              <Input
+                isMandatory
+                heading={"Sector"}
+                placeHolder={PLACE_HOLDER.sector}
+                value={sector.value}
+                onChange={sector.onChange}
+              />
+            </div>
+            <div className={"col-sm-6"}>
+              <Input
+                isMandatory
+                heading={"Role"}
+                placeHolder={PLACE_HOLDER.role}
+                value={position.value}
+                onChange={position.onChange}
+              />
+            </div>
+          </div>
+
+          <div className={"row"}>
+            <div className={"col-sm-6"}>
+              {fresherChecked ? (
+                <div className="ml-2">
+                  <Input
+                    isMandatory
+                    heading={"Years of experience"}
+                    type={"text"}
+                    placeHolder={"Fresher"}
+                    value={"Fresher"}
+                    disabled
+                  />
+                </div>
+              ) : (
+                <div>
+                  <Input
+                    isMandatory
+                    heading={"Years of experience"}
+                    type={"number"}
+                    placeHolder={"Experience"}
+                    value={experience.value}
+                    onChange={experience.onChange}
+                  />
+                </div>
+              )}
+              <span className={"position-absolute left-9 pl-5 top-0"}>
+                <Checkbox
+                  id={"fresher"}
+                  className={"text-primary"}
+                  text={"Fresher"}
+                  defaultChecked={fresherChecked}
+                  onCheckChange={(checked) => {
+                    setFresherChecked(checked);
+                  }}
+                />
+              </span>
+            </div>
+
+            <div className={"col-sm-6 mt-1"}>
+              <InputHeading
+                Class={"mb-0"}
+                heading={"Interview Duration"}
+                isMandatory
+              />
+              <Radio
+                selected={selectedDuration}
+                selectItem={selectedDuration}
+                data={interviewDurations}
+                onRadioChange={(selected) => {
+                  if (selected) {
+                    setSelectedDuration(selected);
                   }
                 }}
               />
             </div>
           </div>
-        </div>
-      </Modal>
 
-      <Modal isOpen={jdScheduleModal.visible} onClose={jdScheduleModal.hide}>
-        <div className="mt--5 pb-4">
-          <div className="text-center ">
-            <div className="display-4 text-black">
-              {"Interview Preparation is in progress,"}
-            </div>
-            <div className="display-4 text-black">
-              {"it will take couple of minutes,"}
-            </div>
-            <div className="display-4 text-black">
-              {"you will receive schedule confirmation over mail."}
+          <TextArea
+            isMandatory
+            error={jdDescriptionError}
+            placeholder={PLACE_HOLDER.jd}
+            heading="Job Description"
+            value={jd.value.slice(0, CHAR_LENGTH)}
+            onChange={(e) => {
+              let value = e.target.value;
+              if (value.length > CHAR_LENGTH) {
+                setJdDescriptionError(ERROR_MESSAGE);
+              } else {
+                setJdDescriptionError(undefined);
+              }
+              jd.set(value);
+            }}
+          />
+
+          <div className="text-center">
+            <Button
+              block
+              size="md"
+              text={"Submit"}
+              onClick={submitJdApiHandler}
+            />
+          </div>
+        </Modal>
+
+        <Modal isOpen={generateJdModal.visible} onClose={generateJdModal.hide}>
+          <PreparingYourInterview />
+        </Modal>
+
+        <Modal isOpen={completedModal.visible} onClose={completedModal.hide}>
+          <div className="text-center m-0 p-0">
+            <div className="display-1 text-black m-0 p-0">
+              Your Interview is Ready!
             </div>
           </div>
-          <div className="text-center py-3">
+          <div className="text-center mb-5 mt-3">
+            <small className="text-black text-sm">
+              Click below to start Interview
+            </small>
             <div className="row justify-content-center pt-1">
               <div className="col-4">
                 <Button
+                  loading={startInterviewLoader.loader}
                   block
                   size="md"
-                  text={"Close"}
+                  text={"Start Now"}
                   onClick={() => {
-                    jdScheduleModal.hide();
+                    if (scheduleId) {
+                      proceedInterviewHandler(scheduleId);
+                    }
                   }}
                 />
               </div>
             </div>
           </div>
-        </div>
-      </Modal>
+        </Modal>
 
-      <Modal
-        title={"Create Interview for Others"}
-        isOpen={createForOthersJdModal}
-        onClose={() => {
-          dispatch(hideCreateForOthersJdModal());
-        }}
-      >
-        <div className={"row"}>
-          <div className={"col-sm-6"}>
-            <Input
-              isMandatory
-              heading={"First Name"}
-              placeHolder={" First Name"}
-              value={firstName.value}
-              onChange={firstName.onChange}
-            />
-          </div>
-          <div className={"col-sm-6 mt-2"}>
-            <Input
-              heading={"Last Name"}
-              placeHolder={"Last Name"}
-              value={lastName.value}
-              onChange={lastName.onChange}
-            />
-          </div>
-        </div>
-
-        <div className={"row"}>
-          <div className={"col-sm-6"}>
-            <Input
-              heading={"Email"}
-              placeHolder={"Email Id"}
-              value={email.value}
-              onChange={(e) => {
-                const value = e.target.value;
-                if (value === "") {
-                  setNotifyInterview(false);
-                  setNotifyReport(false);
-                }
-                email.onChange(e);
-              }}
-            />
-          </div>
-          <div className={"col-sm-6"}>
-            <Input
-              heading={"Mobile Number"}
-              maxLength={10}
-              type={"number"}
-              placeHolder={"Mobile Number"}
-              value={mobileNumber.value}
-              onChange={mobileNumber.onChange}
-            />
-          </div>
-        </div>
-
-        <TextArea
-          height={"100px"}
-          heading={"Note"}
-          value={noteForOthers.value}
-          onChange={noteForOthers.onChange}
-        />
-
-        <div className={"row"}>
-          <div className={"col-sm-6"}>
-            <Input
-              isMandatory
-              heading={"Sector"}
-              placeHolder={"Sector"}
-              value={sectorForOthers.value}
-              onChange={sectorForOthers.onChange}
-            />
-          </div>
-          <div className={"col-sm-6"}>
-            <Input
-              isMandatory
-              heading={"Role"}
-              placeHolder={"Role"}
-              value={positionForOthers.value}
-              onChange={positionForOthers.onChange}
-            />
-          </div>
-        </div>
-
-        <div className={"row"}>
-          <div className={"col-sm-6"}>
-            <Input
-              isMandatory
-              type={"number"}
-              heading={"Experience"}
-              placeHolder={"Experience"}
-              value={experienceForOthers.value}
-              onChange={experienceForOthers.onChange}
-            />
-          </div>
-
-          <div className={"col-sm-6 mt-1"}>
-            <InputHeading
-              Class={"mb-0"}
-              heading={"Interview Duration"}
-              isMandatory
-            />
-            <Radio
-              selected={selectedDurationForOthers}
-              selectItem={selectedDurationForOthers}
-              data={interviewDurations}
-              onRadioChange={(selected) => {
-                if (selected) {
-                  setSelectedDurationForOthers(selected);
-                }
-              }}
-            />
-          </div>
-        </div>
-
-        <TextArea
-          isMandatory
-          error={jdDescriptionError}
-          placeholder={PLACE_HOLDER.jd}
-          heading="JD Details"
-          value={jdForOthers.value.slice(0, CHAR_LENGTH)}
-          onChange={(e) => {
-            let value = e.target.value;
-            if (value.length > CHAR_LENGTH) {
-              setJdDescriptionError(ERROR_MESSAGE);
-            } else {
-              setJdDescriptionError(undefined);
-            }
-            jdForOthers.set(value);
-          }}
-        />
-
-        <div className={"d-flex"}>
-          <Checkbox
-            className={"text-primary flex-row"}
-            text={"Notify interview"}
-            id={"notifyInterview"}
-            defaultChecked={notifyInterview}
-            onCheckChange={(checked) => {
-              if (email.value) {
-                setNotifyInterview(checked);
-                setNotifyError(false);
-              } else {
-                setNotifyInterview(false);
-                setNotifyError(true);
-              }
-            }}
-          />
-          <div className="ml-4"></div>
-          <Checkbox
-            className={"text-primary"}
-            text={"Notify Report"}
-            id={"notifyReport"}
-            defaultChecked={notifyReport}
-            onCheckChange={(checked) => {
-              if (email.value) {
-                setNotifyReport(checked);
-                setNotifyError(false);
-              } else {
-                setNotifyReport(false);
-                setNotifyError(true);
-              }
-            }}
-          />
-        </div>
-        {notifyError ? (
-          <small className="text-red mt-2">
-            Please fill above email field to enable notification.
-          </small>
-        ) : null}
-        <div className="mt-5">
-          <Button
-            block
-            size="md"
-            text={"Submit"}
-            onClick={createForOthersApiHandler}
-          />
-        </div>
-      </Modal>
-
-      {/**
-       * Add another form
-       */}
-      <Modal
-        title={"Create Interview for Others"}
-        isOpen={addAnotherModal.visible}
-        onClose={addAnotherModal.hide}
-      >
-        <div className={"row"}>
-          <div className={"col-6"}>
-            <Input
-              isMandatory
-              heading={"First Name"}
-              placeHolder={" First Name"}
-              value={addAnotherFirstName.value}
-              onChange={addAnotherFirstName.onChange}
-            />
-          </div>
-          <div className={"col-6 mt-2"}>
-            <Input
-              heading={"Last Name"}
-              placeHolder={"Last Name"}
-              value={addAnotherLastName.value}
-              onChange={addAnotherLastName.onChange}
-            />
-          </div>
-        </div>
-
-        <div className={"row"}>
-          <div className={"col-6"}>
-            <Input
-              heading={"Email"}
-              placeHolder={"Email Id"}
-              value={addAnotherEmail.value}
-              onChange={(e) => {
-                const value = e.target.value;
-                if (value === "") {
-                  setAddAnotherNotifyInterview(false);
-                  setAddAnotherNotifyReport(false);
-                }
-                addAnotherEmail.onChange(e);
-              }}
-            />
-          </div>
-          <div className={"col-6"}>
-            <Input
-              heading={"Mobile Number"}
-              maxLength={10}
-              type={"number"}
-              placeHolder={"Mobile Number"}
-              value={addAnotherMobileNumber.value}
-              onChange={addAnotherMobileNumber.onChange}
-            />
-          </div>
-        </div>
-
-        <TextArea
-          height={"100px"}
-          heading={"Note"}
-          value={addAnotherNote.value}
-          onChange={addAnotherNote.onChange}
-        />
-
-        <div className={"d-flex m-0 p-0"}>
-          <Checkbox
-            className={"text-primary flex-row"}
-            text={"Notify interview"}
-            id={"addAnotherNotifyInterview"}
-            defaultChecked={addAnotherNotifyInterview}
-            onCheckChange={(checked) => {
-              if (addAnotherEmail.value) {
-                setAddAnotherNotifyInterview(checked);
-                setNotifyError(false);
-              } else {
-                setAddAnotherNotifyInterview(false);
-                setNotifyError(true);
-              }
-            }}
-          />
-          <div className="ml-3"></div>
-          <Checkbox
-            className={"text-primary"}
-            text={"Notify Report"}
-            id={"addAnotherNotifyReport"}
-            defaultChecked={addAnotherNotifyReport}
-            onCheckChange={(checked) => {
-              if (addAnotherEmail.value) {
-                setAddAnotherNotifyReport(checked);
-                setNotifyError(false);
-              } else {
-                setAddAnotherNotifyReport(false);
-                setNotifyError(true);
-              }
-            }}
-          />
-        </div>
-        {notifyError ? (
-          <small className="text-red mt-2">
-            Please fill above email field to enable notification
-          </small>
-        ) : null}
-
-        <div className="mt-5">
-          <Button
-            block
-            size="md"
-            text={"Submit"}
-            onClick={createNewJdScheduleApiHandler}
-          />
-        </div>
-      </Modal>
-
-      {/** watch interview modal */}
-
-      <Modal
-        isOpen={openWatchInterviewModal.visible}
-        size="lg"
-        onClose={() => {
-          openWatchInterviewModal.hide();
-          setWatchInterviewUrl(undefined);
-        }}
-        title="Interview Video"
-        // subTitle={`(${watchInterviewUrl?.interview_duration} minutes)`}
-      >
-        <>
-          <div className="mt--5">
-            <small className="text-sm">{`(${watchInterviewUrl?.interview_duration} minutes)`}</small>
-          </div>
-          <div className="mt-4 mb--4">
-            {watchInterviewUrl && watchInterviewUrl?.recording_url ? (
-              <video controls className="d-flex col pt--3">
-                <source
-                  src={
-                    SERVER +
-                    (watchInterviewUrl.recording_url.charAt(0) === "/"
-                      ? watchInterviewUrl.recording_url.slice(1)
-                      : watchInterviewUrl.recording_url)
-                  }
-                  type={"video/webm"}
-                />
-              </video>
-            ) : (
-              <div className="d-flex justify-content-center">
-                <div className="mt-5 mb-5">
-                  <div className="align-self-center">
-                    <Image src={image.noVideo} />
-                  </div>
-                  <div className="mt-2" style={{ color: "#e3e5e8" }}>
-                    {"No Video Found"}
-                  </div>
+        <Modal isOpen={jdScheduleModal.visible} onClose={jdScheduleModal.hide}>
+          <div className="mt--5 pb-4">
+            <div className="text-center ">
+              <div className="display-4 text-black">
+                {"Interview Preparation is in progress,"}
+              </div>
+              <div className="display-4 text-black">
+                {"it will take couple of minutes,"}
+              </div>
+              <div className="display-4 text-black">
+                {"you will receive schedule confirmation over mail."}
+              </div>
+            </div>
+            <div className="text-center py-3">
+              <div className="row justify-content-center pt-1">
+                <div className="col-4">
+                  <Button
+                    block
+                    size="md"
+                    text={"Close"}
+                    onClick={() => {
+                      jdScheduleModal.hide();
+                    }}
+                  />
                 </div>
               </div>
-            )}
+            </div>
           </div>
-        </>
-      </Modal>
+        </Modal>
+
+        <Modal
+          title={"Create Interview for Others"}
+          isOpen={createForOthersJdModal}
+          onClose={() => {
+            dispatch(hideCreateForOthersJdModal());
+          }}
+        >
+          <div className={"row"}>
+            <div className={"col-sm-6"}>
+              <Input
+                isMandatory
+                heading={"First Name"}
+                placeHolder={" First Name"}
+                value={firstName.value}
+                onChange={firstName.onChange}
+              />
+            </div>
+            <div className={"col-sm-6 mt-2"}>
+              <Input
+                heading={"Last Name"}
+                placeHolder={"Last Name"}
+                value={lastName.value}
+                onChange={lastName.onChange}
+              />
+            </div>
+          </div>
+
+          <div className={"row"}>
+            <div className={"col-sm-6"}>
+              <Input
+                heading={"Email"}
+                placeHolder={"Email Id"}
+                value={email.value}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (value === "") {
+                    setNotifyInterview(false);
+                    setNotifyReport(false);
+                  }
+                  email.onChange(e);
+                }}
+              />
+            </div>
+            <div className={"col-sm-6"}>
+              <Input
+                heading={"Mobile Number"}
+                maxLength={10}
+                type={"number"}
+                placeHolder={"Mobile Number"}
+                value={mobileNumber.value}
+                onChange={mobileNumber.onChange}
+              />
+            </div>
+          </div>
+
+          <TextArea
+            height={"100px"}
+            heading={"Note"}
+            value={noteForOthers.value}
+            onChange={noteForOthers.onChange}
+          />
+
+          <div className={"row"}>
+            <div className={"col-sm-6"}>
+              <Input
+                isMandatory
+                heading={"Sector"}
+                placeHolder={"Sector"}
+                value={sectorForOthers.value}
+                onChange={sectorForOthers.onChange}
+              />
+            </div>
+            <div className={"col-sm-6"}>
+              <Input
+                isMandatory
+                heading={"Role"}
+                placeHolder={"Role"}
+                value={positionForOthers.value}
+                onChange={positionForOthers.onChange}
+              />
+            </div>
+          </div>
+
+          <div className={"row"}>
+            <div className={"col-sm-6"}>
+              <Input
+                isMandatory
+                type={"number"}
+                heading={"Experience"}
+                placeHolder={"Experience"}
+                value={experienceForOthers.value}
+                onChange={experienceForOthers.onChange}
+              />
+            </div>
+
+            <div className={"col-sm-6 mt-1"}>
+              <InputHeading
+                Class={"mb-0"}
+                heading={"Interview Duration"}
+                isMandatory
+              />
+              <Radio
+                selected={selectedDurationForOthers}
+                selectItem={selectedDurationForOthers}
+                data={interviewDurations}
+                onRadioChange={(selected) => {
+                  if (selected) {
+                    setSelectedDurationForOthers(selected);
+                  }
+                }}
+              />
+            </div>
+          </div>
+
+          <TextArea
+            isMandatory
+            error={jdDescriptionError}
+            placeholder={PLACE_HOLDER.jd}
+            heading="JD Details"
+            value={jdForOthers.value.slice(0, CHAR_LENGTH)}
+            onChange={(e) => {
+              let value = e.target.value;
+              if (value.length > CHAR_LENGTH) {
+                setJdDescriptionError(ERROR_MESSAGE);
+              } else {
+                setJdDescriptionError(undefined);
+              }
+              jdForOthers.set(value);
+            }}
+          />
+
+          <div className={"d-flex"}>
+            <Checkbox
+              className={"text-primary flex-row"}
+              text={"Notify interview"}
+              id={"notifyInterview"}
+              defaultChecked={notifyInterview}
+              onCheckChange={(checked) => {
+                if (email.value) {
+                  setNotifyInterview(checked);
+                  setNotifyError(false);
+                } else {
+                  setNotifyInterview(false);
+                  setNotifyError(true);
+                }
+              }}
+            />
+            <div className="ml-4"></div>
+            <Checkbox
+              className={"text-primary"}
+              text={"Notify Report"}
+              id={"notifyReport"}
+              defaultChecked={notifyReport}
+              onCheckChange={(checked) => {
+                if (email.value) {
+                  setNotifyReport(checked);
+                  setNotifyError(false);
+                } else {
+                  setNotifyReport(false);
+                  setNotifyError(true);
+                }
+              }}
+            />
+          </div>
+          {notifyError ? (
+            <small className="text-red mt-2">
+              Please fill above email field to enable notification.
+            </small>
+          ) : null}
+          <div className="mt-5">
+            <Button
+              block
+              size="md"
+              text={"Submit"}
+              onClick={createForOthersApiHandler}
+            />
+          </div>
+        </Modal>
+
+        {/**
+         * Add another form
+         */}
+        <Modal
+          title={"Create Interview for Others"}
+          isOpen={addAnotherModal.visible}
+          onClose={addAnotherModal.hide}
+        >
+          <div className={"row"}>
+            <div className={"col-6"}>
+              <Input
+                isMandatory
+                heading={"First Name"}
+                placeHolder={" First Name"}
+                value={addAnotherFirstName.value}
+                onChange={addAnotherFirstName.onChange}
+              />
+            </div>
+            <div className={"col-6 mt-2"}>
+              <Input
+                heading={"Last Name"}
+                placeHolder={"Last Name"}
+                value={addAnotherLastName.value}
+                onChange={addAnotherLastName.onChange}
+              />
+            </div>
+          </div>
+
+          <div className={"row"}>
+            <div className={"col-6"}>
+              <Input
+                heading={"Email"}
+                placeHolder={"Email Id"}
+                value={addAnotherEmail.value}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (value === "") {
+                    setAddAnotherNotifyInterview(false);
+                    setAddAnotherNotifyReport(false);
+                  }
+                  addAnotherEmail.onChange(e);
+                }}
+              />
+            </div>
+            <div className={"col-6"}>
+              <Input
+                heading={"Mobile Number"}
+                maxLength={10}
+                type={"number"}
+                placeHolder={"Mobile Number"}
+                value={addAnotherMobileNumber.value}
+                onChange={addAnotherMobileNumber.onChange}
+              />
+            </div>
+          </div>
+
+          <TextArea
+            height={"100px"}
+            heading={"Note"}
+            value={addAnotherNote.value}
+            onChange={addAnotherNote.onChange}
+          />
+
+          <div className={"d-flex m-0 p-0"}>
+            <Checkbox
+              className={"text-primary flex-row"}
+              text={"Notify interview"}
+              id={"addAnotherNotifyInterview"}
+              defaultChecked={addAnotherNotifyInterview}
+              onCheckChange={(checked) => {
+                if (addAnotherEmail.value) {
+                  setAddAnotherNotifyInterview(checked);
+                  setNotifyError(false);
+                } else {
+                  setAddAnotherNotifyInterview(false);
+                  setNotifyError(true);
+                }
+              }}
+            />
+            <div className="ml-3"></div>
+            <Checkbox
+              className={"text-primary"}
+              text={"Notify Report"}
+              id={"addAnotherNotifyReport"}
+              defaultChecked={addAnotherNotifyReport}
+              onCheckChange={(checked) => {
+                if (addAnotherEmail.value) {
+                  setAddAnotherNotifyReport(checked);
+                  setNotifyError(false);
+                } else {
+                  setAddAnotherNotifyReport(false);
+                  setNotifyError(true);
+                }
+              }}
+            />
+          </div>
+          {notifyError ? (
+            <small className="text-red mt-2">
+              Please fill above email field to enable notification
+            </small>
+          ) : null}
+
+          <div className="mt-5">
+            <Button
+              block
+              size="md"
+              text={"Submit"}
+              onClick={createNewJdScheduleApiHandler}
+            />
+          </div>
+        </Modal>
+
+        {/** watch interview modal */}
+
+        {/* <Modal
+          isOpen={openWatchInterviewModal.visible}
+          size="lg"
+          onClose={() => {
+            openWatchInterviewModal.hide();
+            setWatchInterviewUrl(undefined);
+          }}
+          title="Interview Video"
+        // subTitle={`(${watchInterviewUrl?.interview_duration} minutes)`}
+        >
+          <>
+            <div className="mt--5">
+              <small className="text-sm">{`(${watchInterviewUrl?.interview_duration} minutes)`}</small>
+            </div>
+            <div className="mt-4 mb--4">
+              {watchInterviewUrl && watchInterviewUrl?.recording_url ? (
+                <video controls className="d-flex col pt--3">
+                  <source
+                    src={
+                      SERVER +
+                      (watchInterviewUrl.recording_url.charAt(0) === "/"
+                        ? watchInterviewUrl.recording_url.slice(1)
+                        : watchInterviewUrl.recording_url)
+                    }
+                    type={"video/webm"}
+                  />
+                </video>
+              ) : (
+                <div className="d-flex justify-content-center">
+                  <div className="mt-5 mb-5">
+                    <div className="align-self-center">
+                      <Image src={image.noVideo} />
+                    </div>
+                    <div className="mt-2" style={{ color: "#e3e5e8" }}>
+                      {"No Video Found"}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </>
+        </Modal> */}
+
+        <WatchInterviewModal
+          isOpen={openWatchInterviewModal.visible}
+          onClose={() => {
+            openWatchInterviewModal.hide();
+            dispatch(watchInterviewVideoUrl(undefined));
+          }}
+          name={interviewUrl?.interviewee_name?.trim()}
+          subTitle={interviewUrl?.interview_duration}
+          urlData={interviewUrl}
+        />
+      </div>
     </>
   );
 }
