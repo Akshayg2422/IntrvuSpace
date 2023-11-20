@@ -1,51 +1,73 @@
-import React, { Component, useEffect, useRef, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
-import { createSector, getSectors, getStartChat } from '@Redux';
+import { icons } from '@Assets';
+import { CommonTable, Input, MenuBar, Modal, NoDataFound, Spinner, TextArea, showToast } from '@Components';
 import { useInput, useLoader, useModal } from '@Hooks';
-import { translate } from "@I18n";
-import { Back, Button, Card, CommonTable, Image, ImagePicker, Input, Modal, showToast } from '@Components';
-import { ADD_SECTOR_RULES, getPhoto, getValidateError, ifObjectExist, validate, filteredName } from '@Utils';
+import { SettingHeader } from '@Modules';
+import { addSectorCorporate, getSectorCorporate } from '@Redux';
+import { ADD_SECTOR_CORPORATE_RULES, INITIAL_PAGE, capitalizeFirstLetter, getValidateError, ifObjectExist, paginationHandler, validate } from '@Utils';
+import { useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 
 function Sector() {
+
+
   const dispatch = useDispatch()
 
-  const addSector = useModal(false);
+  const { sectorsCorporate,
+    sectorsCorporateNumOfPages,
+    sectorsCorporateCurrentPages
+  } = useSelector((state: any) => state.DashboardReducer)
 
-  const name = useInput("");
-  const description = useInput("");
-  const [image, setImage] = useState("");
+
+  const loader = useLoader(false);
+
+  /**
+   * add sector state
+   */
   const addSectorLoader = useLoader(false);
+  const addSectorModal = useModal(false);
 
-  const [photo, setPhoto] = useState<any>("");
-  const { sectors } = useSelector((state: any) => state.DashboardReducer)
+  const sectorName = useInput("");
+  const sectorDescription = useInput("");
+  const [editId, setEditId] = useState<any>()
+  const [selectedSector, setSelectedSector] = useState<any>(undefined)
+  const inputRef= useRef<any>(null)
 
+
+  const MENU = [
+    { id: '0', name: "Edit", icon: icons.edit },
+  ]
 
   useEffect(() => {
-    getSectorDetailsApiHandler()
+    getSectorCorporateApiHandler(INITIAL_PAGE)
   }, [])
 
-  const addSectorDetailsApiHandler = () => {
+
+  /**
+   * add sector api
+   */
+
+  const addSectorApiHandler = () => {
+
+
     const params = {
-      name: name.value,
-      description: description.value,
-      photo: photo
+      name: sectorName.value,
+      description: sectorDescription.value,
+      ...(selectedSector && { id: selectedSector?.id })
     }
 
-    const validation = validate(ADD_SECTOR_RULES, params)
+    const validation = validate(ADD_SECTOR_CORPORATE_RULES, params)
 
     if (ifObjectExist(validation)) {
       addSectorLoader.show()
+
       dispatch(
-        createSector({
+        addSectorCorporate({
           params,
           onSuccess: (success: any) => () => {
-            addSector.hide()
-            description.set('')
-            name.set('')
-            setPhoto('')
+            resetValues();
             addSectorLoader.hide()
-            getSectorDetailsApiHandler()
+            getSectorCorporateApiHandler(sectorsCorporateCurrentPages)
             showToast(success.message, 'success')
           },
           onError: (error: any) => () => {
@@ -54,20 +76,31 @@ function Sector() {
           },
         })
       )
+
     } else {
-      addSectorLoader.hide()
       showToast(getValidateError(validation))
     }
   };
 
-  const getSectorDetailsApiHandler = () => {
-    const params = {}
+  /**
+   * get sector api
+   */
+  const getSectorCorporateApiHandler = (page_number: number) => {
+
+    const params = {
+      page_number,
+    }
+
+    loader.show();
+
     dispatch(
-      getSectors({
+      getSectorCorporate({
         params,
-        onSuccess: (success: any) => () => {
+        onSuccess: () => () => {
+          loader.hide();
         },
-        onError: (error: string) => () => {
+        onError: () => () => {
+          loader.hide();
         },
       })
     );
@@ -75,85 +108,123 @@ function Sector() {
 
   const normalizedTableData = (data: any) => {
     return data?.map((el: any) => {
+      const { name, description } = el
+
       return {
-        '': <Image variant={'rounded'} src={getPhoto(el?.photo)} />,
-        Name: el.name,
-        description: filteredName(el?.description, 90),
+        Name: capitalizeFirstLetter(name),
+        description: capitalizeFirstLetter(description),
+        '':
+          <MenuBar
+            menuData={MENU}
+            onClick={(item) => {
+              if (item?.id === MENU[0].id) {
+                
+                addSectorModal.show();
+                
+                /**
+                 * prefill the sector modal
+                 */
+
+                setSelectedSector(el)
+                setEditId(el)
+                sectorName.set(name)
+                sectorDescription.set(description)
+
+              }
+
+
+            }} />
       };
     });
   };
 
+
+  /**
+   * reset Value
+   */
+
+  function resetValues() {
+    sectorName.set('');
+    sectorDescription.set('');
+    addSectorModal.hide();
+    setSelectedSector(undefined);
+
+  }
+
   return (
     <>
-      <div className='container-fluid'>
-        <div className="row justify-content-between mt-2 pl-2 mr--2 mb-3">
-          <Back />
-          <Button
-            className={'text-white shadow-none'}
-            size={'sm'}
-            text={"Add Sector"}
-            onClick={() => {
-              addSector.show()
+      <div className={'screen-padding'}>
+
+        <SettingHeader
+          title={'Sectors'}
+          buttonText={'Add'}
+          onClick={addSectorModal.show}
+        />
+
+        {
+          loader.loader && <div className={'loader-container'}><Spinner /></div>
+        }
+
+        {
+          !loader.loader &&
+          sectorsCorporate?.length > 0
+          &&
+          <CommonTable
+            isPagination={sectorsCorporateNumOfPages > 1}
+            displayDataSet={normalizedTableData(sectorsCorporate)}
+            noOfPage={sectorsCorporateNumOfPages}
+            currentPage={sectorsCorporateCurrentPages}
+            paginationNumberClick={(currentPage) => {
+              getSectorCorporateApiHandler(paginationHandler("current", currentPage));
+
             }}
+            previousClick={() => {
+              getSectorCorporateApiHandler(paginationHandler("prev", sectorsCorporateCurrentPages))
+            }
+            }
+            nextClick={() => {
+              getSectorCorporateApiHandler(paginationHandler("next", sectorsCorporateCurrentPages));
+            }
+            }
           />
-        </div>
-        <div className='row px-0  mx--4'>
-          <div className='col-sm-12 px-0'>
-            <CommonTable
-              card
-              isPagination
-              title={'Sectors'}
-              displayDataSet={normalizedTableData(sectors)}
-            />
+        }
+        {
+          !loader.loader &&
+          sectorsCorporate?.length <= 0 &&
+          <div className={'no-data-container'}>
+            <NoDataFound />
           </div>
-        </div>
+        }
       </div>
-      < Modal size={'lg'} title={"Add Sector"} isOpen={addSector.visible} onClose={()=>{
-        addSector.hide()
-        name.set("")
-        description.set("")
-        setPhoto("")
-      }} >
-        <div className="col-md-9">
-          <div className="mt--2">
+
+
+      <Modal
+        loading={addSectorLoader.loader}
+        title={`${editId ? "Edit" : "Create"} Sector`}
+        isOpen={addSectorModal.visible}
+        onClose={resetValues}
+        onClick={addSectorApiHandler}
+      >
+        <div className='row'>
+          <div className='col-sm-6'>
             <Input
               heading={"Name"}
-              value={name.value}
-              onChange={name.onChange}
+              value={sectorName.value}
+              onChange={sectorName.onChange}
+              ref={inputRef}
             />
           </div>
-          <div className="mt--2">
-            <Input
-              heading={"Description"}
-              value={description.value}
-              onChange={description.onChange}
-            />
-          </div>
-          <div className=" pb-4 mt--4">
-            <div className="row">
-              <ImagePicker
-                icon={image}
-                size='xl'
-                heading={translate("common.addAttachment")!}
-                noOfFileImagePickers={1}
-                onSelect={(image) => {
-                  let file = image.toString().replace(/^data:(.*,)?/, "")
-                  setPhoto(file)
-                }}
-              />
-            </div>
-          </div>
         </div>
-        <div className="col text-right ">
-          <Button size={'md'}
-            loading={addSectorLoader.loader}
-            text={"Submit"}
-            onClick={addSectorDetailsApiHandler}
-          />
-        </div>
+        <TextArea
+          heading={'Description'}
+          height={"200px"}
+          value={sectorDescription.value}
+          onChange={sectorDescription.onChange}
+        />
+
       </Modal >
     </>
   )
 }
 
-export { Sector }
+export { Sector };

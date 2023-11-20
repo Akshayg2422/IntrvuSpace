@@ -1,7 +1,39 @@
-import { icons } from '@Assets'
-import { Designation, WeightageCountForm, CreateQuestionForm, Clients, Sector, Questions, Call, Report, QuestionSections, AnalyzingAnimation, Schedules, Login, Otp, Splash, Register, LoginWithOtp, AdminLogin, VariantInfo, PrivacyPolicy, TermsAndConditions, ReturnAndRefund, Reports, HowItWorks, Introduction, Settings, Response, CreateNewPassword, ForgotPassword, PreparingYourInterview, UploadCorporateOpeningsCard, UploadJdCard } from '@Modules';
-
-
+import { icons } from '@Assets';
+import {
+  AdminLogin,
+  AnalyzingAnimation,
+  Clients,
+  CreateNewPassword,
+  CreateQuestionForm,
+  Department,
+  Designation,
+  ForgotPassword,
+  HowItWorks,
+  Introduction,
+  Login,
+  LoginWithOtp,
+  ManageTeamMate,
+  Otp,
+  PreparingYourInterview,
+  PrivacyPolicy,
+  QuestionSections,
+  Questions, Register,
+  Report,
+  Reports,
+  Response,
+  ReturnAndRefund,
+  Schedules,
+  Scheduling,
+  Sector,
+  Settings,
+  TermsAndConditions,
+  VariantInfo,
+  WeightageCountForm,
+  EmailVerification,
+  CorporateRegister,
+  SettingDesignation,
+  AdminSchedules
+} from '@Modules';
 
 export const ROUTES = {
   'auth-module': {
@@ -17,8 +49,10 @@ export const ROUTES = {
     reports: '/reports',
     'how-it-works': '/how-it-works',
     introduction: '/introduction',
-    forgotPassword:'/forgotPassword',
-    createNewPassword: '/createNewPassword'
+    forgotPassword: '/forgotPassword',
+    createNewPassword: '/createNewPassword',
+    'register-company': '/register-company',
+    'mail-verification': '/mail-verification'
   },
   'designation-module': {
     Dashboard: "/dashboard",
@@ -37,9 +71,65 @@ export const ROUTES = {
     'variant-info': '/variant-info',
     settings: '/settings',
     'response': '/response',
-    'preparing-your-interview':'/preparing-your-interview'
+    'preparing-your-interview': '/preparing-your-interview',
+    'department': '/department',
+    'employeeDesignations': '/employeeDesignations',
+    'ManageTeamMate': '/ManageTeamMate',
+    // 'Sectors':'/Sectors'
+    'scheduling-interview': '/scheduling-interview',
+    'admin-schedule': '/admin-schedule'
   }
 }
+
+export const OLD_ROUTES = [
+  {
+    id: 4,
+    path: ROUTES['designation-module']['questions'],
+    component: <Questions />
+  },
+  {
+    id: 5,
+    path: ROUTES['designation-module']['question-sections'],
+    component: <QuestionSections />
+  },
+  {
+    id: 1,
+    path: ROUTES['designation-module']['weightage-count-form'],
+    component: <WeightageCountForm />
+  },
+  {
+    id: 2,
+    path: ROUTES['designation-module']['create-question-form'],
+    component: <CreateQuestionForm />
+  }
+  ,
+  {
+    id: 7,
+    path: ROUTES['designation-module']['schedules'],
+    component: <Schedules />
+  },
+  {
+    id: 6,
+    path: ROUTES['designation-module']['analyzing-animation'],
+    component: <AnalyzingAnimation />
+  },
+  {
+    id: 12,
+    path: ROUTES['designation-module']['scheduling-interview'],
+    component: <Scheduling />
+  },
+  {
+    id: 11,
+    path: ROUTES['designation-module']['preparing-your-interview'],
+    component: <PreparingYourInterview />
+  }
+  ,
+  {
+    id: 10,
+    path: ROUTES['designation-module'].response + '/:schedule_id',
+    component: <Response />
+  },
+]
 
 
 export const AUTH_ROUTES = [
@@ -53,142 +143,81 @@ export const AUTH_ROUTES = [
     path: ROUTES['auth-module'].otp,
     component: <Otp />
   },
-  // {
-  //   id: 3,
-  //   path: ROUTES['auth-module'].splash,
-  //   component: <Splash />
-  // },
   {
-    id: 4,
+    id: 3,
     path: ROUTES['auth-module'].register,
     component: <Register />
   },
   {
-    id: 5,
+    id: 4,
     path: ROUTES['auth-module'].loginWithOtp,
     component: <LoginWithOtp />
   },
   {
-    id: 6,
+    id: 5,
     path: ROUTES['auth-module'].admin_login,
     component: <AdminLogin />
   },
   {
-    key: 7,
+    key: 6,
     path: ROUTES['auth-module'].privacy,
     component: <PrivacyPolicy />
   },
   {
-    key: 8,
+    key: 7,
     path: ROUTES['auth-module'].TermsAndConditions,
     component: <TermsAndConditions />
   },
   {
-    key: 9,
+    key: 8,
     path: ROUTES['auth-module'].ReturnAndRefund,
     component: <ReturnAndRefund />
   },
   {
-    key: 10,
+    key: 9,
     path: ROUTES['auth-module'].reports,
     component: <Reports />
   },
   {
-    key: 11,
+    key: 10,
     path: ROUTES['auth-module']['how-it-works'],
     component: <HowItWorks />
   },
   {
-    key: 12,
+    key: 11,
     path: ROUTES['auth-module'].introduction,
     component: <Introduction />
   },
   {
-    key: 13,
+    key: 12,
     path: ROUTES['auth-module'].forgotPassword,
     component: <ForgotPassword />
   },
   {
-    key: 14,
+    key: 13,
     path: ROUTES['auth-module'].createNewPassword,
     component: <CreateNewPassword />
   },
+  {
+    key: 15,
+    path: ROUTES['auth-module']['register-company'],
+    component: <CorporateRegister />
+  },
+
+  {
+    key: 16,
+    path: ROUTES['auth-module']['mail-verification'],
+    component: <EmailVerification />
+  }
 
 
 ]
 
-export const DASHBOARD_ROUTES = [
-  {
-    id: 1,
-    path: ROUTES['designation-module']['weightage-count-form'],
-    component: <WeightageCountForm />
-  },
-  {
-    id: 2,
-    path: ROUTES['designation-module']['create-question-form'],
-    component: <CreateQuestionForm />
-  },
-  {
-    id: 3,
-    path: ROUTES['designation-module']['sector'],
-    component: <Sector />
-  },
-  {
-    id: 4,
-    path: ROUTES['designation-module']['questions'],
-    component: <Questions />
-  },
-  {
-    id: 5,
-    path: ROUTES['designation-module']['question-sections'],
-    component: <QuestionSections />
-  },
-  {
-    id: 6,
-    path: ROUTES['designation-module']['analyzing-animation'],
-    component: <AnalyzingAnimation />
-  },
-  {
-    id: 7,
-    path: ROUTES['designation-module']['schedules'],
-    component: <Schedules />
-  },
+export const JOB_SEEKER_ROUTES = [
   {
     id: 8,
     path: ROUTES['designation-module'].report + '/:schedule_id',
     component: <Report />
-  },
-  {
-    id: 9,
-    path: ROUTES['designation-module']['variant-info'],
-    component: <VariantInfo />
-  },
-  {
-    id: 10,
-    path: ROUTES['designation-module'].response + '/:schedule_id',
-    component: <Response />
-  },
-  {
-    id: 11,
-    path: ROUTES['designation-module']['preparing-your-interview'],
-    component: <PreparingYourInterview/>
-  },
-]
-
-export const HOME_ROUTES = [
-  {
-    path: ROUTES['designation-module'].schedule,
-    name: "Schedule",
-    icon: icons.schedule,
-    layout: "",
-    component: <Designation />
-  },
-  {
-    path: ROUTES['designation-module'].settings,
-    name: "Settings",
-    icon: icons.settings,
-    layout: "",
-    component: <Settings />
   },
   {
     path: ROUTES['designation-module'].client,
@@ -197,23 +226,88 @@ export const HOME_ROUTES = [
     layout: "",
     component: <Clients />
   },
-  // {
-  //   path: ROUTES['designation-module'].report,
-  //   name: "Report",
-  //   icon: icons.company,
-  //   layout: "",
-  //   component: <Report />
-  // },
-  // {
-  //   path: ROUTES['designation-module'].Dashboard,
-  //   name: "Dashboard",
-  //   icon: icons.issue,
-  //   layout: "",
-  //   component: <Dashboard />
-  // },
+]
+
+export const SUPER_ADMIN_ROUTES = [
+  {
+    id: 1,
+    path: ROUTES['designation-module']['admin-schedule'],
+    component: <AdminSchedules />
+  },
+  {
+    id: 2,
+    path: ROUTES['designation-module']['scheduling-interview'],
+    component: <Scheduling />
+  },
+  {
+    id: 3,
+    path: ROUTES['designation-module'].response + '/:schedule_id',
+    component: <Response />
+  },
+  {
+    id: 4,
+    path: ROUTES['designation-module'].settings,
+    component: <Settings />
+  },
+]
+
+export const ADMIN_ROUTES = [
+  {
+    id: 1,
+    path: ROUTES['designation-module'].schedule,
+    name: "Schedule",
+    icon: icons.schedule,
+    layout: "",
+    component: <Designation />
+  },
+  {
+    id: 2,
+    path: ROUTES['designation-module'].settings,
+    name: "Settings",
+    icon: icons.settings,
+    layout: "",
+    component: <Settings />
+  },
+  {
+    id: 3,
+    path: ROUTES['designation-module'].department,
+    name: "Department",
+    // icon: icons.settings,
+    layout: "",
+    component: <Department />
+  },
+  {
+    id: 4,
+    path: ROUTES['designation-module'].employeeDesignations,
+    name: "Designations",
+    // icon: icons.settings,
+    layout: "",
+    component: <SettingDesignation />
+  },
+  {
+    id: 5,
+    path: ROUTES['designation-module'].ManageTeamMate,
+    name: "ManageTeamMate",
+    // icon: icons.settings,
+    layout: "",
+    component: <ManageTeamMate />
+  },
+  {
+    id: 6,
+    path: ROUTES['designation-module'].report + '/:schedule_id',
+    component: <Report />
+  },
+  {
+    id: 7,
+    path: ROUTES['designation-module']['sector'],
+    component: <Sector />
+  },
+  {
+    id: 8,
+    path: ROUTES['designation-module']['variant-info'],
+    component: <VariantInfo />
+  },
 ];
-
-
 
 
 

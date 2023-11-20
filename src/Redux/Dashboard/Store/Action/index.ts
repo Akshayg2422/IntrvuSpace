@@ -578,6 +578,17 @@ export const getJdItemListFailure = (error: any) => {
   };
 };
 
+/**
+ * update Jd item
+ */
+
+export const updateJdItem = (params: any) => {
+  return {
+    type: ActionTypes.UPDATE_JD_ITEM,
+    payload: params,
+  };
+};
+
 // GET_SCHEDULE_BASIC_INFO
 
 export const getScheduleBasicInfo = (params: any) => {
@@ -659,6 +670,13 @@ export const getCorporateScheduleDetailsFailure = (error: any) => {
   return {
     type: ActionTypes.GET_CORPORATE_SCHEDULE_DETAILS_FAILURE,
     payload: error,
+  };
+};
+
+
+export const refreshCorporateSchedule = () => {
+  return {
+    type: ActionTypes.REFRESH_CORPORATE_SCHEDULE_DETAILS,
   };
 };
 
@@ -795,37 +813,16 @@ export const addSectorCorporate = (params: any) => {
     payload: params,
   };
 };
-export const addSectorCorporateSuccess = (response: any) => {
-  return {
-    type: ActionTypes.ADD_SECTORS_CORPORATE_SUCCESS,
-    payload: response,
-  };
-};
-export const addSectorCorporateFailure = (error: any) => {
-  return {
-    type: ActionTypes.ADD_SECTORS_CORPORATE_FAILURE,
-    payload: error,
-  };
-};
 
-// addDepartment
+/** 
+ * Add department
+ */
+
 
 export const addDepartmentCorporate = (params: any) => {
   return {
     type: ActionTypes.ADD_DEPARTMENT_CORPORATE,
     payload: params,
-  };
-};
-export const addDepartmentCorporateSuccess = (response: any) => {
-  return {
-    type: ActionTypes.ADD_DEPARTMENT_CORPORATE_SUCCESS,
-    payload: response,
-  };
-};
-export const addDepartmentCorporateFailure = (error: any) => {
-  return {
-    type: ActionTypes.ADD_DEPARTMENT_CORPORATE_FAILURE,
-    payload: error,
   };
 };
 
@@ -849,6 +846,70 @@ export const getDepartmentCorporateFailure = (error: any) => {
     payload: error,
   };
 };
+
+// addDesignation
+
+export const addDesignation = (params: any) => {
+  return {
+    type: ActionTypes.ADD_DESIGNATION,
+    payload: params,
+  };
+};
+
+
+// getDesignation
+
+export const getDesignations = (params: any) => {
+  return {
+    type: ActionTypes.GET_FETCH_DESIGNATION,
+    payload: params,
+  };
+};
+export const getDesignationsSuccess = (response: any) => {
+  return {
+    type: ActionTypes.GET_FETCH_DESIGNATION_SUCCESS,
+    payload: response,
+  };
+};
+export const getDesignationsFailure = (error: any) => {
+  return {
+    type: ActionTypes.GET_FETCH_DESIGNATION_FAILURE,
+    payload: error,
+  };
+};
+
+// Add TeamMate Data
+
+export const addTeamMateData = (params: any) => {
+  return {
+    type: ActionTypes.ADD_TEAM_MATE_DATA,
+    payload: params,
+  }
+}
+
+
+// grt TeamMate Data
+
+export const getTeamMateData = (params: any) => {
+  return {
+    type: ActionTypes.GET_TEAM_MATE_DATA,
+    payload: params,
+  }
+}
+
+export const getTeamMateDataSuccess = (response: any) => {
+  return {
+    type: ActionTypes.GET_TEAM_MATE_DATA_SUCCESS,
+    payload: response,
+  }
+}
+
+export const getTeamMateDataFailure = (error: any) => {
+  return {
+    type: ActionTypes.GET_TEAM_MATE_DATA_FAILURE,
+    payload: error
+  }
+}
 
 // createCorporateSchedule
 
@@ -1032,18 +1093,7 @@ export const bulkUploadCandidates = (params: any) => {
     payload: params,
   };
 };
-export const bulkUploadCandidatesSuccess = (response: any) => {
-  return {
-    type: ActionTypes.BULK_UPLOAD_CANDIDATES_CP_SUCCESS,
-    payload: response,
-  };
-};
-export const bulkUploadCandidatesFailure = (error: any) => {
-  return {
-    type: ActionTypes.BULK_UPLOAD_CANDIDATES_CP_FAILURE,
-    payload: error,
-  };
-};
+
 
 // showCreateOpeningsModal
 
@@ -1132,5 +1182,66 @@ export const postCorporateScheduleActionsFailure = (error: any) => {
   return {
     type: ActionTypes.POST_CORPORATE_SCHEUDULE_ACTIONS_FAILURE,
     payload: error,
+  };
+};
+
+
+
+// ONGOING SCHEDULE
+
+export const getOngoingSchedules = (params: any) => {
+  return {
+    type: ActionTypes.FETCH_ONGOING_SCHEDULES,
+    payload: params,
+  };
+};
+export const getOngoingSchedulesSuccess = (response: any) => {
+  return {
+    type: ActionTypes.FETCH_ONGOING_SCHEDULES_SUCCESS,
+    payload: response,
+  };
+};
+export const getOngoingSchedulesFailure = (error: any) => {
+  return {
+    type: ActionTypes.FETCH_ONGOING_SCHEDULES_FAILURE,
+    payload: error,
+  };
+};
+
+
+
+export const onGoingSelectedIIds = (params: any) => {
+  console.log('parasmaaasssss,', params)
+  return {
+    type: ActionTypes.ON_GOING_SELECTED_ID,
+    payload: params,
+  };
+};
+
+
+
+/**
+ *  update corporate Schedules
+ */
+
+
+export const updateCorporateSchedules = (response: any) => {
+  return {
+    type: ActionTypes.UPDATE_CORPORATE_SCHEDULE,
+    payload: response,
+  };
+};
+
+
+/**
+ *  watch inteview video
+ */
+
+
+export const watchInterviewVideoUrl = (response: any) => {
+  
+  return {
+    type: ActionTypes.WATCH_INTERVIEW_VIDEO_URL,
+    payload: response,
   };
 };

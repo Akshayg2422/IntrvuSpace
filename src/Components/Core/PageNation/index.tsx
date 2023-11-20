@@ -24,9 +24,9 @@ interface GetPaginatorSetProps {
 
 
 
-function PageNation({  isPagination, currentPage, noOfPage, previousClick, nextClick, paginationNumberClick}: CommonPageProps) {
+function PageNation({ isPagination, currentPage, noOfPage, previousClick, nextClick, paginationNumberClick }: CommonPageProps) {
 
-  
+
   const GetPaginatorSet = ({ currentPage, totalPages }: GetPaginatorSetProps) => {
 
 
@@ -70,7 +70,7 @@ function PageNation({  isPagination, currentPage, noOfPage, previousClick, nextC
       }
 
       return (
-        <div className="mb-3 mt--3">
+        <div className="mb-3 pointer">
           <ul className="pagination col justify-content-end mb-0">
             <li className={`${currentPage === 1 ? 'disabled' : ''} page-item `} onClick={currentPage === 1 ? undefined : previousClick}>
               <a className="page-link">

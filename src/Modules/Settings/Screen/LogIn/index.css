@@ -1,0 +1,17 @@
+.heading-text {
+    text-align: center !important;
+    margin-top: 28px;
+    margin-bottom: 20px;
+}
+
+.forgot-password {
+    font-size: 13px;
+    color: var(--primary);
+    margin-top: 26px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.register {
+    margin-top: 35px !important;
+}

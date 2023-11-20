@@ -6,16 +6,16 @@ import { Spinner } from "@Components";
 function Button({
   loading,
   text,
-  color = "primary",
+  color = 'primary',
   variant = "default",
-  size,
+  size = 'lg',
   height = 15,
   width,
   icon,
   icons,
   onEnter,
   onClick,
-  buttonOutline,
+  outline = false,
   ...rest
 }: ButtonProps) {
   return (
@@ -23,11 +23,11 @@ function Button({
       {variant === "default" && (
         <>
           <RSButton
-            className={buttonOutline ? "btn btn-outline-primary" : "btn-btn-primary"}
             size={size}
             color={color}
-            {...rest}
             onClick={loading ? undefined : onClick}
+            outline={outline}
+            {...rest}
           >
             <div className="d-flex align-items-center justify-content-center">
               {loading && (
@@ -47,6 +47,7 @@ function Button({
           size={size}
           className="btn-icon"
           color={color}
+          outline
           {...rest}
           onClick={onClick}
         >
@@ -68,6 +69,7 @@ function Button({
           size={size}
           className="btn-icon-only  d-flex align-items-center justify-content-center"
           color={color}
+          outline
           onClick={onClick}
           {...rest}
         >

@@ -5,7 +5,7 @@ import { FormGroup } from 'reactstrap';
 import { DateTimePickerProps } from './interfaces';
 
 
-function DateTimePicker({ id, heading, placeholder, type = 'date',dateFormatType= "LT", onChange, disableFuture = false,dateShowingFormat="after", ...rest }: DateTimePickerProps) {
+function DateTimePicker({ id, heading, noSpace, placeholder, type = 'date', dateFormatType = "LT", onChange, disableFuture = false, dateShowingFormat = "after", ...rest }: DateTimePickerProps) {
 
   const currentDate = moment();
   const currentDate1 = moment().subtract(1, 'day')
@@ -14,28 +14,25 @@ function DateTimePicker({ id, heading, placeholder, type = 'date',dateFormatType
     : (current: any) => current.isBefore(currentDate, 'day');
 
   return (
-    <FormGroup>
-      {heading && <InputHeading Class={"position-relative"} id={id} heading={heading} />}
+    <FormGroup className={noSpace ? 'm-0 b-0' : ""}>
+      {heading && <InputHeading id={id} heading={heading} />}
 
       <ReactDatetime
-      className='position-relative z-index-1'
         {...rest}
         inputProps={
           {
             placeholder: placeholder,
             onKeyDown: (e) => { e.preventDefault() },
-            // readOnly: true,
-
           }
         }
         closeOnSelect={true}
         timeFormat={type !== 'date' && true}
-        dateFormat={type === 'time' ? false : 'YYYY-MM-DD'}
+        dateFormat={type === 'time' ? false : 'MMM D YYYY'}
         onChange={
           (date: any) => {
             if (onChange)
               if (isMoment(date))
-                onChange(type === 'time' ? date.format('LT') : type === 'both' ? date.format() : date.format('YYYY-MM-DD'))
+                onChange(type === 'time' ? date.format('LT') : type === 'both' ? date.format() : date.format('MMM D YYYY'))
               else
                 onChange(date)
           }

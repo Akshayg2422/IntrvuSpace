@@ -3,6 +3,7 @@ import { USER_LOGIN_DETAILS, RESTORE_APP, USER_LOGOUT, HANDLING_API, FCM_TOKEN }
 
 
 export const userLoginDetails = (params: any) => {
+  console.log(params,"params")
   return {
     type: USER_LOGIN_DETAILS,
     payload: params,

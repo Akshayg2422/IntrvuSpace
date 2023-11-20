@@ -14,7 +14,6 @@ export const image = {
     Benefits: require('./brand/benefits.png'),
     EaseOfUse: require('./brand/Ease of use.png'),
     Rev: require('./brand/revolution image.png'),
-
     TMS_Logo: require('./brand/TMS_Logo.png'),
     TMS_Img1: require('./brand/TMS_Img1.png'),
     TMS_Img2: require('./brand/TMS_Img2.png'),
@@ -58,9 +57,13 @@ export const image = {
     CreateIntrvu: require('./theme/createIntrvu.png'),
     AccessReportsAndInsights: require('./theme/AccessReportsAndInsights.png'),
     ScheduleAndNotification: require('./theme/ScheduleAndNotification.png'),
-    CandidatesAttendInterview: require('./theme/candidatesAttendInterview.png'),
+    CandidatesAttendInterview: require('./theme/candidatesAttendsInterview.png'),
     CreateJdAddCandidates: require('./theme/createJdAddCandidates.png'),
     AutoApproval: require('./theme/autoApproval.png'),
     InsightsAndReports: require('./theme/InsightsAndReports.png'),
-    StreamlinedInterviewAndInsights: require('./theme/StreamlinedInterviewAndInsights.png')
+    StreamlinedInterviewAndInsights: require('./theme/StreamlinedInterviewAndInsights.png'),
+    passportImage: require('./theme/passportImage.jpg'),
+    noVideo: require('./theme/noVideo.png'),
+    StreamlinedAutomatedInterview: require('./theme/StreamlinedAutomatedInterview.png')
+
 }

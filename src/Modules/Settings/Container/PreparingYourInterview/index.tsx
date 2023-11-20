@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
 import { icons } from '@Assets';
-import { useModal, useNavigation } from '@Hooks';
-import { Button, Modal } from '@Components';
-import { useSelector } from 'react-redux';
-import { PreparingYourInterviewProps } from './interfaces'
+import { Image } from '@Components';
+import { useEffect, useState } from 'react';
+import { PreparingYourInterviewProps } from './interfaces';
+import './index.css'
 
-function PreparingYourInterview({ showStart, onClick }: PreparingYourInterviewProps) {
+function PreparingYourInterview({ isCompleted }: PreparingYourInterviewProps) {
 
     const steps = [
         { icon: icons.check, text: 'Analyzing your JD' },
@@ -17,47 +16,88 @@ function PreparingYourInterview({ showStart, onClick }: PreparingYourInterviewPr
 
     const [currentStep, setCurrentStep] = useState(-1);
 
+
     useEffect(() => {
-        const timer = setInterval(() => {
-            setCurrentStep((prevStep) => (prevStep < steps.length - 1 ? prevStep + 1 : prevStep));
-        }, 5000);
+        if (isCompleted) {
+            setCurrentStep(steps.length - 1)
+        }
+    }, [isCompleted])
+    // 
+
+
+
+    useEffect(() => {
+
+        let timer: NodeJS.Timeout;
 
         const initialStepTimer = setTimeout(() => {
             setCurrentStep(0);
-        }, 1000);
+            timer = setInterval(() => {
+                setCurrentStep((prevStep) => (prevStep < steps.length - 2 ? prevStep + 1 : prevStep));
+            }, 5000);
+        }, 2000);
 
         return () => {
-            clearInterval(timer);
+            if (timer) {
+                clearInterval(timer);
+            }
             clearTimeout(initialStepTimer);
         };
     }, []);
 
+    console.log("currentStep", currentStep);
+
+
     return (
-        <div className="col-md-12 rounded-sm px-md-4">
-            <div className="text-secondary col-11">
-                <div className="m-0 h2 font-weight-800 pb-2">Preparing your Interview...</div>
-                <div className="text-default">It will take a couple of minutes. You can wait and join using the link that will be sent to your email once the interview is ready.</div>
-                <div className="pt-5 text-secondary pb-md-6 pb-sm-0 pb-5">
-                    {steps.map((step, index) => (
-                        <div key={index} className="d-flex align-items-center pb-2">
-                            {index <= currentStep ? (
-                                <>
-                                    <img src={step.icon} height={22} />
-                                    <small className="pl-2 m-0 font-weight-500 text-black">{step.text}</small>
-                                </>
-                            ) : (
-                                <small style={{ paddingLeft: '19px' }} className="m-0 text-default">{step.text}</small>
-                            )}
+        <div>
+            {
+                steps.map((each, index) => {
+
+                    const isSelected = index <= currentStep
+
+                    const { text, icon } = each
+
+                    return (
+                        <div key={index} className={'d-flex align-items-center mb-2'}>
+                            <div className={'d-flex align-items-center'}>
+                                {
+                                    isSelected ?
+
+                                        <Image
+                                            className='mr-2'
+                                            src={icon}
+                                            height={12}
+                                            width={12}
+                                            style={{
+                                                objectFit: 'contain'
+                                            }}
+                                        />
+
+                                        :
+                                        <>
+                                            {
+                                                currentStep !== -1
+                                                    ?
+                                                    <div
+                                                        className='mr-2'
+                                                        style={{
+                                                            width: 12,
+                                                            height: 12
+                                                        }}>
+
+                                                    </div>
+                                                    :
+                                                    null
+                                            }
+                                        </>
+                                }
+                            </div>
+                            <div className={`key-point  ${isSelected ? 'text-secondary  mb-0' : ''}`}>{text}</div>
                         </div>
-                    ))}
-                </div>
-            </div>
-            {showStart && (
-                <div className="d-flex justify-content-center pr-sm-0 pr-5">
-                    <Button className={'px-5 border border-primary rounded-sm'} text={'Start Interview'} onClick={onClick} />
-                </div>
-            )}
-        </div>
+                    )
+                })
+            }
+        </div >
     );
 }
 

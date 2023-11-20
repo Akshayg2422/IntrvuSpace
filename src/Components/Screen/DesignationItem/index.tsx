@@ -1,188 +1,100 @@
-import { DesignationItemProps } from "./interfaces";
-import { NoDataFound, Button, MenuBar, Image, Badge } from "@Components";
 import { icons } from "@Assets";
-import { Card, CardBody, CardFooter } from "reactstrap";
-import { useEffect, useState } from "react";
-import { useNavigation } from "@Hooks";
-import { ROUTES } from "@Routes";
+import { Button, Image, ViewMore } from "@Components";
 import { capitalizeFirstLetter } from "@Utils";
+import { DesignationItemProps } from "./interfaces";
+import './index.css';
 
 function DesignationItem({
   item,
-  onAdd,
-  onEdit,
-  onView,
-  onClick,
+  onViewDetails,
   onViewMore
 }: DesignationItemProps) {
 
-  const VIEW_MORE_LENGTH = 300;
-
-
-
+  const { job_description: { position, experience, details }, candidate_details: { selected_candidates, total_candidates }, is_active, vacancies, interview_duration, is_view_more } = item
+console.log(selected_candidates,"selected_candidates=====>")
 
   return (
-    <>
-      <Card
-        className="rounded px-sm-5 py-sm-4 p-3"
-        style={{
-          borderWidth: "1px",
-          borderColor: "#d3deff",
-          backgroundColor: "transparent",
-        }}
-      >
-        <CardBody className="pt-1 pb-1 px-0">
-          <div className="text-secondary">
-            {item ? (
-              <div key={item.id} className="mx-0">
-                <div className="d-flex align-items-center mb-3 justify-content-between">
-                  <div className="">
-                    <div className="d-flex flex-sm-row flex-column align-items-sm-center">
-                      <span
-                        className="col p-0 m-0 font-weight-800"
-                        style={{ fontSize: 26 }}
-                      >
-                        {capitalizeFirstLetter(item.job_description.position)}
-                      </span>
-                      {/* <div className={'ml-3 px-3'} style={{backgroundColor:'#ebe4ff', borderRadius:"50px", height:"30px"}}> <h4 className=' text-primary font-weight-900 pt-1 px-1'>{item.candidate_details.selected_candidates} Selected</h4></div> */}
-                      <div className="mt-sm-1 pl-sm-3 pl-sm-1">
-                        <Badge
-                          className="text-primary text-lowercase"
-                          style={{
-                            backgroundColor: "#ebe4ff",
-                            borderRadius: 30,
-                            fontSize: 12,
-                            borderWidth: 0,
-                          }}
-                          text={
-                            item.candidate_details.selected_candidates
-                              ? `${item.candidate_details.selected_candidates} Selected`
-                              : ""
-                          }
-                        />
-                      </div>
-                    </div>
-                    <h5 className="m-0 font-weight-500">
-                      {item.job_description.experience}
-                    </h5>
-                  </div>
-                  <div className="ml-sm-0">
-                    <Button
-                      style={{
-                        fontSize: "15px",
-                        borderColor: "#d8dade",
-                        borderRadius: 4,
-                      }}
-                      outline
-                      size="lg"
-                      className={"px-md-5 m-0"}
-                      text={"View Details"}
-                      onClick={(e) => {
-                        if (onView) {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          onView(item);
-                        }
-                      }}
-                    />
-                    <div className=" d-flex align-items-center justify-content-center mt-1">
-                      {item.is_active ? (
-                        <>
-                          {" "}
-                          <img
-                            src={icons.check}
-                            height={20}
-                            width={20}
-                            style={{
-                              objectFit: "contain",
-                            }}
-                          />
-                          <h5 className="p-0 font-weight-800 m-0">Active</h5>
-                        </>
-                      ) : (
-                        <h5 className="p-0 font-weight-800 m-0 text-default">
-                          Closed
-                        </h5>
-                      )}
-                    </div>
-                  </div>
-                </div>
-                <div className="text-default">
-                  <div
-                    className=" d-flex flex-wrap pt-2 h5"
-                    style={{ marginTop: -10 }}
-                  >
-                    <div className="mb-0 p-0 mr-4">
-                      <b>{item.vacancies}</b>
-                      <span className="pl-1 font-weight-500">Vacancies</span>
-                    </div>
 
-                    <div className="mb-0 p-0 mr-4">
-                      <b>{item.candidate_details.total_candidates}</b>
-                      <span className="pl-1 font-weight-500">
-                        Candidates added
-                      </span>
-                    </div>
-                    <div className=" mb-0 p-0">
-                      <b>{item.interview_duration} min</b>
-                      <span className="pl-1 font-weight-500">Duration</span>
-                    </div>
-                  </div>
-                  {item.job_description.details.length < VIEW_MORE_LENGTH ||
-                    item?.is_view_more ? (
-                    <div className="mt-3 mb-2" style={{ fontSize: "14px" }}>
-                      <span> {item.job_description.details} </span>
-                      {item?.is_view_more && <span
-                        className="text-primary font-weight-800 pointer"
-                        onClick={() => {
-                          if (onViewMore)
-                            onViewMore(false)
-                          /** 
-                           * false
-                           */
+    <div className={'card-container'}>
+     
+  
 
-                        }}
-                      >
-                        {"View Less"}
-                      </span>}
-                    </div>
-                  ) : (
-                    <div className="mt-3 mb-2" style={{ fontSize: "14px" }}>
-                      <span className="">
-                        {item.job_description.details.slice(
-                          0,
-                          VIEW_MORE_LENGTH
-                        )}
-                        ...{" "}
-                      </span>
-                      <span
-                        className="text-primary font-weight-800 pointer"
-                        onClick={() => {
-                          if (onViewMore)
-                            onViewMore(true)
-
-                          /**
-                           *  true
-                           */
-
-
-                        }}
-                      >
-                        {"View More"}
-                      </span>
-                    </div>
-                  )}
-                </div>
+      <div className={'section-container'}>
+        <div>
+          <div className="d-flex align-items-center">
+            <span className={'screen-heading m-0 p-0'}>
+              {capitalizeFirstLetter(position)}
+            </span>
+            {
+              selected_candidates >0 &&
+              <div className={'badge-schedule '}>
+                <span className={'badge-text'}>{`${selected_candidates} Selected`}</span>
               </div>
-            ) : (
-              <div className="d-flex align-items-center justify-content-center h-100">
-                <NoDataFound />
-              </div>
-            )}
+            }
           </div>
-        </CardBody>
-      </Card>
-    </>
+          <div className={'experience'}>
+            {experience}
+          </div>
+        </div>
+        <div>
+          <div className={'view-details-btn'}>
+            <Button
+              outline
+              block
+              text={'View Details'}
+              onClick={() => {
+                if (onViewDetails) {
+                  onViewDetails();
+                }
+              }}
+            />
+          </div>
+          <div className={'d-flex align-items-center justify-content-center'}>
+            <div className={'status-container'}>
+              {is_active ? (
+                <>
+                  <Image
+                    src={icons.check}
+                    height={12}
+                    width={12}
+                    style={{
+                      objectFit: 'contain',
+                    }}
+                  />
+                  <span className={'status-active'}>Active</span>
+                </>
+
+              ) : (
+                <h5 className={'status-closed'}>
+                  Closed
+                </h5>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className={'d-flex align-items-center details-wrapper'}>
+        <div className={'details-container'}>
+          <span className={'details-title'}>{vacancies}</span>
+          <span className={'details-desc'}>{'Vacancies'}</span>
+        </div>
+        <div className={'details-container details-container-space'}>
+          <span className={'details-title'}>{total_candidates}</span>
+          <span className={'details-desc'}>{'Candidates added'}</span>
+        </div>
+        <div className={'details-container details-container-space'}>
+          <span className={'details-title'}>{interview_duration} min</span>
+          <span className={'details-desc'}>{'Duration'}</span>
+        </div>
+      </div>
+
+      <div className={'jd-container'}>
+        <ViewMore text={details} onViewMore={onViewMore} isViewMore={is_view_more} />
+      </div>
+     
+
+    </div >
   );
 }
 

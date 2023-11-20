@@ -1,17 +1,16 @@
-import React, { useEffect } from "react";
-import { Logo, Image, Button } from "@Components";
-import { ROUTES } from "@Routes";
-import { useNavigation } from "@Hooks";
-import { useSelector, useDispatch } from 'react-redux'
 import { icons } from "@Assets";
-import { Landing, Website } from '@Modules'
+import { Image } from "@Components";
+import { useNavigation } from "@Hooks";
+import { Website } from '@Modules';
+import { ROUTES } from "@Routes";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from 'react-redux';
 
 
 function Splash() {
 
     const SPLASH_STAY_TIME_MILE_SECONDS = 1500;
     const { goTo } = useNavigation();
-    const dispatch = useDispatch()
 
 
     const { loginDetails } = useSelector((state: any) => state.AppReducer);
@@ -38,7 +37,6 @@ function Splash() {
                         goTo(ROUTES['designation-module'].client, true)
                     }
                 }
-
 
             }
 

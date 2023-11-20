@@ -16,6 +16,12 @@ export * from './ReturnAndRefund'
 export * from './Settings'
 export * from './CreateNewPassword'
 export * from './ForgotPassword'
+export * from './VerifyEmail'
+export * from './EmailVerification'
+export * from './CorporateRegister'
+
+
+
 
 
 

@@ -1,8 +1,7 @@
 import { SERVER } from '@Services'
 import moment from 'moment'
 
-export const getPhoto = (photo: any) =>  (SERVER + photo)
-// SERVER === 'https://9ce0-2401-4900-338f-b561-b6d5-db6d-d51c-aa91.ngrok-free.app/' ? (SERVER + photo) : (SERVER + photo);
+export const getPhoto = (photo: any) => (SERVER + photo)
 
 export const handleEmailClick = (email: any) => {
   return (
@@ -29,5 +28,25 @@ export function arrayOrderbyCreatedAt(array: any) {
           : 0;
     });
     return modifiedArray;
+  }
+}
+
+
+export function arrayOrderbyDate(array: any, key: string, isReverse: boolean = false) {
+  let modifiedArray = [];
+  if (array && array.length > 0) {
+    modifiedArray = array.sort((a: any, b: any) => {
+      return a[key] < b[key]
+        ? -1
+        : a[key] > b[key]
+          ? 1
+          : 0;
+    });
+    if (isReverse) {
+      modifiedArray = modifiedArray.reverse();
+    }
+    return modifiedArray;
+
+
   }
 }

@@ -10,7 +10,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { RecordRTCPromisesHandler, StereoAudioRecorder } from 'recordrtc';
-import { useScreenRecorder } from './useScreenRecorder';
+import { useScreenRecorder } from '@Hooks';
 const compare_moment_format = 'YYYY-MM-DDHH:mm:ss';
 
 

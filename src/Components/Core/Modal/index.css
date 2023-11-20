@@ -1,0 +1,58 @@
+.sub-title-space {
+    margin-top: 8px;
+}
+
+.cancel-container {
+    position: absolute;
+    bottom: 0px;
+    right: 30px;
+}
+
+.modal-container {
+    position: relative;
+    height: 50px;
+}
+
+.section-modal-container {
+    padding: 0px 50px 50px 50px;
+}
+
+
+.modal-bottom-btn {
+    width: 215px;
+}
+
+.modal-bottom-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-cancel-container {
+    cursor: pointer;
+    padding: 5px 10px;
+}
+
+
+.modal-background {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(255, 255, 255, 0.8);
+    /* Adjust the alpha (0.8) for the desired blur effect */
+    backdrop-filter: blur(10px);
+    /* Adjust the blur radius (10px) as needed */
+    z-index: 999;
+    /* Adjust the z-index as needed */
+}
+
+.modal-child-container {
+    margin: 50px 0px;
+}
+
+.sub-text {
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+}

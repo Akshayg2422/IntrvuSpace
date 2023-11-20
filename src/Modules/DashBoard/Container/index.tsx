@@ -52,6 +52,23 @@ export * from './WebsiteReportsAndInsights'
 export * from './WebsiteAutoApprovalForCandidatesPerformance'
 export * from './UploadCorporateOpeningsCard'
 export * from './VideoStream'
+export * from './OnGoingSchedules'
+export * from './ScheduleDetails'
+export * from './WebsiteContactUs'
+export * from './WebsiteFooter'
+export * from './DetailedReport'
+export * from './JobDescriptionKeyAreas'
+export * from './BasicReportMatrixCard'
+export * from './DetailedReportMatrixCard'
+export * from './ReportHeader'
+export * from './AdvancedReport'
+export * from './BasicReport'
+export * from './CreateNew'
+export * from './JdItem'
+export * from './BulkUpload'
+
+
+
 
 
 

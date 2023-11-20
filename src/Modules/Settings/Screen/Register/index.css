@@ -1,0 +1,11 @@
+.heading-txt {
+    flex: 1
+}
+
+.heading-container {
+    margin-bottom: 20px;
+}
+
+.bottom-text {
+    margin-top: 35px !important;
+}

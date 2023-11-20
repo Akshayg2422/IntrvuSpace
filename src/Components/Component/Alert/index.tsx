@@ -2,11 +2,11 @@ import React from 'react'
 import { AlertProps } from './interfaces'
 import { Modal, ModalFooter } from '@Components'
 
-function Alert({ ...props }: AlertProps) {
+function Alert({ primary = 'Confirm', secondary = 'Cancel', ...rest }: AlertProps) {
 
     return (
-        <Modal {...props}>
-            <ModalFooter {...props} primary={'Proceed'} secondary={'cancel'} />
+        <Modal {...rest}>
+            <ModalFooter {...rest} primary={primary} secondary={secondary} />
         </Modal>
     )
 }

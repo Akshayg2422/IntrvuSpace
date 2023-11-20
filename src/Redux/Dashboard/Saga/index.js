@@ -552,33 +552,30 @@ function* addSectorsCorporateSaga(action) {
   try {
     const response = yield call(Api.addCorporateSectorApi, action.payload.params);
     if (response.success) {
-      yield put(Action.addSectorCorporateSuccess(response));
       yield call(action.payload.onSuccess(response));
     } else {
-      yield put(Action.addSectorCorporateFailure(response.error_message));
       yield call(action.payload.onError(response));
     }
 
   } catch (error) {
-    yield put(Action.addSectorCorporateFailure(error));
     yield call(action.payload.onError(error));
   }
 }
 
-// addDepartment
+/**
+ * Add department
+ */
+
 function* addDepartmentCorporateSaga(action) {
   try {
     const response = yield call(Api.addDepartmentCorporateApi, action.payload.params);
     if (response.success) {
-      yield put(Action.addDepartmentCorporateSuccess(response));
       yield call(action.payload.onSuccess(response));
     } else {
-      yield put(Action.addDepartmentCorporateFailure(response.error_message));
       yield call(action.payload.onError(response));
     }
 
   } catch (error) {
-    yield put(Action.addDepartmentCorporateFailure(error));
     yield call(action.payload.onError(error));
   }
 }
@@ -598,6 +595,41 @@ function* getDepartmentCorporateSaga(action) {
 
   } catch (error) {
     yield put(Action.getDepartmentCorporateFailure(error));
+    yield call(action.payload.onError(error));
+  }
+}
+
+// addDesignation 
+
+function* addDesignationSaga(action) {
+  try {
+    const response = yield call(Api.addDesignationApi, action.payload.params);
+    if (response.success) {
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield call(action.payload.onError(response));
+    }
+
+  } catch (error) {
+    yield call(action.payload.onError(error));
+  }
+}
+
+// getDesignation 
+
+function* getDesignationsSaga(action) {
+  try {
+    const response = yield call(Api.getDesignationApi, action.payload.params);
+    if (response.success) {
+      yield put(Action.getDesignationsSuccess(response));
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield put(Action.getDesignationsFailure(response.error_message));
+      yield call(action.payload.onError(response));
+    }
+
+  } catch (error) {
+    yield put(Action.getDesignationsFailure(error));
     yield call(action.payload.onError(error));
   }
 }
@@ -625,6 +657,7 @@ function* createCorporateSchedulesSaga(action) {
 function* getCorporateSchedulesSaga(action) {
   try {
     const response = yield call(Api.getCorporateSchedulesApi, action.payload.params);
+
 
     if (response.success) {
       yield put(Action.getCorporateSchedulesSuccess(response));
@@ -774,15 +807,11 @@ function* bulkUploadCandidatesCpSaga(action) {
   try {
     const response = yield call(Api.bulkUploadCandidatesCpApi, action.payload.params);
     if (response.success) {
-
-      yield put(Action.bulkUploadCandidatesSuccess(response?.details));
       yield call(action.payload.onSuccess(response));
     } else {
-      yield put(Action.bulkUploadCandidatesFailure(response.error_message));
       yield call(action.payload.onError(response));
     }
   } catch (error) {
-    yield put(Action.bulkUploadCandidatesFailure(error));
     yield call(action.payload.onError(error));
   }
 }
@@ -861,6 +890,58 @@ function* postCorporateScheduleActionsSaga(action) {
   }
 }
 
+//Add teamMate
+
+function* addTeamMateDataSaga(action) {
+  try {
+    const response = yield call(Api.addTeamMateDataApi, action.payload.params);
+    if (response.success) {
+      yield call(action.payload.onSuccess(response))
+    } else {
+      yield call(action.payload.onError(response));
+    }
+  } catch (error) {
+    yield call(action.payload.onError(error));
+  }
+}
+
+//Get teamMate
+
+function* getTeamMateDataSaga(action) {
+  try {
+    const response = yield call(Api.getTeamMateDataApi, action.payload.params);
+    if (response.success) {
+      yield put(Action.getTeamMateDataSuccess(response));
+      yield call(action.payload.onSuccess(response))
+    } else {
+      yield put(Action.getTeamMateDataFailure(response.error_message));
+      yield call(action.payload.onError(response));
+    }
+  } catch (error) {
+    yield put(Action.getTeamMateDataFailure(error));
+    yield call(action.payload.onError(error));
+  }
+}
+
+
+// fetchONGOING
+
+function* fetchOnGoingSchedulesSaga(action) {
+  try {
+    const response = yield call(Api.getOngoingSchedulesApi, action.payload.params);
+    if (response.success) {
+      yield put(Action.getOngoingSchedulesSuccess(response));
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield put(Action.getOngoingSchedulesFailure(response.error_message));
+      yield call(action.payload.onError(response));
+    }
+  } catch (error) {
+    yield put(Action.getOngoingSchedulesFailure(error));
+    yield call(action.payload.onError(error));
+  }
+}
+
 
 
 function* DashboardSaga() {
@@ -897,6 +978,8 @@ function* DashboardSaga() {
   yield takeLatest(Action.ADD_SECTORS_CORPORATE, addSectorsCorporateSaga);
   yield takeLatest(Action.ADD_DEPARTMENT_CORPORATE, addDepartmentCorporateSaga);
   yield takeLatest(Action.GET_DEPARTMENT_CORPORATE, getDepartmentCorporateSaga);
+  yield takeLatest(Action.ADD_DESIGNATION, addDesignationSaga)
+  yield takeLatest(Action.GET_FETCH_DESIGNATION, getDesignationsSaga);
   yield takeLatest(Action.CREATE_CORPORATE_SCHEDULES, createCorporateSchedulesSaga);
   yield takeLatest(Action.GET_CORPORATE_SCHEDULES, getCorporateSchedulesSaga);
   yield takeLatest(Action.CREATE_SCHEDULES_SUPER_ADMIN, createSchedulesSuperAdminSaga);
@@ -911,6 +994,11 @@ function* DashboardSaga() {
   yield takeLatest(Action.FETCH_CANDIDATES_CORPORATE, fetchCandidatesCorporateSaga);
   yield takeLatest(Action.SYNC_VIDEO, syncVideoSaga);
   yield takeLatest(Action.POST_CORPORATE_SCHEUDULE_ACTIONS, postCorporateScheduleActionsSaga);
+  yield takeLatest(Action.ADD_TEAM_MATE_DATA, addTeamMateDataSaga);
+  yield takeLatest(Action.GET_TEAM_MATE_DATA, getTeamMateDataSaga);
+
+  yield takeLatest(Action.FETCH_ONGOING_SCHEDULES, fetchOnGoingSchedulesSaga);
+
 
 
 

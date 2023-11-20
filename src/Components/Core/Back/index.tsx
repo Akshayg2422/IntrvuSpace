@@ -3,7 +3,7 @@ import { Image } from '@Components'
 import { icons } from '@Assets'
 import { BackProps } from './interfaces'
 import { useNavigation } from '@Hooks'
-function Back({ variant = 'default', icon = icons.backButton, h = 18, w = 18, onClick }: BackProps) {
+function Back({ variant = 'default', icon = icons.backButton, h = 16, w = 16, onClick }: BackProps) {
 
     const { goBack } = useNavigation()
     return (
@@ -16,9 +16,9 @@ function Back({ variant = 'default', icon = icons.backButton, h = 18, w = 18, on
                 }
             }
 
-        }} className='pointer'>
-            <Image src={icon} width={h} height={w} style={{
-                objectFit: 'contain'
+        }} className='pointer d-flex align-items-center'>
+            <Image src={icon} height={h} width={w} style={{
+                objectFit: 'contain',
             }} />
         </div>
     )

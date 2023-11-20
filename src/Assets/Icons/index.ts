@@ -210,10 +210,18 @@ export const icons = {
   twitter: require('./SocialMedia/twitter.png'),
   shield: require('./PackageIcons/shield.png'),
   globe: require('./PackageIcons/globe.png'),
+  appLogoText: require('./AppLogoText/icon.png'),
   headSet: require('./PackageIcons/headset.png'),
   check: require("./Check/icon.png"),
-  poweredBy: require('./PoweredBy/icon.png'),
+  poweredBy: require('./PoweredBy/Group 126.png'),
   more: require('./More/icon.png'),
   frame: require('./Frame/icon.png'),
-  checkBlack: require('./CheckBlack/icon.png')
+  checkBlack: require('./CheckBlack/icon.png'),
+  rupees:require('./Rupees/icon.png'),
+  phoneCall: require('./PhoneCall/icon.png'),
+  email: require('./Email/icon.png'),
+  mark: require('./Mark/icon.png'),
+  play: require('./Play/icon.png'),
+  pause: require('./Pause/icon.png'),
+  moneyDefalt: require('./MoneyDefalt/icon.png')
 };

@@ -1,0 +1,72 @@
+.schedule-container {
+    margin-top: 55px;
+}
+
+.schedule-container-top {
+    margin-top: 30px;
+}
+
+
+.create-opening-container {
+    margin-top: 60px;
+}
+
+.opening-form-container {
+    margin-left: 20px;
+}
+
+.duration-container {
+    margin-top: 25px;
+}
+
+
+.duration-content-container {
+    display: flex;
+}
+
+.each-duration {
+    width: 25%;
+}
+
+.each-duration-space {
+    margin-left: 25px;
+}
+
+
+
+
+
+.group-container {
+    margin-top: 25px;
+    margin-bottom: 50px;
+}
+
+.no-data-container {
+    display: flex;
+    height: 300px;
+    align-items: center;
+    justify-content: center;
+}
+
+@media(max-width: 768px) {
+
+    .duration-content-container {
+        display: flex;
+        flex-wrap: wrap
+    }
+
+    .each-duration {
+        width: 50%;
+        padding: 5px;
+    }
+
+    .each-duration-space {
+        margin-left: 0px;
+
+    }
+
+    .opening-form-container {
+        margin-left: 0px;
+    }
+
+}

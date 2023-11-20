@@ -16,7 +16,7 @@ function WebsiteHeader() {
   const { goTo } = useNavigation();
 
 
-  const { growingWidth, titleLineRef: websiteHeaderRef } =
+  const { titleLineRef: websiteHeaderRef } =
     useGrowingTitleLine();
 
   return (
@@ -24,9 +24,10 @@ function WebsiteHeader() {
       className={`header pt-8`}
       ref={websiteHeaderRef}
       style={{ backgroundColor: "" }}
+      id="home"
     >
       <Container>
-        <div className="mb-md-6">
+        <div className="mb-md-6" >
           <Row>
             <Col lg="5">
               <div className="">
@@ -66,7 +67,9 @@ function WebsiteHeader() {
                     return (
                       <>
                         <div className="pt-2">
-                          <Image src={icons.check} height={20} />
+                          <Image src={icons.check} height={12} width={12} style={{
+                            objectFit: 'contain'
+                          }} />
                           <span
                             className="ml-2 text-secondary"
                             style={{ fontSize: 12.5, fontWeight: 800 }}
@@ -86,7 +89,7 @@ function WebsiteHeader() {
                   text={"Register"}
                   size="lg"
                   onClick={() => {
-                    goTo(ROUTES["auth-module"].register);
+                    goTo(ROUTES['auth-module']['register-company']);
                   }}
                 />
 
@@ -104,7 +107,7 @@ function WebsiteHeader() {
             <Col lg="7" sm="12">
               <div className="">
                 <img
-                  src={image.CandidatesAttendInterview}
+                  src={image.StreamlinedAutomatedInterview}
                   width={"100%"}
                   height={"100%"}
                 />

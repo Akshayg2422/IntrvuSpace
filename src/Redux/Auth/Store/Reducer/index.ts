@@ -9,6 +9,10 @@ const initialState: AuthProps = {
     loginUser: undefined,
     OTP: undefined,
     memberUsingLoginOtp: undefined,
+    registerCompanyDetails: undefined,
+    verifyOtp: undefined,
+    VerificationEmail: undefined,
+    userEmail: undefined
 };
 
 
@@ -25,19 +29,6 @@ const AuthReducer = (state = initialState, action: any) => {
         case ActionTypes.REGISTER_AS_MEMBER_FAILURE:
             state = { ...state, registerDetails: undefined };
             break;
-
-        //memberLoginUsingPassword
-
-        case ActionTypes.MEMBER_LOGIN_USING_PASSWORD:
-            state = { ...state, };
-            break;
-        case ActionTypes.MEMBER_LOGIN_USING_PASSWORD_SUCCESS:
-            state = { ...state };
-            break;
-        case ActionTypes.MEMBER_LOGIN_USING_PASSWORD_FAILURE:
-            state = { ...state, };
-            break;
-
 
 
         //get otp
@@ -65,9 +56,22 @@ const AuthReducer = (state = initialState, action: any) => {
             state = { ...state, memberUsingLoginOtp: undefined };
             break;
 
+
+        /**
+         * save user email
+         */
+
+        case ActionTypes.SAVE_USER_EMAIL:
+
+            state = { ...state, userEmail: action.payload };
+            break;
+
+
         default:
             state = state;
             break;
+
+
 
     }
 

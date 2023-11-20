@@ -36,6 +36,8 @@ export * from './DragAndReorder'
 export * from './Sliders'
 export * from './ReactAutoComplete'
 export * from './DropZoneFilePicker'
+export * from './InputPassword'
+export * from './AutoFocusInput'
 
 
 

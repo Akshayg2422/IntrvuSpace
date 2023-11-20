@@ -2,7 +2,7 @@ import { Button, ButtonGroup, Divider, Modal, NoRecordsFound, TopNavbar } from '
 import { useModal, useNavigation, useWindowDimensions } from '@Hooks';
 import { getMyPastInterviews, selectedScheduleId } from '@Redux';
 import { ROUTES } from '@Routes';
-import { SERVER } from '@Services';
+import { getPhoto } from '@Utils';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Card } from 'reactstrap';
@@ -13,7 +13,7 @@ function Schedules() {
     const dispatch = useDispatch()
     const { myPastInterviews } = useSelector((state: any) => state.DashboardReducer)
     const showVideoModal = useModal(false);
-    const { goBack } = useNavigation();
+
     const { goTo } = useNavigation();
     const [videoDetails, setVideoDetails] = useState<any>()
 
@@ -146,7 +146,7 @@ function Schedules() {
                     }}
                     title={videoDetails?.interviewee_expected_role}>
                     <video controls className='d-flex col' loop={false} >
-                        <source src={SERVER + videoDetails?.recording_url} type="video/mp4" />
+                        <source src={getPhoto(videoDetails?.recording_url)} type="video/mp4" />
                     </video>
                     {/* <div  className='d-flex'>
                     <ReactPlayer  loop={true} controls url={SERVER + videoDetails?.recording_url} />
