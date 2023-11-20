@@ -178,7 +178,7 @@ function Call() {
       setIsTtfSpeaking(false);
     };
 
-    audioElementRef.current.onloadstart = function () {};
+    audioElementRef.current.onloadstart = function () { };
     audioElementRef.current.onended = function () {
       setIsTtfSpeaking(false);
       if (closeCall.current === true) {
@@ -351,7 +351,7 @@ function Call() {
           canConnect.current = false;
           socketRef.current.close();
           socketRef.current = null;
-        } catch (e) {}
+        } catch (e) { }
         clearInterval(reconnectInterval);
       }
     };
@@ -831,6 +831,59 @@ function Call() {
     validateProceedStartListening();
   };
 
+
+  /**
+ * can start interview
+ */
+
+
+  const handleCanStartInterview = (params: any) => {
+
+
+    startInterviewLoader.show();
+
+    dispatch(
+      canStartInterview({
+        params,
+        onSuccess: (res: any) => () => {
+
+          getBasicInfo();
+          startInterviewHandler();
+          // Clear the interval only after a successful response
+          stopInterval();
+          startInterviewLoader.hide();
+
+        },
+        onError: (error: any) => () => {
+        },
+      })
+    );
+
+  };
+
+
+  function canStartInterviewCheckHandler() {
+
+    const { can_start_interview } = scheduleInfo;
+
+    if (can_start_interview) {
+      startInterviewHandler();
+    } else {
+
+      const canStartParams = { schedule_id };
+
+      handleCanStartInterview(canStartParams);
+
+
+      intervalIdRef.current = setInterval(() => {
+        handleCanStartInterview(canStartParams)
+      }, INTERVAL_TIME);
+
+
+    }
+
+  }
+
   async function startInterviewHandler() {
     startInterviewLoader.show();
     const hasCamPermission = await hasCameraPermission();
@@ -841,31 +894,19 @@ function Call() {
       if (hasMicPermission) {
         micPermissionModal.hide();
 
-        const canStartParams = { schedule_id };
 
         if (!recordStatus && isForceRecord) {
           await startScreenRecording();
         } else if (recordStatus || !isForceRecord) {
-          intervalIdRef.current = setInterval(() => {
-            dispatch(
-              canStartInterview({
-                params: canStartParams,
-                onSuccess: (res: any) => () => {
-                  initiateSocket();
 
-                  proceedOpenCallView.current = true;
+          initiateSocket();
 
-                  if (intervalIdRef.current) {
-                    clearInterval(intervalIdRef.current);
-                  }
-                },
-                onError: (error: any) => () => {
-                  startInterviewLoader.hide();
-                  setNetworkError(true);
-                },
-              })
-            );
-          }, INTERVAL_TIME);
+          proceedOpenCallView.current = true;
+
+          if (intervalIdRef.current) {
+            clearInterval(intervalIdRef.current);
+          }
+
         } else {
           startScreenRecording();
         }
@@ -893,7 +934,7 @@ function Call() {
         onSuccess: () => () => {
           endInterviewHandler();
         },
-        onError: () => () => {},
+        onError: () => () => { },
       })
     );
   }
@@ -1026,9 +1067,9 @@ function Call() {
                     <div className="position-absolute d-flex align-items-center justify-content-center bottom-0 w-100 mb-5">
                       <div className="col-md-6">
                         <CallHeader
-                          webcam={showCam}
+                          webcam={true}
                           mic={!mute}
-                          onWebCamChange={webCamHandler}
+                          onWebCamChange={() => { }}
                           onMicChange={micMuteHandler}
                           onEndClick={endInterviewHandler}
                           onEndInterViewClick={closeInterviewAPiHandler}
@@ -1149,7 +1190,7 @@ function Call() {
                 scheduleInfo={scheduleInfo}
                 loading={startInterviewLoader.loader}
                 heading={scheduleInfo?.interviewee_expected_designation}
-                onClick={startInterviewHandler}
+                onClick={canStartInterviewCheckHandler}
               />
             ) : (
               <></>
@@ -1197,7 +1238,7 @@ function Call() {
             {"2. Enable microphone access in system settings. "}
             <span
               className="pointer text-primary font-weight-700"
-              // onClick={gotoPermissionSetting}
+            // onClick={gotoPermissionSetting}
             >{`(${getOperatingSystem()})`}</span>
           </p>
         </div>

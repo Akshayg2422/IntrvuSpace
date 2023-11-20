@@ -163,7 +163,7 @@ function JdItem({
                 <div className={"skill-value font-weight-bold"}>
                   {"Aptitude"}
                 </div>
-                <div className={"skill-value"}>{""}</div>
+                <div className={"skill-value"}><div className={'report-btn-container'}>{""}</div></div>
                 <div className={"skill-empty"}>{""}</div>
               </div>
             </div>
@@ -196,7 +196,7 @@ function JdItem({
                     <div className={"completed-item-content"}>
                       <div className={"skill-empty"}>{""}</div>
                       <div className={"skill-value"}>{skill_matrix}</div>
-                      <div className={"skill-value ml-1"}>
+                      <div className={"skill-value"}>
                         {other_analytics?.communication}
                       </div>
                       <div className={"skill-value"}>
@@ -225,10 +225,8 @@ function JdItem({
                           </div>
                         )}
                       </div>
-                      <div className={"skill-empty ml-2"}>
-                        {/**
-                         * Watch interview
-                         */}
+                      <div className={"skill-empty d-flex align-items-center justify-content-center"}>
+
                         {recording_url && recording_url.length > 0 && (
                           <WatchInterviewButtonIcon
                             id={"1000"}
