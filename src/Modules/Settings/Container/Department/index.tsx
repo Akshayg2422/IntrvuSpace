@@ -1,10 +1,11 @@
 import { icons } from '@Assets';
-import { CommonTable, Input, MenuBar, Modal, NoDataFound, Spinner, showToast } from '@Components';
+import { AutoFocusInput, CommonTable, Input, MenuBar, Modal, NoDataFound, Spinner, showToast } from '@Components';
+// import AutoFocusInput from '@Components//Core/AutoFocusInput';
 import { useInput, useLoader, useModal } from '@Hooks';
 import { SettingHeader } from '@Modules';
 import { addDepartmentCorporate, getDepartmentCorporate } from '@Redux';
 import { ADD_DEPARTMENT_CORPORATE_RULES, INITIAL_PAGE, capitalizeFirstLetter, getValidateError, ifObjectExist, paginationHandler, validate } from '@Utils';
-import { useEffect, useState} from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 
@@ -26,13 +27,12 @@ function Department() {
   const loader = useLoader(true)
   const addLoader = useLoader(false);
   const departmentName = useInput("");
+  const inputRef = useRef<any>()
 
 
   useEffect(() => {
     getDepartmentApiHandler(INITIAL_PAGE)
   }, [])
-
-
 
 
   const getDepartmentApiHandler = (page_number: number) => {
@@ -174,9 +174,11 @@ function Department() {
           <div className='col-sm-6'>
             <Input
               heading={"Name"}
+              ref={inputRef}
               value={departmentName.value}
               onChange={departmentName.onChange}
             />
+
           </div>
         </div>
       </Modal >

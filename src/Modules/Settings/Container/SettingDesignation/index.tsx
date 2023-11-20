@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Spinner, Modal, Input, CommonTable, NoDataFound, Image, MenuBar, Checkbox, showToast } from '@Components';
 import { SettingHeader } from '@Modules';
 import { useInput, useLoader, useModal } from '@Hooks';
@@ -32,7 +32,6 @@ function SettingDesignation() {
      */
 
     const [selectedDesignation, setSelectedDesignation] = useState<any>(undefined);
-
     const addDesignationModal = useModal(false);
     const designationName = useInput('')
     const [isHr, setIsHr] = useState(false);
@@ -41,7 +40,7 @@ function SettingDesignation() {
     const [isSuperAdmin, setIsSuperAdmin] = useState(false);
     const [editId, setEditId] = useState<any>()
     const addLoader = useLoader(false);
-
+    const inputRef = useRef<any>()
 
 
     useEffect(() => {
@@ -174,7 +173,6 @@ function SettingDesignation() {
     function resetValue() {
 
         addDesignationModal.hide();
-
         designationName.set('')
         setIsHrAdmin(false);
         setIsHr(false);
@@ -242,6 +240,7 @@ function SettingDesignation() {
                             heading={"Name"}
                             value={designationName.value}
                             onChange={designationName.onChange}
+                            ref={inputRef}
                         />
                     </div>
                 </div>
