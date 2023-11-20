@@ -44,8 +44,8 @@ function CallHeader({
   const formattedTime =
     time.hours > 0
       ? `${formatTime(time.hours)}:${formatTime(time.minutes)}:${formatTime(
-          time.seconds
-        )}`
+        time.seconds
+      )}`
       : `${formatTime(time.minutes)}:${formatTime(time.seconds)}`;
 
   function proceedMenuClickHandler(selected: any) {
@@ -95,13 +95,13 @@ function CallHeader({
                 color={"warning"}
                 variant={"icon-rounded"}
                 icon={icons.phone}
-                height={16}
-                width={16}
+                height={22}
+                width={22}
                 onClick={onEndClick}
               />
             </div>
             <div className="">
-              <MenuBar menuData={CALL_MENU} onClick={proceedMenuClickHandler} direction="up"/>
+              <MenuBar menuData={CALL_MENU} onClick={proceedMenuClickHandler} direction="up" />
             </div>
           </div>
         </div>
