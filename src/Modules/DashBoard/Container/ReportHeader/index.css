@@ -55,7 +55,6 @@
     margin-left: 25px;
     display: flex;
     flex-direction: column;
-
 }
 
 .user-mark-container {
@@ -66,7 +65,7 @@
 }
 
 .user-heading {
-    font-size: 48px;
+    font-size: 36px;
     font-weight: 700;
     line-height: 1;
 }
