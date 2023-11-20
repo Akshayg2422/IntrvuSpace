@@ -20,7 +20,7 @@ function MenuBar({ icon = icons.more, menuData, onClick, direction = "down" }: T
         >
           <Image src={icon} width={20} height={20} />
         </DropdownToggle>
-        <DropdownMenu right className={'shadow-none'} style={{ zIndex: 9999 }}>
+        <DropdownMenu right className={'shadow-none'} style={{ zIndex: 9999 }} >
           {menuData &&
             menuData.length > 0 &&
             menuData.map((el: any, index: number) => {
