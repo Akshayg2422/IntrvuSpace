@@ -102,174 +102,176 @@ function AllInOnePlatform() {
                   </div>
                 </div>
                 <div >
-                <Card
-                  className="text-left mt-6 mx-4"  
-                  
-                  style={{
-                    borderWidth: 1.5,
-                    borderColor: "#e8edff",
-                    backgroundColor: "transparent",
-                  }}
-                >
-                  <div className="row "  >
-                    <div className="col-md-4 d-flex flex-column justify-content-center">
-                      {CREATE_JD_AND_ADD_CANDIDATE.map((item) => {
-                        return (
-                          <>
-                            <div className="mt-2 " >
-                              <Image src={icons.check} height={12} width={12} style={{
-                                objectFit: 'contain'
-                              }} />
+                  <Card
+                    className="text-left mt-6 mx-4"
+
+                    style={{
+                      borderWidth: 1.5,
+                      borderColor: "#e8edff",
+                      backgroundColor: "transparent",
+                    }}
+                  >
+                    <div className="row "  >
+                      <div className="col-md-4 d-flex flex-column justify-content-center">
+                        {CREATE_JD_AND_ADD_CANDIDATE.map((item) => {
+                          return (
+                            <>
+                              <div className="mt-2 " >
+                                <Image src={icons.check} height={12} width={12} style={{
+                                  objectFit: 'contain'
+                                }} />
+                                <span
+                                  className="ml-2 text-secondary"
+                                  style={{ fontSize: 12.5, fontWeight: 800 }}
+                                >
+                                  {item.mainText}
+                                </span>
+                                <span
+                                  className="text-secondary"
+                                  style={{ fontSize: 12.5, fontWeight: 500 }}
+                                >
+                                  {item.subText}
+                                </span>
+                              </div>
+                            </>
+                          );
+                        })}
+                      </div>
+
+                      <div className="col-md-4 d-flex flex-column justify-content-center mt-5 mt-md-2">
+                        <div className="row">
+                          <div className="d-none d-lg-block">
+                            <div
+                              style={{
+                                width: 1.3,
+                                height: 300,
+                                backgroundColor: "#e8edff",
+                              }}
+                            />
+                          </div>
+                          <div className="mx-lg-5 mb-2 mx-md-0 mx-3">
+                            <div
+                              className="text-secondary boldText "
+                              style={{ fontSize: 21 }}
+                            >
+                              <div className="text-center">
+                                <span>{`Automated Interviews,`}</span>
+                              </div>
+                              <div className="allInOneMarginTop text-center">
+                                <span>Approvals & Reports</span>
+                              </div>
+                            </div>
+                            <div className="mt-4 text-center">
                               <span
-                                className="ml-2 text-secondary"
-                                style={{ fontSize: 12.5, fontWeight: 800 }}
+                                className="text-gray"
+                                style={{ fontSize: 13, fontFamily: "cursive" }}
                               >
-                                {item.mainText}
+                                {/* <s>{`₹ 700.00`}</s> */}
+                                <Image src={icons.moneyDefalt} height={50} width={60} style={{
+                                  objectFit: 'contain'
+                                }} />
                               </span>
+                              <Badge
+                                className="text-primary ml-2"
+                                text={"SAVE 58%"}
+                                size="md"
+                                style={{
+                                  borderRadius: 30,
+                                  backgroundColor: "#ebe4ff",
+                                  fontSize: 13,
+                                  fontWeight: 800,
+                                }}
+                              />
+                            </div>
+                            <div className="text-center">
                               <span
                                 className="text-secondary"
-                                style={{ fontSize: 12.5, fontWeight: 500 }}
+                                style={{
+                                  fontSize: 18,
+                                  fontWeight: 500,
+                                  fontFamily: "cursive",
+                                }}
                               >
-                                {item.subText}
+                                {"₹"}
+                              </span>
+                              <span className="text-secondary display-2 ml-1">
+                                700
+                                700
+                              </span>
+                              <span
+                                className="text-secondary ml-1"
+                                style={{ fontSize: 18, fontWeight: 500 }}
+                              >
+                                /interview
                               </span>
                             </div>
-                          </>
-                        );
-                      })}
-                    </div>
-
-                    <div className="col-md-4 d-flex flex-column justify-content-center mt-5 mt-md-2">
-                      <div className="row">
-                        <div className="d-none d-lg-block">
-                          <div
-                            style={{
-                              width: 1.3,
-                              height: 300,
-                              backgroundColor: "#e8edff",
-                            }}
-                          />
-                        </div>
-                        <div className="mx-lg-5 mb-2 mx-md-0 mx-3">
-                          <div
-                            className="text-secondary boldText "
-                            style={{ fontSize: 21 }}
-                          >
-                            <div className="text-center">
-                              <span>{`Automated Interviews,`}</span>
+                            <div className="d-flex float-center ">
+                              <Button
+                                text={"Add to cart"}
+                                className={"mt-3 ls-0"}
+                                block
+                                style={{ borderRadius: 4 }}
+                              />
                             </div>
-                            <div className="allInOneMarginTop text-center">
-                              <span>Approvals & Reports</span>
+                            <div className="mt-3 text-center">
+                              <span
+                                className="text-gray"
+                                style={{ fontFamily: "cursive", fontSize: 13 }}
+                              >
+                                {"₹"}
+                              </span>
+                              <span
+                                className="text-gray"
+                                style={{ fontSize: 13 }}
+                              >
+                                {"600.00/interview for 1000+"}
+                                {"600.00/interview for 1000+"}
+                              </span>
                             </div>
                           </div>
-                          <div className="mt-4 text-center">
-                            <span
-                              className="text-gray"
-                              style={{ fontSize: 13, fontFamily: "cursive" }}
-                            >
-                              {/* <s>{`₹ 700.00`}</s> */}
-                              <Image src={icons.moneyDefalt} height={50} width={60} style={{
-                                objectFit: 'contain'
-                              }} />
-                            </span>
-                            <Badge
-                              className="text-primary ml-2"
-                              text={"SAVE 58%"}
-                              size="md"
+
+                          <div className="d-none d-lg-block">
+                            <div
                               style={{
-                                borderRadius: 30,
-                                backgroundColor: "#ebe4ff",
-                                fontSize: 13,
-                                fontWeight: 800,
+                                width: 1.2,
+                                height: 300,
+                                backgroundColor: "#e8edff",
                               }}
                             />
                           </div>
-                          <div className="text-center">
-                            <span
-                              className="text-secondary"
-                              style={{
-                                fontSize: 18,
-                                fontWeight: 500,
-                                fontFamily: "cursive",
-                              }}
-                            >
-                              {"₹"}
-                            </span>
-                            <span className="text-secondary display-2 ml-1">
-                              700
-                            </span>
-                            <span
-                              className="text-secondary ml-1"
-                              style={{ fontSize: 18, fontWeight: 500 }}
-                            >
-                              /interview
-                            </span>
-                          </div>
-                          <div className="d-flex float-center ">
-                            <Button
-                              text={"Add to cart"}
-                              className={"mt-3 ls-0"}
-                              block
-                              style={{ borderRadius: 4 }}
-                            />
-                          </div>
-                          <div className="mt-3 text-center">
-                            <span
-                              className="text-gray"
-                              style={{ fontFamily: "cursive", fontSize: 13 }}
-                            >
-                              {"₹"}
-                            </span>
-                            <span
-                              className="text-gray"
-                              style={{ fontSize: 13 }}
-                            >
-                              {"600.00/interview for 1000+"}
-                            </span>
-                          </div>
-                        </div>
-
-                        <div className="d-none d-lg-block">
-                          <div
-                            style={{
-                              width: 1.2,
-                              height: 300,
-                              backgroundColor: "#e8edff",
-                            }}
-                          />
                         </div>
                       </div>
-                    </div>
 
-                    <div className="col-md-4 d-flex flex-column justify-content-center mt-5 mt-md-0">
-                      {REPORTS_AND_AUTO_APPROVALS.map((item) => {
-                        return (
-                          <>
-                            <div className="mt-2">
-                              <Image src={icons.check} height={12} width={12} style={{
-                                objectFit: 'contain'
-                              }} />
-                              <span
-                                className="ml-2 text-secondary"
-                                style={{ fontSize: 12.5, fontWeight: 800 }}
-                              >
-                                {item.mainText}
-                              </span>
-                              <span
-                                className="text-secondary"
-                                style={{ fontSize: 12.5, fontWeight: 500 }}
-                              >
-                                {item.subText}
-                              </span>
-                            </div>
-                          </>
-                        );
-                      })}
+                      <div className="col-md-4 d-flex flex-column justify-content-center mt-5 mt-md-0">
+                        {REPORTS_AND_AUTO_APPROVALS.map((item) => {
+                          return (
+                            <>
+                              <div className="mt-2">
+                                <Image src={icons.check} height={12} width={12} style={{
+                                  objectFit: 'contain'
+                                }} />
+                                <span
+                                  className="ml-2 text-secondary"
+                                  style={{ fontSize: 12.5, fontWeight: 800 }}
+                                >
+                                  {item.mainText}
+                                </span>
+                                <span
+                                  className="text-secondary"
+                                  style={{ fontSize: 12.5, fontWeight: 500 }}
+                                >
+                                  {item.subText}
+                                </span>
+                              </div>
+                            </>
+                          );
+                        })}
+                      </div>
                     </div>
-                  </div>
-                </Card>
-                  
+                  </Card>
+
                 </div>
-              
+
 
                 <div className="pt-6">
                   <span className="display-3 font-weight-bolder text-secondary">
