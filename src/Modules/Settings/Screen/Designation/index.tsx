@@ -15,7 +15,6 @@ import {
   showToast,
   TopNavbarCorporateFlow,
   TopNavbar,
-  Checkbox,
 } from "@Components";
 import {
   useDropDown,
@@ -93,7 +92,6 @@ function Designation() {
   const referenceId = useInput("");
 
   const [isPositionSearch, setIsPositionSearch] = useState(false);
-  const [videoRecordMandatory, setVideoRecordMandatory] = useState(true)
 
   /**
    * loader state
@@ -177,7 +175,6 @@ function Designation() {
       reference_id: referenceId.value,
       vacancies: vacancies?.value,
       interview_duration: duration?.value,
-      video_recording_mandatory: videoRecordMandatory
     };
 
     const validation = validate(CREATE_CORPORATE_SCHEDULE_RULES, params);
@@ -253,7 +250,6 @@ function Designation() {
       })
     );
   };
-  
 
   /**
    * close create opening modal
@@ -513,17 +509,6 @@ function Designation() {
                 addSectorCorporateApiHandler(value);
               }}
               onSelected={setSelectedSector}
-            />
-          </div>
-          <div className={"col-sm-6"}>
-            <Checkbox
-              id={"video-Recording"}
-              className={"text-primary"}
-              text={"Video recording mandatory"}
-              defaultChecked={videoRecordMandatory}
-              onCheckChange={(checked) => {
-                setVideoRecordMandatory(checked);
-              }}
             />
           </div>
         </div>
