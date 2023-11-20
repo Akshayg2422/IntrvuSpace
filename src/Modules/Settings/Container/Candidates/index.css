@@ -54,7 +54,7 @@
 
 .table-container {
     margin-top: 40px;
-
+    overflow-x: auto;
 }
 
 
