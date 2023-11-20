@@ -40,7 +40,7 @@ function TopNavbarCorporateFlow() {
   const HEADER_MENU = [
     // { id: '1', name: 'Home', value: 'HM', route: ROUTES['designation-module']['admin-schedule'] },
     // { id: '2', name: 'Ongoing Schedule', value: 'OGS', route: ROUTES['designation-module']['scheduling-interview'] },
-    { id: '3', name: 'Setting', value: 'ST', route: ROUTES['designation-module'].settings },
+    { id: '3', name: 'Settings', value: 'ST', route: ROUTES['designation-module'].settings },
   ]
 
   function getCandidateMenu() {
