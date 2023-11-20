@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Spinner, NoDataFound, CommonTable, MenuBar, Modal, Input, DropDown, showToast } from '@Components';
 import { SettingHeader } from '@Modules';
 import { useDropDown, useInput, useLoader, useModal } from '@Hooks';
@@ -35,10 +35,10 @@ function ManageTeamMate() {
   const teamDepartment = useDropDown({});
   const teamDesignation = useDropDown({});
   const [editId, setEditId] = useState<any>()
-
-
   const [selectedTeam, setSelectedTeam] = useState<any>(undefined)
+  const inputRef= useRef<any>(null)
 
+  
 
   /**
    * get team state
@@ -276,6 +276,7 @@ function ManageTeamMate() {
         onClose={resetValues}
         onClick={addTeamMAteDataApiHandler}
       >
+
         <div className='row'>
           <div className="col-sm-6">
             <Input
@@ -283,6 +284,8 @@ function ManageTeamMate() {
               placeholder={'First Name'}
               value={firstName.value}
               onChange={firstName.onChange}
+             ref={inputRef}
+              
             />
           </div>
           <div className={'col-sm-6'}>
@@ -291,10 +294,12 @@ function ManageTeamMate() {
               placeholder={'Last Name'}
               value={lastName.value}
               onChange={lastName.onChange}
+              // ref={inputRef}
             />
           </div>
 
         </div>
+
         <div className='row'>
           <div className="col-sm-6">
             <Input
@@ -302,6 +307,7 @@ function ManageTeamMate() {
               placeholder={'Email'}
               value={teamEmail.value}
               onChange={teamEmail.onChange}
+              // ref={inputRef}
             />
           </div>
           <div className={'col-sm-6'}>
@@ -312,10 +318,14 @@ function ManageTeamMate() {
               placeholder={'Mobile Number'}
               value={mobileNumber.value}
               onChange={mobileNumber.onChange}
+              // ref={inputRef}
+              
             />
           </div>
 
         </div>
+
+
 
         <div className='row'>
           <div className="col-sm-6">

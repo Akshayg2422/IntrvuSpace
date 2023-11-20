@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-redeclare */
 import { PageNotFound, ScreenWrapper } from "@Components";
-import { Splash, Call } from '@Modules';
+import { Call, Splash } from '@Modules';
 import { AUTH_ROUTES, JOB_SEEKER_ROUTES, ADMIN_ROUTES, ROUTES, RequireAuth, RequireHome, SUPER_ADMIN_ROUTES } from "@Routes";
 import { Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
