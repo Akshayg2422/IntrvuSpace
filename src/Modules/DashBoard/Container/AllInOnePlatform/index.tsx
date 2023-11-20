@@ -196,7 +196,6 @@ function AllInOnePlatform() {
                               </span>
                               <span className="text-secondary display-2 ml-1">
                                 700
-                                700
                               </span>
                               <span
                                 className="text-secondary ml-1"
@@ -224,7 +223,6 @@ function AllInOnePlatform() {
                                 className="text-gray"
                                 style={{ fontSize: 13 }}
                               >
-                                {"600.00/interview for 1000+"}
                                 {"600.00/interview for 1000+"}
                               </span>
                             </div>
