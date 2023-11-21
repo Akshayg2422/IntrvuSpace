@@ -111,6 +111,7 @@ function Candidates({ id, details }: CandidatesProps) {
 
   const { loginDetails } = useSelector((state: any) => state.AppReducer);
   const { is_department_admin } = loginDetails || {}
+  
 
   useEffect(() => {
 
@@ -510,7 +511,7 @@ function Candidates({ id, details }: CandidatesProps) {
               }
             </div>
           </div>
-          {is_department_admin && !isJdClosed && (
+          {!is_department_admin && !isJdClosed && (
             <div className={"empty-candidates-btn-container"}>
               <div className={"empty-btn-container"}>
                 <Button
@@ -611,7 +612,7 @@ function Candidates({ id, details }: CandidatesProps) {
               {!isJdClosed && (
                 <div className={"add-candidate-container"}>
                   <div className={"add-button-container"}>
-                    {is_department_admin &&
+                    {!is_department_admin &&
                       <Button
                         block
                         text={"Add"}
@@ -620,7 +621,7 @@ function Candidates({ id, details }: CandidatesProps) {
                     }
                   </div>
                   <div className={"add-button-container"}>
-                    {is_department_admin &&
+                    {!is_department_admin &&
                       <Button
                         block
                         outline

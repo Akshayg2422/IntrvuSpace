@@ -312,20 +312,23 @@ function Designation() {
                 onChange={status.onChange}
               />
             </div>
-           {is_department_admin && <div className="col-sm-3">
-              {departmentCorporate && departmentCorporate.length > 0 && (
-                <DropDown
-                  id={"department"}
-                  heading={"Department"}
-                  data={[
-                    DEFAULT_VALUE,
-                    ...getDropDownCompanyDisplayData(departmentCorporate),
-                  ]}
-                  selected={filterDepartment.value}
-                  onChange={filterDepartment.onChange}
-                />
-              )}
-            </div>}
+
+            {!is_department_admin && (
+              <div className="col-sm-3">
+                {departmentCorporate && departmentCorporate.length > 0 && (
+                  <DropDown
+                    id={"department"}
+                    heading={"Department"}
+                    data={[
+                      DEFAULT_VALUE,
+                      ...getDropDownCompanyDisplayData(departmentCorporate),
+                    ]}
+                    selected={filterDepartment.value}
+                    onChange={filterDepartment.onChange}
+                  />
+                )}
+              </div>
+            )}
 
             <div className="col-sm-3">
               {sectorsCorporate && sectorsCorporate.length > 0 && (
