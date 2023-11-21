@@ -858,7 +858,7 @@ function Call() {
   };
 
   function canStartInterviewCheckHandler() {
-    // if (getBrowserInfo().browserName !== "Mozilla Firefox" && getBrowserInfo().browserName !== "Safari" ) {
+    if (getBrowserInfo().browserName !== "Mozilla Firefox" && getBrowserInfo().browserName !== "Safari" ) {
       const { can_start_interview } = scheduleInfo;
 
       if (can_start_interview) {
@@ -872,9 +872,9 @@ function Call() {
           handleCanStartInterview(canStartParams);
         }, INTERVAL_TIME);
       }
-    // } else {
-    //   openBrowserNotSupportedModal.show();
-    // }
+    } else {
+      openBrowserNotSupportedModal.show();
+    }
   }
 
   async function startInterviewHandler() {
