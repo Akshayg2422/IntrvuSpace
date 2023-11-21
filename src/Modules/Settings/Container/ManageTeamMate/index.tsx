@@ -285,7 +285,7 @@ function ManageTeamMate() {
               placeholder={'First Name'}
               value={firstName.value}
               onChange={firstName.onChange}
-            //  ref={inputRef}
+             ref={inputRef}
               
             />
           </div>
@@ -295,7 +295,6 @@ function ManageTeamMate() {
               placeholder={'Last Name'}
               value={lastName.value}
               onChange={lastName.onChange}
-            // ref={inputRef}
             />
           </div>
 
@@ -308,7 +307,6 @@ function ManageTeamMate() {
               placeholder={'Email'}
               value={teamEmail.value}
               onChange={teamEmail.onChange}
-            // ref={inputRef}
             />
           </div>
           <div className={'col-sm-6'}>
@@ -319,7 +317,6 @@ function ManageTeamMate() {
               placeholder={'Mobile Number'}
               value={mobileNumber.value}
               onChange={mobileNumber.onChange}
-            // ref={inputRef}
 
             />
           </div>
