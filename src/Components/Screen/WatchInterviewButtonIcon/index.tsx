@@ -1,9 +1,15 @@
-import { showToast } from "@Components";
-import { getBrowserInfo } from "@Utils";
+import { Image, Modal, showToast } from "@Components";
+import { WATCH_VIDEO_PERMISSION_CONTEXT, getBrowserInfo } from "@Utils";
 import { UncontrolledTooltip } from "reactstrap";
 import { WatchInterviewButtonIconProps } from "./interface";
+import { useModal } from "@Hooks";
 
-const WatchInterviewButtonIcon = ({onClick, id}: WatchInterviewButtonIconProps) => {
+const WatchInterviewButtonIcon = ({
+  onClick,
+  id,
+}: WatchInterviewButtonIconProps) => {
+  const openWatchInterviewNotSupportedModal = useModal(false);
+
   return (
     <>
       <UncontrolledTooltip delay={0} placement="top" target={`tooltip${id}`}>
@@ -14,19 +20,47 @@ const WatchInterviewButtonIcon = ({onClick, id}: WatchInterviewButtonIconProps) 
           id={`tooltip${id}`}
           className="bi bi-eye-fill text-primary fa-lg pointer"
           onClick={() => {
-            if(onClick){
-            if (getBrowserInfo().browserName !== "Mozilla Firefox") {
-                onClick()
-            } else {
-              showToast(
-                "Watch Interview is not supported in this browser",
-                "info"
-              );
+            if (onClick) {
+              if (getBrowserInfo().browserName !== "Mozilla Firefox" && getBrowserInfo().browserName !== "Safari") {
+                onClick();
+              } else {
+                openWatchInterviewNotSupportedModal.show();
+              }
             }
-        }
           }}
         ></i>
       </div>
+
+      {/**
+       * watch interview not supported Modal
+       */}
+
+      <Modal
+        isOpen={openWatchInterviewNotSupportedModal.visible}
+        onClose={() => {
+          openWatchInterviewNotSupportedModal.hide();
+        }}
+        title={"Browser Permission Denied"}
+        buttonText="Close"
+        onClick={() => {
+          openWatchInterviewNotSupportedModal.hide();
+        }}
+      >
+        <div className="mt--4">
+          {WATCH_VIDEO_PERMISSION_CONTEXT.map((item) => {
+            const { id, icon, text, h } = item;
+
+            return (
+              <div key={id}>
+                <div className="d-flex align-items-center ">
+                  <Image src={icon} height={h} />
+                  <div className="ml-2">{text}</div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </Modal>
     </>
   );
 };

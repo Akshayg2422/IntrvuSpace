@@ -20,7 +20,9 @@ import {
 import { CALL_WEBSOCKET } from "@Services";
 import { color } from "@Themes";
 import {
+  BROWSER_PERMISSION_CONTEXT,
   capitalizeFirstLetter,
+  getBrowserInfo,
   getOperatingSystem,
   getShortName,
   gotoPermissionSetting,
@@ -178,7 +180,7 @@ function Call() {
       setIsTtfSpeaking(false);
     };
 
-    audioElementRef.current.onloadstart = function () { };
+    audioElementRef.current.onloadstart = function () {};
     audioElementRef.current.onended = function () {
       setIsTtfSpeaking(false);
       if (closeCall.current === true) {
@@ -262,6 +264,8 @@ function Call() {
   const [isEnableRecording, setIsEnableRecording] = useState(false);
 
   const [isForceRecord, setIsForceRecord] = useState(true); // static state to force record by default setting false
+
+  const openBrowserNotSupportedModal = useModal(false);
 
   {
     /** interview recording useEffect */
@@ -351,7 +355,7 @@ function Call() {
           canConnect.current = false;
           socketRef.current.close();
           socketRef.current = null;
-        } catch (e) { }
+        } catch (e) {}
         clearInterval(reconnectInterval);
       }
     };
@@ -831,60 +835,51 @@ function Call() {
     validateProceedStartListening();
   };
 
-
   /**
- * can start interview
- */
-
+   * can start interview
+   */
 
   const handleCanStartInterview = (params: any) => {
-
-
     startInterviewLoader.show();
 
     dispatch(
       canStartInterview({
         params,
         onSuccess: (res: any) => () => {
-
           getBasicInfo();
           startInterviewHandler();
           // Clear the interval only after a successful response
           stopInterval();
           startInterviewLoader.hide();
-
         },
-        onError: (error: any) => () => {
-        },
+        onError: (error: any) => () => {},
       })
     );
-
   };
 
-
   function canStartInterviewCheckHandler() {
+    if (getBrowserInfo().browserName !== "Mozilla Firefox" && getBrowserInfo().browserName !== "Safari" ) {
+      const { can_start_interview } = scheduleInfo;
 
-    const { can_start_interview } = scheduleInfo;
+      if (can_start_interview) {
+        startInterviewHandler();
+      } else {
+        const canStartParams = { schedule_id };
 
-    if (can_start_interview) {
-      startInterviewHandler();
+        handleCanStartInterview(canStartParams);
+
+        intervalIdRef.current = setInterval(() => {
+          handleCanStartInterview(canStartParams);
+        }, INTERVAL_TIME);
+      }
     } else {
-
-      const canStartParams = { schedule_id };
-
-      handleCanStartInterview(canStartParams);
-
-
-      intervalIdRef.current = setInterval(() => {
-        handleCanStartInterview(canStartParams)
-      }, INTERVAL_TIME);
-
-
+      openBrowserNotSupportedModal.show();
     }
-
   }
 
   async function startInterviewHandler() {
+    const { is_video_recording_manditory } = scheduleInfo
+
     startInterviewLoader.show();
     const hasCamPermission = await hasCameraPermission();
     if (hasCamPermission) {
@@ -894,10 +889,10 @@ function Call() {
       if (hasMicPermission) {
         micPermissionModal.hide();
 
-
-        if (!recordStatus && isForceRecord) {
+        if (!recordStatus && is_video_recording_manditory) {
+         
           await startScreenRecording();
-        } else if (recordStatus || !isForceRecord) {
+        } else if (recordStatus || !is_video_recording_manditory) {
 
           initiateSocket();
 
@@ -906,10 +901,10 @@ function Call() {
           if (intervalIdRef.current) {
             clearInterval(intervalIdRef.current);
           }
-
-        } else {
-          startScreenRecording();
-        }
+        } 
+        // else {
+        //   startScreenRecording();
+        // }
       } else {
         micPermissionModal.show();
       }
@@ -919,7 +914,6 @@ function Call() {
   }
 
   function endInterviewHandler() {
-    // isScreenRecording && stopScreenRecording();
     closeCall.current = true;
     onEndCallHandler();
     stopScreenRecording();
@@ -934,7 +928,7 @@ function Call() {
         onSuccess: () => () => {
           endInterviewHandler();
         },
-        onError: () => () => { },
+        onError: () => () => {},
       })
     );
   }
@@ -1067,9 +1061,13 @@ function Call() {
                     <div className="position-absolute d-flex align-items-center justify-content-center bottom-0 w-100 mb-5">
                       <div className="col-md-6">
                         <CallHeader
-                          webcam={true}
+                          webcam={scheduleInfo?.is_video_recording_manditory ? true : showCam} 
                           mic={!mute}
-                          onWebCamChange={() => { }}
+                          onWebCamChange={() => {
+                            if(!scheduleInfo?.is_video_recording_manditory){
+                              webCamHandler()
+                            }
+                          }}
                           onMicChange={micMuteHandler}
                           onEndClick={endInterviewHandler}
                           onEndInterViewClick={closeInterviewAPiHandler}
@@ -1238,7 +1236,7 @@ function Call() {
             {"2. Enable microphone access in system settings. "}
             <span
               className="pointer text-primary font-weight-700"
-            // onClick={gotoPermissionSetting}
+              // onClick={gotoPermissionSetting}
             >{`(${getOperatingSystem()})`}</span>
           </p>
         </div>
@@ -1344,6 +1342,39 @@ function Call() {
           startInterviewLoader.hide();
         }}
       />
+
+      {/**
+       * Browser not supported modal
+       */}
+
+      <Modal
+        isOpen={openBrowserNotSupportedModal.visible}
+        onClose={() => {
+          openBrowserNotSupportedModal.hide();
+          startInterviewLoader.hide();
+        }}
+        title={"Browser Permission Denied"}
+        buttonText="Close"
+        onClick={() => {
+          openBrowserNotSupportedModal.hide();
+          startInterviewLoader.hide();
+        }}
+      >
+        <div className="mt--4">
+          {BROWSER_PERMISSION_CONTEXT.map((item) => {
+            const { id, icon, text, h } = item;
+
+            return (
+              <div key={id}>
+                <div className="d-flex align-items-center">
+                  <Image src={icon} height={h} />
+                  <div className="ml-2">{text}</div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </Modal>
     </>
   );
 }
