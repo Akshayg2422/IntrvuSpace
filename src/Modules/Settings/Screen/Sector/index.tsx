@@ -144,6 +144,7 @@ function Sector() {
    */
 
   function resetValues() {
+    setEditId('');
     sectorName.set('');
     sectorDescription.set('');
     addSectorModal.hide();
