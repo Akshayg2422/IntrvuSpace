@@ -11,16 +11,11 @@ function Login() {
 
   const { goTo } = useNavigation();
   const dispatch = useDispatch();
-
   const password = useInput("");
   const email = useInput("");
   const loginLoader = useLoader(false);
-
-
   const enterPress = useKeyPress("Enter");
   const { loginDetails } = useSelector((state: any) => state.AppReducer);
-
-
 
   useEffect(() => {
     if (enterPress) {
@@ -87,10 +82,7 @@ function Login() {
     } else {
       showToast(getValidateError(validation))
     }
-
-
   };
-
 
   function goToForgotPasswordScreen() {
     goTo(ROUTES["auth-module"].forgotPassword);
@@ -100,7 +92,6 @@ function Login() {
     goTo(ROUTES["auth-module"].register);
 
   }
-
 
   function goToRegisterCompanyScreen() {
     goTo(ROUTES["auth-module"]["register-company"]);

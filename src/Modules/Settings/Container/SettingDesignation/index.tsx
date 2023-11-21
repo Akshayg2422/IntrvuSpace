@@ -144,7 +144,7 @@ function SettingDesignation() {
                 "HR": getActiveStatus(is_hr),
                 "HR Admin": getActiveStatus(is_hr_admin),
                 "Super Admin": getActiveStatus(is_super_admin),
-                // "Department Admin": getActiveStatus(is_department_admin),
+                "Department Admin": getActiveStatus(is_department_admin),
 
                 " ": <MenuBar
                     menuData={MENU}
@@ -266,15 +266,12 @@ function SettingDesignation() {
                         defaultChecked={isSuperAdmin}
                         onCheckChange={setIsSuperAdmin}
                     />
-                    {/* <Checkbox
+                    <Checkbox
                         id={'department-admin'}
                         text={'Department Admin'}
                         defaultChecked={isDepartmentAdmin}
                         onCheckChange={setIsDepartmentAdmin}
-                    /> */}
-
-
-
+                    />
                 </div>
             </Modal >
         </>

@@ -43,6 +43,7 @@ import {
   INTERVIEW_DURATIONS,
   PLACEHOLDER_ROLES,
   STATUS_LIST,
+  capitalizeLetter,
   getDropDownCompanyDisplayData,
   getValidateError,
   ifObjectExist,
@@ -63,6 +64,8 @@ function Designation() {
     corporateScheduleNumOfPages,
     corporateScheduleCurrentPages,
   } = useSelector((state: any) => state.DashboardReducer);
+  const { loginDetails } = useSelector((state: any) => state.AppReducer);
+  const { is_department_admin } = loginDetails || {}
 
   const { goTo } = useNavigation();
   const dispatch = useDispatch();
@@ -309,20 +312,23 @@ function Designation() {
                 onChange={status.onChange}
               />
             </div>
-            <div className="col-sm-3">
-              {departmentCorporate && departmentCorporate.length > 0 && (
-                <DropDown
-                  id={"department"}
-                  heading={"Department"}
-                  data={[
-                    DEFAULT_VALUE,
-                    ...getDropDownCompanyDisplayData(departmentCorporate),
-                  ]}
-                  selected={filterDepartment.value}
-                  onChange={filterDepartment.onChange}
-                />
-              )}
-            </div>
+
+            {!is_department_admin && (
+              <div className="col-sm-3">
+                {departmentCorporate && departmentCorporate.length > 0 && (
+                  <DropDown
+                    id={"department"}
+                    heading={"Department"}
+                    data={[
+                      DEFAULT_VALUE,
+                      ...getDropDownCompanyDisplayData(departmentCorporate),
+                    ]}
+                    selected={filterDepartment.value}
+                    onChange={filterDepartment.onChange}
+                  />
+                )}
+              </div>
+            )}
 
             <div className="col-sm-3">
               {sectorsCorporate && sectorsCorporate.length > 0 && (
@@ -447,10 +453,9 @@ function Designation() {
 
           <div className={"col-sm-6"}>
             <Input
-              className={'text-uppercase'}
               heading={"Reference No"}
               placeHolder={"Reference No"}
-              value={referenceId.value}
+              value={capitalizeLetter(referenceId.value)}
               onChange={referenceId.onChange}
               maxLength={12}
             />

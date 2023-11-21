@@ -28,6 +28,20 @@ function App() {
   const { loginDetails } = useSelector((state: any) => state.AppReducer);
 
   const { is_admin, is_super_admin } = loginDetails || {}
+  // const { user_type } = loginDetails || {};
+
+  // const userRoutes = () => {
+  //   switch (user_type) {
+  //     case 'CP':
+  //       return ADMIN_ROUTES;
+  //     case 'JS':
+  //       return JOB_SEEKER_ROUTES;
+  //     case 'SA':
+  //       return SUPER_ADMIN_ROUTES;
+  //     default:
+  //       return null;
+  //   }
+  // }
 
   const AUTH = 1
 
@@ -60,12 +74,15 @@ function App() {
     });
   };
 
+  // const routes = userRoutes();
+
   return (
     <ScreenWrapper>
       <Routes>
         <Route path="/" element={<Splash />} />
         {getRoutes(AUTH_ROUTES, AUTH)}
 
+        {/* {routes && getRoutes(routes)} */}
         {is_admin && getRoutes(ADMIN_ROUTES)}
         {!is_admin && getRoutes(JOB_SEEKER_ROUTES)}
         {is_super_admin && getRoutes(SUPER_ADMIN_ROUTES)}
