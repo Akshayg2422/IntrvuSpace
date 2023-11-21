@@ -1,5 +1,5 @@
 import { icons } from '@Assets';
-import { CommonTable, Input, MenuBar, Modal, NoDataFound, Spinner, TextArea, showToast } from '@Components';
+import { AutoFocusInput, CommonTable, Input, MenuBar, Modal, NoDataFound, Spinner, TextArea, showToast } from '@Components';
 import { useInput, useLoader, useModal } from '@Hooks';
 import { SettingHeader } from '@Modules';
 import { addSectorCorporate, getSectorCorporate } from '@Redux';
@@ -207,7 +207,7 @@ function Sector() {
       >
         <div className='row'>
           <div className='col-sm-6'>
-            <Input
+            <AutoFocusInput
               heading={"Name"}
               value={sectorName.value}
               onChange={sectorName.onChange}

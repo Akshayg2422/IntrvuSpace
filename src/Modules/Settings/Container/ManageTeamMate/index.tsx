@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Spinner, NoDataFound, CommonTable, MenuBar, Modal, Input, DropDown, showToast } from '@Components';
+import { Spinner, NoDataFound, CommonTable, MenuBar, Modal, Input, DropDown, showToast, AutoFocusInput } from '@Components';
 import { SettingHeader } from '@Modules';
 import { useDropDown, useInput, useLoader, useModal } from '@Hooks';
 import { INITIAL_PAGE, paginationHandler, capitalizeFirstLetter, getDropDownDisplayData, getValidateError, ifObjectExist, validate, USER_FORM_RULES } from '@Utils';
@@ -279,12 +279,12 @@ function ManageTeamMate() {
 
         <div className='row'>
           <div className="col-sm-6">
-            <Input
+            <AutoFocusInput
               heading={"First Name"}
               placeholder={'First Name'}
               value={firstName.value}
               onChange={firstName.onChange}
-             ref={inputRef}
+            //  ref={inputRef}
               
             />
           </div>

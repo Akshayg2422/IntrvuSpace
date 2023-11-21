@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Spinner, Modal, Input, CommonTable, NoDataFound, Image, MenuBar, Checkbox, showToast } from '@Components';
+import { Spinner, Modal, Input, CommonTable, NoDataFound, Image, MenuBar, Checkbox, showToast, AutoFocusInput } from '@Components';
 import { SettingHeader } from '@Modules';
 import { useInput, useLoader, useModal } from '@Hooks';
 import { getDesignations, addDesignation } from '@Redux';
@@ -236,7 +236,7 @@ function SettingDesignation() {
             >
                 <div className='row'>
                     <div className='col-sm-6'>
-                        <Input
+                        <AutoFocusInput
                             heading={"Name"}
                             value={designationName.value}
                             onChange={designationName.onChange}

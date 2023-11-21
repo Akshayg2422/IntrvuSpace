@@ -4,5 +4,6 @@ export interface AutoFocusInputProps extends RsInputProps, InputHeadingProps {
     id?: string
     variant?: InputVariants;
     noSpace?: boolean
+    ref?:string
     
 }   

@@ -172,7 +172,7 @@ function Department() {
       >
         <div className='row'>
           <div className='col-sm-6'>
-            <Input
+            <AutoFocusInput
               heading={"Name"}
               ref={inputRef}
               value={departmentName.value}
