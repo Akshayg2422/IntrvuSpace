@@ -180,6 +180,11 @@ function FromJD() {
 
     const validation = validate(FROM_JD_RULES, params);
 
+
+    setIsQuestionGenerated(false);
+
+
+
     if (ifObjectExist(validation)) {
       dispatch(hideCreateJdModal());
       generateJdModal.show();
@@ -196,6 +201,7 @@ function FromJD() {
               /**
                * first Time call api after on success
                */
+
 
               handleCanStartInterview(canStartParams);
 
@@ -306,6 +312,9 @@ function FromJD() {
     sector.set("");
     setDuration(INTERVIEW_DURATIONS[0]);
   }
+
+
+  console.log("isQuestionGenerated", isQuestionGenerated);
 
   return (
     <>

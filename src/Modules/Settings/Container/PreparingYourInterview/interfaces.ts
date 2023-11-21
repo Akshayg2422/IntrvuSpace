@@ -1,3 +1,3 @@
 export interface PreparingYourInterviewProps {
-    isCompleted?: boolean
+    isCompleted?: boolean;
 }

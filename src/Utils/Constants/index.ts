@@ -1587,4 +1587,9 @@ export const COUNTRY_ISO_CODE = [
   }
 ]
 
+export const ENTIRE_SCREEN_CONTEXT = [
+  {id: 1, icon: icons.check, text: "Please confirm to record this interview"},
+  {id: 2, icon: icons.check, text: "Click to select the entire screen option to share to your interviewer"},
+]
+
 

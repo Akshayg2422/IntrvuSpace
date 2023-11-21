@@ -18,11 +18,11 @@ function PreparingYourInterview({ isCompleted }: PreparingYourInterviewProps) {
 
 
     useEffect(() => {
-
         if (isCompleted) {
             setCurrentStep(steps.length - 1)
         }
     }, [isCompleted])
+    // 
 
 
 
@@ -45,6 +45,7 @@ function PreparingYourInterview({ isCompleted }: PreparingYourInterviewProps) {
         };
     }, []);
 
+    console.log("currentStep", currentStep);
 
 
     return (
@@ -58,7 +59,6 @@ function PreparingYourInterview({ isCompleted }: PreparingYourInterviewProps) {
 
                     return (
                         <div key={index} className={'d-flex align-items-center mb-2'}>
-
                             <div className={'d-flex align-items-center'}>
                                 {
                                     isSelected ?

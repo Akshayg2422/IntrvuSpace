@@ -9,10 +9,10 @@ import { Image } from "@Components";
 import { icons } from '@Assets'
 import './index.css'
 
-function MenuBar({ icon = icons.more, menuData, onClick }: TripleDotProps) {
+function MenuBar({ icon = icons.more, menuData, onClick, direction = "down" }: TripleDotProps) {
   return (
     <div>
-      <UncontrolledDropdown>
+      <UncontrolledDropdown direction={direction}>
         <DropdownToggle
           data-toggle={'dropdown'}
           tag={'span'}
@@ -20,14 +20,14 @@ function MenuBar({ icon = icons.more, menuData, onClick }: TripleDotProps) {
         >
           <Image src={icon} width={20} height={20} />
         </DropdownToggle>
-        <DropdownMenu right className={'shadow-none'} >
+        <DropdownMenu right className={'shadow-none'} style={{ zIndex: 9999 }} >
           {menuData &&
             menuData.length > 0 &&
             menuData.map((el: any, index: number) => {
               const { icon, name } = el;
               return (
                 <>
-                  <DropdownItem
+                  <DropdownItem className=""
                     onClick={(e) => {
                       if (onClick) {
                         onClick(el);

@@ -18,6 +18,8 @@ import {
   Spinner,
   TextArea,
   TopNavbarCorporateFlow,
+  WatchInterviewButtonIcon,
+  WatchInterviewModal,
   showToast,
 } from "@Components";
 import { useInput, useLoader, useModal, useNavigation } from "@Hooks";
@@ -41,6 +43,7 @@ import {
   showCreateForOthersJdModal,
   showCreateJddModal,
   deleteJd,
+  watchInterviewVideoUrl,
 } from "@Redux";
 import { ROUTES } from "@Routes";
 import { SERVER } from "@Services";
@@ -90,7 +93,7 @@ function AdminSchedules() {
     "In beta version, you can upload only max of " +
     CHAR_LENGTH +
     " characters.";
-  const { createJdModal, jdItem, createForOthersJdModal,jdItemNumOfPages,jdItemCurrentPages} = useSelector(
+  const { createJdModal, jdItem, createForOthersJdModal,jdItemNumOfPages,jdItemCurrentPages, interviewUrl} = useSelector(
     (state: any) => state.DashboardReducer
   );
 
@@ -180,9 +183,7 @@ function AdminSchedules() {
           setLoading(false);
        
         },
-        onError: () => () => {
-     
-         },
+        onError: () => () => {},
       })
     );
   };
@@ -225,7 +226,7 @@ function AdminSchedules() {
 
                       stopInterval();
                     },
-                    onError: (error: any) => () => { },
+                    onError: (error: any) => () => {},
                   })
                 );
               }, INTERVAL_TIME);
@@ -303,7 +304,7 @@ function AdminSchedules() {
                           clearInterval(intervalIdRef.current);
                         }
                       },
-                      onError: (error: any) => () => { },
+                      onError: (error: any) => () => {},
                     })
                   );
                 }, INTERVAL_TIME);
@@ -365,7 +366,7 @@ function AdminSchedules() {
                         clearInterval(intervalIdRef.current);
                       }
                     },
-                    onError: (error: any) => () => { },
+                    onError: (error: any) => () => {},
                   })
                 );
               }, INTERVAL_TIME);
@@ -415,7 +416,7 @@ function AdminSchedules() {
         onSuccess: () => () => {
           getKnowledgeGroupFromJdHandler(jdItemCurrentPages);
         },
-        onError: () => () => { },
+        onError: () => () => {},
       })
     );
   }
@@ -429,7 +430,7 @@ function AdminSchedules() {
         onSuccess: () => () => {
           getKnowledgeGroupFromJdHandler(jdItemCurrentPages);
         },
-        onError: () => () => { },
+        onError: () => () => {},
       })
     );
   }
@@ -449,7 +450,7 @@ function AdminSchedules() {
         onSuccess: () => () => {
           getKnowledgeGroupFromJdHandler(jdItemCurrentPages);
         },
-        onError: () => () => { },
+        onError: () => () => {},
       })
     );
   }
@@ -493,15 +494,14 @@ function AdminSchedules() {
 
   return (
     <>
-      <div className={'screen'}>
-
+      <div className={"screen"}>
         <TopNavbarCorporateFlow />
         {loading ? (
           <div className={"loader-container"}>
             <Spinner />
           </div>
         ) : jdItem && jdItem.length > 0 ? (
-          <div className={'screen-container'}>
+          <div className={"screen-container"}>
             {
               <div>
                 {jdItem &&
@@ -615,7 +615,9 @@ function AdminSchedules() {
                                         <span
                                           className="h4 text-primary ml-3 pointer"
                                           onClick={() => {
-                                            const updatedData: any = [...jdMore];
+                                            const updatedData: any = [
+                                              ...jdMore,
+                                            ];
                                             updatedData[index] = {
                                               ...updatedData[index],
                                               more: false,
@@ -635,7 +637,9 @@ function AdminSchedules() {
                                         <span
                                           className="h4 text-primary ml-1 pointer"
                                           onClick={() => {
-                                            const updatedData: any = [...jdMore];
+                                            const updatedData: any = [
+                                              ...jdMore,
+                                            ];
                                             updatedData[index] = {
                                               ...updatedData[index],
                                               more: true,
@@ -661,6 +665,8 @@ function AdminSchedules() {
                           {schedules &&
                             schedules.length > 0 &&
                             schedules.map((each: any, index: number) => {
+                              console.log("111", each);
+
                               const {
                                 is_complete,
                                 is_report_complete,
@@ -674,6 +680,7 @@ function AdminSchedules() {
                                 custom_interview_link,
                                 recording_url,
                                 interview_duration,
+                                interviewee_name,
                               } = each;
 
                               const basic_info =
@@ -700,12 +707,16 @@ function AdminSchedules() {
                                   return `${timeDifference} mins ago`;
                                 } else if (timeDifference < 1440) {
                                   const hours = Math.floor(timeDifference / 60);
-                                  return `${hours} ${hours === 1 ? "hour" : "hours"
-                                    } ago`;
+                                  return `${hours} ${
+                                    hours === 1 ? "hour" : "hours"
+                                  } ago`;
                                 } else {
-                                  const days = Math.floor(timeDifference / 1440);
-                                  return `${days} ${days === 1 ? "day" : "days"
-                                    } ago`;
+                                  const days = Math.floor(
+                                    timeDifference / 1440
+                                  );
+                                  return `${days} ${
+                                    days === 1 ? "day" : "days"
+                                  } ago`;
                                 }
                               };
 
@@ -719,9 +730,9 @@ function AdminSchedules() {
                                         <h5 className="m-0 p-0">
                                           {demoDisplayName
                                             ? demoDisplayName
-                                              .charAt(0)
-                                              .toUpperCase() +
-                                            demoDisplayName.slice(1)
+                                                .charAt(0)
+                                                .toUpperCase() +
+                                              demoDisplayName.slice(1)
                                             : "Interview " + (index + 1)}
                                         </h5>
                                         <h5 className="m-0 p-0 ml-2">
@@ -746,49 +757,34 @@ function AdminSchedules() {
                                     <h5 className="mb-0 text-center d-none d-lg-block d-md-block d-xl-block">
                                       {is_complete
                                         ? `Completed: ${getDisplayTimeFromMoment(
-                                          interview_end_time
-                                        )}`
+                                            interview_end_time
+                                          )}`
                                         : `Created at: ${getDisplayTimeFromMoment(
-                                          created_at
-                                        )}`}
+                                            created_at
+                                          )}`}
                                     </h5>
                                     <div className="col m-0 p-0 d-flex justify-content-end">
                                       <div className="row mr-lg-3 mr-sm-0 mr-0">
-                                        {is_complete && recording_url && (
-                                          <>
-                                            <UncontrolledTooltip
-                                              delay={0}
-                                              placement="top"
-                                              target={`tooltip1000`}
-                                            >
-                                              Watch Interview
-                                            </UncontrolledTooltip>
-                                            <div className="d-flex align-items-center mr-3">
-                                              <i
-                                                id={"tooltip1000"}
-                                                className="bi bi-eye-fill text-primary fa-lg pointer"
-                                                onClick={() => {
-                                                  setWatchInterviewUrl({
+                                        {/**
+                                         * Watch interview 
+                                         */}
+                                        {recording_url &&
+                                          recording_url.length > 0 && (
+
+                                            <WatchInterviewButtonIcon
+                                              id={"1000"}
+                                              onClick={() => {
+                                                openWatchInterviewModal.show();
+                                                dispatch(
+                                                  watchInterviewVideoUrl({
                                                     recording_url,
                                                     interview_duration,
-                                                  });
-                                                  if (
-                                                    getBrowserInfo()
-                                                      .browserName !==
-                                                    "Mozilla Firefox"
-                                                  ) {
-                                                    openWatchInterviewModal.show();
-                                                  } else {
-                                                    showToast(
-                                                      "Watch Interview is not supported in this browser",
-                                                      "info"
-                                                    );
-                                                  }
-                                                }}
-                                              ></i>
-                                            </div>
-                                          </>
-                                        )}
+                                                    interviewee_name,
+                                                  })
+                                                );
+                                              }}
+                                            />
+                                          )}
                                         {is_complete && is_report_complete && (
                                           <div>
                                             <Button
@@ -832,7 +828,10 @@ function AdminSchedules() {
                                           <MenuBar
                                             menuData={SCHEDULE_MENU}
                                             onClick={(action) =>
-                                              proceedMenuClickHandler(action, id)
+                                              proceedMenuClickHandler(
+                                                action,
+                                                id
+                                              )
                                             }
                                             icon={icons.more}
                                           />
@@ -843,11 +842,11 @@ function AdminSchedules() {
                                     <h5 className="mb-0 text-center d-block d-sm-none">
                                       {is_complete
                                         ? `Completed: ${getDisplayTimeFromMoment(
-                                          interview_end_time
-                                        )}`
+                                            interview_end_time
+                                          )}`
                                         : `Created at: ${getDisplayTimeFromMoment(
-                                          created_at
-                                        )}`}
+                                            created_at
+                                          )}`}
                                     </h5>
                                   </div>
                                   {index !== schedules.length - 1 && (
@@ -1246,8 +1245,8 @@ function AdminSchedules() {
         </Modal>
 
         {/**
-       * Add another form
-       */}
+         * Add another form
+         */}
         <Modal
           title={"Create Interview for Others"}
           isOpen={addAnotherModal.visible}
@@ -1359,7 +1358,7 @@ function AdminSchedules() {
 
         {/** watch interview modal */}
 
-        <Modal
+        {/* <Modal
           isOpen={openWatchInterviewModal.visible}
           size="lg"
           onClose={() => {
@@ -1400,7 +1399,18 @@ function AdminSchedules() {
               )}
             </div>
           </>
-        </Modal>
+        </Modal> */}
+
+        <WatchInterviewModal
+          isOpen={openWatchInterviewModal.visible}
+          onClose={() => {
+            openWatchInterviewModal.hide();
+            dispatch(watchInterviewVideoUrl(undefined));
+          }}
+          name={interviewUrl?.interviewee_name?.trim()}
+          subTitle={interviewUrl?.interview_duration}
+          urlData={interviewUrl}
+        />
       </div>
     </>
   );

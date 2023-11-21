@@ -1,8 +1,10 @@
 import {
   Button,
   DropDown,
-  Spinner
+  Spinner,
+  Image
 } from "@Components";
+
 import { useDropDown, useLoader } from "@Hooks";
 import { BasicReport, ReportHeader, DetailedReport } from '@Modules';
 import { fetchBasicReport } from "@Redux";
@@ -10,6 +12,7 @@ import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import ReactToPrint from "react-to-print";
+import { icons } from "@Assets";
 import './index.css';
 
 
@@ -82,6 +85,10 @@ function Report() {
 
   return (
     <div className={'screen'}>
+
+      {/* <div className={'back-container'}>
+        <Back />
+      </div> */}
       <div className={'report-dropdown-container'}>
         <div className="col-sm-3">
           <DropDown
@@ -119,7 +126,17 @@ function Report() {
           <ReportHeader details={report} />
           {reportType?.value?.id === REPORT_TYPE[0].id && <BasicReport details={report} />}
           {reportType?.value?.id === REPORT_TYPE[1].id && <DetailedReport details={report} />}
-
+          <div className="d-flex justify-content-end mt-8 mb-6">
+            <a
+              href={"https://www.intrvu.space"}
+              target="_blank"
+              rel="noreferrer"
+            >
+              <Image src={icons.poweredBy} height={50} style={{
+                objectFit: 'contain'
+              }} />
+            </a>
+          </div>
         </div>
       }
     </div>

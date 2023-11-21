@@ -18,9 +18,14 @@ const useInput = (initialValue: any) => {
       if (type === 'number') {
         setValue(Math.abs(parseInt(onChangeValue)));
       } else {
-        if(onChangeValue.trim().length>=0){
-        setValue(onChangeValue);
+        if(onChangeValue.trim()?.length==0){
+          setValue(onChangeValue.trim());
         }
+        else{
+          setValue(onChangeValue);
+
+        }
+        
       }
     }
   };

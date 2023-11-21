@@ -129,14 +129,18 @@
 }
 
 .skill-value {
+  display: flex;
   flex: 1;
-  font-size: 1rem !important;
+  font-size: 1rem;
   color: var(--secondary) !important;
   font-weight: 400 !important;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
 }
 
 .report-btn-container {
-  width: 155px;
+  width: 125px;
 }
 
 .skill-empty {

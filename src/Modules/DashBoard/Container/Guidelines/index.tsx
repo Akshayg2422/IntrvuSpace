@@ -33,7 +33,7 @@ const GO_TO_DASHBOARD_GUIDELINES = [
 
 function Guidelines({
     scheduleInfo = undefined,
-    loading,
+    loading = false,
     heading,
     onClick,
 }: GuidelinesProps) {
@@ -115,7 +115,7 @@ function Guidelines({
                                 <div className="pt-4 text-secondary col-12">
                                     {GO_TO_DASHBOARD_GUIDELINES.map((step, index) => (
                                         <span key={index} className="d-flex align-items-center pb-3">
-                                            {index === 2 ? <span><img className={'mb-sm-0 mb-3'} src={step.icon} height={22} /></span> : <img src={step.icon} height={22} />}
+                                            {index === 2 ? <span><img className={'mb-sm-0 mb-3'} src={step.icon} height={13} /></span> : <img src={step.icon} height={13} />}
                                             <small className="pl-2 m-0 font-weight-500 text-secondary">{step.title}</small>
                                         </span>
                                     ))}

@@ -4,7 +4,7 @@ import { useInput, useLoader, useModal } from '@Hooks';
 import { SettingHeader } from '@Modules';
 import { addSectorCorporate, getSectorCorporate } from '@Redux';
 import { ADD_SECTOR_CORPORATE_RULES, INITIAL_PAGE, capitalizeFirstLetter, getValidateError, ifObjectExist, paginationHandler, validate } from '@Utils';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 
@@ -31,6 +31,7 @@ function Sector() {
   const sectorDescription = useInput("");
   const [editId, setEditId] = useState<any>()
   const [selectedSector, setSelectedSector] = useState<any>(undefined)
+  const inputRef= useRef<any>(null)
 
 
   const MENU = [
@@ -210,6 +211,7 @@ function Sector() {
               heading={"Name"}
               value={sectorName.value}
               onChange={sectorName.onChange}
+              ref={inputRef}
             />
           </div>
         </div>

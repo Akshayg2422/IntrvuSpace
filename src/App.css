@@ -103,13 +103,18 @@ input[type=number] {
     background-color: var(--badge);
     border-radius: 20px;
     border-width: 0px;
-    padding: 5px 25px;
+    padding: 6px 20px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-left: 20px;
 }
 
+.back-container {
+    position: absolute;
+    left: 3%;
+    top: 65px;
+    z-index: 9999;
+}
 
 
 @media(max-width: 768px) {

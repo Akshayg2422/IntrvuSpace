@@ -3,6 +3,7 @@ import {
   Button,
   Image,
   ViewMore,
+  WatchInterviewButtonIcon,
   WatchInterviewModal,
   showToast,
 } from "@Components";
@@ -19,7 +20,6 @@ import { useDispatch, useSelector } from "react-redux";
 import "./index.css";
 import { JdItemProps } from "./interfaces";
 
-
 function JdItem({
   item,
   onViewMore,
@@ -32,10 +32,6 @@ function JdItem({
   const dispatch = useDispatch();
 
   const openWatchInterviewModal = useModal(false);
-
-
-
-  
 
   const {
     id,
@@ -167,7 +163,7 @@ function JdItem({
                 <div className={"skill-value font-weight-bold"}>
                   {"Aptitude"}
                 </div>
-                <div className={"skill-value"}>{""}</div>
+                <div className={"skill-value"}><div className={'report-btn-container'}>{""}</div></div>
                 <div className={"skill-empty"}>{""}</div>
               </div>
             </div>
@@ -200,7 +196,7 @@ function JdItem({
                     <div className={"completed-item-content"}>
                       <div className={"skill-empty"}>{""}</div>
                       <div className={"skill-value"}>{skill_matrix}</div>
-                      <div className={"skill-value ml-1"}>
+                      <div className={"skill-value"}>
                         {other_analytics?.communication}
                       </div>
                       <div className={"skill-value"}>
@@ -229,30 +225,20 @@ function JdItem({
                           </div>
                         )}
                       </div>
-                      <div className={"skill-empty text-center"}>
+                      <div className={"skill-empty d-flex align-items-center justify-content-center"}>
+
                         {recording_url && recording_url.length > 0 && (
-                          <i
-                            className="bi bi-eye-fill text-primary fa-lg pointer"
+                          <WatchInterviewButtonIcon
+                            id={"1000"}
                             onClick={() => {
-                              if (
-                                getBrowserInfo().browserName !==
-                                "Mozilla Firefox"
-                              ) {
-                                openWatchInterviewModal.show();
-                                dispatch(
-                                  watchInterviewVideoUrl({
-                                    recording_url,
-                                    interview_duration,
-                                    interviewee_name,
-                                    interviewee_email,
-                                  })
-                                );
-                              } else {
-                                showToast(
-                                  "Watch Interview is not supported in this browser",
-                                  "info"
-                                );
-                              }
+                              openWatchInterviewModal.show();
+                              dispatch(
+                                watchInterviewVideoUrl({
+                                  recording_url,
+                                  interview_duration,
+                                  interviewee_name,
+                                })
+                              );
                             }}
                           />
                         )}
