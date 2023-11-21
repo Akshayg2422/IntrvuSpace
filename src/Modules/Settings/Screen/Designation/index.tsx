@@ -447,10 +447,12 @@ function Designation() {
 
           <div className={"col-sm-6"}>
             <Input
+              className={'text-uppercase'}
               heading={"Reference No"}
               placeHolder={"Reference No"}
               value={referenceId.value}
               onChange={referenceId.onChange}
+              maxLength={12}
             />
           </div>
         </div>
