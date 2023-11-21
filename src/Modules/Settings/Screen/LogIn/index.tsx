@@ -11,16 +11,11 @@ function Login() {
 
   const { goTo } = useNavigation();
   const dispatch = useDispatch();
-
   const password = useInput("");
   const email = useInput("");
   const loginLoader = useLoader(false);
-
-
   const enterPress = useKeyPress("Enter");
   const { loginDetails } = useSelector((state: any) => state.AppReducer);
-
-
 
   useEffect(() => {
     if (enterPress) {
@@ -87,10 +82,7 @@ function Login() {
     } else {
       showToast(getValidateError(validation))
     }
-
-
   };
-
 
   function goToForgotPasswordScreen() {
     goTo(ROUTES["auth-module"].forgotPassword);
@@ -101,7 +93,6 @@ function Login() {
 
   }
 
-
   function goToRegisterCompanyScreen() {
     goTo(ROUTES["auth-module"]["register-company"]);
 
@@ -109,43 +100,43 @@ function Login() {
 
   return (
     <>
-    <div className={'auth-screen'}>
-      <div className={'auth-logo'}>
-        <Logo />
-      </div>
-      <div className={'auth-container'}>
-        <div className="text-sub-heading heading-text">Log in</div>
-        <Input
-          value={email.value}
-          placeholder="Email"
-          onChange={email.onChange}
-        />
-        <InputPassword
-          value={password?.value}
-          onChange={password.onChange}
-        />
-        <Button
-          loading={loginLoader.loader}
-          block
-          text={"Log in"}
-          onClick={loginApiHandler}
-        />
-
-        <h5
-          className={"forgot-password font-weight-700"}
-          onClick={goToForgotPasswordScreen}>
-          {'Forgot password?'}
-        </h5>
-
-        <div className="text-center font-size-md register">
-          <span className="text-secondary font-weight-700"> {"Not a member yet?"}</span>
-          <span className="text-primary font-weight-700 pointer ml-1" onClick={goToRegisterScreen}> {"Sign Up"}</span>
-          <span className="text-secondary font-weight-700 ml-1"> {"/"}</span>
-          <span className="text-primary font-weight-700 pointer ml-1" onClick={goToRegisterCompanyScreen}> {"Corporate"}</span>
+      <div className={'auth-screen'}>
+        <div className={'auth-logo'}>
+          <Logo />
         </div>
-      </div>
+        <div className={'auth-container'}>
+          <div className="text-sub-heading heading-text">Log in</div>
+          <Input
+            value={email.value}
+            placeholder="Email"
+            onChange={email.onChange}
+          />
+          <InputPassword
+            value={password?.value}
+            onChange={password.onChange}
+          />
+          <Button
+            loading={loginLoader.loader}
+            block
+            text={"Log in"}
+            onClick={loginApiHandler}
+          />
 
-    </div>
+          <h5
+            className={"forgot-password font-weight-700"}
+            onClick={goToForgotPasswordScreen}>
+            {'Forgot password?'}
+          </h5>
+
+          <div className="text-center font-size-md register">
+            <span className="text-secondary font-weight-700"> {"Not a member yet?"}</span>
+            <span className="text-primary font-weight-700 pointer ml-1" onClick={goToRegisterScreen}> {"Sign Up"}</span>
+            <span className="text-secondary font-weight-700 ml-1"> {"/"}</span>
+            <span className="text-primary font-weight-700 pointer ml-1" onClick={goToRegisterCompanyScreen}> {"Corporate"}</span>
+          </div>
+        </div>
+
+      </div>
     </>
   );
 }
