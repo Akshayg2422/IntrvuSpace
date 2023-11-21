@@ -13,6 +13,7 @@ import {
   InputHeading,
   MenuBar,
   Modal,
+  PageNation,
   Radio,
   Spinner,
   TextArea,
@@ -54,6 +55,7 @@ import {
   validate,
   CREATE_FOR_ADD_ANOTHER_RULES,
   getBrowserInfo,
+  paginationHandler,
 } from "@Utils";
 import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -91,8 +93,9 @@ function AdminSchedules() {
     "In beta version, you can upload only max of " +
     CHAR_LENGTH +
     " characters.";
-  const { createJdModal, jdItem, createForOthersJdModal, interviewUrl } =
-    useSelector((state: any) => state.DashboardReducer);
+  const { createJdModal, jdItem, createForOthersJdModal,jdItemNumOfPages,jdItemCurrentPages, interviewUrl} = useSelector(
+    (state: any) => state.DashboardReducer
+  );
 
   const { goTo } = useNavigation();
   const position = useInput("");
@@ -126,7 +129,9 @@ function AdminSchedules() {
   const noteForOthers = useInput("");
 
   const startInterviewLoader = useLoader(false);
+
   const createInterviewSuperAdminLoader = useLoader(false);
+
 
   /**
    * Add another start
@@ -146,6 +151,7 @@ function AdminSchedules() {
   const [selectedInterviewJd, setSelectedInterviewJd] = useState(undefined);
   const [notifyError, setNotifyError] = useState(false);
 
+
   /**
    * Add another end
    */
@@ -155,7 +161,7 @@ function AdminSchedules() {
   const openWatchInterviewModal = useModal(false);
 
   useEffect(() => {
-    getKnowledgeGroupFromJdHandler();
+    getKnowledgeGroupFromJdHandler(jdItemCurrentPages);
 
     return () => {
       stopInterval();
@@ -164,14 +170,18 @@ function AdminSchedules() {
 
   const dispatch = useDispatch();
 
-  const getKnowledgeGroupFromJdHandler = () => {
-    const params = { from_jd: true };
+  const getKnowledgeGroupFromJdHandler = (page_number:any) => {
+    setLoading(true);
+
+    const params = { from_jd: true,
+      page_number };
 
     dispatch(
       getJdItemList({
         params,
         onSuccess: () => () => {
           setLoading(false);
+       
         },
         onError: () => () => {},
       })
@@ -210,7 +220,7 @@ function AdminSchedules() {
                     onSuccess: (res: any) => () => {
                       generateJdModal.hide();
                       completedModal.show();
-                      getKnowledgeGroupFromJdHandler();
+                      getKnowledgeGroupFromJdHandler(jdItemCurrentPages);
                       resetValues();
                       // showToast(res.status, 'success');
 
@@ -288,7 +298,7 @@ function AdminSchedules() {
                       onSuccess: (res: any) => () => {
                         generateJdModal.hide();
                         completedModal.show();
-                        getKnowledgeGroupFromJdHandler();
+                        getKnowledgeGroupFromJdHandler(jdItemCurrentPages);
                         showToast(res.status, "success");
                         if (intervalIdRef.current) {
                           clearInterval(intervalIdRef.current);
@@ -350,7 +360,7 @@ function AdminSchedules() {
                       generateJdModal.hide();
                       completedModal.show();
                       createForOthersResetValues();
-                      getKnowledgeGroupFromJdHandler();
+                      getKnowledgeGroupFromJdHandler(jdItemCurrentPages);
 
                       if (intervalIdRef.current) {
                         clearInterval(intervalIdRef.current);
@@ -404,7 +414,7 @@ function AdminSchedules() {
       resetInterview({
         params,
         onSuccess: () => () => {
-          getKnowledgeGroupFromJdHandler();
+          getKnowledgeGroupFromJdHandler(jdItemCurrentPages);
         },
         onError: () => () => {},
       })
@@ -418,7 +428,7 @@ function AdminSchedules() {
       deleteInterview({
         params,
         onSuccess: () => () => {
-          getKnowledgeGroupFromJdHandler();
+          getKnowledgeGroupFromJdHandler(jdItemCurrentPages);
         },
         onError: () => () => {},
       })
@@ -438,7 +448,7 @@ function AdminSchedules() {
       deleteJd({
         params,
         onSuccess: () => () => {
-          getKnowledgeGroupFromJdHandler();
+          getKnowledgeGroupFromJdHandler(jdItemCurrentPages);
         },
         onError: () => () => {},
       })
@@ -851,6 +861,31 @@ function AdminSchedules() {
                   })}
               </div>
             }
+                {jdItemNumOfPages > 1 && (
+            <div className="mt-3">
+              <PageNation
+                currentPage={jdItemCurrentPages}
+                noOfPage={jdItemNumOfPages}
+                isPagination={jdItemNumOfPages}
+                paginationNumberClick={(currentPage) => {
+                  getKnowledgeGroupFromJdHandler(
+                    paginationHandler("current", currentPage)
+                  );
+                }}
+                previousClick={() => {
+                  getKnowledgeGroupFromJdHandler(
+                    paginationHandler("prev", jdItemCurrentPages)
+                  );
+                }}
+                nextClick={() => {
+                  getKnowledgeGroupFromJdHandler(
+                    paginationHandler("next", jdItemCurrentPages)
+                  );
+                }}
+              />
+            </div>
+          )}
+
           </div>
         ) : (
           <UploadJdCard />

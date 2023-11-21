@@ -34,6 +34,9 @@ const initialState: DashboardProp = {
   recordingPermission: false,
   jdVariantData: undefined,
   jdItem: undefined,
+  jdItemNumOfPages:undefined,
+  jdItemCurrentPages:1,
+  jdItemCount:undefined,
   scheduleInfo: undefined,
   selectedSection: 0,
   corporateScheduleDetails: undefined,
@@ -365,10 +368,23 @@ const DashboardReducer = (state = initialState, action: any) => {
      * get jd item list
      */
     case ActionTypes.GET_JD_ITEM_LIST:
-      state = { ...state };
+      state = { ...state,
+        jdItem:[],
+        jdItemNumOfPages:0,
+        jdItemCurrentPages:1
+        
+       };
       break;
     case ActionTypes.GET_JD_ITEM_LIST_SUCCESS:
-      state = { ...state, jdItem: action.payload.details?.jd_items };
+      const {jd_items}=action?.payload?.details
+      state = { ...state, 
+        jdItem: jd_items?.data?jd_items?.data:jd_items,
+        jdItemNumOfPages: jd_items?.num_pages,
+        jdItemCurrentPages:
+        jd_items?.next_page === -1
+          ? jd_items?.num_pages
+          :jd_items?.next_page - 1,
+      };
       break;
     case ActionTypes.GET_JD_ITEM_LIST_FAILURE:
       state = { ...state, jdItem: undefined };
@@ -378,7 +394,7 @@ const DashboardReducer = (state = initialState, action: any) => {
       state = { ...state, jdItem: action.payload };
       break;
 
-    // GET_SCHEDULE_BASIC_INFO
+      /// neww 
 
     case ActionTypes.GET_SCHEDULE_BASIC_INFO:
       state = { ...state, scheduleInfo: undefined };
