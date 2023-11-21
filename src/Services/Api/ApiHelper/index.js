@@ -33,8 +33,8 @@ export const SERVER =
 
 
 
-export const CALL_WEBSOCKET = `wss://mockeazyprimary.leorainfotech.in/aaa`
-// export const CALL_WEBSOCKET = `wss://mepp.leorainfotech.in/aaa`
+// export const CALL_WEBSOCKET = `wss://mockeazyprimary.leorainfotech.in/aaa`
+export const CALL_WEBSOCKET = `wss://mepp.leorainfotech.in/aaa`
 
 // export const CALL_WEBSOCKET = `ws://192.168.128.126:8005/aaa`
 
