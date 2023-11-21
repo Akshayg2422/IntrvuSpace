@@ -31,7 +31,7 @@ function Sector() {
   const sectorDescription = useInput("");
   const [editId, setEditId] = useState<any>()
   const [selectedSector, setSelectedSector] = useState<any>(undefined)
-  const inputRef= useRef<any>(null)
+  const inputFocus= useRef<any>(null)
 
 
   const MENU = [
@@ -207,11 +207,11 @@ function Sector() {
       >
         <div className='row'>
           <div className='col-sm-6'>
-            <AutoFocusInput
+            <Input
               heading={"Name"}
               value={sectorName.value}
               onChange={sectorName.onChange}
-              ref={inputRef}
+              innerRef={inputFocus}
             />
           </div>
         </div>

@@ -27,7 +27,7 @@ function Department() {
   const loader = useLoader(true)
   const addLoader = useLoader(false);
   const departmentName = useInput("");
-  const inputRef = useRef<any>()
+  const inputFocus = useRef<any>()
 
 
   useEffect(() => {
@@ -172,9 +172,9 @@ function Department() {
       >
         <div className='row'>
           <div className='col-sm-6'>
-            <AutoFocusInput
+            <Input
               heading={"Name"}
-              ref={inputRef}
+              innerRef={inputFocus}
               value={departmentName.value}
               onChange={departmentName.onChange}
             />

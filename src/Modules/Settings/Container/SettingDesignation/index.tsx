@@ -40,7 +40,7 @@ function SettingDesignation() {
     const [isSuperAdmin, setIsSuperAdmin] = useState(false);
     const [editId, setEditId] = useState<any>()
     const addLoader = useLoader(false);
-    const inputRef = useRef<any>()
+    const inputFocus = useRef<any>()
 
 
     useEffect(() => {
@@ -237,11 +237,11 @@ function SettingDesignation() {
             >
                 <div className='row'>
                     <div className='col-sm-6'>
-                        <AutoFocusInput
+                        <Input
                             heading={"Name"}
                             value={designationName.value}
                             onChange={designationName.onChange}
-                            ref={inputRef}
+                            innerRef={inputFocus}
                         />
                     </div>
                 </div>

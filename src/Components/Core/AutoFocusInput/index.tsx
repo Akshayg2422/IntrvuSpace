@@ -14,9 +14,6 @@ const AutoFocusInput = React.forwardRef(({ id, className, heading, variant = 'de
     }
   }, [ref]);
 
-
-
-
   return (
 
     <FormGroup className={noSpace ? 'm-0 b-0' : ''}>

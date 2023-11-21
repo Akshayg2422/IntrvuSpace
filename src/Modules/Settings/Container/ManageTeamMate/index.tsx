@@ -36,7 +36,7 @@ function ManageTeamMate() {
   const teamDesignation = useDropDown({});
   const [editId, setEditId] = useState<any>()
   const [selectedTeam, setSelectedTeam] = useState<any>(undefined)
-  const inputRef = useRef<any>(null)
+  const inputFocus = useRef<any>(null)
 
 
 
@@ -280,12 +280,12 @@ function ManageTeamMate() {
 
         <div className='row'>
           <div className="col-sm-6">
-            <AutoFocusInput
+            <Input
               heading={"First Name"}
               placeholder={'First Name'}
               value={firstName.value}
               onChange={firstName.onChange}
-             ref={inputRef}
+              innerRef={inputFocus}
               
             />
           </div>
