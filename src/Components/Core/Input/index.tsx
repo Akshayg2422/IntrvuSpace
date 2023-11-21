@@ -1,16 +1,16 @@
 
 
-import React, { useEffect, useRef } from 'react';
+import React,{ useEffect, useRef }  from 'react';
 import { InputHeading } from '@Components';
 import { InputProps } from './interfaces';
 import { FormGroup, Input as RsInput } from 'reactstrap';
 
 const Input = React.forwardRef(({ id, className, heading, innerRef, variant = 'default', isMandatory, textColor, noSpace, ...rest }: InputProps,ref:any) => {
-    const inputRef = useRef<any>();
+    const inputFocus = useRef<any>();
 
     useEffect(() => {
         if (innerRef) {
-            inputRef.current.focus();
+            inputFocus.current.focus();
         }
     }, [innerRef]);
 
@@ -18,7 +18,7 @@ const Input = React.forwardRef(({ id, className, heading, innerRef, variant = 'd
         <FormGroup className={noSpace ? 'm-0 b-0' : ''}>
             <InputHeading heading={heading} id={id} isMandatory={isMandatory} />
             <RsInput
-                innerRef={inputRef}
+                innerRef={inputFocus}
                 className={`${className} ${variant !== 'default' && 'form-control-' + variant} form-control-md`}
                 id={id}
                 ref={ref}

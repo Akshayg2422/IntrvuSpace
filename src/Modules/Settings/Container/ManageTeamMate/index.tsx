@@ -36,7 +36,7 @@ function ManageTeamMate() {
   const teamDesignation = useDropDown({});
   const [editId, setEditId] = useState<any>()
   const [selectedTeam, setSelectedTeam] = useState<any>(undefined)
-  const inputFocus = useRef<any>(null)
+  const inFocus = useRef<any>(null)
 
 
 
@@ -285,7 +285,7 @@ function ManageTeamMate() {
               placeholder={'First Name'}
               value={firstName.value}
               onChange={firstName.onChange}
-              innerRef={inputFocus}
+              innerRef={inFocus}
               
             />
           </div>

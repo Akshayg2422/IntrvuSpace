@@ -40,7 +40,7 @@ function SettingDesignation() {
     const [isSuperAdmin, setIsSuperAdmin] = useState(false);
     const [editId, setEditId] = useState<any>()
     const addLoader = useLoader(false);
-    const inputFocus = useRef<any>()
+    const inFocus = useRef<any>()
 
 
     useEffect(() => {
@@ -241,7 +241,7 @@ function SettingDesignation() {
                             heading={"Name"}
                             value={designationName.value}
                             onChange={designationName.onChange}
-                            innerRef={inputFocus}
+                            innerRef={inFocus}
                         />
                     </div>
                 </div>
