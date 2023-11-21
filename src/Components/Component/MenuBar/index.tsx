@@ -9,10 +9,10 @@ import { Image } from "@Components";
 import { icons } from '@Assets'
 import './index.css'
 
-function MenuBar({ icon = icons.more, menuData, onClick }: TripleDotProps) {
+function MenuBar({ icon = icons.more, menuData, onClick, direction = "down" }: TripleDotProps) {
   return (
     <div>
-      <UncontrolledDropdown>
+      <UncontrolledDropdown direction={direction}>
         <DropdownToggle
           data-toggle={'dropdown'}
           tag={'span'}
@@ -27,7 +27,7 @@ function MenuBar({ icon = icons.more, menuData, onClick }: TripleDotProps) {
               const { icon, name } = el;
               return (
                 <>
-                  <DropdownItem
+                  <DropdownItem className=""
                     onClick={(e) => {
                       if (onClick) {
                         onClick(el);

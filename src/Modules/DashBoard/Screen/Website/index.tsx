@@ -34,7 +34,6 @@ function Website() {
         {/* <From /> */}
         {/* <AuthenticationAndDashboardModule />
         <Pricing /> */}
-        <WebsiteContactUs />
         <WebsiteFooter />
       </div>
     </div>

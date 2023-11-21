@@ -159,8 +159,9 @@ function TopNavbar() {
 
               <NavItem className="d-none d-lg-block ml-2">
                 <div className='row align-items-center m-auto'>
+
                   <span className='mb-0 text-black font-weight-400 pointer' onClick={toggleDropdownHandler}>
-                    {loginDetails?.user}
+                    {loginDetails?.user.charAt(0).toUpperCase() + loginDetails?.user.slice(1)}
                   </span>
 
                   <Nav navbar>

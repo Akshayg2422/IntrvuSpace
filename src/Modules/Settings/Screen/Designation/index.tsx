@@ -15,6 +15,7 @@ import {
   showToast,
   TopNavbarCorporateFlow,
   TopNavbar,
+  Checkbox,
 } from "@Components";
 import {
   useDropDown,
@@ -92,6 +93,7 @@ function Designation() {
   const referenceId = useInput("");
 
   const [isPositionSearch, setIsPositionSearch] = useState(false);
+  const [videoRecordMandatory, setVideoRecordMandatory] = useState(true)
 
   /**
    * loader state
@@ -175,6 +177,8 @@ function Designation() {
       reference_id: referenceId.value,
       vacancies: vacancies?.value,
       interview_duration: duration?.value,
+      video_recording_mandatory: videoRecordMandatory
+
     };
 
     const validation = validate(CREATE_CORPORATE_SCHEDULE_RULES, params);
@@ -250,6 +254,8 @@ function Designation() {
       })
     );
   };
+  console.log('111111111111========>', videoRecordMandatory);
+
 
   /**
    * close create opening modal
@@ -284,6 +290,7 @@ function Designation() {
           <div className="row">
             <div className="col-sm-3">
               <Input
+                id={'search'}
                 heading={"Search"}
                 type={"text"}
                 placeHolder={"Job Title, Reference No..."}
@@ -440,10 +447,12 @@ function Designation() {
 
           <div className={"col-sm-6"}>
             <Input
+              className={'text-uppercase'}
               heading={"Reference No"}
               placeHolder={"Reference No"}
               value={referenceId.value}
               onChange={referenceId.onChange}
+              maxLength={12}
             />
           </div>
         </div>
@@ -511,6 +520,18 @@ function Designation() {
               onSelected={setSelectedSector}
             />
           </div>
+          <div className={"col-sm-6"}>
+            <Checkbox
+              id={"video-Recording"}
+              className={"text-primary"}
+              text={"Video recording mandatory"}
+              defaultChecked={videoRecordMandatory}
+              onCheckChange={(checked) => {
+                setVideoRecordMandatory(checked);
+              }}
+            />
+          </div>
+
         </div>
       </Modal>
     </div>

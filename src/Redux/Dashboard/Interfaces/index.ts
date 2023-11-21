@@ -2,6 +2,7 @@ export interface DashboardProp {
   userLoggedIn: boolean
   chat: any
   GroupDetails: any
+  jdItemCount:any
   selectedRole: any
   knowledgeGroups: any
   sectors: any
@@ -64,4 +65,6 @@ export interface DashboardProp {
   refreshCorporateSchedules?: boolean;
   candidatesCount?: number;
   interviewUrl?: any;
+  jdItemNumOfPages:any,
+  jdItemCurrentPages:any,
 }
