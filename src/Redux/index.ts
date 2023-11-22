@@ -1,6 +1,8 @@
 export * from './App';
 export * from './Dashboard'
 export * from './Auth'
+export * from './SuperAdmin'
+
 
 
 

@@ -168,6 +168,8 @@ function JdItem({
               </div>
             </div>
             {completedSchedules.map((item: any, index: number) => {
+              console.log("item", item);
+              
               const {
                 id,
                 report_analytics,
@@ -177,6 +179,7 @@ function JdItem({
                 recording_url,
                 interviewee_email,
                 interviewee_name,
+                is_video_recording_manditory
               } = item;
 
               const { skill_matrix, other_analytics } = report_analytics || {};

@@ -12,7 +12,8 @@ const initialState: AuthProps = {
     registerCompanyDetails: undefined,
     verifyOtp: undefined,
     VerificationEmail: undefined,
-    userEmail: undefined
+    userEmail: undefined,
+    dashboardDetails: undefined
 };
 
 
@@ -54,6 +55,21 @@ const AuthReducer = (state = initialState, action: any) => {
             break;
         case ActionTypes.FETCH_MEMBER_USING_LOGIN_OTP_FAILURE:
             state = { ...state, memberUsingLoginOtp: undefined };
+            break;
+
+
+        /**
+         * get Dashboard 
+         */
+
+        case ActionTypes.GET_DASHBOARD:
+            state = { ...state, dashboardDetails: undefined };
+            break;
+        case ActionTypes.GET_DASHBOARD_SUCCESS:
+            state = { ...state, dashboardDetails: action.payload };
+            break;
+        case ActionTypes.GET_DASHBOARD_FAILURE:
+            state = { ...state, dashboardDetails: undefined };
             break;
 
 

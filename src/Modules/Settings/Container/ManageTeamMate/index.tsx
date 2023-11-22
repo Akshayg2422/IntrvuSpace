@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Spinner, NoDataFound, CommonTable, MenuBar, Modal, Input, DropDown, showToast } from '@Components';
+import { Spinner, NoDataFound, CommonTable, MenuBar, Modal, Input, DropDown, showToast, AutoFocusInput } from '@Components';
 import { SettingHeader } from '@Modules';
 import { useDropDown, useInput, useLoader, useModal } from '@Hooks';
 import { INITIAL_PAGE, paginationHandler, capitalizeFirstLetter, getDropDownDisplayData, getValidateError, ifObjectExist, validate, USER_FORM_RULES } from '@Utils';
@@ -36,7 +36,7 @@ function ManageTeamMate() {
   const teamDesignation = useDropDown({});
   const [editId, setEditId] = useState<any>()
   const [selectedTeam, setSelectedTeam] = useState<any>(undefined)
-  const inputRef = useRef<any>(null)
+  const inFocus = useRef<any>(null)
 
 
 
@@ -285,8 +285,8 @@ function ManageTeamMate() {
               placeholder={'First Name'}
               value={firstName.value}
               onChange={firstName.onChange}
-              ref={inputRef}
-
+              innerRef={inFocus}
+              
             />
           </div>
           <div className={'col-sm-6'}>
@@ -295,7 +295,6 @@ function ManageTeamMate() {
               placeholder={'Last Name'}
               value={lastName.value}
               onChange={lastName.onChange}
-            // ref={inputRef}
             />
           </div>
 
@@ -308,7 +307,6 @@ function ManageTeamMate() {
               placeholder={'Email'}
               value={teamEmail.value}
               onChange={teamEmail.onChange}
-            // ref={inputRef}
             />
           </div>
           <div className={'col-sm-6'}>
@@ -319,7 +317,6 @@ function ManageTeamMate() {
               placeholder={'Mobile Number'}
               value={mobileNumber.value}
               onChange={mobileNumber.onChange}
-            // ref={inputRef}
 
             />
           </div>

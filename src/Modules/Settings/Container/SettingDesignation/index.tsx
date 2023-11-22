@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Spinner, Modal, Input, CommonTable, NoDataFound, Image, MenuBar, Checkbox, showToast } from '@Components';
+import { Spinner, Modal, Input, CommonTable, NoDataFound, Image, MenuBar, Checkbox, showToast, AutoFocusInput } from '@Components';
 import { SettingHeader } from '@Modules';
 import { useInput, useLoader, useModal } from '@Hooks';
 import { getDesignations, addDesignation } from '@Redux';
@@ -40,7 +40,7 @@ function SettingDesignation() {
     const [isSuperAdmin, setIsSuperAdmin] = useState(false);
     const [editId, setEditId] = useState<any>()
     const addLoader = useLoader(false);
-    const inputRef = useRef<any>()
+    const inFocus = useRef<any>()
 
 
     useEffect(() => {
@@ -144,7 +144,7 @@ function SettingDesignation() {
                 "HR": getActiveStatus(is_hr),
                 "HR Admin": getActiveStatus(is_hr_admin),
                 "Super Admin": getActiveStatus(is_super_admin),
-                // "Department Admin": getActiveStatus(is_department_admin),
+                "Department Admin": getActiveStatus(is_department_admin),
 
                 " ": <MenuBar
                     menuData={MENU}
@@ -241,7 +241,7 @@ function SettingDesignation() {
                             heading={"Name"}
                             value={designationName.value}
                             onChange={designationName.onChange}
-                            ref={inputRef}
+                            innerRef={inFocus}
                         />
                     </div>
                 </div>
@@ -266,15 +266,12 @@ function SettingDesignation() {
                         defaultChecked={isSuperAdmin}
                         onCheckChange={setIsSuperAdmin}
                     />
-                    {/* <Checkbox
+                    <Checkbox
                         id={'department-admin'}
                         text={'Department Admin'}
                         defaultChecked={isDepartmentAdmin}
                         onCheckChange={setIsDepartmentAdmin}
-                    /> */}
-
-
-
+                    />
                 </div>
             </Modal >
         </>

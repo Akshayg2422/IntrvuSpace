@@ -22,7 +22,7 @@ function UploadCorporateOpeningsCard() {
 
     return (
         <CreateNew
-            image={image.StreamlinedInterviewAndInsights}
+            image={image.StreamlinedAutomatedInterview}
             title={`Streamlined \n Interviews & Insights`}
             description={'Get access to interview video recordings and detailed curated reports on Candidates for watch interview'}
             keyPoints={INSIGHTS_AND_REPORTS}

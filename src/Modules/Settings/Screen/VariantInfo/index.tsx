@@ -169,6 +169,7 @@ function VariantInfo() {
   return (
     <>
       <div className={"screen-padding"}>
+        
         {!corporateScheduleDetails ? (
           <div
             className={

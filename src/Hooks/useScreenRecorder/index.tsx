@@ -21,10 +21,12 @@ const useScreenRecorder = () => {
   const [recordedAudioData, setRecordedAudioData] = useState<any>([]);
   const intervalIdRef = useRef<any>(null);
   const [recordStatus, setRecordStatus] = useState<any>(); // true
+  const [isScreenRecordingReady, setIsScreenRecordingReady] = useState(false);
+  
   const { scheduleId, VideoSessionDetails } = useSelector(
     (state: any) => state.DashboardReducer
   );
-  const [isScreenRecordingReady, setIsScreenRecordingReady] = useState(false);
+  
 
   const dispatch = useDispatch();
 
@@ -33,12 +35,11 @@ const useScreenRecorder = () => {
   const startScreenRecording = async () => {
 
     try {
-      if (getBrowserInfo().browserName !== "Mozilla Firefox") {
+      if (getBrowserInfo().browserName !== "Mozilla Firefox" && getBrowserInfo().browserName !== "Safari") {
         const audioStream = await navigator.mediaDevices.getUserMedia({
           audio: true,
         });
 
-        console.log("1111111111", audioStream);
         
         const videoStream = await navigator.mediaDevices.getDisplayMedia({
           video: {
@@ -46,7 +47,6 @@ const useScreenRecorder = () => {
           },
         } as never);
 
-        console.log("222222222", videoStream);
         
 
         const stream = new MediaStream([
@@ -54,7 +54,6 @@ const useScreenRecorder = () => {
           ...videoStream.getTracks(),
         ]);
 
-        console.log("33333333333", stream);
         
 
         const tracks = videoStream.getTracks();
@@ -62,6 +61,8 @@ const useScreenRecorder = () => {
         if (tracks.length > 0) {
           const track = tracks[0];
           const settings: any = track.getSettings();
+          console.log("settings", settings);
+          
 
           if (settings.displaySurface === "monitor") {
             setMediaStream(stream);
@@ -100,7 +101,7 @@ const useScreenRecorder = () => {
     intervalIdRef.current = setInterval(() => {
       if (recordedVideoData && recordedVideoData.length > 0) {
         const videoBlob = new Blob(recordedVideoData, { type: "video/webm" });
-        console.log("blobbbb====>", videoBlob);
+        // console.log("blobbbb====>", videoBlob);
         sendBlobToServer(videoBlob, false);
         recordedVideoData.length = 0;
       }

@@ -28,27 +28,26 @@ import { capitalizeFirstLetter, filteredName } from "@Utils";
 function TopNavbarCorporateFlow() {
   const logoutModal = useModal(false);
   const { goTo } = useNavigation();
-  const { loginDetails } = useSelector((state: any) => state.AppReducer);
+
   const { corporateScheduleCount } = useSelector(
     (state: any) => state.DashboardReducer
   );
   const dispatch = useDispatch();
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
-  const { is_super_admin } = loginDetails || {}
+
+  const { dashboardDetails } = useSelector((state: any) => state.AuthReducer);
+
+  const { name } = dashboardDetails?.basic_info || {}
+  const { is_super_admin } = dashboardDetails?.rights || {}
+
+
+
 
   const HEADER_MENU = [
-    // { id: '1', name: 'Home', value: 'HM', route: ROUTES['designation-module']['admin-schedule'] },
-    // { id: '2', name: 'Ongoing Schedule', value: 'OGS', route: ROUTES['designation-module']['scheduling-interview'] },
-    { id: '3', name: 'Settings', value: 'ST', route: ROUTES['designation-module'].settings },
+    ...(is_super_admin ? [{ id: '1', name: 'Settings', value: 'ST', route: ROUTES['designation-module'].settings }] : []),
+    { id: '2', name: 'Logout', value: 'LG', route: "" }
   ]
-
-  function getCandidateMenu() {
-    return [
-      ...(is_super_admin ? HEADER_MENU : []),
-      ...[{ id: '4', name: 'Logout', value: 'LG', route: "" }],
-    ] as never[];
-  }
 
 
   const dropdownHandler = (item: any) => {
@@ -137,7 +136,7 @@ function TopNavbarCorporateFlow() {
               <Row className="d-flex justify-content-between">
                 <Col>
                   <div className="font-weight-bold text-black">
-                    {loginDetails?.user}
+                    {capitalizeFirstLetter(name)}
                   </div>
                 </Col>
                 <Col className="collapse-close" xs="6">
@@ -162,24 +161,11 @@ function TopNavbarCorporateFlow() {
               className="align-items-lg-center ml-lg-auto mr--4 justify-content-end"
               navbar
             >
-              {/* {loginDetails?.is_super_admin && (
-                <NavItem>
-                  <NavLink to="/admin-schedule" tag={Link}>
-                    <div className={'btn-wrapper ml-md--9'}>
-                      <Button
-                        block
-                        text={"Create For Others"}
-                        onClick={handleCreateForOthersInterviewClick}
-                      />
-                    </div>
-                  </NavLink>
-                </NavItem>
-              )} */}
 
               {corporateScheduleCount >
                 0 && (
                   <NavItem>
-                    <NavLink to="/schedule" tag={Link}>
+                    <NavLink tag={Link}>
                       <div className={'btn-wrapper'}>
                         <Button
                           block
@@ -196,7 +182,7 @@ function TopNavbarCorporateFlow() {
                     className="mb-0 text-secondary font-weight-400 pointer"
                     onClick={toggleDropdown}
                   >
-                    {filteredName(capitalizeFirstLetter(loginDetails?.user), 20)}
+                    {filteredName(capitalizeFirstLetter(name), 20)}
                   </span>
                   <Nav navbar>
                     <UncontrolledDropdown
@@ -220,7 +206,7 @@ function TopNavbarCorporateFlow() {
                         </Media>
                       </DropdownToggle>
                       <DropdownMenu right>
-                        {getCandidateMenu().map((item: any) => {
+                        {HEADER_MENU.map((item: any) => {
 
                           return (
                             <DropdownItem
@@ -228,7 +214,6 @@ function TopNavbarCorporateFlow() {
                                 e.preventDefault();
                                 dropdownHandler(item);
                                 setDropdownOpen(false);
-                                console.log('333333333333333333333')
                               }}
                             >
                               {/* <i className={item.icon}></i> */}
@@ -242,7 +227,7 @@ function TopNavbarCorporateFlow() {
                 </div>
               </NavItem>
               <div className="d-xl-none d-lg-none">
-                {getCandidateMenu().map((item: any) => {
+                {HEADER_MENU.map((item: any) => {
 
                   const { id, name } = item;
 

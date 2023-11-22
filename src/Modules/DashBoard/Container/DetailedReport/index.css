@@ -35,7 +35,7 @@
 .detailed-job-description-item {
     display: flex;
     justify-content: space-between;
-    padding: 50px;
+    padding: 25px;
     margin-top: 40px;
     width: 100%;
     align-items: center;

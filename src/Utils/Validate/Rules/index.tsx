@@ -39,7 +39,7 @@ export const PINCODE = {
 export const PASSWORD = {
   password: {
     presence: { allowEmpty: false, message: "Password cannot be empty" },
-    length: { minimum: 8, message: "Password minimum 8 chars" },
+    length: { minimum: 6, message: "Password minimum 6 chars" },
   }
 }
 
@@ -72,20 +72,14 @@ export const EMAIL_VERIFICATION_RULES = {
 export const RESET_PASSWORD_RULES = {
   ...EMAIL_RULES,
   ...OTP_NUMBER_RULES,
-  password: {
-    presence: { message: "Password cannot be empty" },
-    length: { minimum: 8, message: "Password minimum 8 chars" },
-  }
+  ...PASSWORD
 }
 
 export const REGISTER_RULES = {
   ...FIRST_NAME_RULES,
   ...EMAIL_RULES,
   ...MOBILE_NUMBER_RULES,
-  password: {
-    presence: { message: "Password cannot be empty" },
-    length: { minimum: 6, message: "Password minimum 6 chars" },
-  }
+  ...PASSWORD
 }
 
 
@@ -190,7 +184,10 @@ export const ADD_DEPARTMENT_CORPORATE_RULES = {
 }
 
 export const ADD_DESIGNATION_CORPORATE_RULES = {
-  ...NAME_RULES
+  name: {
+    presence: { allowEmpty: false, message: "Name cannot be empty" },
+    length: { minimum: 2, message: 'Name minimum 2 chars' }
+  }
 }
 
 

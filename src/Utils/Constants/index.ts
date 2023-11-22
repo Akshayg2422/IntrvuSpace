@@ -1,6 +1,12 @@
 import { icons } from "@Assets";
 
+export const TYPE_CORPORATE = 'CP'
+export const TYPE_JOB_SEEKER = 'JS'
+export const TYPE_SUPER_ADMIN = 'SA'
+
+
 export const DEFAULT_TASK_GROUP = { id: 'ALL', Photo: null, code: "ALL" }
+
 
 export const ERRORS = {
   SOMETHING_WENT_WRONG: 'Something went wrong, please try again later',
@@ -1588,8 +1594,16 @@ export const COUNTRY_ISO_CODE = [
 ]
 
 export const ENTIRE_SCREEN_CONTEXT = [
-  {id: 1, icon: icons.check, text: "Please confirm to record this interview"},
-  {id: 2, icon: icons.check, text: "Click to select the entire screen option to share to your interviewer"},
+  { id: 1, icon: icons.check, text: "Please confirm to record this interview" },
+  { id: 2, icon: icons.check, text: "Click to select the entire screen option to share to your interviewer" },
 ]
 
+export const BROWSER_PERMISSION_CONTEXT = [
+  {id: 1, icon: icons.frame, text: "Browser permission to record the interview is not allowed in this browser", h: "24"},
+  {id: 2, icon: icons.check, text: "Use other browsers like Google Chrome, Microsoft Edge, Brave etc", h: "10"},
+]
 
+export const WATCH_VIDEO_PERMISSION_CONTEXT = [
+  {id: 1, icon: icons.frame, text: "Browser permission to watch the recorded interview is not allowed in this browser", h: "24"},
+  {id: 2, icon: icons.check, text: "Use other browsers like Google Chrome, Microsoft Edge, Brave etc", h: "10"},
+]

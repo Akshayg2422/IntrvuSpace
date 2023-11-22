@@ -1,52 +1,52 @@
-import React, { useEffect, useState } from "react";
-import { CandidatesProps } from "./interfaces";
+import { icons } from "@Assets";
 import {
-  Input,
+  Alert,
   Button,
-  DropDown,
   CommonTable,
+  DropDown,
   Image,
+  Input,
   MenuBar,
   Modal,
-  showToast,
   NoDataFound,
-  Alert,
   Spinner,
   WatchInterviewModal,
+  showToast,
 } from "@Components";
 import {
-  fetchCandidatesCorporate,
-  createSchedule,
-  refreshCorporateSchedule,
-  postManualApprovalOnCandidate,
+  useDropDown,
+  useInput,
+  useKeyPress,
+  useLoader,
+  useModal,
+  useNavigation,
+} from "@Hooks";
+import { BulkUpload } from "@Modules";
+import {
   bulkUploadCandidates,
+  createSchedule,
+  fetchCandidatesCorporate,
+  postManualApprovalOnCandidate,
+  refreshCorporateSchedule,
   watchInterviewVideoUrl,
 } from "@Redux";
-import { useSelector, useDispatch } from "react-redux";
+import { ROUTES } from "@Routes";
 import {
-  paginationHandler,
-  capitalizeFirstLetter,
-  validate,
   VALIDATE_ADD_NEW_CANDIDATES_RULES,
-  ifObjectExist,
-  getValidateError,
+  capitalizeFirstLetter,
+  copyToClipboard,
   getBrowserInfo,
   getPhoto,
-  copyToClipboard,
+  getValidateError,
+  ifObjectExist,
+  paginationHandler,
+  validate,
+  WATCH_VIDEO_PERMISSION_CONTEXT,
 } from "@Utils";
-import { icons, image } from "@Assets";
-import {
-  useModal,
-  useInput,
-  useLoader,
-  useDropDown,
-  useNavigation,
-  useKeyPress,
-} from "@Hooks";
-import { ROUTES } from "@Routes";
-import { BulkUpload } from "@Modules";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import "./index.css";
-import { SERVER } from "@Services";
+import { CandidatesProps } from "./interfaces";
 
 function Candidates({ id, details }: CandidatesProps) {
   const { goTo } = useNavigation();
@@ -56,19 +56,24 @@ function Candidates({ id, details }: CandidatesProps) {
     { id: 1, name: "Approve Manually" },
     { id: 2, name: "Reject Manually" },
     { id: 3, name: "Remove Candidate" },
-    { id: 4, name: "Block Interview" },
-    { id: 5, name: "Copy Interview Link" }
+
   ];
-  const CANDIDATE_MENU_OPTIONS_COMPLETE_INTERVIEW = [
+
+  const CANDIDATE_MENU_OPTIONS_COMPLETED = [
     { id: 6, name: "Watch Interview" }
   ];
 
+  const CANDIDATE_MENU_OPTIONS_NOT_START = [
+    { id: 4, name: "Block Interview" },
+    { id: 5, name: "Copy Interview Link" },
+  ];
 
 
-  function getCandidateMenu(isClose: boolean) {
+
+  function getCandidateMenu(isCompleted: boolean) {
     return [
       ...CANDIDATE_MENU_OPTIONS,
-      ...(isClose ? CANDIDATE_MENU_OPTIONS_COMPLETE_INTERVIEW : [])
+      ...(isCompleted ? CANDIDATE_MENU_OPTIONS_COMPLETED : CANDIDATE_MENU_OPTIONS_NOT_START)
     ] as never[];
   }
 
@@ -87,7 +92,9 @@ function Candidates({ id, details }: CandidatesProps) {
     };
     return iconsMap[key];
   };
-  const [candidateCountDetails, setCandidateCountDetails] = useState<any>(0)
+  const [candidateCountDetails, setCandidateCountDetails] = useState<any>(0);
+
+  const openWatchInterviewNotSupportedModal = useModal(false);
 
   const dispatch = useDispatch();
 
@@ -106,20 +113,20 @@ function Candidates({ id, details }: CandidatesProps) {
     candidatesCount,
     candidatesListNumOfPages,
     candidatesListCurrentPages,
-    interviewUrl
+    interviewUrl,
   } = useSelector((state: any) => state.DashboardReducer);
 
+  const { dashboardDetails } = useSelector((state: any) => state.AuthReducer);
+  const { is_department_admin } = dashboardDetails?.rights || {}
+
+
   useEffect(() => {
-
     if (candidatesCount > candidateCountDetails) {
-      setCandidateCountDetails(candidatesCount)
+      setCandidateCountDetails(candidatesCount);
     }
-
-  }, [candidatesCount])
+  }, [candidatesCount]);
 
   const loader = useLoader(false);
-
-
 
   /**
    * add candidate state
@@ -223,40 +230,11 @@ function Candidates({ id, details }: CandidatesProps) {
           status_icon_type,
           is_closed,
           is_complete,
-          interviewee_photo
+          interviewee_photo,
         } = item;
 
         const status = getIcon(status_icon_type);
         return {
-          "     ":
-            (
-              <div className={'user-photo-containers border'}>
-                {interviewee_photo ?
-                  <Image
-                    src={getPhoto(interviewee_photo)}
-                    height={'100%'}
-                    width={'100%'}
-                    style={{
-                      objectFit: 'cover',
-                      overflow: 'hidden',
-                      padding: '1px',
-                      borderRadius: '4px'
-                    }}
-                  />
-                  :
-                  <Image
-                    src={icons.profile}
-                    height={27}
-                    width={27}
-                    style={{
-                      objectFit: 'contain'
-                    }}
-                  />
-
-                }
-              </div>
-            ),
-
 
           "": (
             <div className={"d-flex align-items-center"}>
@@ -270,14 +248,55 @@ function Candidates({ id, details }: CandidatesProps) {
                   }}
                 />
               ) : null}
-              {candidate_score && (
+              {candidate_score ? (
                 <div className={"screen-heading ml-2"}>{candidate_score}</div>
-              )}
+              ) : candidate_score === 0 ? <div className={"screen-heading ml-2"}>{candidate_score}</div> : null}
             </div>
           ),
+
           name: (
-            <div className={"th-bold"}>
-              {capitalizeFirstLetter(interviewee_name)}
+            <div className={"d-flex align-items-center"}>
+              <div>
+                {interviewee_photo ?
+                  <Image
+                    src={getPhoto(interviewee_photo)}
+                    height={50}
+                    width={50}
+                    style={{
+                      objectFit: 'cover',
+                      overflow: 'hidden',
+                      padding: '1px',
+                      borderRadius: '30px',
+                      width: "45px",
+                      height: "45px",
+                    }}
+                  />
+                  :
+                  <div style={{
+                    width: "45px",
+                    height: "45px",
+                    borderRadius: "30px",
+                    backgroundColor: "#FAFBFF",
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    display: 'flex',
+
+                  }}>
+                    <Image
+                      src={icons.profile}
+                      height={20}
+                      width={20}
+                      style={{
+                        objectFit: 'contain'
+                      }}
+                    />
+                  </div>
+
+                }
+              </div>
+              <div className={"th-bold ml-3"}>
+                {capitalizeFirstLetter(interviewee_name)}
+              </div>
             </div>
           ),
 
@@ -287,7 +306,7 @@ function Candidates({ id, details }: CandidatesProps) {
 
           Email: <div className={"th-regular"}>{interviewee_email}</div>,
 
-          "Status": (
+          Status: (
             <div className={`text-${status_note_colour} font-weight-400`}>
               {status_note}
             </div>
@@ -366,7 +385,14 @@ function Candidates({ id, details }: CandidatesProps) {
    */
 
   function onCandidateMenuHandler(action: any, item: any) {
-    const { id, recording_url, interview_duration, interviewee_name, interviewee_email, interview_link } = item;
+    const {
+      id,
+      recording_url,
+      interview_duration,
+      interviewee_name,
+      interviewee_email,
+      interview_link,
+    } = item;
 
     setSelectedCandidates(id);
 
@@ -378,23 +404,28 @@ function Candidates({ id, details }: CandidatesProps) {
       postManualApprovalOnCandidateApiHandler(params, id);
     } else if (action.id === CANDIDATE_MENU_OPTIONS[2].id) {
       removeCandidateModal.show();
-    } else if (action.id === CANDIDATE_MENU_OPTIONS[3].id) {
+    } else if (action.id === CANDIDATE_MENU_OPTIONS_NOT_START[0].id) {
       closeCandidateModal.show();
-    } else if (action.id === CANDIDATE_MENU_OPTIONS[4].id) {
+    } else if (action.id === CANDIDATE_MENU_OPTIONS_NOT_START[1].id) {
       copyToClipboard(interview_link);
       showToast("Interview link copied", "success");
-    } else if (action.id === CANDIDATE_MENU_OPTIONS_COMPLETE_INTERVIEW[0].id) {
+    } else if (action.id === CANDIDATE_MENU_OPTIONS_COMPLETED[0].id) {
       if (recording_url && recording_url.length > 0 && interview_duration) {
-        dispatch(watchInterviewVideoUrl({
-          recording_url,
-          interview_duration,
-          interviewee_name,
-          interviewee_email
-        }));
-        if (getBrowserInfo().browserName !== "Mozilla Firefox") {
+        dispatch(
+          watchInterviewVideoUrl({
+            recording_url,
+            interview_duration,
+            interviewee_name,
+            interviewee_email,
+          })
+        );
+        if (
+          getBrowserInfo().browserName !== "Mozilla Firefox" &&
+          getBrowserInfo().browserName !== "Safari"
+        ) {
           openWatchInterviewModal.show();
         } else {
-          showToast("Watch Video is not supported in this browser", "info");
+          openWatchInterviewNotSupportedModal.show();
         }
       } else {
         showToast("Interview video unavailable", "info");
@@ -507,7 +538,7 @@ function Candidates({ id, details }: CandidatesProps) {
               }
             </div>
           </div>
-          {!isJdClosed && (
+          {!is_department_admin && !isJdClosed && (
             <div className={"empty-candidates-btn-container"}>
               <div className={"empty-btn-container"}>
                 <Button
@@ -528,7 +559,7 @@ function Candidates({ id, details }: CandidatesProps) {
         </div>
       )}
 
-      {(candidateCountDetails > 0) && (
+      {candidateCountDetails > 0 && (
         <div>
           <div className={"candidate-dashboard-container"}>
             <div
@@ -566,20 +597,20 @@ function Candidates({ id, details }: CandidatesProps) {
           </div>
 
           <div className={"card-container"}>
-            <div className={"table-heading"}>
+            <div className={"table-heading "}>
               <span className={"screen-heading"}>{"Candidates"}</span>
-              {selected_candidates > 0 &&
+              {selected_candidates > 0 && (
                 <div
                   className={"badge-schedule"}
                   style={{
-                    marginLeft: '20px'
+                    marginLeft: "20px",
                   }}
                 >
                   <span
                     className={"badge-text"}
                   >{`${selected_candidates} Selected`}</span>
                 </div>
-              }
+              )}
             </div>
 
             <div className={"table-search-container"}>
@@ -608,28 +639,32 @@ function Candidates({ id, details }: CandidatesProps) {
               {!isJdClosed && (
                 <div className={"add-candidate-container"}>
                   <div className={"add-button-container"}>
-                    <Button
+                    {!is_department_admin && <Button
                       block
                       text={"Add"}
                       onClick={addCandidateModal.show}
                     />
+                    }
                   </div>
                   <div className={"add-button-container"}>
-                    <Button
+                    {!is_department_admin && <Button
                       block
                       outline
                       text={"Bulk Import"}
                       onClick={openBulkUploadHandler}
                     />
+                    }
                   </div>
                 </div>
               )}
             </div>
 
             {!loader.loader ? (
-              <div className={'table-container'} style={{
-                ...(candidatesList?.length === 1 && { height: "280px" })
-              }}>
+              <div
+                className={'table-container'}
+                style={{
+                  ...(candidatesList?.length === 1 && { height: "280px" })
+                }}>
 
                 {candidatesList?.length > 0 ? (
                   <CommonTable
@@ -666,9 +701,8 @@ function Candidates({ id, details }: CandidatesProps) {
               </div>
             )}
           </div>
-        </div >
-      )
-      }
+        </div>
+      )}
 
       {/**
        * add candidate Modal
@@ -769,6 +803,36 @@ function Candidates({ id, details }: CandidatesProps) {
         urlData={interviewUrl}
       />
 
+      {/**
+       * watch interview not supported Modal
+       */}
+
+      <Modal
+        isOpen={openWatchInterviewNotSupportedModal.visible}
+        onClose={() => {
+          openWatchInterviewNotSupportedModal.hide();
+        }}
+        title={"Browser Permission Denied"}
+        buttonText="Close"
+        onClick={() => {
+          openWatchInterviewNotSupportedModal.hide();
+        }}
+      >
+        <div className="mt--4">
+          {WATCH_VIDEO_PERMISSION_CONTEXT.map((item) => {
+            const { id, icon, text, h } = item;
+
+            return (
+              <div key={id}>
+                <div className="d-flex align-items-center ">
+                  <Image src={icon} height={h} />
+                  <div className="ml-2">{text}</div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </Modal>
     </>
   );
 }
