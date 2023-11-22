@@ -68,7 +68,7 @@ export const ROUTES = {
     'question-sections': '/question-sections',
     'analyzing-animation': '/analyzing-animation',
     schedules: '/schedules',
-    'variant-info': '/variant-info',
+    'opening-detail': '/opening-detail',
     settings: '/settings',
     'response': '/response',
     'preparing-your-interview': '/preparing-your-interview',
@@ -304,7 +304,7 @@ export const ADMIN_ROUTES = [
   },
   {
     id: 8,
-    path: ROUTES['designation-module']['variant-info'],
+    path: ROUTES['designation-module']['opening-detail'],
     component: <VariantInfo />
   },
 ];
