@@ -357,22 +357,6 @@ function VariantInfo() {
               maxLength={4}
             />
           </div>
-          {/* <div>
-          <Button
-                    block
-                    outline
-                    className={`${duration?.id === id
-                      ? "btn-outline-primary-active"
-                      : "btn-outline-primary-inactive"
-                      }`}
-                    // text={subText}
-                    onClick={() => {
-                      // setDuration(item);
-                    }}
-                  />
-          </div> */}
-
-
         </div>
       </Modal>
     </>
