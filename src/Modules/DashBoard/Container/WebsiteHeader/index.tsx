@@ -27,7 +27,7 @@ function WebsiteHeader() {
       id="home"
     >
       <Container>
-        <div className="mb-md-6" >
+        <div className="mb-md-6">
           <Row>
             <Col lg="5">
               <div className="">
