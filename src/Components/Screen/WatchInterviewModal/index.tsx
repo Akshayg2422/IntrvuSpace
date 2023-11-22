@@ -1,9 +1,10 @@
-import { Image, Modal } from "@Components";
+import { Image, Modal, showToast } from "@Components";
 import { WatchInterviewModalProps } from "./interface";
 import { useEffect, useRef, useState } from "react";
 import { icons } from "@Assets";
 import { getPhoto } from "@Utils";
 import "./index.css";
+import { error } from "console";
 
 const WatchInterviewModal = ({
   isOpen,
@@ -24,11 +25,7 @@ const WatchInterviewModal = ({
     if (recording_url) {
       const recordingUrlArr = [...recording_url];
       const updatedRecordingUrlArr: any = recordingUrlArr.map((item, index) => {
-        if (index === 0) {
-          return { url: item, isPlay: true };
-        } else {
-          return { url: item, isPlay: false };
-        }
+        return { url: item, isPlay: index === 0 };
       });
       setRecordingUrlArray(updatedRecordingUrlArr);
     }
@@ -75,9 +72,15 @@ const WatchInterviewModal = ({
     const videoElement = videoRef.current;
     if (videoElement) {
       if (updatedUrlArr[playVideoUrlIndex].isPlay) {
-        await videoElement?.play();
+        videoElement.play().catch((error: any) => {
+          console.log(`Video play failed`, error);
+        });
       } else {
-        await videoElement?.pause();
+        try {
+          videoElement.pause();
+        } catch (error: any) {
+          console.log(`Video pause failed`, error);
+        }
       }
     }
   };
