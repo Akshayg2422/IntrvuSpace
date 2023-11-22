@@ -1,52 +1,51 @@
-import React, { useEffect, useState } from "react";
-import { CandidatesProps } from "./interfaces";
+import { icons } from "@Assets";
 import {
-  Input,
+  Alert,
   Button,
-  DropDown,
   CommonTable,
+  DropDown,
   Image,
+  Input,
   MenuBar,
   Modal,
-  showToast,
   NoDataFound,
-  Alert,
   Spinner,
   WatchInterviewModal,
+  showToast,
 } from "@Components";
 import {
-  fetchCandidatesCorporate,
-  createSchedule,
-  refreshCorporateSchedule,
-  postManualApprovalOnCandidate,
+  useDropDown,
+  useInput,
+  useKeyPress,
+  useLoader,
+  useModal,
+  useNavigation,
+} from "@Hooks";
+import { BulkUpload } from "@Modules";
+import {
   bulkUploadCandidates,
+  createSchedule,
+  fetchCandidatesCorporate,
+  postManualApprovalOnCandidate,
+  refreshCorporateSchedule,
   watchInterviewVideoUrl,
 } from "@Redux";
-import { useSelector, useDispatch } from "react-redux";
+import { ROUTES } from "@Routes";
 import {
-  paginationHandler,
-  capitalizeFirstLetter,
-  validate,
   VALIDATE_ADD_NEW_CANDIDATES_RULES,
-  ifObjectExist,
-  getValidateError,
+  capitalizeFirstLetter,
+  copyToClipboard,
   getBrowserInfo,
   getPhoto,
-  copyToClipboard,
+  getValidateError,
+  ifObjectExist,
+  paginationHandler,
+  validate,
 } from "@Utils";
-import { icons, image } from "@Assets";
-import {
-  useModal,
-  useInput,
-  useLoader,
-  useDropDown,
-  useNavigation,
-  useKeyPress,
-} from "@Hooks";
-import { ROUTES } from "@Routes";
-import { BulkUpload } from "@Modules";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import "./index.css";
-import { SERVER } from "@Services";
+import { CandidatesProps } from "./interfaces";
 
 function Candidates({ id, details }: CandidatesProps) {
   const { goTo } = useNavigation();
@@ -109,9 +108,9 @@ function Candidates({ id, details }: CandidatesProps) {
     interviewUrl
   } = useSelector((state: any) => state.DashboardReducer);
 
-  const { loginDetails } = useSelector((state: any) => state.AppReducer);
-  const { is_department_admin } = loginDetails || {}
-  
+  const { dashboardDetails } = useSelector((state: any) => state.AuthReducer);
+  const { is_department_admin } = dashboardDetails?.rights || {}
+
 
   useEffect(() => {
 
@@ -612,22 +611,20 @@ function Candidates({ id, details }: CandidatesProps) {
               {!isJdClosed && (
                 <div className={"add-candidate-container"}>
                   <div className={"add-button-container"}>
-                    {!is_department_admin &&
-                      <Button
-                        block
-                        text={"Add"}
-                        onClick={addCandidateModal.show}
-                      />
+                    {!is_department_admin && <Button
+                      block
+                      text={"Add"}
+                      onClick={addCandidateModal.show}
+                    />
                     }
                   </div>
                   <div className={"add-button-container"}>
-                    {!is_department_admin &&
-                      <Button
-                        block
-                        outline
-                        text={"Bulk Import"}
-                        onClick={openBulkUploadHandler}
-                      />
+                    {!is_department_admin && <Button
+                      block
+                      outline
+                      text={"Bulk Import"}
+                      onClick={openBulkUploadHandler}
+                    />
                     }
                   </div>
                 </div>
@@ -635,9 +632,11 @@ function Candidates({ id, details }: CandidatesProps) {
             </div>
 
             {!loader.loader ? (
-              <div className={'table-container'} style={{
-                ...(candidatesList?.length === 1 && { height: "280px" })
-              }}>
+              <div
+                className={'table-container'}
+                style={{
+                  ...(candidatesList?.length === 1 && { height: "280px" })
+                }}>
 
                 {candidatesList?.length > 0 ? (
                   <CommonTable

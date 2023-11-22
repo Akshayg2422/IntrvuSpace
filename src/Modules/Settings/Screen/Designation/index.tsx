@@ -64,8 +64,11 @@ function Designation() {
     corporateScheduleNumOfPages,
     corporateScheduleCurrentPages,
   } = useSelector((state: any) => state.DashboardReducer);
-  const { loginDetails } = useSelector((state: any) => state.AppReducer);
-  const { is_department_admin } = loginDetails || {}
+
+
+  const { dashboardDetails } = useSelector((state: any) => state.AuthReducer);
+  const { is_department_admin } = dashboardDetails?.rights || {}
+
 
   const { goTo } = useNavigation();
   const dispatch = useDispatch();

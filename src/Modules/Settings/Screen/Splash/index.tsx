@@ -1,13 +1,17 @@
 import { icons } from "@Assets";
-import { Image } from "@Components";
+import { Image, showToast } from "@Components";
 import { useNavigation } from "@Hooks";
 import { Website } from '@Modules';
 import { ROUTES } from "@Routes";
+import { TYPE_CORPORATE, TYPE_SUPER_ADMIN, TYPE_JOB_SEEKER } from "@Utils";
 import { useEffect } from "react";
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { getDashboard } from '@Redux'
 
 
 function Splash() {
+
+    const dispatch = useDispatch()
 
     const SPLASH_STAY_TIME_MILE_SECONDS = 1500;
     const { goTo } = useNavigation();
@@ -15,29 +19,57 @@ function Splash() {
 
     const { loginDetails } = useSelector((state: any) => state.AppReducer);
 
+    console.log(loginDetails);
+
+    const { isLoggedIn, user_type } = loginDetails || {}
+
+
+    function getDashboardApiHandler() {
+        const params = {}
+        dispatch(
+            getDashboard({
+                params,
+                onSuccess: () => () => {
+                    userRoutingHandler()
+                },
+                onError: (error: any) => () => {
+                    showToast(error.error_message, "error");
+                },
+            })
+        );
+    }
+
+
+    function userRoutingHandler() {
+        const route = localStorage.getItem('route');
+
+        let reDirectRoute: any = undefined
+
+        if (user_type === TYPE_CORPORATE) {
+            reDirectRoute = ROUTES['designation-module'].schedule
+        } else if (user_type === TYPE_JOB_SEEKER) {
+            reDirectRoute = ROUTES['designation-module'].client
+        } else if (user_type === TYPE_SUPER_ADMIN) {
+            reDirectRoute = ROUTES["super-admin"].dashboard
+        }
+
+        if (reDirectRoute) {
+            if (route) {
+                localStorage.removeItem('route');
+                goTo(route, true);
+            } else {
+                goTo(reDirectRoute, true);
+            }
+        } else {
+            showToast('Invalid User Type')
+        }
+    }
+
 
     useEffect(() => {
         setTimeout(() => {
-            if (loginDetails?.isLoggedIn) {
-                if (loginDetails.is_admin) {
-                    const route = localStorage.getItem('route');
-                    if (route) {
-                        localStorage.removeItem('route');
-                        goTo(route, true);
-                    } else {
-                        goTo(ROUTES['designation-module'].schedule, true);
-                    }
-                }
-                else {
-                    const route = localStorage.getItem('route');
-                    if (route) {
-                        localStorage.removeItem('route');
-                        goTo(route, true);
-                    } else {
-                        goTo(ROUTES['designation-module'].client, true)
-                    }
-                }
-
+            if (isLoggedIn) {
+                getDashboardApiHandler();
             }
 
         }, SPLASH_STAY_TIME_MILE_SECONDS);
@@ -45,18 +77,19 @@ function Splash() {
 
     return (
         <div>
-            {loginDetails?.isLoggedIn ? <div className={"d-flex vh-100  justify-content-center align-items-center bg-white"}>
-                <div className="text-center">
-                    <Image
-                        src={icons.logoText}
-                        height={"30%"}
-                        width={"30%"}
-                    />
-                </div>
+            {isLoggedIn ?
+                <div className={"d-flex vh-100  justify-content-center align-items-center bg-white"}>
+                    <div className="text-center">
+                        <Image
+                            src={icons.logoText}
+                            height={"30%"}
+                            width={"30%"}
+                        />
+                    </div>
 
-            </div>
-                // : <Landing />
-                : <Website />
+                </div>
+                :
+                <Website />
             }
         </div>
     );

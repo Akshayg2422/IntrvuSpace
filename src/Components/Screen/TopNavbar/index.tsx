@@ -19,6 +19,7 @@ import {
   UncontrolledCollapse,
   UncontrolledDropdown
 } from "reactstrap";
+import { capitalizeFirstLetter } from '@Utils'
 
 
 function TopNavbar() {
@@ -29,9 +30,13 @@ function TopNavbar() {
 
   const logoutModal = useModal(false);
   const { goTo } = useNavigation()
-  const { loginDetails } = useSelector((state: any) => state.AppReducer);
   const { jdItem } = useSelector((state: any) => state.DashboardReducer);
   const [isOpenDropdown, setIsOpenDropdown] = useState(false)
+
+  const { dashboardDetails } = useSelector((state: any) => state.AuthReducer);
+
+  const { name, email, designation, department } = dashboardDetails?.basic_info || {}
+
 
 
 
@@ -117,7 +122,7 @@ function TopNavbar() {
               <Row className="d-flex justify-content-between">
                 <Col>
                   <div className='font-weight-bold text-black'>
-                    {loginDetails?.user}
+                    {capitalizeFirstLetter(name)}
                   </div>
                 </Col>
                 <Col className="collapse-close" xs="6">
@@ -161,7 +166,7 @@ function TopNavbar() {
                 <div className='row align-items-center m-auto'>
 
                   <span className='mb-0 text-black font-weight-400 pointer' onClick={toggleDropdownHandler}>
-                    {loginDetails?.user.charAt(0).toUpperCase() + loginDetails?.user.slice(1)}
+                    {capitalizeFirstLetter(name)}
                   </span>
 
                   <Nav navbar>

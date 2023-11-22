@@ -41,6 +41,8 @@ function Login() {
         memberLoginUsingPassword({
           params,
           onSuccess: (response: any) => () => {
+
+
             const { details } = response;
             const { is_email_verified, token } = details || {};
 
@@ -65,8 +67,6 @@ function Login() {
               }
 
             } else {
-              console.log('came');
-
               showToast(response.error_message, 'error');
             }
           },

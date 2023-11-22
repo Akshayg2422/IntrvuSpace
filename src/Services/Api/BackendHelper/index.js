@@ -240,6 +240,11 @@ export const getOngoingSchedulesApi = payload => post(URL.GRT_ONGOING_SCHEDULES,
 
 
 
+/**
+ * get Dashboard Api
+ */
+
+export const getDashboardApi = payload => post(URL.URL_DASHBOARD, payload, {})
 
 
 
