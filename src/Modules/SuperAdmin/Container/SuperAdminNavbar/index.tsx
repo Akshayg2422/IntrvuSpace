@@ -2,7 +2,7 @@
 import { icons } from '@Assets';
 import { Alert, Button, Image } from '@Components';
 import { useModal, useNavigation } from '@Hooks';
-import { showCreateJddModal, userLogout } from "@Redux";
+import { userLogout, showCreateForOthersJdModal } from "@Redux";
 import { ROUTES } from '@Routes';
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -19,24 +19,31 @@ import {
   UncontrolledCollapse,
   UncontrolledDropdown
 } from "reactstrap";
-import { capitalizeFirstLetter } from '@Utils'
+import { capitalizeFirstLetter } from '@Utils';
 
 
-function TopNavbar() {
+function SuperAdminNavbar() {
+
 
   const HEADER_MENU = [
-    { id: '1', name: 'Logout', value: 'LG', icon: 'ni ni-button-power' },
+    { id: '1', name: 'Home', value: 'HM', route: ROUTES['designation-module']['admin-schedule'] },
+    { id: '2', name: 'Ongoing Schedule', value: 'OGS', route: ROUTES['designation-module']['scheduling-interview'] },
+    { id: '3', name: 'Logout', value: 'LG', route: "" }
   ]
+
 
   const logoutModal = useModal(false);
   const { goTo } = useNavigation()
-  const { jdItem } = useSelector((state: any) => state.DashboardReducer);
-  const [isOpenDropdown, setIsOpenDropdown] = useState(false)
 
   const { dashboardDetails } = useSelector((state: any) => state.AuthReducer);
 
+
+  console.log("dashboardDetails", dashboardDetails);
+
   const { name, email, designation, department } = dashboardDetails?.basic_info || {}
 
+  const { jdItem } = useSelector((state: any) => state.DashboardReducer);
+  const [isOpenDropdown, setIsOpenDropdown] = useState(false)
 
 
 
@@ -45,13 +52,16 @@ function TopNavbar() {
 
 
   const dropdownHandler = (item: any) => {
-    if (item.value === 'ST') {
-      goTo(ROUTES['designation-module'].settings)
-    }
-    else if (item.value === 'LG') {
+
+    const { route } = item
+    if (item.value === 'LG') {
       logoutModal.show()
+    } else {
+      goTo(route);
     }
+
   };
+
 
   function proceedLogout() {
     try {
@@ -69,14 +79,16 @@ function TopNavbar() {
     } catch (error) { }
   }
 
-  const handleCreateInterviewClick = () => {
-    dispatch(showCreateJddModal());
-  };
-
 
   const toggleDropdownHandler = () => {
     setIsOpenDropdown(!isOpenDropdown)
   }
+
+
+  const handleCreateForOthersInterviewClick = () => {
+    dispatch(showCreateForOthersJdModal());
+  };
+
 
 
 
@@ -147,20 +159,6 @@ function TopNavbar() {
               className="align-items-lg-center ml-lg-auto mr--4 justify-content-end"
               navbar
             >
-
-              {jdItem && jdItem.length > 0 && (
-                <NavItem>
-                  <NavLink to="/home" tag={Link}>
-                    <div className={'btn-wrapper'}>
-                      <Button
-                        block
-                        text={"Create Interview"}
-                        onClick={handleCreateInterviewClick}
-                      />
-                    </div>
-                  </NavLink>
-                </NavItem>
-              )}
 
               <NavItem className="d-none d-lg-block ml-2">
                 <div className='row align-items-center m-auto'>
@@ -237,5 +235,5 @@ function TopNavbar() {
   )
 }
 
-export { TopNavbar };
+export { SuperAdminNavbar };
 

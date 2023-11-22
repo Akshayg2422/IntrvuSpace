@@ -105,8 +105,8 @@ function WebsiteHeader() {
               </div>
             </Col>
             <Col lg="7" sm="12">
-              <div className="">
-                <img
+              <div className="text-center">
+                <Image
                   src={image.StreamlinedAutomatedInterview}
                   width={"100%"}
                   height={"100%"}

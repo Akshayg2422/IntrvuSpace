@@ -60,8 +60,8 @@ function CreateNew({ children, title, description, keyPoints, image, buttonText,
                     <Image
                         src={image}
                         className={'section-image'}
-                        height={'70%'}
-                        width={'70%'}
+                        height={'90%'}
+                        width={'90%'}
                     />
                 </div>
             </div>

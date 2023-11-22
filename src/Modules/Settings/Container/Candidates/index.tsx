@@ -1,53 +1,52 @@
-import React, { useEffect, useState } from "react";
-import { CandidatesProps } from "./interfaces";
+import { icons } from "@Assets";
 import {
-  Input,
+  Alert,
   Button,
-  DropDown,
   CommonTable,
+  DropDown,
   Image,
+  Input,
   MenuBar,
   Modal,
-  showToast,
   NoDataFound,
-  Alert,
   Spinner,
   WatchInterviewModal,
+  showToast,
 } from "@Components";
 import {
-  fetchCandidatesCorporate,
-  createSchedule,
-  refreshCorporateSchedule,
-  postManualApprovalOnCandidate,
+  useDropDown,
+  useInput,
+  useKeyPress,
+  useLoader,
+  useModal,
+  useNavigation,
+} from "@Hooks";
+import { BulkUpload } from "@Modules";
+import {
   bulkUploadCandidates,
+  createSchedule,
+  fetchCandidatesCorporate,
+  postManualApprovalOnCandidate,
+  refreshCorporateSchedule,
   watchInterviewVideoUrl,
 } from "@Redux";
-import { useSelector, useDispatch } from "react-redux";
+import { ROUTES } from "@Routes";
 import {
-  paginationHandler,
-  capitalizeFirstLetter,
-  validate,
   VALIDATE_ADD_NEW_CANDIDATES_RULES,
-  ifObjectExist,
-  getValidateError,
+  capitalizeFirstLetter,
+  copyToClipboard,
   getBrowserInfo,
   getPhoto,
-  copyToClipboard,
+  getValidateError,
+  ifObjectExist,
+  paginationHandler,
+  validate,
   WATCH_VIDEO_PERMISSION_CONTEXT,
 } from "@Utils";
-import { icons, image } from "@Assets";
-import {
-  useModal,
-  useInput,
-  useLoader,
-  useDropDown,
-  useNavigation,
-  useKeyPress,
-} from "@Hooks";
-import { ROUTES } from "@Routes";
-import { BulkUpload } from "@Modules";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import "./index.css";
-import { SERVER } from "@Services";
+import { CandidatesProps } from "./interfaces";
 
 function Candidates({ id, details }: CandidatesProps) {
   const { goTo } = useNavigation();
@@ -116,6 +115,10 @@ function Candidates({ id, details }: CandidatesProps) {
     candidatesListCurrentPages,
     interviewUrl,
   } = useSelector((state: any) => state.DashboardReducer);
+
+  const { dashboardDetails } = useSelector((state: any) => state.AuthReducer);
+  const { is_department_admin } = dashboardDetails?.rights || {}
+
 
   useEffect(() => {
     if (candidatesCount > candidateCountDetails) {
@@ -535,7 +538,7 @@ function Candidates({ id, details }: CandidatesProps) {
               }
             </div>
           </div>
-          {!isJdClosed && (
+          {!is_department_admin && !isJdClosed && (
             <div className={"empty-candidates-btn-container"}>
               <div className={"empty-btn-container"}>
                 <Button
@@ -636,19 +639,21 @@ function Candidates({ id, details }: CandidatesProps) {
               {!isJdClosed && (
                 <div className={"add-candidate-container"}>
                   <div className={"add-button-container"}>
-                    <Button
+                    {!is_department_admin && <Button
                       block
                       text={"Add"}
                       onClick={addCandidateModal.show}
                     />
+                    }
                   </div>
                   <div className={"add-button-container"}>
-                    <Button
+                    {!is_department_admin && <Button
                       block
                       outline
                       text={"Bulk Import"}
                       onClick={openBulkUploadHandler}
                     />
+                    }
                   </div>
                 </div>
               )}
@@ -656,11 +661,11 @@ function Candidates({ id, details }: CandidatesProps) {
 
             {!loader.loader ? (
               <div
-                className={"table-container"}
+                className={'table-container'}
                 style={{
-                  ...(candidatesList?.length === 1 && { height: "280px" }),
-                }}
-              >
+                  ...(candidatesList?.length === 1 && { height: "280px" })
+                }}>
+
                 {candidatesList?.length > 0 ? (
                   <CommonTable
                     isPagination={candidatesListNumOfPages > 1}

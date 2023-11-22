@@ -1,51 +1,45 @@
-import React, { useState } from "react";
+import { useState } from "react";
 // react library for routing
 import { Link } from "react-router-dom";
 // reactstrap components
+import { icons } from "@Assets";
+import { Alert, Button, Image } from "@Components";
+import { useModal, useNavigation } from "@Hooks";
+import { showCreateForOthersJdModal, showCreateJddModal, userLogout } from "@Redux";
+import { ROUTES } from "@Routes";
+import { capitalizeFirstLetter, filteredName } from "@Utils";
+import { useDispatch, useSelector } from "react-redux";
 import {
-  UncontrolledCollapse,
-  NavbarBrand,
-  Navbar,
-  NavItem,
-  NavLink,
-  Nav,
-  Row,
   Col,
   DropdownItem,
   DropdownMenu,
   DropdownToggle,
   Media,
+  Nav,
+  NavItem,
+  NavLink,
+  Navbar,
+  NavbarBrand,
+  Row,
+  UncontrolledCollapse,
   UncontrolledDropdown,
 } from "reactstrap";
-import { icons } from "@Assets";
-import { Image, Modal, Button, Heading, Alert } from "@Components";
-import { useModal, useNavigation } from "@Hooks";
-import { ROUTES } from "@Routes";
-import { showCreateForOthersJdModal, showCreateOpeningsModal, userLogout } from "@Redux";
-import { useDispatch, useSelector } from "react-redux";
-import { capitalizeFirstLetter, filteredName } from "@Utils";
 
-function TopNavbarCorporateFlow() {
+function CreateOthersNavbar() {
   const logoutModal = useModal(false);
   const { goTo } = useNavigation();
+  const { dashboardDetails } = useSelector((state: any) => state.AuthReducer);
+  const { name, email, designation, department } = dashboardDetails?.basic_info || {}
 
-  const { corporateScheduleCount } = useSelector(
-    (state: any) => state.DashboardReducer
-  );
+
   const dispatch = useDispatch();
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
 
-  const { dashboardDetails } = useSelector((state: any) => state.AuthReducer);
-
-  const { name, email, designation, department } = dashboardDetails?.basic_info || {}
-
-
-
   const HEADER_MENU = [
-    { id: '1', name: 'Settings', value: 'ST', route: ROUTES['designation-module'].settings },
-    { id: '2', name: 'Logout', value: 'LG', route: "" }
+    { id: '4', name: 'Logout', value: 'LG', route: "" }
   ]
+
 
 
   const dropdownHandler = (item: any) => {
@@ -57,6 +51,11 @@ function TopNavbarCorporateFlow() {
       goTo(route);
     }
 
+  };
+
+
+  const handleCreateInterviewClick = () => {
+    dispatch(showCreateJddModal());
   };
 
 
@@ -72,10 +71,6 @@ function TopNavbarCorporateFlow() {
       );
     } catch (error) { }
   }
-
-  const handleCreateOpeningsClick = () => {
-    dispatch(showCreateOpeningsModal());
-  };
 
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
@@ -160,20 +155,30 @@ function TopNavbarCorporateFlow() {
               navbar
             >
 
-              {corporateScheduleCount >
-                0 && (
-                  <NavItem>
-                    <NavLink tag={Link}>
-                      <div className={'btn-wrapper'}>
-                        <Button
-                          block
-                          text={"Create Opening"}
-                          onClick={handleCreateOpeningsClick}
-                        />
-                      </div>
-                    </NavLink>
-                  </NavItem>
-                )}
+              <NavItem>
+                <NavLink tag={Link}>
+                  <div className={'btn-wrapper'}>
+                    <Button
+                      block
+                      text={"Create For Others"}
+                      onClick={handleCreateForOthersInterviewClick}
+                    />
+                  </div>
+                </NavLink>
+              </NavItem>
+
+              <NavItem>
+                <NavLink tag={Link}>
+                  <div className={'btn-wrapper'}>
+                    <Button
+                      block
+                      text={"Create Interview"}
+                      onClick={handleCreateInterviewClick}
+                    />
+                  </div>
+                </NavLink>
+              </NavItem>
+
               <NavItem className="d-none d-lg-block ml-lg-2">
                 <div className="row align-items-center m-auto">
                   <span
@@ -205,13 +210,13 @@ function TopNavbarCorporateFlow() {
                       </DropdownToggle>
                       <DropdownMenu right>
                         {HEADER_MENU.map((item: any) => {
-
                           return (
                             <DropdownItem
                               onClick={(e) => {
                                 e.preventDefault();
                                 dropdownHandler(item);
                                 setDropdownOpen(false);
+                                console.log('333333333333333333333')
                               }}
                             >
                               {/* <i className={item.icon}></i> */}
@@ -264,4 +269,4 @@ function TopNavbarCorporateFlow() {
   );
 }
 
-export { TopNavbarCorporateFlow };
+export { CreateOthersNavbar };

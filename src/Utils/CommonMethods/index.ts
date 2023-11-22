@@ -452,3 +452,8 @@ export function copyToClipboard(text: string) {
   document.execCommand("copy");
   document.body.removeChild(textarea);
 }
+
+export function capitalizeLetter(string: any) {
+  if (string !== undefined && string !== null && string.length > 0)
+    return string.toUpperCase();
+}

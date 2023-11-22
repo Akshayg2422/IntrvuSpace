@@ -32,7 +32,8 @@ import {
   EmailVerification,
   CorporateRegister,
   SettingDesignation,
-  AdminSchedules
+  AdminSchedules,
+  SuperAdminDashboard
 } from '@Modules';
 
 export const ROUTES = {
@@ -78,6 +79,9 @@ export const ROUTES = {
     // 'Sectors':'/Sectors'
     'scheduling-interview': '/scheduling-interview',
     'admin-schedule': '/admin-schedule'
+  },
+  'super-admin': {
+    'dashboard': "dashboard"
   }
 }
 
@@ -248,6 +252,11 @@ export const SUPER_ADMIN_ROUTES = [
     id: 4,
     path: ROUTES['designation-module'].settings,
     component: <Settings />
+  },
+  {
+    id: 5,
+    path: ROUTES['super-admin'].dashboard,
+    component: <SuperAdminDashboard />
   },
 ]
 
