@@ -273,7 +273,7 @@ function Designation() {
   return (
     <div className={"screen"}>
       <TopNavbarCorporateFlow />
-      {/* <TopNavbar /> */}
+
       {listLoader.loader && (
         <div className={"loader-container"}>
           <Spinner />
@@ -361,7 +361,7 @@ function Designation() {
                       }
                       onViewDetails={() => {
                         dispatch(setSelectedRole(item));
-                        goTo(ROUTES["designation-module"]["variant-info"]);
+                        goTo(ROUTES["designation-module"]["opening-detail"]);
                       }}
                     />
                   </div>

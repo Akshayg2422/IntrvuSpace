@@ -57,17 +57,24 @@ function Candidates({ id, details }: CandidatesProps) {
     { id: 1, name: "Approve Manually" },
     { id: 2, name: "Reject Manually" },
     { id: 3, name: "Remove Candidate" },
+
+  ];
+
+  const CANDIDATE_MENU_OPTIONS_COMPLETED = [
+    { id: 6, name: "Watch Interview" }
+  ];
+
+  const CANDIDATE_MENU_OPTIONS_NOT_START = [
     { id: 4, name: "Block Interview" },
     { id: 5, name: "Copy Interview Link" },
   ];
-  const CANDIDATE_MENU_OPTIONS_COMPLETE_INTERVIEW = [
-    { id: 6, name: "Watch Interview" },
-  ];
 
-  function getCandidateMenu(isClose: boolean) {
+
+
+  function getCandidateMenu(isCompleted: boolean) {
     return [
       ...CANDIDATE_MENU_OPTIONS,
-      ...(isClose ? CANDIDATE_MENU_OPTIONS_COMPLETE_INTERVIEW : []),
+      ...(isCompleted ? CANDIDATE_MENU_OPTIONS_COMPLETED : CANDIDATE_MENU_OPTIONS_NOT_START)
     ] as never[];
   }
 
@@ -225,32 +232,6 @@ function Candidates({ id, details }: CandidatesProps) {
 
         const status = getIcon(status_icon_type);
         return {
-          "     ": (
-            <div className={"user-photo-containers border"}>
-              {interviewee_photo ? (
-                <Image
-                  src={getPhoto(interviewee_photo)}
-                  height={"100%"}
-                  width={"100%"}
-                  style={{
-                    objectFit: "cover",
-                    overflow: "hidden",
-                    padding: "1px",
-                    borderRadius: "4px",
-                  }}
-                />
-              ) : (
-                <Image
-                  src={icons.profile}
-                  height={27}
-                  width={27}
-                  style={{
-                    objectFit: "contain",
-                  }}
-                />
-              )}
-            </div>
-          ),
 
           "": (
             <div className={"d-flex align-items-center"}>
@@ -264,14 +245,55 @@ function Candidates({ id, details }: CandidatesProps) {
                   }}
                 />
               ) : null}
-              {candidate_score && (
+              {candidate_score ? (
                 <div className={"screen-heading ml-2"}>{candidate_score}</div>
-              )}
+              ) : candidate_score === 0 ? <div className={"screen-heading ml-2"}>{candidate_score}</div> : null}
             </div>
           ),
+
           name: (
-            <div className={"th-bold"}>
-              {capitalizeFirstLetter(interviewee_name)}
+            <div className={"d-flex align-items-center"}>
+              <div>
+                {interviewee_photo ?
+                  <Image
+                    src={getPhoto(interviewee_photo)}
+                    height={50}
+                    width={50}
+                    style={{
+                      objectFit: 'cover',
+                      overflow: 'hidden',
+                      padding: '1px',
+                      borderRadius: '30px',
+                      width: "45px",
+                      height: "45px",
+                    }}
+                  />
+                  :
+                  <div style={{
+                    width: "45px",
+                    height: "45px",
+                    borderRadius: "30px",
+                    backgroundColor: "#FAFBFF",
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    display: 'flex',
+
+                  }}>
+                    <Image
+                      src={icons.profile}
+                      height={20}
+                      width={20}
+                      style={{
+                        objectFit: 'contain'
+                      }}
+                    />
+                  </div>
+
+                }
+              </div>
+              <div className={"th-bold ml-3"}>
+                {capitalizeFirstLetter(interviewee_name)}
+              </div>
             </div>
           ),
 
@@ -379,12 +401,12 @@ function Candidates({ id, details }: CandidatesProps) {
       postManualApprovalOnCandidateApiHandler(params, id);
     } else if (action.id === CANDIDATE_MENU_OPTIONS[2].id) {
       removeCandidateModal.show();
-    } else if (action.id === CANDIDATE_MENU_OPTIONS[3].id) {
+    } else if (action.id === CANDIDATE_MENU_OPTIONS_NOT_START[0].id) {
       closeCandidateModal.show();
-    } else if (action.id === CANDIDATE_MENU_OPTIONS[4].id) {
+    } else if (action.id === CANDIDATE_MENU_OPTIONS_NOT_START[1].id) {
       copyToClipboard(interview_link);
       showToast("Interview link copied", "success");
-    } else if (action.id === CANDIDATE_MENU_OPTIONS_COMPLETE_INTERVIEW[0].id) {
+    } else if (action.id === CANDIDATE_MENU_OPTIONS_COMPLETED[0].id) {
       if (recording_url && recording_url.length > 0 && interview_duration) {
         dispatch(
           watchInterviewVideoUrl({
@@ -429,7 +451,7 @@ function Candidates({ id, details }: CandidatesProps) {
             closeCandidateModal.hide();
             removeCandidateModal.hide();
             setSelectedCandidates(undefined);
-          } catch (e) {}
+          } catch (e) { }
         },
         onError: (error: any) => () => {
           showToast(error.error_message, "error");
@@ -549,9 +571,8 @@ function Candidates({ id, details }: CandidatesProps) {
               <div className={"dashboard-title"}>{"Selected Candidates"}</div>
               <div>
                 <span
-                  className={`text-heading ${
-                    selected_candidates > 0 && "text-primary"
-                  }`}
+                  className={`text-heading ${selected_candidates > 0 && "text-primary"
+                    }`}
                 >
                   {selected_candidates}
                 </span>
@@ -573,7 +594,7 @@ function Candidates({ id, details }: CandidatesProps) {
           </div>
 
           <div className={"card-container"}>
-            <div className={"table-heading"}>
+            <div className={"table-heading "}>
               <span className={"screen-heading"}>{"Candidates"}</span>
               {selected_candidates > 0 && (
                 <div

@@ -11,23 +11,22 @@ function DesignationItem({
 }: DesignationItemProps) {
 
   const { job_description: { position, experience, details }, candidate_details: { selected_candidates, total_candidates }, is_active, vacancies, interview_duration, is_view_more } = item
-console.log(selected_candidates,"selected_candidates=====>")
 
   return (
 
     <div className={'card-container'}>
-     
-  
 
       <div className={'section-container'}>
         <div>
-          <div className="d-flex align-items-center">
+          <div className={"d-flex align-items-center"}>
             <span className={'screen-heading m-0 p-0'}>
               {capitalizeFirstLetter(position)}
             </span>
             {
-              selected_candidates >0 &&
-              <div className={'badge-schedule '}>
+              selected_candidates > 0 &&
+              <div className={'badge-schedule'} style={{
+                marginLeft: "20px"
+              }}>
                 <span className={'badge-text'}>{`${selected_candidates} Selected`}</span>
               </div>
             }
@@ -92,7 +91,7 @@ console.log(selected_candidates,"selected_candidates=====>")
       <div className={'jd-container'}>
         <ViewMore text={details} onViewMore={onViewMore} isViewMore={is_view_more} />
       </div>
-     
+
 
     </div >
   );
