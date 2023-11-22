@@ -116,6 +116,13 @@ input[type=number] {
     z-index: 9999;
 }
 
+.back-container-vacancies {
+    position: absolute;
+    left: 3%;
+    top: 65px;
+    /* z-index: 9999; */
+}
+
 
 @media(max-width: 768px) {
     .card-container {

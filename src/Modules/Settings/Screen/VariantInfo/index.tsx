@@ -7,17 +7,24 @@ import {
   showToast,
   Back,
   Spinner,
+  Input,
+  Button,
 } from "@Components";
-import { useLoader, useModal } from "@Hooks";
+import { useInput, useLoader, useModal } from "@Hooks";
 import { Candidates } from "@Modules";
 import {
+  createCorporateSchedules,
   getCorporateScheduleDetails,
   postCorporateScheduleActions,
 } from "@Redux";
 import {
+  CREATE_CORPORATE_VACANCIES_RULES,
   capitalizeFirstLetter,
   displayFormatDate,
   getDisplayTime,
+  getValidateError,
+  ifObjectExist,
+  validate,
 } from "@Utils";
 import moment from "moment";
 import { useEffect, useState } from "react";
@@ -34,6 +41,7 @@ function VariantInfo() {
   const MODIFY_OPTION = [
     { id: 1, name: "Close JD" },
     { id: 2, name: "Modify Deadlines" },
+    { id: 3, name: 'Modify Vacancies' }
   ];
 
   const { selectedRole, corporateScheduleDetails, refreshCorporateSchedules } =
@@ -55,8 +63,9 @@ function VariantInfo() {
   const { position, experience, details } = job_description || {};
 
   const loader = useModal(false);
+  const vacanciesCount = useInput(vacancies)
 
-  console.log(corporateScheduleDetails, "corporateScheduleDetails======///")
+  // console.log(corporateScheduleDetails, "corporateScheduleDetails======///")
 
   /**
    * view more details
@@ -76,6 +85,7 @@ function VariantInfo() {
    */
 
   const modifyDeadlineModal = useModal(false);
+  const modifyVacancyModal = useModal(false)
   const [scheduleEndDate, setScheduleEndDate] = useState<any>("");
   const [scheduleEndTime, setScheduleEndTime] = useState<any>("");
 
@@ -107,6 +117,11 @@ function VariantInfo() {
     } else if (action.id === MODIFY_OPTION[1].id) {
       modifyDeadlineHandler();
     }
+    else if (action.id === MODIFY_OPTION[2].id) {
+      vacanciesCount.set(vacancies)
+      modifyVacancyModal.show()
+    }
+
   }
 
   function proceedCloseJdApiHandler() {
@@ -129,6 +144,7 @@ function VariantInfo() {
           scheduleActionLoader.hide();
           modifyDeadlineModal.hide();
           closeJdModal.hide();
+          modifyVacancyModal.hide()
           getCorporateScheduleDetailsHandler();
           showToast(response.message, "success");
         },
@@ -150,6 +166,14 @@ function VariantInfo() {
     modifyDeadlineModal.show();
   };
 
+
+  const modifyVacancyHandler = () => {
+    const params = {
+      vacancies: vacanciesCount?.value > 0 ? vacanciesCount?.value : '',
+    };
+    corporateScheduleActionsHandler(params);
+  }
+
   function proceedModifyDeadlineApiHandler() {
     const convertedTime = moment(scheduleEndTime, "hh:mm A").format("HH:mm:ss");
     const formattedDate = moment(scheduleEndDate, "MMM DD YYYY").format(
@@ -169,7 +193,7 @@ function VariantInfo() {
   return (
     <>
       <div className={"screen-padding"}>
-        
+
         {!corporateScheduleDetails ? (
           <div
             className={
@@ -183,7 +207,7 @@ function VariantInfo() {
 
             <div className={"variant-header"}>
               <div>
-                <div className={'back-container'}>
+                <div className={'back-container-vacancies'}>
                   <Back />
                 </div>
                 <div className={"screen-heading"}>
@@ -310,6 +334,45 @@ function VariantInfo() {
               onChange={setScheduleEndTime}
             />
           </div>
+        </div>
+      </Modal>
+
+
+      <Modal
+        loading={scheduleActionLoader.loader}
+        title={"Modify Vacancies"}
+        isOpen={modifyVacancyModal.visible}
+        onClose={modifyVacancyModal.hide}
+        buttonText={"Submit"}
+        onClick={modifyVacancyHandler}
+      >
+        <div className={"row"}>
+          <div className={"col-sm-6"}>
+            <Input
+              heading={"Vacancies"}
+              type={"number"}
+              placeHolder={"0"}
+              value={vacanciesCount.value}
+              onChange={vacanciesCount.onChange}
+              maxLength={4}
+            />
+          </div>
+          {/* <div>
+          <Button
+                    block
+                    outline
+                    className={`${duration?.id === id
+                      ? "btn-outline-primary-active"
+                      : "btn-outline-primary-inactive"
+                      }`}
+                    // text={subText}
+                    onClick={() => {
+                      // setDuration(item);
+                    }}
+                  />
+          </div> */}
+
+
         </div>
       </Modal>
     </>
