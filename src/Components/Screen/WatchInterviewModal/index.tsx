@@ -18,56 +18,69 @@ const WatchInterviewModal = ({
   const { recording_url } = urlData || {};
   const videoRef = useRef<any>();
 
+  //useEffect to render play and pause button
+
   useEffect(() => {
     if (recording_url) {
       const recordingUrlArr = [...recording_url];
       const updatedRecordingUrlArr: any = recordingUrlArr.map((item, index) => {
-        return { url: item, isPaused: false };
+        if (index === 0) {
+          return { url: item, isPlay: true };
+        } else {
+          return { url: item, isPlay: false };
+        }
       });
       setRecordingUrlArray(updatedRecordingUrlArr);
     }
   }, [recording_url, playVideoUrlIndex]);
 
+  // function to handle pause
+
   function onPauseHandler() {
     const updatedUrlArr: any = [...recordingUrlArray];
     const updatedUrlArr1: any = updatedUrlArr.map((item: any, index) => {
       if (index === playVideoUrlIndex) {
-        return { ...item, isPaused: true };
+        return { ...item, isPlay: false };
       } else {
-        return { ...item, isPaused: false };
+        return { ...item, isPlay: false };
       }
     });
     setRecordingUrlArray(updatedUrlArr1);
   }
+
+  // function to handle play
 
   function onPlayHandler() {
     const updatedUrlArr: any = [...recordingUrlArray];
     const updatedUrlArr1: any = updatedUrlArr.map(
       (item: any, index: number) => {
         if (index === playVideoUrlIndex) {
-          return { ...item, isPaused: false };
+          return { ...item, isPlay: true };
         } else {
-          return { ...item, isPaused: item?.isPaused };
+          return { ...item, isPlay: false };
         }
       }
     );
     setRecordingUrlArray(updatedUrlArr1);
   }
 
-  const onImageClickHandler = () => {
+  // function to handle image on click using useRef
+
+  const onImageClickHandler = async () => {
     const updatedUrlArr = [...recordingUrlArray];
-    updatedUrlArr[playVideoUrlIndex].isPaused = !updatedUrlArr[playVideoUrlIndex].isPaused;
+    updatedUrlArr[playVideoUrlIndex].isPlay =
+      !updatedUrlArr[playVideoUrlIndex].isPlay;
     setRecordingUrlArray(updatedUrlArr);
-  
-    const videoElement = videoRef.current; // Access the underlying video element
-  
-    if (updatedUrlArr[playVideoUrlIndex].isPaused) {
-      videoElement.pause(); // Pause the video
-    } else {
-      videoElement.play(); // Play the video
+
+    const videoElement = videoRef.current;
+    if (videoElement) {
+      if (updatedUrlArr[playVideoUrlIndex].isPlay) {
+        await videoElement?.play();
+      } else {
+        await videoElement?.pause();
+      }
     }
   };
-
 
   return (
     <>
@@ -112,7 +125,7 @@ const WatchInterviewModal = ({
               {recordingUrlArray &&
                 recordingUrlArray.length > 0 &&
                 recordingUrlArray.map((item, index: number) => {
-                  const { url, isPaused } = item || {};
+                  const { url, isPlay } = item || {};
                   return (
                     <div>
                       <div
@@ -127,7 +140,7 @@ const WatchInterviewModal = ({
                       >
                         <Image
                           key={index}
-                          src={isPaused ? icons.pause : icons.play}
+                          src={isPlay ? icons.pause : icons.play}
                           style={{
                             cursor: "pointer",
                             height: 60,
