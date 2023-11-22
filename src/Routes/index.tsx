@@ -32,7 +32,8 @@ import {
   EmailVerification,
   CorporateRegister,
   SettingDesignation,
-  AdminSchedules
+  AdminSchedules,
+  SuperAdminDashboard
 } from '@Modules';
 
 export const ROUTES = {
@@ -68,7 +69,7 @@ export const ROUTES = {
     'question-sections': '/question-sections',
     'analyzing-animation': '/analyzing-animation',
     schedules: '/schedules',
-    'variant-info': '/variant-info',
+    'opening-detail': '/opening-detail',
     settings: '/settings',
     'response': '/response',
     'preparing-your-interview': '/preparing-your-interview',
@@ -78,6 +79,9 @@ export const ROUTES = {
     // 'Sectors':'/Sectors'
     'scheduling-interview': '/scheduling-interview',
     'admin-schedule': '/admin-schedule'
+  },
+  'super-admin': {
+    'dashboard': "dashboard"
   }
 }
 
@@ -249,6 +253,11 @@ export const SUPER_ADMIN_ROUTES = [
     path: ROUTES['designation-module'].settings,
     component: <Settings />
   },
+  {
+    id: 5,
+    path: ROUTES['super-admin'].dashboard,
+    component: <SuperAdminDashboard />
+  },
 ]
 
 export const ADMIN_ROUTES = [
@@ -304,7 +313,7 @@ export const ADMIN_ROUTES = [
   },
   {
     id: 8,
-    path: ROUTES['designation-module']['variant-info'],
+    path: ROUTES['designation-module']['opening-detail'],
     component: <VariantInfo />
   },
 ];

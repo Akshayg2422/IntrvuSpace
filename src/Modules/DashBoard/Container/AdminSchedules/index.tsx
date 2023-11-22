@@ -1,39 +1,38 @@
 /* eslint-disable no-empty-pattern */
 /* eslint-disable react-hooks/rules-of-hooks */
 
-import { icons, image } from "@Assets";
+import { icons } from "@Assets";
 import {
   Button,
-  Card,
   Checkbox,
   Divider,
-  Heading,
   Image,
   Input,
   InputHeading,
   MenuBar,
   Modal,
+  NoDataFound,
   PageNation,
   Radio,
   Spinner,
   TextArea,
-  TopNavbarCorporateFlow,
   WatchInterviewButtonIcon,
   WatchInterviewModal,
-  showToast,
+  showToast
 } from "@Components";
 import { useInput, useLoader, useModal, useNavigation } from "@Hooks";
 import {
-  GenerateModal,
-  UploadJdCard,
   Clipboard,
   PreparingYourInterview,
+  UploadJdCard,
+  CreateOthersNavbar
 } from "@Modules";
 import {
   canStartInterview,
   createNewJdSchedule,
   createSchedulesSuperAdmin,
   deleteInterview,
+  deleteJd,
   getJdItemList,
   hideCreateForOthersJdModal,
   hideCreateJdModal,
@@ -42,24 +41,20 @@ import {
   selectedScheduleId,
   showCreateForOthersJdModal,
   showCreateJddModal,
-  deleteJd,
   watchInterviewVideoUrl,
 } from "@Redux";
 import { ROUTES } from "@Routes";
-import { SERVER } from "@Services";
 import {
+  CREATE_FOR_ADD_ANOTHER_RULES,
   CREATE_FOR_OTHERS_RULES,
   FROM_JD_RULES,
   getValidateError,
   ifObjectExist,
-  validate,
-  CREATE_FOR_ADD_ANOTHER_RULES,
-  getBrowserInfo,
   paginationHandler,
+  validate
 } from "@Utils";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { UncontrolledTooltip } from "reactstrap";
 
 const interviewDurations = [
   { id: "0", text: "Quick", subText: "(5 mins)", value: 5 },
@@ -93,7 +88,7 @@ function AdminSchedules() {
     "In beta version, you can upload only max of " +
     CHAR_LENGTH +
     " characters.";
-  const { createJdModal, jdItem, createForOthersJdModal,jdItemNumOfPages,jdItemCurrentPages, interviewUrl} = useSelector(
+  const { createJdModal, jdItem, createForOthersJdModal, jdItemNumOfPages, jdItemCurrentPages, interviewUrl } = useSelector(
     (state: any) => state.DashboardReducer
   );
 
@@ -170,20 +165,22 @@ function AdminSchedules() {
 
   const dispatch = useDispatch();
 
-  const getKnowledgeGroupFromJdHandler = (page_number:any) => {
+  const getKnowledgeGroupFromJdHandler = (page_number: any) => {
     setLoading(true);
 
-    const params = { from_jd: true,
-      page_number };
+    const params = {
+      from_jd: true,
+      page_number
+    };
 
     dispatch(
       getJdItemList({
         params,
         onSuccess: () => () => {
           setLoading(false);
-       
+
         },
-        onError: () => () => {},
+        onError: () => () => { },
       })
     );
   };
@@ -226,7 +223,7 @@ function AdminSchedules() {
 
                       stopInterval();
                     },
-                    onError: (error: any) => () => {},
+                    onError: (error: any) => () => { },
                   })
                 );
               }, INTERVAL_TIME);
@@ -304,7 +301,7 @@ function AdminSchedules() {
                           clearInterval(intervalIdRef.current);
                         }
                       },
-                      onError: (error: any) => () => {},
+                      onError: (error: any) => () => { },
                     })
                   );
                 }, INTERVAL_TIME);
@@ -366,7 +363,7 @@ function AdminSchedules() {
                         clearInterval(intervalIdRef.current);
                       }
                     },
-                    onError: (error: any) => () => {},
+                    onError: (error: any) => () => { },
                   })
                 );
               }, INTERVAL_TIME);
@@ -416,7 +413,7 @@ function AdminSchedules() {
         onSuccess: () => () => {
           getKnowledgeGroupFromJdHandler(jdItemCurrentPages);
         },
-        onError: () => () => {},
+        onError: () => () => { },
       })
     );
   }
@@ -430,7 +427,7 @@ function AdminSchedules() {
         onSuccess: () => () => {
           getKnowledgeGroupFromJdHandler(jdItemCurrentPages);
         },
-        onError: () => () => {},
+        onError: () => () => { },
       })
     );
   }
@@ -450,7 +447,7 @@ function AdminSchedules() {
         onSuccess: () => () => {
           getKnowledgeGroupFromJdHandler(jdItemCurrentPages);
         },
-        onError: () => () => {},
+        onError: () => () => { },
       })
     );
   }
@@ -492,10 +489,13 @@ function AdminSchedules() {
     stopInterval();
   });
 
+
+  console.log(jdItem);
+
   return (
     <>
       <div className={"screen"}>
-        <TopNavbarCorporateFlow />
+        <CreateOthersNavbar />
         {loading ? (
           <div className={"loader-container"}>
             <Spinner />
@@ -707,16 +707,14 @@ function AdminSchedules() {
                                   return `${timeDifference} mins ago`;
                                 } else if (timeDifference < 1440) {
                                   const hours = Math.floor(timeDifference / 60);
-                                  return `${hours} ${
-                                    hours === 1 ? "hour" : "hours"
-                                  } ago`;
+                                  return `${hours} ${hours === 1 ? "hour" : "hours"
+                                    } ago`;
                                 } else {
                                   const days = Math.floor(
                                     timeDifference / 1440
                                   );
-                                  return `${days} ${
-                                    days === 1 ? "day" : "days"
-                                  } ago`;
+                                  return `${days} ${days === 1 ? "day" : "days"
+                                    } ago`;
                                 }
                               };
 
@@ -730,9 +728,9 @@ function AdminSchedules() {
                                         <h5 className="m-0 p-0">
                                           {demoDisplayName
                                             ? demoDisplayName
-                                                .charAt(0)
-                                                .toUpperCase() +
-                                              demoDisplayName.slice(1)
+                                              .charAt(0)
+                                              .toUpperCase() +
+                                            demoDisplayName.slice(1)
                                             : "Interview " + (index + 1)}
                                         </h5>
                                         <h5 className="m-0 p-0 ml-2">
@@ -757,11 +755,11 @@ function AdminSchedules() {
                                     <h5 className="mb-0 text-center d-none d-lg-block d-md-block d-xl-block">
                                       {is_complete
                                         ? `Completed: ${getDisplayTimeFromMoment(
-                                            interview_end_time
-                                          )}`
+                                          interview_end_time
+                                        )}`
                                         : `Created at: ${getDisplayTimeFromMoment(
-                                            created_at
-                                          )}`}
+                                          created_at
+                                        )}`}
                                     </h5>
                                     <div className="col m-0 p-0 d-flex justify-content-end">
                                       <div className="row mr-lg-3 mr-sm-0 mr-0">
@@ -842,11 +840,11 @@ function AdminSchedules() {
                                     <h5 className="mb-0 text-center d-block d-sm-none">
                                       {is_complete
                                         ? `Completed: ${getDisplayTimeFromMoment(
-                                            interview_end_time
-                                          )}`
+                                          interview_end_time
+                                        )}`
                                         : `Created at: ${getDisplayTimeFromMoment(
-                                            created_at
-                                          )}`}
+                                          created_at
+                                        )}`}
                                     </h5>
                                   </div>
                                   {index !== schedules.length - 1 && (
@@ -861,34 +859,36 @@ function AdminSchedules() {
                   })}
               </div>
             }
-                {jdItemNumOfPages > 1 && (
-            <div className="mt-3">
-              <PageNation
-                currentPage={jdItemCurrentPages}
-                noOfPage={jdItemNumOfPages}
-                isPagination={jdItemNumOfPages}
-                paginationNumberClick={(currentPage) => {
-                  getKnowledgeGroupFromJdHandler(
-                    paginationHandler("current", currentPage)
-                  );
-                }}
-                previousClick={() => {
-                  getKnowledgeGroupFromJdHandler(
-                    paginationHandler("prev", jdItemCurrentPages)
-                  );
-                }}
-                nextClick={() => {
-                  getKnowledgeGroupFromJdHandler(
-                    paginationHandler("next", jdItemCurrentPages)
-                  );
-                }}
-              />
-            </div>
-          )}
+            {jdItemNumOfPages > 1 && (
+              <div className="mt-3">
+                <PageNation
+                  currentPage={jdItemCurrentPages}
+                  noOfPage={jdItemNumOfPages}
+                  isPagination={jdItemNumOfPages}
+                  paginationNumberClick={(currentPage) => {
+                    getKnowledgeGroupFromJdHandler(
+                      paginationHandler("current", currentPage)
+                    );
+                  }}
+                  previousClick={() => {
+                    getKnowledgeGroupFromJdHandler(
+                      paginationHandler("prev", jdItemCurrentPages)
+                    );
+                  }}
+                  nextClick={() => {
+                    getKnowledgeGroupFromJdHandler(
+                      paginationHandler("next", jdItemCurrentPages)
+                    );
+                  }}
+                />
+              </div>
+            )}
 
           </div>
         ) : (
-          <UploadJdCard />
+          <div className={"d-flex align-items-center justify-content-center h-100vh"}>
+            <NoDataFound text={"No Data Found"} />
+          </div>
         )}
 
         <Modal
@@ -1003,7 +1003,10 @@ function AdminSchedules() {
           </div>
         </Modal>
 
-        <Modal isOpen={generateJdModal.visible} onClose={generateJdModal.hide}>
+        <Modal
+          title={'Preparing your Interview...'}
+          subTitle={'It will take a couple of minutes. You can wait and join using the link that will be sent to your email once the interview is ready.'}
+          isOpen={generateJdModal.visible} onClose={generateJdModal.hide}>
           <PreparingYourInterview />
         </Modal>
 

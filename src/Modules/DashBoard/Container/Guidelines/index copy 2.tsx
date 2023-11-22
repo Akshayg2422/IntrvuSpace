@@ -21,7 +21,6 @@ const GUIDELINES = [
 
 function Guidelines({ scheduleInfo = undefined, loading, heading, onClick }: GuidelinesProps) {
     const { goBack } = useNavigation()
-    const { loginDetails } = useSelector((state: any) => state.AppReducer);
 
 
     const title = `Interview for the role of ${heading}`

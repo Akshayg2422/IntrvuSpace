@@ -35,12 +35,12 @@ const ReportHeader = ({ details }: ReportHeaderProps) => {
 
     return (
         <div className={'base-info-container'}>
-            <div className={'user-info-container'}>
+            <div className={'report-header-wrapper user-info-container'}>
                 {
                     userAuthCheck() &&
                     <div className={'user-auth-container'}>
 
-                        <div className={'user-photo-container border'}>
+                        <div className={'user-photo-container'}>
                             {
                                 candidate_photo ?
                                     <Image
@@ -68,11 +68,14 @@ const ReportHeader = ({ details }: ReportHeaderProps) => {
                         {
                             user_location_info ?
                                 <div className={'user-address-container'}>
-                                    <div>
+                                    <Image src={icons.location} width={20} height={20} style={{
+                                        objectFit: 'contain'
+                                    }} />
+                                    <span className='ml-1'>
                                         {city && city !== '-' ? <span className={'screen-des'}>{city}</span> : <></>}
                                         {region && region !== '-' ? <span className={'screen-des'}>, {region}</span> : <></>}
-                                    </div>
-                                    {country && country !== '-' ? <span className={'screen-des'}>{getCountryName(country)}</span> : <></>}
+                                        {country && country !== '-' ? <span className={'screen-des'}>, {getCountryName(country)}</span> : <></>}
+                                    </span>
                                 </div>
                                 :
                                 <>
@@ -80,25 +83,27 @@ const ReportHeader = ({ details }: ReportHeaderProps) => {
                         }
                     </div>
                 }
-                <div className={userAuthCheck() ? 'user-details-container-left' : 'user-details-container-center'}>
-                    <div className={'user-heading'}>{capitalizeFirstLetter(name)}</div>
-                    <div className={'user-role'}> {`${role} - ${experience_txt}`}</div>
-                    <div className={'badge-schedule'}>
-                        <div className={'badge-text'}>{interview_duration + " min Interview"}</div>
-                    </div>
+            </div>
+
+            <div className={'report-header-wrapper user-details-container-center text-secondary'} >
+                <div className={'user-heading'}>{capitalizeFirstLetter(name)}</div>
+                <div className={'user-role'}> {`${role} - ${experience_txt}`}</div>
+                <div className={'badge-schedule'}>
+                    <div className={'badge-text'}>{interview_duration + " min Interview"}</div>
                 </div>
             </div>
 
-            <div className={'user-mark-container'}>
-                <span
-                    className={'mark-text'}
+            <div className='report-header-wrapper justify-content-end'>
+                <h1
+                    className={'mark-text m-0 p-0 mt--4 '}
                     style={{
                         color: colorVariant(candidate_score),
                     }}
                 >
                     {candidate_score}
-                </span>
+                </h1>
             </div>
+
         </div >
     )
 }

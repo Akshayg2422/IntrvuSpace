@@ -90,7 +90,10 @@ function Report() {
         <Back />
       </div> */}
       <div className={'report-dropdown-container'}>
-        <div className="col-sm-3">
+        <div style={{
+          width: "220px",
+          maxWidth: '300px',
+        }}>
           <DropDown
             noSpace
             id={"status"}
@@ -99,21 +102,23 @@ function Report() {
             onChange={reportType.onChange}
           />
         </div>
+        <div className="ml-3">
+          <ReactToPrint
+            documentTitle={fileName}
+            trigger={() => (
+              <Button
+
+                variant={'icon-rounded'}
+                color={'primary'}
+                icons={"bi bi-printer-fill fa-lg"}
+              />
+            )}
+            content={() => componentRef.current}
+          />
+        </div>
       </div>
 
-      <div className={'print-container'}>
-        <ReactToPrint
-          documentTitle={fileName}
-          trigger={() => (
-            <Button
-              variant={'icon-rounded'}
-              color={'primary'}
-              icons={"bi bi-printer-fill fa-lg"}
-            />
-          )}
-          content={() => componentRef.current}
-        />
-      </div>
+
       {
         loader.loader && <div className={'loader-container'}> <Spinner /></div>
       }

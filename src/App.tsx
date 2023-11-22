@@ -18,6 +18,7 @@ import "react-perfect-scrollbar/dist/css/styles.css";
 import "select2/dist/css/select2.min.css";
 import "sweetalert2/dist/sweetalert2.min.css";
 import './App.css';
+import { TYPE_CORPORATE, TYPE_JOB_SEEKER, TYPE_SUPER_ADMIN } from "./Utils";
 
 
 
@@ -27,7 +28,21 @@ function App() {
 
   const { loginDetails } = useSelector((state: any) => state.AppReducer);
 
-  const { is_admin, is_super_admin } = loginDetails || {}
+
+  const { user_type } = loginDetails || {};
+
+  const userRoutes = () => {
+    switch (user_type) {
+      case TYPE_CORPORATE:
+        return ADMIN_ROUTES;
+      case TYPE_JOB_SEEKER:
+        return JOB_SEEKER_ROUTES;
+      case TYPE_SUPER_ADMIN:
+        return SUPER_ADMIN_ROUTES;
+      default:
+        return null;
+    }
+  }
 
   const AUTH = 1
 
@@ -60,16 +75,14 @@ function App() {
     });
   };
 
+  const routes = userRoutes();
+
   return (
     <ScreenWrapper>
       <Routes>
         <Route path="/" element={<Splash />} />
         {getRoutes(AUTH_ROUTES, AUTH)}
-
-        {is_admin && getRoutes(ADMIN_ROUTES)}
-        {!is_admin && getRoutes(JOB_SEEKER_ROUTES)}
-        {is_super_admin && getRoutes(SUPER_ADMIN_ROUTES)}
-
+        {routes && getRoutes(routes)}
         <Route path={ROUTES['designation-module'].interview + '/:schedule_id'} element={<Call />} />
         <Route path={"*"} element={<PageNotFound />} />
       </Routes>

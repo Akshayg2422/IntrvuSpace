@@ -136,6 +136,30 @@ function* verifyEmailUsingOtpSaga(action) {
 }
 
 
+
+/**
+ * get Dashboard saga
+} action 
+ */
+
+function* getDashboardSaga(action) {
+    try {
+        const response = yield call(Api.getDashboardApi, action.payload.params);
+        if (response) {
+            yield put(Action.getDashboardSuccess(response?.details));
+            yield call(action.payload.onSuccess(response));
+        } else {
+            yield put(Action.getDashboardFailure(response.error_message));
+            yield call(action.payload.onError(response));
+        }
+    } catch (error) {
+        yield put(Action.getDashboardFailure(error));
+        yield call(action.payload.onError(error));
+    }
+}
+
+
+
 function* AuthSaga() {
 
     yield takeLatest(Action.MEMBER_LOGIN_USING_PASSWORD, memberLoginUsingPasswordSaga);
@@ -145,6 +169,8 @@ function* AuthSaga() {
     yield takeLatest(Action.REGISTER_AS_COMPANY, registerAsCompanySaga);
     yield takeLatest(Action.GET_OTP_FOR_EMAIL_VERIFICATION, getOtpForEmailVerificationSaga);
     yield takeLatest(Action.VERIFY_EMAIL_USING_OTP, verifyEmailUsingOtpSaga);
+    yield takeLatest(Action.GET_DASHBOARD, getDashboardSaga);
+
 }
 
 export default AuthSaga;
