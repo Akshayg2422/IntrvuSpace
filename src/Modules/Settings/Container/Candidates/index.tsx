@@ -55,18 +55,16 @@ function Candidates({ id, details }: CandidatesProps) {
   const CANDIDATE_MENU_OPTIONS = [
     { id: 1, name: "Approve Manually" },
     { id: 2, name: "Reject Manually" },
-    // { id: 3, name: "Remove Candidate" }
+   { id: 3, name: "Remove Candidate" }
 
   ];
 
   const CANDIDATE_MENU_OPTIONS_COMPLETED = [
-     { id: 3, name: "Remove Candidate" },
     { id: 6, name: "Watch Interview" },
    
   ];
 
   const CANDIDATE_MENU_OPTIONS_NOT_START = [
-   { id: 3, name: "Remove Candidate" },
     { id: 4, name: "Block Interview" },
     { id: 5, name: "Copy Interview Link" },
   
@@ -410,14 +408,14 @@ function Candidates({ id, details }: CandidatesProps) {
     } else if (action.id === CANDIDATE_MENU_OPTIONS[1].id) {
       const params = { is_manually_rejected: true };
       postManualApprovalOnCandidateApiHandler(params, id);
-    } else if (action.id === CANDIDATE_MENU_OPTIONS_NOT_START[0].id||action.id === CANDIDATE_MENU_OPTIONS_COMPLETED[0].id) {
+    } else if (action.id ===  CANDIDATE_MENU_OPTIONS[2].id) {
       removeCandidateModal.show();
-    } else if (action.id === CANDIDATE_MENU_OPTIONS_NOT_START[1].id) {
+    } else if (action.id === CANDIDATE_MENU_OPTIONS_NOT_START[0].id) {
       closeCandidateModal.show();
-    } else if (action.id === CANDIDATE_MENU_OPTIONS_NOT_START[2].id) {
+    } else if (action.id === CANDIDATE_MENU_OPTIONS_NOT_START[1].id) {
       copyToClipboard(interview_link);
       showToast("Interview link copied", "success");
-    } else if (action.id === CANDIDATE_MENU_OPTIONS_COMPLETED[1].id) {
+    } else if (action.id === CANDIDATE_MENU_OPTIONS_COMPLETED[0].id) {
       if (recording_url && recording_url.length > 0 && interview_duration) {
         dispatch(
           watchInterviewVideoUrl({
