@@ -38,6 +38,7 @@ function DateTimePicker({ id, heading, noSpace, placeholder, type = 'date', date
           }
         }
         isValidDate={disableDt}
+        
       />
     </FormGroup >
   )
