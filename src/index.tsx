@@ -15,6 +15,8 @@ import { PersistGate } from "redux-persist/integration/react";
 
 import { store, sagaMiddleware, rootSaga, persistor } from "@Redux";
 import { AppProvider } from "@Contexts";
+import DetectFace2 from "./Modules/DashBoard/Screen/DetectFace";
+import Check from "./Modules/DashBoard/Screen/Check";
 
 sagaMiddleware.run(rootSaga);
 
@@ -27,7 +29,7 @@ root.render(
     <PersistGate loading={null} persistor={persistor}>
       <AppProvider>
         <BrowserRouter>
-          <App />
+          <Check />
         </BrowserRouter>
       </AppProvider>
     </PersistGate>
