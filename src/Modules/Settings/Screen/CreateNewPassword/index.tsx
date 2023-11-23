@@ -23,19 +23,13 @@ function CreateNewPassword() {
 
     const { retrieveEmail } = useSelector((state: any) => state.DashboardReducer);
 
-
     useEffect(() => {
         if (enterPress) {
             createNewPasswordHandler()
         }
     }, [enterPress])
 
-
-
     const createNewPasswordHandler = () => {
-
-
-
 
         const { email } = retrieveEmail
 
@@ -54,7 +48,7 @@ function CreateNewPassword() {
                     params,
                     onSuccess: (response) => () => {
                         showToast(response.message, "success");
-                        goTo(ROUTES['auth-module'].splash, true);
+                        goTo(ROUTES["auth-module"].login, true);
                         loader.hide();
                     },
                     onError: (error) => () => {

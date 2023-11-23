@@ -43,6 +43,7 @@ import {
   INTERVIEW_DURATIONS,
   PLACEHOLDER_ROLES,
   STATUS_LIST,
+  capitalizeLetter,
   getDropDownCompanyDisplayData,
   getValidateError,
   ifObjectExist,
@@ -63,6 +64,11 @@ function Designation() {
     corporateScheduleNumOfPages,
     corporateScheduleCurrentPages,
   } = useSelector((state: any) => state.DashboardReducer);
+
+
+  const { dashboardDetails } = useSelector((state: any) => state.AuthReducer);
+  const { is_department_admin } = dashboardDetails?.rights || {}
+
 
   const { goTo } = useNavigation();
   const dispatch = useDispatch();
@@ -273,7 +279,7 @@ function Designation() {
   return (
     <div className={"screen"}>
       <TopNavbarCorporateFlow />
-      {/* <TopNavbar /> */}
+
       {listLoader.loader && (
         <div className={"loader-container"}>
           <Spinner />
@@ -309,20 +315,23 @@ function Designation() {
                 onChange={status.onChange}
               />
             </div>
-            <div className="col-sm-3">
-              {departmentCorporate && departmentCorporate.length > 0 && (
-                <DropDown
-                  id={"department"}
-                  heading={"Department"}
-                  data={[
-                    DEFAULT_VALUE,
-                    ...getDropDownCompanyDisplayData(departmentCorporate),
-                  ]}
-                  selected={filterDepartment.value}
-                  onChange={filterDepartment.onChange}
-                />
-              )}
-            </div>
+
+            {!is_department_admin && (
+              <div className="col-sm-3">
+                {departmentCorporate && departmentCorporate.length > 0 && (
+                  <DropDown
+                    id={"department"}
+                    heading={"Department"}
+                    data={[
+                      DEFAULT_VALUE,
+                      ...getDropDownCompanyDisplayData(departmentCorporate),
+                    ]}
+                    selected={filterDepartment.value}
+                    onChange={filterDepartment.onChange}
+                  />
+                )}
+              </div>
+            )}
 
             <div className="col-sm-3">
               {sectorsCorporate && sectorsCorporate.length > 0 && (
@@ -361,7 +370,7 @@ function Designation() {
                       }
                       onViewDetails={() => {
                         dispatch(setSelectedRole(item));
-                        goTo(ROUTES["designation-module"]["variant-info"]);
+                        goTo(ROUTES["designation-module"]["opening-detail"]);
                       }}
                     />
                   </div>
@@ -447,10 +456,9 @@ function Designation() {
 
           <div className={"col-sm-6"}>
             <Input
-              className={'text-uppercase'}
               heading={"Reference No"}
               placeHolder={"Reference No"}
-              value={referenceId.value}
+              value={capitalizeLetter(referenceId.value)}
               onChange={referenceId.onChange}
               maxLength={12}
             />

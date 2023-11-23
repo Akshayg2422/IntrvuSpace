@@ -1,5 +1,5 @@
 import { icons } from '@Assets';
-import { CommonTable, Input, MenuBar, Modal, NoDataFound, Spinner, TextArea, showToast } from '@Components';
+import { AutoFocusInput, CommonTable, Input, MenuBar, Modal, NoDataFound, Spinner, TextArea, showToast } from '@Components';
 import { useInput, useLoader, useModal } from '@Hooks';
 import { SettingHeader } from '@Modules';
 import { addSectorCorporate, getSectorCorporate } from '@Redux';
@@ -31,7 +31,7 @@ function Sector() {
   const sectorDescription = useInput("");
   const [editId, setEditId] = useState<any>()
   const [selectedSector, setSelectedSector] = useState<any>(undefined)
-  const inputRef= useRef<any>(null)
+  const inFocus= useRef<any>(null)
 
 
   const MENU = [
@@ -144,6 +144,7 @@ function Sector() {
    */
 
   function resetValues() {
+    setEditId('');
     sectorName.set('');
     sectorDescription.set('');
     addSectorModal.hide();
@@ -211,7 +212,7 @@ function Sector() {
               heading={"Name"}
               value={sectorName.value}
               onChange={sectorName.onChange}
-              ref={inputRef}
+              innerRef={inFocus}
             />
           </div>
         </div>

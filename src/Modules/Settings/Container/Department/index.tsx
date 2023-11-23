@@ -27,7 +27,7 @@ function Department() {
   const loader = useLoader(true)
   const addLoader = useLoader(false);
   const departmentName = useInput("");
-  const inputRef = useRef<any>()
+  const inFocus = useRef<any>()
 
 
   useEffect(() => {
@@ -174,7 +174,7 @@ function Department() {
           <div className='col-sm-6'>
             <Input
               heading={"Name"}
-              ref={inputRef}
+              innerRef={inFocus}
               value={departmentName.value}
               onChange={departmentName.onChange}
             />

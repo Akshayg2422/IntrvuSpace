@@ -130,4 +130,31 @@ export const verifyEmailUsingOtp = (params: any) => {
 };
 
 
+/**
+ * get DASHBOARD
+ */
+
+
+
+export const getDashboard = (params: any) => {
+    return {
+        type: ActionTypes.GET_DASHBOARD,
+        payload: params,
+    };
+};
+
+export const getDashboardSuccess = (response: any) => {
+
+    return {
+        type: ActionTypes.GET_DASHBOARD_SUCCESS,
+        payload: response
+    }
+}
+
+export const getDashboardFailure = (error: any) => {
+    return {
+        type: ActionTypes.GET_DASHBOARD_FAILURE,
+        payload: error
+    }
+}
 

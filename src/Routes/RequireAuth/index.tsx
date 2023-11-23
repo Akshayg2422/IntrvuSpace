@@ -12,6 +12,8 @@ type RequireAuthProps = {
 export const RequireAuth = ({ children }: RequireAuthProps) => {
 
 
+    console.log('RequireAuth');
+
     const [sideNavOpen, setSideNavOpen] = useState(true);
     const mainContentRef = React.useRef<HTMLDivElement | null>(null);
     const location = useLocation();

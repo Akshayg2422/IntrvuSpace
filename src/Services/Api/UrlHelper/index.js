@@ -4,6 +4,8 @@
 const ASSISTANT = '/ivoassistant/'
 const EMPLOYEE = '/employee/'
 const COMPANY = '/company/'
+const AUTH = '/authentication/'
+
 
 
 export const GET_START_CHAT = ASSISTANT + 'processCall';
@@ -239,6 +241,7 @@ export const GRT_ONGOING_SCHEDULES = ASSISTANT + 'getOngoingSchedules'
 
 //employee/getOtpForEmailVerification
 
+export const URL_DASHBOARD = AUTH + 'dashboard'
 
 
 

@@ -8,4 +8,5 @@ export interface AuthProps {
   verifyOtp: any,
   VerificationEmail: any,
   userEmail: string | undefined;
+  dashboardDetails: any
 }
