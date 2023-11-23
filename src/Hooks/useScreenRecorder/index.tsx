@@ -8,12 +8,14 @@ import { getBrowserInfo } from "@Utils";
 import { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import { useNavigation } from "@Hooks";
+import { useScreenRecorderProps } from './interfaces'
 
 
-const useScreenRecorder = () => {
+const useScreenRecorder = (onRecordingStatusChange?: any) => {
   let { schedule_id } = useParams();
 
-  
+
   const [mediaStream, setMediaStream] = useState<any>(null);
   const [recorder, setRecorder] = useState<any>(null);
   const [isScreenRecording, setIsScreenRecording] = useState(false);
@@ -22,15 +24,17 @@ const useScreenRecorder = () => {
   const intervalIdRef = useRef<any>(null);
   const [recordStatus, setRecordStatus] = useState<any>(); // true
   const [isScreenRecordingReady, setIsScreenRecordingReady] = useState(false);
-  
-  const { scheduleId, VideoSessionDetails } = useSelector(
+
+  const { VideoSessionDetails } = useSelector(
     (state: any) => state.DashboardReducer
   );
-  
+
+  // const { goBack } = useNavigation()
+
 
   const dispatch = useDispatch();
 
- 
+
 
   const startScreenRecording = async () => {
 
@@ -40,29 +44,40 @@ const useScreenRecorder = () => {
           audio: true,
         });
 
-        
+
         const videoStream = await navigator.mediaDevices.getDisplayMedia({
           video: {
             displaySurface: "monitor", // or "application" for capturing a specific application window
           },
         } as never);
 
-        
+
+
 
         const stream = new MediaStream([
           ...audioStream.getTracks(),
           ...videoStream.getTracks(),
         ]);
 
-        
+
 
         const tracks = videoStream.getTracks();
 
         if (tracks.length > 0) {
           const track = tracks[0];
           const settings: any = track.getSettings();
-          console.log("settings", settings);
-          
+
+
+          track.onended = () => {
+            // This callback will be invoked when the user stops sharing the screen
+            console.log('Screen sharing stopped');
+            if (onRecordingStatusChange) {
+              onRecordingStatusChange()
+            }
+            // Call your Stopsharing function here
+            // setRecordStatus(false)
+          }
+
 
           if (settings.displaySurface === "monitor") {
             setMediaStream(stream);
@@ -79,6 +94,10 @@ const useScreenRecorder = () => {
             };
             // Start recording every 1 second.
             mediaRecorder.start(1000);
+
+
+
+
 
             setRecordStatus(true);
             console.log("User selected the entire screen.");
@@ -110,7 +129,9 @@ const useScreenRecorder = () => {
   }, [recordedVideoData, VideoSessionDetails]);
 
 
-  const stopScreenRecording = async () => {    
+
+
+  const stopScreenRecording = async () => {
     if (recorder) {
       recorder.stop();
       mediaStream.getTracks().forEach((track) => track.stop());
@@ -147,7 +168,7 @@ const useScreenRecorder = () => {
             dispatch(getRecordedVideoSessionDetails(res?.details));
           }
         },
-        onError: (error: any) => () => {},
+        onError: (error: any) => () => { },
       })
     );
   };
@@ -163,6 +184,7 @@ const useScreenRecorder = () => {
     recordedAudioData,
     setIsScreenRecordingReady,
     isScreenRecordingReady,
+
   };
 };
 
