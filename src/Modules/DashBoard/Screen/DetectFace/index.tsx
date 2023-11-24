@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { FilesetResolver, DrawingUtils, FaceLandmarker } from '@mediapipe/tasks-vision';
-import { useModal } from '@Hooks';
+import { useModal, useNavigation } from '@Hooks';
 import { Button, Image, Modal } from '@Components';
 import { icons } from '@Assets';
 
-function DetectFace2({onClick}) {
+function DetectFace({onClick, setCallDetectFace}) {
     const videoRef = useRef<any>(null)
     let faceLandmarker: any;
     let runningMode = "IMAGE";
@@ -23,6 +23,7 @@ function DetectFace2({onClick}) {
     const audioStreamRef = useRef<any>(null)
     const audioStreamRunningRef = useRef<any>()
     const clearTimeOutRef = useRef<any>()
+    const { goBack } = useNavigation();
 
     async function createFaceLandmarker() {
         try {
@@ -47,9 +48,6 @@ function DetectFace2({onClick}) {
         if(!detectFaceModal.visible){
             name()
             detectFaceModal.show()
-        }
-        else{
-            detectFaceModal.hide()
         }
 
     }
@@ -93,7 +91,7 @@ console.log(detectFaceModal.visible,"detectFaceModal");
     // Enable the live webcam view and start detection.
     function enableCam() {
 
-        start()
+        startAudioDetect()
         timeoutFunc()
         webcamRunningRef.current = true
     
@@ -125,7 +123,7 @@ console.log(detectFaceModal.visible,"detectFaceModal");
             canvasCtx = canvasElement?.getContext("2d");
             drawingUtils = new DrawingUtils(canvasCtx);
             video.srcObject = stream;
-
+            
             video.addEventListener("loadeddata", predictWebcam);
         });
     }
@@ -232,7 +230,7 @@ console.log(detectFaceModal.visible,"detectFaceModal");
     }
 
 
-    function start() {
+    function startAudioDetect() {
         audioStreamRunningRef.current = true
 
         audioContext.current = new window.AudioContext();
@@ -260,11 +258,29 @@ console.log(detectFaceModal.visible,"detectFaceModal");
         const canvasHeight = ctx.canvas.height;
         const barWidth = canvasWidth / bufferLength;
 
-        const gradient = ctx.createLinearGradient(0, 0, 0, canvasHeight);
-        gradient.addColorStop(1, 'black');
-        gradient.addColorStop(0.75, 'blue');
-        gradient.addColorStop(0.25, 'cyan');
-        gradient.addColorStop(0, 'lime');
+        // const gradient = ctx.createLinearGradient(0, 0, 0, canvasHeight);
+        // gradient.addColorStop(1, 'black');
+        // gradient.addColorStop(0.75, 'blue');
+        // gradient.addColorStop(0.25, 'cyan');
+        // gradient.addColorStop(0, 'lime');
+//         const gradient = ctx.createLinearGradient(0, 100, 250, 0);
+
+// // Add three color stops
+// gradient.addColorStop(0, "#641df2");
+// gradient.addColorStop(0.5, "cyan");
+// gradient.addColorStop(1, "#641df2");
+
+const gradient = ctx.createLinearGradient(0, 0, 600, 0);
+    gradient.addColorStop(0, "black");
+    gradient.addColorStop(0.125, "red");
+    gradient.addColorStop(0.25, "orange");
+    gradient.addColorStop(0.375, "yellow");
+    gradient.addColorStop(0.5, "green");
+    gradient.addColorStop(0.625, "blue");
+    gradient.addColorStop(0.75, "indigo");
+    gradient.addColorStop(0.875, "violet");
+    gradient.addColorStop(1, "black");
+
 
         const draw = () => {
             analyser.getByteFrequencyData(dataArray);
@@ -285,7 +301,7 @@ console.log(detectFaceModal.visible,"detectFaceModal");
                 ctx.fillRect(i * barWidth, canvasHeight - scaledHeight, barWidth, scaledHeight);
             }
             array.push(Math.round(add / bufferLength))
-            console.log(add / bufferLength, 'addd');
+            // console.log(add / bufferLength, 'addd');
 
             if (audioStreamRunningRef.current) {
                 requestAnimationFrame(draw);
@@ -298,7 +314,8 @@ console.log(detectFaceModal.visible,"detectFaceModal");
 
 
     function timeoutFunc() {
-
+        console.log('functionCalled',5);
+        
         clearTimeOutRef.current =  setTimeout(() => {
             let count = 0
             let average: any;
@@ -314,7 +331,7 @@ console.log(detectFaceModal.visible,"detectFaceModal");
 
             }
             else {
-                webcamRunningRef.current = false
+                // webcamRunningRef.current = false
                 setFaceFound(false)
             }
             if (average < 20) {
@@ -334,6 +351,8 @@ console.log(detectFaceModal.visible,"detectFaceModal");
     }
 
     const stopStream = () => {
+        console.log(45);
+        
         webcamRunningRef.current = false
         if (videoStreamRef) {
             videoStreamRef.current.getTracks().forEach(function (track) {
@@ -360,14 +379,15 @@ console.log(detectFaceModal.visible,"detectFaceModal");
                 text={"click"}></Button> */}
             <Modal isOpen={detectFaceModal.visible}
                 onClose={() => {
-                    // detectFaceModal.hide()
+                    detectFaceModal.hide()
                     setFaceFound(false)
                     setNoiseDetection(false)
                     stopStream()
                     setNoiseDetection('Checking')
                     setFaceFound('Checking')
                     clearTimeout(clearTimeOutRef.current)
-                    setTryAgain(tryAgain + 1)
+                    setCallDetectFace(false)
+                    goBack()
                 }}
                 title={'Face and Noise Validation'}>
                 <div className='d-flex justify-content-center flex-column align-items-center'>
@@ -382,10 +402,13 @@ console.log(detectFaceModal.visible,"detectFaceModal");
                             faceFound === 'Checking' && noiseDetection === 'Checking' ? <h5 className='text-secondary'>Checking...</h5> : faceFound && noiseDetection ? <Button text={'Continue'} className={'m-0'} onClick={()=>{detectFaceModal.hide()
                                 webcamRunningRef.current = false
                                 audioStreamRunningRef.current = false
+                                setNoiseDetection('Checking')
+                                setFaceFound('Checking')
                                 audioContext.current.close();
                                 onClick()
                         }}></Button> : <Button text={'Try Again'} className={'m-0'} onClick={() => {
-                                setTryAgain(tryAgain + 1)
+                                // setTryAgain(tryAgain + 1)
+                                // createFaceLandmarker()
                                 setNoiseDetection('Checking')
                                 setFaceFound('Checking')
                                 enableCam()
@@ -423,4 +446,4 @@ console.log(detectFaceModal.visible,"detectFaceModal");
     );
 };
 
-export default DetectFace2;
+export default DetectFace;
