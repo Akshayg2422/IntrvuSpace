@@ -246,6 +246,13 @@ function Call() {
   const interviewLimitModal = useModal(false);
   const camPermissionModal = useModal(false);
 
+  const handleRecordingStatusChange = () => {
+    // Do something with the updated recording status
+    console.log('Screen recording status changed:');
+    endInterviewHandler();
+  };
+
+
   const {
     startScreenRecording,
     stopScreenRecording,
@@ -257,13 +264,10 @@ function Call() {
     recordedVideoData,
     isScreenRecordingReady,
     setIsScreenRecordingReady,
-  } = useScreenRecorder();
+  } = useScreenRecorder(handleRecordingStatusChange);
 
-  console.log("recordSttaus==>", recordStatus);
 
-  {
-    /** screen recording */
-  }
+
 
   const [isConfirmRecordingModalOpen, setIsConfirmRecordingModalOpen] =
     useState(false);
@@ -885,7 +889,8 @@ function Call() {
   }
 
   async function startInterviewHandler() {
-    const { is_video_recording_manditory } = scheduleInfo
+    // const { is_video_recording_manditory } = scheduleInfo
+    const is_video_recording_manditory = true
 
     startInterviewLoader.show();
     const hasCamPermission = await hasCameraPermission();
@@ -897,8 +902,7 @@ function Call() {
         micPermissionModal.hide();
 
         if (!recordStatus && is_video_recording_manditory) {
-console.log('running',34);
-
+         
           await startScreenRecording();
         }
         else if (!callDetectFace) {

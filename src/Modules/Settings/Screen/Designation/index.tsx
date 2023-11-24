@@ -181,7 +181,7 @@ function Designation() {
       experience: parseInt(experience.value?.id),
       jd: jd.value,
       reference_id: referenceId.value,
-      vacancies: vacancies?.value,
+      vacancies: vacancies?.value>0?vacancies?.value:'',
       interview_duration: duration?.value,
       video_recording_mandatory: videoRecordMandatory
 
