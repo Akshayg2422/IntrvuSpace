@@ -306,9 +306,11 @@ export const CREATE_CORPORATE_SCHEDULE_RULES = {
 
 export const CREATE_CORPORATE_VACANCIES_RULES = {
   vacancies:{
-    presence: { allowEmpty: false, message: "Vacancies minimum 1 " },
+    presence: { allowEmpty: false, message: "Vacancies cannot be empty minimum 1 " },
   }
 }
+
+
 
 
 

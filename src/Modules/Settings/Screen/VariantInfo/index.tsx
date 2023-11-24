@@ -171,7 +171,14 @@ function VariantInfo() {
     const params = {
       vacancies: vacanciesCount?.value > 0 ? vacanciesCount?.value : '',
     };
+    const validation = validate(CREATE_CORPORATE_VACANCIES_RULES, params);
+
+    if (ifObjectExist(validation)) {
     corporateScheduleActionsHandler(params);
+    }
+    else{
+      showToast(getValidateError(validation));
+    }
   }
 
   function proceedModifyDeadlineApiHandler() {
