@@ -103,7 +103,7 @@
   &.start-date:hover,
   &.end-date:hover,
   &.middle-date:hover {
-    background-color: $info !important;
+    background-color: $primary !important;
     color: $white !important;
   }
   &.start-date{
@@ -299,9 +299,9 @@ td.rdtYear:hover {
 .rdtCounters {
   .rdtCounter:last-child {
     .rdtCount {
-      color: $info;
+      color: $primary;
       border-radius: 50%;
-      border: 1px solid $info;
+      border: 1px solid $primary;
     }
   }
 }
