@@ -25,3 +25,24 @@ export const getCompaniesFailure = (error: any) => {
     }
 }
 
+/**
+ * alter company status
+ */
+
+export const alterCompanyStatus = (params: any) => {
+  return {
+      type: ActionTypes.ALTER_COMPANY_STATUS,
+      payload: params,
+  };
+};
+
+/**
+ * alter company limit
+ */
+
+export const alterCompanyLimit = (params: any) => {
+  return {
+      type: ActionTypes.ALTER_COMPANY_LIMIT,
+      payload: params,
+  };
+};
