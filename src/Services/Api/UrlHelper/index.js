@@ -251,3 +251,26 @@ export const URL_GETCOMPANY = COMPANY +'getCompany'
 
 
 
+/**
+ * 
+ */
+
+export const URL_GET_COMPANIES = COMPANY + 'getCompanies'
+
+
+/*
+alter company status
+ */
+
+export const URL_ALTER_COMPANY_STATUS= COMPANY +'alterCompanyStatus'
+
+
+/*
+alter company limits
+ */
+
+export const URL_ALTER_COMPANY_LIMIT= COMPANY +'alterCompanyLimit'
+
+
+
+

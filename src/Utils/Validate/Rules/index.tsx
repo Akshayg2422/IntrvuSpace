@@ -302,6 +302,9 @@ export const CREATE_CORPORATE_SCHEDULE_RULES = {
   department_id: {
     presence: { allowEmpty: false, message: "Department cannot be empty" },
   },
+  vacancies :{
+    presence: { allowEmpty: false, message: "vacancies minimum 1 cannot be empty" },
+  }
 }
 
 export const CREATE_FOR_OTHERS_RULES = {
@@ -366,7 +369,7 @@ export const CREATE_NEW_PASSWORD_RULES = {
 export const USER_FORM_RULES = {
   first_name: {
     presence: { message: "Name cannot be empty." },
-    length: { minimum: 3, message: "Fast Name should have a minimum of 3 characters." },
+    length: { minimum: 3, message: "First Name should have a minimum of 3 characters." },
   },
   last_name: {
     presence: { message: "Last name cannot be empty" },
