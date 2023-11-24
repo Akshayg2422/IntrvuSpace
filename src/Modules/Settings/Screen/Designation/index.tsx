@@ -16,6 +16,7 @@ import {
   TopNavbarCorporateFlow,
   TopNavbar,
   Checkbox,
+  DateTimePicker,
 } from "@Components";
 import {
   useDropDown,
@@ -44,6 +45,8 @@ import {
   PLACEHOLDER_ROLES,
   STATUS_LIST,
   capitalizeLetter,
+  displayFormatDate,
+  getDisplayTime,
   getDropDownCompanyDisplayData,
   getValidateError,
   ifObjectExist,
@@ -53,6 +56,7 @@ import {
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./index.css";
+import moment from "moment";
 
 function Designation() {
   const {
@@ -100,6 +104,15 @@ function Designation() {
 
   const [isPositionSearch, setIsPositionSearch] = useState(false);
   const [videoRecordMandatory, setVideoRecordMandatory] = useState(true)
+
+  const [scheduleEndDate, setScheduleEndDate] = useState<any>(moment().add(9, 'day').format('MMM D YYYY'));
+  const [scheduleEndTime, setScheduleEndTime] = useState<any>(moment().set({ hour: 23, minute: 59, second: 0 }).format('LT'));
+
+  const formatDeadline = (date: string, time: string) => {
+    const formattedDate = moment(date, 'MMM D YYYY').format('YYYY-MM-DD');
+    const formattedTime = moment(time, 'LT').format('HH:mm:ss');
+    return `${formattedDate}T${formattedTime}`;
+  };
 
   /**
    * loader state
@@ -183,8 +196,8 @@ function Designation() {
       reference_id: referenceId.value,
       vacancies: vacancies?.value>0?vacancies?.value:'',
       interview_duration: duration?.value,
-      video_recording_mandatory: videoRecordMandatory
-
+      video_recording_mandatory: videoRecordMandatory,
+      deadline: formatDeadline(scheduleEndDate, scheduleEndTime)
     };
 
     const validation = validate(CREATE_CORPORATE_SCHEDULE_RULES, params);
@@ -276,6 +289,16 @@ function Designation() {
     updateData[index] = { ...updateData[index], is_view_more: status };
     dispatch(updateCorporateSchedules(updateData));
   }
+
+  const modifyDeadlineHandler = () => {
+    const displayTime = moment(
+      getDisplayTime('candidate_deadline'),
+      "HH:mm:ss"
+    ).format("hh:mm A");
+    setScheduleEndDate(displayFormatDate('candidate_deadline', "date"));
+    setScheduleEndTime(displayTime);
+  };
+
   return (
     <div className={"screen"}>
       <TopNavbarCorporateFlow />
@@ -529,6 +552,27 @@ function Designation() {
             />
           </div>
           <div className={"col-sm-6"}>
+            <DateTimePicker
+              noSpace
+              disableFuture={true}
+              heading={"Deadline Date"}
+              placeholder={"Deadline Date"}
+              value={scheduleEndDate}
+              onChange={setScheduleEndDate}
+            />
+          </div>
+          <div className="col-sm-6">
+            <DateTimePicker
+              noSpace
+              type={"time"}
+              dateFormat={"HH:mm:ss"}
+              heading={"Deadline Time"}
+              placeholder={"Deadline Time"}
+              value={scheduleEndTime}
+              onChange={setScheduleEndTime}
+            />
+          </div>
+          <div className={"col-sm-6 pt-2"}>
             <Checkbox
               id={"video-Recording"}
               className={"text-primary"}
@@ -539,8 +583,8 @@ function Designation() {
               }}
             />
           </div>
-
         </div>
+
       </Modal>
     </div>
   );

@@ -247,3 +247,13 @@ export const URL_DASHBOARD = AUTH + 'dashboard'
 
 
 
+/**
+ * 
+ */
+
+export const URL_GET_COMPANIES = COMPANY + 'getCompanies'
+
+
+
+
+
