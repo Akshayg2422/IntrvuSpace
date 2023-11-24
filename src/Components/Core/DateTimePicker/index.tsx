@@ -12,6 +12,7 @@ function DateTimePicker({ id, heading, noSpace, placeholder, type = 'date', date
   const disableDt = disableFuture
     ? (current: any) => current.isAfter(currentDate1, 'day')
     : (current: any) => current.isBefore(currentDate, 'day');
+    
 
   return (
     <FormGroup className={noSpace ? 'm-0 b-0' : ""}>
@@ -31,13 +32,14 @@ function DateTimePicker({ id, heading, noSpace, placeholder, type = 'date', date
         onChange={
           (date: any) => {
             if (onChange)
-              if (isMoment(date))
+              if (isMoment(date))   
                 onChange(type === 'time' ? date.format('LT') : type === 'both' ? date.format() : date.format('MMM D YYYY'))
               else
                 onChange(date)
           }
         }
         isValidDate={disableDt}
+        
       />
     </FormGroup >
   )
