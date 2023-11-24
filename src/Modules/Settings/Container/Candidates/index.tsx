@@ -75,8 +75,8 @@ function Candidates({ id, details }: CandidatesProps) {
   function getCandidateMenu(isCompleted: boolean,is_skipped:boolean) {
     return [
       ...CANDIDATE_MENU_OPTIONS,
-      // ...(isCompleted ? CANDIDATE_MENU_OPTIONS_COMPLETED :CANDIDATE_MENU_OPTIONS_NOT_START)
-      ...(isCompleted ?(is_skipped?[]: CANDIDATE_MENU_OPTIONS_COMPLETED ):(is_skipped?[]:CANDIDATE_MENU_OPTIONS_NOT_START))
+       ...(isCompleted ? CANDIDATE_MENU_OPTIONS_COMPLETED :CANDIDATE_MENU_OPTIONS_NOT_START)
+      // ...(isCompleted ?(is_skipped?[]: CANDIDATE_MENU_OPTIONS_COMPLETED ):(is_skipped?[]:CANDIDATE_MENU_OPTIONS_NOT_START))
     ] as never[];
   }
 
