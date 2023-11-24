@@ -1,0 +1,42 @@
+
+  
+
+  /* Style for the input area */
+  .select2-selection--single {
+    /* max-width: 250px;  */
+    white-space: nowrap; 
+  overflow: hidden;
+   text-overflow: ellipsis;
+   
+  }
+  .select2-container .select2-selection__arrow {
+    right: 10px; /* Adjust the right position as needed */
+}
+  /* .ellipsis-text {
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  } */
+  
+ 
+
+
+    /* .select2-selection--single {
+      width: 100%;
+      white-space: nowrap; 
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+  
+    .select2-search {
+      flex-grow: 1;
+    } */
+  
+
+
+
+
+
+  
