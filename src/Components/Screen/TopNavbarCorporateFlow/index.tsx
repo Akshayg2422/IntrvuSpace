@@ -30,7 +30,7 @@ function TopNavbarCorporateFlow() {
   const { goTo } = useNavigation();
 
   const { corporateScheduleCount } = useSelector(
-    (state: any) => state.DashboardReducer
+    (state: any) => state.
   );
   const dispatch = useDispatch();
   const [dropdownOpen, setDropdownOpen] = useState(false);

@@ -243,6 +243,10 @@ export const GRT_ONGOING_SCHEDULES = ASSISTANT + 'getOngoingSchedules'
 
 export const URL_DASHBOARD = AUTH + 'dashboard'
 
+//get company
+
+export const URL_GETCOMPANY = COMPANY +'getCompany'
+
 
 
 

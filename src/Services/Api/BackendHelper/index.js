@@ -246,5 +246,7 @@ export const getOngoingSchedulesApi = payload => post(URL.GRT_ONGOING_SCHEDULES,
 
 export const getDashboardApi = payload => post(URL.URL_DASHBOARD, payload, {})
 
+/* get company api */
+export const getCompanies = payload => post(URL.URL_GETCOMPANY, payload, {});
 
 
