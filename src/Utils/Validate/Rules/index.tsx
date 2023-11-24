@@ -93,7 +93,30 @@ export const REGISTER_COMPANY_RULES = {
   sector: {
     presence: { allowEmpty: false, message: "sector cannot be empty" },
   },
+
+  
 }
+
+export const REGISTER_COMPANY_SUPER_ADMIN_RULES = {
+  brand_name: {
+    presence: { allowEmpty: false, message: "Brand Name cannot be empty" },
+  },
+  ...ADDRESS,
+  ...MOBILE_NUMBER_RULES,
+  ...PINCODE,
+  sector: {
+    presence: { allowEmpty: false, message: "sector cannot be empty" },
+  },
+  interview_limit: {
+    presence: { allowEmpty: false, message: "interview limit cannot be empty" },
+    length: { maximum: 6, message: "interview_limit  minimum 6 chars" },
+   
+  },
+  
+}
+
+
+
 
 export const CREATE_QUESTION_SECTION_RULES = {
   name: CREATE_QUESTION_FORM_RULES.name,

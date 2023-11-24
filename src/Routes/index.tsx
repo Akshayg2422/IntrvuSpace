@@ -35,6 +35,7 @@ import {
   AdminSchedules,
   SuperAdminDashboard
 } from '@Modules';
+import { SuperAdminCorporateRegister } from '@Modules//SuperAdmin/Screen/SuperAdminCorporateRegister';
 
 export const ROUTES = {
   'auth-module': {
@@ -81,7 +82,9 @@ export const ROUTES = {
     'admin-schedule': '/admin-schedule'
   },
   'super-admin': {
-    'dashboard': "dashboard"
+    dashboard:"/dashboard",
+    'super-admin-register-company': '/super-admin-register-company'
+
   }
 }
 
@@ -258,7 +261,14 @@ export const SUPER_ADMIN_ROUTES = [
     path: ROUTES['super-admin'].dashboard,
     component: <SuperAdminDashboard />
   },
+
+  {
+    id: 6,
+    path: ROUTES['super-admin']['super-admin-register-company'],
+    component: <SuperAdminCorporateRegister />
+  },
 ]
+
 
 export const ADMIN_ROUTES = [
   {
