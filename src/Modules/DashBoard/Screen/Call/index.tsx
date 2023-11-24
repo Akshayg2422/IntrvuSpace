@@ -180,7 +180,7 @@ function Call() {
       setIsTtfSpeaking(false);
     };
 
-    audioElementRef.current.onloadstart = function () { };
+    audioElementRef.current.onloadstart = function () {};
     audioElementRef.current.onended = function () {
       setIsTtfSpeaking(false);
       if (closeCall.current === true) {
@@ -241,10 +241,9 @@ function Call() {
 
   const handleRecordingStatusChange = () => {
     // Do something with the updated recording status
-    console.log('Screen recording status changed:');
+    console.log("Screen recording status changed:");
     endInterviewHandler();
   };
-
 
   const {
     startScreenRecording,
@@ -258,9 +257,6 @@ function Call() {
     isScreenRecordingReady,
     setIsScreenRecordingReady,
   } = useScreenRecorder(handleRecordingStatusChange);
-
-
-
 
   const [isConfirmRecordingModalOpen, setIsConfirmRecordingModalOpen] =
     useState(false);
@@ -359,7 +355,7 @@ function Call() {
           canConnect.current = false;
           socketRef.current.close();
           socketRef.current = null;
-        } catch (e) { }
+        } catch (e) {}
         clearInterval(reconnectInterval);
       }
     };
@@ -856,15 +852,19 @@ function Call() {
           stopInterval();
           startInterviewLoader.hide();
         },
-        onError: (error: any) => () => { },
+        onError: (error: any) => () => {},
       })
     );
   };
 
   function canStartInterviewCheckHandler() {
-    if (getBrowserInfo().browserName !== "Mozilla Firefox" && getBrowserInfo().browserName !== "Safari") {
-      const { can_start_interview } = scheduleInfo;
+    const { can_start_interview, is_video_recording_manditory } = scheduleInfo;
 
+    if (
+      (getBrowserInfo().browserName !== "Mozilla Firefox" &&
+        getBrowserInfo().browserName !== "Safari") ||
+      !is_video_recording_manditory
+    ) {
       if (can_start_interview) {
         startInterviewHandler();
       } else {
@@ -882,7 +882,7 @@ function Call() {
   }
 
   async function startInterviewHandler() {
-    const { is_video_recording_manditory } = scheduleInfo
+    const { is_video_recording_manditory } = scheduleInfo;
     // const is_video_recording_manditory = true
 
     startInterviewLoader.show();
@@ -895,10 +895,8 @@ function Call() {
         micPermissionModal.hide();
 
         if (!recordStatus && is_video_recording_manditory) {
-
           await startScreenRecording();
         } else if (recordStatus || !is_video_recording_manditory) {
-
           initiateSocket();
 
           proceedOpenCallView.current = true;
@@ -933,7 +931,7 @@ function Call() {
         onSuccess: () => () => {
           endInterviewHandler();
         },
-        onError: () => () => { },
+        onError: () => () => {},
       })
     );
   }
@@ -1066,11 +1064,15 @@ function Call() {
                     <div className="position-absolute d-flex align-items-center justify-content-center bottom-0 w-100 mb-5">
                       <div className="col-md-6">
                         <CallHeader
-                          webcam={scheduleInfo?.is_video_recording_manditory ? true : showCam}
+                          webcam={
+                            scheduleInfo?.is_video_recording_manditory
+                              ? true
+                              : showCam
+                          }
                           mic={!mute}
                           onWebCamChange={() => {
                             if (!scheduleInfo?.is_video_recording_manditory) {
-                              webCamHandler()
+                              webCamHandler();
                             }
                           }}
                           onMicChange={micMuteHandler}
@@ -1241,7 +1243,7 @@ function Call() {
             {"2. Enable microphone access in system settings. "}
             <span
               className="pointer text-primary font-weight-700"
-            // onClick={gotoPermissionSetting}
+              // onClick={gotoPermissionSetting}
             >{`(${getOperatingSystem()})`}</span>
           </p>
         </div>
