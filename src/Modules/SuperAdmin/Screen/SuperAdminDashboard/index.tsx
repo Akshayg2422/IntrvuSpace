@@ -1,18 +1,35 @@
 import React, { useEffect } from 'react'
 import { SuperAdminNavbar } from '@Modules'
 import { useSelector, useDispatch } from 'react-redux'
-import { getCompanies } from '@Redux'
+import { alterCompanyStatus, getCompanies } from '@Redux'
 import { log } from 'console';
 
 function SuperAdminDashboard() {
 
     const { companies } = useSelector((state: any) => state.SuperAdminReducer);
-
     const dispatch = useDispatch()
 
     useEffect(() => {
         getCompaniesApiHandler();
+        alterCompanyStatusApiHandler()
     }, [])
+
+    const alterCompanyStatusApiHandler=()=>{
+        const params = {
+
+        };
+        dispatch(
+            alterCompanyStatus({
+                params,
+                onSuccess: () => () => {
+
+                },
+                onError: () => () => {
+                },
+            })
+        );
+
+    }
 
 
     const getCompaniesApiHandler = () => {
