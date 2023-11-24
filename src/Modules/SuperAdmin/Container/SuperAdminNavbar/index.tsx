@@ -160,6 +160,19 @@ function SuperAdminNavbar() {
               navbar
             >
 
+              <NavItem>
+                <div className={'btn-wrapper'}>
+                  <Button
+                    block
+                    text={"Create Company"}
+                    onClick={() => {
+                      goTo(ROUTES['super-admin']['super-admin-register-company'])
+
+                    }}
+                  />
+                </div>
+              </NavItem>
+
               <NavItem className="d-none d-lg-block ml-2">
                 <div className='row align-items-center m-auto'>
 
@@ -168,6 +181,8 @@ function SuperAdminNavbar() {
                   </span>
 
                   <Nav navbar>
+                 
+
                     <UncontrolledDropdown nav
                       isOpen={isOpenDropdown}
                       toggle={toggleDropdownHandler}>
@@ -196,6 +211,8 @@ function SuperAdminNavbar() {
                         })}
                       </DropdownMenu>
                     </UncontrolledDropdown>
+
+                    
                   </Nav>
 
                 </div>
