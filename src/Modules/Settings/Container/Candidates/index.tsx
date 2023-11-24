@@ -521,7 +521,7 @@ function Candidates({ id, details }: CandidatesProps) {
 
   return (
     <>
-      {candidatesCount <= 0 && (
+      {candidatesCount <= 0 && !is_department_admin && !isJdClosed &&(
         <div className={"empty-candidates-container"}>
           <div className={"text-heading"}>
             {"Start adding your Candidates Now !"}
@@ -538,7 +538,7 @@ function Candidates({ id, details }: CandidatesProps) {
               }
             </div>
           </div>
-          {!is_department_admin && !isJdClosed && (
+          {/* {!is_department_admin && !isJdClosed && ( */}
             <div className={"empty-candidates-btn-container"}>
               <div className={"empty-btn-container"}>
                 <Button
@@ -555,7 +555,7 @@ function Candidates({ id, details }: CandidatesProps) {
                 />
               </div>
             </div>
-          )}
+          {/* )} */}
         </div>
       )}
 
