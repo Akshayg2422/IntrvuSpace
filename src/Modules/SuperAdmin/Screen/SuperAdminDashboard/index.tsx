@@ -11,11 +11,24 @@ function SuperAdminDashboard() {
 
 
     const { companies, companiesNumOfPages, companiesCurrentPages } = useSelector((state: any) => state.SuperAdminReducer);
+
+
     const dispatch = useDispatch()
+
+    /**
+     * add modal
+     */
     const limitModal = useModal(false);
-    const limitLoader = useLoader(false);
+    const addLimitLoader = useLoader(false);
+
+    const loader = useLoader(false);
+
+
     const [selectedCompany, setSelectedCompany] = useState(undefined)
     const limit = useInput("")
+
+
+
 
     useEffect(() => {
         getCompaniesApiHandler(INITIAL_PAGE);
@@ -28,16 +41,23 @@ function SuperAdminDashboard() {
             { id: 2, name: "Limit" },
         ]
     }
+
+
     const getCompaniesApiHandler = (page_number: number) => {
         const params = {
             page_number
         };
+
+        loader.show();
+
         dispatch(
             getCompanies({
                 params,
                 onSuccess: () => () => {
+                    loader.hide();
                 },
                 onError: () => () => {
+                    loader.hide();
                 },
             })
         );
@@ -48,19 +68,22 @@ function SuperAdminDashboard() {
             id,
             is_active: !enable
         };
-        console.log('API Params:', params);
+
         dispatch(
             alterCompanyStatus({
                 params,
                 onSuccess: (response: any) => () => {
+                    const { message } = response
                     getCompaniesApiHandler(companiesCurrentPages);
-                    showToast(response?.message, 'success')
+                    showToast(message, 'success')
                 },
-                onError: (error) => () => {
-                    showToast(error?.message, 'error')
+                onError: (error: any) => () => {
+                    const { message } = error
+                    showToast(message, 'error')
                 },
             })
         );
+
     }
 
     const alterCompanyLimitApiHandler = () => {
@@ -73,11 +96,13 @@ function SuperAdminDashboard() {
                 params,
                 onSuccess: (response: any) => () => {
                     limitModal.hide()
+                    const { message } = response
                     getCompaniesApiHandler(companiesCurrentPages);
-                    showToast(response?.message, 'success')
+                    showToast(message, 'success')
                 },
                 onError: (error: any) => () => {
-                    showToast(error?.message, 'error')
+                    const { message } = error
+                    showToast(message, 'error')
                 },
             })
         );
@@ -87,8 +112,8 @@ function SuperAdminDashboard() {
         const { id, is_active, interview_limit } = item;
 
         setSelectedCompany(id);
-        const MENU = getCandidateMenu(is_active)
 
+        const MENU = getCandidateMenu(is_active)
 
         if (MENU[0].id === action.id) {
             alterCompanyStatusApiHandler(id, is_active);
@@ -97,6 +122,7 @@ function SuperAdminDashboard() {
             limitModal.show();
             limit.set(interview_limit);
         }
+
     }
 
     const normalizedTableData = (data: any) => {
@@ -117,64 +143,30 @@ function SuperAdminDashboard() {
 
                     "": (
                         <div className={"d-flex align-items-center"}>
-                            {is_active ? (
-                                <Image
-                                    src={icons?.check}
-                                    height={12}
-                                    width={12}
-                                    style={{
-                                        objectFit: "contain",
-                                    }}
-                                />
-                            ) : <Image
-                                src={icons?.frame}
-                                height={18}
-                                width={18}
+                            <Image
+                                src={icons[is_active ? 'check' : 'frame']}
+                                height={is_active ? 12 : 18}
+                                width={is_active ? 12 : 18}
                                 style={{
                                     objectFit: "contain",
                                 }}
-                            />}
+                            />
                         </div>
                     ),
 
                     name: (
                         <div className={"d-flex align-items-center"}>
                             <div>
-                                {logo ?
+                                <div className={'image-container'}>
                                     <Image
-                                        src={getPhoto(logo)}
-                                        height={50}
-                                        width={50}
+                                        className={logo ? '' : 'place-holder'}
+                                        src={logo ? getPhoto(logo) : icons.company}
                                         style={{
-                                            objectFit: 'cover',
-                                            overflow: 'hidden',
-                                            padding: '1px',
-                                            borderRadius: '30px',
-                                            width: "45px",
-                                            height: "45px",
+                                            objectFit: "contain",
+                                            filter: !logo ? "grayscale(100%)" : ""
                                         }}
                                     />
-                                    :
-                                    <div style={{
-                                        width: "45px",
-                                        height: "45px",
-                                        borderRadius: "30px",
-                                        backgroundColor: "#FAFBFF",
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        display: 'flex',
-
-                                    }}>
-                                        <Image
-                                            src={icons.profile}
-                                            height={20}
-                                            width={20}
-                                            style={{
-                                                objectFit: 'contain'
-                                            }}
-                                        />
-                                    </div>
-                                }
+                                </div>
                             </div>
                             <div className={"th-bold ml-3"}>
                                 {capitalizeFirstLetter(display_name)}
@@ -186,7 +178,7 @@ function SuperAdminDashboard() {
                     address,
                     'limit': interview_limit,
                     'consumed': consumed_interviews,
-                    "  ": (
+                    " ": (
                         <div className={"d-flex align-items-center"}>
                             {
                                 <div className={"th-menu-container"}>
@@ -206,46 +198,50 @@ function SuperAdminDashboard() {
         <>
             <div className={'screen'}>
                 <SuperAdminNavbar />
-                {companies ? (
-                    companies.length > 0 ? (
-                        <div className={'screen-container overflow-auto'}>
-                            <CommonTable
-                                isPagination
-                                tableDataSet={companies}
-                                displayDataSet={normalizedTableData(companies)}
-                                noOfPage={companiesNumOfPages}
-                                currentPage={companiesCurrentPages}
-                                paginationNumberClick={(currentPage) => {
-                                    getCompaniesApiHandler(
-                                        paginationHandler("current", currentPage)
-                                    );
-                                }}
-                                previousClick={() => {
-                                    getCompaniesApiHandler(
-                                        paginationHandler("prev", companiesCurrentPages)
-                                    );
-                                }}
-                                nextClick={() => {
-                                    getCompaniesApiHandler(
-                                        paginationHandler("next", companiesCurrentPages)
-                                    );
-                                }}
-                            />
-                        </div>
-                    ) : (
-                        <div className={"no-data-found"}>
-                            <NoDataFound />
-                        </div>
-                    )
-                ) : (
-                    <div className={"h-100vh d-flex justify-content-center align-items-center"}>
+                {
+                    loader.loader &&
+                    <div className={'loader-container'}>
                         <Spinner />
                     </div>
-                )}
+                }
+
+                {
+                    companies && companies?.length > 0 &&
+                    <div className={'screen-container overflow-auto'}>
+                        <CommonTable
+                            isPagination
+                            tableDataSet={companies}
+                            displayDataSet={normalizedTableData(companies)}
+                            noOfPage={companiesNumOfPages}
+                            currentPage={companiesCurrentPages}
+                            paginationNumberClick={(currentPage) => {
+                                getCompaniesApiHandler(
+                                    paginationHandler("current", currentPage)
+                                );
+                            }}
+                            previousClick={() => {
+                                getCompaniesApiHandler(
+                                    paginationHandler("prev", companiesCurrentPages)
+                                );
+                            }}
+                            nextClick={() => {
+                                getCompaniesApiHandler(
+                                    paginationHandler("next", companiesCurrentPages)
+                                );
+                            }}
+                        />
+                    </div>
+                }
+                {
+                    !loader.loader && companies?.length <= 0 &&
+                    <div className={"no-data-found"}>
+                        <NoDataFound />
+                    </div>
+                }
             </div>
 
             <Modal
-                loading={limitLoader.loader}
+                loading={addLimitLoader.loader}
                 title={"Edit Limit"}
                 isOpen={limitModal.visible}
                 onClose={limitModal.hide}
