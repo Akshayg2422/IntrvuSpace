@@ -93,7 +93,30 @@ export const REGISTER_COMPANY_RULES = {
   sector: {
     presence: { allowEmpty: false, message: "sector cannot be empty" },
   },
+
+  
 }
+
+export const REGISTER_COMPANY_SUPER_ADMIN_RULES = {
+  brand_name: {
+    presence: { allowEmpty: false, message: "Brand Name cannot be empty" },
+  },
+  ...ADDRESS,
+  ...MOBILE_NUMBER_RULES,
+  ...PINCODE,
+  sector: {
+    presence: { allowEmpty: false, message: "sector cannot be empty" },
+  },
+  interview_limit: {
+    presence: { allowEmpty: false, message: "interview limit cannot be empty" },
+    length: { maximum: 6, message: "interview_limit  minimum 6 chars" },
+   
+  },
+  
+}
+
+
+
 
 export const CREATE_QUESTION_SECTION_RULES = {
   name: CREATE_QUESTION_FORM_RULES.name,
@@ -302,6 +325,9 @@ export const CREATE_CORPORATE_SCHEDULE_RULES = {
   department_id: {
     presence: { allowEmpty: false, message: "Department cannot be empty" },
   },
+  vacancies :{
+    presence: { allowEmpty: false, message: "vacancies minimum 1 cannot be empty" },
+  }
 }
 
 export const CREATE_FOR_OTHERS_RULES = {
@@ -366,7 +392,7 @@ export const CREATE_NEW_PASSWORD_RULES = {
 export const USER_FORM_RULES = {
   first_name: {
     presence: { message: "Name cannot be empty." },
-    length: { minimum: 3, message: "Fast Name should have a minimum of 3 characters." },
+    length: { minimum: 3, message: "First Name should have a minimum of 3 characters." },
   },
   last_name: {
     presence: { message: "Last name cannot be empty" },

@@ -6,6 +6,7 @@ import { InputHeading } from '@Components'
 import { Moment, isMoment } from 'moment'
 
 
+
 function DateTimePicker({ id, heading, placeholder, type = 'date', dateFormatType = "", onChange, ...rest }: DateTimePickerProps) {
     return (
         <FormGroup>
