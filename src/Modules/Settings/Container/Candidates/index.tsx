@@ -521,7 +521,7 @@ function Candidates({ id, details }: CandidatesProps) {
 
   return (
     <>
-      {candidatesCount <= 0 && !is_department_admin && !isJdClosed &&(
+      {candidatesCount <= 0 && !is_department_admin && !isJdClosed && (
         <div className={"empty-candidates-container"}>
           <div className={"text-heading"}>
             {"Start adding your Candidates Now !"}
@@ -539,22 +539,22 @@ function Candidates({ id, details }: CandidatesProps) {
             </div>
           </div>
           {/* {!is_department_admin && !isJdClosed && ( */}
-            <div className={"empty-candidates-btn-container"}>
-              <div className={"empty-btn-container"}>
-                <Button
-                  block
-                  text={"Add Manually"}
-                  onClick={addCandidateModal.show}
-                />
-              </div>
-              <div className={"empty-btn-container bulk-btn-container"}>
-                <Button
-                  block
-                  text={"Bulk Import"}
-                  onClick={openBulkUploadHandler}
-                />
-              </div>
+          <div className={"empty-candidates-btn-container"}>
+            <div className={"empty-btn-container"}>
+              <Button
+                block
+                text={"Add Manually"}
+                onClick={addCandidateModal.show}
+              />
             </div>
+            <div className={"empty-btn-container bulk-btn-container"}>
+              <Button
+                block
+                text={"Bulk Import"}
+                onClick={openBulkUploadHandler}
+              />
+            </div>
+          </div>
           {/* )} */}
         </div>
       )}

@@ -3,11 +3,11 @@ import { Logo, showToast } from "@Components";
 import { useLoader, useNavigation } from "@Hooks";
 import { SuperAdminRegisterAdmin, SuperAdminRegisterCompany } from '@Modules';
 import { registerAsCompany } from '@Redux';
-import { REGISTER_COMPANY_RULES, REGISTER_COMPANY_SUPER_ADMIN_RULES, REGISTER_RULES, getValidateError, ifObjectExist, validate } from '@Utils';
+import { ROUTES } from "@Routes";
+import { REGISTER_COMPANY_SUPER_ADMIN_RULES, REGISTER_RULES, getValidateError, ifObjectExist, validate } from '@Utils';
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import './index.css';
-import { ROUTES } from "@Routes";
 
 
 function SuperAdminCorporateRegister() {
@@ -15,7 +15,7 @@ function SuperAdminCorporateRegister() {
     const REGISTER_ADMIN = 1
     const REGISTER_COMPANY = 2
 
-    const {goTo} = useNavigation();
+    const { goTo } = useNavigation();
 
 
     const dispatch = useDispatch();
@@ -79,8 +79,8 @@ function SuperAdminCorporateRegister() {
                         loader.hide()
 
                         showToast(response.message, 'success');
-                      
-                       goTo( ROUTES['super-admin'].dashboard,true)
+
+                        goTo(ROUTES['super-admin'].dashboard, true)
                     },
                     onError: (error) => () => {
                         loader.hide()
@@ -117,6 +117,7 @@ function SuperAdminCorporateRegister() {
                 <Logo />
             </div>
             <div className={'auth-container'}>
+
                 {formType === REGISTER_ADMIN &&
                     <SuperAdminRegisterAdmin
                         params={params}

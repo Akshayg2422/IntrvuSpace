@@ -22,7 +22,7 @@ function SuperAdminRegisterCompany({ loading, params, onParams, onBackPress, onS
     };
 
     const registerCompanyOnChange = (e: any) => {
-      
+
         const key = e.target.id;
         const value = e.target.value;
         const maxLength = e.target.maxLength
@@ -63,75 +63,77 @@ function SuperAdminRegisterCompany({ loading, params, onParams, onBackPress, onS
                     <div className="text-sub-heading m-0 p-0 text-center">{'Register Company'}</div>
                 </div>
             </div>
+            <div className={'field-wrapper'}>
+                <ImagePicker
+                    defaultPhotos={params?.photo}
+                    onSelect={(images) => {
+                        registerCompanyParamsHandler({ photo: [images] })
+                    }}
+                />
+                <Input
+                    id={'brand_name'}
+                    value={params?.brand_name}
+                    placeholder={'Company Name'}
+                    onChange={registerCompanyOnChange}
+                />
+                <Input
+                    id={'communication_address'}
+                    value={params?.communication_address}
+                    placeholder={'Address'}
+                    onChange={registerCompanyOnChange}
+                />
+                <Input
+                    className={'bg-white'}
+                    readOnly={true}
+                    type={'number'}
+                    placeholder={"Phone"}
+                    maxLength={10}
+                    value={params?.mobile_number}
+                />
 
-            <ImagePicker
-                defaultPhotos={params?.photo}
-                onSelect={(images) => {
-                    registerCompanyParamsHandler({ photo: [images] })
-                }}
-            />
-            <Input
-                id={'brand_name'}
-                value={params?.brand_name}
-                placeholder={'Company Name'}
-                onChange={registerCompanyOnChange}
-            />
-            <Input
-                id={'communication_address'}
-                value={params?.communication_address}
-                placeholder={'Address'}
-                onChange={registerCompanyOnChange}
-            />
-            <Input
-                className={'bg-white'}
-                readOnly={true}
-                type={'number'}
-                placeholder={"Phone"}
-                maxLength={10}
-                value={params?.mobile_number}
-            />
+                <Input
+                    id={'pincode'}
+                    value={params?.pincode}
+                    type={'number'}
+                    placeholder={"Pincode"}
+                    maxLength={6}
+                    onChange={registerCompanyOnChange}
 
-            <Input
-                id={'pincode'}
-                value={params?.pincode}
-                type={'number'}
-                placeholder={"Pincode"}
-                maxLength={6}
-                onChange={registerCompanyOnChange}
-
-            />
-            <Input
-                id={'sector'}
-                value={params?.sector}
-                placeholder={'Sector'}
-                onChange={registerCompanyOnChange}
-            />
-               <Input
-                id={'interview_limit'}
-                value={params?.interview_limit}
-                type={'number'}
-                placeholder={'Interview Limit'}
-                maxLength={6}
-                onChange={registerCompanyOnChange}
-            />
-               <Input
-                id={'referrer'}
-                value={params?.referrer}
-                placeholder={'Referrer'}
-                onChange={registerCompanyOnChange}
-            />
-               <Input
-                id={'referral_code'}
-                value={params?.referral_code}
-                placeholder={'Referral Code'}
-                onChange={registerCompanyOnChange}
-            />
-               <Input
-                id={'company_code'}
-                value={params?.company_code}
-                placeholder={'company Code'}
-                onChange={registerCompanyOnChange}
-            />
+                />
+                <Input
+                    id={'sector'}
+                    value={params?.sector}
+                    placeholder={'Sector'}
+                    onChange={registerCompanyOnChange}
+                />
+                <Input
+                    id={'interview_limit'}
+                    value={params?.interview_limit}
+                    type={'number'}
+                    placeholder={'Interview Limit'}
+                    maxLength={6}
+                    onChange={registerCompanyOnChange}
+                />
+                <Input
+                    id={'referrer'}
+                    value={params?.referrer}
+                    placeholder={'Referrer'}
+                    onChange={registerCompanyOnChange}
+                />
+                <Input
+                    id={'referral_code'}
+                    value={params?.referral_code}
+                    placeholder={'Referral Code'}
+                    onChange={registerCompanyOnChange}
+                />
+                <Input
+                    noSpace
+                    id={'company_code'}
+                    value={params?.company_code}
+                    placeholder={'company Code'}
+                    onChange={registerCompanyOnChange}
+                />
+            </div>
             <Button
                 loading={loading}
                 block
