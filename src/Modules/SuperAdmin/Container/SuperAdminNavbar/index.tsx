@@ -150,6 +150,17 @@ function SuperAdminNavbar() {
               className="align-items-lg-center ml-lg-auto mr--4 justify-content-end"
               navbar
             >
+              <NavItem>
+                <div className={'btn-wrapper'}>
+                  <Button
+                    block
+                    text={"Past Interview"}
+                    onClick={() => {
+                      goTo(ROUTES['super-admin']['recent-interviews'])
+                    }}
+                  />
+                </div>
+              </NavItem>
 
               <NavItem>
                 <div className={'btn-wrapper'}>

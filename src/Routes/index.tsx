@@ -33,7 +33,8 @@ import {
   CorporateRegister,
   SettingDesignation,
   AdminSchedules,
-  SuperAdminDashboard
+  SuperAdminDashboard,
+  Interview
 } from '@Modules';
 import { SuperAdminCorporateRegister } from '@Modules//SuperAdmin/Screen/SuperAdminCorporateRegister';
 
@@ -82,8 +83,9 @@ export const ROUTES = {
     'admin-schedule': '/admin-schedule'
   },
   'super-admin': {
-    dashboard:"/dashboard",
-    'super-admin-register-company': '/super-admin-register-company'
+    dashboard: "/dashboard",
+    'super-admin-register-company': '/super-admin-register-company',
+    'recent-interviews': '/recent-interviews'
 
   }
 }
@@ -266,6 +268,11 @@ export const SUPER_ADMIN_ROUTES = [
     id: 6,
     path: ROUTES['super-admin']['super-admin-register-company'],
     component: <SuperAdminCorporateRegister />
+  },
+  {
+    id: 7,
+    path: ROUTES['super-admin']['recent-interviews'],
+    component: <Interview/>
   },
 ]
 
