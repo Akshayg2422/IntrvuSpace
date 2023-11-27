@@ -243,7 +243,40 @@ export const GRT_ONGOING_SCHEDULES = ASSISTANT + 'getOngoingSchedules'
 
 export const URL_DASHBOARD = AUTH + 'dashboard'
 
+//get company
 
+export const URL_GETCOMPANY = COMPANY +'getCompany'
+
+
+
+
+
+/**
+ * 
+ */
+
+export const URL_GET_COMPANIES = COMPANY + 'getCompanies'
+
+
+/*
+alter company status
+ */
+
+export const URL_ALTER_COMPANY_STATUS= COMPANY +'alterCompanyStatus'
+
+
+/*
+alter company limits
+ */
+
+export const URL_ALTER_COMPANY_LIMIT= COMPANY +'alterCompanyLimit'
+
+
+/*
+ get recent interviews
+ */
+
+ export const URL_GET_RECENT_INTERVIEWS=ASSISTANT +'getRecentInterviews'
 
 
 

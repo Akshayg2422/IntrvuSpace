@@ -1,5 +1,5 @@
-import React from 'react'
-import { Table, NoRecordsFound, Heading } from "@Components";
+/* eslint-disable jsx-a11y/anchor-is-valid */
+import { NoRecordsFound, Table } from "@Components";
 
 
 interface CommonTableProps {
@@ -101,7 +101,7 @@ function CommonTable({ card = false, title, displayDataSet, tableDataSet, isPagi
 
       return (
         <div>
-          <ul className="pagination col justify-content-end mb-0">
+          <ul className="pagination col justify-content-end mb-0 pointer">
             <li className={`${currentPage === 1 ? 'disabled' : ''} page-item `} onClick={currentPage === 1 ? undefined : previousClick}>
               <a className="page-link">
                 <i className="fas fa-angle-left"></i>
@@ -133,4 +133,4 @@ function CommonTable({ card = false, title, displayDataSet, tableDataSet, isPagi
   );
 }
 
-export { CommonTable }
+export { CommonTable };

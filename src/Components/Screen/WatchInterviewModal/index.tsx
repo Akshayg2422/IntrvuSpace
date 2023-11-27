@@ -34,31 +34,21 @@ const WatchInterviewModal = ({
   // function to handle pause
 
   function onPauseHandler() {
-    const updatedUrlArr: any = [...recordingUrlArray];
-    const updatedUrlArr1: any = updatedUrlArr.map((item: any, index) => {
-      if (index === playVideoUrlIndex) {
-        return { ...item, isPlay: false };
-      } else {
-        return { ...item, isPlay: false };
-      }
+    const updatedUrlArr: any = recordingUrlArray.map((item: any, index) => {
+      return { ...item, isPlay: false };
     });
-    setRecordingUrlArray(updatedUrlArr1);
+    setRecordingUrlArray(updatedUrlArr);
   }
 
   // function to handle play
 
   function onPlayHandler() {
-    const updatedUrlArr: any = [...recordingUrlArray];
-    const updatedUrlArr1: any = updatedUrlArr.map(
+    const updatedUrlArr: any = recordingUrlArray.map(
       (item: any, index: number) => {
-        if (index === playVideoUrlIndex) {
-          return { ...item, isPlay: true };
-        } else {
-          return { ...item, isPlay: false };
-        }
+        return { ...item, isPlay: index === playVideoUrlIndex };
       }
     );
-    setRecordingUrlArray(updatedUrlArr1);
+    setRecordingUrlArray(updatedUrlArr);
   }
 
   // function to handle image on click using useRef
@@ -112,6 +102,7 @@ const WatchInterviewModal = ({
                   ref={videoRef}
                   key={playVideoUrlIndex}
                   controls
+                  controlsList="nodownload"
                   className="d-flex col pt--3"
                   autoPlay
                   onPause={onPauseHandler}

@@ -1,7 +1,5 @@
 import React from 'react'
 import { ImageProps, ImageVariant } from './interfaces'
-import { color } from '@Themes';
-import { hexToHue } from '@Utils'
 
 function Image({ variant = 'default', className, alt, size, tintColor, ...rest }: ImageProps) {
 
