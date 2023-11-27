@@ -46,3 +46,28 @@ export const alterCompanyLimit = (params: any) => {
       payload: params,
   };
 };
+
+/*
+ get recent interviews
+ */
+ export const getRecentInterviews = (params: any) => {
+    return {
+        type: ActionTypes.GET_RECENT_INTERVIEWS,
+        payload: params,
+    };
+};
+
+export const getRecentInterviewsSuccess = (response: any) => {
+
+    return {
+        type: ActionTypes.GET_RECENT_INTERVIEWS_SUCCESS,
+        payload: response
+    }
+}
+
+export const getRecentInterviewsFailure = (error: any) => {
+    return {
+        type: ActionTypes.GET_RECENT_INTERVIEWS_FAILURE,
+        payload: error
+    }
+}
