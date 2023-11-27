@@ -39,6 +39,7 @@ import { RecordRTCPromisesHandler, StereoAudioRecorder } from "recordrtc";
 import { useScreenRecorder } from "@Hooks";
 import { ENTIRE_SCREEN_CONTEXT } from "@Utils";
 import DetectFace from "../DetectFace";
+import DetectFace2 from "../DetectFace/index copy";
 
 const compare_moment_format = "YYYY-MM-DDHH:mm:ss";
 
@@ -1394,7 +1395,7 @@ function Call() {
       </Modal>
 
       {
-        callDetectFace && <DetectFace onClick={startInterviewHandler} setCallDetectFace={setCallDetectFace}/>
+        callDetectFace && <DetectFace2 onClick={startInterviewHandler} setCallDetectFace={setCallDetectFace}/>
       }
     </>
   );

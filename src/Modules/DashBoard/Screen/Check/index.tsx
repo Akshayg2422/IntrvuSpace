@@ -1,6 +1,8 @@
 import { Button } from '@Components'
 import React, { useState } from 'react'
 import DetectFace from '../DetectFace'
+import DetectFace3 from '../DetectFace/index copy 2'
+import DetectFace2 from '../DetectFace/index copy'
 
 const Check = () => {
     const [call, setCallDetectFace] = useState(false)
@@ -16,7 +18,8 @@ const Check = () => {
     <>
     <Button onClick={callFaceDetect} text={'join'} ></Button>
     {
-        call && <DetectFace onClick = {continueCall} setCallDetectFace={setCallDetectFace}/>
+        call && <DetectFace2 onClick = {continueCall} setCallDetectFace={setCallDetectFace}/>
+
     }
     {
         join && <h1>Joined</h1>

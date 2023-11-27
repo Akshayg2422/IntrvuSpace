@@ -1,17 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { FilesetResolver, DrawingUtils, FaceLandmarker } from '@mediapipe/tasks-vision';
-import { useModal, useNavigation, useLoader } from '@Hooks';
-import { Button, Image, Modal, Spinner } from '@Components';
+import { useModal, useNavigation } from '@Hooks';
+import { Button, Image, Modal } from '@Components';
 import { icons } from '@Assets';
-// import { Spinner } from 'reactstrap';
 
-function DetectFace({ onClick, setCallDetectFace }) {
+function DetectFace3({onClick, setCallDetectFace}) {
     const videoRef = useRef<any>(null)
     let faceLandmarker: any;
     let runningMode = "IMAGE";
     // let webcamRunning = false;
     const webcamRunningRef = useRef<any>()
-    const videoWidth = 600;
+    const videoWidth = 400;
     const faceDetected = useRef<any>(null)
     const canvasRef = useRef<any>(null)
     const audioContext = useRef<any>(null)
@@ -25,8 +24,6 @@ function DetectFace({ onClick, setCallDetectFace }) {
     const audioStreamRunningRef = useRef<any>()
     const clearTimeOutRef = useRef<any>()
     const { goBack } = useNavigation();
-    const ValidationLoader = useLoader(false)
-    const [proceed, setProceed] = useState(false)
 
     async function createFaceLandmarker() {
         try {
@@ -43,16 +40,15 @@ function DetectFace({ onClick, setCallDetectFace }) {
                 runningMode: 'VIDEO',
                 numFaces: 1,
             });
-            if (!detectFaceModal.visible) {
-                enableCam()
-                detectFaceModal.show()
-            }
         }
         catch (error) {
             console.log(error, 'error1');
         }
 
-
+        if(!detectFaceModal.visible){
+            name()
+            detectFaceModal.show()
+        }
 
     }
 
@@ -61,7 +57,7 @@ function DetectFace({ onClick, setCallDetectFace }) {
     let canvasCtx
     let drawingUtils
 
-    console.log(detectFaceModal.visible, "detectFaceModal");
+console.log(detectFaceModal.visible,"detectFaceModal");
 
     useEffect(() => {
         createFaceLandmarker();
@@ -73,7 +69,7 @@ function DetectFace({ onClick, setCallDetectFace }) {
 
     // Check if webcam access is supported.
     console.log(videoRef.current, 'videoooo');
-
+    
     function hasGetUserMedia() {
 
         return !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
@@ -92,25 +88,23 @@ function DetectFace({ onClick, setCallDetectFace }) {
     }
 
 
-
     // Enable the live webcam view and start detection.
-
     function enableCam() {
-        console.log(videoRef.current, "video1");
 
-
-        if (videoRef.current) {
-            startAudioDetect()
-            timeoutFunc()
-        }
-
+        startAudioDetect()
+        timeoutFunc()
         webcamRunningRef.current = true
-
+    
         if (!faceLandmarker) {
             console.log("Wait! faceLandmarker not loaded yet.");
             return;
         }
+        // if (webcamRunning === true) {
+        //     webcamRunning = false;
 
+        // } else {
+        //     webcamRunning = true;
+        // }
 
         // getUsermedia parameters.
         const constraints = {
@@ -129,8 +123,7 @@ function DetectFace({ onClick, setCallDetectFace }) {
             canvasCtx = canvasElement?.getContext("2d");
             drawingUtils = new DrawingUtils(canvasCtx);
             video.srcObject = stream;
-            startAudioDetect()
-            timeoutFunc()
+            
             video.addEventListener("loadeddata", predictWebcam);
         });
     }
@@ -140,7 +133,6 @@ function DetectFace({ onClick, setCallDetectFace }) {
 
     async function predictWebcam() {
 
-
         const radio = video.videoHeight / video.videoWidth;
         video.style.width = videoWidth + "px";
         video.style.height = videoWidth * radio + "px";
@@ -148,15 +140,6 @@ function DetectFace({ onClick, setCallDetectFace }) {
         canvasElement.style.height = videoWidth * radio + "px";
         canvasElement.width = video.videoWidth;
         canvasElement.height = video.videoHeight;
-
-
-        // const radio = video.videoHeight / video.videoWidth;
-        // video.style.width = "662.5px"
-        // video.style.height = "355.75px";
-        // canvasElement.style.width = "662.5px";
-        // canvasElement.style.height ="355.75px";
-        // canvasElement.width = '662.5px';
-        // canvasElement.height = '355.75px';
         // Now let's start detecting the stream.
         if (runningMode === "IMAGE") {
             runningMode = "VIDEO";
@@ -183,47 +166,47 @@ function DetectFace({ onClick, setCallDetectFace }) {
                 drawingUtils.drawConnectors(
                     landmarks,
                     FaceLandmarker.FACE_LANDMARKS_TESSELATION,
-                    { color: "#C0C0C070", lineWidth: 0.4 }
+                    { color: "#C0C0C070", lineWidth: 1 }
                 );
                 drawingUtils.drawConnectors(
                     landmarks,
                     FaceLandmarker.FACE_LANDMARKS_RIGHT_EYE,
-                    { color: "#E0E0E0", lineWidth: 0.3 }
+                    { color: "#E0E0E0", lineWidth: 1 }
                 );
-                // drawingUtils.drawConnectors(
-                //     landmarks,
-                //     FaceLandmarker.FACE_LANDMARKS_RIGHT_EYEBROW,
-                //     { color: "#E0E0E0", lineWidth: 1 }
-                // );
+                drawingUtils.drawConnectors(
+                    landmarks,
+                    FaceLandmarker.FACE_LANDMARKS_RIGHT_EYEBROW,
+                    { color: "#E0E0E0", lineWidth: 1 }
+                );
                 drawingUtils.drawConnectors(
                     landmarks,
                     FaceLandmarker.FACE_LANDMARKS_LEFT_EYE,
-                    { color: "#E0E0E0", lineWidth: 0.3 }
+                    { color: "#E0E0E0", lineWidth: 1 }
                 );
-                // drawingUtils.drawConnectors(
-                //     landmarks,
-                //     FaceLandmarker.FACE_LANDMARKS_LEFT_EYEBROW,
-                //     { color: "#E0E0E0", lineWidth: 1 }
-                // );
+                drawingUtils.drawConnectors(
+                    landmarks,
+                    FaceLandmarker.FACE_LANDMARKS_LEFT_EYEBROW,
+                    { color: "#E0E0E0", lineWidth: 1 }
+                );
                 drawingUtils.drawConnectors(
                     landmarks,
                     FaceLandmarker.FACE_LANDMARKS_FACE_OVAL,
-                    { color: "#641df2", lineWidth: 1 }
+                    { color: "#E0E0E0", lineWidth: 1 }
                 );
                 drawingUtils.drawConnectors(
                     landmarks,
                     FaceLandmarker.FACE_LANDMARKS_LIPS,
-                    { color: "#E0E0E0", lineWidth: 0.4 }
+                    { color: "#E0E0E0", lineWidth: 1 }
                 );
                 drawingUtils.drawConnectors(
                     landmarks,
                     FaceLandmarker.FACE_LANDMARKS_RIGHT_IRIS,
-                    { color: "#E0E0E0", lineWidth: 0.3 }
+                    { color: "#E0E0E0", lineWidth: 1 }
                 );
                 drawingUtils.drawConnectors(
                     landmarks,
                     FaceLandmarker.FACE_LANDMARKS_LEFT_IRIS,
-                    { color: "#E0E0E0", lineWidth: 0.4 }
+                    { color: "#E0E0E0", lineWidth: 1 }
                 );
 
             }
@@ -280,23 +263,23 @@ function DetectFace({ onClick, setCallDetectFace }) {
         // gradient.addColorStop(0.75, 'blue');
         // gradient.addColorStop(0.25, 'cyan');
         // gradient.addColorStop(0, 'lime');
-        //         const gradient = ctx.createLinearGradient(0, 100, 250, 0);
+//         const gradient = ctx.createLinearGradient(0, 100, 250, 0);
 
-        // // Add three color stops
-        // gradient.addColorStop(0, "#641df2");
-        // gradient.addColorStop(0.5, "cyan");
-        // gradient.addColorStop(1, "#641df2");
+// // Add three color stops
+// gradient.addColorStop(0, "#641df2");
+// gradient.addColorStop(0.5, "cyan");
+// gradient.addColorStop(1, "#641df2");
 
-        const gradient = ctx.createLinearGradient(0, 0, 600, 0);
-        gradient.addColorStop(0, "black");
-        gradient.addColorStop(0.125, "red");
-        gradient.addColorStop(0.25, "orange");
-        gradient.addColorStop(0.375, "yellow");
-        gradient.addColorStop(0.5, "green");
-        gradient.addColorStop(0.625, "blue");
-        gradient.addColorStop(0.75, "indigo");
-        gradient.addColorStop(0.875, "violet");
-        gradient.addColorStop(1, "black");
+const gradient = ctx.createLinearGradient(0, 0, 600, 0);
+    gradient.addColorStop(0, "black");
+    gradient.addColorStop(0.125, "red");
+    gradient.addColorStop(0.25, "orange");
+    gradient.addColorStop(0.375, "yellow");
+    gradient.addColorStop(0.5, "green");
+    gradient.addColorStop(0.625, "blue");
+    gradient.addColorStop(0.75, "indigo");
+    gradient.addColorStop(0.875, "violet");
+    gradient.addColorStop(1, "black");
 
 
         const draw = () => {
@@ -331,9 +314,9 @@ function DetectFace({ onClick, setCallDetectFace }) {
 
 
     function timeoutFunc() {
-        console.log('functionCalled', 5);
-
-        clearTimeOutRef.current = setTimeout(() => {
+        console.log('functionCalled',5);
+        
+        clearTimeOutRef.current =  setTimeout(() => {
             let count = 0
             let average: any;
             if (array.length > 0) {
@@ -345,13 +328,11 @@ function DetectFace({ onClick, setCallDetectFace }) {
 
             if (faceDetected.current) {
                 setFaceFound(true)
-                count = count + 1
+
             }
             else {
                 // webcamRunningRef.current = false
                 setFaceFound(false)
-                // audioContext.current.close();
-
             }
             if (average < 20) {
                 setNoiseDetection(true)
@@ -359,20 +340,11 @@ function DetectFace({ onClick, setCallDetectFace }) {
                 console.log("average", average, 2)
                 array = []
             }
-            else if (average == 0) {
-                console.log("average", faceFound, 3)
-                setNoiseDetection(0)
-                audioContext.current.close();
-                array = []
-            }
             else {
-                console.log("average", faceFound, 3)
+                console.log("average", average, 3)
                 setNoiseDetection(false)
                 audioContext.current.close();
                 array = []
-            }
-            if(count === 2){
-                setProceed(true)
             }
 
         }, 7000);
@@ -380,7 +352,7 @@ function DetectFace({ onClick, setCallDetectFace }) {
 
     const stopStream = () => {
         console.log(45);
-
+        
         webcamRunningRef.current = false
         if (videoStreamRef) {
             videoStreamRef.current.getTracks().forEach(function (track) {
@@ -389,45 +361,62 @@ function DetectFace({ onClick, setCallDetectFace }) {
         }
 
         audioStreamRunningRef.current = false
-        console.log(audioContext.current, 'js');
-
-        if (noiseDetection) {
+        if (audioContext.current) {
             audioContext.current.close();
         }
         if (audioStreamRef.current) {
-            console.log(audioStreamRef.current, "audioStreamRef");
-
             const tracks = audioStreamRef.current.getTracks();
             tracks.forEach((track) => track.stop());
         }
-        console.log(audioStreamRef.current, "audioStreamRef");
+
     }
     return (
         <>
-
+            {/* <Button onClick={() => {
+                name()
+                detectFaceModal.show()
+            }}
+                text={"click"}></Button> */}
             <Modal isOpen={detectFaceModal.visible}
                 onClose={() => {
                     detectFaceModal.hide()
                     setFaceFound(false)
                     setNoiseDetection(false)
-
+                    stopStream()
                     setNoiseDetection('Checking')
                     setFaceFound('Checking')
                     clearTimeout(clearTimeOutRef.current)
-                    stopStream()
                     setCallDetectFace(false)
                     goBack()
                 }}
-                title={'Validating face and noise'}
-                size='xl'>
-                <div className='d-flex text-secondary'>
-                    <div className='col-8' style={{ position: 'relative', width: "600px", height: "450px" }}>
-                        <video id="webcam" className='ml-5' ref={videoRef} autoPlay playsInline disablePictureInPicture height={450} width={600} style={{ position: 'absolute', left: '0px', top: '0px', bottom: "0px", right: '0px', }}></video>
-                        <canvas className="ml-lg-5" id="output_canvas" height={450} width={600} style={{ position: 'absolute', left: '0px', top: '0px', bottom: "0px", right: '0px', }}></canvas>
-                        <canvas ref={canvasRef} className='ml-5' width={600} height={100} style={{ position: 'absolute', left: '0px', bottom: "0px", right: '0px' }} />
+                title={'Face and Noise Validation'}>
+                <div className='d-flex justify-content-center flex-column align-items-center'>
+                    <div style={{ position: 'relative', width: "400px", height: "300px" }}>
+                        <video id="webcam" ref={videoRef} autoPlay playsInline style={{ position: 'absolute', left: '0px', top: '0px', bottom: "0px", right: '0px' }}></video>
+                        <canvas className="output_canvas" id="output_canvas" style={{ position: 'absolute', left: '0px', top: '0px', bottom: "0px", right: '0px' }}></canvas>
+                        <canvas ref={canvasRef} width={400} height={100} style={{ position: 'absolute', left: '0px', bottom: "0px", right: '0px' }} />
                     </div>
-                    <div className=' col-4 position-relative'>
-                        {/* <div className='mt-3 '>
+                    <div className='mt-4'>
+
+                        {
+                            faceFound === 'Checking' && noiseDetection === 'Checking' ? <h5 className='text-secondary'>Checking...</h5> : faceFound && noiseDetection ? <Button text={'Continue'} className={'m-0'} onClick={()=>{detectFaceModal.hide()
+                                webcamRunningRef.current = false
+                                audioStreamRunningRef.current = false
+                                setNoiseDetection('Checking')
+                                setFaceFound('Checking')
+                                audioContext.current.close();
+                                onClick()
+                        }}></Button> : <Button text={'Try Again'} className={'m-0'} onClick={() => {
+                                // setTryAgain(tryAgain + 1)
+                                // createFaceLandmarker()
+                                setNoiseDetection('Checking')
+                                setFaceFound('Checking')
+                                enableCam()
+                            }}></Button>
+                        }
+                    </div>
+
+                        <div className='mt-3 mb--5'>
                             {
                                 faceFound === 'Checking' ? <></> : faceFound === true ? <div>
                                     <Image src={icons.check} height={12} width={12} style={{
@@ -449,81 +438,7 @@ function DetectFace({ onClick, setCallDetectFace }) {
                                         objectFit: 'contain'
                                     }} /> <span className='ml-1'>Noise occurred</span></div>
                             }
-                        </div> */}
-
-                        <div className='ml-3'>
-                            <h2 className='text-secondary'>Validating</h2>
-                            <div className='mt-4'>
-                                {
-                                    faceFound === 'Checking' ? <Spinner className={'d-inline-block'} /> : faceFound === true ?
-                                        <Image src={icons.check} height={12} width={12} style={{
-                                            objectFit: 'contain'
-                                        }} />
-                                        : <Image src={icons.frame} height={20} width={12} style={{
-                                            objectFit: 'contain'
-                                        }} />
-                                }
-                                <span className='ml-2 '>Face</span>
-                            </div>
-                            <div className='mt-3'>
-
-                                {
-                                    noiseDetection === 'Checking' ? <Spinner className={'d-inline-block'} /> :
-                                        noiseDetection === 0 ?
-                                            <Image src={icons.frame} height={12} width={12} style={{
-                                                objectFit: 'contain'
-                                            }} />
-
-                                            : <Image src={icons.check} height={20} width={12} style={{
-                                                objectFit: 'contain'
-                                            }} />
-                                }
-                                <span className='ml-2'>Mic</span>
-                            </div>
-                            <div className='mt-3'>
-
-                                {
-                                    noiseDetection === 'Checking' ? <Spinner className={'d-inline-block'} /> :
-                                        noiseDetection === true ?
-                                            <Image src={icons.check} height={12} width={12} style={{
-                                                objectFit: 'contain'
-                                            }} />
-
-                                            : <Image src={icons.frame} height={20} width={12} style={{
-                                                objectFit: 'contain'
-                                            }} />
-                                }
-                                <span className='ml-2'>Noise</span>
-                            </div>
-                            {
-                                proceed ? <div className='mt-4'> <h4 >Thanks for waiting you can start your interview now</h4></div> : 
-                                !faceFound && !noiseDetection ? <div className='mt-4'><h4>We can't detect your face, please show your face clearly</h4><h4 className='mt-4'>You are in noisy surrounding, please be there in silence room</h4></div>
-                                 : !faceFound ? <div className='mt-4'> <h4>We can't detect your face, please show your face clearly</h4></div> 
-                                 : !noiseDetection ? <div className='mt-4'> <h4>You are in noisy surrounding, please be there in silence room</h4></div> : <div></div>
-                            }
                         </div>
-                        <div className='position-absolute bottom-0 right-8'>
-                            {
-                                faceFound === 'Checking' && noiseDetection === 'Checking' ? <h5 className='text-secondary'>Checking...</h5> : faceFound && noiseDetection ? <Button text={'Continue'} className={'m-0'} onClick={() => {
-                                    detectFaceModal.hide()
-                                    webcamRunningRef.current = false
-                                    audioStreamRunningRef.current = false
-                                    setNoiseDetection('Checking')
-                                    setFaceFound('Checking')
-                                    audioContext.current.close();
-                                    onClick()
-                                }}></Button> : <Button text={'Try Again'} className={'m-0'} onClick={() => {
-                                    // setTryAgain(tryAgain + 1)
-                                    // createFaceLandmarker()
-                                    setNoiseDetection('Checking')
-                                    setFaceFound('Checking')
-                                    enableCam()
-                                }}></Button>
-                            }
-
-                        </div>
-                    </div>
-
                 </div>
 
             </Modal>
@@ -531,4 +446,5 @@ function DetectFace({ onClick, setCallDetectFace }) {
     );
 };
 
-export default DetectFace;
+export default DetectFace3;
+
