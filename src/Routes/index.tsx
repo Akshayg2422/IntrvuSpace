@@ -35,6 +35,7 @@ import {
   AdminSchedules,
   SuperAdminDashboard
 } from '@Modules';
+import { CandidateList } from '@Modules//Admin';
 import { SuperAdminCorporateRegister } from '@Modules//SuperAdmin/Screen/SuperAdminCorporateRegister';
 
 export const ROUTES = {
@@ -79,7 +80,8 @@ export const ROUTES = {
     'ManageTeamMate': '/ManageTeamMate',
     // 'Sectors':'/Sectors'
     'scheduling-interview': '/scheduling-interview',
-    'admin-schedule': '/admin-schedule'
+    'admin-schedule': '/admin-schedule',
+    'candidate':'/candidate'
   },
   'super-admin': {
     dashboard:"/dashboard",
@@ -320,6 +322,12 @@ export const ADMIN_ROUTES = [
     id: 7,
     path: ROUTES['designation-module']['sector'],
     component: <Sector />
+  },
+  {
+    id: 3,
+    path: ROUTES['designation-module']['candidate'],
+    name: "candidate",
+    component: <CandidateList/>
   },
   {
     id: 8,

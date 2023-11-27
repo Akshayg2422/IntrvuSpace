@@ -214,6 +214,22 @@ export const ADD_DESIGNATION_CORPORATE_RULES = {
 }
 
 
+export const ADD_CANDIDATE_RULES = {
+  ...FIRST_NAME_RULES,
+  last_name: {
+    presence: { message: "Last name cannot be empty" },
+    length: { minimum: 1, message: "Last name minimum 1 chars" },
+  },
+  ...MOBILE_NUMBER_RULES,
+  ...EMAIL_RULES,
+
+
+}
+
+
+
+
+
 
 export const GENERATE_USING_AI_RULES = {
   name: {
