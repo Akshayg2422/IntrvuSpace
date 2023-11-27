@@ -3,11 +3,12 @@ import { InputHeading, Option, Image } from '@Components';
 import Select2 from 'react-select2-wrapper';
 import { FormGroup } from 'reactstrap';
 import { DropDownProps } from './interfaces';
-import { icons } from '@Assets'
+import { icons } from '@Assets';
+import './index.css'
 
 import { Select2Type } from 'react-select2-wrapper';
 
-function DropDown({ id, heading, disabled, placeHolder, selected, data, onChange, className = 'form-control', Class, noSpace }: DropDownProps) {
+function DropDown({ id, heading, disabled, placeHolder, selected, data, onChange, className = 'form-control ', Class, noSpace }: DropDownProps) {
 
     const select2Ref = useRef<Select2Type | null>(null); // Create a ref for the Select2 component
 
@@ -43,7 +44,7 @@ function DropDown({ id, heading, disabled, placeHolder, selected, data, onChange
                 <Select2
                     id={id}
                     ref={select2Ref}
-                    className={className}
+                    className={className} 
                     data-minimum-results-for-search={'Infinity'}
                     data={data}
                     value={selected && selected.id}
@@ -69,7 +70,9 @@ function DropDown({ id, heading, disabled, placeHolder, selected, data, onChange
                     onClick={openSelect2Dropdown}
                 >
                     <Image src={icons.downArrowBlack} height={10} width={12} style={{
-                        objectFit: 'contain'
+                        objectFit: 'contain',
+                      
+                        
                     }} />
                 </span>
             </div>
