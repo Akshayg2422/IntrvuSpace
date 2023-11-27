@@ -66,10 +66,31 @@ function* alterCompanyLimitSaga(action) {
   }
 }
 
+/**
+ *  recent interviews
+ */
+function* getRecentInterviewsSaga(action) {
+  try {
+      const response = yield call(Api.getRecentInterviewsApi, action.payload.params);
+      if (response) {
+          yield put(Action.getRecentInterviewsSuccess(response));
+          yield call(action.payload.onSuccess(response));
+      } else {
+          yield put(Action.getRecentInterviewsFailure(response.error_message));
+          yield call(action.payload.onError(response));
+      }
+  } catch (error) {
+      yield put(Action.getRecentInterviewsFailure(error));
+      yield call(action.payload.onError(error));
+  }
+}
+
+
 function* SuperAdminSaga() {
   yield takeLatest(Action.GET_COMPANIES, getCompaniesSaga);
   yield takeLatest(Action.ALTER_COMPANY_STATUS,alterCompanyStatusSaga);
   yield takeLatest(Action.ALTER_COMPANY_LIMIT,alterCompanyLimitSaga);
+  yield takeLatest(Action.GET_RECENT_INTERVIEWS,getRecentInterviewsSaga);
 
 }
 export default SuperAdminSaga;
