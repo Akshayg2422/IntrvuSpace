@@ -40,15 +40,15 @@ function TopNavbarCorporateFlow() {
   const { name, email, designation, department } = dashboardDetails?.basic_info || {}
   const { is_super_admin } = dashboardDetails?.rights || {}
 
-  
+
 
 
   const HEADER_MENU = [
-    ...(is_super_admin && [{ id: '1', name: 'Settings', value: 'ST', route: ROUTES['designation-module'].settings }]),
+    ...(is_super_admin ? [{ id: '1', name: 'Settings', value: 'ST', route: ROUTES['designation-module'].settings }] : []),
     { id: '2', name: 'Logout', value: 'LG', route: "" }
   ]
 
-  
+
 
 
   const dropdownHandler = (item: any) => {
