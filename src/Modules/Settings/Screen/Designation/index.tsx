@@ -194,7 +194,7 @@ function Designation() {
       experience: parseInt(experience.value?.id),
       jd: jd.value,
       reference_id: referenceId.value,
-      vacancies: vacancies?.value>0?vacancies?.value:'',
+      vacancies: vacancies?.value > 0 ? vacancies?.value : '',
       interview_duration: duration?.value,
       video_recording_mandatory: videoRecordMandatory,
       deadline: formatDeadline(scheduleEndDate, scheduleEndTime)
@@ -553,7 +553,6 @@ function Designation() {
           </div>
           <div className={"col-sm-6"}>
             <DateTimePicker
-              noSpace
               disableFuture={true}
               heading={"Deadline Date"}
               placeholder={"Deadline Date"}
@@ -563,7 +562,6 @@ function Designation() {
           </div>
           <div className="col-sm-6">
             <DateTimePicker
-              noSpace
               type={"time"}
               dateFormat={"HH:mm:ss"}
               heading={"Deadline Time"}
@@ -572,7 +570,7 @@ function Designation() {
               onChange={setScheduleEndTime}
             />
           </div>
-          <div className={"col-sm-6 pt-2"}>
+          <div className={"col-sm-6"}>
             <Checkbox
               id={"video-Recording"}
               className={"text-primary"}
