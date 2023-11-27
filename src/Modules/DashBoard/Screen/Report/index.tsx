@@ -86,7 +86,7 @@ function Report() {
   return (
     <div className={'screen'}>
 
-      {/* <div className={'back-container'}>
+      {/* <div className={'back-container-vacancies'}>
         <Back />
       </div> */}
       <div className={'report-dropdown-container'}>
