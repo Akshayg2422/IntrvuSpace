@@ -10,7 +10,7 @@ const AdminReducer = (state = initialState, action: any) => {
   switch (action.type) {
 
     /**
- *action.type we have to mention
+ *ActionTypes.variable of actionType we have to mention
  */
 
     case ActionTypes:
