@@ -11,9 +11,6 @@ import { Select2Type } from 'react-select2-wrapper';
 function DropDown({ id, heading, disabled, placeHolder, selected, data, onChange, className = 'form-control ', Class, noSpace }: DropDownProps) {
 
     const select2Ref = useRef<Select2Type | null>(null); // Create a ref for the Select2 component
-    
-
-    console.log(selected,"selected====>::")
 
 
     function proceedOnChange(e: any) {
