@@ -458,16 +458,4 @@ export function capitalizeLetter(string: any) {
     return string.toUpperCase();
 }
 
-export const DropdownValueEllipse = (value: any, length: number) => {
-  if (value?.name?.length > length) {
-    return {
-      id: value.id,
-      name: value.name.substring(0, length).trim() + "...",
-      description: null,
-      photo: null,
-      text: value.name.substring(0, length).trim() + "..."
-    }
-  } else {
-    return value;
-  }
-};
+
