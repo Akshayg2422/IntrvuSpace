@@ -10,7 +10,7 @@ const AdminReducer = (state = initialState, action: any) => {
   switch (action.type) {
 
     /**
- * get companies 
+ *action.type we have to mention
  */
 
     case ActionTypes:
