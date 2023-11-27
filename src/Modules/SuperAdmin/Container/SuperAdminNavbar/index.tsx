@@ -40,9 +40,7 @@ function SuperAdminNavbar() {
 
   console.log("dashboardDetails", dashboardDetails);
 
-  const { name, email, designation, department } = dashboardDetails?.basic_info || {}
-
-  const { jdItem } = useSelector((state: any) => state.DashboardReducer);
+  const { name, } = dashboardDetails?.basic_info || {}
   const [isOpenDropdown, setIsOpenDropdown] = useState(false)
 
 
@@ -85,13 +83,6 @@ function SuperAdminNavbar() {
   }
 
 
-  const handleCreateForOthersInterviewClick = () => {
-    dispatch(showCreateForOthersJdModal());
-  };
-
-
-
-
   return (
     <>
       <Navbar
@@ -102,7 +93,7 @@ function SuperAdminNavbar() {
           zIndex: 999
         }}
       >
-        <div className="container-fluid mx-md-3 mx-sm-0 mx-2">
+        <div className="container-fluid mx-md-3 mx-sm-0 mx-2 py-3">
           <NavbarBrand tag={Link}>
             <div className="d-flex justify-content-between">
               <img className={'d-none d-lg-block d-md-block d-xl-block'} src={icons.logoText} alt="Logo"
@@ -160,7 +151,19 @@ function SuperAdminNavbar() {
               navbar
             >
 
-              <NavItem className="d-none d-lg-block ml-2">
+              <NavItem>
+                <div className={'btn-wrapper'}>
+                  <Button
+                    block
+                    text={"Create Company"}
+                    onClick={() => {
+                      goTo(ROUTES['super-admin']['super-admin-register-company'])
+                    }}
+                  />
+                </div>
+              </NavItem>
+
+              <NavItem className="d-none d-lg-block ml-4">
                 <div className='row align-items-center m-auto'>
 
                   <span className='mb-0 text-black font-weight-400 pointer' onClick={toggleDropdownHandler}>
@@ -168,6 +171,8 @@ function SuperAdminNavbar() {
                   </span>
 
                   <Nav navbar>
+
+
                     <UncontrolledDropdown nav
                       isOpen={isOpenDropdown}
                       toggle={toggleDropdownHandler}>
@@ -196,6 +201,8 @@ function SuperAdminNavbar() {
                         })}
                       </DropdownMenu>
                     </UncontrolledDropdown>
+
+
                   </Nav>
 
                 </div>

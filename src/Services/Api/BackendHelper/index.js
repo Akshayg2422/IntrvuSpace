@@ -246,5 +246,24 @@ export const getOngoingSchedulesApi = payload => post(URL.GRT_ONGOING_SCHEDULES,
 
 export const getDashboardApi = payload => post(URL.URL_DASHBOARD, payload, {})
 
+/* get company api */
+export const getCompanies = payload => post(URL.URL_GETCOMPANY, payload, {});
+
+/**
+ * get companies
+ */
+
+export const getCompaniesApi = payload => post(URL.URL_GET_COMPANIES, payload, {})
+
+/**
+ * alter company status
+ */
+
+export const alterCompanyStatusApi = payload => post(URL.URL_ALTER_COMPANY_STATUS, payload, {})
 
 
+/**
+ * alter company Limits
+ */
+
+export const alterCompanyLimitApi = payload => post(URL.URL_ALTER_COMPANY_LIMIT, payload, {})
