@@ -55,27 +55,31 @@ function Candidates({ id, details }: CandidatesProps) {
   const CANDIDATE_MENU_OPTIONS = [
     { id: 1, name: "Approve Manually" },
     { id: 2, name: "Reject Manually" },
-    { id: 3, name: "Remove Candidate" },
+   { id: 3, name: "Remove Candidate" }
 
   ];
 
   const CANDIDATE_MENU_OPTIONS_COMPLETED = [
-    { id: 6, name: "Watch Interview" }
+    { id: 6, name: "Watch Interview" },
+   
   ];
 
   const CANDIDATE_MENU_OPTIONS_NOT_START = [
     { id: 4, name: "Block Interview" },
     { id: 5, name: "Copy Interview Link" },
+  
   ];
 
 
 
-  function getCandidateMenu(isCompleted: boolean) {
+  function getCandidateMenu(isCompleted: boolean,is_skipped:boolean) {
     return [
       ...CANDIDATE_MENU_OPTIONS,
-      ...(isCompleted ? CANDIDATE_MENU_OPTIONS_COMPLETED : CANDIDATE_MENU_OPTIONS_NOT_START)
+       ...(isCompleted ? CANDIDATE_MENU_OPTIONS_COMPLETED :CANDIDATE_MENU_OPTIONS_NOT_START)
+      // ...(isCompleted ?(is_skipped?[]: CANDIDATE_MENU_OPTIONS_COMPLETED ):(is_skipped?[]:CANDIDATE_MENU_OPTIONS_NOT_START))
     ] as never[];
   }
+
 
   const USER_STATUS_FILTER = [
     { id: "ALL", text: "All" },
@@ -230,6 +234,7 @@ function Candidates({ id, details }: CandidatesProps) {
           status_icon_type,
           is_closed,
           is_complete,
+          is_skipped,
           interviewee_photo,
         } = item;
 
@@ -333,7 +338,7 @@ function Candidates({ id, details }: CandidatesProps) {
                 {!is_closed && (
                   <div className={"th-menu-container"}>
                     <MenuBar
-                      menuData={getCandidateMenu(is_complete)}
+                      menuData={getCandidateMenu(is_complete,is_skipped)}
                       onClick={(action) => onCandidateMenuHandler(action, item)}
                     />
                   </div>
@@ -394,6 +399,7 @@ function Candidates({ id, details }: CandidatesProps) {
       interview_link,
     } = item;
 
+
     setSelectedCandidates(id);
 
     if (action.id === CANDIDATE_MENU_OPTIONS[0].id) {
@@ -402,7 +408,7 @@ function Candidates({ id, details }: CandidatesProps) {
     } else if (action.id === CANDIDATE_MENU_OPTIONS[1].id) {
       const params = { is_manually_rejected: true };
       postManualApprovalOnCandidateApiHandler(params, id);
-    } else if (action.id === CANDIDATE_MENU_OPTIONS[2].id) {
+    } else if (action.id ===  CANDIDATE_MENU_OPTIONS[2].id) {
       removeCandidateModal.show();
     } else if (action.id === CANDIDATE_MENU_OPTIONS_NOT_START[0].id) {
       closeCandidateModal.show();

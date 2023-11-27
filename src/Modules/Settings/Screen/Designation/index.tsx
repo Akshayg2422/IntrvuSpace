@@ -273,7 +273,7 @@ function Designation() {
       })
     );
   };
-  console.log('111111111111========>', videoRecordMandatory);
+
 
 
   /**

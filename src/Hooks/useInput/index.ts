@@ -4,7 +4,7 @@ const useInput = (initialValue: any) => {
 
   const [value, setValue] = useState(initialValue);
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const onChangeValue = event.target.value
+    const onChangeValue = event.target.value.trimStart().replace(/\s+/g, ' ');
     const maxLength = event.target.maxLength
 
     const type = event.target.type;

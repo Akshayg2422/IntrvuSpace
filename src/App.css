@@ -133,11 +133,18 @@ input[type=number] {
     justify-content: center;
 }
 
-.back-container {
+/* .back-container {
     position: absolute;
     left: 3%;
     top: 65px;
     z-index: 9999;
+} */
+
+.back-container-vacancies {
+    position: absolute;
+    left: 3%;
+    top: 65px;
+    /* z-index: 9999; */
 }
 
 
