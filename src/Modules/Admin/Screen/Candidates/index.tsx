@@ -144,7 +144,7 @@ function Candidates() {
     <>
       <div className={'screen-padding'}>
         <SettingHeader
-          title={'Candidates'}
+          title={'Candidate'}
           buttonText={'Add'}
           onClick={addCandidateModel.show}
         />
