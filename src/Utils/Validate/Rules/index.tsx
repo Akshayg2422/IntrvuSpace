@@ -109,8 +109,6 @@ export const REGISTER_COMPANY_SUPER_ADMIN_RULES = {
   },
   interview_limit: {
     presence: { allowEmpty: false, message: "interview limit cannot be empty" },
-    length: { maximum: 6, message: "interview_limit  minimum 6 chars" },
-   
   },
   
 }
