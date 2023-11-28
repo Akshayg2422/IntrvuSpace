@@ -6,7 +6,6 @@ import { CommonTable, Image, Input, MenuBar, Modal, NoDataFound, Spinner, showTo
 import { capitalizeFirstLetter, getPhoto, paginationHandler, INITIAL_PAGE } from '@Utils';
 import { icons } from '@Assets';
 import { useInput, useLoader, useModal } from '@Hooks';
-import { Interview } from '../Interview';
 
 function SuperAdminDashboard() {
 
