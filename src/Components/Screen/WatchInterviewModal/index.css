@@ -8,7 +8,7 @@
 }
 
 .individual-video-card:hover {
-  background-color: #f7f5f9;
+  background-color: rgb(241, 247, 243);
   cursor: pointer;
   transform: scale(1.05);
 }
@@ -17,7 +17,7 @@
   display: flex;
   align-items: center;
   padding: 20px 20px;
-  background-color: #f7f5f9;
+  background-color: rgb(241, 247, 243);
   border-radius: 5px;
 }
 
@@ -25,6 +25,7 @@
   font-size: 1rem;
   margin-left: 20px;
   color: var(--primary);
+  font-weight: 600;
 }
 
 .video-content-border {
