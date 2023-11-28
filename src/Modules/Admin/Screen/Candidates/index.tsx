@@ -130,12 +130,6 @@ function Candidates() {
 
   };
 
-  const handleMobileNumberChange = (e) => {
-    // Apply a pattern to allow only numeric characters and at most one hyphen
-    const inputValue = e.target.value.replace(/[^0-9-]/g, '');
-    const sanitizedValue = inputValue.replace(/-{2,}/g, '-');
-    mobileNumber.set(sanitizedValue);
-  };
 
 
   function modalCloseHandler() {
