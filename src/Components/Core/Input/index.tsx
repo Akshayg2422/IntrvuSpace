@@ -14,6 +14,7 @@ const Input = React.forwardRef(({ id, className, heading, innerRef, variant = 'd
         }
     }, [innerRef]);
 
+ 
     return (
         <FormGroup className={noSpace ? 'm-0 b-0' : ''}>
             <InputHeading heading={heading} id={id} isMandatory={isMandatory} />
@@ -22,7 +23,15 @@ const Input = React.forwardRef(({ id, className, heading, innerRef, variant = 'd
                 className={`${className} ${variant !== 'default' && 'form-control-' + variant} form-control-md`}
                 id={id}
                 ref={ref}
+          
                 {...rest}
+                onKeyDown={(evt) => {
+                    if (rest.type === 'number') {
+                        ["e", "E", "+", "-"].includes(evt.key) && evt.preventDefault();
+                    }
+                }}
+
+                
                 onWheel={(event) => event.currentTarget.blur()}
             />
         </FormGroup>
