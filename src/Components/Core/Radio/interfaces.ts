@@ -3,7 +3,8 @@ export interface RadioItem {
     id: string;
     text: string;
     subText:string;
-    value: any
+    value: any;
+    noSpace?: boolean
 }
 export interface RadioProps extends RsInputProps {
     data: Array<RadioItem>;

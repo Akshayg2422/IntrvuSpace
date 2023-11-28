@@ -131,6 +131,7 @@ function Candidates() {
   };
 
 
+
   function modalCloseHandler() {
     addCandidateModel.hide();
     firstName.set('');
@@ -212,19 +213,18 @@ function Candidates() {
 
           <div className='col-sm-6'>
             <Input
-              heading={"Email"}
-              value={mail.value}
-              onChange={mail.onChange}
-            />
-          </div>
-
-          <div className='col-sm-6'>
-            <Input
               heading={"Mobile Number"}
               type={'number'}
               value={mobileNumber.value}
               maxLength={10}
               onChange={mobileNumber.onChange}
+            />
+          </div>
+          <div className='col-sm-6'>
+            <Input
+              heading={"Email"}
+              value={mail.value}
+              onChange={mail.onChange}
             />
           </div>
         </div>
