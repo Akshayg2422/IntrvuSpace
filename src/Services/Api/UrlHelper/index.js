@@ -272,5 +272,11 @@ alter company limits
 export const URL_ALTER_COMPANY_LIMIT= COMPANY +'alterCompanyLimit'
 
 
+/*
+ get recent interviews
+ */
+
+ export const URL_GET_RECENT_INTERVIEWS=ASSISTANT +'getRecentInterviews'
+
 
 

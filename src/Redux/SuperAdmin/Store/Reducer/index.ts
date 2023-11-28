@@ -5,7 +5,10 @@ import * as ActionTypes from '../ActionTypes'
 const initialState: SuperAdminProps = {
   companies: [],
   companiesNumOfPages: undefined,
-  companiesCurrentPages: 1
+  companiesCurrentPages: 1,
+  recentInterviews:[],
+  recentInterviewsNumOfPages: undefined,
+  recentInterviewsCurrentPages: 1,
 };
 
 const SuperAdminReducer = (state = initialState, action: any) => {
@@ -44,6 +47,29 @@ const SuperAdminReducer = (state = initialState, action: any) => {
     case ActionTypes.GET_COMPANIES_FAILURE:
       state = { ...state, companies: undefined };
       break;
+
+ /*
+ get recent interviews
+ */ 
+    case ActionTypes.GET_RECENT_INTERVIEWS:
+    state = {...state,recentInterviews:undefined};
+    break;
+    
+    case ActionTypes.GET_RECENT_INTERVIEWS_SUCCESS:
+      const { recent_interviews } = action.payload?.details
+      const modifiedRecentInterviews = recent_interviews?.data || recent_interviews
+    state = {...state,
+      recentInterviews:modifiedRecentInterviews,
+      recentInterviewsNumOfPages:recent_interviews?.num_pages ,
+      recentInterviewsCurrentPages:
+      recent_interviews?.next_page === -1 
+      ? recent_interviews?.num_pages 
+      : recent_interviews?.next_page -1
+    };
+    break;
+    case ActionTypes.GET_RECENT_INTERVIEWS_SUCCESS:
+    state = {...state,recentInterviews:undefined};
+    break;
 
 
     default:
