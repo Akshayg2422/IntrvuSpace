@@ -156,7 +156,7 @@ export function getDropDownDisplayData(data: any) {
 
 export function getDropDownCompanyDisplayData(
   data: any,
-  key: "name" | "title" = "name"
+  key: "name" | "title" | 'display_name' = "name"
 ) {
   return (
     data &&
@@ -168,6 +168,7 @@ export function getDropDownCompanyDisplayData(
     })
   );
 }
+
 
 export const combineBase64Strings = (stringsArray) => {
   const decodedArray = stringsArray.map((base64String) => {
@@ -457,5 +458,6 @@ export function capitalizeLetter(string: any) {
   if (string !== undefined && string !== null && string.length > 0)
     return string.toUpperCase();
 }
+
 
 
