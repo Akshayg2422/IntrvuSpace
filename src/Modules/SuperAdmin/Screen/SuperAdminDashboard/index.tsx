@@ -259,7 +259,6 @@ function SuperAdminDashboard() {
                     </div>
                 </div>
             </Modal>
-            <Interview/>
         </>
     )
 }
