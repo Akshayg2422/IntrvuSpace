@@ -34,14 +34,15 @@ body {
 
 
 :root {
-    --primary: #641df2;
-    --secondary: #2f1c6a;
+    --primary: #4cc916;
+    --secondary: #014d0d;
     --placeholder: #727586;
     --border: #DADCE0;
     --border-radius: 4px;
-    --badge: #EBE4FF;
+    --badge: #e0fad9;
     --description: #5A5D73;
-    --card-border: #D5DFFF;
+    /* --card-border: #67a16f; */
+    --card-border: #c8e0cc;
 }
 
 
