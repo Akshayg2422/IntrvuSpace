@@ -34,9 +34,10 @@ import {
   SettingDesignation,
   AdminSchedules,
   SuperAdminDashboard,
-  Interview,
+  RecentInterviews,
   Candidates,
   SuperAdminCorporateRegister
+
 } from '@Modules';
 
 export const ROUTES = {
@@ -274,7 +275,7 @@ export const SUPER_ADMIN_ROUTES = [
   {
     id: 7,
     path: ROUTES['super-admin']['recent-interviews'],
-    component: <Interview />
+    component: <RecentInterviews />
   },
 ]
 

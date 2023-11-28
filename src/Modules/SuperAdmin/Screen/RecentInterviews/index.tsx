@@ -5,7 +5,7 @@ import { CommonTable, DropDown, NoDataFound, Spinner, showToast } from "@Compone
 import { DEFAULT_VALUE, INITIAL_PAGE, getDropDownCompanyDisplayData, paginationHandler } from "@Utils";
 import { useDropDown, useLoader } from "@Hooks";
 
-const Interview = () => {
+const RecentInterviews = () => {
 
   const STATUS_LIST = [
     { id: 'ALL', text: 'All' },
@@ -149,4 +149,4 @@ const Interview = () => {
   );
 };
 
-export { Interview }
+export { RecentInterviews }

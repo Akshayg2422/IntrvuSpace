@@ -1,3 +1,3 @@
 export * from './SuperAdminDashboard'
-export * from './Interview'
+export * from './RecentInterviews'
 export * from './SuperAdminCorporateRegister'
