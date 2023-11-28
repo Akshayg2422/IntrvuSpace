@@ -130,6 +130,13 @@ function Candidates() {
 
   };
 
+  const handleMobileNumberChange = (e) => {
+    // Apply a pattern to allow only numeric characters and at most one hyphen
+    const inputValue = e.target.value.replace(/[^0-9-]/g, '');
+    const sanitizedValue = inputValue.replace(/-{2,}/g, '-');
+    mobileNumber.set(sanitizedValue);
+  };
+
 
   function modalCloseHandler() {
     addCandidateModel.hide();
@@ -212,19 +219,18 @@ function Candidates() {
 
           <div className='col-sm-6'>
             <Input
-              heading={"Email"}
-              value={mail.value}
-              onChange={mail.onChange}
-            />
-          </div>
-
-          <div className='col-sm-6'>
-            <Input
               heading={"Mobile Number"}
               type={'number'}
               value={mobileNumber.value}
               maxLength={10}
               onChange={mobileNumber.onChange}
+            />
+          </div>
+          <div className='col-sm-6'>
+            <Input
+              heading={"Email"}
+              value={mail.value}
+              onChange={mail.onChange}
             />
           </div>
         </div>
