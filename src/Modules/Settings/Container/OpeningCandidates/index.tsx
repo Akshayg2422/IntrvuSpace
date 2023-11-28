@@ -10,6 +10,7 @@ import {
   Modal,
   NoDataFound,
   Spinner,
+  StatusIcon,
   WatchInterviewModal,
   showToast,
 } from "@Components";
@@ -55,27 +56,27 @@ function OpeningCandidates({ id, details }: OpeningCandidatesProps) {
   const CANDIDATE_MENU_OPTIONS = [
     { id: 1, name: "Approve Manually" },
     { id: 2, name: "Reject Manually" },
-   { id: 3, name: "Remove Candidate" }
+    { id: 3, name: "Remove Candidate" }
 
   ];
 
   const CANDIDATE_MENU_OPTIONS_COMPLETED = [
     { id: 6, name: "Watch Interview" },
-   
+
   ];
 
   const CANDIDATE_MENU_OPTIONS_NOT_START = [
     { id: 4, name: "Block Interview" },
     { id: 5, name: "Copy Interview Link" },
-  
+
   ];
 
 
 
-  function getCandidateMenu(isCompleted: boolean,is_skipped:boolean, recording_url: any) {
+  function getCandidateMenu(isCompleted: boolean, is_skipped: boolean, recording_url: any) {
     return [
       ...CANDIDATE_MENU_OPTIONS,
-      ...(isCompleted && recording_url.length === 0 ? [] : isCompleted ?  CANDIDATE_MENU_OPTIONS_COMPLETED :CANDIDATE_MENU_OPTIONS_NOT_START)
+      ...(isCompleted && recording_url.length === 0 ? [] : isCompleted ? CANDIDATE_MENU_OPTIONS_COMPLETED : CANDIDATE_MENU_OPTIONS_NOT_START)
       // ...(isCompleted ?(is_skipped?[]: CANDIDATE_MENU_OPTIONS_COMPLETED ):(is_skipped?[]:CANDIDATE_MENU_OPTIONS_NOT_START))
     ] as never[];
   }
@@ -90,12 +91,13 @@ function OpeningCandidates({ id, details }: OpeningCandidatesProps) {
 
   const getIcon = (key: number) => {
     const iconsMap = {
-      1: { icon: icons.check, h: 12, w: 12 },
-      2: { icon: icons.frame, h: 18, w: 18 },
-      3: { icon: icons.checkBlack, h: 18, w: 18 },
+      1: <StatusIcon />,
+      2: <StatusIcon variant={'frame'} />,
+      3: <StatusIcon variant={'checkBlack'} />
     };
     return iconsMap[key];
   };
+
   const [candidateCountDetails, setCandidateCountDetails] = useState<any>(0);
 
   const openWatchInterviewNotSupportedModal = useModal(false);
@@ -245,14 +247,7 @@ function OpeningCandidates({ id, details }: OpeningCandidatesProps) {
           "": (
             <div className={"d-flex align-items-center"}>
               {status_icon_type ? (
-                <Image
-                  src={status?.icon}
-                  height={status?.h}
-                  width={status?.w}
-                  style={{
-                    objectFit: "contain",
-                  }}
-                />
+                status
               ) : null}
               {candidate_score ? (
                 <div className={"screen-heading ml-2"}>{candidate_score}</div>
@@ -339,7 +334,7 @@ function OpeningCandidates({ id, details }: OpeningCandidatesProps) {
                 {!is_closed && (
                   <div className={"th-menu-container"}>
                     <MenuBar
-                      menuData={getCandidateMenu(is_complete,is_skipped, recording_url)}
+                      menuData={getCandidateMenu(is_complete, is_skipped, recording_url)}
                       onClick={(action) => onCandidateMenuHandler(action, item)}
                     />
                   </div>
@@ -409,7 +404,7 @@ function OpeningCandidates({ id, details }: OpeningCandidatesProps) {
     } else if (action.id === CANDIDATE_MENU_OPTIONS[1].id) {
       const params = { is_manually_rejected: true };
       postManualApprovalOnCandidateApiHandler(params, id);
-    } else if (action.id ===  CANDIDATE_MENU_OPTIONS[2].id) {
+    } else if (action.id === CANDIDATE_MENU_OPTIONS[2].id) {
       removeCandidateModal.show();
     } else if (action.id === CANDIDATE_MENU_OPTIONS_NOT_START[0].id) {
       closeCandidateModal.show();
@@ -827,12 +822,12 @@ function OpeningCandidates({ id, details }: OpeningCandidatesProps) {
       >
         <div className="mt--4">
           {WATCH_VIDEO_PERMISSION_CONTEXT.map((item) => {
-            const { id, icon, text, h } = item;
+            const { id, text, h } = item;
 
             return (
               <div key={id}>
                 <div className="d-flex align-items-center ">
-                  <Image src={icon} height={h} />
+                  <StatusIcon variant={'frame'} />
                   <div className="ml-2">{text}</div>
                 </div>
               </div>

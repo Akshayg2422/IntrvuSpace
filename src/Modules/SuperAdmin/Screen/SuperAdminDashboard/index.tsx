@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { SuperAdminNavbar } from '@Modules'
 import { useSelector, useDispatch } from 'react-redux'
 import { alterCompanyLimit, alterCompanyStatus, getCompanies } from '@Redux'
-import { CommonTable, Image, Input, MenuBar, Modal, NoDataFound, Spinner, showToast } from '@Components';
+import { CommonTable, Image, Input, MenuBar, Modal, NoDataFound, Spinner, StatusIcon, showToast } from '@Components';
 import { capitalizeFirstLetter, getPhoto, paginationHandler, INITIAL_PAGE } from '@Utils';
 import { icons } from '@Assets';
 import { useInput, useLoader, useModal } from '@Hooks';
@@ -143,14 +143,9 @@ function SuperAdminDashboard() {
 
                     "": (
                         <div className={"d-flex align-items-center"}>
-                            <Image
-                                src={icons[is_active ? 'check' : 'frame']}
-                                height={is_active ? 12 : 18}
-                                width={is_active ? 12 : 18}
-                                style={{
-                                    objectFit: "contain",
-                                }}
-                            />
+
+                            {is_active ? <StatusIcon /> : <StatusIcon variant={'frame'} />}
+
                         </div>
                     ),
 
@@ -207,7 +202,7 @@ function SuperAdminDashboard() {
 
                 {
                     companies && companies?.length > 0 &&
-                    <div className={'screen-container overflow-auto'}>
+                    <div className={'screen-container'}>
                         <CommonTable
                             isPagination
                             tableDataSet={companies}

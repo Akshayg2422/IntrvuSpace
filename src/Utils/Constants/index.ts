@@ -1595,16 +1595,16 @@ export const COUNTRY_ISO_CODE = [
 ]
 
 export const ENTIRE_SCREEN_CONTEXT = [
-  { id: 1, icon: icons.check, text: "Please confirm to record this interview" },
-  { id: 2, icon: icons.check, text: "Click to select the 'Entire Screen' option to share your interview" },
+  { id: 1, text: "Please confirm to record this interview" },
+  { id: 2, text: "Click to select the 'Entire Screen' option to share your interview" },
 ]
 
 export const BROWSER_PERMISSION_CONTEXT = [
-  { id: 1, icon: icons.frame, text: "Browser permission to record the interview is not allowed in this browser", h: "24" },
-  { id: 2, icon: icons.check, text: "Use other browsers like Google Chrome, Microsoft Edge, Brave etc", h: "10" },
+  { id: 1, text: "Browser permission to record the interview is not allowed in this browser", h: "24" },
+  { id: 2, text: "Use other browsers like Google Chrome, Microsoft Edge, Brave etc", h: "10" },
 ]
 
 export const WATCH_VIDEO_PERMISSION_CONTEXT = [
-  { id: 1, icon: icons.frame, text: "Browser permission to watch the recorded interview is not allowed in this browser", h: "24" },
-  { id: 2, icon: icons.check, text: "Use other browsers like Google Chrome, Microsoft Edge, Brave etc", h: "10" },
+  { id: 1, text: "Browser permission to watch the recorded interview is not allowed in this browser", h: "24" },
+  { id: 2, text: "Use other browsers like Google Chrome, Microsoft Edge, Brave etc", h: "10" },
 ]

@@ -1,5 +1,5 @@
 import { icons } from "@Assets";
-import { Badge, Button, Card, Image } from "@Components";
+import { Badge, Button, Card, Image, StatusIcon } from "@Components";
 import { useDynamicHeight, useGrowingTitleLine } from "@Hooks";
 import { Col, Container, Row } from "reactstrap";
 import "./index.css";
@@ -117,9 +117,7 @@ function AllInOnePlatform() {
                           return (
                             <>
                               <div className="mt-2 " >
-                                <Image src={icons.check} height={12} width={12} style={{
-                                  objectFit: 'contain'
-                                }} />
+                                <StatusIcon />
                                 <span
                                   className="ml-2 text-secondary"
                                   style={{ fontSize: 12.5, fontWeight: 800 }}
@@ -171,18 +169,11 @@ function AllInOnePlatform() {
                                   objectFit: 'contain'
                                 }} />
                               </span>
-                              <Badge
-                                className="text-primary ml-2"
-                                text={"SAVE 58%"}
-                                size="md"
-                                style={{
-                                  borderRadius: 30,
-                                  backgroundColor: "#ebe4ff",
-                                  fontSize: 13,
-                                  fontWeight: 800,
-                                }}
-                              />
+                              
                             </div>
+                                <div className={'badge-schedule'}>
+                                  <span className={'badge-text'}>{'SAVE 58%'}</span>
+                                </div>
                             <div className="text-center">
                               <span
                                 className="text-secondary"
@@ -245,9 +236,7 @@ function AllInOnePlatform() {
                           return (
                             <>
                               <div className="mt-2">
-                                <Image src={icons.check} height={12} width={12} style={{
-                                  objectFit: 'contain'
-                                }} />
+                                <StatusIcon />
                                 <span
                                   className="ml-2 text-secondary"
                                   style={{ fontSize: 12.5, fontWeight: 800 }}

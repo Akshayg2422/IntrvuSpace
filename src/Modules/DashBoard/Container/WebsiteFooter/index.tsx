@@ -19,9 +19,8 @@ function WebsiteFooter() {
     <>
 
       <footer
-        className="pb-3 pt-3 mt-7"
+        className="pb-3 pt-3 mt-7 bg-container-dark"
         id="footer-main"
-        style={{ backgroundColor: "#F4F5FF" }}
       >
         <section>
           <div>

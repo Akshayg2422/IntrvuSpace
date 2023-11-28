@@ -1,7 +1,7 @@
 import React from 'react'
 import { DetailedReportProps } from './interfaces'
 import { createNewObjectWithoutNullOrNaNValues, capitalizeFirstLetter } from '@Utils';
-import { Image } from '@Components';
+import { Image, StatusIcon } from '@Components';
 import { icons } from '@Assets'
 import './index.css'
 
@@ -18,9 +18,9 @@ function DetailedReport({ details }: DetailedReportProps) {
 
 
   const NOTE = [
-    { id: 1, icon: icons.check, text: "Completely Covered", h: 8 },
-    { id: 2, icon: icons.checkBlack, text: "Partially Covered", h: 20 },
-    { id: 3, icon: icons.frame, text: "Covered but Invalid", h: 18 },
+    { id: 1, icon: <StatusIcon />, text: "Completely Covered", h: 8 },
+    { id: 2, icon: <StatusIcon variant={'checkBlack'} />, text: "Partially Covered", h: 20 },
+    { id: 3, icon: <StatusIcon variant={'frame'} />, text: "Covered but Invalid", h: 18 },
   ];
 
 
@@ -48,7 +48,7 @@ function DetailedReport({ details }: DetailedReportProps) {
         {sections && sections.length > 0 && sections.map((each => {
           const { id, name, rating } = each
           return (
-            <div key={id} className={'detailed-job-description-item border'}>
+            <div key={id} className={'detailed-job-description-item card-border'}>
               <div className={'detailed-job-description-title'}>{name}</div>
               <div className={'detailed-job-description-title font-weight-700'}>{rating}</div>
             </div>
@@ -70,12 +70,9 @@ function DetailedReport({ details }: DetailedReportProps) {
                   const { id, icon, text, h } = each
                   return (
                     <div className={'note-list-item'} key={id}>
-                      <Image
-                        src={icon}
-                        height={h}
-                        style={{
-                          objectFit: 'contain'
-                        }} />
+                      {
+                        icon
+                      }
                       <div className={'note-text'}>{text}</div>
                     </div>
                   )
@@ -91,7 +88,7 @@ function DetailedReport({ details }: DetailedReportProps) {
           sections && sections.length > 0 && sections.map(each => {
             const { name, rating, questions, suggestions } = each;
             return (
-              <div className={'sector-card-container border'}>
+              <div className={'sector-card-container card-border'}>
                 <div className={'sector-heading-container'}>
                   <div className={'detailed-job-description-title'}>{capitalizeFirstLetter(name.replace(/_/g, ' '))}</div>
                   <div className={'detailed-job-description-title'}>{rating}</div>
@@ -114,14 +111,7 @@ function DetailedReport({ details }: DetailedReportProps) {
                                 (ans: any) => {
                                   return (
                                     <div className={'answer-item-container'}>
-                                      <Image
-                                        src={icons.check}
-                                        height={11}
-                                        width={11}
-                                        style={{
-                                          objectFit: 'contain'
-                                        }}
-                                      />
+                                      <StatusIcon />
                                       <small className={'note-text'}>
                                         {ans}
                                       </small>
@@ -136,10 +126,7 @@ function DetailedReport({ details }: DetailedReportProps) {
                                 (ans: any) => {
                                   return (
                                     <div className={'answer-item-container'}>
-                                      <Image
-                                        src={icons.checkBlack}
-                                        height={20}
-                                      />
+                                      <StatusIcon variant={'checkBlack'} />
                                       <small className={'note-text'}>
                                         {ans}
                                       </small>
@@ -155,10 +142,7 @@ function DetailedReport({ details }: DetailedReportProps) {
                                 (ans: any) => {
                                   return (
                                     <div className={'answer-item-container'}>
-                                      <Image
-                                        src={icons.frame}
-                                        height={20}
-                                      />
+                                      <StatusIcon variant={'frame'} />
                                       <small className={'note-text'}>
                                         {ans}
                                       </small>
@@ -172,10 +156,7 @@ function DetailedReport({ details }: DetailedReportProps) {
                               covered?.length <= 0 &&
                               covered_partial?.length <= 0 && (
                                 <div className={'answer-item-container'}>
-                                  <Image
-                                    src={icons.frame}
-                                    height={20}
-                                  />
+                                  <StatusIcon variant={'frame'} />
                                   <small className={'note-text'}>
                                     {"Not Answered"}
                                   </small>
@@ -214,7 +195,7 @@ function DetailedReport({ details }: DetailedReportProps) {
                     const { rating, description, metrics_name } = each;
                     return (
                       <div>
-                        <div className={'detailed-job-description-item border'}>
+                        <div className={'detailed-job-description-item card-border'}>
                           <div>
                             <div className={'detailed-job-description-title'}>{metrics_name}</div>
                             <div className={'note-text ml-0'}>{description}</div>
