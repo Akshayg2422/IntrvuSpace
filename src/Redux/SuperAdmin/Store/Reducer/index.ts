@@ -14,8 +14,6 @@ const initialState: SuperAdminProps = {
 const SuperAdminReducer = (state = initialState, action: any) => {
   switch (action.type) {
 
-
-
     /**
  * get companies 
  */

@@ -42,9 +42,9 @@ export interface DashboardProp {
   corporateScheduleNumOfPages: any,
   corporateScheduleCurrentPages: number,
   isCreateOpening?: boolean;
-  candidatesList?: any;
-  candidatesListNumOfPages: any,
-  candidatesListCurrentPages: number,
+  openingCandidates?: any;
+  openingCandidatesNumOfPages: any,
+  openingCandidatesCurrentPages: number,
   error?: string;
   departmentCorporate: any;
   departmentCorporateNumOfPages: any
@@ -63,7 +63,7 @@ export interface DashboardProp {
   onGoingMessage: any,
   corporateScheduleCount?: number;
   refreshCorporateSchedules?: boolean;
-  candidatesCount?: number;
+  openingCandidatesCount?: number;
   interviewUrl?: any;
   jdItemNumOfPages:any,
   jdItemCurrentPages:any,
