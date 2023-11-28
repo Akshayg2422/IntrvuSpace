@@ -46,9 +46,9 @@ import {
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./index.css";
-import { CandidatesProps } from "./interfaces";
+import { OpeningCandidatesProps } from "./interfaces";
 
-function Candidates({ id, details }: CandidatesProps) {
+function OpeningCandidates({ id, details }: OpeningCandidatesProps) {
   const { goTo } = useNavigation();
   const enterPress = useKeyPress("Enter");
 
@@ -113,10 +113,10 @@ function Candidates({ id, details }: CandidatesProps) {
   const isJdClosed = details?.is_closed;
 
   const {
-    candidatesList,
-    candidatesCount,
-    candidatesListNumOfPages,
-    candidatesListCurrentPages,
+    openingCandidates,
+    openingCandidatesCount,
+    openingCandidatesNumOfPages,
+    openingCandidatesCurrentPages,
     interviewUrl,
   } = useSelector((state: any) => state.DashboardReducer);
 
@@ -125,10 +125,10 @@ function Candidates({ id, details }: CandidatesProps) {
 
 
   useEffect(() => {
-    if (candidatesCount > candidateCountDetails) {
-      setCandidateCountDetails(candidatesCount);
+    if (openingCandidatesCount > candidateCountDetails) {
+      setCandidateCountDetails(openingCandidatesCount);
     }
-  }, [candidatesCount]);
+  }, [openingCandidatesCount]);
 
   const loader = useLoader(false);
 
@@ -180,12 +180,12 @@ function Candidates({ id, details }: CandidatesProps) {
   }
 
   useEffect(() => {
-    getCandidatesCorporate(candidatesListCurrentPages);
+    getCandidatesCorporate(openingCandidatesCurrentPages);
   }, [candidateStatus?.value?.id]);
 
   useEffect(() => {
     if (isCandidateSearch && enterPress) {
-      getCandidatesCorporate(candidatesListCurrentPages);
+      getCandidatesCorporate(openingCandidatesCurrentPages);
     }
   }, [enterPress]);
 
@@ -373,7 +373,7 @@ function Candidates({ id, details }: CandidatesProps) {
             showToast("Candidate added successfully", "success");
             addCandidateLoader.hide();
             addCandidateModal.hide();
-            getCandidatesCorporate(candidatesListCurrentPages);
+            getCandidatesCorporate(openingCandidatesCurrentPages);
           },
           onError: (error: any) => () => {
             showToast(error.error_message, "error");
@@ -454,7 +454,7 @@ function Candidates({ id, details }: CandidatesProps) {
         params,
         onSuccess: (response: any) => () => {
           showToast(response.message, "success");
-          getCandidatesCorporate(candidatesListCurrentPages);
+          getCandidatesCorporate(openingCandidatesCurrentPages);
           dispatch(refreshCorporateSchedule());
 
           try {
@@ -516,7 +516,7 @@ function Candidates({ id, details }: CandidatesProps) {
           bulkUploadLoader.hide();
           dispatch(refreshCorporateSchedule());
           bulkUploadModal.hide();
-          getCandidatesCorporate(candidatesListCurrentPages);
+          getCandidatesCorporate(openingCandidatesCurrentPages);
         },
         onError: (error: any) => () => {
           showToast(error.error_message, "error");
@@ -528,7 +528,7 @@ function Candidates({ id, details }: CandidatesProps) {
 
   return (
     <>
-      {candidatesCount <= 0 && !is_department_admin && !isJdClosed && (
+      {openingCandidates <= 0 && !is_department_admin && !isJdClosed && (
         <div className={"empty-candidates-container"}>
           <div className={"text-heading"}>
             {"Start adding your Candidates Now !"}
@@ -670,16 +670,16 @@ function Candidates({ id, details }: CandidatesProps) {
               <div
                 className={'table-container'}
                 style={{
-                  ...(candidatesList?.length === 1 && { height: "280px" })
+                  ...(openingCandidates?.length === 1 && { height: "280px" })
                 }}>
 
-                {candidatesList?.length > 0 ? (
+                {openingCandidates?.length > 0 ? (
                   <CommonTable
-                    isPagination={candidatesListNumOfPages > 1}
-                    tableDataSet={candidatesList}
-                    displayDataSet={normalizedTableData(candidatesList)}
-                    noOfPage={candidatesListNumOfPages}
-                    currentPage={candidatesListCurrentPages}
+                    isPagination={openingCandidatesNumOfPages > 1}
+                    tableDataSet={openingCandidates}
+                    displayDataSet={normalizedTableData(openingCandidates)}
+                    noOfPage={openingCandidatesNumOfPages}
+                    currentPage={openingCandidatesCurrentPages}
                     paginationNumberClick={(currentPage) => {
                       getCandidatesCorporate(
                         paginationHandler("current", currentPage)
@@ -687,12 +687,12 @@ function Candidates({ id, details }: CandidatesProps) {
                     }}
                     previousClick={() => {
                       getCandidatesCorporate(
-                        paginationHandler("prev", candidatesListCurrentPages)
+                        paginationHandler("prev", openingCandidatesCurrentPages)
                       );
                     }}
                     nextClick={() => {
                       getCandidatesCorporate(
-                        paginationHandler("next", candidatesListCurrentPages)
+                        paginationHandler("next", openingCandidatesCurrentPages)
                       );
                     }}
                   />
@@ -844,4 +844,4 @@ function Candidates({ id, details }: CandidatesProps) {
   );
 }
 
-export { Candidates };
+export { OpeningCandidates };

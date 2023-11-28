@@ -59,10 +59,10 @@ const initialState: DashboardProp = {
   isCreateOpening: false,
   corporateScheduleNumOfPages: undefined,
   corporateScheduleCurrentPages: 1,
-  candidatesList: [],
-  candidatesCount: undefined,
-  candidatesListNumOfPages: undefined,
-  candidatesListCurrentPages: 1,
+  openingCandidates: [],
+  openingCandidatesCount: undefined,
+  openingCandidatesNumOfPages: undefined,
+  openingCandidatesCurrentPages: 1,
   designations: undefined,
   designationsNumOfPage: undefined,
   designationsCurrentPage: 1,
@@ -763,10 +763,10 @@ createScheduleSuperAdmin
     case ActionTypes.FETCH_CANDIDATES_CORPORATE:
       state = {
         ...state,
-        candidatesList: undefined,
-        candidatesListNumOfPages: 0,
-        candidatesListCurrentPages: 1,
-        candidatesCount: undefined,
+        openingCandidates: undefined,
+        openingCandidatesNumOfPages: 0,
+        openingCandidatesCurrentPages: 1,
+        openingCandidatesCount: undefined,
       };
       break;
 
@@ -776,10 +776,10 @@ createScheduleSuperAdmin
 
       state = {
         ...state,
-        candidatesCount: candidate_count,
-        candidatesList: corporate_candidate_details?.data,
-        candidatesListNumOfPages: corporate_candidate_details.num_pages,
-        candidatesListCurrentPages:
+        openingCandidatesCount: candidate_count,
+        openingCandidates: corporate_candidate_details?.data,
+        openingCandidatesNumOfPages: corporate_candidate_details.num_pages,
+        openingCandidatesCurrentPages:
           corporate_candidate_details.next_page === -1
             ? corporate_candidate_details.num_pages
             : corporate_candidate_details.next_page - 1,
@@ -789,8 +789,8 @@ createScheduleSuperAdmin
     case ActionTypes.FETCH_CANDIDATES_CORPORATE_FAILURE:
       state = {
         ...state,
-        candidatesList: undefined,
-        candidatesCount: undefined,
+        openingCandidates: undefined,
+        openingCandidatesCount: undefined,
       };
       break;
 
