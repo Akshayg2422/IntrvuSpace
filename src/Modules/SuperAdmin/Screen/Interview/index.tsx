@@ -7,10 +7,15 @@ import { useDropDown, useLoader } from "@Hooks";
 
 const Interview = () => {
 
+  const STATUS_LIST = [
+    { id: 'ALL', text: 'All' },
+    { id: 'IS_STARTED', text: 'Yet to start' },
+    { id: 'IS_COMPLETED', text: 'Completed' },
+  ]
   const dispatch = useDispatch();
   const loader = useLoader(false)
   const filterCompanies = useDropDown(DEFAULT_VALUE);
-
+  const status = useDropDown(STATUS_LIST[0]);
   const {
     recentInterviews,
     recentInterviewsNumOfPages,
@@ -20,20 +25,24 @@ const Interview = () => {
 
   useEffect(() => {
     getRecentInterviewsHandler(INITIAL_PAGE);
-  }, [filterCompanies.value?.id]);
+  }, [filterCompanies.value?.id, status?.value]);
 
   const getRecentInterviewsHandler = (page_number: number) => {
 
     const companyId = filterCompanies.value.id;
 
+    const filterStatus =
+      status.value?.id === "IS_STARTED"
+        ? { is_started: true }
+        : status.value?.id === "IS_COMPLETED"
+          ? { is_complete: true }
+          : {};
+
     const params = {
       page_number,
-      ...(companyId !== "-1" && {
-        company_id: companyId
-      }),
+      ...(companyId !== "-1" && { company_id: companyId }),
+      ...(filterStatus && filterStatus),
     };
-    console.log('params----------', params);
-
     loader.show();
 
     dispatch(
@@ -68,29 +77,43 @@ const Interview = () => {
       });
   };
 
-
   return (
     <div className={'screen-padding'}>
-      {
-        loader.loader &&
+      {loader.loader && (
         <div className={'loader-container'}>
           <Spinner />
         </div>
-      }
+      )}
 
-      <div className="col-sm-3 m-0 p-0">
-        {companies && companies.length > 0 && (
-          <DropDown
-            id={"companies"}
-            heading={"Companies"}
-            data={[DEFAULT_VALUE, ...getDropDownCompanyDisplayData(companies, 'display_name')]}
-            selected={filterCompanies.value}
-            onChange={filterCompanies.onChange}
-          />
-        )}
-      </div>
+      {!loader.loader && (
+        <div className={'row'}>
+          {companies && companies.length > 0 && (
+            <>
+              <div className={'col-sm-3'}>
+                <DropDown
+                  id={"companies"}
+                  heading={"Companies"}
+                  data={[DEFAULT_VALUE, ...getDropDownCompanyDisplayData(companies, 'display_name')]}
+                  selected={filterCompanies.value}
+                  onChange={filterCompanies.onChange}
+                />
+              </div>
 
-      {recentInterviews && recentInterviews.length > 0 &&
+              <div className={'col-sm-3'}>
+                <DropDown
+                  id={"Status"}
+                  heading={"Status"}
+                  data={STATUS_LIST}
+                  selected={status.value}
+                  onChange={status.onChange}
+                />
+              </div>
+            </>
+          )}
+        </div>
+      )}
+
+      {recentInterviews && recentInterviews.length > 0 && (
         <div className={'overflow-auto'}>
           <CommonTable
             isPagination
@@ -113,14 +136,13 @@ const Interview = () => {
             }}
           />
         </div>
-      }
+      )}
 
-      {
-        !loader.loader && recentInterviews?.length <= 0 && 
+      {!loader.loader && recentInterviews?.length <= 0 && (
         <div className={"no-data-found"}>
           <NoDataFound />
         </div>
-      }
+      )}
     </div>
   );
 };
