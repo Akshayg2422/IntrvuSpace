@@ -42,6 +42,7 @@ function Candidates() {
     getCandidateApiHandler(INITIAL_PAGE)
   }, [])
 
+  
 
   const getCandidateApiHandler = (page_number: number) => {
     const params = {
