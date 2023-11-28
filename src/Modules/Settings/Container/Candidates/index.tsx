@@ -72,10 +72,10 @@ function Candidates({ id, details }: CandidatesProps) {
 
 
 
-  function getCandidateMenu(isCompleted: boolean,is_skipped:boolean) {
+  function getCandidateMenu(isCompleted: boolean,is_skipped:boolean, recording_url: any) {
     return [
       ...CANDIDATE_MENU_OPTIONS,
-       ...(isCompleted ? CANDIDATE_MENU_OPTIONS_COMPLETED :CANDIDATE_MENU_OPTIONS_NOT_START)
+      ...(isCompleted && recording_url.length === 0 ? [] : isCompleted ?  CANDIDATE_MENU_OPTIONS_COMPLETED :CANDIDATE_MENU_OPTIONS_NOT_START)
       // ...(isCompleted ?(is_skipped?[]: CANDIDATE_MENU_OPTIONS_COMPLETED ):(is_skipped?[]:CANDIDATE_MENU_OPTIONS_NOT_START))
     ] as never[];
   }
@@ -236,6 +236,7 @@ function Candidates({ id, details }: CandidatesProps) {
           is_complete,
           is_skipped,
           interviewee_photo,
+          recording_url
         } = item;
 
         const status = getIcon(status_icon_type);
@@ -338,7 +339,7 @@ function Candidates({ id, details }: CandidatesProps) {
                 {!is_closed && (
                   <div className={"th-menu-container"}>
                     <MenuBar
-                      menuData={getCandidateMenu(is_complete,is_skipped)}
+                      menuData={getCandidateMenu(is_complete,is_skipped, recording_url)}
                       onClick={(action) => onCandidateMenuHandler(action, item)}
                     />
                   </div>

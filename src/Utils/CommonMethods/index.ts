@@ -457,3 +457,5 @@ export function capitalizeLetter(string: any) {
   if (string !== undefined && string !== null && string.length > 0)
     return string.toUpperCase();
 }
+
+

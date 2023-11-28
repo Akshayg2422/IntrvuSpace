@@ -1,0 +1,14 @@
+/* Style for the input area */
+.select2-container--default .select2-selection--single {
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+/* Style for the input text padding */
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+  padding-right: 25px !important; /* Adjust the padding as needed, and use !important */
+}
+

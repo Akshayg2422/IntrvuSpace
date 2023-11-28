@@ -267,3 +267,9 @@ export const alterCompanyStatusApi = payload => post(URL.URL_ALTER_COMPANY_STATU
  */
 
 export const alterCompanyLimitApi = payload => post(URL.URL_ALTER_COMPANY_LIMIT, payload, {})
+
+/*
+ get recent interviews
+ */
+
+ export const getRecentInterviewsApi = payload => post(URL.URL_GET_RECENT_INTERVIEWS,payload,{})
