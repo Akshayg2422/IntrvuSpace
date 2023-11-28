@@ -1,8 +1,8 @@
 import * as ActionTypes from '../ActionTypes'
 
-
-//get candidates======>>>>>>>>>>>>>>>>>
-
+/**
+ * get api action candidates
+ */
 
 export const getCandidates = (params: any) => {
    return {
@@ -32,9 +32,9 @@ export const getCandidatesFailure = (error: any) => {
 
 
 
-
-
-///ADD CANDIDATES LIST//////////////////////////////////////===>>>
+/**
+ * adi Api action candidates
+ */
 
 
 export const addCandidate = (params: any) => {

@@ -8,12 +8,12 @@ import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 
-function CandidateList() {
+function Candidates() {
 
   const dispatch = useDispatch()
 
   const {
-    candidatesList,
+    candidates,
     candidatesNumOfPages,
     candidatesCurrentPages,
   } = useSelector((state: any) => state.AdminReducer)
@@ -21,13 +21,19 @@ function CandidateList() {
 
   const MENU = [{ id: '0', name: "Edit", icon: icons.edit }]
 
-  const addCandidateModel = useModal(false);
-  const [editId, setEditId] = useState<any>()
   const loader = useLoader(true)
+
+
+/**
+ * add,Edit candidate state
+ */
+  const addCandidateModel = useModal(false);
+
+  const [editId, setEditId] = useState<any>()
   const addLoader = useLoader(false);
   const firstName = useInput("");
   const lastName = useInput("");
-  const emailVerify = useInput("");
+  const mail = useInput("");
   const mobileNumber = useInput("");
   const inFocus = useRef<any>()
 
@@ -57,7 +63,7 @@ function CandidateList() {
 
   const addCandidateApiHandler = () => {
     const params = {
-        email:emailVerify.value,
+        email:mail.value,
         first_name:firstName.value,
         last_name:lastName.value,
         mobile_number:mobileNumber.value,
@@ -75,6 +81,7 @@ function CandidateList() {
           onSuccess: (success: any) => () => {
             addLoader.hide()
             modalCloseHandler()
+            getCandidateApiHandler(candidatesCurrentPages)
             setEditId('')
             showToast(success.message, 'success')
           },
@@ -110,7 +117,7 @@ function CandidateList() {
                 firstName.set(first_name);
                 lastName.set(last_name)
                 mobileNumber.set(mobile_number)
-                emailVerify.set(email)
+                mail.set(email)
                 addCandidateModel.show()
              
               }
@@ -128,7 +135,7 @@ function CandidateList() {
     firstName.set('');
     lastName.set('')
     mobileNumber.set('')
-    emailVerify.set('')
+    mail.set('')
      setEditId('')
   }
 
@@ -145,12 +152,12 @@ function CandidateList() {
         }
         {
           !loader.loader &&
-          candidatesList?.length > 0
+          candidates?.length > 0
           &&
           <CommonTable
             isPagination={candidatesNumOfPages > 1}
             title={'Candidates'}
-            displayDataSet={normalizedTableData(candidatesList)}
+            displayDataSet={normalizedTableData(candidates)}
             noOfPage={candidatesNumOfPages}
             currentPage={candidatesCurrentPages}
             paginationNumberClick={(currentPage) => {
@@ -169,7 +176,7 @@ function CandidateList() {
         }
         {
           !loader.loader &&
-          candidatesList?.length <= 0 &&
+          candidates?.length <= 0 &&
           <div className={'no-data-container'}>
             <NoDataFound />
           </div>
@@ -178,7 +185,7 @@ function CandidateList() {
 
       <Modal
         loading={addLoader.loader}
-        title={`${editId ? "Edit" : "Add"} Candidate`}
+        title={`${editId ? "Edit" : "Add"}`}
         isOpen={addCandidateModel.visible}
         onClose={modalCloseHandler}
         onClick={addCandidateApiHandler}
@@ -205,15 +212,17 @@ function CandidateList() {
           <div className='col-sm-6'>
             <Input
               heading={"Email"}
-              value={emailVerify.value}
-              onChange={emailVerify.onChange}
+              value={mail.value}
+              onChange={mail.onChange}
             />
           </div>
 
           <div className='col-sm-6'>
             <Input
               heading={"Mobile Number"}
+              type={'number'}
               value={mobileNumber.value}
+              maxLength={10}
               onChange={mobileNumber.onChange}
             />
           </div>
@@ -223,4 +232,4 @@ function CandidateList() {
   )
 }
 
-export { CandidateList };
+export { Candidates };

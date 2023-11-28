@@ -1,8 +1,11 @@
 import { takeLatest, put, call } from 'redux-saga/effects';
 import * as Api from '@Services'
 import * as Action from '../Store'
-import { t } from 'i18n-js';
 
+
+/**
+ * get Api sagas
+ */
 
     function* getCandidatesSaga(action) {
         try {
@@ -23,28 +26,33 @@ import { t } from 'i18n-js';
 
 
 
+/**
+ * post Api sagas 
+ * no need to add redux success and failure action, i need to store add us will use action
+ */
 
-    //add candidates saga =====///>>>>>>=============================
+function* addCandidatesSaga(action) {
+    try {
+        const response = yield call(Api.addCandidatesApi, action.payload.params);
+        if (response) {
+            yield call(action.payload.onSuccess(response));
+        } else {
 
-        function* addCandidatesSaga(action) {
-        try {
-            const response = yield call(Api.addCandidatesApi, action.payload.params);
-            if (response) {
-            
-                yield call(action.payload.onSuccess(response));
-            } else {
-               
-                yield call(action.payload.onError(response));
-            }
-        } catch (error) {
-          
-            yield call(action.payload.onError(error));
+            yield call(action.payload.onError(response));
         }
+    } catch (error) {
+
+        yield call(action.payload.onError(error));
     }
+}
     
+
 function* AdminSaga() {
+
     yield takeLatest(Action.GET_CANDIDATES, getCandidatesSaga);
     yield takeLatest(Action.ADD_CANDIDATES, addCandidatesSaga);
 
   }
+
+
 export default AdminSaga;

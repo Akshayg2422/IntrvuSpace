@@ -1,7 +1,8 @@
 
-// export const GET_COMPANIES_ADMIN = 'GET_COMPANIES_ADMIN' this formate we have mentation the actionType
 
-//GET CANDIDATE
+/**
+ * get Api actionType
+ */
 
 export const GET_CANDIDATES='GET_CANDIDATES'
 
@@ -13,6 +14,8 @@ export const GET_CANDIDATES_FAILURE='GET_CANDIDATES_FAILURE'
 
 
 
-//add candidates =====///>>>>>>=============================
+/**
+ * add Api actionType
+ */
 
 export const ADD_CANDIDATES='ADD_CANDIDATES'

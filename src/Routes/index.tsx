@@ -33,9 +33,11 @@ import {
   CorporateRegister,
   SettingDesignation,
   AdminSchedules,
-  SuperAdminDashboard
+  SuperAdminDashboard,
+
 } from '@Modules';
-import { CandidateList } from '@Modules//Admin';
+import { Candidates } from '@Modules//Admin';
+
 import { SuperAdminCorporateRegister } from '@Modules//SuperAdmin/Screen/SuperAdminCorporateRegister';
 
 export const ROUTES = {
@@ -327,7 +329,7 @@ export const ADMIN_ROUTES = [
     id: 3,
     path: ROUTES['designation-module']['candidate'],
     name: "candidate",
-    component: <CandidateList/>
+    component: <Candidates/>
   },
   {
     id: 8,

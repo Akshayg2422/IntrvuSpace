@@ -4,7 +4,7 @@ import * as ActionTypes from '../ActionTypes'
 
 const initialState: AdminProps = {
 
-  candidatesList:undefined,
+  candidates:undefined,
   candidatesNumOfPages:undefined,
   candidatesCurrentPages:1,
 
@@ -15,35 +15,38 @@ const AdminReducer = (state = initialState, action: any) => {
   switch (action.type) {
 
     /**
- *ActionTypes.variable of actionType we have to mention
+ * get api only we implement the reducer state else we use the normal state to use to store data not to use to store the add api data 
  */
 
     case ActionTypes.GET_CANDIDATES:
 
       state = {
         ...state,
-        candidatesList: undefined,
+        candidates: undefined,
         candidatesNumOfPages: undefined,
         candidatesCurrentPages: 1
       };
       break;
+
     case ActionTypes.GET_CANDIDATES_SUCCESS:
 
-      const { candidates } = action.payload?.details
-      const modifiedCandidates = candidates?.data || candidates
+      const { candidate_list } = action.payload?.details
+      const modifiedCandidates = candidate_list?.data || candidate_list
 
       state = {
         ...state,
-        candidatesList: modifiedCandidates,
-        candidatesNumOfPages: candidates?.num_pages,
+        candidates: modifiedCandidates,
+        candidatesNumOfPages: candidate_list?.num_pages,
         candidatesCurrentPages:
-        candidates.next_page === -1
-            ? candidates.num_pages
-            : candidates.next_page - 1,
+        candidate_list.next_page === -1
+            ? candidate_list.num_pages
+            : candidate_list.next_page - 1,
       };
       break;
+
+
     case ActionTypes.GET_CANDIDATES_FAILURE:
-      state = { ...state, candidatesList: undefined };
+      state = { ...state, candidates: undefined };
       break;
 
    

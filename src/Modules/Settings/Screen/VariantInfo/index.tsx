@@ -11,7 +11,7 @@ import {
   Button,
 } from "@Components";
 import { useInput, useLoader, useModal } from "@Hooks";
-import { Candidates } from "@Modules";
+import { OpeningCandidates } from "@Modules";
 import {
   createCorporateSchedules,
   getCorporateScheduleDetails,
@@ -239,7 +239,7 @@ function VariantInfo() {
               </div>
             </div>
 
-            <Candidates id={id} details={corporateScheduleDetails} />
+            <OpeningCandidates id={id} details={corporateScheduleDetails} />
 
             <div className={"jd-details-container"}>
               <div className={"screen-heading heading-space"}>

@@ -1,7 +1,5 @@
 export interface AdminProps {
-    candidatesList:any,
+    candidates:any,
     candidatesNumOfPages:any,
     candidatesCurrentPages:any,
-
-
 }

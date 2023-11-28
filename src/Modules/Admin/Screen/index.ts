@@ -1,1 +1,1 @@
-export *from './CandidatesList'
+export *from './Candidates'
