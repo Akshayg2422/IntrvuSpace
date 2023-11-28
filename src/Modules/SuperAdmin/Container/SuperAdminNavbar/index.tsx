@@ -233,7 +233,7 @@ function SuperAdminNavbar() {
         subTitle={'Please click on proceed to logout'}
         isOpen={logoutModal.visible}
         onClose={logoutModal.hide}
-        primary={"Logout"}
+        primary={"Proceed"}
         secondaryOnClick={logoutModal.hide}
         primaryOnClick={proceedLogout}
       />
