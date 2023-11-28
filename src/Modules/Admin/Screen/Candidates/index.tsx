@@ -108,7 +108,7 @@ function Candidates() {
         LastName:capitalizeFirstLetter(last_name),
         Email:email,
         MobileNumber:mobile_number,
-        '': ((first_name) &&
+        '': 
           <MenuBar
             menuData={MENU}
             onClick={(item) => {
@@ -124,7 +124,7 @@ function Candidates() {
               }
             }}
           />
-        )
+        
       };
     })
 
@@ -157,7 +157,7 @@ function Candidates() {
           &&
           <CommonTable
             isPagination={candidatesNumOfPages > 1}
-            title={'Candidates'}
+            title={'Candidate'}
             displayDataSet={normalizedTableData(candidates)}
             noOfPage={candidatesNumOfPages}
             currentPage={candidatesCurrentPages}
@@ -204,7 +204,7 @@ function Candidates() {
 
           <div className='col-sm-6'>
             <Input
-              heading={"LastName"}
+              heading={"Last Name"}
               value={lastName.value}
               onChange={lastName.onChange}
             />
