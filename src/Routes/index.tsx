@@ -34,11 +34,11 @@ import {
   SettingDesignation,
   AdminSchedules,
   SuperAdminDashboard,
+  RecentInterviews,
+  Candidates,
+  SuperAdminCorporateRegister
 
 } from '@Modules';
-import { Candidates } from '@Modules//Admin';
-
-import { SuperAdminCorporateRegister } from '@Modules//SuperAdmin/Screen/SuperAdminCorporateRegister';
 
 export const ROUTES = {
   'auth-module': {
@@ -83,11 +83,12 @@ export const ROUTES = {
     // 'Sectors':'/Sectors'
     'scheduling-interview': '/scheduling-interview',
     'admin-schedule': '/admin-schedule',
-    'candidate':'/candidate'
+    'candidate': '/candidate'
   },
   'super-admin': {
-    dashboard:"/dashboard",
-    'super-admin-register-company': '/super-admin-register-company'
+    dashboard: "/dashboard",
+    'super-admin-register-company': '/super-admin-register-company',
+    'recent-interviews': '/recent-interviews'
 
   }
 }
@@ -271,6 +272,11 @@ export const SUPER_ADMIN_ROUTES = [
     path: ROUTES['super-admin']['super-admin-register-company'],
     component: <SuperAdminCorporateRegister />
   },
+  {
+    id: 7,
+    path: ROUTES['super-admin']['recent-interviews'],
+    component: <RecentInterviews />
+  },
 ]
 
 
@@ -329,7 +335,7 @@ export const ADMIN_ROUTES = [
     id: 3,
     path: ROUTES['designation-module']['candidate'],
     name: "candidate",
-    component: <Candidates/>
+    component: <Candidates />
   },
   {
     id: 8,

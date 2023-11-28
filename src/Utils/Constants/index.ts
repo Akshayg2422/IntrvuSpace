@@ -154,6 +154,7 @@ export const COMPANY_TYPE = [
 
 export const SEARCH_PAGE = 1
 export const INITIAL_PAGE = 1
+export const DEFAULT_VALUE = { id: "-1", text: "All" };
 
 
 export const TASK_EVENT_ETA = 'ETA'
@@ -1599,11 +1600,11 @@ export const ENTIRE_SCREEN_CONTEXT = [
 ]
 
 export const BROWSER_PERMISSION_CONTEXT = [
-  {id: 1, icon: icons.frame, text: "Browser permission to record the interview is not allowed in this browser", h: "24"},
-  {id: 2, icon: icons.check, text: "Use other browsers like Google Chrome, Microsoft Edge, Brave etc", h: "10"},
+  { id: 1, icon: icons.frame, text: "Browser permission to record the interview is not allowed in this browser", h: "24" },
+  { id: 2, icon: icons.check, text: "Use other browsers like Google Chrome, Microsoft Edge, Brave etc", h: "10" },
 ]
 
 export const WATCH_VIDEO_PERMISSION_CONTEXT = [
-  {id: 1, icon: icons.frame, text: "Browser permission to watch the recorded interview is not allowed in this browser", h: "24"},
-  {id: 2, icon: icons.check, text: "Use other browsers like Google Chrome, Microsoft Edge, Brave etc", h: "10"},
+  { id: 1, icon: icons.frame, text: "Browser permission to watch the recorded interview is not allowed in this browser", h: "24" },
+  { id: 2, icon: icons.check, text: "Use other browsers like Google Chrome, Microsoft Edge, Brave etc", h: "10" },
 ]
