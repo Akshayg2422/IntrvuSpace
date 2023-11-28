@@ -43,6 +43,7 @@ const Interview = () => {
       ...(companyId !== "-1" && { company_id: companyId }),
       ...(filterStatus && filterStatus),
     };
+
     loader.show();
 
     dispatch(
@@ -79,6 +80,7 @@ const Interview = () => {
 
   return (
     <div className={'screen-padding'}>
+
       {loader.loader && (
         <div className={'loader-container'}>
           <Spinner />
