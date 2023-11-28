@@ -102,7 +102,7 @@ const WatchInterviewModal = ({
                   ref={videoRef}
                   key={playVideoUrlIndex}
                   controls
-                  controlsList="nodownload"
+                  controlsList="nodownload noplaybackrate"
                   className="d-flex col pt--3"
                   autoPlay
                   onPause={onPauseHandler}
