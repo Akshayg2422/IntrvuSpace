@@ -132,15 +132,13 @@ const WatchInterviewModal = ({
                           setPlayVideoUrlIndex(index);
                         }}
                       >
-                        <Image
+                        <i
                           key={index}
-                          src={isPlay ? icons.pause : icons.play}
-                          style={{
-                            cursor: "pointer",
-                            height: 60,
-                          }}
+                          className={`bi bi-${
+                            isPlay ? "pause" : "play"
+                          }-circle-fill pointer text-primary fa-3x`}
                           onClick={onImageClickHandler}
-                        />
+                        ></i>
 
                         <div className="part-text">{`Part ${index + 1}`}</div>
                       </div>

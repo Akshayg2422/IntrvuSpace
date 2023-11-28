@@ -7,7 +7,6 @@ import { capitalizeFirstLetter, getPhoto, paginationHandler, INITIAL_PAGE } from
 import { icons } from '@Assets';
 import { useInput, useLoader, useModal } from '@Hooks';
 
-
 function SuperAdminDashboard() {
 
 

@@ -282,7 +282,7 @@ export const FROM_JD_RULES = {
   },
   sector_name: {
     presence: { message: "Sector name cannot be empty" },
-    length: { minimum: 3, message: "Sector name minimum 3 chars" },
+    length: { minimum: 2, message: "Sector name minimum 2 chars" },
   },
 }
 
