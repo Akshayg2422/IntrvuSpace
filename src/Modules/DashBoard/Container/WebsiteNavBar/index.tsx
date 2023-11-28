@@ -17,10 +17,9 @@ function WebsiteNavBar() {
 
   return (
     <Navbar
-      className="navbar-horizontal navbar-main navbar-dark fixed-top"
+      className="navbar-horizontal navbar-main navbar-dark fixed-top bg-container-light"
       expand="lg"
       id="navbar-main"
-      style={{ backgroundColor: "#fafbff" }}
     >
       <Container>
         <NavbarBrand to="/" tag={Link}>
