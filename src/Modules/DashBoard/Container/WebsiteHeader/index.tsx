@@ -57,7 +57,7 @@ function WebsiteHeader() {
                     className="text-secondary"
                     style={{ fontSize: 14, fontWeight: "500" }}
                   >
-                    {"Create a job description and add the candidates,"} <br />
+                    {"Create a job description and add the ,"} <br />
                     {"Let us take care of the rest of you!"}
                   </span>
                 </div>

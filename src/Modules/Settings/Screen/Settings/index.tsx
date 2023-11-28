@@ -9,6 +9,7 @@ function Settings() {
   const DESIGNATION = 1
   const TEAM = 2
   const SECTOR = 3
+  const CANDIDATES=4
 
   const { goTo } = useNavigation()
 
@@ -17,7 +18,9 @@ function Settings() {
       ROUTES['designation-module'].department,
       ROUTES['designation-module'].employeeDesignations,
       ROUTES['designation-module'].ManageTeamMate,
-      ROUTES['designation-module']['sector']
+      ROUTES['designation-module']['sector'],
+      ROUTES['designation-module']['candidate'],
+
     ];
     goTo(routes[index]);
   }
@@ -63,6 +66,19 @@ function Settings() {
         >
           <div className={'setting-heading'}>{'Sectors'}</div>
         </div>
+      </div>
+
+      <div className={'setting-container pr-4 '}>
+        <div
+          className={'card-container-no-padding setting-container-item col-6'}
+          onClick={() => {
+            gotoScreen(CANDIDATES)
+          }}>
+          <div className={'setting-heading'}>{'Candidate'}</div>
+        </div>
+
+    
+      
       </div>
 
     </div>

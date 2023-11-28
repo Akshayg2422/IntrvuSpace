@@ -278,5 +278,15 @@ export const URL_ALTER_COMPANY_LIMIT= COMPANY +'alterCompanyLimit'
 
  export const URL_GET_RECENT_INTERVIEWS=ASSISTANT +'getRecentInterviews'
 
+ 
+
+ //getCandidates
+
+ export const URL_GET_CANDIDATES = ASSISTANT+'getCandidates'
+
+
+ //addCandidate
+
+ export const URL_ADD_CANDIDATE =ASSISTANT+'addCandidate'
 
 
