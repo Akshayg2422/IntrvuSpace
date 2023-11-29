@@ -906,6 +906,9 @@ function Call() {
          
           await startScreenRecording();
         }
+        else if (!callDetectFace) {
+          setCallDetectFace(true)
+        }
         else if (recordStatus || !is_video_recording_manditory && callDetectFace) {
           setCallDetectFace(false)
 

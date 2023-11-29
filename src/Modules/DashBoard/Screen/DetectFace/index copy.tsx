@@ -3,11 +3,13 @@ import { FilesetResolver, DrawingUtils, FaceLandmarker } from '@mediapipe/tasks-
 import { useModal, useNavigation, useLoader } from '@Hooks';
 import { Button, Image, Modal, Spinner } from '@Components';
 import { icons } from '@Assets';
+// import { Spinner } from 'reactstrap';
 
 function DetectFace2({ onClick, setCallDetectFace }) {
     const videoRef = useRef<any>(null)
     let faceLandmarker: any;
     let runningMode = "IMAGE";
+    // let webcamRunning = false;
     const webcamRunningRef = useRef<any>()
     const videoWidth = 600;
     const faceDetected = useRef<any>(null)
@@ -16,13 +18,14 @@ function DetectFace2({ onClick, setCallDetectFace }) {
     const [noiseDetection, setNoiseDetection] = useState<any>('Checking')
     let array: any = []
     const [faceFound, setFaceFound] = useState<any>('Checking')
-   
+    const [tryAgain, setTryAgain] = useState<any>(0)
     const detectFaceModal = useModal(false)
     const videoStreamRef = useRef<any>()
     const audioStreamRef = useRef<any>(null)
     const audioStreamRunningRef = useRef<any>()
     const clearTimeOutRef = useRef<any>()
     const { goBack } = useNavigation();
+    const ValidationLoader = useLoader(false)
     const [proceed, setProceed] = useState(false)
 
     async function createFaceLandmarker() {
@@ -40,7 +43,10 @@ function DetectFace2({ onClick, setCallDetectFace }) {
                 runningMode: 'VIDEO',
                 numFaces: 1,
             });
-            detectingHandler()
+            if (!detectFaceModal.visible) {
+                enableCam()
+                detectFaceModal.show()
+            }
         }
         catch (error) {
             console.log(error, 'error1');
@@ -55,40 +61,45 @@ function DetectFace2({ onClick, setCallDetectFace }) {
     let canvasCtx
     let drawingUtils
 
+    console.log(detectFaceModal.visible, "detectFaceModal");
 
     useEffect(() => {
-        
-        detectFaceModal.show()
-        enableCam()
-        
-    }, [])
+        createFaceLandmarker();
+        // return () => {
+        //     // Cleanup function to stop the stream when the component unmounts
+        //     stopStream();
+        //   };
+    }, [tryAgain])
+
+    // Check if webcam access is supported.
+    console.log(videoRef.current, 'videoooo');
+
+    function hasGetUserMedia() {
+
+        return !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
+    }
+
+    // If webcam supported, add event listener to button for when user
+    // wants to activate it.
+    function name() {
+
+        if (hasGetUserMedia()) {
+            // webcamRunning = true
+            enableCam()
+        } else {
+            console.warn("getUserMedia() is not supported by your browser");
+        }
+    }
+
+
 
     // Enable the live webcam view and start detection.
 
     function enableCam() {
-        // getUsermedia parameters.
-        const constraints = {
-            video: true
-        };
+        console.log(videoRef.current, "video1");
 
-        // Activate the webcam stream.
-        navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
-            videoStreamRef.current = stream
-            video = videoRef?.current
-            canvasElement = document?.getElementById(
-                "output_canvas"
-            );
-            canvasCtx = canvasElement?.getContext("2d");
-            drawingUtils = new DrawingUtils(canvasCtx);
-            video.srcObject = stream;
-            if(stream){
-                createFaceLandmarker();
-            }
-        });
-    }
 
-     function detectingHandler () {
-        if (webcamRunningRef.current) {
+        if (videoRef.current) {
             startAudioDetect()
             timeoutFunc()
         }
@@ -99,23 +110,36 @@ function DetectFace2({ onClick, setCallDetectFace }) {
             console.log("Wait! faceLandmarker not loaded yet.");
             return;
         }
-        else{
-         startAudioDetect()
+
+
+        // getUsermedia parameters.
+        const constraints = {
+            video: true
+        };
+
+        // Activate the webcam stream.
+        navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
+            videoStreamRef.current = stream
+            video = videoRef?.current
+            console.log(video, "video");
+
+            canvasElement = document?.getElementById(
+                "output_canvas"
+            );
+            canvasCtx = canvasElement?.getContext("2d");
+            drawingUtils = new DrawingUtils(canvasCtx);
+            video.srcObject = stream;
+            startAudioDetect()
             timeoutFunc()
-            // video.addEventListener("loadeddata", predictWebcam);
-            predictWebcam()
-        }
-
-     }
-
-   
+            video.addEventListener("loadeddata", predictWebcam);
+        });
+    }
 
     let lastVideoTime = -1;
     let results: any = undefined;
 
     async function predictWebcam() {
 
-console.log('hello');
 
         const radio = video.videoHeight / video.videoWidth;
         video.style.width = videoWidth + "px";
@@ -125,6 +149,14 @@ console.log('hello');
         canvasElement.width = video.videoWidth;
         canvasElement.height = video.videoHeight;
 
+
+        // const radio = video.videoHeight / video.videoWidth;
+        // video.style.width = "662.5px"
+        // video.style.height = "355.75px";
+        // canvasElement.style.width = "662.5px";
+        // canvasElement.style.height ="355.75px";
+        // canvasElement.width = '662.5px';
+        // canvasElement.height = '355.75px';
         // Now let's start detecting the stream.
         if (runningMode === "IMAGE") {
             runningMode = "VIDEO";
@@ -395,7 +427,29 @@ console.log('hello');
                         <canvas ref={canvasRef} className='ml-5' width={600} height={100} style={{ position: 'absolute', left: '0px', bottom: "0px", right: '0px' }} />
                     </div>
                     <div className=' col-4 position-relative'>
-                      
+                        {/* <div className='mt-3 '>
+                            {
+                                faceFound === 'Checking' ? <></> : faceFound === true ? <div>
+                                    <Image src={icons.check} height={12} width={12} style={{
+                                        objectFit: 'contain'
+                                    }} />
+                                    <span className='ml-2'>Face detected</span>
+                                </div> : <div> <Image src={icons.frame} height={20} width={12} style={{
+                                    objectFit: 'contain'
+                                }} /> <span className='ml-1'>Face not detected</span></div>
+                            }
+                            {
+                                noiseDetection === 'Checking' ? <></> :
+                                    noiseDetection === true ? <div>
+                                        <Image src={icons.check} height={12} width={12} style={{
+                                            objectFit: 'contain'
+                                        }} />
+                                        <span className='ml-2'>No noise captured</span>
+                                    </div> : <div> <Image src={icons.frame} height={20} width={12} style={{
+                                        objectFit: 'contain'
+                                    }} /> <span className='ml-1'>Noise occurred</span></div>
+                            }
+                        </div> */}
 
                         <div className='ml-3'>
                             <h2 className='text-secondary'>Validating</h2>
@@ -459,9 +513,11 @@ console.log('hello');
                                     audioContext.current.close();
                                     onClick()
                                 }}></Button> : <Button text={'Try Again'} className={'m-0'} onClick={() => {
+                                    // setTryAgain(tryAgain + 1)
+                                    // createFaceLandmarker()
                                     setNoiseDetection('Checking')
                                     setFaceFound('Checking')
-                                    detectingHandler()
+                                    enableCam()
                                 }}></Button>
                             }
 

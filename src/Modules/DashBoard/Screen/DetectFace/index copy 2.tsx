@@ -4,7 +4,7 @@ import { useModal, useNavigation } from '@Hooks';
 import { Button, Image, Modal } from '@Components';
 import { icons } from '@Assets';
 
-function DetectFace3({onClick, setCallDetectFace}) {
+function DetectFace3({onClick}) {
     const videoRef = useRef<any>(null)
     let faceLandmarker: any;
     let runningMode = "IMAGE";
@@ -270,45 +270,81 @@ console.log(detectFaceModal.visible,"detectFaceModal");
 // gradient.addColorStop(0.5, "cyan");
 // gradient.addColorStop(1, "#641df2");
 
-const gradient = ctx.createLinearGradient(0, 0, 600, 0);
-    gradient.addColorStop(0, "black");
-    gradient.addColorStop(0.125, "red");
-    gradient.addColorStop(0.25, "orange");
-    gradient.addColorStop(0.375, "yellow");
-    gradient.addColorStop(0.5, "green");
-    gradient.addColorStop(0.625, "blue");
-    gradient.addColorStop(0.75, "indigo");
-    gradient.addColorStop(0.875, "violet");
-    gradient.addColorStop(1, "black");
+// const gradient = ctx.createLinearGradient(0, 0, 600, 0);
+//     gradient.addColorStop(0, "black");
+//     gradient.addColorStop(0.125, "red");
+//     gradient.addColorStop(0.25, "orange");
+//     gradient.addColorStop(0.375, "yellow");
+//     gradient.addColorStop(0.5, "green");
+//     gradient.addColorStop(0.625, "blue");
+//     gradient.addColorStop(0.75, "indigo");
+//     gradient.addColorStop(0.875, "violet");
+//     gradient.addColorStop(1, "black");
 
 
-        const draw = () => {
-            analyser.getByteFrequencyData(dataArray);
-            // console.log(dataArray,"dataArray",bufferLength);
+        // const draw = () => {
+        //     analyser.getByteFrequencyData(dataArray);
+        //     // console.log(dataArray,"dataArray",bufferLength);
 
-            // Clear the canvas
-            ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+        //     // Clear the canvas
+        //     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+        //     let add = 0
+        //     for (let i = 0; i < bufferLength; i++) {
+        //         add = add + dataArray[i];
+        //         const barHeight = dataArray[i];
+
+        //         // Use linear scaling
+        //         const scaledHeight = (barHeight / 255) * canvasHeight;
+
+        //         // Draw the bar
+        //         ctx.fillStyle = gradient;
+        //         ctx.fillRect(i * barWidth, canvasHeight - scaledHeight, barWidth, scaledHeight);
+        //     }
+        //     array.push(Math.round(add / bufferLength))
+        //     // console.log(add / bufferLength, 'addd');
+
+        //     if (audioStreamRunningRef.current) {
+        //         requestAnimationFrame(draw);
+        //     }
+        // };
+
+        // draw();
+        const drawWaveform = () => {
+            analyser.getByteTimeDomainData(dataArray);
+            // console.log(dataArray);
+  
+            ctx.fillStyle = 'rgb(255, 255, 255)';
+            ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+  
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = '#641df2';
+            ctx.beginPath();
+  
+            const sliceWidth = (canvasWidth * 1.0) / bufferLength;
+            let x = 0;
             let add = 0
+  
             for (let i = 0; i < bufferLength; i++) {
-                add = add + dataArray[i];
-                const barHeight = dataArray[i];
-
-                // Use linear scaling
-                const scaledHeight = (barHeight / 255) * canvasHeight;
-
-                // Draw the bar
-                ctx.fillStyle = gradient;
-                ctx.fillRect(i * barWidth, canvasHeight - scaledHeight, barWidth, scaledHeight);
+              add = add + dataArray[i];
+              const v = dataArray[i] / 128.0;
+              const y = (v * canvasHeight) / 2;
+  
+              if (i === 0) {
+                ctx.moveTo(x, y);
+              } else {
+                ctx.lineTo(x, y);
+              }
+  
+              x += sliceWidth;
             }
-            array.push(Math.round(add / bufferLength))
-            // console.log(add / bufferLength, 'addd');
-
-            if (audioStreamRunningRef.current) {
-                requestAnimationFrame(draw);
-            }
-        };
-
-        draw();
+            // console.log(add /bufferLength , 'addd');
+  
+            ctx.lineTo(canvasWidth, canvasHeight / 2);
+            ctx.stroke();
+  
+            requestAnimationFrame(drawWaveform);
+          };
+drawWaveform()
     };
 
 
@@ -372,11 +408,6 @@ const gradient = ctx.createLinearGradient(0, 0, 600, 0);
     }
     return (
         <>
-            {/* <Button onClick={() => {
-                name()
-                detectFaceModal.show()
-            }}
-                text={"click"}></Button> */}
             <Modal isOpen={detectFaceModal.visible}
                 onClose={() => {
                     detectFaceModal.hide()
@@ -386,7 +417,7 @@ const gradient = ctx.createLinearGradient(0, 0, 600, 0);
                     setNoiseDetection('Checking')
                     setFaceFound('Checking')
                     clearTimeout(clearTimeOutRef.current)
-                    setCallDetectFace(false)
+                    // setCallDetectFace(false)
                     goBack()
                 }}
                 title={'Face and Noise Validation'}>

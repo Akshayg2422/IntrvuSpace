@@ -16,9 +16,9 @@ const Check = () => {
     }
   return (
     <>
-    <Button onClick={callFaceDetect} text={'join'} ></Button>
+    { !call && <Button onClick={callFaceDetect} text={'join'} ></Button>}
     {
-        call && <DetectFace2 onClick = {continueCall} setCallDetectFace={setCallDetectFace}/>
+        call && <DetectFace onClick = {continueCall} experience={4} duration={5} heading={"developer"} />
 
     }
     {
