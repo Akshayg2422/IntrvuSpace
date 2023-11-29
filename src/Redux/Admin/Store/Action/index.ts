@@ -43,3 +43,33 @@ export const addCandidate = (params: any) => {
         payload: params,
     };
  };
+
+ /*
+ getJdSection
+ */
+
+ export const getJdSection = (params: any) => {
+    return {
+        type: ActionTypes.GET_CANDIDATES,
+        payload: params,
+    };
+ };
+ 
+ export const getJdSectionSuccess = (response: any) => {
+ 
+    return {
+        type: ActionTypes.GET_CANDIDATES_SUCCESS,
+        payload: response
+    }
+ }
+ 
+ 
+ 
+ export const getJdSectionFailure = (error: any) => {
+    return {
+        type: ActionTypes.GET_CANDIDATES_FAILURE,
+        payload: error
+    }
+ }
+ 
+ 

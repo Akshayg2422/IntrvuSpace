@@ -45,12 +45,33 @@ function* addCandidatesSaga(action) {
         yield call(action.payload.onError(error));
     }
 }
+
+// get jd section
+
+function* getJdSectionSaga(action) {
+    try {
+        const response = yield call(Api.getJdSectionApi, action.payload.params);
+        if (response) {
+            yield put(Action.getJdSectionSuccess(response));
+            yield call(action.payload.onSuccess(response));
+        } else {
+            yield put(Action.getJdSectionFailure(response.error_message));
+            yield call(action.payload.onError(response));
+        }
+    } catch (error) {
+        yield put(Action.getJdSectionFailure(error));
+        yield call(action.payload.onError(error));
+    }
+}
+
+
     
 
 function* AdminSaga() {
 
     yield takeLatest(Action.GET_CANDIDATES, getCandidatesSaga);
     yield takeLatest(Action.ADD_CANDIDATES, addCandidatesSaga);
+    yield takeLatest(Action.GET_JDSECTION, getJdSectionSaga);
 
   }
 
