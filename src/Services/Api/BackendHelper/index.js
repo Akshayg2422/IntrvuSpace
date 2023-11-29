@@ -272,17 +272,25 @@ export const alterCompanyLimitApi = payload => post(URL.URL_ALTER_COMPANY_LIMIT,
  get recent interviews
  */
 
- export const getRecentInterviewsApi = payload => post(URL.URL_GET_RECENT_INTERVIEWS,payload,{})
+export const getRecentInterviewsApi = payload => post(URL.URL_GET_RECENT_INTERVIEWS, payload, {})
 
- /*
- getCandidate
+/*
+getCandidate
+*/
+
+export const getCandidatesApi = payload => post(URL.URL_GET_CANDIDATES, payload, {})
+
+export const addCandidatesApi = payload => post(URL.URL_ADD_CANDIDATE, payload, {})
+
+
+/**
+ * add super admin create company
  */
 
- export const getCandidatesApi = payload => post(URL.URL_GET_CANDIDATES,payload,{})
+export const createCompanySuperAdminApi = payload => post(URL.URL_CREATE_COMPANY_SUPER_ADMIN, payload, {})
 
- export const addCandidatesApi = payload => post(URL.URL_ADD_CANDIDATE,payload,{})
 
 /*
  getJdSection
  */
- export const getJdSectionApi = payload => post(URL.URL_GET_JDSECTION,payload,{})
+export const getJdSectionApi = payload => post(URL.URL_GET_JDSECTION, payload, {})

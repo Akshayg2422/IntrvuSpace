@@ -174,9 +174,9 @@ function VariantInfo() {
     const validation = validate(CREATE_CORPORATE_VACANCIES_RULES, params);
 
     if (ifObjectExist(validation)) {
-    corporateScheduleActionsHandler(params);
+      corporateScheduleActionsHandler(params);
     }
-    else{
+    else {
       showToast(getValidateError(validation));
     }
   }

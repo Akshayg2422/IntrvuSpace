@@ -82,14 +82,14 @@ function SuperAdminRegisterCompany({ loading, params, onParams, onBackPress, onS
                     placeholder={'Address'}
                     onChange={registerCompanyOnChange}
                 />
-                <Input
+                {/* <Input
                     className={'bg-white'}
                     readOnly={true}
                     type={'number'}
                     placeholder={"Phone"}
                     maxLength={10}
                     value={params?.mobile_number}
-                />
+                /> */}
 
                 <Input
                     id={'pincode'}

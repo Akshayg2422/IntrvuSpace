@@ -10,6 +10,7 @@ function ImagePicker({ defaultPhotos, variant = 'single', max = 3, onSelect }: I
   const [photos, setPhotos] = useState<any>([])
 
 
+
   useEffect(() => {
     if (defaultPhotos && defaultPhotos.length > 0) {
       setPhotos(defaultPhotos)
@@ -74,7 +75,7 @@ function ImagePicker({ defaultPhotos, variant = 'single', max = 3, onSelect }: I
         {photos && photos.length > 0
           && photos.map((el: any, index: number) => {
             return (
-              <div className={`picker-container border overflow-hidden ${index === 0 ? '' : 'picker-margin-left'}`} onClick={handleFilePickerHandler}>
+              <div className={`picker-container card-border overflow-hidden ${index === 0 ? '' : 'picker-margin-left'}`} onClick={handleFilePickerHandler}>
                 <Image
                   height={'100%'}
                   width={'100%'}

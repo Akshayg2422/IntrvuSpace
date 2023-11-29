@@ -67,7 +67,7 @@
     .thead-light {
         th {
             height: 50px;
-            background-color: #FAFBFF;
+            background-color: var(--bg-container-dark);
             color: $table-head-color;
 
             a {

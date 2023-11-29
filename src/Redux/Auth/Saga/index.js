@@ -160,6 +160,26 @@ function* getDashboardSaga(action) {
 
 
 
+
+/**
+ * verify email (Submit api dont need success and failure state)
+ */
+
+function* createCompanySuperAdminSaga(action) {
+    try {
+        const response = yield call(Api.createCompanySuperAdminApi, action.payload.params);
+        if (response.success) {
+            yield call(action.payload.onSuccess(response));
+        } else {
+            yield call(action.payload.onError(response));
+        }
+    } catch (error) {
+        yield call(action.payload.onError(error));
+    }
+}
+
+
+
 function* AuthSaga() {
 
     yield takeLatest(Action.MEMBER_LOGIN_USING_PASSWORD, memberLoginUsingPasswordSaga);
@@ -170,6 +190,7 @@ function* AuthSaga() {
     yield takeLatest(Action.GET_OTP_FOR_EMAIL_VERIFICATION, getOtpForEmailVerificationSaga);
     yield takeLatest(Action.VERIFY_EMAIL_USING_OTP, verifyEmailUsingOtpSaga);
     yield takeLatest(Action.GET_DASHBOARD, getDashboardSaga);
+    yield takeLatest(Action.CREATE_COMPANY_SUPER_ADMIN, createCompanySuperAdminSaga);
 
 }
 
