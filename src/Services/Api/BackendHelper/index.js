@@ -288,3 +288,9 @@ export const addCandidatesApi = payload => post(URL.URL_ADD_CANDIDATE, payload, 
  */
 
 export const createCompanySuperAdminApi = payload => post(URL.URL_CREATE_COMPANY_SUPER_ADMIN, payload, {})
+
+
+/*
+ getJdSection
+ */
+export const getJdSectionApi = payload => post(URL.URL_GET_JDSECTION, payload, {})

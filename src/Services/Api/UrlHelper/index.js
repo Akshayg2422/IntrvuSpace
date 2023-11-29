@@ -299,3 +299,9 @@ export const URL_ADD_CANDIDATE = ASSISTANT + 'addCandidate'
 export const URL_CREATE_COMPANY_SUPER_ADMIN = EMPLOYEE + 'createCompanySuperAdmin'
 
 
+ //get jd section
+
+ export const URL_GET_JDSECTION =ASSISTANT+'getJDSections'
+
+
+
