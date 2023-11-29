@@ -2,7 +2,7 @@ import { icons } from '@Assets';
 import {  CommonTable, Input, MenuBar, Modal, NoDataFound, Spinner, showToast } from '@Components';
 import { useInput, useLoader, useModal } from '@Hooks';
 import { SettingHeader } from '@Modules';
-import { addCandidate, getCandidates} from '@Redux';
+import { addCandidate, getCandidates, getJdSection} from '@Redux';
 import { ADD_CANDIDATE_RULES, INITIAL_PAGE, capitalizeFirstLetter, getValidateError, ifObjectExist, paginationHandler, validate } from '@Utils';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -60,7 +60,8 @@ function Candidates() {
         },
       })
     );
-  };
+  }; 
+
 
   const addCandidateApiHandler = () => {
     const params = {
