@@ -48,6 +48,8 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./index.css";
 import { OpeningCandidatesProps } from "./interfaces";
+import { PhotoProvider, PhotoView } from "react-photo-view";
+import "react-photo-view/dist/react-photo-view.css";
 
 function OpeningCandidates({ id, details }: OpeningCandidatesProps) {
   const { goTo } = useNavigation();
@@ -259,29 +261,34 @@ function OpeningCandidates({ id, details }: OpeningCandidatesProps) {
             <div className={"d-flex align-items-center"}>
               <div>
                 {interviewee_photo ?
-                  <Image
-                    src={getPhoto(interviewee_photo)}
-                    height={50}
-                    width={50}
-                    style={{
-                      objectFit: 'cover',
-                      overflow: 'hidden',
-                      padding: '1px',
-                      borderRadius: '30px',
-                      width: "45px",
-                      height: "45px",
-                    }}
-                  />
+                  <PhotoProvider>
+                    <div className={"pointer"}>
+                      <PhotoView src={getPhoto(interviewee_photo)}>
+                        <Image
+                          src={getPhoto(interviewee_photo)}
+                          height={50}
+                          width={50}
+                          style={{
+                            objectFit: 'cover',
+                            overflow: 'hidden',
+                            padding: '1px',
+                            borderRadius: '30px',
+                            width: "45px",
+                            height: "45px",
+                          }}
+                        />
+                      </PhotoView>
+                    </div>
+                  </PhotoProvider>
                   :
                   <div style={{
                     width: "45px",
                     height: "45px",
                     borderRadius: "30px",
-                    backgroundColor: "#FAFBFF",
+                    backgroundColor: "#fbfcfa",
                     alignItems: 'center',
                     justifyContent: 'center',
                     display: 'flex',
-
                   }}>
                     <Image
                       src={icons.profile}
