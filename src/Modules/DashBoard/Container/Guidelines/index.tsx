@@ -58,7 +58,7 @@ function Guidelines({
     return (
         <>
             {
-                !scheduleInfo?.is_complete && <DetectFace onClick={onClick} heading={heading} experience={experience} duration={interview_duration}  />
+                !scheduleInfo?.is_complete && <DetectFace onClick={onClick} heading={heading} experience={experience} duration={interview_duration} loading = {loading} />
             }
             {
                 //  !scheduleInfo?.is_complete && 

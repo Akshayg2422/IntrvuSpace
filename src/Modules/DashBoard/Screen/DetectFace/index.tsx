@@ -11,7 +11,7 @@ import {
 } from "@Utils";
 import './index.css'
 
-function DetectFace({ onClick, heading, experience, duration }) {
+function DetectFace({ onClick, heading, experience, duration, loading }) {
 
 
 
@@ -28,6 +28,7 @@ function DetectFace({ onClick, heading, experience, duration }) {
     const [noiseDetection, setNoiseDetection] = useState<any>('Checking')
     let array: any = []
     const [faceFound, setFaceFound] = useState<any>('Checking')
+    const [micCheck, setMicCheck] = useState<any>('Checking')
 
     const detectFaceModal = useModal(false)
     const videoStreamRef = useRef<any>()
@@ -39,7 +40,7 @@ function DetectFace({ onClick, heading, experience, duration }) {
     const camPermissionModal = useModal(false);
     const micPermissionModal = useModal(false);
     const [showDetecting, setShowDetecting] = useState<any>(false)
-    const [next, setNext] = useState(false)
+    // const [showCanvas, setShowCanvas] = useState(false)
 
     async function createFaceLandmarker() {
         try {
@@ -384,9 +385,14 @@ function DetectFace({ onClick, heading, experience, duration }) {
         clearTimeOutRef.current = setTimeout(() => {
             let count = 0
             let average: any;
+            let MicDisableAverage: any;
             if (array.length > 0) {
                 const sum = array.reduce((accumulator: number, currentValue: number) => accumulator + currentValue);
                 average = sum / array.length;
+                const micDisableSum = array.slice(array.length-10, array.length).reduce((accumulator: number, currentValue: number) => accumulator + currentValue);
+                MicDisableAverage = micDisableSum / 10
+                // console.log(micDisableSum,"micDisableSum");
+                
 
             }
             console.log(array, "average");
@@ -401,29 +407,37 @@ function DetectFace({ onClick, heading, experience, duration }) {
                 // audioContext.current.close();
 
             }
+            if (MicDisableAverage == 0) {
+                setMicCheck(true)
+                audioContext.current.close();
+                audioStreamRunningRef.current = false
+                array = []
+            }
+            else {
+                count = count + 1
+                setMicCheck(false)
+               
+            }
+
             if (average < 30) {
                 setNoiseDetection(true)
                 count = count + 1
                 console.log("average", average, 2)
                 array = []
             }
-            else if (average == 0) {
-                console.log("average", faceFound, 3)
-                setNoiseDetection(0)
-                audioContext.current.close();
-                array = []
-            }
+          
             else {
                 console.log("average", average, 3)
                 setNoiseDetection(false)
+                audioStreamRunningRef.current = false
                 audioContext.current.close();
                 array = []
             }
-            if (count === 2) {
+            if (count === 3) {
                 webcamRunningRef.current = false
                 audioStreamRunningRef.current = false
                 audioContext.current.close();
-                console.log(audioContext.current);
+                console.log(audioContext.current.state);
 
                 setProceed(true)
             }
@@ -435,6 +449,7 @@ function DetectFace({ onClick, heading, experience, duration }) {
         console.log(45);
         setNoiseDetection('Checking')
         setFaceFound('Checking')
+        setMicCheck('Checking')
         clearTimeout(clearTimeOutRef.current)
 
         webcamRunningRef.current = false
@@ -506,18 +521,18 @@ function DetectFace({ onClick, heading, experience, duration }) {
                                         <div className=' d-flex align-items-baseline'> <Image src={icons.greenTick} height={12} width={12} style={{
                                             objectFit: 'contain'
                                         }} /> <span className='ml-3'>Face visible & valid</span></div>
-                                        : <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.wrong} height={20} width={12} style={{
+                                        : <div className='mt-3 d-flex align-items-center'> <Image src={icons.wrong} height={20} width={12} style={{
                                             objectFit: 'contain'
-                                        }} /> <span className='ml-3'> Face not visible & valid</span></div>
+                                        }} /> <span className='ml-3 '> Face not visible & valid</span></div>
                                 }
 
                             </div>
                             <div className='mt-2'>
 
                                 {
-                                    noiseDetection === 'Checking' ? <div className='d-flex align-items-center'> <Spinner color='secondary' className={'d-inline-block  '} /> <span className='mt-1 ml-3'>Validating audio input</span></div> :
-                                        noiseDetection === 0 ?
-                                            <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.wrong} height={20} width={12} style={{
+                                    micCheck === 'Checking' ? <div className='d-flex align-items-center'> <Spinner color='secondary' className={'d-inline-block  '} /> <span className='mt-1 ml-3'>Validating audio input</span></div> :
+                                        micCheck  ?
+                                            <div className='mt-3 d-flex align-items-center'> <Image src={icons.wrong} height={20} width={12} style={{
                                                 objectFit: 'contain'
                                             }} /> <span className='ml-3'> Audio input ia not clear</span></div>
 
@@ -536,7 +551,7 @@ function DetectFace({ onClick, heading, experience, duration }) {
                                                 objectFit: 'contain'
                                             }} /> <span className='ml-3'>Ambience is quiet</span></div>
 
-                                            : <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.wrong} height={20} width={12} style={{
+                                            : <div className='mt-3 d-flex align-items-center'> <Image src={icons.wrong} height={20} width={12} style={{
                                                 objectFit: 'contain'
                                             }} /> <span className='ml-3'>Ambience is not quiet</span></div>
                                 }
@@ -569,6 +584,13 @@ function DetectFace({ onClick, heading, experience, duration }) {
                                 </div>
                             </div>
                             }
+                         {micCheck === true && <div className='mt-4 text-secondary'>
+                                <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.frame} height={12} width={12} style={{
+                                    objectFit: 'contain'
+                                }} />  <span className='mb-0 ml-2  text-secondary '>Please check your mic and try again</span>
+                                </div>
+                            </div>
+                            }
                             {!noiseDetection && <div className='mt-4 text-secondary'>
                                 <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.frame} height={12} width={12} style={{
                                     objectFit: 'contain'
@@ -582,7 +604,8 @@ function DetectFace({ onClick, heading, experience, duration }) {
                                 {
                                     faceFound === 'Checking' && noiseDetection === 'Checking' ? <></> :
                                         <div className={"btn-wrapper"}>{
-                                            faceFound && noiseDetection ? <Button
+                                            proceed ? <Button
+                                            loading = {loading}
                                                 block
                                                 text={'Join now'} className={'m-0'} onClick={() => {
                                                     onClick()
@@ -591,6 +614,7 @@ function DetectFace({ onClick, heading, experience, duration }) {
                                                     text={'Try Again'} className={'m-0'} onClick={() => {
                                                         setNoiseDetection('Checking')
                                                         setFaceFound('Checking')
+                                                        setMicCheck('Checking')
                                                         detectingHandler()
                                                     }}></Button>
                                         }
