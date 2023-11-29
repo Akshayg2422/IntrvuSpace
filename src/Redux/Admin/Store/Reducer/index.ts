@@ -57,7 +57,7 @@ const AdminReducer = (state = initialState, action: any) => {
       break;
 
       case ActionTypes.GET_JDSECTION_SUCCESS:
-      state = { ...state, jdSection:action.payload?.details};
+      state = { ...state, jdSection:action.payload?.details?.jd_sections};
       break;
       
       case ActionTypes.GET_JDSECTION_FAILURE:

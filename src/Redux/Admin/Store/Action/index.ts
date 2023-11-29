@@ -50,7 +50,7 @@ export const addCandidate = (params: any) => {
 
  export const getJdSection = (params: any) => {
     return {
-        type: ActionTypes.GET_CANDIDATES,
+        type: ActionTypes.GET_JDSECTION,
         payload: params,
     };
  };
@@ -58,7 +58,7 @@ export const addCandidate = (params: any) => {
  export const getJdSectionSuccess = (response: any) => {
  
     return {
-        type: ActionTypes.GET_CANDIDATES_SUCCESS,
+        type: ActionTypes.GET_JDSECTION_SUCCESS,
         payload: response
     }
  }
@@ -67,7 +67,7 @@ export const addCandidate = (params: any) => {
  
  export const getJdSectionFailure = (error: any) => {
     return {
-        type: ActionTypes.GET_CANDIDATES_FAILURE,
+        type: ActionTypes.GET_JDSECTION_FAILURE,
         payload: error
     }
  }

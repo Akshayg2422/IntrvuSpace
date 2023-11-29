@@ -9,12 +9,14 @@ import {
   Spinner,
   Input,
   Button,
+  CommonTable,
 } from "@Components";
 import { useInput, useLoader, useModal } from "@Hooks";
 import { OpeningCandidates } from "@Modules";
 import {
   createCorporateSchedules,
   getCorporateScheduleDetails,
+  getJdSection,
   postCorporateScheduleActions,
 } from "@Redux";
 import {
@@ -30,6 +32,7 @@ import moment from "moment";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./index.css";
+import { Console } from "console";
 
 function VariantInfo() {
   const dispatch = useDispatch();
@@ -49,6 +52,10 @@ function VariantInfo() {
 
   const { selectedRole, corporateScheduleDetails, refreshCorporateSchedules } =
     useSelector((state: any) => state.DashboardReducer);
+    
+
+    const { jdSection } = useSelector((state:any) => state.AdminReducer);
+    
 
   const { id } = selectedRole || {};
 
@@ -62,8 +69,12 @@ function VariantInfo() {
     vacancies,
     is_closed,
     candidate_details,
+    knowledge_group_variant_id
   } = corporateScheduleDetails || {};
   const { position, experience, details } = job_description || {};
+  // const { name,description} = jdSection||{}
+
+
 
   const loader = useModal(false);
   const vacanciesCount = useInput(vacancies)
@@ -89,6 +100,7 @@ function VariantInfo() {
 
   const modifyDeadlineModal = useModal(false);
   const modifyVacancyModal = useModal(false)
+
   const modifyvViewsectionModal = useModal(false)
   const [scheduleEndDate, setScheduleEndDate] = useState<any>("");
   const [scheduleEndTime, setScheduleEndTime] = useState<any>("");
@@ -96,6 +108,7 @@ function VariantInfo() {
   useEffect(() => {
     getCorporateScheduleDetailsHandler();
   }, [refreshCorporateSchedules]);
+
 
   const getCorporateScheduleDetailsHandler = () => {
     const params = {
@@ -115,6 +128,40 @@ function VariantInfo() {
     );
   };
 
+  const getJdSectionHandler = () => {
+    const params = {
+      knowledge_group_variant_id:knowledge_group_variant_id
+    
+    };
+    loader.show();
+    dispatch(
+      getJdSection({
+        params,
+        onSuccess: (response: any) => () => {
+          console.log(JSON.stringify(response),'response')
+          loader.hide();
+        },
+        onError: (error: any) => () => {
+          loader.hide();
+        },
+      })
+    );
+  };
+
+  const normalizedTableData = (jdSection: any) => {
+    return jdSection?.map((el: any) => {
+      const { id,name,description ,weightage} = el
+
+      return {
+        name: capitalizeFirstLetter(name),
+        description:capitalizeFirstLetter(description),
+        Weightage:weightage
+      };
+    })
+
+  };
+
+
   function onScheduleMenuHandler(action: any) {
     if (action.id === MODIFY_OPTION[0].id) {
       closeJdModal.show();
@@ -126,6 +173,7 @@ function VariantInfo() {
       modifyVacancyModal.show()
     }
     else if (action.id === MODIFY_OPTION[3].id) {
+      getJdSectionHandler();
       modifyvViewsectionModal.show()
 
     }
@@ -173,6 +221,8 @@ function VariantInfo() {
     setScheduleEndTime(displayTime);
     modifyDeadlineModal.show();
   };
+
+
 
 
   const modifyVacancyHandler = () => {
@@ -377,22 +427,21 @@ function VariantInfo() {
         </div>
         
       </Modal>
-      {modifyvViewsectionModal&&
-      <Modal>
+      
+      <Modal
       loading={scheduleActionLoader.loader}
-      title={"View Section"}
+      title={"Sections"}
       isOpen={modifyvViewsectionModal.visible}
-      {/* onClose={modifyvViewsectionModal.hide} */}
-      {/* onClick={modifyVacancyHandler} */}
-        
+      onClose={modifyvViewsectionModal.hide}
+      >
+        <CommonTable
+        displayDataSet={normalizedTableData(jdSection)}
+       tableDataSet={jdSection}
+        />
 
-
-
-
-
-
+      
       </Modal>
-}
+
     </>
   );
 }
