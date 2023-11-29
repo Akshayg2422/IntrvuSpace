@@ -5,17 +5,15 @@ import { alterCompanyLimit, alterCompanyStatus, getCompanies, setSelectedCompany
 import { CommonTable, Image, Input, MenuBar, Modal, NoDataFound, Spinner, StatusIcon, showToast } from '@Components';
 import { capitalizeFirstLetter, getPhoto, paginationHandler, INITIAL_PAGE } from '@Utils';
 import { icons } from '@Assets';
-import { useInput, useLoader, useModal, useNavigation } from '@Hooks';
+import { useInput, useKeyPress, useLoader, useModal, useNavigation } from '@Hooks';
 import { ROUTES } from '@Routes'
+import { PhotoProvider, PhotoView } from "react-photo-view";
+import "react-photo-view/dist/react-photo-view.css";
 
 function SuperAdminDashboard() {
 
-
     const { companies, companiesNumOfPages, companiesCurrentPages } = useSelector((state: any) => state.SuperAdminReducer);
-
-
     const dispatch = useDispatch()
-
     const { goTo } = useNavigation();
 
     /**
@@ -24,19 +22,22 @@ function SuperAdminDashboard() {
 
     const limitModal = useModal(false);
     const addLimitLoader = useLoader(false);
-
     const loader = useLoader(false);
-
-
     const [selectedCompanyId, setSelectedCompanyId] = useState(undefined)
     const limit = useInput("")
+    const search = useInput("");
+    const [isSearch, setIsSearch] = useState(false);
+    const enterPress = useKeyPress("Enter");
 
-
-
+    useEffect(() => {
+        if (isSearch) {
+            getCompaniesApiHandler(INITIAL_PAGE);
+        }
+    }, [])
 
     useEffect(() => {
         getCompaniesApiHandler(INITIAL_PAGE);
-    }, [])
+    }, [enterPress])
 
 
     function getCandidateMenu(is_active: boolean) {
@@ -50,7 +51,8 @@ function SuperAdminDashboard() {
 
     const getCompaniesApiHandler = (page_number: number) => {
         const params = {
-            page_number
+            page_number,
+            ...(search?.value && { q: search?.value }),
         };
 
         loader.show();
@@ -60,6 +62,7 @@ function SuperAdminDashboard() {
                 params,
                 onSuccess: () => () => {
                     loader.hide();
+                    setIsSearch(false);
                 },
                 onError: () => () => {
                     loader.hide();
@@ -160,14 +163,48 @@ function SuperAdminDashboard() {
                         <div className={"d-flex align-items-center"}>
                             <div>
                                 <div className={'image-container'}>
-                                    <Image
-                                        className={logo ? '' : 'place-holder'}
-                                        src={logo ? getPhoto(logo) : icons.company}
-                                        style={{
-                                            objectFit: "contain",
-                                            filter: !logo ? "grayscale(100%)" : ""
-                                        }}
-                                    />
+                                    {logo ?
+                                        <PhotoProvider>
+                                            <div className={"pointer"}>
+                                                <PhotoView src={getPhoto(logo)}>
+                                                    <Image
+                                                        src={getPhoto(logo)}
+                                                        height={50}
+                                                        width={50}
+                                                        style={{
+                                                            objectFit: 'cover',
+                                                            overflow: 'hidden',
+                                                            padding: '1px',
+                                                            borderRadius: '30px',
+                                                            width: "45px",
+                                                            height: "45px",
+                                                        }}
+                                                    />
+                                                </PhotoView>
+                                            </div>
+                                        </PhotoProvider>
+                                        :
+                                        <div style={{
+                                            width: "45px",
+                                            height: "45px",
+                                            borderRadius: "30px",
+                                            backgroundColor: "#FAFBFF",
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            display: 'flex',
+                                        }}>
+                                            <Image
+                                                src={icons.profile}
+                                                height={20}
+                                                width={20}
+                                                style={{
+                                                    objectFit: 'contain'
+                                                }}
+                                            />
+                                        </div>
+
+                                    }
+
                                 </div>
                             </div>
                             <div className={"th-bold ml-3"}>
@@ -200,16 +237,28 @@ function SuperAdminDashboard() {
         <>
             <div className={'screen'}>
                 <SuperAdminNavbar />
-                {
-                    loader.loader &&
-                    <div className={'loader-container'}>
-                        <Spinner />
-                    </div>
-                }
 
-                {
-                    companies && companies?.length > 0 &&
-                    <div className={'screen-container'}>
+                <div className={'screen-container'}>
+                    <div className="col-sm-3 m-0 p-0">
+                        <Input
+                            id={'search'}
+                            heading={"Search"}
+                            type={"text"}
+                            placeHolder={"Mobile, Email, Name, Id"}
+                            value={search?.value}
+                            onChange={search.onChange}
+                            onFocus={() => setIsSearch(true)}
+                            onBlur={() => setIsSearch(false)}
+                        />
+                    </div>
+                    {
+                        loader.loader &&
+                        <div className={'loader-container'}>
+                            <Spinner />
+                        </div>
+                    }
+                    {
+                        companies && companies?.length > 0 &&
                         <CommonTable
                             isPagination
                             tableDataSet={companies}
@@ -232,8 +281,9 @@ function SuperAdminDashboard() {
                                 );
                             }}
                         />
-                    </div>
-                }
+                    }
+                </div>
+
                 {
                     !loader.loader && companies?.length <= 0 &&
                     <div className={"no-data-found"}>
