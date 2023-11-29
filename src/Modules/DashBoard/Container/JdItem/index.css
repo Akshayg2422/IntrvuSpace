@@ -90,7 +90,7 @@
 
 .complete-schedule-container {
   margin-top: 40px;
-  background-color: #FAFBFF;
+  background-color: var(--bg-container-light);
   padding: 40px;
 }
 

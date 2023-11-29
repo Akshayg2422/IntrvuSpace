@@ -43,6 +43,8 @@ body {
     --description: #5A5D73;
     /* --card-border: #67a16f; */
     --card-border: #c8e0cc;
+    --bg-container-light: #fbfcfa;
+    --bg-container-dark: #f2faf0;
 }
 
 
@@ -58,6 +60,14 @@ input::-webkit-inner-spin-button {
 input[type=number] {
     -moz-appearance: textfield;
     appearance: textfield;
+}
+
+.bg-container-light {
+    background-color: var(--bg-container-light);
+}
+
+.bg-container-dark {
+    background-color: var(--bg-container-dark);
 }
 
 .auth-screen {
@@ -99,8 +109,8 @@ input[type=number] {
     padding: 4% 7%;
 }
 
-.border {
-    border: 1px solid #DADCE0;
+.card-border {
+    border: 1px solid var(--card-border);
     border-radius: var(--border-radius);
 }
 
@@ -128,10 +138,12 @@ input[type=number] {
     background-color: var(--badge);
     border-radius: 20px;
     border-width: 0px;
-    padding: 6px 20px;
+    padding: 6px 30px;
+    width: fit-content;
     display: flex;
     align-items: center;
     justify-content: center;
+    white-space: nowrap;
 }
 
 /* .back-container {

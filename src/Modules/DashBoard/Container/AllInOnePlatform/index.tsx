@@ -1,5 +1,5 @@
 import { icons } from "@Assets";
-import { Badge, Button, Card, Image } from "@Components";
+import { Button, Card, Image, StatusIcon } from "@Components";
 import { useDynamicHeight, useGrowingTitleLine } from "@Hooks";
 import { Col, Container, Row } from "reactstrap";
 import "./index.css";
@@ -117,9 +117,7 @@ function AllInOnePlatform() {
                           return (
                             <>
                               <div className="mt-2 " >
-                                <Image src={icons.check} height={12} width={12} style={{
-                                  objectFit: 'contain'
-                                }} />
+                                <StatusIcon />
                                 <span
                                   className="ml-2 text-secondary"
                                   style={{ fontSize: 12.5, fontWeight: 800 }}
@@ -170,18 +168,14 @@ function AllInOnePlatform() {
                                 <Image src={icons.moneyDefalt} height={50} width={60} style={{
                                   objectFit: 'contain'
                                 }} />
+
                               </span>
-                              <Badge
-                                className="text-primary ml-2"
-                                text={"SAVE 58%"}
-                                size="md"
-                                style={{
-                                  borderRadius: 30,
-                                  backgroundColor: "#ebe4ff",
-                                  fontSize: 13,
-                                  fontWeight: 800,
-                                }}
-                              />
+
+                            </div>
+                            <div className={'d-flex align-items-center justify-content-center'}>
+                              <div className={'badge-schedule'}>
+                                <span className={'badge-text'}>{'SAVE 58%'}</span>
+                              </div>
                             </div>
                             <div className="text-center">
                               <span
@@ -206,7 +200,7 @@ function AllInOnePlatform() {
                             </div>
                             <div className="d-flex float-center ">
                               <Button
-                                text={"Add to cart"}
+                                text={"Register"}
                                 className={"mt-3 ls-0"}
                                 block
                                 style={{ borderRadius: 4 }}
@@ -245,9 +239,7 @@ function AllInOnePlatform() {
                           return (
                             <>
                               <div className="mt-2">
-                                <Image src={icons.check} height={12} width={12} style={{
-                                  objectFit: 'contain'
-                                }} />
+                                <StatusIcon />
                                 <span
                                   className="ml-2 text-secondary"
                                   style={{ fontSize: 12.5, fontWeight: 800 }}

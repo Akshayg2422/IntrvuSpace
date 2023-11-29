@@ -2,6 +2,7 @@ import { icons } from "@Assets";
 import {
   Button,
   Image,
+  StatusIcon,
   ViewMore,
   WatchInterviewButtonIcon,
   WatchInterviewModal,
@@ -80,14 +81,7 @@ function JdItem({
                 <>
                   {completedSchedules && completedSchedules.length > 0 && (
                     <div className={"completed-date-container"}>
-                      <Image
-                        src={icons.check}
-                        height={12}
-                        width={12}
-                        style={{
-                          objectFit: "contain",
-                        }}
-                      />
+                      <StatusIcon/>
                       <div className={"completed-text-container"}>
                         <span className={"details-desc font-weight-700"}>
                           {"Completed on "}

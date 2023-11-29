@@ -4,6 +4,7 @@ import { Button, Image, Modal, MenuBar, Alert } from "@Components";
 import { icons } from "@Assets";
 import { color } from "@Themes";
 import { useModal } from "@Hooks";
+import { useSelector } from "react-redux";
 
 function CallHeader({
   webcam,
@@ -13,6 +14,10 @@ function CallHeader({
   onEndClick,
   onEndInterViewClick,
 }: CallHeaderProps) {
+  const { scheduleInfo } = useSelector((state: any) => state.DashboardReducer);
+
+  const { is_video_recording_manditory } = scheduleInfo;
+
   const CALL_MENU = [{ id: 0, name: "End Interview" }];
 
   const [time, setTime] = useState({ hours: 0, minutes: 0, seconds: 0 });
@@ -44,8 +49,8 @@ function CallHeader({
   const formattedTime =
     time.hours > 0
       ? `${formatTime(time.hours)}:${formatTime(time.minutes)}:${formatTime(
-        time.seconds
-      )}`
+          time.seconds
+        )}`
       : `${formatTime(time.minutes)}:${formatTime(time.seconds)}`;
 
   function proceedMenuClickHandler(selected: any) {
@@ -101,7 +106,11 @@ function CallHeader({
               />
             </div>
             <div className="">
-              <MenuBar menuData={CALL_MENU} onClick={proceedMenuClickHandler} direction="up" />
+              <MenuBar
+                menuData={CALL_MENU}
+                onClick={proceedMenuClickHandler}
+                direction={`${is_video_recording_manditory ? "up" : "down"}`}
+              />
             </div>
           </div>
         </div>

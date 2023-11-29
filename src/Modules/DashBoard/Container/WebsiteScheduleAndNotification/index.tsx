@@ -1,6 +1,6 @@
 import { icons, image } from '@Assets';
 import { Col, Container, Row } from 'reactstrap';
-import { Image } from '@Components'
+import { Image, StatusIcon } from '@Components'
 
 const packageContent = [
     { id: 1, description: "Interview invite link will be sent over email and text message to the candidate" },
@@ -38,9 +38,7 @@ function WebsiteScheduleAndNotification() {
                                         <>
                                             <div className="row ml-md-1 ml-sm-0 ml-1">
                                                 <div>
-                                                    <Image src={icons.check} height={12} width={12} style={{
-                                                        objectFit: 'contain'
-                                                    }} />
+                                                    <StatusIcon/>
                                                 </div>
                                                 <span
                                                     className="col-11 text-default"

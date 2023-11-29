@@ -33,9 +33,12 @@ import {
   CorporateRegister,
   SettingDesignation,
   AdminSchedules,
-  SuperAdminDashboard
+  SuperAdminDashboard,
+  RecentInterviews,
+  Candidates,
+  SuperAdminCorporateRegister
+
 } from '@Modules';
-import { SuperAdminCorporateRegister } from '@Modules//SuperAdmin/Screen/SuperAdminCorporateRegister';
 
 export const ROUTES = {
   'auth-module': {
@@ -79,11 +82,13 @@ export const ROUTES = {
     'ManageTeamMate': '/ManageTeamMate',
     // 'Sectors':'/Sectors'
     'scheduling-interview': '/scheduling-interview',
-    'admin-schedule': '/admin-schedule'
+    'admin-schedule': '/admin-schedule',
+    'candidate': '/candidate'
   },
   'super-admin': {
-    dashboard:"/dashboard",
-    'super-admin-register-company': '/super-admin-register-company'
+    dashboard: "/dashboard",
+    'super-admin-register-company': '/super-admin-register-company',
+    'recent-interviews': '/recent-interviews'
 
   }
 }
@@ -267,6 +272,11 @@ export const SUPER_ADMIN_ROUTES = [
     path: ROUTES['super-admin']['super-admin-register-company'],
     component: <SuperAdminCorporateRegister />
   },
+  {
+    id: 7,
+    path: ROUTES['super-admin']['recent-interviews'],
+    component: <RecentInterviews />
+  },
 ]
 
 
@@ -320,6 +330,12 @@ export const ADMIN_ROUTES = [
     id: 7,
     path: ROUTES['designation-module']['sector'],
     component: <Sector />
+  },
+  {
+    id: 3,
+    path: ROUTES['designation-module']['candidate'],
+    name: "candidate",
+    component: <Candidates />
   },
   {
     id: 8,

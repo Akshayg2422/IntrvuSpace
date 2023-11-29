@@ -1,5 +1,5 @@
 import { icons } from '@Assets';
-import { Image } from '@Components';
+import { Image, StatusIcon } from '@Components';
 import { useEffect, useState } from 'react';
 import { PreparingYourInterviewProps } from './interfaces';
 import './index.css'
@@ -7,11 +7,11 @@ import './index.css'
 function PreparingYourInterview({ isCompleted }: PreparingYourInterviewProps) {
 
     const steps = [
-        { icon: icons.check, text: 'Analyzing your JD' },
-        { icon: icons.check, text: 'Extracting key areas' },
-        { icon: icons.check, text: 'Preparing Topics' },
-        { icon: icons.check, text: 'Generating evaluation criteria' },
-        { icon: icons.check, text: 'Preparing interview Room' },
+        { text: 'Analyzing your JD' },
+        { text: 'Extracting key areas' },
+        { text: 'Preparing Topics' },
+        { text: 'Generating evaluation criteria' },
+        { text: 'Preparing interview Room' },
     ];
 
     const [currentStep, setCurrentStep] = useState(-1);
@@ -55,7 +55,7 @@ function PreparingYourInterview({ isCompleted }: PreparingYourInterviewProps) {
 
                     const isSelected = index <= currentStep
 
-                    const { text, icon } = each
+                    const { text } = each
 
                     return (
                         <div key={index} className={'d-flex align-items-center mb-2'}>
@@ -63,15 +63,7 @@ function PreparingYourInterview({ isCompleted }: PreparingYourInterviewProps) {
                                 {
                                     isSelected ?
 
-                                        <Image
-                                            className='mr-2'
-                                            src={icon}
-                                            height={12}
-                                            width={12}
-                                            style={{
-                                                objectFit: 'contain'
-                                            }}
-                                        />
+                                        <StatusIcon />
 
                                         :
                                         <>
@@ -92,7 +84,7 @@ function PreparingYourInterview({ isCompleted }: PreparingYourInterviewProps) {
                                         </>
                                 }
                             </div>
-                            <div className={`key-point  ${isSelected ? 'text-secondary  mb-0' : ''}`}>{text}</div>
+                            <div className={`key-point  ${isSelected ? 'text-secondary ml-2  mb-0' : ''}`}>{text}</div>
                         </div>
                     )
                 })

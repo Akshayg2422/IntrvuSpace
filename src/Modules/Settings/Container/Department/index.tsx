@@ -94,7 +94,7 @@ function Department() {
 
       return {
         Name: capitalizeFirstLetter(name),
-        '': ((name) &&
+        '':
           <MenuBar
             menuData={MENU}
             onClick={(item) => {
@@ -106,7 +106,7 @@ function Department() {
               }
             }}
           />
-        )
+
       };
     })
 

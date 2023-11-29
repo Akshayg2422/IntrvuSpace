@@ -1,36 +1,22 @@
 import { icons } from "@Assets";
-import { Button, Modal, Image } from "@Components";
+import { Button, Modal, Image, StatusIcon } from "@Components";
 import { useModal, useNavigation } from "@Hooks";
 import { useSelector } from "react-redux";
 import { GuidelinesProps } from "./interfaces";
 
 const START_INTERVIEW_GUIDELINES = [
-    { icon: icons.check, title: "Use of headphones for better quality" },
-    { icon: icons.check, title: "Attend from an quiet and secluded space" },
-    {
-        icon: icons.check,
-        title: "Verify the stability of your internet connection",
-    },
-    {
-        icon: icons.check,
-        title: "Keep the video function enabled throughout the session",
-    },
-    {
-        icon: icons.check,
-        title:
-            "After completing the interview, check back in a couple of minutes to view the report",
-    },
+    { title: "Use of headphones for better quality" },
+    { title: "Attend from an quiet and secluded space" },
+    { title: "Verify the stability of your internet connection", },
+    { title: "Keep the video function enabled throughout the session", },
+    { title: "After completing the interview, check back in a couple of minutes to view the report" },
 ];
 
 const GO_TO_DASHBOARD_GUIDELINES = [
-    { icon: icons.check, title: "Your interview is complete" },
-    { icon: icons.check, title: "Report is being generated" },
-    {
-        icon: icons.check,
-        title: "Upon completion of report, you will be notified over email",
-    },
+    { title: "Your interview is complete" },
+    { title: "Report is being generated" },
+    { title: "Upon completion of report, you will be notified over email" },
 ];
-
 function Guidelines({
     scheduleInfo = undefined,
     loading = false,
@@ -81,13 +67,7 @@ function Guidelines({
                             START_INTERVIEW_GUIDELINES.map((step, index) => (
                                 <div>
                                     <div key={index} className="d-flex align-items-center pb-2">
-                                        <Image
-                                            src={step.icon}
-                                            height={12}
-                                            width={12}
-                                            style={{
-                                                objectFit: 'contain'
-                                            }} />
+                                        <StatusIcon/>
                                         <small className="pl-2 m-0 bullet-key-point font-weight-400 text-secondary">{step.title}</small>
                                     </div>
                                 </div>
@@ -115,7 +95,7 @@ function Guidelines({
                                 <div className="pt-4 text-secondary col-12">
                                     {GO_TO_DASHBOARD_GUIDELINES.map((step, index) => (
                                         <span key={index} className="d-flex align-items-center pb-3">
-                                            {index === 2 ? <span><img className={'mb-sm-0 mb-3'} src={step.icon} height={13} /></span> : <img src={step.icon} height={13} />}
+                                            {index === 2 ? <span><StatusIcon /></span> : <StatusIcon />}
                                             <small className="pl-2 m-0 font-weight-500 text-secondary">{step.title}</small>
                                         </span>
                                     ))}

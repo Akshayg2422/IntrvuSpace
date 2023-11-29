@@ -1,5 +1,5 @@
 import { icons, image } from "@Assets";
-import { Button, Image } from "@Components";
+import { Button, Image, StatusIcon } from "@Components";
 import { useGrowingTitleLine, useNavigation } from "@Hooks";
 import { ROUTES } from "@Routes";
 import { Col, Container, Row } from "reactstrap";
@@ -57,7 +57,7 @@ function WebsiteHeader() {
                     className="text-secondary"
                     style={{ fontSize: 14, fontWeight: "500" }}
                   >
-                    {"Create a job description and add the candidates,"} <br />
+                    {"Create a job description and add the ,"} <br />
                     {"Let us take care of the rest of you!"}
                   </span>
                 </div>
@@ -67,9 +67,7 @@ function WebsiteHeader() {
                     return (
                       <>
                         <div className="pt-2">
-                          <Image src={icons.check} height={12} width={12} style={{
-                            objectFit: 'contain'
-                          }} />
+                         <StatusIcon/>
                           <span
                             className="ml-2 text-secondary"
                             style={{ fontSize: 12.5, fontWeight: 800 }}

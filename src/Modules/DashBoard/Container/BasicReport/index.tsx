@@ -44,7 +44,7 @@ function BasicReport({ details }: BasicReportProps) {
                 {sections && sections.length > 0 && sections.map((each => {
                     const { id, name, rating } = each
                     return (
-                        <div key={id} className={'job-description-item border'}>
+                        <div key={id} className={'job-description-item card-border'}>
                             <div className={'job-description-title'}>{name}</div>
                             <div className={'job-description-title font-weight-700'}>{rating}</div>
                         </div>
