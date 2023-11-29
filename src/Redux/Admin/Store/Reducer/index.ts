@@ -7,6 +7,7 @@ const initialState: AdminProps = {
   candidates:undefined,
   candidatesNumOfPages:undefined,
   candidatesCurrentPages:1,
+  jdSection:[],
 
 
 };
@@ -48,6 +49,21 @@ const AdminReducer = (state = initialState, action: any) => {
     case ActionTypes.GET_CANDIDATES_FAILURE:
       state = { ...state, candidates: undefined };
       break;
+   
+      //get jd section
+
+      case ActionTypes.GET_JDSECTION:
+      state = { ...state, jdSection:undefined };
+      break;
+
+      case ActionTypes.GET_JDSECTION_SUCCESS:
+      state = { ...state, jdSection:action.payload?.details};
+      break;
+      
+      case ActionTypes.GET_JDSECTION_FAILURE:
+        state = { ...state, jdSection:undefined};
+        break;
+  
 
    
 
