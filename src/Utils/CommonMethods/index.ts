@@ -191,9 +191,11 @@ export const combineBase64Strings = (stringsArray) => {
     validDecodedArray.reduce((acc, curr) => acc.concat(Array.from(curr)), [])
   );
 
+
   const combinedBase64 = btoa(String.fromCharCode.apply(null, combinedArray));
 
   return combinedBase64;
+
 };
 
 export async function checkMicrophoneState() {

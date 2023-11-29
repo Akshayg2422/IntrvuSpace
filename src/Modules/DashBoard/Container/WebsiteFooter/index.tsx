@@ -32,10 +32,8 @@ function WebsiteFooter() {
                       <NavbarBrand to="/" tag={Link}>
                         <Image src={icons.logoText} height={20} />
                       </NavbarBrand>
-                      <p className="text-default mt-4 mb-3 d-flex justify-content-start text-justify" style={{ fontSize: '15px', fontWeight: 400 }}>
-                        intrvu SPACE is your dedicated companion in the pursuit of
-                        interview success. Prepare effectively, outshine the
-                        competition, and unlock the job you deserve!
+                      <p className="text-default mt-4 mb-3 d-flex justify-content-start" style={{ fontSize: '15px', fontWeight: 400 }}>
+                        intrvu SPACE is your dedicated companion in the pursuit of interview success. Prepare effectively, outshine the competition, and unlock the job you deserve!
                       </p>
                     </div>
                   </div>

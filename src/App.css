@@ -62,11 +62,11 @@ input[type=number] {
     appearance: textfield;
 }
 
-.bg-container-light{
+.bg-container-light {
     background-color: var(--bg-container-light);
 }
 
-.bg-container-dark{
+.bg-container-dark {
     background-color: var(--bg-container-dark);
 }
 
@@ -138,11 +138,12 @@ input[type=number] {
     background-color: var(--badge);
     border-radius: 20px;
     border-width: 0px;
-    padding: 6px 20px;
+    padding: 6px 30px;
+    width: fit-content;
     display: flex;
-    width: auto;
     align-items: center;
     justify-content: center;
+    white-space: nowrap;
 }
 
 /* .back-container {

@@ -143,9 +143,7 @@ function SuperAdminDashboard() {
 
                     "": (
                         <div className={"d-flex align-items-center"}>
-
                             {is_active ? <StatusIcon /> : <StatusIcon variant={'frame'} />}
-
                         </div>
                     ),
 

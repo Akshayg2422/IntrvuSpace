@@ -1,5 +1,5 @@
 import { icons } from "@Assets";
-import { Badge, Button, Card, Image, StatusIcon } from "@Components";
+import { Button, Card, Image, StatusIcon } from "@Components";
 import { useDynamicHeight, useGrowingTitleLine } from "@Hooks";
 import { Col, Container, Row } from "reactstrap";
 import "./index.css";
@@ -168,12 +168,15 @@ function AllInOnePlatform() {
                                 <Image src={icons.moneyDefalt} height={50} width={60} style={{
                                   objectFit: 'contain'
                                 }} />
+
                               </span>
-                              
+
                             </div>
-                                <div className={'badge-schedule'}>
-                                  <span className={'badge-text'}>{'SAVE 58%'}</span>
-                                </div>
+                            <div className={'d-flex align-items-center justify-content-center'}>
+                              <div className={'badge-schedule'}>
+                                <span className={'badge-text'}>{'SAVE 58%'}</span>
+                              </div>
+                            </div>
                             <div className="text-center">
                               <span
                                 className="text-secondary"
@@ -197,7 +200,7 @@ function AllInOnePlatform() {
                             </div>
                             <div className="d-flex float-center ">
                               <Button
-                                text={"Add to cart"}
+                                text={"Register"}
                                 className={"mt-3 ls-0"}
                                 block
                                 style={{ borderRadius: 4 }}
