@@ -1,33 +1,39 @@
 import React, { useEffect, useState } from 'react'
 import { SuperAdminNavbar } from '@Modules'
 import { useSelector, useDispatch } from 'react-redux'
-import { alterCompanyLimit, alterCompanyStatus, getCompanies } from '@Redux'
+import { alterCompanyLimit, alterCompanyStatus, getCompanies, setSelectedCompany } from '@Redux'
 import { CommonTable, Image, Input, MenuBar, Modal, NoDataFound, Spinner, StatusIcon, showToast } from '@Components';
 import { capitalizeFirstLetter, getPhoto, paginationHandler, INITIAL_PAGE } from '@Utils';
 import { icons } from '@Assets';
-import { useInput, useKeyPress, useLoader, useModal } from '@Hooks';
+import { useInput, useKeyPress, useLoader, useModal, useNavigation } from '@Hooks';
+import { ROUTES } from '@Routes'
+import { PhotoProvider, PhotoView } from "react-photo-view";
+import "react-photo-view/dist/react-photo-view.css";
 
 function SuperAdminDashboard() {
 
-
     const { companies, companiesNumOfPages, companiesCurrentPages } = useSelector((state: any) => state.SuperAdminReducer);
     const dispatch = useDispatch()
+    const { goTo } = useNavigation();
 
     /**
      * add modal
      */
+
     const limitModal = useModal(false);
     const addLimitLoader = useLoader(false);
     const loader = useLoader(false);
-    const [selectedCompany, setSelectedCompany] = useState(undefined)
+    const [selectedCompanyId, setSelectedCompanyId] = useState(undefined)
     const limit = useInput("")
-
     const search = useInput("");
     const [isSearch, setIsSearch] = useState(false);
     const enterPress = useKeyPress("Enter");
 
-
-
+    useEffect(() => {
+        if (isSearch) {
+            getCompaniesApiHandler(INITIAL_PAGE);
+        }
+    }, [])
 
     useEffect(() => {
         getCompaniesApiHandler(INITIAL_PAGE);
@@ -36,8 +42,9 @@ function SuperAdminDashboard() {
 
     function getCandidateMenu(is_active: boolean) {
         return [
+            { id: 0, name: "Edit" },
             { id: 1, name: is_active ? "Disable" : 'Enable' },
-            { id: 2, name: "Limit" },
+            { id: 2, name: "Alter Limit" },
         ]
     }
 
@@ -89,7 +96,7 @@ function SuperAdminDashboard() {
 
     const alterCompanyLimitApiHandler = () => {
         const params = {
-            id: selectedCompany,
+            id: selectedCompanyId,
             new_limit: limit.value
         };
         dispatch(
@@ -112,14 +119,18 @@ function SuperAdminDashboard() {
     function companyMenuHandler(action: any, item: any) {
         const { id, is_active, interview_limit } = item;
 
-        setSelectedCompany(id);
+        setSelectedCompanyId(id);
+        dispatch(setSelectedCompany(item))
 
         const MENU = getCandidateMenu(is_active)
 
         if (MENU[0].id === action.id) {
-            alterCompanyStatusApiHandler(id, is_active);
+            goTo(ROUTES['super-admin']['super-admin-register-company'])
         }
         else if (MENU[1].id === action.id) {
+            alterCompanyStatusApiHandler(id, is_active);
+        }
+        else if (MENU[2].id === action.id) {
             limitModal.show();
             limit.set(interview_limit);
         }
@@ -152,14 +163,48 @@ function SuperAdminDashboard() {
                         <div className={"d-flex align-items-center"}>
                             <div>
                                 <div className={'image-container'}>
-                                    <Image
-                                        className={logo ? '' : 'place-holder'}
-                                        src={logo ? getPhoto(logo) : icons.company}
-                                        style={{
-                                            objectFit: "contain",
-                                            filter: !logo ? "grayscale(100%)" : ""
-                                        }}
-                                    />
+                                    {logo ?
+                                        <PhotoProvider>
+                                            <div className={"pointer"}>
+                                                <PhotoView src={getPhoto(logo)}>
+                                                    <Image
+                                                        src={getPhoto(logo)}
+                                                        height={50}
+                                                        width={50}
+                                                        style={{
+                                                            objectFit: 'cover',
+                                                            overflow: 'hidden',
+                                                            padding: '1px',
+                                                            borderRadius: '30px',
+                                                            width: "45px",
+                                                            height: "45px",
+                                                        }}
+                                                    />
+                                                </PhotoView>
+                                            </div>
+                                        </PhotoProvider>
+                                        :
+                                        <div style={{
+                                            width: "45px",
+                                            height: "45px",
+                                            borderRadius: "30px",
+                                            backgroundColor: "#FAFBFF",
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            display: 'flex',
+                                        }}>
+                                            <Image
+                                                src={icons.profile}
+                                                height={20}
+                                                width={20}
+                                                style={{
+                                                    objectFit: 'contain'
+                                                }}
+                                            />
+                                        </div>
+
+                                    }
+
                                 </div>
                             </div>
                             <div className={"th-bold ml-3"}>
@@ -192,28 +237,28 @@ function SuperAdminDashboard() {
         <>
             <div className={'screen'}>
                 <SuperAdminNavbar />
-                {
-                    loader.loader &&
-                    <div className={'loader-container'}>
-                        <Spinner />
-                    </div>
-                }
 
-                {
-                    companies && companies?.length > 0 &&
-                    <div className={'screen-container'}>
-                        <div className="col-sm-3 m-0 p-0">
-                            <Input
-                                id={'search'}
-                                heading={"Search"}
-                                type={"text"}
-                                placeHolder={"Mobile, Email, Name, Id"}
-                                value={search?.value}
-                                onChange={search.onChange}
-                                onFocus={() => setIsSearch(true)}
-                                onBlur={() => setIsSearch(false)}
-                            />
+                <div className={'screen-container'}>
+                    <div className="col-sm-3 m-0 p-0">
+                        <Input
+                            id={'search'}
+                            heading={"Search"}
+                            type={"text"}
+                            placeHolder={"Mobile, Email, Name, Id"}
+                            value={search?.value}
+                            onChange={search.onChange}
+                            onFocus={() => setIsSearch(true)}
+                            onBlur={() => setIsSearch(false)}
+                        />
+                    </div>
+                    {
+                        loader.loader &&
+                        <div className={'loader-container'}>
+                            <Spinner />
                         </div>
+                    }
+                    {
+                        companies && companies?.length > 0 &&
                         <CommonTable
                             isPagination
                             tableDataSet={companies}
@@ -236,8 +281,9 @@ function SuperAdminDashboard() {
                                 );
                             }}
                         />
-                    </div>
-                }
+                    }
+                </div>
+
                 {
                     !loader.loader && companies?.length <= 0 &&
                     <div className={"no-data-found"}>
@@ -248,7 +294,7 @@ function SuperAdminDashboard() {
 
             <Modal
                 loading={addLimitLoader.loader}
-                title={"Edit Limit"}
+                title={"Alter Limit"}
                 isOpen={limitModal.visible}
                 onClose={limitModal.hide}
                 onClick={alterCompanyLimitApiHandler}

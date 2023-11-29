@@ -158,3 +158,15 @@ export const getDashboardFailure = (error: any) => {
     }
 }
 
+
+
+/**
+ * create company Super admin
+ */
+
+export const createCompanySuperAdmin = (params: any) => {
+    return {
+        type: ActionTypes.CREATE_COMPANY_SUPER_ADMIN,
+        payload: params,
+    };
+};

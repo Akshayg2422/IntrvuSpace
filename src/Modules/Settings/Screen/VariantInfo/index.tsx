@@ -9,12 +9,14 @@ import {
   Spinner,
   Input,
   Button,
+  CommonTable,
 } from "@Components";
 import { useInput, useLoader, useModal } from "@Hooks";
 import { OpeningCandidates } from "@Modules";
 import {
   createCorporateSchedules,
   getCorporateScheduleDetails,
+  getJdSection,
   postCorporateScheduleActions,
 } from "@Redux";
 import {
@@ -30,6 +32,7 @@ import moment from "moment";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./index.css";
+import { Console } from "console";
 
 function VariantInfo() {
   const dispatch = useDispatch();
@@ -41,11 +44,18 @@ function VariantInfo() {
   const MODIFY_OPTION = [
     { id: 1, name: "Close JD" },
     { id: 2, name: "Modify Deadlines" },
-    { id: 3, name: 'Modify Vacancies' }
+    { id: 3, name: 'Modify Vacancies' },
+    { id: 4, name: 'View Section' }
+
+    
   ];
 
   const { selectedRole, corporateScheduleDetails, refreshCorporateSchedules } =
     useSelector((state: any) => state.DashboardReducer);
+    
+
+    const { jdSection } = useSelector((state:any) => state.AdminReducer);
+    
 
   const { id } = selectedRole || {};
 
@@ -59,8 +69,12 @@ function VariantInfo() {
     vacancies,
     is_closed,
     candidate_details,
+    knowledge_group_variant_id
   } = corporateScheduleDetails || {};
   const { position, experience, details } = job_description || {};
+  // const { name,description} = jdSection||{}
+
+
 
   const loader = useModal(false);
   const vacanciesCount = useInput(vacancies)
@@ -86,12 +100,15 @@ function VariantInfo() {
 
   const modifyDeadlineModal = useModal(false);
   const modifyVacancyModal = useModal(false)
+
+  const modifyvViewsectionModal = useModal(false)
   const [scheduleEndDate, setScheduleEndDate] = useState<any>("");
   const [scheduleEndTime, setScheduleEndTime] = useState<any>("");
 
   useEffect(() => {
     getCorporateScheduleDetailsHandler();
   }, [refreshCorporateSchedules]);
+
 
   const getCorporateScheduleDetailsHandler = () => {
     const params = {
@@ -111,6 +128,40 @@ function VariantInfo() {
     );
   };
 
+  const getJdSectionHandler = () => {
+    const params = {
+      knowledge_group_variant_id:knowledge_group_variant_id
+    
+    };
+    loader.show();
+    dispatch(
+      getJdSection({
+        params,
+        onSuccess: (response: any) => () => {
+          console.log(JSON.stringify(response),'response')
+          loader.hide();
+        },
+        onError: (error: any) => () => {
+          loader.hide();
+        },
+      })
+    );
+  };
+
+  const normalizedTableData = (jdSection: any) => {
+    return jdSection?.map((el: any) => {
+      const { id,name,description ,weightage} = el
+
+      return {
+        name: capitalizeFirstLetter(name),
+        description:capitalizeFirstLetter(description),
+        Weightage:weightage
+      };
+    })
+
+  };
+
+
   function onScheduleMenuHandler(action: any) {
     if (action.id === MODIFY_OPTION[0].id) {
       closeJdModal.show();
@@ -120,6 +171,11 @@ function VariantInfo() {
     else if (action.id === MODIFY_OPTION[2].id) {
       vacanciesCount.set(vacancies)
       modifyVacancyModal.show()
+    }
+    else if (action.id === MODIFY_OPTION[3].id) {
+      getJdSectionHandler();
+      modifyvViewsectionModal.show()
+
     }
 
   }
@@ -169,6 +225,8 @@ function VariantInfo() {
   };
 
 
+
+
   const modifyVacancyHandler = () => {
     const params = {
       vacancies: vacanciesCount?.value > 0 ? vacanciesCount?.value : '',
@@ -182,6 +240,8 @@ function VariantInfo() {
       showToast(getValidateError(validation));
     }
   }
+
+  
 
   function proceedModifyDeadlineApiHandler() {
     const convertedTime = moment(scheduleEndTime, "hh:mm A").format("HH:mm:ss");
@@ -367,7 +427,23 @@ function VariantInfo() {
             />
           </div>
         </div>
+        
       </Modal>
+      
+      <Modal
+      loading={scheduleActionLoader.loader}
+      title={"Sections"}
+      isOpen={modifyvViewsectionModal.visible}
+      onClose={modifyvViewsectionModal.hide}
+      >
+        <CommonTable
+        displayDataSet={normalizedTableData(jdSection)}
+       tableDataSet={jdSection}
+        />
+
+      
+      </Modal>
+
     </>
   );
 }

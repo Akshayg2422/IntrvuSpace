@@ -114,7 +114,7 @@ const RecentInterviews = () => {
   }
 
   function deleteInterviewApiHandler(sid: string) {
-    
+
     const params = { sid };
 
     dispatch(
@@ -164,13 +164,8 @@ const RecentInterviews = () => {
   return (
     <div className={'screen-padding'}>
 
-      {loader.loader && (
-        <div className={'loader-container'}>
-          <Spinner />
-        </div>
-      )}
 
-      {!loader.loader && (
+      {(
         <div className={'row'}>
           {companies && companies.length > 0 && (
             <>
@@ -179,7 +174,7 @@ const RecentInterviews = () => {
                   id={'search'}
                   heading={"Search"}
                   type={"text"}
-                  placeHolder={"Mobile, Email, Name, Id"}
+                  placeHolder={"Name, Email..."}
                   value={search?.value}
                   onChange={search.onChange}
                   onFocus={() => setIsSearch(true)}
@@ -207,6 +202,12 @@ const RecentInterviews = () => {
               </div>
             </>
           )}
+        </div>
+      )}
+
+      {loader.loader && (
+        <div className={'loader-container'}>
+          <Spinner />
         </div>
       )}
 

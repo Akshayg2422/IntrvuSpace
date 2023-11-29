@@ -15,8 +15,7 @@ const LOCAL_IP = "https://66fc-103-118-190-4.ngrok-free.app/"
 
 
 
-
-export const BUILD_TYPE = BUILD_TYPE_LOCAL;
+export const BUILD_TYPE = BUILD_TYPE_PRE_PROD_IP;
 
 
 export const SERVER =

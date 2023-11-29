@@ -5,7 +5,7 @@ import './style.scss'
 
 function Spinner({ color = 'primary', spinner = true, className, size = 'sm' }: SpinnerProps) {
     return (
-        <div>
+        <div className = {className}>
             {spinner ?
 
                 <RsSpinner className={className} color={color} size={size} >

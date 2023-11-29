@@ -6,9 +6,10 @@ const initialState: SuperAdminProps = {
   companies: [],
   companiesNumOfPages: undefined,
   companiesCurrentPages: 1,
-  recentInterviews:[],
+  recentInterviews: [],
   recentInterviewsNumOfPages: undefined,
   recentInterviewsCurrentPages: 1,
+  selectedCompany: undefined
 };
 
 const SuperAdminReducer = (state = initialState, action: any) => {
@@ -46,28 +47,39 @@ const SuperAdminReducer = (state = initialState, action: any) => {
       state = { ...state, companies: undefined };
       break;
 
- /*
- get recent interviews
- */ 
+    /*
+    get recent interviews
+    */
     case ActionTypes.GET_RECENT_INTERVIEWS:
-    state = {...state,recentInterviews:undefined};
-    break;
-    
+      state = { ...state, recentInterviews: undefined };
+      break;
+
     case ActionTypes.GET_RECENT_INTERVIEWS_SUCCESS:
       const { recent_interviews } = action.payload?.details
       const modifiedRecentInterviews = recent_interviews?.data || recent_interviews
-    state = {...state,
-      recentInterviews:modifiedRecentInterviews,
-      recentInterviewsNumOfPages:recent_interviews?.num_pages ,
-      recentInterviewsCurrentPages:
-      recent_interviews?.next_page === -1 
-      ? recent_interviews?.num_pages 
-      : recent_interviews?.next_page -1
-    };
-    break;
-    case ActionTypes.GET_RECENT_INTERVIEWS_SUCCESS:
-    state = {...state,recentInterviews:undefined};
-    break;
+      state = {
+        ...state,
+        recentInterviews: modifiedRecentInterviews,
+        recentInterviewsNumOfPages: recent_interviews?.num_pages,
+        recentInterviewsCurrentPages:
+          recent_interviews?.next_page === -1
+            ? recent_interviews?.num_pages
+            : recent_interviews?.next_page - 1
+      };
+      break;
+    case ActionTypes.GET_RECENT_INTERVIEWS_FAILURE:
+      state = { ...state, recentInterviews: undefined };
+      break;
+
+
+
+    /**
+     * get slelectd company
+     */
+
+    case ActionTypes.SELECTED_COMPANY:
+      state = { ...state, selectedCompany: action.payload };
+      break;
 
 
     default:

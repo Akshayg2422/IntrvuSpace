@@ -1,15 +1,15 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { Back, Button, Input, InputPassword, showToast } from "@Components";
-import { REGISTER_RULES, getValidateError, ifObjectExist, validate } from '@Utils';
+import { getRegisterRules, getValidateError, ifObjectExist, validate } from '@Utils';
 import './index.css';
 import { SuperAdminRegisterAdminProps } from './interfaces';
 
-function SuperAdminRegisterAdmin({ params, onParams, onSubmit }: SuperAdminRegisterAdminProps) {
+function SuperAdminRegisterAdmin({ edit, params, onParams, onSubmit }: SuperAdminRegisterAdminProps) {
 
 
     const validateCompanyAdminDetailsHandler = () => {
 
-        const validation = validate(REGISTER_RULES, params)
+        const validation = validate(getRegisterRules(edit), params)
         if (ifObjectExist(validation)) {
             if (params?.password === params?.confirm_password) {
                 if (onSubmit) {
@@ -85,19 +85,22 @@ function SuperAdminRegisterAdmin({ params, onParams, onSubmit }: SuperAdminRegis
                 onChange={registerAdminOnChange}
 
             />
-            <InputPassword
-                id={'password'}
-                value={params.password}
-                placeholder={'Password'}
-                onChange={registerAdminOnChange}
-            />
-            <InputPassword
-                id={'confirm_password'}
-                value={params.confirm_password}
-                placeholder={'Confirm Password'}
-                onChange={registerAdminOnChange}
-            />
-
+            {edit &&
+                <>
+                    <InputPassword
+                        id={'password'}
+                        value={params.password}
+                        placeholder={'Password'}
+                        onChange={registerAdminOnChange}
+                    />
+                    <InputPassword
+                        id={'confirm_password'}
+                        value={params.confirm_password}
+                        placeholder={'Confirm Password'}
+                        onChange={registerAdminOnChange}
+                    />
+                </>
+            }
             <Button
                 block
                 text={"Next"}

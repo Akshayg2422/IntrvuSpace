@@ -224,4 +224,6 @@ export const icons = {
   play: require('./Play/icon.png'),
   pause: require('./Pause/icon.png'),
   moneyDefalt: require('./MoneyDefalt/icon.png'),
+  greenTick: require('./GreenTick/icon.png'),
+  wrong: require('./Wrong/icon.png')
 };
