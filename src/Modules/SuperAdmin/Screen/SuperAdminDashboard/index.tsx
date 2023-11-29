@@ -5,14 +5,12 @@ import { alterCompanyLimit, alterCompanyStatus, getCompanies } from '@Redux'
 import { CommonTable, Image, Input, MenuBar, Modal, NoDataFound, Spinner, StatusIcon, showToast } from '@Components';
 import { capitalizeFirstLetter, getPhoto, paginationHandler, INITIAL_PAGE } from '@Utils';
 import { icons } from '@Assets';
-import { useInput, useLoader, useModal } from '@Hooks';
+import { useInput, useKeyPress, useLoader, useModal } from '@Hooks';
 
 function SuperAdminDashboard() {
 
 
     const { companies, companiesNumOfPages, companiesCurrentPages } = useSelector((state: any) => state.SuperAdminReducer);
-
-
     const dispatch = useDispatch()
 
     /**
@@ -20,19 +18,20 @@ function SuperAdminDashboard() {
      */
     const limitModal = useModal(false);
     const addLimitLoader = useLoader(false);
-
     const loader = useLoader(false);
-
-
     const [selectedCompany, setSelectedCompany] = useState(undefined)
     const limit = useInput("")
+
+    const search = useInput("");
+    const [isSearch, setIsSearch] = useState(false);
+    const enterPress = useKeyPress("Enter");
 
 
 
 
     useEffect(() => {
         getCompaniesApiHandler(INITIAL_PAGE);
-    }, [])
+    }, [enterPress])
 
 
     function getCandidateMenu(is_active: boolean) {
@@ -45,7 +44,8 @@ function SuperAdminDashboard() {
 
     const getCompaniesApiHandler = (page_number: number) => {
         const params = {
-            page_number
+            page_number,
+            ...(search?.value && { q: search?.value }),
         };
 
         loader.show();
@@ -55,6 +55,7 @@ function SuperAdminDashboard() {
                 params,
                 onSuccess: () => () => {
                     loader.hide();
+                    setIsSearch(false);
                 },
                 onError: () => () => {
                     loader.hide();
@@ -201,6 +202,18 @@ function SuperAdminDashboard() {
                 {
                     companies && companies?.length > 0 &&
                     <div className={'screen-container'}>
+                        <div className="col-sm-3 m-0 p-0">
+                            <Input
+                                id={'search'}
+                                heading={"Search"}
+                                type={"text"}
+                                placeHolder={"Mobile, Email, Name, Id"}
+                                value={search?.value}
+                                onChange={search.onChange}
+                                onFocus={() => setIsSearch(true)}
+                                onBlur={() => setIsSearch(false)}
+                            />
+                        </div>
                         <CommonTable
                             isPagination
                             tableDataSet={companies}
