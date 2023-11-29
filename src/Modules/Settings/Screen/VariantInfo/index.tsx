@@ -41,7 +41,10 @@ function VariantInfo() {
   const MODIFY_OPTION = [
     { id: 1, name: "Close JD" },
     { id: 2, name: "Modify Deadlines" },
-    { id: 3, name: 'Modify Vacancies' }
+    { id: 3, name: 'Modify Vacancies' },
+    { id: 4, name: 'View Section' }
+
+    
   ];
 
   const { selectedRole, corporateScheduleDetails, refreshCorporateSchedules } =
@@ -86,6 +89,7 @@ function VariantInfo() {
 
   const modifyDeadlineModal = useModal(false);
   const modifyVacancyModal = useModal(false)
+  const modifyvViewsectionModal = useModal(false)
   const [scheduleEndDate, setScheduleEndDate] = useState<any>("");
   const [scheduleEndTime, setScheduleEndTime] = useState<any>("");
 
@@ -120,6 +124,10 @@ function VariantInfo() {
     else if (action.id === MODIFY_OPTION[2].id) {
       vacanciesCount.set(vacancies)
       modifyVacancyModal.show()
+    }
+    else if (action.id === MODIFY_OPTION[3].id) {
+      modifyvViewsectionModal.show()
+
     }
 
   }
@@ -180,6 +188,8 @@ function VariantInfo() {
       showToast(getValidateError(validation));
     }
   }
+
+  
 
   function proceedModifyDeadlineApiHandler() {
     const convertedTime = moment(scheduleEndTime, "hh:mm A").format("HH:mm:ss");
@@ -365,7 +375,24 @@ function VariantInfo() {
             />
           </div>
         </div>
+        
       </Modal>
+      {modifyvViewsectionModal&&
+      <Modal>
+      loading={scheduleActionLoader.loader}
+      title={"View Section"}
+      isOpen={modifyvViewsectionModal.visible}
+      {/* onClose={modifyvViewsectionModal.hide} */}
+      {/* onClick={modifyVacancyHandler} */}
+        
+
+
+
+
+
+
+      </Modal>
+}
     </>
   );
 }
