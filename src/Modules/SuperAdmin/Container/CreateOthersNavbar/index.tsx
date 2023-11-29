@@ -208,15 +208,14 @@ function CreateOthersNavbar() {
                           </Media>
                         </Media>
                       </DropdownToggle>
-                      <DropdownMenu right>
+                      <DropdownMenu right className="dropdown-menu-items">
                         {HEADER_MENU.map((item: any) => {
                           return (
-                            <DropdownItem
+                            <DropdownItem className="menu-items"
                               onClick={(e) => {
                                 e.preventDefault();
                                 dropdownHandler(item);
                                 setDropdownOpen(false);
-                                console.log('333333333333333333333')
                               }}
                             >
                               {/* <i className={item.icon}></i> */}

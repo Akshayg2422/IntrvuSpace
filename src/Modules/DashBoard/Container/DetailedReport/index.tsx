@@ -18,9 +18,9 @@ function DetailedReport({ details }: DetailedReportProps) {
 
 
   const NOTE = [
-    { id: 1, icon: <StatusIcon />, text: "Completely Covered", h: 8 },
+    { id: 1, icon: <StatusIcon />, text: "Completely Covered", h: 20 },
     { id: 2, icon: <StatusIcon variant={'checkBlack'} />, text: "Partially Covered", h: 20 },
-    { id: 3, icon: <StatusIcon variant={'frame'} />, text: "Covered but Invalid", h: 18 },
+    { id: 3, icon: <StatusIcon variant={'frame'} />, text: "Covered but Invalid", h: 20 },
   ];
 
 
