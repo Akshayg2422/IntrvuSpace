@@ -39,6 +39,8 @@ import { useParams } from "react-router-dom";
 import { RecordRTCPromisesHandler, StereoAudioRecorder } from "recordrtc";
 import { useScreenRecorder } from "@Hooks";
 import { ENTIRE_SCREEN_CONTEXT } from "@Utils";
+import DetectFace from "../DetectFace";
+import DetectFace2 from "../DetectFace/index copy";
 
 const compare_moment_format = "YYYY-MM-DDHH:mm:ss";
 
@@ -137,6 +139,12 @@ function Call() {
   const voiceUpSaturation = useRef<any>(1);
 
   const [networkBreakTime, setNetworkBreakTime] = useState(0);
+
+  /**
+   * Detect face
+   */
+
+  const [callDetectFace, setCallDetectFace] = useState<any>(false)
 
   // microphone permission states
 
@@ -884,8 +892,8 @@ function Call() {
   }
 
   async function startInterviewHandler() {
-    const { is_video_recording_manditory } = scheduleInfo;
-    // const is_video_recording_manditory = true
+    // const { is_video_recording_manditory } = scheduleInfo;
+    const is_video_recording_manditory = true
 
     startInterviewLoader.show();
     const hasCamPermission = await hasCameraPermission();
@@ -897,8 +905,12 @@ function Call() {
         micPermissionModal.hide();
 
         if (!recordStatus && is_video_recording_manditory) {
+         
           await startScreenRecording();
-        } else if (recordStatus || !is_video_recording_manditory) {
+        }
+        else if (recordStatus || !is_video_recording_manditory && callDetectFace) {
+          setCallDetectFace(false)
+
           initiateSocket();
 
           proceedOpenCallView.current = true;
@@ -1384,6 +1396,10 @@ function Call() {
           })}
         </div>
       </Modal>
+
+      {/* {
+        callDetectFace && <DetectFace onClick={startInterviewHandler} />
+      } */}
     </>
   );
 }
