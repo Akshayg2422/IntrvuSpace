@@ -290,3 +290,9 @@ export const URL_ALTER_COMPANY_LIMIT= COMPANY +'alterCompanyLimit'
  export const URL_ADD_CANDIDATE =ASSISTANT+'addCandidate'
 
 
+ //get jd section
+
+ export const URL_GET_JDSECTION =ASSISTANT+'getJDSections'
+
+
+
