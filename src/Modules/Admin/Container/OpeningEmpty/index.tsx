@@ -4,7 +4,7 @@ import { showCreateOpeningsModal } from '@Redux';
 import { useDispatch } from 'react-redux';
 import './index.css';
 
-function UploadCorporateOpeningsCard() {
+function OpeningEmpty() {
 
     const dispatch = useDispatch();
 
@@ -32,4 +32,4 @@ function UploadCorporateOpeningsCard() {
     )
 }
 
-export { UploadCorporateOpeningsCard };
+export { OpeningEmpty };

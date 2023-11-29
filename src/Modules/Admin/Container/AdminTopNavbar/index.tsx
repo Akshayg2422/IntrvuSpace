@@ -25,12 +25,13 @@ import {
   UncontrolledDropdown,
 } from "reactstrap";
 
-function TopNavbarCorporateFlow() {
+import { AdminTopNavbarProps } from './interfaces'
+
+function AdminTopNavbar({ showCreateOpening, onCreateOpeningClick }: AdminTopNavbarProps) {
   const logoutModal = useModal(false);
   const { goTo } = useNavigation();
 
-  const { corporateScheduleCount } = useSelector(
-    (state: any) => state.DashboardReducer);
+
   const dispatch = useDispatch();
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -74,10 +75,6 @@ function TopNavbarCorporateFlow() {
       );
     } catch (error) { }
   }
-
-  const handleCreateOpeningsClick = () => {
-    dispatch(showCreateOpeningsModal());
-  };
 
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
@@ -159,21 +156,19 @@ function TopNavbarCorporateFlow() {
               className="align-items-lg-center ml-lg-auto mr--4 justify-content-end"
               navbar
             >
-
-              {corporateScheduleCount >
-                0 && (
-                  <NavItem>
-                    <NavLink tag={Link}>
-                      <div className={'btn-wrapper'}>
-                        <Button
-                          block
-                          text={"Create Opening"}
-                          onClick={handleCreateOpeningsClick}
-                        />
-                      </div>
-                    </NavLink>
-                  </NavItem>
-                )}
+              {showCreateOpening && (
+                <NavItem>
+                  <NavLink tag={Link}>
+                    <div className={'btn-wrapper'}>
+                      <Button
+                        block
+                        text={"Create Opening"}
+                        onClick={onCreateOpeningClick}
+                      />
+                    </div>
+                  </NavLink>
+                </NavItem>
+              )}
               <NavItem className="d-none d-lg-block ml-lg-2">
                 <div className="row align-items-center m-auto">
                   <span
@@ -264,4 +259,4 @@ function TopNavbarCorporateFlow() {
   );
 }
 
-export { TopNavbarCorporateFlow };
+export { AdminTopNavbar };

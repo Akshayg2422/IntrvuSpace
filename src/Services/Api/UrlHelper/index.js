@@ -299,9 +299,28 @@ export const URL_ADD_CANDIDATE = ASSISTANT + 'addCandidate'
 export const URL_CREATE_COMPANY_SUPER_ADMIN = EMPLOYEE + 'createCompanySuperAdmin'
 
 
- //get jd section
+//get jd section
 
- export const URL_GET_JDSECTION =ASSISTANT+'getJDSections'
+export const URL_GET_JD_SECTION = ASSISTANT + 'getJDSections'
+
+
+/**
+ * get corporate schedule lite GetCorporateSchedulesLite
+ */
+
+export const URL_GET_CORPORATE_SCHEDULES_LITE = ASSISTANT + 'getCorporateSchedulesLite'
+
+
+/**
+ * create opening lite
+ */
+export const URL_CREATE_OPENING_LITE = ASSISTANT + 'createCorporateOpeningLite'
+
+
+/**
+ * add candidate corporate  lite
+ */
+export const URL_ADD_CANDIDATE_CORPORATE_LITE = ASSISTANT + 'addCandidateCorporateLite'
 
 
 

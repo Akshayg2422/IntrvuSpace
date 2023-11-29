@@ -7,21 +7,61 @@ import * as Action from '../Store'
  * get Api sagas
  */
 
-    function* getCandidatesSaga(action) {
-        try {
-            const response = yield call(Api.getCandidatesApi, action.payload.params);
-            if (response) {
-                yield put(Action.getCandidatesSuccess(response));
-                yield call(action.payload.onSuccess(response));
-            } else {
-                yield put(Action.getCandidatesFailure(response.error_message));
-                yield call(action.payload.onError(response));
-            }
-        } catch (error) {
-            yield put(Action.getCandidatesFailure(error));
-            yield call(action.payload.onError(error));
+function* getCandidatesSaga(action) {
+    try {
+        const response = yield call(Api.getCandidatesApi, action.payload.params);
+        if (response) {
+            yield put(Action.getCandidatesSuccess(response));
+            yield call(action.payload.onSuccess(response));
+        } else {
+            yield put(Action.getCandidatesFailure(response.error_message));
+            yield call(action.payload.onError(response));
         }
+    } catch (error) {
+        yield put(Action.getCandidatesFailure(error));
+        yield call(action.payload.onError(error));
     }
+}
+
+
+
+// get jd section
+
+function* getJdSectionSaga(action) {
+    try {
+        const response = yield call(Api.getJdSectionApi, action.payload.params);
+        if (response) {
+            yield put(Action.getJdSectionSuccess(response));
+            yield call(action.payload.onSuccess(response));
+        } else {
+            yield put(Action.getJdSectionFailure(response.error_message));
+            yield call(action.payload.onError(response));
+        }
+    } catch (error) {
+        yield put(Action.getJdSectionFailure(error));
+        yield call(action.payload.onError(error));
+    }
+}
+
+// get jd section
+
+function* getCorporateSchedulesLiteSaga(action) {
+    try {
+        const response = yield call(Api.getCorporateScheduleLiteApi, action.payload.params);
+
+        if (response) {
+            yield put(Action.getCorporateSchedulesLiteSuccess(response));
+            yield call(action.payload.onSuccess(response));
+        } else {
+            yield put(Action.getCorporateSchedulesLiteFailure(response.error_message));
+            yield call(action.payload.onError(response));
+        }
+    } catch (error) {
+        yield put(Action.getCorporateSchedulesLiteFailure(error));
+        yield call(action.payload.onError(error));
+    }
+}
+
 
 
 
@@ -46,34 +86,36 @@ function* addCandidatesSaga(action) {
     }
 }
 
-// get jd section
-
-function* getJdSectionSaga(action) {
+function* createCorporateOpeningLiteSaga(action) {
     try {
-        const response = yield call(Api.getJdSectionApi, action.payload.params);
+        const response = yield call(Api.createOpeningLiteApi, action.payload.params);
         if (response) {
-            yield put(Action.getJdSectionSuccess(response));
             yield call(action.payload.onSuccess(response));
         } else {
-            yield put(Action.getJdSectionFailure(response.error_message));
+
             yield call(action.payload.onError(response));
         }
     } catch (error) {
-        yield put(Action.getJdSectionFailure(error));
+
         yield call(action.payload.onError(error));
     }
 }
 
 
-    
+
+
 
 function* AdminSaga() {
 
     yield takeLatest(Action.GET_CANDIDATES, getCandidatesSaga);
     yield takeLatest(Action.ADD_CANDIDATES, addCandidatesSaga);
-    yield takeLatest(Action.GET_JDSECTION, getJdSectionSaga);
+    yield takeLatest(Action.GET_JD_SECTION, getJdSectionSaga);
+    yield takeLatest(Action.GET_CORPORATE_SCHEDULES_LITE, getCorporateSchedulesLiteSaga);
+    yield takeLatest(Action.CREATE_CORPORATE_OPENING_LITE, createCorporateOpeningLiteSaga);
 
-  }
+
+
+}
 
 
 export default AdminSaga;

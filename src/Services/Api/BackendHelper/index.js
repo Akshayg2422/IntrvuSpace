@@ -293,4 +293,26 @@ export const createCompanySuperAdminApi = payload => post(URL.URL_CREATE_COMPANY
 /*
  getJdSection
  */
-export const getJdSectionApi = payload => post(URL.URL_GET_JDSECTION, payload, {})
+export const getJdSectionApi = payload => post(URL.URL_GET_JD_SECTION, payload, {})
+
+
+
+/**
+ * get corporate schedule lite GetCorporateSchedulesLite
+ */
+export const getCorporateScheduleLiteApi = payload => post(URL.URL_GET_CORPORATE_SCHEDULES_LITE, payload, {})
+
+
+
+/**
+ * create opening lite
+ */
+export const createOpeningLiteApi = payload => post(URL.URL_CREATE_OPENING_LITE, payload, {})
+
+
+/**
+ * add candidate corporate  lite
+ */
+export const addCandidateCorporateLiteApi = payload => post(URL.URL_ADD_CANDIDATE_CORPORATE_LITE, payload, {})
+
+
