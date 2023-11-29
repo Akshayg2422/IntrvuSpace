@@ -2,7 +2,7 @@
 import { icons } from '@Assets';
 import { Alert, Button, Image } from '@Components';
 import { useModal, useNavigation } from '@Hooks';
-import { userLogout, showCreateForOthersJdModal } from "@Redux";
+import { userLogout, setSelectedCompany } from "@Redux";
 import { ROUTES } from '@Routes';
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -37,8 +37,6 @@ function SuperAdminNavbar() {
 
   const { dashboardDetails } = useSelector((state: any) => state.AuthReducer);
 
-
-  console.log("dashboardDetails", dashboardDetails);
 
   const { name, } = dashboardDetails?.basic_info || {}
   const [isOpenDropdown, setIsOpenDropdown] = useState(false)
@@ -168,6 +166,7 @@ function SuperAdminNavbar() {
                     block
                     text={"Create Company"}
                     onClick={() => {
+                      dispatch(setSelectedCompany(undefined))
                       goTo(ROUTES['super-admin']['super-admin-register-company'])
                     }}
                   />
