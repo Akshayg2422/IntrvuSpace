@@ -389,10 +389,10 @@ function DetectFace({ onClick, heading, experience, duration, loading }) {
             if (array.length > 0) {
                 const sum = array.reduce((accumulator: number, currentValue: number) => accumulator + currentValue);
                 average = sum / array.length;
-                const micDisableSum = array.slice(array.length-10, array.length).reduce((accumulator: number, currentValue: number) => accumulator + currentValue);
+                const micDisableSum = array.slice(array.length - 10, array.length).reduce((accumulator: number, currentValue: number) => accumulator + currentValue);
                 MicDisableAverage = micDisableSum / 10
                 // console.log(micDisableSum,"micDisableSum");
-                
+
 
             }
             console.log(array, "average");
@@ -416,7 +416,7 @@ function DetectFace({ onClick, heading, experience, duration, loading }) {
             else {
                 count = count + 1
                 setMicCheck(false)
-               
+
             }
 
             if (average < 30) {
@@ -425,7 +425,7 @@ function DetectFace({ onClick, heading, experience, duration, loading }) {
                 console.log("average", average, 2)
                 array = []
             }
-          
+
             else {
                 console.log("average", average, 3)
                 setNoiseDetection(false)
@@ -531,7 +531,7 @@ function DetectFace({ onClick, heading, experience, duration, loading }) {
 
                                 {
                                     micCheck === 'Checking' ? <div className='d-flex align-items-center'> <Spinner color='secondary' className={'d-inline-block  '} /> <span className='mt-1 ml-3'>Validating audio input</span></div> :
-                                        micCheck  ?
+                                        micCheck ?
                                             <div className='mt-3 d-flex align-items-center'> <Image src={icons.wrong} height={20} width={12} style={{
                                                 objectFit: 'contain'
                                             }} /> <span className='ml-3'> Audio input ia not clear</span></div>
@@ -559,7 +559,7 @@ function DetectFace({ onClick, heading, experience, duration, loading }) {
                             </div>
                             {
                                 proceed && <div className='text-secondary'>
-                                     <h2 className='mt-4 text-secondary '>Expected criteria's are met ! </h2>
+                                    <h2 className='mt-4 text-secondary '>Expected criteria's are met ! </h2>
                                     <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.check} height={12} width={12} style={{
                                         objectFit: 'contain'
                                     }} />
@@ -584,7 +584,7 @@ function DetectFace({ onClick, heading, experience, duration, loading }) {
                                 </div>
                             </div>
                             }
-                         {micCheck === true && <div className='mt-4 text-secondary'>
+                            {micCheck === true && <div className='mt-4 text-secondary'>
                                 <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.frame} height={12} width={12} style={{
                                     objectFit: 'contain'
                                 }} />  <span className='mb-0 ml-2  text-secondary '>Please check your mic and try again</span>
@@ -605,7 +605,7 @@ function DetectFace({ onClick, heading, experience, duration, loading }) {
                                     faceFound === 'Checking' && noiseDetection === 'Checking' ? <></> :
                                         <div className={"btn-wrapper"}>{
                                             proceed ? <Button
-                                            loading = {loading}
+                                                loading={loading}
                                                 block
                                                 text={'Join now'} className={'m-0'} onClick={() => {
                                                     onClick()
