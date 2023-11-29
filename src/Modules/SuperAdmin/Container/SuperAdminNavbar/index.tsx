@@ -150,6 +150,17 @@ function SuperAdminNavbar() {
               className="align-items-lg-center ml-lg-auto mr--4 justify-content-end"
               navbar
             >
+              <NavItem>
+                <div className={'btn-wrapper mr-3'}>
+                  <Button
+                    block
+                    text={"Recent Interview"}
+                    onClick={() => {
+                      goTo(ROUTES['super-admin']['recent-interviews'])
+                    }}
+                  />
+                </div>
+              </NavItem>
 
               <NavItem>
                 <div className={'btn-wrapper'}>
@@ -233,7 +244,7 @@ function SuperAdminNavbar() {
         subTitle={'Please click on proceed to logout'}
         isOpen={logoutModal.visible}
         onClose={logoutModal.hide}
-        primary={"Logout"}
+        primary={"Proceed"}
         secondaryOnClick={logoutModal.hide}
         primaryOnClick={proceedLogout}
       />

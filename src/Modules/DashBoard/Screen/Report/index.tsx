@@ -66,12 +66,12 @@ function Report() {
           /**
            * report
            */
+
           const { interview_meta_info } = response.details
           const { name, role } = interview_meta_info || {};
 
-          const file_name = role + "_" + name + "_" + (reportType.value.id === 'DR' ? 'detailed_report' : 'report')
-
-          console.log(file_name);
+          const reportSuffix = reportType.value.id === 'DR' ? 'detailed_report' : 'report';
+          const file_name = `${role}_${name}_${reportSuffix}`;
 
           setFileName(file_name);
 

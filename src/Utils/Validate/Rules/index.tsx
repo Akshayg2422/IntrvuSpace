@@ -109,8 +109,6 @@ export const REGISTER_COMPANY_SUPER_ADMIN_RULES = {
   },
   interview_limit: {
     presence: { allowEmpty: false, message: "interview limit cannot be empty" },
-    length: { maximum: 6, message: "interview_limit  minimum 6 chars" },
-   
   },
   
 }
@@ -214,6 +212,22 @@ export const ADD_DESIGNATION_CORPORATE_RULES = {
 }
 
 
+export const ADD_CANDIDATE_RULES = {
+  ...FIRST_NAME_RULES,
+  last_name: {
+    presence: { message: "Last name cannot be empty" },
+    length: { minimum: 1, message: "Last name minimum 1 chars" },
+  },
+  ...MOBILE_NUMBER_RULES,
+  ...EMAIL_RULES,
+
+
+}
+
+
+
+
+
 
 export const GENERATE_USING_AI_RULES = {
   name: {
@@ -268,7 +282,7 @@ export const FROM_JD_RULES = {
   },
   sector_name: {
     presence: { message: "Sector name cannot be empty" },
-    length: { minimum: 3, message: "Sector name minimum 3 chars" },
+    length: { minimum: 2, message: "Sector name minimum 2 chars" },
   },
 }
 

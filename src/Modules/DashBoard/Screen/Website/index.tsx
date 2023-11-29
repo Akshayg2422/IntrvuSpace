@@ -13,7 +13,7 @@ import {
 
 function Website() {
   return (
-    <div style={{ backgroundColor: "#fafbff" }}>
+    <div className={'bg-container-light'}>
       <div className="main-content" >
         <WebsiteNavBar />
         <WebsiteHeader />

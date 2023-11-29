@@ -1,5 +1,5 @@
 import { icons } from "@Assets";
-import { Button, Image, ViewMore } from "@Components";
+import { Button, Image, StatusIcon, ViewMore } from "@Components";
 import { capitalizeFirstLetter } from "@Utils";
 import { DesignationItemProps } from "./interfaces";
 import './index.css';
@@ -52,14 +52,7 @@ function DesignationItem({
             <div className={'status-container'}>
               {is_active ? (
                 <>
-                  <Image
-                    src={icons.check}
-                    height={12}
-                    width={12}
-                    style={{
-                      objectFit: 'contain',
-                    }}
-                  />
+                  <StatusIcon />
                   <span className={'status-active'}>Active</span>
                 </>
 

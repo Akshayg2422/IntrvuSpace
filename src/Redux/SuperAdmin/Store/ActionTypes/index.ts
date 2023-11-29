@@ -10,7 +10,6 @@ export const GET_COMPANIES_FAILURE = 'GET_COMPANIES_FAILURE'
 
 export const ALTER_COMPANY_STATUS = 'ALTER_COMPANY_STATUS'
 
-
 /**
  * alter company limits
  */

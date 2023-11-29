@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Spinner, Modal, Input, CommonTable, NoDataFound, Image, MenuBar, Checkbox, showToast, AutoFocusInput } from '@Components';
+import { Spinner, Modal, Input, CommonTable, NoDataFound, Image, MenuBar, Checkbox, showToast, AutoFocusInput, StatusIcon } from '@Components';
 import { SettingHeader } from '@Modules';
 import { useInput, useLoader, useModal } from '@Hooks';
 import { getDesignations, addDesignation } from '@Redux';
@@ -125,14 +125,7 @@ function SettingDesignation() {
             function getActiveStatus(status: boolean) {
                 if (status) {
                     return (
-                        <Image
-                            src={icons.check}
-                            height={15}
-                            width={15}
-                            style={{
-                                objectFit: 'contain'
-                            }}
-                        />
+                        <StatusIcon/>
                     )
                 } else {
                     return null;

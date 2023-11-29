@@ -32,7 +32,7 @@ const DropDownIcon = ({
         onChange={handleSelectChange}
         name={name}
         disabled={disabled}
-        style={{...style}}
+        style={{ ...style }}
       >
         {placeholder && <option>{placeholder}</option>}
         {data && data.length > 0 ? (
@@ -53,7 +53,7 @@ const DropDownIcon = ({
       {error && <code className="text-danger">{error}</code>}
     </div>
 
-    
+
   );
 };
 

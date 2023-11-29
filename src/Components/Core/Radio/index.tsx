@@ -23,7 +23,7 @@ function Radio({
     return (
       <>
         {data?.map((item: RadioItem, index: number) => {
-          const { id, text, subText } = item;
+          const { id, text, subText, noSpace = false } = item;
           let isSelected: boolean = false;
           const disable = disableId?.some(each => each.id === item.id)
 
@@ -34,7 +34,7 @@ function Radio({
           return (
             <div
               key={id}
-              className={`custom-control custom-radio  mb-2 ${variant === 'row' && index !== 0 && 'ml-lg-4 ml-sm-0 ml-2'}`}
+              className={`custom-control custom-radio  mb-2 ${variant === 'row' && (index !== 0 && !noSpace ) && 'ml-lg-4 ml-sm-0 ml-2'}`}
             >
               <input
                 className={'custom-control-input'}

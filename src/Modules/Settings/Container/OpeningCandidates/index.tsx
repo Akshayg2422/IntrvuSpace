@@ -10,6 +10,7 @@ import {
   Modal,
   NoDataFound,
   Spinner,
+  StatusIcon,
   WatchInterviewModal,
   showToast,
 } from "@Components";
@@ -46,36 +47,36 @@ import {
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./index.css";
-import { CandidatesProps } from "./interfaces";
+import { OpeningCandidatesProps } from "./interfaces";
 
-function Candidates({ id, details }: CandidatesProps) {
+function OpeningCandidates({ id, details }: OpeningCandidatesProps) {
   const { goTo } = useNavigation();
   const enterPress = useKeyPress("Enter");
 
   const CANDIDATE_MENU_OPTIONS = [
     { id: 1, name: "Approve Manually" },
     { id: 2, name: "Reject Manually" },
-   { id: 3, name: "Remove Candidate" }
+    { id: 3, name: "Remove Candidate" }
 
   ];
 
   const CANDIDATE_MENU_OPTIONS_COMPLETED = [
     { id: 6, name: "Watch Interview" },
-   
+
   ];
 
   const CANDIDATE_MENU_OPTIONS_NOT_START = [
     { id: 4, name: "Block Interview" },
     { id: 5, name: "Copy Interview Link" },
-  
+
   ];
 
 
 
-  function getCandidateMenu(isCompleted: boolean,is_skipped:boolean, recording_url: any) {
+  function getCandidateMenu(isCompleted: boolean, is_skipped: boolean, recording_url: any) {
     return [
       ...CANDIDATE_MENU_OPTIONS,
-      ...(isCompleted && recording_url.length === 0 ? [] : isCompleted ?  CANDIDATE_MENU_OPTIONS_COMPLETED :CANDIDATE_MENU_OPTIONS_NOT_START)
+      ...(isCompleted && recording_url.length === 0 ? [] : isCompleted ? CANDIDATE_MENU_OPTIONS_COMPLETED : CANDIDATE_MENU_OPTIONS_NOT_START)
       // ...(isCompleted ?(is_skipped?[]: CANDIDATE_MENU_OPTIONS_COMPLETED ):(is_skipped?[]:CANDIDATE_MENU_OPTIONS_NOT_START))
     ] as never[];
   }
@@ -90,12 +91,13 @@ function Candidates({ id, details }: CandidatesProps) {
 
   const getIcon = (key: number) => {
     const iconsMap = {
-      1: { icon: icons.check, h: 12, w: 12 },
-      2: { icon: icons.frame, h: 18, w: 18 },
-      3: { icon: icons.checkBlack, h: 18, w: 18 },
+      1: <StatusIcon />,
+      2: <StatusIcon variant={'frame'} />,
+      3: <StatusIcon variant={'checkBlack'} />
     };
     return iconsMap[key];
   };
+
   const [candidateCountDetails, setCandidateCountDetails] = useState<any>(0);
 
   const openWatchInterviewNotSupportedModal = useModal(false);
@@ -113,10 +115,10 @@ function Candidates({ id, details }: CandidatesProps) {
   const isJdClosed = details?.is_closed;
 
   const {
-    candidatesList,
-    candidatesCount,
-    candidatesListNumOfPages,
-    candidatesListCurrentPages,
+    openingCandidates,
+    openingCandidatesCount,
+    openingCandidatesNumOfPages,
+    openingCandidatesCurrentPages,
     interviewUrl,
   } = useSelector((state: any) => state.DashboardReducer);
 
@@ -125,10 +127,10 @@ function Candidates({ id, details }: CandidatesProps) {
 
 
   useEffect(() => {
-    if (candidatesCount > candidateCountDetails) {
-      setCandidateCountDetails(candidatesCount);
+    if (openingCandidatesCount > candidateCountDetails) {
+      setCandidateCountDetails(openingCandidatesCount);
     }
-  }, [candidatesCount]);
+  }, [openingCandidatesCount]);
 
   const loader = useLoader(false);
 
@@ -180,12 +182,12 @@ function Candidates({ id, details }: CandidatesProps) {
   }
 
   useEffect(() => {
-    getCandidatesCorporate(candidatesListCurrentPages);
+    getCandidatesCorporate(openingCandidatesCurrentPages);
   }, [candidateStatus?.value?.id]);
 
   useEffect(() => {
     if (isCandidateSearch && enterPress) {
-      getCandidatesCorporate(candidatesListCurrentPages);
+      getCandidatesCorporate(openingCandidatesCurrentPages);
     }
   }, [enterPress]);
 
@@ -245,14 +247,7 @@ function Candidates({ id, details }: CandidatesProps) {
           "": (
             <div className={"d-flex align-items-center"}>
               {status_icon_type ? (
-                <Image
-                  src={status?.icon}
-                  height={status?.h}
-                  width={status?.w}
-                  style={{
-                    objectFit: "contain",
-                  }}
-                />
+                status
               ) : null}
               {candidate_score ? (
                 <div className={"screen-heading ml-2"}>{candidate_score}</div>
@@ -339,7 +334,7 @@ function Candidates({ id, details }: CandidatesProps) {
                 {!is_closed && (
                   <div className={"th-menu-container"}>
                     <MenuBar
-                      menuData={getCandidateMenu(is_complete,is_skipped, recording_url)}
+                      menuData={getCandidateMenu(is_complete, is_skipped, recording_url)}
                       onClick={(action) => onCandidateMenuHandler(action, item)}
                     />
                   </div>
@@ -373,7 +368,7 @@ function Candidates({ id, details }: CandidatesProps) {
             showToast("Candidate added successfully", "success");
             addCandidateLoader.hide();
             addCandidateModal.hide();
-            getCandidatesCorporate(candidatesListCurrentPages);
+            getCandidatesCorporate(openingCandidatesCurrentPages);
           },
           onError: (error: any) => () => {
             showToast(error.error_message, "error");
@@ -409,7 +404,7 @@ function Candidates({ id, details }: CandidatesProps) {
     } else if (action.id === CANDIDATE_MENU_OPTIONS[1].id) {
       const params = { is_manually_rejected: true };
       postManualApprovalOnCandidateApiHandler(params, id);
-    } else if (action.id ===  CANDIDATE_MENU_OPTIONS[2].id) {
+    } else if (action.id === CANDIDATE_MENU_OPTIONS[2].id) {
       removeCandidateModal.show();
     } else if (action.id === CANDIDATE_MENU_OPTIONS_NOT_START[0].id) {
       closeCandidateModal.show();
@@ -454,7 +449,7 @@ function Candidates({ id, details }: CandidatesProps) {
         params,
         onSuccess: (response: any) => () => {
           showToast(response.message, "success");
-          getCandidatesCorporate(candidatesListCurrentPages);
+          getCandidatesCorporate(openingCandidatesCurrentPages);
           dispatch(refreshCorporateSchedule());
 
           try {
@@ -516,7 +511,7 @@ function Candidates({ id, details }: CandidatesProps) {
           bulkUploadLoader.hide();
           dispatch(refreshCorporateSchedule());
           bulkUploadModal.hide();
-          getCandidatesCorporate(candidatesListCurrentPages);
+          getCandidatesCorporate(openingCandidatesCurrentPages);
         },
         onError: (error: any) => () => {
           showToast(error.error_message, "error");
@@ -528,7 +523,7 @@ function Candidates({ id, details }: CandidatesProps) {
 
   return (
     <>
-      {candidatesCount <= 0 && !is_department_admin && !isJdClosed && (
+      {openingCandidates <= 0 && !is_department_admin && !isJdClosed && (
         <div className={"empty-candidates-container"}>
           <div className={"text-heading"}>
             {"Start adding your Candidates Now !"}
@@ -670,16 +665,16 @@ function Candidates({ id, details }: CandidatesProps) {
               <div
                 className={'table-container'}
                 style={{
-                  ...(candidatesList?.length === 1 && { height: "280px" })
+                  ...(openingCandidates?.length === 1 && { height: "280px" })
                 }}>
 
-                {candidatesList?.length > 0 ? (
+                {openingCandidates?.length > 0 ? (
                   <CommonTable
-                    isPagination={candidatesListNumOfPages > 1}
-                    tableDataSet={candidatesList}
-                    displayDataSet={normalizedTableData(candidatesList)}
-                    noOfPage={candidatesListNumOfPages}
-                    currentPage={candidatesListCurrentPages}
+                    isPagination={openingCandidatesNumOfPages > 1}
+                    tableDataSet={openingCandidates}
+                    displayDataSet={normalizedTableData(openingCandidates)}
+                    noOfPage={openingCandidatesNumOfPages}
+                    currentPage={openingCandidatesCurrentPages}
                     paginationNumberClick={(currentPage) => {
                       getCandidatesCorporate(
                         paginationHandler("current", currentPage)
@@ -687,12 +682,12 @@ function Candidates({ id, details }: CandidatesProps) {
                     }}
                     previousClick={() => {
                       getCandidatesCorporate(
-                        paginationHandler("prev", candidatesListCurrentPages)
+                        paginationHandler("prev", openingCandidatesCurrentPages)
                       );
                     }}
                     nextClick={() => {
                       getCandidatesCorporate(
-                        paginationHandler("next", candidatesListCurrentPages)
+                        paginationHandler("next", openingCandidatesCurrentPages)
                       );
                     }}
                   />
@@ -827,12 +822,12 @@ function Candidates({ id, details }: CandidatesProps) {
       >
         <div className="mt--4">
           {WATCH_VIDEO_PERMISSION_CONTEXT.map((item) => {
-            const { id, icon, text, h } = item;
+            const { id, text, h } = item;
 
             return (
               <div key={id}>
                 <div className="d-flex align-items-center ">
-                  <Image src={icon} height={h} />
+                  <StatusIcon variant={'frame'} />
                   <div className="ml-2">{text}</div>
                 </div>
               </div>
@@ -844,4 +839,4 @@ function Candidates({ id, details }: CandidatesProps) {
   );
 }
 
-export { Candidates };
+export { OpeningCandidates };

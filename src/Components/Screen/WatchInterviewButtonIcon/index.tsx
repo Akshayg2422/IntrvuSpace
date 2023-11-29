@@ -1,4 +1,4 @@
-import { Image, Modal, showToast } from "@Components";
+import { Image, Modal, StatusIcon, showToast } from "@Components";
 import { WATCH_VIDEO_PERMISSION_CONTEXT, getBrowserInfo } from "@Utils";
 import { UncontrolledTooltip } from "reactstrap";
 import { WatchInterviewButtonIconProps } from "./interface";
@@ -48,12 +48,12 @@ const WatchInterviewButtonIcon = ({
       >
         <div className="mt--4">
           {WATCH_VIDEO_PERMISSION_CONTEXT.map((item) => {
-            const { id, icon, text, h } = item;
+            const { id, text, h } = item;
 
             return (
               <div key={id}>
                 <div className="d-flex align-items-center ">
-                  <Image src={icon} height={h} />
+                  <StatusIcon variant={'frame'} />
                   <div className="ml-2">{text}</div>
                 </div>
               </div>

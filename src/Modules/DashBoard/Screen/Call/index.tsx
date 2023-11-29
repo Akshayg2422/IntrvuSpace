@@ -8,6 +8,7 @@ import {
   Image,
   Modal,
   Spinner,
+  StatusIcon,
 } from "@Components";
 import { useLoader, useModal, useNavigation } from "@Hooks";
 import { CallHeader, CallHeaderMobile, Guidelines, Report } from "@Modules";
@@ -188,7 +189,7 @@ function Call() {
       setIsTtfSpeaking(false);
     };
 
-    audioElementRef.current.onloadstart = function () {};
+    audioElementRef.current.onloadstart = function () { };
     audioElementRef.current.onended = function () {
       setIsTtfSpeaking(false);
       if (closeCall.current === true) {
@@ -265,6 +266,7 @@ function Call() {
     isScreenRecordingReady,
     setIsScreenRecordingReady,
   } = useScreenRecorder(handleRecordingStatusChange);
+  
 
   const [isConfirmRecordingModalOpen, setIsConfirmRecordingModalOpen] =
     useState(false);
@@ -289,7 +291,7 @@ function Call() {
     return () => {
       if (recordStatus) {
         onEndCallHandler();
-      }
+      } 
     };
   }, [recordStatus, isConfirmRecordingModalOpen]);
 
@@ -363,7 +365,7 @@ function Call() {
           canConnect.current = false;
           socketRef.current.close();
           socketRef.current = null;
-        } catch (e) {}
+        } catch (e) { }
         clearInterval(reconnectInterval);
       }
     };
@@ -860,7 +862,7 @@ function Call() {
           stopInterval();
           startInterviewLoader.hide();
         },
-        onError: (error: any) => () => {},
+        onError: (error: any) => () => { },
       })
     );
   };
@@ -943,7 +945,7 @@ function Call() {
         onSuccess: () => () => {
           endInterviewHandler();
         },
-        onError: () => () => {},
+        onError: () => () => { },
       })
     );
   }
@@ -1255,7 +1257,7 @@ function Call() {
             {"2. Enable microphone access in system settings. "}
             <span
               className="pointer text-primary font-weight-700"
-              // onClick={gotoPermissionSetting}
+            // onClick={gotoPermissionSetting}
             >{`(${getOperatingSystem()})`}</span>
           </p>
         </div>
@@ -1304,12 +1306,12 @@ function Call() {
       >
         <div className="mt--4">
           {ENTIRE_SCREEN_CONTEXT.map((item) => {
-            const { id, icon, text } = item;
+            const { id, text } = item;
 
             return (
               <div key={id}>
                 <div className="d-flex align-items-center ">
-                  <Image src={icon} height={8} />
+                  <StatusIcon />
                   <div className="ml-2">{text}</div>
                 </div>
               </div>
@@ -1381,12 +1383,12 @@ function Call() {
       >
         <div className="mt--4">
           {BROWSER_PERMISSION_CONTEXT.map((item) => {
-            const { id, icon, text, h } = item;
+            const { id, text, h } = item;
 
             return (
               <div key={id}>
                 <div className="d-flex align-items-center">
-                  <Image src={icon} height={h} />
+                  <StatusIcon variant={'frame'} />
                   <div className="ml-2">{text}</div>
                 </div>
               </div>

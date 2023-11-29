@@ -57,10 +57,10 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 const interviewDurations = [
-  { id: "0", text: "Quick", subText: "(5 mins)", value: 5 },
-  { id: "1", text: "Short", subText: "(10 mins)", value: 10 },
-  { id: "2", text: "Medium", subText: "(15 mins)", value: 15 },
-  { id: "3", text: "Long", subText: "(30 mins)", value: 30 },
+  { id: "0", text: "Quick", subText: "(5 mins)", value: 5, noSpace: false },
+  { id: "1", text: "Short", subText: "(10 mins)", value: 10, noSpace: false },
+  { id: "2", text: "Medium", subText: "(15 mins)", value: 15, noSpace: false },
+  { id: "3", text: "Long", subText: "(30 mins)", value: 30, noSpace: true },
 ];
 
 const PLACE_HOLDER = {
@@ -969,7 +969,7 @@ function AdminSchedules() {
                 data={interviewDurations}
                 onRadioChange={(selected) => {
                   if (selected) {
-                    setSelectedDuration(selected);
+                    setSelectedDuration(selected as never);
                   }
                 }}
               />
@@ -1175,7 +1175,7 @@ function AdminSchedules() {
                 data={interviewDurations}
                 onRadioChange={(selected) => {
                   if (selected) {
-                    setSelectedDurationForOthers(selected);
+                    setSelectedDurationForOthers(selected as never);
                   }
                 }}
               />

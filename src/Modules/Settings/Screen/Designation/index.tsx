@@ -553,7 +553,6 @@ function Designation() {
           </div>
           <div className={"col-sm-6"}>
             <DateTimePicker
-              noSpace
               disableFuture={true}
               heading={"Deadline Date"}
               placeholder={"Deadline Date"}
@@ -563,7 +562,6 @@ function Designation() {
           </div>
           <div className="col-sm-6">
             <DateTimePicker
-              noSpace
               type={"time"}
               dateFormat={"HH:mm:ss"}
               heading={"Deadline Time"}

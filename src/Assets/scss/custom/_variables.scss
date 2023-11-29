@@ -1,8 +1,4 @@
 //
-// Variables
-//
-
-//
 // Base variables
 //
 
@@ -85,9 +81,14 @@ $colors: map-merge(("blue": $blue,
 );
 
 $default: #172b4d !default;
-$primary: #641df2 !default;
+
+$primary: #4cc916 !default;
+// $primary: #3ddc57 !default;
 // $primary: #5e72e4 !default;
-$secondary: #2f1c6a !default;
+// $secondary: #0c4c15 !default;
+// $secondary: #0c4c15 !default;
+$secondary: #014d0d !default;
+// $secondary: #083710 !default;
 $success: $green !default;
 $info: $teal !default;
 $warning: $orange !default;
@@ -312,7 +313,10 @@ $shape-height-sm: 1.5 !default;
 
 $border-width: 1px !default;
 $border-color: #DADCE0 !default;
-$border-color-modal: #D5DFFF !default;
+$border-color-modal: #c8e0cc !default;
+// $border-color-modal: #D5DFFF !default;
+
+
 
 
 $border-radius: 0.25rem !default;
@@ -644,7 +648,7 @@ $custom-control-indicator-disabled-bg: $gray-200 !default;
 $custom-control-label-disabled-color: $gray-600 !default;
 
 $custom-checkbox-indicator-border-radius: $border-radius-sm !default;
-//$custom-checkbox-indicator-icon-checked:      str-replace(url("data:image/svg+xml !default;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3E%3Cpath fill='%23fff' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z'/%3E%3C/svg%3E"), "#", "%23") !default;
+//$custom-checkbox-indicator-icon-checked: str-replace(url("data:image/svg+xml !default;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3E%3Cpath fill='%23fff' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z'/%3E%3C/svg%3E"), "#", "%23") !default;
 
 // Custom toggle
 

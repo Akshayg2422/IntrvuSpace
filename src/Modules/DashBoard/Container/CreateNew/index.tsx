@@ -1,5 +1,5 @@
 import { icons } from '@Assets'
-import { Button, Image } from '@Components';
+import { Button, Image, StatusIcon } from '@Components';
 import { CreateNewProps } from './interfaces';
 import './index.css';
 
@@ -33,9 +33,7 @@ function CreateNew({ children, title, description, keyPoints, image, buttonText,
                                     <div className={'d-flex align-items-center'} style={{
                                         marginTop: '18px'
                                     }}>
-                                        <Image height={9} width={12} src={icons.check} style={{
-                                            objectFit: 'contain',
-                                        }} />
+                                        <StatusIcon/>
                                         <div style={{
                                             marginLeft: '8px'
                                         }}>
