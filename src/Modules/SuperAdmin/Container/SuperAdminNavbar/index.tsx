@@ -7,6 +7,7 @@ import { ROUTES } from '@Routes';
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import './index.css'
 import {
   Col,
   DropdownItem, DropdownMenu, DropdownToggle, Media,
@@ -193,10 +194,10 @@ function SuperAdminNavbar() {
                           </Media>
                         </Media>
                       </DropdownToggle>
-                      <DropdownMenu right >
+                      <DropdownMenu right className='dropdown-menu-items'>
                         {HEADER_MENU.map((item) => {
                           return (
-                            <DropdownItem
+                            <DropdownItem className='menu-items'
                               onClick={(e) => {
                                 e.preventDefault()
                                 dropdownHandler(item);
