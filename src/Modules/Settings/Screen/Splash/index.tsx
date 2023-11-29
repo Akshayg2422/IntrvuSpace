@@ -61,7 +61,8 @@ function Splash() {
                 goTo(reDirectRoute, true);
             }
         } else {
-            showToast('Invalid User Type')
+            goTo(ROUTES['auth-module'].login)
+            // showToast('Invalid User Type')
         }
     }
 

@@ -2,3 +2,11 @@
     padding: 10px;
     cursor: pointer;
 }
+
+.dropdown-menu-items {
+    background-color: transparent;
+}
+
+.dropdown-menu-items .menu-items:hover {
+    background-color: var(--bg-container-light);
+}
