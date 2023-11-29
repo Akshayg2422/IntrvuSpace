@@ -12,6 +12,9 @@ import {
 import './index.css'
 
 function DetectFace({ onClick, heading, experience, duration }) {
+
+
+
     const videoRef = useRef<any>(null)
 
     let faceLandmarker: any;
@@ -44,6 +47,7 @@ function DetectFace({ onClick, heading, experience, duration }) {
             const filesetResolver = await FilesetResolver.forVisionTasks(
                 "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3/wasm"
             );
+
             faceLandmarker = await FaceLandmarker.createFromOptions(filesetResolver, {
                 baseOptions: {
                     modelAssetPath: `https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task`,
@@ -219,7 +223,7 @@ function DetectFace({ onClick, heading, experience, duration }) {
                 drawingUtils.drawConnectors(
                     landmarks,
                     FaceLandmarker.FACE_LANDMARKS_FACE_OVAL,
-                    { color: "#641df2", lineWidth: 1 }
+                    { color: "#4cc916", lineWidth: 1 }
                 );
                 drawingUtils.drawConnectors(
                     landmarks,
@@ -331,7 +335,7 @@ function DetectFace({ onClick, heading, experience, duration }) {
                 add = add + dataArray[j];
             }
             array.push(Math.round(add / bufferLength))
-            
+
             console.log(array, 'addd');
 
             analyser.getByteTimeDomainData(dataArray);
@@ -341,17 +345,15 @@ function DetectFace({ onClick, heading, experience, duration }) {
             ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
             ctx.lineWidth = 2;
-            ctx.strokeStyle = '#641df2';
+            ctx.strokeStyle = '#4cc916';
             ctx.beginPath();
 
             const sliceWidth = (canvasWidth * 1.0) / bufferLength;
             let x = 0;
-            // let add = 0
+
 
             for (let i = 0; i < bufferLength; i++) {
-                // console.log(dataArray[i]);
 
-                //   add = add + dataArray[i];
                 const v = dataArray[i] / 128.0;
                 const y = (v * canvasHeight) / 2;
 
@@ -363,10 +365,7 @@ function DetectFace({ onClick, heading, experience, duration }) {
 
                 x += sliceWidth;
             }
-            // let fixed :any = (add/ bufferLength).toFixed(2)
-            // array.push(fixed * 100)
 
-            // console.log(fixed * 100 , 'addd');
 
             ctx.lineTo(canvasWidth, canvasHeight / 2);
             ctx.stroke();
@@ -421,6 +420,11 @@ function DetectFace({ onClick, heading, experience, duration }) {
                 array = []
             }
             if (count === 2) {
+                webcamRunningRef.current = false
+                audioStreamRunningRef.current = false
+                audioContext.current.close();
+                console.log(audioContext.current);
+
                 setProceed(true)
             }
 
@@ -443,9 +447,9 @@ function DetectFace({ onClick, heading, experience, duration }) {
         audioStreamRunningRef.current = false
         console.log(audioContext.current, 'js');
 
-        if (noiseDetection) {
-            audioContext.current.close();
-        }
+        // if (noiseDetection) {
+        //     audioContext.current.close();
+        // }
         if (audioStreamRef.current) {
             console.log(audioStreamRef.current, "audioStreamRef");
 
@@ -457,16 +461,14 @@ function DetectFace({ onClick, heading, experience, duration }) {
     }
     return (
         <>
-            <div className='position-relative px-6 pt-4' >
+            <div className='position-relative px-lg-6 pt-4 px-2' >
                 <div className='screen-back'>
                     <Back variant='override' onClick={stopStream} />
                 </div>
                 <div className={'text-secondary col-md-9 mb-md-4 m-0 p-0'}>
                     <span className="screen-heading m-0 p-0 lh-120">{`Interview for the role of ${heading}`}<span className={'text-secondary text-des ml-2'}>{experience}</span></span>
                     <div
-                        className='text-secondary text-des font-weight-700' style={{
-                            marginTop: '15px'
-                        }}>
+                        className='text-secondary text-des font-weight-700 mt-2'>
                         {`${duration} mins`}
                         <span className={'font-weight-400 ml-1'}>{'Duration'}</span>
                     </div>
@@ -487,86 +489,113 @@ function DetectFace({ onClick, heading, experience, duration }) {
                 title={'Validating face and noise'}
                 size='xl'> */}
 
-                {showDetecting && <div className='d-flex text-secondary'>
-                    <div className='col-8' style={{ position: 'relative', width: "600px", height: "450px" }}>
-                        <video id="webcam" className='ml-5' ref={videoRef} autoPlay playsInline disablePictureInPicture height={450} width={600} style={{ position: 'absolute', left: '0px', top: '0px', bottom: "0px", right: '0px', }}></video>
-                        {!next && <><canvas className="ml-lg-5" id="output_canvas" height={450} width={600} style={{ position: 'absolute', left: '0px', top: '0px', bottom: "0px", right: '0px', }}></canvas>
-                            <canvas ref={canvasRef} className='ml-5' width={600} height={100} style={{ position: 'absolute', left: '0px', bottom: "0px", right: '0px' }} /></>}
+                {showDetecting && <div className='d-lg-flex text-secondary'>
+                    <div className='col-lg-7 col-12' style={{ position: 'relative', width: "600px", height: "450px" }}>
+                        <video id="webcam" ref={videoRef} autoPlay playsInline disablePictureInPicture height={450} width={600} style={{ position: 'absolute', left: '0px', top: '0px', bottom: "0px", right: '0px', }}></video>
+                        {!proceed && <><canvas id="output_canvas" height={450} width={600} style={{ position: 'absolute', left: '0px', top: '0px', bottom: "0px", right: '0px', }}></canvas>
+                            <canvas ref={canvasRef} width={600} height={100} style={{ position: 'absolute', left: '0px', bottom: "0px", right: '0px' }} /></>}
                     </div>
-                    <div className=' col-4 position-relative'>
+                    <div className=' col-lg-5 col-12 position-relative'>
 
 
-                        <div className='ml-3 text-default'>
+                        <div className='ml-3 text-secondary'>
                             <h2 className='text-secondary'>Checking Prerequirites</h2>
                             <div className='mt-4'>
                                 {
-                                    faceFound === 'Checking' ?<div className='d-flex align-items-center'> <Spinner color='secondary' className={'d-inline-block  '} /> <span className='mt-1 ml-2'>Validating video input</span></div> : faceFound === true ?
-                                       <div> <Image src={icons.check} height={12} width={12} style={{
+                                    faceFound === 'Checking' ? <div className='d-flex align-items-center'> <Spinner color='secondary' className={'d-inline-block  '} /> <span className='mt-1 ml-3'>Validating video input</span></div> : faceFound === true ?
+                                        <div className=' d-flex align-items-baseline'> <Image src={icons.greenTick} height={12} width={12} style={{
                                             objectFit: 'contain'
-                                        }} /> <span className='ml-2'>Face visible & valid</span></div>
-                                        :<div> <Image src={icons.frame} height={20} width={12} style={{
+                                        }} /> <span className='ml-3'>Face visible & valid</span></div>
+                                        : <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.wrong} height={20} width={12} style={{
                                             objectFit: 'contain'
-                                        }} /> <span className='ml-2'> Face not visible & valid</span></div>
+                                        }} /> <span className='ml-3'> Face not visible & valid</span></div>
                                 }
-                                
+
                             </div>
                             <div className='mt-2'>
 
                                 {
-                                    noiseDetection === 'Checking' ?<div className='d-flex align-items-center'> <Spinner color='secondary' className={'d-inline-block  '} /> <span className='mt-1 ml-2'>Validating audio input</span></div>  :
+                                    noiseDetection === 'Checking' ? <div className='d-flex align-items-center'> <Spinner color='secondary' className={'d-inline-block  '} /> <span className='mt-1 ml-3'>Validating audio input</span></div> :
                                         noiseDetection === 0 ?
-                                        <div> <Image src={icons.frame} height={20} width={12} style={{
-                                            objectFit: 'contain'
-                                        }} /> <span className='ml-2'> Audio input ia not clear</span></div>
-
-                                            :  <div> <Image src={icons.check} height={12} width={12} style={{
+                                            <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.wrong} height={20} width={12} style={{
                                                 objectFit: 'contain'
-                                            }} /> <span className='ml-2'>Audio input is clear</span></div>
+                                            }} /> <span className='ml-3'> Audio input ia not clear</span></div>
+
+                                            : <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.greenTick} height={12} width={12} style={{
+                                                objectFit: 'contain'
+                                            }} /> <span className='ml-3'>Audio input is clear</span></div>
                                 }
-                                
+
                             </div>
                             <div className='mt-2'>
 
                                 {
-                                    noiseDetection === 'Checking' ? <div className='d-flex align-items-center'> <Spinner color='secondary' className={'d-inline-block  '} /> <span className='mt-1 ml-2'>Checking ambience sound stability</span></div>  :
+                                    noiseDetection === 'Checking' ? <div className='d-flex align-items-center'> <Spinner color='secondary' className={'d-inline-block  '} /> <span className='mt-1 ml-3'>Checking ambience sound stability</span></div> :
                                         noiseDetection === true ?
-                                        <div> <Image src={icons.check} height={12} width={12} style={{
-                                            objectFit: 'contain'
-                                        }} /> <span className='ml-2'>Ambience is quiet</span></div>
-
-                                            : <div> <Image src={icons.frame} height={20} width={12} style={{
+                                            <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.greenTick} height={12} width={12} style={{
                                                 objectFit: 'contain'
-                                            }} /> <span className='ml-2'>Ambience is not quiet</span></div>
+                                            }} /> <span className='ml-3'>Ambience is quiet</span></div>
+
+                                            : <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.wrong} height={20} width={12} style={{
+                                                objectFit: 'contain'
+                                            }} /> <span className='ml-3'>Ambience is not quiet</span></div>
                                 }
-                               
+
                             </div>
                             {
-                                proceed ? <div className='mt-4'> <h4 >Expected criteria's are met ! </h4>
-                                <h4>Attend from an quiet and secluded space</h4>
-                                <h4>Verify the stability of your internet connection</h4>
-                                <h4>Keep the video function enabled throughout the session</h4>
-                                </div> :
-                                    !faceFound && !noiseDetection ? <div className='mt-4'><h4>We can't detect your face, please show your face clearly</h4><h4 className='mt-4'>You are in noisy surrounding, please be there in silence room</h4></div>
-                                        : !faceFound ? <div className='mt-4'> <h4>We can't detect your face, please show your face clearly</h4></div>
-                                            : !noiseDetection ? <div className='mt-4'> <h4>You are in noisy surrounding, please be there in silent room</h4></div> : <div></div>
+                                proceed && <div className='text-secondary'>
+                                     <h2 className='mt-4 text-secondary '>Expected criteria's are met ! </h2>
+                                    <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.check} height={12} width={12} style={{
+                                        objectFit: 'contain'
+                                    }} />
+                                        <span className='mb-0 ml-3  text-secondary '>Attend from a quiet and secluded space</span>
+                                    </div>
+                                    <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.check} height={12} width={12} style={{
+                                        objectFit: 'contain'
+                                    }} />
+                                        <span className='mb-0 ml-3  text-secondary '>Verify the stability of your internet connection</span>
+                                    </div>
+                                    <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.check} height={12} width={12} style={{
+                                        objectFit: 'contain'
+                                    }} />
+                                        <span className='mb-0 ml-3  text-secondary '>Keep the video function enabled throughout the session</span>
+                                    </div>
+                                </div>}
+
+                            {!faceFound && <div className='mt-4 text-secondary'>
+                                <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.frame} height={12} width={12} style={{
+                                    objectFit: 'contain'
+                                }} />  <span className='mb-0 ml-2  text-secondary '>We can't detect your face, please show your face clearly</span>
+                                </div>
+                            </div>
                             }
+                            {!noiseDetection && <div className='mt-4 text-secondary'>
+                                <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.frame} height={12} width={12} style={{
+                                    objectFit: 'contain'
+                                }} /><span className='mb-0 ml-2  text-secondary '>You are in noisy surrounding, please be there in silent room</span>
+                                </div></div>}
+
                         </div>
                         <div className='position-absolute bottom-0 d-flex justify-content-center right-0 left-0'>
                             <div>
 
-                            {
-                                faceFound === 'Checking' && noiseDetection === 'Checking' ? <h5 className='text-secondary'>Checking...</h5> : faceFound && noiseDetection ? <Button text={'Continue'} className={'m-0'} onClick={() => {
-                                    webcamRunningRef.current = false
-                                    audioStreamRunningRef.current = false
-                                    audioContext.current.close();
-                                    setNext(true)
-                                    onClick()
-                                }}></Button> : <Button text={'Try Again'} className={'m-0'} onClick={() => {
-                                    setNoiseDetection('Checking')
-                                    setFaceFound('Checking')
-                                    detectingHandler()
-                                }}></Button>
-                            }
+                                {
+                                    faceFound === 'Checking' && noiseDetection === 'Checking' ? <></> :
+                                        <div className={"btn-wrapper"}>{
+                                            faceFound && noiseDetection ? <Button
+                                                block
+                                                text={'Join now'} className={'m-0'} onClick={() => {
+                                                    onClick()
+                                                }}></Button> : <Button
+                                                    block
+                                                    text={'Try Again'} className={'m-0'} onClick={() => {
+                                                        setNoiseDetection('Checking')
+                                                        setFaceFound('Checking')
+                                                        detectingHandler()
+                                                    }}></Button>
+                                        }
+                                        </div>
+                                }
                             </div>
 
                         </div>
