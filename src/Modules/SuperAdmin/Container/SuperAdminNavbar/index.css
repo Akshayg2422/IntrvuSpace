@@ -1,0 +1,7 @@
+.dropdown-menu-items {
+    background-color: "white";
+}
+
+.dropdown-menu-items .menu-items:hover {
+    background-color: var(--bg-container-light);
+}

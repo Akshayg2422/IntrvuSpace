@@ -203,11 +203,11 @@ function TopNavbarCorporateFlow() {
                           </Media>
                         </Media>
                       </DropdownToggle>
-                      <DropdownMenu right>
+                      <DropdownMenu right className="dropdown-menu-items">
                         {HEADER_MENU.map((item: any) => {
 
                           return (
-                            <DropdownItem
+                            <DropdownItem className="menu-items"
                               onClick={(e) => {
                                 e.preventDefault();
                                 dropdownHandler(item);
