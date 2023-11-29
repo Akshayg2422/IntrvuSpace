@@ -197,16 +197,18 @@ function VariantInfo() {
       postCorporateScheduleActions({
         params,
         onSuccess: (response: any) => () => {
+          const { message } = response
           scheduleActionLoader.hide();
           modifyDeadlineModal.hide();
           closeJdModal.hide();
           modifyVacancyModal.hide()
           getCorporateScheduleDetailsHandler();
-          showToast(response.message, "success");
+          showToast(message, "success");
         },
         onError: (error: any) => () => {
+          const { error_message } = error
           scheduleActionLoader.hide();
-          showToast(error.error_message, "error");
+          showToast(error_message, "error");
         },
       })
     );

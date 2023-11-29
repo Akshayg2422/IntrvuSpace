@@ -1,33 +1,28 @@
 import { icons } from "@Assets";
-import { Image } from "@Components";
+import { Divider, Image } from "@Components";
 import { useNavigation } from "@Hooks";
 import { ROUTES } from "@Routes";
 import { Link } from "react-router-dom";
 import "./index.css";
 import {
+  CardFooter,
   Container,
-  Row,
-  Col,
-  Nav,
-  NavItem,
-  NavLink,
   NavbarBrand,
 } from "reactstrap";
 
 function WebsiteFooter() {
-  const { goTo } = useNavigation();
   return (
     <>
       <footer className="pb-3 pt-3 mt-7 bg-container-dark" id="footer-main">
         <section>
           <div>
-            <div className="container">
+            <div className="container mb-md--3">
               <div className="row">
-                <div className="col-lg-4 d-flex justify-content-start mt--2">
+                <div className="col-lg-4 d-flex justify-content-start">
                   <div className="">
                     <div className="mr-3 ">
                       <NavbarBrand to="/" tag={Link}>
-                        <Image src={icons.logoText} height={20} />
+                        <Image className={'mb-2'} src={icons.logoText} height={20} />
                       </NavbarBrand>
                       <p
                         className="text-secondary mt-4 mb-3 d-flex justify-content-start"
@@ -49,18 +44,18 @@ function WebsiteFooter() {
                     >
                       <div className="">
                         <a className="link-text" href="#home">
-                          <span className="pointer">Home</span>
+                          Home
                         </a>
                       </div>
-                      <div className="mt-1">
+                      <div className="">
                         <a
-                          className="text-secondary link-text"
+                          className="link-text"
                           href="#Automated Interviews"
                         >
-                          <span className="pointer ">Pricing</span>
+                          Pricing
                         </a>
                       </div>
-                      <div className="mt-1">
+                      <div>
                         <span>Contact Us</span>
                       </div>
                     </p>
@@ -81,7 +76,7 @@ function WebsiteFooter() {
                           Privacy Policy
                         </a>
                       </div>
-                      <div className="mt-1">
+                      <div >
                         <a
                           className="text-secondary text-decoration-underline-hover"
                           onClick={
@@ -113,7 +108,7 @@ function WebsiteFooter() {
                         <span className="ml-2">+91 9445092211</span>
                       </div>
                       <div className="mt-1">
-                        <Image src={icons.mark} height={16} />
+                        <Image src={icons.mark} height={18} />
 
                         <span className="ml-2">
                           No:03, Prithiv Nagar, G.N.T Road,
@@ -130,10 +125,12 @@ function WebsiteFooter() {
             </div>
           </div>
         </section>
+
         <hr className="mx-lg-6 mx-md-4 mx-3"></hr>
+
         <Container>
           <div
-            className={`mt--2 ml-0 d-flex flex-sm-row flex-column justify-content-between`}
+            className={`mt--2 ml-0 d-flex flex-sm-row flex-column  align-items-center`}
           >
             <div className={"col col-sm-6 text-secondary ml--3"}>
               Copyright © {new Date().getFullYear()} www.intrvu.space | All

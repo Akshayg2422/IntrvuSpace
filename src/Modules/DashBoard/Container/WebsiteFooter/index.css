@@ -3,5 +3,5 @@
 }
 
 .link-text :hover {
-    color: var(--primary) !important;
+    color: var(--primary);
 }
