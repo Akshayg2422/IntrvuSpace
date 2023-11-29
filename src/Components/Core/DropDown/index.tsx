@@ -35,16 +35,14 @@ function DropDown({ id, heading, disabled, placeHolder, selected, data, onChange
     return (
         <FormGroup className={noSpace ? 'm-0 b-0' : ""}>
             <InputHeading heading={heading} Class={Class} id={id} />
-            <div 
-            style={{
-                position: "relative",
-             
-            
-            }}>
+            <div
+                style={{
+                    position: "relative",
+                }}>
                 <Select2
                     id={id}
                     ref={select2Ref}
-                    className={className} 
+                    className={className}
                     data-minimum-results-for-search={'Infinity'}
                     data={data}
                     value={selected && selected.id}
@@ -57,7 +55,7 @@ function DropDown({ id, heading, disabled, placeHolder, selected, data, onChange
                     }
                     onChange={proceedOnChange}
                 >
-                    
+
 
                 </Select2>
                 <span
@@ -69,11 +67,13 @@ function DropDown({ id, heading, disabled, placeHolder, selected, data, onChange
                     }}
                     onClick={openSelect2Dropdown}
                 >
-                    <Image src={icons.downArrowBlack} height={10} width={12} style={{
-                        objectFit: 'contain',
-                      
-                        
-                    }} />
+                    <Image
+                        src={icons.downArrowBlack}
+                        height={10}
+                        width={12}
+                        style={{
+                            objectFit: 'contain',
+                        }} />
                 </span>
             </div>
         </FormGroup>

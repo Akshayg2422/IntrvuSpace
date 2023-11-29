@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { getRecentInterviews } from "@Redux";
-import { CommonTable, DropDown, NoDataFound, Spinner, showToast } from "@Components";
-import { DEFAULT_VALUE, INITIAL_PAGE, getDropDownCompanyDisplayData, paginationHandler } from "@Utils";
+import { CommonTable, DropDown, NoDataFound, Spinner } from "@Components";
 import { useDropDown, useLoader } from "@Hooks";
+import { getRecentInterviews } from "@Redux";
+import { DEFAULT_VALUE, INITIAL_PAGE, getDropDownCompanyDisplayData, paginationHandler } from "@Utils";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
 
 const RecentInterviews = () => {
 
@@ -12,10 +13,13 @@ const RecentInterviews = () => {
     { id: 'IS_STARTED', text: 'Yet to start' },
     { id: 'IS_COMPLETED', text: 'Completed' },
   ]
+
   const dispatch = useDispatch();
   const loader = useLoader(false)
   const filterCompanies = useDropDown(DEFAULT_VALUE);
   const status = useDropDown(STATUS_LIST[0]);
+
+
   const {
     recentInterviews,
     recentInterviewsNumOfPages,
@@ -25,23 +29,21 @@ const RecentInterviews = () => {
 
   useEffect(() => {
     getRecentInterviewsHandler(INITIAL_PAGE);
-  }, [filterCompanies.value?.id, status?.value]);
+  }, []);
 
   const getRecentInterviewsHandler = (page_number: number) => {
 
     const companyId = filterCompanies.value.id;
 
-    const filterStatus =
-      status.value?.id === "IS_STARTED"
-        ? { is_started: true }
-        : status.value?.id === "IS_COMPLETED"
-          ? { is_complete: true }
-          : {};
+    const filterStatus = {
+      ...(status.value?.id === "IS_STARTED" && { is_started: true }),
+      ...(status.value?.id === "IS_COMPLETED" && { is_complete: true })
+    };
 
     const params = {
       page_number,
       ...(companyId !== "-1" && { company_id: companyId }),
-      ...(filterStatus && filterStatus),
+      ...filterStatus
     };
 
     loader.show();
@@ -116,28 +118,26 @@ const RecentInterviews = () => {
       )}
 
       {recentInterviews && recentInterviews.length > 0 && (
-        <div className={'overflow-auto'}>
-          <CommonTable
-            isPagination
-            tableDataSet={recentInterviews}
-            displayDataSet={normalizedTableData(recentInterviews)}
-            noOfPage={recentInterviewsNumOfPages}
-            currentPage={recentInterviewsCurrentPages}
-            paginationNumberClick={(currentPage) => {
-              getRecentInterviewsHandler(paginationHandler("current", currentPage));
-            }}
-            previousClick={() => {
-              getRecentInterviewsHandler(
-                paginationHandler("prev", recentInterviewsCurrentPages)
-              );
-            }}
-            nextClick={() => {
-              getRecentInterviewsHandler(
-                paginationHandler("next", recentInterviewsCurrentPages)
-              );
-            }}
-          />
-        </div>
+        <CommonTable
+          isPagination
+          tableDataSet={recentInterviews}
+          displayDataSet={normalizedTableData(recentInterviews)}
+          noOfPage={recentInterviewsNumOfPages}
+          currentPage={recentInterviewsCurrentPages}
+          paginationNumberClick={(currentPage) => {
+            getRecentInterviewsHandler(paginationHandler("current", currentPage));
+          }}
+          previousClick={() => {
+            getRecentInterviewsHandler(
+              paginationHandler("prev", recentInterviewsCurrentPages)
+            );
+          }}
+          nextClick={() => {
+            getRecentInterviewsHandler(
+              paginationHandler("next", recentInterviewsCurrentPages)
+            );
+          }}
+        />
       )}
 
       {!loader.loader && recentInterviews?.length <= 0 && (
@@ -149,4 +149,4 @@ const RecentInterviews = () => {
   );
 };
 
-export { RecentInterviews }
+export { RecentInterviews };

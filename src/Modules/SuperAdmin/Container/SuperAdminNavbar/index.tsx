@@ -151,10 +151,10 @@ function SuperAdminNavbar() {
               navbar
             >
               <NavItem>
-                <div className={'btn-wrapper'}>
+                <div className={'btn-wrapper mr-3'}>
                   <Button
                     block
-                    text={"Past Interview"}
+                    text={"Recent Interview"}
                     onClick={() => {
                       goTo(ROUTES['super-admin']['recent-interviews'])
                     }}
