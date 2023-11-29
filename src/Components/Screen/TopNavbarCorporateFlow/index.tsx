@@ -1,29 +1,29 @@
-import React, { useState } from "react";
+import { useState } from "react";
 // react library for routing
 import { Link } from "react-router-dom";
 // reactstrap components
+import { icons } from "@Assets";
+import { Alert, Button, Image } from "@Components";
+import { useModal, useNavigation } from "@Hooks";
+import { showCreateOpeningsModal, userLogout } from "@Redux";
+import { ROUTES } from "@Routes";
+import { capitalizeFirstLetter, filteredName } from "@Utils";
+import { useDispatch, useSelector } from "react-redux";
 import {
-  UncontrolledCollapse,
-  NavbarBrand,
-  Navbar,
-  NavItem,
-  NavLink,
-  Nav,
-  Row,
   Col,
   DropdownItem,
   DropdownMenu,
   DropdownToggle,
   Media,
+  Nav,
+  NavItem,
+  NavLink,
+  Navbar,
+  NavbarBrand,
+  Row,
+  UncontrolledCollapse,
   UncontrolledDropdown,
 } from "reactstrap";
-import { icons } from "@Assets";
-import { Image, Modal, Button, Heading, Alert } from "@Components";
-import { useModal, useNavigation } from "@Hooks";
-import { ROUTES } from "@Routes";
-import { showCreateForOthersJdModal, showCreateOpeningsModal, userLogout } from "@Redux";
-import { useDispatch, useSelector } from "react-redux";
-import { capitalizeFirstLetter, filteredName } from "@Utils";
 
 function TopNavbarCorporateFlow() {
   const logoutModal = useModal(false);
@@ -37,18 +37,18 @@ function TopNavbarCorporateFlow() {
 
   const { dashboardDetails } = useSelector((state: any) => state.AuthReducer);
 
-  const { name, email, designation, department } = dashboardDetails?.basic_info || {}
+  const { name } = dashboardDetails?.basic_info || {}
   const { is_super_admin } = dashboardDetails?.rights || {}
 
-  
+
 
 
   const HEADER_MENU = [
-    ...(is_super_admin && [{ id: '1', name: 'Settings', value: 'ST', route: ROUTES['designation-module'].settings }]),
+    ...(is_super_admin ? [{ id: '1', name: 'Settings', value: 'ST', route: ROUTES['designation-module'].settings }] : []),
     { id: '2', name: 'Logout', value: 'LG', route: "" }
   ]
 
-  
+
 
 
   const dropdownHandler = (item: any) => {
@@ -61,7 +61,6 @@ function TopNavbarCorporateFlow() {
     }
 
   };
-
 
   function proceedLogout() {
     try {
@@ -84,9 +83,7 @@ function TopNavbarCorporateFlow() {
     setDropdownOpen(!dropdownOpen);
   };
 
-  const handleCreateForOthersInterviewClick = () => {
-    dispatch(showCreateForOthersJdModal());
-  };
+
 
   return (
     <>

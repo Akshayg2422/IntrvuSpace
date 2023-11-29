@@ -30,10 +30,10 @@ export const getCompaniesFailure = (error: any) => {
  */
 
 export const alterCompanyStatus = (params: any) => {
-  return {
-      type: ActionTypes.ALTER_COMPANY_STATUS,
-      payload: params,
-  };
+    return {
+        type: ActionTypes.ALTER_COMPANY_STATUS,
+        payload: params,
+    };
 };
 
 /**
@@ -41,16 +41,16 @@ export const alterCompanyStatus = (params: any) => {
  */
 
 export const alterCompanyLimit = (params: any) => {
-  return {
-      type: ActionTypes.ALTER_COMPANY_LIMIT,
-      payload: params,
-  };
+    return {
+        type: ActionTypes.ALTER_COMPANY_LIMIT,
+        payload: params,
+    };
 };
 
 /*
  get recent interviews
  */
- export const getRecentInterviews = (params: any) => {
+export const getRecentInterviews = (params: any) => {
     return {
         type: ActionTypes.GET_RECENT_INTERVIEWS,
         payload: params,
@@ -71,3 +71,17 @@ export const getRecentInterviewsFailure = (error: any) => {
         payload: error
     }
 }
+
+
+
+/**
+ *  selcted companies
+ */
+
+
+export const setSelectedCompany = (item: any) => {
+    return {
+        type: ActionTypes.SELECTED_COMPANY,
+        payload: item,
+    };
+};

@@ -245,7 +245,9 @@ export const URL_DASHBOARD = AUTH + 'dashboard'
 
 //get company
 
-export const URL_GETCOMPANY = COMPANY +'getCompany'
+export const URL_GETCOMPANY = COMPANY + 'getCompany'
+
+
 
 
 
@@ -262,32 +264,39 @@ export const URL_GET_COMPANIES = COMPANY + 'getCompanies'
 alter company status
  */
 
-export const URL_ALTER_COMPANY_STATUS= COMPANY +'alterCompanyStatus'
+export const URL_ALTER_COMPANY_STATUS = COMPANY + 'alterCompanyStatus'
 
 
 /*
 alter company limits
  */
 
-export const URL_ALTER_COMPANY_LIMIT= COMPANY +'alterCompanyLimit'
+export const URL_ALTER_COMPANY_LIMIT = COMPANY + 'alterCompanyLimit'
 
 
 /*
  get recent interviews
  */
 
- export const URL_GET_RECENT_INTERVIEWS=ASSISTANT +'getRecentInterviews'
-
- 
-
- //getCandidates
-
- export const URL_GET_CANDIDATES = ASSISTANT+'getCandidates'
+export const URL_GET_RECENT_INTERVIEWS = ASSISTANT + 'getRecentInterviews'
 
 
- //addCandidate
 
- export const URL_ADD_CANDIDATE =ASSISTANT+'addCandidate'
+//getCandidates
+
+export const URL_GET_CANDIDATES = ASSISTANT + 'getCandidates'
+
+
+//addCandidate
+
+export const URL_ADD_CANDIDATE = ASSISTANT + 'addCandidate'
+
+
+/**
+ * super admin create company
+ */
+
+export const URL_CREATE_COMPANY_SUPER_ADMIN = EMPLOYEE + 'createCompanySuperAdmin'
 
 
  //get jd section

@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { SuperAdminNavbar } from '@Modules'
 import { useSelector, useDispatch } from 'react-redux'
-import { alterCompanyLimit, alterCompanyStatus, getCompanies } from '@Redux'
+import { alterCompanyLimit, alterCompanyStatus, getCompanies, setSelectedCompany } from '@Redux'
 import { CommonTable, Image, Input, MenuBar, Modal, NoDataFound, Spinner, StatusIcon, showToast } from '@Components';
 import { capitalizeFirstLetter, getPhoto, paginationHandler, INITIAL_PAGE } from '@Utils';
 import { icons } from '@Assets';
-import { useInput, useLoader, useModal } from '@Hooks';
+import { useInput, useLoader, useModal, useNavigation } from '@Hooks';
+import { ROUTES } from '@Routes'
 
 function SuperAdminDashboard() {
 
@@ -15,16 +16,19 @@ function SuperAdminDashboard() {
 
     const dispatch = useDispatch()
 
+    const { goTo } = useNavigation();
+
     /**
      * add modal
      */
+
     const limitModal = useModal(false);
     const addLimitLoader = useLoader(false);
 
     const loader = useLoader(false);
 
 
-    const [selectedCompany, setSelectedCompany] = useState(undefined)
+    const [selectedCompanyId, setSelectedCompanyId] = useState(undefined)
     const limit = useInput("")
 
 
@@ -37,8 +41,9 @@ function SuperAdminDashboard() {
 
     function getCandidateMenu(is_active: boolean) {
         return [
+            { id: 0, name: "Edit" },
             { id: 1, name: is_active ? "Disable" : 'Enable' },
-            { id: 2, name: "Limit" },
+            { id: 2, name: "Alter Limit" },
         ]
     }
 
@@ -88,7 +93,7 @@ function SuperAdminDashboard() {
 
     const alterCompanyLimitApiHandler = () => {
         const params = {
-            id: selectedCompany,
+            id: selectedCompanyId,
             new_limit: limit.value
         };
         dispatch(
@@ -111,14 +116,18 @@ function SuperAdminDashboard() {
     function companyMenuHandler(action: any, item: any) {
         const { id, is_active, interview_limit } = item;
 
-        setSelectedCompany(id);
+        setSelectedCompanyId(id);
+        dispatch(setSelectedCompany(item))
 
         const MENU = getCandidateMenu(is_active)
 
         if (MENU[0].id === action.id) {
-            alterCompanyStatusApiHandler(id, is_active);
+            goTo(ROUTES['super-admin']['super-admin-register-company'])
         }
         else if (MENU[1].id === action.id) {
+            alterCompanyStatusApiHandler(id, is_active);
+        }
+        else if (MENU[2].id === action.id) {
             limitModal.show();
             limit.set(interview_limit);
         }
@@ -235,7 +244,7 @@ function SuperAdminDashboard() {
 
             <Modal
                 loading={addLimitLoader.loader}
-                title={"Edit Limit"}
+                title={"Alter Limit"}
                 isOpen={limitModal.visible}
                 onClose={limitModal.hide}
                 onClick={alterCompanyLimitApiHandler}

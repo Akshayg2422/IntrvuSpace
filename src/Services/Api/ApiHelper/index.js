@@ -15,7 +15,6 @@ const LOCAL_IP = "http://192.168.220.32:8001/"
 
 
 
-
 export const BUILD_TYPE = BUILD_TYPE_PRE_PROD_IP;
 
 
