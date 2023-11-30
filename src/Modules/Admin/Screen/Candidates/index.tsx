@@ -112,13 +112,11 @@ function Candidates() {
       const { first_name, email, last_name, mobile_number } = el
 
       return {
-        FirstName: capitalizeFirstLetter(first_name),
-        LastName: capitalizeFirstLetter(last_name),
-        Email: email,
-        MobileNumber: mobile_number,
-        
-
-        '':
+        "First Name": capitalizeFirstLetter(first_name),
+        "Last Name":capitalizeFirstLetter(last_name),
+        Email:email,
+        "Mobile Number":mobile_number,
+        '': 
           <MenuBar
             menuData={MENU}
             onClick={(item) => {

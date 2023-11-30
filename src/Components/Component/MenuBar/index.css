@@ -5,8 +5,10 @@
 
 .dropdown-menu-items {
     background-color: transparent;
+    color: var(--secondary);
 }
 
 .dropdown-menu-items .menu-items:hover {
     background-color: var(--bg-container-light);
+    color: var(--secondary);
 }
