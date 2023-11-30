@@ -106,7 +106,7 @@ input[type=number] {
     width: 100%;
     position: relative;
     flex-direction: column;
-    padding: 4% 7%;
+    padding: 3% 6%;
 }
 
 .card-border {
