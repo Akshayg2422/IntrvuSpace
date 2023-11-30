@@ -15,7 +15,7 @@ const LOCAL_IP = "http://192.168.168.32:8000/"
 
 
 
-export const BUILD_TYPE = BUILD_TYPE_LOCAL;
+export const BUILD_TYPE = BUILD_TYPE_PRE_PROD_IP;
 
 
 export const SERVER =
@@ -34,9 +34,9 @@ export const SERVER =
 
 
 // export const CALL_WEBSOCKET = `wss://mockeazyprimary.leorainfotech.in/aaa`
-// export const CALL_WEBSOCKET = `wss://mepp.leorainfotech.in/aaa`
+export const CALL_WEBSOCKET = `wss://mepp.leorainfotech.in/aaa`
 
-export const CALL_WEBSOCKET = `ws://192.168.168.32:8000/aaa`
+// export const CALL_WEBSOCKET = `ws://192.168.168.32:8000/aaa`
 
 
 const axiosApi = axios.create({

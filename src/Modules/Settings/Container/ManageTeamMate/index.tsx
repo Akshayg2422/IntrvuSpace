@@ -226,6 +226,7 @@ function ManageTeamMate() {
     mobileNumber.set('')
     teamDesignation.set({})
     teamDepartment.set({})
+    setSelectedTeam(undefined)
   }
 
   return (
@@ -234,9 +235,9 @@ function ManageTeamMate() {
         <SettingHeader
           title={'Team'}
           buttonText={'Add'}
-          onClick={()=>{
-            resetValues();
-            addTeamMateModal.show()}}
+          onClick={
+           
+            addTeamMateModal.show}
         />
 
         {
