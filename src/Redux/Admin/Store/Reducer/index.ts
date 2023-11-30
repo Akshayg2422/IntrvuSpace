@@ -3,12 +3,14 @@ import { AdminProps } from "../../Interfaces";
 import * as ActionTypes from '../ActionTypes'
 
 const initialState: AdminProps = {
-
-  candidates:undefined,
-  candidatesNumOfPages:undefined,
-  candidatesCurrentPages:1,
-
-
+  candidates: undefined,
+  candidatesNumOfPages: undefined,
+  candidatesCurrentPages: 1,
+  jdSection: [],
+  schedulesLite: [],
+  schedulesLiteNumOfPages: undefined,
+  schedulesLiteCurrentPage: 1,
+  schedulesLiteCount: -1
 };
 
 const AdminReducer = (state = initialState, action: any) => {
@@ -38,7 +40,7 @@ const AdminReducer = (state = initialState, action: any) => {
         candidates: modifiedCandidates,
         candidatesNumOfPages: candidate_list?.num_pages,
         candidatesCurrentPages:
-        candidate_list.next_page === -1
+          candidate_list.next_page === -1
             ? candidate_list.num_pages
             : candidate_list.next_page - 1,
       };
@@ -49,10 +51,63 @@ const AdminReducer = (state = initialState, action: any) => {
       state = { ...state, candidates: undefined };
       break;
 
-   
+    //get jd section
+
+    case ActionTypes.GET_JD_SECTION:
+      state = { ...state, jdSection: undefined };
+      break;
+
+    case ActionTypes.GET_JD_SECTION_SUCCESS:
+      state = { ...state, jdSection: action.payload?.details?.jd_sections };
+      break;
+
+    case ActionTypes.GET_JD_SECTION_FAILURE:
+      state = { ...state, jdSection: undefined };
+      break;
+
+    /**
+     * get corporate schedules lite
+     */
+
+    case ActionTypes.GET_CORPORATE_SCHEDULES_LITE:
+
+      state = {
+        ...state,
+        schedulesLite: undefined,
+        schedulesLiteNumOfPages: undefined,
+        schedulesLiteCurrentPage: 1
+      };
+      break;
+
+    case ActionTypes.GET_CORPORATE_SCHEDULES_LITE_SUCCESS:
+
+      const { corporate_jd_items, schedule_count } = action.payload?.details
+      const modifiedJd = corporate_jd_items?.data || corporate_jd_items
+
+      console.log(action.payload);
+
+      state = {
+        ...state,
+        schedulesLiteCount: schedule_count,
+        schedulesLite: modifiedJd,
+        schedulesLiteNumOfPages: corporate_jd_items?.num_pages,
+        schedulesLiteCurrentPage:
+          corporate_jd_items.next_page === -1
+            ? corporate_jd_items.num_pages
+            : corporate_jd_items.next_page - 1,
+      };
+
+      break;
+
+    case ActionTypes.GET_CORPORATE_SCHEDULES_LITE_FAILURE:
+      state = { ...state, schedulesLite: undefined };
+      break;
+
+    case ActionTypes.UPDATE_CORPORATE_SCHEDULES_LITE:
+      state = { ...state, schedulesLite: action.payload };
+      break;
 
 
-  
     default:
       state = state;
       break;
@@ -61,4 +116,4 @@ const AdminReducer = (state = initialState, action: any) => {
   return state;
 };
 
-export {AdminReducer};
+export { AdminReducer };

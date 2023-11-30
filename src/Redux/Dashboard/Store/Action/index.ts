@@ -1239,7 +1239,7 @@ export const updateCorporateSchedules = (response: any) => {
 
 
 export const watchInterviewVideoUrl = (response: any) => {
-  
+
   return {
     type: ActionTypes.WATCH_INTERVIEW_VIDEO_URL,
     payload: response,

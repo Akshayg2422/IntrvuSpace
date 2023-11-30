@@ -21,13 +21,13 @@ function WebsiteHeader() {
 
   return (
     <div
-      className={`header pt-8`}
+      className={`header pt-lg-8 pt-md-8 pt-sm-0 pt-7`}
       ref={websiteHeaderRef}
       style={{ backgroundColor: "" }}
       id="home"
     >
       <Container>
-        <div className="mb-md-6">
+        <div className="mb-6">
           <Row>
             <Col lg="5">
               <div className="">
@@ -62,7 +62,7 @@ function WebsiteHeader() {
                   </span>
                 </div>
 
-                <div className="" style={{ paddingTop: 35 }}>
+                <div className="pt-md-5 pt-lg-5 pt-sm-0 pt-3">
                   {packageContent.map((item) => {
                     return (
                       <>
@@ -81,7 +81,7 @@ function WebsiteHeader() {
                 </div>
 
                 <Button
-                  className={"mt-7 col-sm-10 ls-0"}
+                  className={"mt-md-7 mt-sm-0 mt-4 col-sm-10 ls-0"}
                   style={{ borderRadius: 4 }}
                   block
                   text={"Register"}
@@ -103,7 +103,7 @@ function WebsiteHeader() {
               </div>
             </Col>
             <Col lg="7" sm="12">
-              <div className="text-center">
+              <div className="text-center mt-sm-0 mt-2">
                 <Image
                   src={image.StreamlinedAutomatedInterview}
                   width={"100%"}

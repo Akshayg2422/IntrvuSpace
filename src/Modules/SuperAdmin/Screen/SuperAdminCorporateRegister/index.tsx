@@ -1,12 +1,12 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { Logo, showToast } from "@Components";
 import { useLoader, useNavigation } from "@Hooks";
-import { SuperAdminRegisterAdmin, SuperAdminRegisterCompany } from '@Modules';
-import { registerAsCompany } from '@Redux';
+import { SuperAdminRegisterAdmin, SuperAdminRegisterCompany, } from '@Modules';
+import { createCompanySuperAdmin } from '@Redux';
 import { ROUTES } from "@Routes";
-import { REGISTER_COMPANY_SUPER_ADMIN_RULES, REGISTER_RULES, getValidateError, ifObjectExist, validate } from '@Utils';
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { REGISTER_COMPANY_SUPER_ADMIN_RULES, getRegisterRules, getValidateError, ifObjectExist, validate, urlToBase64 } from '@Utils';
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import './index.css';
 
 
@@ -18,16 +18,54 @@ function SuperAdminCorporateRegister() {
     const { goTo } = useNavigation();
 
 
+    const { selectedCompany } = useSelector((state: any) => state.SuperAdminReducer);
+
     const dispatch = useDispatch();
 
     const [params, setParams] = useState({});
     const [formType, setFormType] = useState(REGISTER_ADMIN);
     const loader = useLoader(false);
 
+    const isEdit = !selectedCompany
+
+    useEffect(() => {
+
+        if (selectedCompany) {
+            prefillCompanyDetails();
+        }
+
+    }, [])
+
+
+    async function prefillCompanyDetails() {
+
+        const { interview_limit, display_name, phone, email, sector, address, pincode, admin_name, referrer, referral_code, code, logo } = selectedCompany
+
+        const base64Logo = await urlToBase64(logo);
+
+        setParams({
+            first_name: admin_name,
+            interview_limit,
+            brand_name: display_name,
+            email,
+            sector,
+            communication_address: address,
+            referrer,
+            company_code: code,
+            mobile_number: phone,
+            referral_code,
+            pincode,
+            photo: [{ id: 0, base64: base64Logo }]
+        })
+
+    }
+
+
+
 
     const proceedRegisterCorporateApiHandler = () => {
 
-        const validation = validate({ ...REGISTER_RULES, ...REGISTER_COMPANY_SUPER_ADMIN_RULES }, params)
+        const validation = validate({ ...getRegisterRules(isEdit), ...REGISTER_COMPANY_SUPER_ADMIN_RULES }, params)
 
         const {
             first_name,
@@ -42,8 +80,8 @@ function SuperAdminCorporateRegister() {
             interview_limit,
             referrer,
             referral_code,
-            company_code
-
+            company_code,
+            is_light_variant
         } = params as any;
 
         const base64Photo = photo && photo.length > 0 ? photo[0].base64 : "";
@@ -53,6 +91,7 @@ function SuperAdminCorporateRegister() {
         const cleanedBase64Photo = cleanBase64(base64Photo);
 
         const updatedParams = {
+            ...(!isEdit && { id: selectedCompany?.id }),
             first_name,
             email,
             password,
@@ -65,21 +104,21 @@ function SuperAdminCorporateRegister() {
             referrer,
             referral_code,
             company_code,
+            is_light_variant: is_light_variant,
             logo: cleanedBase64Photo,
         };
+
 
         loader.show()
 
         if (ifObjectExist(validation)) {
 
             dispatch(
-                registerAsCompany({
+                createCompanySuperAdmin({
                     params: updatedParams,
                     onSuccess: (response: any) => () => {
                         loader.hide()
-
                         showToast(response.message, 'success');
-
                         goTo(ROUTES['super-admin'].dashboard, true)
                     },
                     onError: (error) => () => {
@@ -111,6 +150,8 @@ function SuperAdminCorporateRegister() {
 
 
 
+
+
     return (
         <div className={'auth-screen'}>
             <div className={'auth-logo'}>
@@ -118,8 +159,10 @@ function SuperAdminCorporateRegister() {
             </div>
             <div className={'auth-container'}>
 
-                {formType === REGISTER_ADMIN &&
+                {
+                    formType === REGISTER_ADMIN &&
                     <SuperAdminRegisterAdmin
+                        edit={isEdit}
                         params={params}
                         onParams={updatedParamsHandler}
                         onSubmit={setRegisterCompanyHandler}

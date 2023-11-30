@@ -82,6 +82,13 @@ export const REGISTER_RULES = {
   ...PASSWORD
 }
 
+export const getRegisterRules = (isPasswordRequired: boolean = true) => ({
+  ...FIRST_NAME_RULES,
+  ...EMAIL_RULES,
+  ...MOBILE_NUMBER_RULES,
+  ...(isPasswordRequired ? PASSWORD : {})
+})
+
 
 export const REGISTER_COMPANY_RULES = {
   brand_name: {
@@ -94,7 +101,7 @@ export const REGISTER_COMPANY_RULES = {
     presence: { allowEmpty: false, message: "sector cannot be empty" },
   },
 
-  
+
 }
 
 export const REGISTER_COMPANY_SUPER_ADMIN_RULES = {
@@ -110,7 +117,7 @@ export const REGISTER_COMPANY_SUPER_ADMIN_RULES = {
   interview_limit: {
     presence: { allowEmpty: false, message: "interview limit cannot be empty" },
   },
-  
+
 }
 
 
@@ -339,13 +346,31 @@ export const CREATE_CORPORATE_SCHEDULE_RULES = {
   department_id: {
     presence: { allowEmpty: false, message: "Department cannot be empty" },
   },
-  vacancies :{
+  vacancies: {
     presence: { allowEmpty: false, message: "vacancies minimum 1 cannot be empty" },
   }
 }
 
+
+export const CREATE_CORPORATE_SCHEDULE_LITE_RULES = {
+  role: {
+    presence: { allowEmpty: false, message: "Position cannot be empty" },
+    length: { minimum: 3, message: "Minimum 3 chars in Position" },
+  },
+  experience: {
+    presence: { allowEmpty: false, message: "Experience cannot be empty" },
+  },
+  jd: {
+    presence: { allowEmpty: false, message: "Job Description cannot be empty" },
+  },
+  vacancies: {
+    presence: { allowEmpty: false, message: "vacancies minimum 1 cannot be empty" },
+  },
+  ...VALIDATE_ADD_NEW_CANDIDATES_RULES
+}
+
 export const CREATE_CORPORATE_VACANCIES_RULES = {
-  vacancies:{
+  vacancies: {
     presence: { allowEmpty: false, message: "Vacancies cannot be empty minimum 1 " },
   }
 }

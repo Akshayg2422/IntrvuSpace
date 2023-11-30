@@ -68,7 +68,7 @@ const ReportHeader = ({ details }: ReportHeaderProps) => {
                         {
                             user_location_info ?
                                 <div className={'user-address-container'}>
-                                    <Image src={icons.location} width={20} height={20} style={{
+                                    <Image src={icons.mark} width={20} height={20} style={{
                                         objectFit: 'contain'
                                     }} />
                                     <span className='ml-1'>

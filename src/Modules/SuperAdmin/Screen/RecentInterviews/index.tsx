@@ -1,8 +1,10 @@
-import { CommonTable, DropDown, NoDataFound, Spinner } from "@Components";
-import { useDropDown, useLoader } from "@Hooks";
-import { getRecentInterviews } from "@Redux";
+import { icons } from "@Assets";
+import { CommonTable, DropDown, Input, MenuBar, NoDataFound, Spinner, showToast } from "@Components";
+import { useDropDown, useInput, useKeyPress, useLoader, useNavigation } from "@Hooks";
+import { deleteInterview, getRecentInterviews, resetInterview } from "@Redux";
+import { ROUTES } from "@Routes";
 import { DEFAULT_VALUE, INITIAL_PAGE, getDropDownCompanyDisplayData, paginationHandler } from "@Utils";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 
@@ -14,11 +16,20 @@ const RecentInterviews = () => {
     { id: 'IS_COMPLETED', text: 'Completed' },
   ]
 
+  const SCHEDULE_MENU = [
+    { id: 1, name: "View Interview Info" },
+    { id: 2, name: "Reset Interview" },
+    { id: 3, name: "Delete Interview" },
+  ];
+
   const dispatch = useDispatch();
   const loader = useLoader(false)
   const filterCompanies = useDropDown(DEFAULT_VALUE);
   const status = useDropDown(STATUS_LIST[0]);
-
+  const search = useInput("");
+  const [isSearch, setIsSearch] = useState(false);
+  const enterPress = useKeyPress("Enter");
+  const { goTo } = useNavigation();
 
   const {
     recentInterviews,
@@ -29,7 +40,13 @@ const RecentInterviews = () => {
 
   useEffect(() => {
     getRecentInterviewsHandler(INITIAL_PAGE);
-  }, []);
+  }, [filterCompanies.value.id, status.value?.id]);
+
+  useEffect(() => {
+    if (isSearch) {
+      getRecentInterviewsHandler(INITIAL_PAGE);
+    }
+  }, [enterPress]);
 
   const getRecentInterviewsHandler = (page_number: number) => {
 
@@ -42,6 +59,7 @@ const RecentInterviews = () => {
 
     const params = {
       page_number,
+      ...(search?.value && { q: search?.value }),
       ...(companyId !== "-1" && { company_id: companyId }),
       ...filterStatus
     };
@@ -53,6 +71,7 @@ const RecentInterviews = () => {
         params,
         onSuccess: () => () => {
           loader.hide();
+          setIsSearch(false);
         },
         onError: () => () => {
           loader.hide();
@@ -61,11 +80,61 @@ const RecentInterviews = () => {
     );
   };
 
+  function proceedMenuClickHandler(selected: any, id: any) {
+    if (selected?.id === SCHEDULE_MENU[0].id) {
+      proceedResponse(id);
+    } else if (selected?.id === SCHEDULE_MENU[1].id) {
+      resetInterviewApiHandler(id);
+    } else if (selected?.id === SCHEDULE_MENU[2].id) {
+      deleteInterviewApiHandler(id);
+    }
+  }
+
+  function proceedResponse(id: string) {
+    if (id) {
+      goTo(ROUTES["designation-module"].response + "/" + id);
+    }
+  }
+
+  function resetInterviewApiHandler(sid: string) {
+
+    const params = { sid };
+
+    dispatch(
+      resetInterview({
+        params,
+        onSuccess: (response: any) => () => {
+          const { message } = response
+          getRecentInterviewsHandler(recentInterviewsCurrentPages)
+          showToast(message, 'success')
+        },
+        onError: () => () => { },
+      })
+    );
+  }
+
+  function deleteInterviewApiHandler(sid: string) {
+
+    const params = { sid };
+
+    dispatch(
+      deleteInterview({
+        params,
+        onSuccess: (response: any) => () => {
+          const { message } = response
+          getRecentInterviewsHandler(recentInterviewsCurrentPages)
+          showToast(message, 'success')
+        },
+        onError: () => () => { },
+      })
+    );
+  }
+
   const normalizedTableData = (data: any) => {
     if (data && data.length > 0)
       return data.map((each: any) => {
 
-        const { interviewee_name, interviewee_role, interviewee_email, interviewee_experience, interview_duration, company_details } = each;
+        const { id, interviewee_name, interviewee_role, interviewee_email, interviewee_experience, interview_duration, company_details } = each;
         const name = company_details?.name
 
         return {
@@ -74,7 +143,19 @@ const RecentInterviews = () => {
           role: interviewee_role,
           email: interviewee_email,
           experience: interviewee_experience,
-          duration: interview_duration
+          duration: interview_duration,
+          '': <div className={""}>
+            <MenuBar
+              menuData={SCHEDULE_MENU}
+              onClick={(action) =>
+                proceedMenuClickHandler(
+                  action,
+                  id
+                )
+              }
+              icon={icons.more}
+            />
+          </div>
         };
 
       });
@@ -83,16 +164,23 @@ const RecentInterviews = () => {
   return (
     <div className={'screen-padding'}>
 
-      {loader.loader && (
-        <div className={'loader-container'}>
-          <Spinner />
-        </div>
-      )}
 
-      {!loader.loader && (
+      {(
         <div className={'row'}>
           {companies && companies.length > 0 && (
             <>
+              <div className="col-sm-3">
+                <Input
+                  id={'search'}
+                  heading={"Search"}
+                  type={"text"}
+                  placeHolder={"Name, Email..."}
+                  value={search?.value}
+                  onChange={search.onChange}
+                  onFocus={() => setIsSearch(true)}
+                  onBlur={() => setIsSearch(false)}
+                />
+              </div>
               <div className={'col-sm-3'}>
                 <DropDown
                   id={"companies"}
@@ -114,6 +202,12 @@ const RecentInterviews = () => {
               </div>
             </>
           )}
+        </div>
+      )}
+
+      {loader.loader && (
+        <div className={'loader-container'}>
+          <Spinner />
         </div>
       )}
 

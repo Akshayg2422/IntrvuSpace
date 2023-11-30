@@ -62,49 +62,50 @@ function RegisterCompany({ loading, params, onParams, onBackPress, onSubmit }: R
                     <div className="text-sub-heading m-0 p-0 text-center">{'Register Company'}</div>
                 </div>
             </div>
+            <div className={'field-wrapper'}>
+                <ImagePicker
+                    defaultPhotos={params?.photo}
+                    onSelect={(images) => {
+                        registerCompanyParamsHandler({ photo: [images] })
+                    }}
+                />
+                <Input
+                    id={'brand_name'}
+                    value={params?.brand_name}
+                    placeholder={'Company Name'}
+                    onChange={registerCompanyOnChange}
+                />
+                <Input
+                    id={'communication_address'}
+                    value={params?.communication_address}
+                    placeholder={'Address'}
+                    onChange={registerCompanyOnChange}
+                />
+                {/* <Input
+                    className={'bg-white'}
+                    readOnly={true}
+                    type={'number'}
+                    placeholder={"Phone"}
+                    maxLength={10}
+                    value={params?.mobile_number}
+                /> */}
 
-            <ImagePicker
-                defaultPhotos={params?.photo}
-                onSelect={(images) => {
-                    registerCompanyParamsHandler({ photo: [images] })
-                }}
-            />
-            <Input
-                id={'brand_name'}
-                value={params?.brand_name}
-                placeholder={'Company Name'}
-                onChange={registerCompanyOnChange}
-            />
-            <Input
-                id={'communication_address'}
-                value={params?.communication_address}
-                placeholder={'Address'}
-                onChange={registerCompanyOnChange}
-            />
-            <Input
-                className={'bg-white'}
-                readOnly={true}
-                type={'number'}
-                placeholder={"Phone"}
-                maxLength={10}
-                value={params?.mobile_number}
-            />
+                <Input
+                    id={'pincode'}
+                    value={params?.pincode}
+                    type={'number'}
+                    placeholder={"Pincode"}
+                    maxLength={6}
+                    onChange={registerCompanyOnChange}
 
-            <Input
-                id={'pincode'}
-                value={params?.pincode}
-                type={'number'}
-                placeholder={"Pincode"}
-                maxLength={6}
-                onChange={registerCompanyOnChange}
-
-            />
-            <Input
-                id={'sector'}
-                value={params?.sector}
-                placeholder={'Sector'}
-                onChange={registerCompanyOnChange}
-            />
+                />
+                <Input
+                    id={'sector'}
+                    value={params?.sector}
+                    placeholder={'Sector'}
+                    onChange={registerCompanyOnChange}
+                />
+            </div>
             <Button
                 loading={loading}
                 block

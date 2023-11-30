@@ -2,11 +2,12 @@
 import { icons } from '@Assets';
 import { Alert, Button, Image } from '@Components';
 import { useModal, useNavigation } from '@Hooks';
-import { userLogout, showCreateForOthersJdModal } from "@Redux";
+import { userLogout, setSelectedCompany } from "@Redux";
 import { ROUTES } from '@Routes';
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import './index.css'
 import {
   Col,
   DropdownItem, DropdownMenu, DropdownToggle, Media,
@@ -37,8 +38,6 @@ function SuperAdminNavbar() {
 
   const { dashboardDetails } = useSelector((state: any) => state.AuthReducer);
 
-
-  console.log("dashboardDetails", dashboardDetails);
 
   const { name, } = dashboardDetails?.basic_info || {}
   const [isOpenDropdown, setIsOpenDropdown] = useState(false)
@@ -168,6 +167,7 @@ function SuperAdminNavbar() {
                     block
                     text={"Create Company"}
                     onClick={() => {
+                      dispatch(setSelectedCompany(undefined))
                       goTo(ROUTES['super-admin']['super-admin-register-company'])
                     }}
                   />
@@ -177,7 +177,7 @@ function SuperAdminNavbar() {
               <NavItem className="d-none d-lg-block ml-4">
                 <div className='row align-items-center m-auto'>
 
-                  <span className='mb-0 text-black font-weight-400 pointer' onClick={toggleDropdownHandler}>
+                  <span className='mb-0 text-secondary font-weight-400 pointer' onClick={toggleDropdownHandler}>
                     {capitalizeFirstLetter(name)}
                   </span>
 
@@ -190,14 +190,14 @@ function SuperAdminNavbar() {
                       <DropdownToggle className="nav-link pr-0" color="" tag="a">
                         <Media className="align-items-center">
                           <Media className="d-none d-lg-block ml--2 mr-2 pointer">
-                            <Image height={12} width={12} src={icons.downArrowBlack} />
+                            <Image height={12} width={12} src={icons.downArrowSecondary} />
                           </Media>
                         </Media>
                       </DropdownToggle>
-                      <DropdownMenu right >
+                      <DropdownMenu right className='dropdown-menu-items'>
                         {HEADER_MENU.map((item) => {
                           return (
-                            <DropdownItem
+                            <DropdownItem className='menu-items text-secondary'
                               onClick={(e) => {
                                 e.preventDefault()
                                 dropdownHandler(item);

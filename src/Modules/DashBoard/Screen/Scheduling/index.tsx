@@ -1,16 +1,6 @@
-import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux'
-import { getInterviewScheduleDetails, getOngoingSchedules } from '@Redux'
-import { Image, Divider, Back, Spinner } from '@Components'
-import { icons } from '@Assets'
-import { useLoader } from '@Hooks'
 import { OnGoingSchedule, ScheduleDetails } from '../../Container';
 
 function Scheduling() {
-
-
-
 
     return (
         <div className='container-fluid  pt-4 fixed-top '>
@@ -35,6 +25,6 @@ function Scheduling() {
     )
 }
 
-export { Scheduling }
+export { Scheduling };
 
 

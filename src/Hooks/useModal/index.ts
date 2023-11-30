@@ -9,7 +9,7 @@ const useModal = (initialValue: boolean) => {
     }
   };
 
-  const show = () => {    
+  const show = () => {
     setVisible(true);
   };
 

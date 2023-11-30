@@ -1,0 +1,7 @@
+.link-text {
+    color: var(--secondary);
+}
+
+.link-text :hover {
+    color: var(--primary);
+}

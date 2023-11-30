@@ -141,6 +141,22 @@ export async function imagePickerConvertBase64(array) {
 
 
 
+export async function urlToBase64(photo: any) {
+  let fetchedPhoto = await getPhoto(photo);
+  const base64 = await fetch(fetchedPhoto)
+    .then((response) => response.blob())
+    .then((blob) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(blob);
+      return new Promise((res) => {
+        reader.onloadend = () => {
+          res(reader.result);
+        };
+      });
+    });
+  return base64
+}
+
 
 
 export function getDropDownDisplayData(data: any) {

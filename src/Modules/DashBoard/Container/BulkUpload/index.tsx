@@ -96,7 +96,7 @@ function BulkUpload({ loading, tempFile, isOpen, onClose, onUpload }: BulkUpload
             }}
             style={{
               borderWidth: 1.5,
-              borderColor: "#e8edff",
+              borderColor: "#e0fad9",
               backgroundColor: "transparent",
             }}
           >
@@ -107,7 +107,7 @@ function BulkUpload({ loading, tempFile, isOpen, onClose, onUpload }: BulkUpload
               onChange={(e) => selectHandler(e)}
               accept=".csv"
             />
-            <button className="dz-button" type="button">
+            <button className="dz-button text-primary px-3" type="button" style={{backgroundColor: "#f2faf0"}}>
               {"Drop file here to upload"}
             </button>
           </Card>
