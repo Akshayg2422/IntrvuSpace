@@ -476,7 +476,7 @@ function* getCorporateScheduleDetailsSaga(action) {
 function* postStudentCodeSubmissionSaga(action) {
   try {
     const response = yield call(Api.postStudentCodeSubmissionApi, action.payload.params);
-    if (response) {
+    if (response.success) {
       yield put(Action.postStudentCodeSubmissionSuccess(response));
       yield call(action.payload.onSuccess(response));
     } else {

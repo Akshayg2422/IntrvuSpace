@@ -1,10 +1,8 @@
-import { Image, Modal, showToast } from "@Components";
-import { WatchInterviewModalProps } from "./interface";
-import { useEffect, useRef, useState } from "react";
-import { icons } from "@Assets";
+import { Modal } from "@Components";
 import { getPhoto } from "@Utils";
+import { useEffect, useRef, useState } from "react";
 import "./index.css";
-import { error } from "console";
+import { WatchInterviewModalProps } from "./interface";
 
 const WatchInterviewModal = ({
   isOpen,
@@ -86,11 +84,10 @@ const WatchInterviewModal = ({
             setRecordingUrlArray([]);
           }
         }}
-        title={`Watch ${name}'s Interview ${
-          recording_url && recording_url.length > 1
-            ? ` - Part ${playVideoUrlIndex + 1}`
-            : ""
-        }`}
+        title={`Watch ${name}'s Interview ${recording_url && recording_url.length > 1
+          ? ` - Part ${playVideoUrlIndex + 1}`
+          : ""
+          }`}
         subTitle={`(${subTitle} minutes)`}
         size="xl"
       >
@@ -123,20 +120,18 @@ const WatchInterviewModal = ({
                   return (
                     <div>
                       <div
-                        className={` ${
-                          index === playVideoUrlIndex
-                            ? "selected-video-card"
-                            : "individual-video-card"
-                        }`}
+                        className={` ${index === playVideoUrlIndex
+                          ? "selected-video-card"
+                          : "individual-video-card"
+                          }`}
                         onClick={() => {
                           setPlayVideoUrlIndex(index);
                         }}
                       >
                         <i
                           key={index}
-                          className={`bi bi-${
-                            isPlay ? "pause" : "play"
-                          }-circle-fill pointer text-primary fa-3x`}
+                          className={`bi bi-${isPlay ? "pause" : "play"
+                            }-circle-fill pointer text-primary fa-3x`}
                           onClick={onImageClickHandler}
                         ></i>
 

@@ -1,8 +1,8 @@
 import { icons } from '@Assets';
-import {  CommonTable, Input, MenuBar, Modal, NoDataFound, Spinner, showToast } from '@Components';
+import { CommonTable, Input, MenuBar, Modal, NoDataFound, Spinner, showToast } from '@Components';
 import { useInput, useLoader, useModal } from '@Hooks';
 import { SettingHeader } from '@Modules';
-import { addCandidate, getCandidates, getJdSection} from '@Redux';
+import { addCandidate, getCandidates, getJdSection } from '@Redux';
 import { ADD_CANDIDATE_RULES, INITIAL_PAGE, capitalizeFirstLetter, getValidateError, ifObjectExist, paginationHandler, validate } from '@Utils';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -24,9 +24,9 @@ function Candidates() {
   const loader = useLoader(true)
 
 
-/**
- * add,Edit candidate state
- */
+  /**
+   * add,Edit candidate state
+   */
   const addCandidateModel = useModal(false);
 
   const [editId, setEditId] = useState<any>()
@@ -42,7 +42,7 @@ function Candidates() {
     getCandidateApiHandler(INITIAL_PAGE)
   }, [])
 
-  
+
 
   const getCandidateApiHandler = (page_number: number) => {
     const params = {
@@ -60,16 +60,16 @@ function Candidates() {
         },
       })
     );
-  }; 
+  };
 
 
   const addCandidateApiHandler = () => {
     const params = {
-        email:mail.value,
-        first_name:firstName.value,
-        last_name:lastName.value,
-        mobile_number:mobileNumber.value,
-       ...(editId && { id: editId })
+      email: mail.value,
+      first_name: firstName.value,
+      last_name: lastName.value,
+      mobile_number: mobileNumber.value,
+      ...(editId && { id: editId })
     }
 
     const validation = validate(ADD_CANDIDATE_RULES, params)
@@ -105,30 +105,30 @@ function Candidates() {
 
   const normalizedTableData = (data: any) => {
     return data.map((el: any) => {
-      const { first_name,email,last_name,mobile_number } = el
+      const { first_name, email, last_name, mobile_number } = el
 
       return {
         FirstName: capitalizeFirstLetter(first_name),
-        LastName:capitalizeFirstLetter(last_name),
-        Email:email,
-        MobileNumber:mobile_number,
-        '': 
+        LastName: capitalizeFirstLetter(last_name),
+        Email: email,
+        MobileNumber: mobile_number,
+        '':
           <MenuBar
             menuData={MENU}
             onClick={(item) => {
               if (item?.id === MENU[0].id) {
-                const { first_name,email,last_name,mobile_number,id } = el
+                const { first_name, email, last_name, mobile_number, id } = el
                 setEditId(id)
                 firstName.set(first_name);
                 lastName.set(last_name)
                 mobileNumber.set(mobile_number)
                 mail.set(email)
                 addCandidateModel.show()
-             
+
               }
             }}
           />
-        
+
       };
     })
 
@@ -140,7 +140,7 @@ function Candidates() {
     lastName.set('')
     mobileNumber.set('')
     mail.set('')
-     setEditId('')
+    setEditId('')
   }
 
   return (
@@ -165,15 +165,15 @@ function Candidates() {
             noOfPage={candidatesNumOfPages}
             currentPage={candidatesCurrentPages}
             paginationNumberClick={(currentPage) => {
-                getCandidateApiHandler(paginationHandler("current", currentPage));
+              getCandidateApiHandler(paginationHandler("current", currentPage));
 
             }}
             previousClick={() => {
-                getCandidateApiHandler(paginationHandler("prev", candidatesCurrentPages))
+              getCandidateApiHandler(paginationHandler("prev", candidatesCurrentPages))
             }
             }
             nextClick={() => {
-                getCandidateApiHandler(paginationHandler("next", candidatesCurrentPages));
+              getCandidateApiHandler(paginationHandler("next", candidatesCurrentPages));
             }
             }
           />

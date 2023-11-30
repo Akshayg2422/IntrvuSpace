@@ -170,3 +170,16 @@ export const createCompanySuperAdmin = (params: any) => {
         payload: params,
     };
 };
+
+
+/**
+ * switch to Advance
+ */
+
+export const switchToAdvance = (params: any) => {
+    return {
+        type: ActionTypes.SWITCH_TO_ADVANCE,
+        payload: params,
+    };
+};
+

@@ -33,7 +33,7 @@ function CreateNew({ children, title, description, keyPoints, image, buttonText,
                                     <div className={'d-flex align-items-center'} style={{
                                         marginTop: '18px'
                                     }}>
-                                        <StatusIcon/>
+                                        <StatusIcon />
                                         <div style={{
                                             marginLeft: '8px'
                                         }}>

@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { Back, Button, ImagePicker, Input, showToast } from "@Components";
+import { Back, Button, Checkbox, ImagePicker, Input, showToast } from "@Components";
 import { REGISTER_COMPANY_SUPER_ADMIN_RULES, getValidateError, ifObjectExist, validate } from '@Utils';
 import { SuperAdminRegisterCompanyProps } from './interfaces';
 import './index.css';
@@ -42,6 +42,12 @@ function SuperAdminRegisterCompany({ loading, params, onParams, onBackPress, onS
             registerCompanyParamsHandler(currentParams)
         }
 
+    }
+
+
+    function checkboxOnChange(checked: boolean, id: string) {
+        const currentParams = { [id]: checked }
+        registerCompanyParamsHandler(currentParams)
     }
 
     const registerCompanyParamsHandler = (currentParams: any) => {
@@ -127,11 +133,17 @@ function SuperAdminRegisterCompany({ loading, params, onParams, onBackPress, onS
                     onChange={registerCompanyOnChange}
                 />
                 <Input
-                    noSpace
                     id={'company_code'}
                     value={params?.company_code}
                     placeholder={'company Code'}
                     onChange={registerCompanyOnChange}
+                />
+
+                <Checkbox
+                    id={'is_light_variant'}
+                    text={'Light Variant'}
+                    defaultChecked={params?.is_light_variant}
+                    onCheckChange={(checked) => { checkboxOnChange(checked, 'is_light_variant') }}
                 />
             </div>
             <Button

@@ -1,0 +1,17 @@
+.duration-container {
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+
+
+.duration-content-container {
+    display: flex;
+}
+
+.each-duration {
+    width: 25%;
+}
+
+.each-duration-space {
+    margin-left: 25px;
+}
