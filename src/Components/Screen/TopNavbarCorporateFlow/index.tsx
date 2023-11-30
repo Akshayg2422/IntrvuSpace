@@ -198,7 +198,7 @@ function TopNavbarCorporateFlow() {
                             <Image
                               height={12}
                               width={12}
-                              src={icons.downArrowBlack}
+                              src={icons.downArrowSecondary}
                             />
                           </Media>
                         </Media>
@@ -207,7 +207,7 @@ function TopNavbarCorporateFlow() {
                         {HEADER_MENU.map((item: any) => {
 
                           return (
-                            <DropdownItem className="menu-items"
+                            <DropdownItem className="menu-items text-secondary"
                               onClick={(e) => {
                                 e.preventDefault();
                                 dropdownHandler(item);
