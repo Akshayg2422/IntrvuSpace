@@ -290,45 +290,6 @@ function DetectFace({ onClick, heading, experience, duration, loading }) {
 
         const canvasWidth = ctx.canvas.width;
         const canvasHeight = ctx.canvas.height;
-        const barWidth = canvasWidth / bufferLength;
-
-        // const gradient = ctx.createLinearGradient(0, 100, 250, 0);
-
-        // // Add three color stops
-        // gradient.addColorStop(0, "#641df2");
-        // gradient.addColorStop(0.5, "#641df2");
-        // gradient.addColorStop(1, "#641df2");
-
-        // const draw = () => {
-
-        //     analyser.getByteFrequencyData(dataArray);
-        //     console.log(dataArray,"dataArray",bufferLength);
-
-
-
-        //     // Clear the canvas
-        //     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-        //     let add = 0
-        //     for (let i = 0; i < bufferLength; i++) {
-        //         add = add + dataArray[i];
-        //         const barHeight = dataArray[i];
-
-        //         // Use linear scaling
-        //         const scaledHeight = (barHeight / 255) * canvasHeight;
-
-        //         // Draw the bar
-        //         ctx.fillStyle = gradient;
-        //         ctx.fillRect(i * barWidth, canvasHeight - scaledHeight, barWidth, scaledHeight);
-        //     }
-        //     array.push(Math.round(add / bufferLength))
-        //     // console.log(add / bufferLength, 'addd');
-
-        //     if (audioStreamRunningRef.current) {
-        //         requestAnimationFrame(draw);
-        //     }
-        // };
-
-        // draw();
         const drawWaveform = () => {
 
             analyser.getByteFrequencyData(dataArray);
@@ -577,6 +538,10 @@ function DetectFace({ onClick, heading, experience, duration, loading }) {
                                         <span className='mb-0 ml-3  text-secondary '>Keep the video function enabled throughout the session</span>
                                     </div>
                                 </div>}
+
+                                {
+                                    !proceed && !faceFound || !noiseDetection || micCheck === true ? <h2 className='mt-4 text-secondary '>Expected criteria's are not met ! </h2> : <></>
+                                }
 
                             {!faceFound && <div className='mt-4 text-secondary'>
                                 <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.frame} height={12} width={12} style={{
