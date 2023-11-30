@@ -41,7 +41,10 @@ function SuperAdminCorporateRegister() {
 
         const { interview_limit, display_name, phone, email, sector, address, pincode, admin_name, referrer, referral_code, code, logo } = selectedCompany
 
-        const base64Logo = await urlToBase64(logo);
+        let base64Logo = "";
+        if (logo) {
+            base64Logo = await urlToBase64(logo) as string;
+        }
 
         setParams({
             first_name: admin_name,
