@@ -100,10 +100,11 @@ function DetectFace({ onClick, heading, experience, duration, loading }) {
                 enableCam()
             } else {
                 micPermissionModal.show();
+                setShowDetecting('permissionNotGranted')
             }
         } else {
             camPermissionModal.show();
-
+            setShowDetecting('permissionNotGranted')
         }
     }
 
@@ -454,7 +455,7 @@ function DetectFace({ onClick, heading, experience, duration, loading }) {
 
         webcamRunningRef.current = false
         if (videoStreamRef) {
-            videoStreamRef.current.getTracks().forEach(function (track) {
+            videoStreamRef.current?.getTracks().forEach(function (track) {
                 track.stop();
             });
         }
@@ -468,7 +469,7 @@ function DetectFace({ onClick, heading, experience, duration, loading }) {
         if (audioStreamRef.current) {
             console.log(audioStreamRef.current, "audioStreamRef");
 
-            const tracks = audioStreamRef.current.getTracks();
+            const tracks = audioStreamRef.current?.getTracks();
             tracks.forEach((track) => track.stop());
         }
         console.log(audioStreamRef.current, "audioStreamRef");
@@ -504,7 +505,7 @@ function DetectFace({ onClick, heading, experience, duration, loading }) {
                 title={'Validating face and noise'}
                 size='xl'> */}
 
-                {showDetecting && <div className='d-lg-flex text-secondary'>
+                {showDetecting === true ? <div className='d-lg-flex text-secondary'>
                     <div className='col-lg-7 col-12' style={{ position: 'relative', width: "600px", height: "450px" }}>
                         <video id="webcam" ref={videoRef} autoPlay playsInline disablePictureInPicture height={450} width={600} style={{ position: 'absolute', left: '0px', top: '0px', bottom: "0px", right: '0px', }}></video>
                         {!proceed && <><canvas id="output_canvas" height={450} width={600} style={{ position: 'absolute', left: '0px', top: '0px', bottom: "0px", right: '0px', }}></canvas>
@@ -625,7 +626,22 @@ function DetectFace({ onClick, heading, experience, duration, loading }) {
                         </div>
                     </div>
 
-                </div>
+                </div> : showDetecting === 'permissionNotGranted' ? <div className='mt-4 text-secondary'>
+                <h2 className="text-secondary">
+                These are general guidelines for enabling webcam and microphone permissions:
+                    </h2>
+                    <h3 className='text-secondary mt-4'>For Web Browsers:</h3>
+                    <p className="mt-3 font-weight-500">{"1. Open your web Browser."}</p>
+                    <p className="mt-3 font-weight-500">
+                        {"2. Go to the website or web application where you want to use the webcam or microphone."}</p>
+                        <p className="mt-3 font-weight-500">
+                        {"3. Click on the padlock icon in the address bar."}</p>
+                        <p className="mt-3 font-weight-500">
+                        {"4. In the dropdown menu, locate 'Camera' or 'Microphone' and set it to 'Allow'."}</p> 
+                        <p className="mt-3 font-weight-500">
+                        {"5. Reload the page and try again."}</p>
+
+                </div> : <></>
 
                 }
 
@@ -633,37 +649,34 @@ function DetectFace({ onClick, heading, experience, duration, loading }) {
             {/* </Modal> */}
 
 
-            {/** Microphone access modal */}
-            <Modal
+             {/** Microphone access modal */}
+             <Modal
                 isOpen={micPermissionModal.visible}
                 onClose={() => {
                     micPermissionModal.hide();
-                    //   startInterviewLoader.hide();
+                    // goBack()
                 }}
                 title={"Microphone Access Required"}
+                buttonText='Close'
+                onClick={() => {
+                    micPermissionModal.hide();
+                    
+                }}
             >
                 <div>
-                    <h3 className="text-gray-dark font-weight-500">
-                        To continue, grant microphone access:
+                    <h3 className="text-secondary font-weight-500">
+                        To continue, grant microphone permission:
                     </h3>
                     <p className="mb-0">{"1. Check browser settings."}</p>
                     <p className="mb-0">
                         {"2. Enable microphone access in system settings. "}
                         <span
                             className="pointer text-primary font-weight-700"
-                        // onClick={gotoPermissionSetting}
+                        // onClick={()=>{gotoPermissionSetting('microphone')}}
                         >{`(${getOperatingSystem()})`}</span>
                     </p>
                 </div>
-                <div className="d-flex float-right">
-                    <Button
-                        text={"OK"}
-                        onClick={() => {
-                            micPermissionModal.hide();
-                            //   startInterviewLoader.hide();
-                        }}
-                    />
-                </div>
+               
             </Modal>
             {/**
        * Camera permission modal
@@ -673,18 +686,30 @@ function DetectFace({ onClick, heading, experience, duration, loading }) {
                 isOpen={camPermissionModal.visible}
                 onClose={() => {
                     camPermissionModal.hide();
-                    //   startInterviewLoader.hide();
+                //    goBack()
                 }}
-                title={"Camera Permission"}
-                subTitle={
-                    "Please provide access to your web camera to start the interview"
-                }
+                title={"Camera Access Required"}
+               
                 buttonText="Close"
                 onClick={() => {
                     camPermissionModal.hide();
-                    //   startInterviewLoader.hide();
+                    
                 }}
-            />
+            >
+                <div>
+                    <h3 className="text-secondary font-weight-500">
+                        To continue, Grant Webcam Permission:
+                    </h3>
+                    <p className="mb-0">{"1. Check browser settings."}</p>
+                    <p className="mb-0">
+                        {"2. Enable camera access in system settings. "}
+                        <span
+                            className="pointer text-primary font-weight-700"
+                        // onClick={()=>{gotoPermissionSetting('microphone')}}
+                        >{`(${getOperatingSystem()})`}</span>
+                    </p>
+                </div>
+            </Modal>
         </>
     );
 };

@@ -10,7 +10,7 @@ import * as Action from '../Store'
 function* getCandidatesSaga(action) {
     try {
         const response = yield call(Api.getCandidatesApi, action.payload.params);
-        if (response) {
+        if (response.success) {
             yield put(Action.getCandidatesSuccess(response));
             yield call(action.payload.onSuccess(response));
         } else {
@@ -30,7 +30,7 @@ function* getCandidatesSaga(action) {
 function* getJdSectionSaga(action) {
     try {
         const response = yield call(Api.getJdSectionApi, action.payload.params);
-        if (response) {
+        if (response.success) {
             yield put(Action.getJdSectionSuccess(response));
             yield call(action.payload.onSuccess(response));
         } else {
@@ -49,7 +49,7 @@ function* getCorporateSchedulesLiteSaga(action) {
     try {
         const response = yield call(Api.getCorporateScheduleLiteApi, action.payload.params);
 
-        if (response) {
+        if (response.success) {
             yield put(Action.getCorporateSchedulesLiteSuccess(response));
             yield call(action.payload.onSuccess(response));
         } else {
@@ -74,7 +74,7 @@ function* getCorporateSchedulesLiteSaga(action) {
 function* addCandidatesSaga(action) {
     try {
         const response = yield call(Api.addCandidatesApi, action.payload.params);
-        if (response) {
+        if (response.success) {
             yield call(action.payload.onSuccess(response));
         } else {
 
@@ -89,7 +89,7 @@ function* addCandidatesSaga(action) {
 function* createCorporateOpeningLiteSaga(action) {
     try {
         const response = yield call(Api.createOpeningLiteApi, action.payload.params);
-        if (response) {
+        if (response.success) {
             yield call(action.payload.onSuccess(response));
         } else {
 
@@ -107,10 +107,9 @@ function* createCorporateOpeningLiteSaga(action) {
 function* addCandidateCorporateLiteSaga(action) {
     try {
         const response = yield call(Api.addCandidateCorporateLiteApi, action.payload.params);
-        if (response) {
+        if (response.success) {
             yield call(action.payload.onSuccess(response));
         } else {
-
             yield call(action.payload.onError(response));
         }
     } catch (error) {

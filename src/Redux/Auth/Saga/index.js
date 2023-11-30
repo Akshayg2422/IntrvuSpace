@@ -28,18 +28,12 @@ function* memberLoginUsingPasswordSaga(action) {
     try {
         const response = yield call(Api.memberLoginUsingPasswordApi, action.payload.params);
 
-        console.log(response);
-        if (response) {
-            console.log('response');
+        if (response.success) {
             yield call(action.payload.onSuccess(response));
         } else {
-            console.log('failure');
-
             yield call(action.payload.onError(response));
         }
     } catch (error) {
-        console.log('failure111');
-        console.log(error);
         yield call(action.payload.onError(error));
     }
 }
@@ -49,7 +43,7 @@ function* memberLoginUsingPasswordSaga(action) {
 function* fetchOtpSaga(action) {
     try {
         const response = yield call(Api.fetchOTPApi, action.payload.params);
-        if (response) {
+        if (response.success) {
             yield put(Action.fetchOTPSuccess(response));
             yield call(action.payload.onSuccess(response));
         } else {
@@ -68,7 +62,7 @@ function* fetchOtpSaga(action) {
 function* fetchMemberLoginUsingOtpSaga(action) {
     try {
         const response = yield call(Api.fetchMemberLoginUsingOtpApi, action.payload.params);
-        if (response) {
+        if (response.success) {
             yield put(Action.fetchMemberUsingLoginOtpSuccess(response));
             yield call(action.payload.onSuccess(response));
         } else {
@@ -107,7 +101,7 @@ function* registerAsCompanySaga(action) {
 function* getOtpForEmailVerificationSaga(action) {
     try {
         const response = yield call(Api.getOtpForEmailVerificationAPi, action.payload.params);
-        if (response) {
+        if (response.success) {
             yield call(action.payload.onSuccess(response));
         } else {
             yield call(action.payload.onError(response));
@@ -145,7 +139,7 @@ function* verifyEmailUsingOtpSaga(action) {
 function* getDashboardSaga(action) {
     try {
         const response = yield call(Api.getDashboardApi, action.payload.params);
-        if (response) {
+        if (response.success) {
             yield put(Action.getDashboardSuccess(response?.details));
             yield call(action.payload.onSuccess(response));
         } else {
