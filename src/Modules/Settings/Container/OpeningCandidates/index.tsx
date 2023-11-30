@@ -530,43 +530,44 @@ function OpeningCandidates({ id, details }: OpeningCandidatesProps) {
 
   return (
     <>
-      {openingCandidates <= 0 && !is_department_admin && !isJdClosed && (
-        <div className={"empty-candidates-container"}>
-          <div className={"text-heading"}>
-            {"Start adding your Candidates Now !"}
+      {
+        openingCandidatesCount <= 0 && !is_department_admin && !isJdClosed && (
+          <div className={"empty-candidates-container"}>
+            <div className={"text-heading"}>
+              {"Start adding your Candidates Now !"}
+            </div>
+            <div className={"empty-candidates-des-container"}>
+              <div className={"text-des"}>
+                {
+                  "Start adding the candidates with their email and phone number. intrvu SPACE instantly schedules interviews and sends the interview"
+                }
+              </div>
+              <div className={"text-des"}>
+                {
+                  "invite link over email and message with the deadlines before which they can join anytime of their preference"
+                }
+              </div>
+            </div>
+            {/* {!is_department_admin && !isJdClosed && ( */}
+            <div className={"empty-candidates-btn-container"}>
+              <div className={"empty-btn-container"}>
+                <Button
+                  block
+                  text={"Add Manually"}
+                  onClick={addCandidateModal.show}
+                />
+              </div>
+              <div className={"empty-btn-container bulk-btn-container"}>
+                <Button
+                  block
+                  text={"Bulk Import"}
+                  onClick={openBulkUploadHandler}
+                />
+              </div>
+            </div>
+            {/* )} */}
           </div>
-          <div className={"empty-candidates-des-container"}>
-            <div className={"text-des"}>
-              {
-                "Start adding the candidates with their email and phone number. intrvu SPACE instantly schedules interviews and sends the interview"
-              }
-            </div>
-            <div className={"text-des"}>
-              {
-                "invite link over email and message with the deadlines before which they can join anytime of their preference"
-              }
-            </div>
-          </div>
-          {/* {!is_department_admin && !isJdClosed && ( */}
-          <div className={"empty-candidates-btn-container"}>
-            <div className={"empty-btn-container"}>
-              <Button
-                block
-                text={"Add Manually"}
-                onClick={addCandidateModal.show}
-              />
-            </div>
-            <div className={"empty-btn-container bulk-btn-container"}>
-              <Button
-                block
-                text={"Bulk Import"}
-                onClick={openBulkUploadHandler}
-              />
-            </div>
-          </div>
-          {/* )} */}
-        </div>
-      )}
+        )}
 
       {candidateCountDetails > 0 && (
         <div>
