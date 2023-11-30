@@ -15,12 +15,13 @@ function WebsiteScheduleAndNotification() {
         <Container>
             <div className="mb-md-6">
                 <Row>
-                    <Col className={'pt-md-4'} lg="7" sm="12">
-                        <div>
+                    <Col lg="7" sm="12">
+                        <div className={'mt-md-5 d-flex justify-content-center'}>
                             <img
+                                className={"mr-md-8"}
                                 src={image.ScheduleAndNotification}
-                                width={"100%"}
-                                height={"100%"}
+                                width={"80%"}
+                                height={"80%"}
                             />
                         </div>
                     </Col>
@@ -36,9 +37,9 @@ function WebsiteScheduleAndNotification() {
                                 {packageContent.map((item) => {
                                     return (
                                         <>
-                                            <div className="row ml-md-1 ml-sm-0 ml-1">
+                                            <div className="row ml-sm-0 ml-1">
                                                 <div>
-                                                    <StatusIcon/>
+                                                    <StatusIcon />
                                                 </div>
                                                 <span
                                                     className="col-11 text-secondary"

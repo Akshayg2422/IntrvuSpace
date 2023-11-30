@@ -263,7 +263,7 @@ function AllInOnePlatform() {
                 </div>
 
 
-                <div className="pt-6">
+                <div className="pt-md-6 pt-lg-6 pt-sm-0 pt-4">
                   <span className="display-3 font-weight-bolder text-secondary">
                     How it works ?
                   </span>
