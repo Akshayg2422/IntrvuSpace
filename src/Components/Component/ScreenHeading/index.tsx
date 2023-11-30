@@ -3,31 +3,39 @@ import { ScreenHeadingProps } from './interfaces'
 import { useNavigation } from '@Hooks'
 import { Image } from '@Components'
 import { icons } from '@Assets'
+import './index.css'
 
 function ScreenHeading({ text, subtitle, children }: ScreenHeadingProps) {
 
     const { goBack } = useNavigation()
 
+
+
     return (
 
         <div className={'mb-4'} >
-            <div className="row">
-                <div className="screen-heading d-flex align-items-center col-4 m-0 p-0">
-                    <span className={'ml-md--3 pr-md-4 pr-sm-0 pr-2 d-flex align-items-center'}>
+            <div className={'d-flex'}>
+                <div className="screen-heading col-auto m-0 p-0 d-flex align-items-center" style={{ position: 'relative' }}>
+                    <div
+                        className='pointer back-btn-container'
+                        onClick={() => { goBack() }}
+                    >
                         <Image
-                            className="pointer"
+                            className={'btn-image-container'}
                             src={icons.backButton}
-                            height={12}
-                            onClick={() => { goBack() }} />
-                    </span>
-                    {text}
+                        />
+                    </div>
+                    <div className='m-0'>
+                        {text}
+                    </div>
                 </div>
-                <div className={'col-8'}>{children}</div>
+                <div className={'col'}>{children}</div>
             </div>
+
             <div className={'text-secondary'}>
                 {subtitle}
             </div>
-        </div>
+        </div >
     )
 }
 
