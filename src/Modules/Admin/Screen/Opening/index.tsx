@@ -70,6 +70,10 @@ function Opening() {
     corporateScheduleCurrentPages,
   } = useSelector((state: any) => state.DashboardReducer);
 
+  const DEFAULT_DATE = moment().add(9, 'day').format('MMM D YYYY')
+  const DEFAULT_TIME = moment().set({ hour: 23, minute: 59, second: 0 }).format('LT')
+
+
 
   const { dashboardDetails } = useSelector((state: any) => state.AuthReducer);
   const { is_department_admin } = dashboardDetails?.rights || {}
@@ -108,8 +112,8 @@ function Opening() {
   const [isPositionSearch, setIsPositionSearch] = useState(false);
   const [videoRecordMandatory, setVideoRecordMandatory] = useState(true)
 
-  const [scheduleEndDate, setScheduleEndDate] = useState<any>(moment().add(9, 'day').format('MMM D YYYY'));
-  const [scheduleEndTime, setScheduleEndTime] = useState<any>(moment().set({ hour: 23, minute: 59, second: 0 }).format('LT'));
+  const [scheduleEndDate, setScheduleEndDate] = useState<any>(DEFAULT_DATE);
+  const [scheduleEndTime, setScheduleEndTime] = useState<any>(DEFAULT_TIME);
 
   const formatDeadline = (date: string, time: string) => {
     const formattedDate = moment(date, 'MMM D YYYY').format('YYYY-MM-DD');
@@ -229,7 +233,9 @@ function Opening() {
   };
 
   function resetValues() {
+
     createOpeningModal.hide();
+
     position.set("");
     experience.set(EXPERIENCE_LIST[0]);
     jd.set("");
@@ -238,6 +244,10 @@ function Opening() {
     referenceId.set("");
     setSelectedSector("");
     setSelectedDepartment("");
+
+    setScheduleEndDate(DEFAULT_DATE);
+    setScheduleEndTime(DEFAULT_TIME);
+
   }
 
   const getCorporateScheduleApiHandler = (page_number: number) => {
