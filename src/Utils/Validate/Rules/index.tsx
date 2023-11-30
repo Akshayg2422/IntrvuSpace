@@ -221,10 +221,10 @@ export const ADD_DESIGNATION_CORPORATE_RULES = {
 
 export const ADD_CANDIDATE_RULES = {
   ...FIRST_NAME_RULES,
-  last_name: {
-    presence: { message: "Last name cannot be empty" },
-    length: { minimum: 1, message: "Last name minimum 1 chars" },
-  },
+  // last_name: {
+  //   presence: { message: "Last name cannot be empty" },
+  //   length: { minimum: 1, message: "Last name minimum 1 chars" },
+  // },
   ...MOBILE_NUMBER_RULES,
   ...EMAIL_RULES,
 
@@ -321,10 +321,10 @@ export const CREATE_KNOWLEDGE_GROUP_VARIANT_RULES = {
 
 export const VALIDATE_ADD_NEW_CANDIDATES_RULES = {
   ...FIRST_NAME_RULES,
-  last_name: {
-    presence: { message: "Last name cannot be empty" },
-    length: { minimum: 1, message: "Last name minimum 1 chars" },
-  },
+  // last_name: {
+  //   presence: { message: "Last name cannot be empty" },
+  //   length: { minimum: 1, message: "Last name minimum 1 chars" },
+  // },
   ...MOBILE_NUMBER_RULES,
   ...EMAIL_RULES,
 }
@@ -446,10 +446,10 @@ export const USER_FORM_RULES = {
     presence: { message: "Name cannot be empty." },
     length: { minimum: 3, message: "First Name should have a minimum of 3 characters." },
   },
-  last_name: {
-    presence: { message: "Last name cannot be empty" },
-    length: { minimum: 1, message: "Last name minimum 1 chars" },
-  },
+  // last_name: {
+  //   presence: { message: "Last name cannot be empty" },
+  //   length: { minimum: 1, message: "Last name minimum 1 chars" },
+  // },
 
   mobile_number: {
     presence: { message: "Mobile number cannot be empty" },
