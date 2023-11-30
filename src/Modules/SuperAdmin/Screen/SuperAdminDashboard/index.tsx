@@ -26,17 +26,19 @@ function SuperAdminDashboard() {
     const [selectedCompanyId, setSelectedCompanyId] = useState(undefined)
     const limit = useInput("")
     const search = useInput("");
-    const [isSearch, setIsSearch] = useState(false);
+
     const enterPress = useKeyPress("Enter");
 
     useEffect(() => {
-        if (isSearch) {
-            getCompaniesApiHandler(INITIAL_PAGE);
-        }
+
+        getCompaniesApiHandler(INITIAL_PAGE);
+
     }, [])
 
     useEffect(() => {
-        getCompaniesApiHandler(INITIAL_PAGE);
+        if (enterPress) {
+            getCompaniesApiHandler(INITIAL_PAGE);
+        }
     }, [enterPress])
 
 
@@ -50,6 +52,9 @@ function SuperAdminDashboard() {
 
 
     const getCompaniesApiHandler = (page_number: number) => {
+
+        console.log('called');
+
         const params = {
             page_number,
             ...(search?.value && { q: search?.value }),
@@ -62,7 +67,6 @@ function SuperAdminDashboard() {
                 params,
                 onSuccess: () => () => {
                     loader.hide();
-                    setIsSearch(false);
                 },
                 onError: () => () => {
                     loader.hide();
@@ -244,11 +248,9 @@ function SuperAdminDashboard() {
                             id={'search'}
                             heading={"Search"}
                             type={"text"}
-                            placeHolder={"Mobile, Email, Name, Id"}
+                            placeHolder={"Name, Mobile, ..."}
                             value={search?.value}
                             onChange={search.onChange}
-                            onFocus={() => setIsSearch(true)}
-                            onBlur={() => setIsSearch(false)}
                         />
                     </div>
                     {

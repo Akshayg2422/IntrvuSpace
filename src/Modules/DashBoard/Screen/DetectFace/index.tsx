@@ -290,45 +290,6 @@ function DetectFace({ onClick, heading, experience, duration, loading }) {
 
         const canvasWidth = ctx.canvas.width;
         const canvasHeight = ctx.canvas.height;
-        const barWidth = canvasWidth / bufferLength;
-
-        // const gradient = ctx.createLinearGradient(0, 100, 250, 0);
-
-        // // Add three color stops
-        // gradient.addColorStop(0, "#641df2");
-        // gradient.addColorStop(0.5, "#641df2");
-        // gradient.addColorStop(1, "#641df2");
-
-        // const draw = () => {
-
-        //     analyser.getByteFrequencyData(dataArray);
-        //     console.log(dataArray,"dataArray",bufferLength);
-
-
-
-        //     // Clear the canvas
-        //     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-        //     let add = 0
-        //     for (let i = 0; i < bufferLength; i++) {
-        //         add = add + dataArray[i];
-        //         const barHeight = dataArray[i];
-
-        //         // Use linear scaling
-        //         const scaledHeight = (barHeight / 255) * canvasHeight;
-
-        //         // Draw the bar
-        //         ctx.fillStyle = gradient;
-        //         ctx.fillRect(i * barWidth, canvasHeight - scaledHeight, barWidth, scaledHeight);
-        //     }
-        //     array.push(Math.round(add / bufferLength))
-        //     // console.log(add / bufferLength, 'addd');
-
-        //     if (audioStreamRunningRef.current) {
-        //         requestAnimationFrame(draw);
-        //     }
-        // };
-
-        // draw();
         const drawWaveform = () => {
 
             analyser.getByteFrequencyData(dataArray);
@@ -390,10 +351,10 @@ function DetectFace({ onClick, heading, experience, duration, loading }) {
             if (array.length > 0) {
                 const sum = array.reduce((accumulator: number, currentValue: number) => accumulator + currentValue);
                 average = sum / array.length;
-                const micDisableSum = array.slice(array.length-10, array.length).reduce((accumulator: number, currentValue: number) => accumulator + currentValue);
+                const micDisableSum = array.slice(array.length - 10, array.length).reduce((accumulator: number, currentValue: number) => accumulator + currentValue);
                 MicDisableAverage = micDisableSum / 10
                 // console.log(micDisableSum,"micDisableSum");
-                
+
 
             }
             console.log(array, "average");
@@ -417,7 +378,7 @@ function DetectFace({ onClick, heading, experience, duration, loading }) {
             else {
                 count = count + 1
                 setMicCheck(false)
-               
+
             }
 
             if (average < 30) {
@@ -426,7 +387,7 @@ function DetectFace({ onClick, heading, experience, duration, loading }) {
                 console.log("average", average, 2)
                 array = []
             }
-          
+
             else {
                 console.log("average", average, 3)
                 setNoiseDetection(false)
@@ -532,7 +493,7 @@ function DetectFace({ onClick, heading, experience, duration, loading }) {
 
                                 {
                                     micCheck === 'Checking' ? <div className='d-flex align-items-center'> <Spinner color='secondary' className={'d-inline-block  '} /> <span className='mt-1 ml-3'>Validating audio input</span></div> :
-                                        micCheck  ?
+                                        micCheck ?
                                             <div className='mt-3 d-flex align-items-center'> <Image src={icons.wrong} height={20} width={12} style={{
                                                 objectFit: 'contain'
                                             }} /> <span className='ml-3'> Audio input ia not clear</span></div>
@@ -560,7 +521,7 @@ function DetectFace({ onClick, heading, experience, duration, loading }) {
                             </div>
                             {
                                 proceed && <div className='text-secondary'>
-                                     <h2 className='mt-4 text-secondary '>Expected criteria's are met ! </h2>
+                                    <h2 className='mt-4 text-secondary '>Expected criteria's are met ! </h2>
                                     <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.check} height={12} width={12} style={{
                                         objectFit: 'contain'
                                     }} />
@@ -578,6 +539,10 @@ function DetectFace({ onClick, heading, experience, duration, loading }) {
                                     </div>
                                 </div>}
 
+                                {
+                                    !proceed && !faceFound || !noiseDetection || micCheck === true ? <h2 className='mt-4 text-secondary '>Expected criteria's are not met ! </h2> : <></>
+                                }
+
                             {!faceFound && <div className='mt-4 text-secondary'>
                                 <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.frame} height={12} width={12} style={{
                                     objectFit: 'contain'
@@ -585,7 +550,7 @@ function DetectFace({ onClick, heading, experience, duration, loading }) {
                                 </div>
                             </div>
                             }
-                         {micCheck === true && <div className='mt-4 text-secondary'>
+                            {micCheck === true && <div className='mt-4 text-secondary'>
                                 <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.frame} height={12} width={12} style={{
                                     objectFit: 'contain'
                                 }} />  <span className='mb-0 ml-2  text-secondary '>Please check your mic and try again</span>
@@ -606,7 +571,7 @@ function DetectFace({ onClick, heading, experience, duration, loading }) {
                                     faceFound === 'Checking' && noiseDetection === 'Checking' ? <></> :
                                         <div className={"btn-wrapper"}>{
                                             proceed ? <Button
-                                            loading = {loading}
+                                                loading={loading}
                                                 block
                                                 text={'Join now'} className={'m-0'} onClick={() => {
                                                     onClick()

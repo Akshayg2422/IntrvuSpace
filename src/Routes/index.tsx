@@ -6,7 +6,6 @@ import {
   CreateNewPassword,
   CreateQuestionForm,
   Department,
-  Designation,
   ForgotPassword,
   HowItWorks,
   Introduction,
@@ -22,12 +21,11 @@ import {
   Reports,
   Response,
   ReturnAndRefund,
-  Schedules,
   Scheduling,
   Sector,
   Settings,
   TermsAndConditions,
-  VariantInfo,
+  OpeningDetails,
   WeightageCountForm,
   EmailVerification,
   CorporateRegister,
@@ -36,7 +34,8 @@ import {
   SuperAdminDashboard,
   RecentInterviews,
   Candidates,
-  SuperAdminCorporateRegister
+  SuperAdminCorporateRegister,
+  Schedule
 
 } from '@Modules';
 
@@ -113,12 +112,6 @@ export const OLD_ROUTES = [
     id: 2,
     path: ROUTES['designation-module']['create-question-form'],
     component: <CreateQuestionForm />
-  }
-  ,
-  {
-    id: 7,
-    path: ROUTES['designation-module']['schedules'],
-    component: <Schedules />
   },
   {
     id: 6,
@@ -287,7 +280,7 @@ export const ADMIN_ROUTES = [
     name: "Schedule",
     icon: icons.schedule,
     layout: "",
-    component: <Designation />
+    component: <Schedule />
   },
   {
     id: 2,
@@ -340,7 +333,7 @@ export const ADMIN_ROUTES = [
   {
     id: 8,
     path: ROUTES['designation-module']['opening-detail'],
-    component: <VariantInfo />
+    component: <OpeningDetails />
   },
 ];
 

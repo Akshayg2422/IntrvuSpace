@@ -61,7 +61,7 @@ function DropDown({ id, heading, disabled, placeHolder, selected, data, onChange
                 <span
                     style={{
                         position: 'absolute',
-                        right: "5%",
+                        right: "10%",
                         top: "25%",
                         cursor: 'pointer'
                     }}

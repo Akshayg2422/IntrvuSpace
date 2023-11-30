@@ -19,7 +19,6 @@ function Splash() {
 
     const { loginDetails } = useSelector((state: any) => state.AppReducer);
 
-    console.log(loginDetails);
 
     const { isLoggedIn, user_type } = loginDetails || {}
 

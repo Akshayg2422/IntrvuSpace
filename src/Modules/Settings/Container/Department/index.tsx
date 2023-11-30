@@ -1,8 +1,7 @@
 import { icons } from '@Assets';
-import { AutoFocusInput, CommonTable, Input, MenuBar, Modal, NoDataFound, Spinner, showToast } from '@Components';
+import { AutoFocusInput, Button, CommonTable, Input, MenuBar, Modal, NoDataFound, ScreenHeading, Spinner, showToast } from '@Components';
 // import AutoFocusInput from '@Components//Core/AutoFocusInput';
 import { useInput, useLoader, useModal } from '@Hooks';
-import { SettingHeader } from '@Modules';
 import { addDepartmentCorporate, getDepartmentCorporate } from '@Redux';
 import { ADD_DEPARTMENT_CORPORATE_RULES, INITIAL_PAGE, capitalizeFirstLetter, getValidateError, ifObjectExist, paginationHandler, validate } from '@Utils';
 import { useEffect, useRef, useState } from 'react';
@@ -122,10 +121,19 @@ function Department() {
   return (
     <>
       <div className={'screen-padding'}>
-        <SettingHeader
-          title={'Departments'}
-          buttonText={'Add'}
-          onClick={addDepartmentModel.show}
+        <ScreenHeading
+          text={'Departments'}
+          children={
+            <div className={'d-flex justify-content-end'}>
+              <div className={'btn-wrapper'}>
+                <Button
+                  block
+                  text={'Add'}
+                  onClick={addDepartmentModel.show}
+                />
+              </div>
+            </div>
+          }
         />
         {
           loader.loader && <div className={'loader-container'}><Spinner /></div>

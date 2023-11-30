@@ -140,12 +140,6 @@ function Call() {
 
   const [networkBreakTime, setNetworkBreakTime] = useState(0);
 
-  /**
-   * Detect face
-   */
-
-  const [callDetectFace, setCallDetectFace] = useState<any>(false)
-
   // microphone permission states
 
   const micPermissionModal = useModal(false);
@@ -266,7 +260,7 @@ function Call() {
     isScreenRecordingReady,
     setIsScreenRecordingReady,
   } = useScreenRecorder(handleRecordingStatusChange);
-  
+
 
   const [isConfirmRecordingModalOpen, setIsConfirmRecordingModalOpen] =
     useState(false);
@@ -291,7 +285,7 @@ function Call() {
     return () => {
       if (recordStatus) {
         onEndCallHandler();
-      } 
+      }
     };
   }, [recordStatus, isConfirmRecordingModalOpen]);
 
@@ -892,8 +886,7 @@ function Call() {
   }
 
   async function startInterviewHandler() {
-    // const { is_video_recording_manditory } = scheduleInfo;
-    const is_video_recording_manditory = true
+    const { is_video_recording_manditory } = scheduleInfo;
 
     startInterviewLoader.show();
     const hasCamPermission = await hasCameraPermission();
@@ -904,13 +897,11 @@ function Call() {
       if (hasMicPermission) {
         micPermissionModal.hide();
 
-        if (!recordStatus && is_video_recording_manditory) {
+        if (!recordStatus && is_video_recording_manditory ) {
          
           await startScreenRecording();
         }
-        else if (recordStatus || !is_video_recording_manditory && callDetectFace) {
-          setCallDetectFace(false)
-
+        else if (recordStatus || !is_video_recording_manditory) {
           initiateSocket();
 
           proceedOpenCallView.current = true;
@@ -1396,10 +1387,6 @@ function Call() {
           })}
         </div>
       </Modal>
-
-      {/* {
-        callDetectFace && <DetectFace onClick={startInterviewHandler} />
-      } */}
     </>
   );
 }
