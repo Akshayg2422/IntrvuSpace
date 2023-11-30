@@ -25,7 +25,7 @@ function WebsiteFooter() {
                         <Image className={'mb-2'} src={icons.logoText} height={20} />
                       </NavbarBrand>
                       <p
-                        className="text-secondary mt-4 mb-3 d-flex justify-content-start"
+                        className="text-secondary mt-1 mb-3 d-flex justify-content-start"
                         style={{ fontSize: "15px", fontWeight: 400 }}
                       >
                         intrvu SPACE is your dedicated companion in the pursuit
@@ -39,7 +39,7 @@ function WebsiteFooter() {
                   <div className="">
                     <h3 className="text-secondary font-weight-800">COMPANY</h3>
                     <p
-                      className="mt-4 text-secondary"
+                      className="text-secondary"
                       style={{ fontSize: "15px", fontWeight: 400 }}
                     >
                       <div className="">
@@ -68,7 +68,7 @@ function WebsiteFooter() {
                       className="text-secondary"
                       style={{ fontSize: "15px", fontWeight: 400 }}
                     >
-                      <div className="mt-4">
+                      <div>
                         <a
                           className="text-secondary text-decoration-underline-hover"
                           // onClick={() => goTo(ROUTES["auth-module"].privacy)}
@@ -99,7 +99,7 @@ function WebsiteFooter() {
                       className="text-secondary"
                       style={{ fontSize: "15px", fontWeight: 400 }}
                     >
-                      <div className="mt-4 d-flex align-items-center">
+                      <div className="d-flex align-items-center">
                         <Image src={icons.email} height={16} />
                         <span className="ml-2">contact@leorainfotech.in</span>
                       </div>

@@ -14,17 +14,18 @@ function WebsiteReportsAndInsights() {
         <Container>
             <div className="mb-md-6">
                 <Row>
-                    <Col className={'pt-md-5'} lg="6" sm="12">
-                        <div>
+                    <Col lg="7" sm="12">
+                        <div className={'mt-md-5 d-flex justify-content-center'}>
                             <img
+                                className={"mr-md-8"}
                                 src={image.AccessReportsAndInsights}
-                                width={"100%"}
-                                height={"100%"}
+                                width={"80%"}
+                                height={"80%"}
                             />
                         </div>
                     </Col>
-                    <Col lg="6">
-                        <div className="mt-5 ml-md-7">
+                    <Col lg="5">
+                        <div className="mt-5 ml-md-4">
                             <div>
                                 <span style={{ lineHeight: '35px' }} className="display-3 text-secondary font-weight-bolder mb-0 ls-1">
                                     Access on Interview <br></br>Reports & Insights
@@ -35,9 +36,9 @@ function WebsiteReportsAndInsights() {
                                 {packageContent.map((item) => {
                                     return (
                                         <>
-                                            <div className="row ml-md-1 ml-sm-0 ml-1">
+                                            <div className="row ml-sm-0 ml-1">
                                                 <div>
-                                                    <StatusIcon/>
+                                                    <StatusIcon />
                                                 </div>
                                                 <span
                                                     className="col-11 text-secondary"

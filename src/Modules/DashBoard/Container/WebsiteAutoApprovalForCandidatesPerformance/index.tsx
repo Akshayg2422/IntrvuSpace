@@ -14,7 +14,7 @@ function WebsiteAutoApprovalForCandidatesPerformance() {
         <Container>
             <div className={'pb-md-5'}>
                 <Row>
-                    <Col lg="6">
+                    <Col lg="5">
                         <div className="mt-5">
                             <div>
                                 <span style={{ lineHeight: '35px' }} className="display-3 text-secondary font-weight-bolder mb-0">
@@ -29,7 +29,7 @@ function WebsiteAutoApprovalForCandidatesPerformance() {
                                         <>
                                             <div className="row ml-md-1 ml-sm-0 ml-1">
                                                 <div>
-                                                    <StatusIcon/>
+                                                    <StatusIcon />
                                                 </div>
                                                 <span
                                                     className="col-11 text-secondary"
@@ -43,12 +43,13 @@ function WebsiteAutoApprovalForCandidatesPerformance() {
                             </div>
                         </div>
                     </Col>
-                    <Col className={'pt-md-2'} lg="6" sm="12">
-                        <div>
+                    <Col className={'pt-5'} lg="7" sm="12">
+                        <div className={'d-flex justify-content-center'}>
                             <img
+                                className={'ml-md-6'}
                                 src={image.AutoApproval}
-                                width={"100%"}
-                                height={"100%"}
+                                width={"80%"}
+                                height={"80%"}
                             />
                         </div>
                     </Col>
