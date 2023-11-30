@@ -1,24 +1,21 @@
 import {
   Alert,
+  CommonTable,
   DateTimePicker,
+  Input,
   MenuBar,
   Modal,
-  ViewMore,
-  showToast,
-  Back,
-  Spinner,
-  Input,
-  Button,
-  CommonTable,
   ScreenHeading,
+  Spinner,
+  ViewMore,
+  showToast
 } from "@Components";
 import { useInput, useLoader, useModal } from "@Hooks";
 import { OpeningCandidates } from "@Modules";
 import {
-  createCorporateSchedules,
   getCorporateScheduleDetails,
   getJdSection,
-  postCorporateScheduleActions,
+  postCorporateScheduleActions
 } from "@Redux";
 import {
   CREATE_CORPORATE_VACANCIES_RULES,
@@ -278,7 +275,6 @@ function OpeningDetails() {
             <ScreenHeading
               text={capitalizeFirstLetter(position)}
               subtitle={capitalizeFirstLetter(experience)}
-
             >
               <div className={"vacancies-container d-flex justify-content-end"}>
                 <div className={"screen-heading"}>{`${vacancies}  ${vacancies > 1 ? "Vacancies" : "Vacancy"
