@@ -43,7 +43,7 @@ function WebsiteCreateJdAndAddCandidates() {
                             </div>
                         </Col>
                         <Col lg="6" sm="12">
-                            <div>
+                            <div className="mt-6">
                                 <img
                                     className={'ml-md-7 ml-sm-0 ml-4'}
                                     src={image.CreateJdAddCandidates}
