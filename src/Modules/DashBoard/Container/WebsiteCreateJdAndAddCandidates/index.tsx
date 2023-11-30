@@ -14,7 +14,7 @@ function WebsiteCreateJdAndAddCandidates() {
             <Container>
                 <div className="mb-6">
                     <Row>
-                        <Col lg="6">
+                        <Col lg="5">
                             <div className="mt-5">
                                 <div>
                                     <span style={{ lineHeight: '35px' }} className="display-3 text-secondary font-weight-bolder mb-0 ls-1">
@@ -28,7 +28,7 @@ function WebsiteCreateJdAndAddCandidates() {
                                             <>
                                                 <div className="row ml-md-1 ml-sm-0 ml-1">
                                                     <div>
-                                                       <StatusIcon/>
+                                                        <StatusIcon />
                                                     </div>
                                                     <span
                                                         className="col-11 text-secondary"
@@ -42,10 +42,10 @@ function WebsiteCreateJdAndAddCandidates() {
                                 </div>
                             </div>
                         </Col>
-                        <Col lg="6" sm="12">
-                            <div className="mt-6">
+                        <Col lg="7" sm="12">
+                            <div className="mt-5 d-flex justify-content-center">
                                 <img
-                                    className={'ml-md-7 ml-sm-0 ml-4'}
+                                    className={'ml-md-6'}
                                     src={image.CreateJdAddCandidates}
                                     width={"80%"}
                                     height={"80%"}
