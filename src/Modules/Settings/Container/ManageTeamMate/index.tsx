@@ -234,7 +234,9 @@ function ManageTeamMate() {
         <SettingHeader
           title={'Team'}
           buttonText={'Add'}
-          onClick={addTeamMateModal.show}
+          onClick={()=>{
+            resetValues();
+            addTeamMateModal.show()}}
         />
 
         {
