@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Spinner, Modal, Input, CommonTable, NoDataFound, Image, MenuBar, Checkbox, showToast, AutoFocusInput, StatusIcon } from '@Components';
-import { SettingHeader } from '@Modules';
+import { Spinner, Modal, Input, CommonTable, NoDataFound, Image, MenuBar, Checkbox, showToast, AutoFocusInput, StatusIcon, ScreenHeading, Button } from '@Components';
 import { useInput, useLoader, useModal } from '@Hooks';
 import { getDesignations, addDesignation } from '@Redux';
 import { useDispatch, useSelector } from 'react-redux';
@@ -125,7 +124,7 @@ function SettingDesignation() {
             function getActiveStatus(status: boolean) {
                 if (status) {
                     return (
-                        <StatusIcon/>
+                        <StatusIcon />
                     )
                 } else {
                     return null;
@@ -180,10 +179,19 @@ function SettingDesignation() {
     return (
         <>
             <div className={'screen-padding'}>
-                <SettingHeader
-                    title={'Designations'}
-                    buttonText={'Add'}
-                    onClick={addDesignationModal.show}
+                <ScreenHeading
+                    text={'Designations'}
+                    children={
+                        <div className={'d-flex justify-content-end'}>
+                            <div className={'btn-wrapper'}>
+                                <Button
+                                    block
+                                    text={'Add'}
+                                    onClick={addDesignationModal.show}
+                                />
+                            </div>
+                        </div>
+                    }
                 />
 
                 {

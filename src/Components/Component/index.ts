@@ -28,6 +28,7 @@ export * from './AnimatedLoader'
 export * from './AnimatedBook'
 export * from './ReportLoader'
 export * from './StatusIcon'
+export * from './ScreenHeading'
 
 
 

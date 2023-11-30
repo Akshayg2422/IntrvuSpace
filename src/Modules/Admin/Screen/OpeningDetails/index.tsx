@@ -10,6 +10,7 @@ import {
   Input,
   Button,
   CommonTable,
+  ScreenHeading,
 } from "@Components";
 import { useInput, useLoader, useModal } from "@Hooks";
 import { OpeningCandidates } from "@Modules";
@@ -274,20 +275,12 @@ function OpeningDetails() {
         {
           corporateScheduleDetails &&
           <div>
-            <div className={"variant-header"}>
-              <div>
-                <div className={'back-container-vacancies'}>
-                  <Back />
-                </div>
-                <div className={"screen-heading"}>
-                  {capitalizeFirstLetter(position)}
-                </div>
-                <div className={"experience"}>
-                  {capitalizeFirstLetter(experience)}
-                </div>
-              </div>
+            <ScreenHeading
+              text={capitalizeFirstLetter(position)}
+              subtitle={capitalizeFirstLetter(experience)}
 
-              <div className={"vacancies-container"}>
+            >
+              <div className={"vacancies-container d-flex justify-content-end"}>
                 <div className={"screen-heading"}>{`${vacancies}  ${vacancies > 1 ? "Vacancies" : "Vacancy"
                   }`}</div>
                 {!is_closed && (
@@ -299,7 +292,7 @@ function OpeningDetails() {
                   </div>
                 )}
               </div>
-            </div>
+            </ScreenHeading>
 
             <OpeningCandidates id={id} details={corporateScheduleDetails} />
 

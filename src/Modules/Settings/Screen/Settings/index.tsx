@@ -1,7 +1,7 @@
 import { useNavigation } from '@Hooks';
-import { SettingHeader } from '@Modules';
 import { ROUTES } from '@Routes';
 import './index.css';
+import { ScreenHeading } from '@Components';
 
 function Settings() {
 
@@ -9,7 +9,7 @@ function Settings() {
   const DESIGNATION = 1
   const TEAM = 2
   const SECTOR = 3
-  const CANDIDATES=4
+  const CANDIDATES = 4
 
   const { goTo } = useNavigation()
 
@@ -28,8 +28,7 @@ function Settings() {
   return (
     <div className={'screen-padding'}>
 
-      <SettingHeader title={'Settings'} />
-
+      <ScreenHeading text={'Settings'} />
 
       <div className={'setting-container'}>
         <div
@@ -77,8 +76,8 @@ function Settings() {
           <div className={'setting-heading'}>{'Candidate'}</div>
         </div>
 
-    
-      
+
+
       </div>
 
     </div>

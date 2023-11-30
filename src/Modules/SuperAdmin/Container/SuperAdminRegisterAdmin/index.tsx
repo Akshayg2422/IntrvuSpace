@@ -85,7 +85,8 @@ function SuperAdminRegisterAdmin({ edit, params, onParams, onSubmit }: SuperAdmi
                 onChange={registerAdminOnChange}
 
             />
-            {edit &&
+            {
+                edit &&
                 <>
                     <InputPassword
                         id={'password'}

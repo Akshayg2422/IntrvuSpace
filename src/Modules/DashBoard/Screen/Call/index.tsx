@@ -260,7 +260,7 @@ function Call() {
     isScreenRecordingReady,
     setIsScreenRecordingReady,
   } = useScreenRecorder(handleRecordingStatusChange);
-  
+
 
   const [isConfirmRecordingModalOpen, setIsConfirmRecordingModalOpen] =
     useState(false);
@@ -285,7 +285,7 @@ function Call() {
     return () => {
       if (recordStatus) {
         onEndCallHandler();
-      } 
+      }
     };
   }, [recordStatus, isConfirmRecordingModalOpen]);
 
@@ -887,7 +887,6 @@ function Call() {
 
   async function startInterviewHandler() {
     const { is_video_recording_manditory } = scheduleInfo;
-    // const is_video_recording_manditory = true
 
     startInterviewLoader.show();
     const hasCamPermission = await hasCameraPermission();
