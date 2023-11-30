@@ -780,8 +780,8 @@ function OpeningCandidates({ id, details }: OpeningCandidatesProps) {
 
       <Alert
         isOpen={closeCandidateModal.visible}
-        title={"Block Interview"}
-        subTitle={"Are you sure, want to block this interview?"}
+        title={"Block Candidate's Interview"}
+        subTitle={"Are you sure, want to block this candidate's interview?"}
         onClose={() => {
           closeCandidateModal.hide();
         }}
