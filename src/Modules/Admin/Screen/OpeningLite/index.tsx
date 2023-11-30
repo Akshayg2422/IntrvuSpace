@@ -281,7 +281,7 @@ function OpeningLite() {
                     )
                 }
 
-                {!loader.loader && schedulesLiteCount <= 0 && <OpeningEmpty />}
+                {!loader.loader && schedulesLiteCount <= 0 && <OpeningEmpty onCreateOpeningClick={createOpeningModal.show} />}
 
                 {schedulesLiteCount > 0 && (
                     <div className={"screen-container"}>

@@ -25,7 +25,7 @@ import {
   Sector,
   Settings,
   TermsAndConditions,
-  VariantInfo,
+  OpeningDetails,
   WeightageCountForm,
   EmailVerification,
   CorporateRegister,
@@ -333,7 +333,7 @@ export const ADMIN_ROUTES = [
   {
     id: 8,
     path: ROUTES['designation-module']['opening-detail'],
-    component: <VariantInfo />
+    component: <OpeningDetails />
   },
 ];
 
