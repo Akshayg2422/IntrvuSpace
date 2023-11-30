@@ -892,8 +892,8 @@ function Call() {
   }
 
   async function startInterviewHandler() {
-    // const { is_video_recording_manditory } = scheduleInfo;
-    const is_video_recording_manditory = true
+    const { is_video_recording_manditory } = scheduleInfo;
+    // const is_video_recording_manditory = true
 
     startInterviewLoader.show();
     const hasCamPermission = await hasCameraPermission();
