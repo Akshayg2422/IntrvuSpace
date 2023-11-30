@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { icons } from "@Assets";
 import { Alert, Button, Image } from "@Components";
 import { useModal, useNavigation } from "@Hooks";
-import { showCreateOpeningsModal, userLogout } from "@Redux";
+import { userLogout, switchToAdvance } from "@Redux";
 import { ROUTES } from "@Routes";
 import { capitalizeFirstLetter, filteredName } from "@Utils";
 import { useDispatch, useSelector } from "react-redux";
@@ -39,16 +39,29 @@ function AdminTopNavbar({ showCreateOpening, onCreateOpeningClick }: AdminTopNav
   const { dashboardDetails } = useSelector((state: any) => state.AuthReducer);
 
   const { name } = dashboardDetails?.basic_info || {}
-  const { is_super_admin } = dashboardDetails?.rights || {}
+  const { is_super_admin, is_light_variant } = dashboardDetails?.rights || {}
 
 
 
 
   const HEADER_MENU = [
-    ...(is_super_admin ? [{ id: '1', name: 'Settings', value: 'ST', route: ROUTES['designation-module'].settings }] : []),
-    { id: '2', name: 'Logout', value: 'LG', route: "" }
+    ...(is_light_variant ? [{ id: '0', name: 'Switch to Advanced Dashboard', value: 'STP', route: "" }] : []),
+    ...(is_super_admin && !is_light_variant ? [{ id: '1', name: 'Settings', value: 'ST', route: ROUTES['designation-module'].settings }] : []),
+    { id: '2', name: 'Logout', value: 'LG', route: "" },
   ]
 
+  function switchToAdvanceApiHandler() {
+    const params = {}
+    dispatch(
+      switchToAdvance({
+        params,
+        onSuccess: () => () => {
+          goTo(ROUTES["auth-module"].splash, true);
+        },
+        onError: () => () => { },
+      })
+    );
+  }
 
 
 
@@ -57,7 +70,11 @@ function AdminTopNavbar({ showCreateOpening, onCreateOpeningClick }: AdminTopNav
     const { route } = item
     if (item.value === 'LG') {
       logoutModal.show()
-    } else {
+    }
+    else if (item.value === 'STP') {
+      switchToAdvanceApiHandler();
+    }
+    else {
       goTo(route);
     }
 

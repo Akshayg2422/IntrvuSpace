@@ -68,3 +68,11 @@ export const GET_DASHBOARD_FAILURE = 'GET_DASHBOARD_FAILURE'
 
 
 export const CREATE_COMPANY_SUPER_ADMIN = 'CREATE_COMPANY_SUPER_ADMIN'
+
+
+/**
+ * switch to advance
+ */
+
+
+export const SWITCH_TO_ADVANCE = 'SWITCH_TO_ADVANCE'

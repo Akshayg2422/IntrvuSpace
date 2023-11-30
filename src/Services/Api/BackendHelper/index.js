@@ -316,3 +316,11 @@ export const createOpeningLiteApi = payload => post(URL.URL_CREATE_OPENING_LITE,
 export const addCandidateCorporateLiteApi = payload => post(URL.URL_ADD_CANDIDATE_CORPORATE_LITE, payload, {})
 
 
+
+
+/**
+ * switch to advance
+ */
+export const switchToAdvanceApi = payload => post(URL.URL_SWITCH_TO_ADVANCE, payload, {})
+
+

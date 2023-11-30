@@ -1,8 +1,20 @@
 import { Checkbox, DateTimePicker, DropDown, Duration, Input, Modal, NoDataFound, PageNation, Spinner, TextArea, showToast } from '@Components';
-import { useDropDown, useInput, useLoader, useModal } from '@Hooks';
+import { useDropDown, useInput, useLoader, useModal, useNavigation } from '@Hooks';
 import { AdminTopNavbar, OpeningEmpty, ScheduleLiteItem } from "@Modules";
-import { getCorporateSchedulesLite, updatedCorporateSchedulesLite, createCorporateOpeningLite } from "@Redux";
-import { EXPERIENCE_LIST, INITIAL_PAGE, INTERVIEW_DURATIONS, PLACEHOLDER_ROLES, paginationHandler, validate, getValidateError, ifObjectExist, CREATE_CORPORATE_SCHEDULE_LITE_RULES } from "@Utils";
+import { addCandidateCorporateLite, createCorporateOpeningLite, getCorporateSchedulesLite, updatedCorporateSchedulesLite } from "@Redux";
+import { ROUTES } from '@Routes';
+import {
+    CREATE_CORPORATE_SCHEDULE_LITE_RULES,
+    EXPERIENCE_LIST,
+    INITIAL_PAGE,
+    INTERVIEW_DURATIONS,
+    PLACEHOLDER_ROLES,
+    VALIDATE_ADD_NEW_CANDIDATES_RULES,
+    getValidateError,
+    ifObjectExist,
+    paginationHandler,
+    validate
+} from "@Utils";
 import moment from "moment";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,6 +22,8 @@ import { useDispatch, useSelector } from 'react-redux';
 function OpeningLite() {
 
     const dispatch = useDispatch();
+
+    const { goTo } = useNavigation();
 
     const {
         schedulesLite,
@@ -20,6 +34,10 @@ function OpeningLite() {
 
 
     const loader = useLoader(false);
+    const addLoader = useLoader(false);
+
+
+    const [selectedSchedule, setSelectedSchedule] = useState<any>(undefined)
 
 
     /**
@@ -29,6 +47,8 @@ function OpeningLite() {
     const createOpeningModal = useModal(false);
 
 
+    const DEFAULT_DATE = moment().add(9, 'day').format('MMM D YYYY')
+    const DEFAULT_TIME = moment().set({ hour: 23, minute: 59, second: 0 }).format('LT')
 
 
     const position = useInput("");
@@ -39,8 +59,8 @@ function OpeningLite() {
     const jd = useInput("");
     const [duration, setDuration] = useState<any>(INTERVIEW_DURATIONS[0]);
     const [videoRecordMandatory, setVideoRecordMandatory] = useState(true)
-    const [scheduleEndDate, setScheduleEndDate] = useState<any>(moment().add(9, 'day').format('MMM D YYYY'));
-    const [scheduleEndTime, setScheduleEndTime] = useState<any>(moment().set({ hour: 23, minute: 59, second: 0 }).format('LT'));
+    const [scheduleEndDate, setScheduleEndDate] = useState<any>(DEFAULT_DATE);
+    const [scheduleEndTime, setScheduleEndTime] = useState<any>(DEFAULT_TIME);
 
     const firstName = useInput("");
     const lastName = useInput("");
@@ -61,7 +81,6 @@ function OpeningLite() {
     const candidateLastName = useInput("");
     const candidateEmail = useInput(undefined);
     const candidateMobileNumber = useInput("");
-
 
     const [candidateNotifyInterview, setCandidateNotifyInterview] =
         useState(false);
@@ -103,13 +122,52 @@ function OpeningLite() {
 
 
     function resetValues() {
+        /**
+         * hide modal
+         */
         createOpeningModal.hide();
+
+        /**
+         * reset fields
+         */
+
+        position.set("");
+        experience.set(EXPERIENCE_LIST[0]);
+        jd.set("");
+        vacancies.set("1");
+        setDuration(INTERVIEW_DURATIONS[0]);
+        sector.set('')
+
+        firstName.set('')
+        lastName.set('')
+        email.set('')
+        mobileNumber.set('')
+        setNotifyInterview(false)
+        setNotifyReport(false)
+        setNotifyError(false)
+
+        setScheduleEndDate(DEFAULT_DATE);
+        setScheduleEndTime(DEFAULT_TIME);
+    }
+
+    function resetCandidatesValues() {
+        addCandidateModal.hide();
+
+        candidateFirstName.set('')
+        candidateLastName.set('')
+        candidateMobileNumber.set('')
+        candidateEmail.set('')
+
+        setCandidateNotifyInterview(false)
+        setCandidateNotifyReport(false)
+
+        setNotifyError(false)
+
     }
 
 
     const createCorporateScheduleLiteApiHandler = () => {
         const params = {
-
             role: position.value,
             experience: parseInt(experience.value?.id),
             jd: jd.value,
@@ -121,6 +179,7 @@ function OpeningLite() {
             last_name: lastName?.value,
             mobile_number: mobileNumber?.value,
             email: email?.value,
+            sector_name: sector?.value,
             is_notify_interview: notifyInterview,
             is_notify_report: notifyReport,
         };
@@ -130,16 +189,23 @@ function OpeningLite() {
 
 
         if (ifObjectExist(validation)) {
-
+            addLoader.show();
             dispatch(
                 createCorporateOpeningLite({
                     params,
                     onSuccess: (response: any) => () => {
+
+                        addLoader.hide();
+
                         getCorporateScheduleApiHelper(schedulesLiteCurrentPage);
                         showToast(response.message, "success");
                         resetValues();
+
                     },
-                    onError: (error) => () => {
+                    onError: (error: any) => () => {
+
+                        addLoader.hide();
+
                         showToast(error.error_message, "error");
                     },
                 })
@@ -155,6 +221,50 @@ function OpeningLite() {
         return `${formattedDate}T${formattedTime}`;
     };
 
+
+    const addCandidateCorporateLiteApiHandler = () => {
+        const params = {
+            corporate_openings_details_id: selectedSchedule?.id,
+            first_name: candidateFirstName?.value,
+            last_name: candidateLastName?.value,
+            mobile_number: candidateMobileNumber?.value,
+            email: candidateEmail?.value,
+            is_notify_interview: candidateNotifyInterview,
+            is_notify_report: candidateNotifyReport,
+        }
+
+        const validation = validate(VALIDATE_ADD_NEW_CANDIDATES_RULES, params);
+
+
+        if (ifObjectExist(validation)) {
+
+            addLoader.show();
+
+            dispatch(
+                addCandidateCorporateLite({
+                    params,
+                    onSuccess: (response: any) => () => {
+                        addLoader.hide();
+                        getCorporateScheduleApiHelper(schedulesLiteCurrentPage);
+                        showToast(response.message, "success");
+                        resetCandidatesValues();
+                    },
+                    onError: (error: any) => () => {
+                        addLoader.hide();
+                        showToast(error.error_message, "error");
+                    },
+                })
+            );
+        } else {
+            showToast(getValidateError(validation));
+        }
+    };
+
+    function proceedReport(id: string) {
+        if (id) {
+            goTo(ROUTES["designation-module"].report + "/" + id);
+        }
+    }
 
     return (
         <>
@@ -191,10 +301,12 @@ function OpeningLite() {
                                                     <ScheduleLiteItem
                                                         key={index}
                                                         item={item}
+                                                        reportOnClick={proceedReport}
                                                         onViewMore={(status) =>
                                                             viewMoreDetailsHandler(status, index)
                                                         }
                                                         onTryAnother={() => {
+                                                            setSelectedSchedule(item);
                                                             addCandidateModal.show();
                                                         }}
                                                     />
@@ -238,8 +350,9 @@ function OpeningLite() {
                 )}
 
             </div>
+
             <Modal
-                loading={false}
+                loading={addLoader.loader}
                 isOpen={createOpeningModal.visible}
                 title={"Create Opening"}
                 subTitle={
@@ -419,10 +532,11 @@ function OpeningLite() {
             </Modal>
 
             <Modal
+                loading={addLoader.loader}
                 title={"Create Interview"}
                 isOpen={addCandidateModal.visible}
-                onClose={addCandidateModal.hide}
-                onClick={() => { }}
+                onClose={resetCandidatesValues}
+                onClick={addCandidateCorporateLiteApiHandler}
             >
                 <div className={"row"}>
                     <div className={"col-sm-6"}>
@@ -454,6 +568,8 @@ function OpeningLite() {
                                 if (value === "") {
                                     setCandidateNotifyInterview(false);
                                     setCandidateNotifyReport(false);
+                                } else {
+                                    setNotifyError(false)
                                 }
                                 candidateEmail.onChange(e);
                             }}

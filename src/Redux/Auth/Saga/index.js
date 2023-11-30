@@ -178,6 +178,24 @@ function* createCompanySuperAdminSaga(action) {
     }
 }
 
+/**
+ * switch to Advance saga
+ */
+
+function* switchToAdvanceSaga(action) {
+    try {
+        const response = yield call(Api.switchToAdvanceApi, action.payload.params);
+        if (response.success) {
+            yield call(action.payload.onSuccess(response));
+        } else {
+            yield call(action.payload.onError(response));
+        }
+    } catch (error) {
+        yield call(action.payload.onError(error));
+    }
+}
+
+
 
 
 function* AuthSaga() {
@@ -191,6 +209,8 @@ function* AuthSaga() {
     yield takeLatest(Action.VERIFY_EMAIL_USING_OTP, verifyEmailUsingOtpSaga);
     yield takeLatest(Action.GET_DASHBOARD, getDashboardSaga);
     yield takeLatest(Action.CREATE_COMPANY_SUPER_ADMIN, createCompanySuperAdminSaga);
+    yield takeLatest(Action.SWITCH_TO_ADVANCE, switchToAdvanceSaga);
+
 
 }
 

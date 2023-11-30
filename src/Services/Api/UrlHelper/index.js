@@ -323,4 +323,11 @@ export const URL_CREATE_OPENING_LITE = ASSISTANT + 'createCorporateOpeningLite'
 export const URL_ADD_CANDIDATE_CORPORATE_LITE = ASSISTANT + 'addCandidateCorporateLite'
 
 
+/**
+ *  switch to Advance
+ */
+
+export const URL_SWITCH_TO_ADVANCE = ASSISTANT + 'switchToAdvancedMode'
+
+
 
