@@ -266,7 +266,7 @@ function Call() {
     isScreenRecordingReady,
     setIsScreenRecordingReady,
   } = useScreenRecorder(handleRecordingStatusChange);
-  
+
 
   const [isConfirmRecordingModalOpen, setIsConfirmRecordingModalOpen] =
     useState(false);
@@ -291,7 +291,7 @@ function Call() {
     return () => {
       if (recordStatus) {
         onEndCallHandler();
-      } 
+      }
     };
   }, [recordStatus, isConfirmRecordingModalOpen]);
 
@@ -892,8 +892,7 @@ function Call() {
   }
 
   async function startInterviewHandler() {
-    // const { is_video_recording_manditory } = scheduleInfo;
-    const is_video_recording_manditory = true
+    const { is_video_recording_manditory } = scheduleInfo;
 
     startInterviewLoader.show();
     const hasCamPermission = await hasCameraPermission();
@@ -905,7 +904,7 @@ function Call() {
         micPermissionModal.hide();
 
         if (!recordStatus && is_video_recording_manditory) {
-         
+
           await startScreenRecording();
         }
         else if (recordStatus || !is_video_recording_manditory && callDetectFace) {
