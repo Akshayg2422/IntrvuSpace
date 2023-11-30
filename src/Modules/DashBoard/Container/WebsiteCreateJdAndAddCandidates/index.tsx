@@ -31,7 +31,7 @@ function WebsiteCreateJdAndAddCandidates() {
                                                        <StatusIcon/>
                                                     </div>
                                                     <span
-                                                        className="col-11 text-default"
+                                                        className="col-11 text-secondary"
                                                     >
                                                         <p style={{ fontSize: '15px', fontWeight: 400 }}>{item.description}</p>
                                                     </span>
