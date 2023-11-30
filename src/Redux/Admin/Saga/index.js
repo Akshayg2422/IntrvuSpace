@@ -10,7 +10,7 @@ import * as Action from '../Store'
     function* getCandidatesSaga(action) {
         try {
             const response = yield call(Api.getCandidatesApi, action.payload.params);
-            if (response) {
+            if (response.success) {
                 yield put(Action.getCandidatesSuccess(response));
                 yield call(action.payload.onSuccess(response));
             } else {
@@ -34,7 +34,7 @@ import * as Action from '../Store'
 function* addCandidatesSaga(action) {
     try {
         const response = yield call(Api.addCandidatesApi, action.payload.params);
-        if (response) {
+        if (response.success) {
             yield call(action.payload.onSuccess(response));
         } else {
 

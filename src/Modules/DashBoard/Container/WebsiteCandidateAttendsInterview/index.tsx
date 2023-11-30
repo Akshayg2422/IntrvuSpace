@@ -29,7 +29,7 @@ function WebsiteCandidateAttendsInterview() {
                                         <>
                                             <div className="row ml-md-1 ml-sm-0 ml-1">
                                                 <div>
-                                                    <StatusIcon/>
+                                                    <StatusIcon />
                                                 </div>
                                                 <span
                                                     className="col-11 text-secondary"
@@ -43,10 +43,10 @@ function WebsiteCandidateAttendsInterview() {
                             </div>
                         </div>
                     </Col>
-                    <Col className={'pt-md-5'} lg="7" sm="12">
-                        <div>
+                    <Col className={'pt-5'} lg="7" sm="12">
+                        <div className={'d-flex justify-content-center'}>
                             <img
-                                className={'ml-md-8 ml-sm-0 ml-4'}
+                                className={'ml-md-6'}
                                 src={image.CandidatesAttendInterview}
                                 width={"80%"}
                                 height={"80%"}

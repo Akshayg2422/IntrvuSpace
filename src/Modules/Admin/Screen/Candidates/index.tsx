@@ -81,15 +81,18 @@ function Candidates() {
         addCandidate({
           params,
           onSuccess: (success: any) => () => {
+            const {message}=success
             addLoader.hide()
             modalCloseHandler()
             getCandidateApiHandler(candidatesCurrentPages)
             setEditId('')
-            showToast(success.message, 'success')
+            showToast(message, 'success')
           },
           onError: (error: any) => () => {
+            const {error_message}=error
+       
+            showToast(error_message, 'error')
             addLoader.hide()
-            showToast(error.error_message, 'error')
           },
         })
       )
@@ -129,9 +132,7 @@ function Candidates() {
       };
     })
 
-  };
-
-
+  }
 
   function modalCloseHandler() {
     addCandidateModel.hide();

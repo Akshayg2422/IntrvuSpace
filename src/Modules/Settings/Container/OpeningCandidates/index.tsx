@@ -285,7 +285,7 @@ function OpeningCandidates({ id, details }: OpeningCandidatesProps) {
                     width: "45px",
                     height: "45px",
                     borderRadius: "30px",
-                    backgroundColor: "#fbfcfa",
+                    backgroundColor: "#FAFBFF",
                     alignItems: 'center',
                     justifyContent: 'center',
                     display: 'flex',

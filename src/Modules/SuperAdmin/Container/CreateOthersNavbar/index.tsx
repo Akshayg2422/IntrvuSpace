@@ -157,7 +157,7 @@ function CreateOthersNavbar() {
 
               <NavItem>
                 <NavLink tag={Link}>
-                  <div className={'btn-wrapper'}>
+                  <div className={'btn-wrapper mr-1'}>
                     <Button
                       block
                       text={"Create For Others"}
@@ -181,10 +181,7 @@ function CreateOthersNavbar() {
 
               <NavItem className="d-none d-lg-block ml-lg-2">
                 <div className="row align-items-center m-auto">
-                  <span
-                    className="mb-0 text-secondary font-weight-400 pointer"
-                    onClick={toggleDropdown}
-                  >
+                  <span className="mb-0 text-secondary font-weight-400 pointer" onClick={toggleDropdown}>
                     {filteredName(capitalizeFirstLetter(name), 20)}
                   </span>
                   <Nav navbar>
@@ -253,7 +250,7 @@ function CreateOthersNavbar() {
             </Nav>
           </UncontrolledCollapse>
         </div>
-      </Navbar>
+      </Navbar >
 
       <Alert
         title={'Logout'}
