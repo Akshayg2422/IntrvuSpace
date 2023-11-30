@@ -245,6 +245,8 @@ function Opening() {
     setSelectedSector("");
     setSelectedDepartment("");
 
+    setVideoRecordMandatory(true);
+
     setScheduleEndDate(DEFAULT_DATE);
     setScheduleEndTime(DEFAULT_TIME);
 
