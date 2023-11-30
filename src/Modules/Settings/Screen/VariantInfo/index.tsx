@@ -10,6 +10,7 @@ import {
   Input,
   Button,
   CommonTable,
+  ScreenHeading,
 } from "@Components";
 import { useInput, useLoader, useModal } from "@Hooks";
 import { OpeningCandidates } from "@Modules";
@@ -47,15 +48,15 @@ function VariantInfo() {
     { id: 3, name: 'Modify Vacancies' },
     { id: 4, name: 'View Section' }
 
-    
+
   ];
 
   const { selectedRole, corporateScheduleDetails, refreshCorporateSchedules } =
     useSelector((state: any) => state.DashboardReducer);
-    
 
-    const { jdSection } = useSelector((state:any) => state.AdminReducer);
-    
+
+  const { jdSection } = useSelector((state: any) => state.AdminReducer);
+
 
   const { id } = selectedRole || {};
 
@@ -130,15 +131,15 @@ function VariantInfo() {
 
   const getJdSectionHandler = () => {
     const params = {
-      knowledge_group_variant_id:knowledge_group_variant_id
-    
+      knowledge_group_variant_id: knowledge_group_variant_id
+
     };
     loader.show();
     dispatch(
       getJdSection({
         params,
         onSuccess: (response: any) => () => {
-          console.log(JSON.stringify(response),'response')
+          console.log(JSON.stringify(response), 'response')
           loader.hide();
         },
         onError: (error: any) => () => {
@@ -150,12 +151,12 @@ function VariantInfo() {
 
   const normalizedTableData = (jdSection: any) => {
     return jdSection?.map((el: any) => {
-      const { id,name,description ,weightage} = el
+      const { id, name, description, weightage } = el
 
       return {
         name: capitalizeFirstLetter(name),
-        description:capitalizeFirstLetter(description),
-        Weightage:weightage
+        description: capitalizeFirstLetter(description),
+        Weightage: weightage
       };
     })
 
@@ -241,7 +242,7 @@ function VariantInfo() {
     }
   }
 
-  
+
 
   function proceedModifyDeadlineApiHandler() {
     const convertedTime = moment(scheduleEndTime, "hh:mm A").format("HH:mm:ss");
@@ -274,31 +275,25 @@ function VariantInfo() {
         ) : (
           <div>
 
-            <div className={"variant-header"}>
-              <div>
-                <div className={'back-container-vacancies'}>
-                  <Back />
-                </div>
-                <div className={"screen-heading"}>
-                  {capitalizeFirstLetter(position)}
-                </div>
-                <div className={"experience"}>
-                  {capitalizeFirstLetter(experience)}
-                </div>
-              </div>
-
-              <div className={"vacancies-container"}>
-                <div className={"screen-heading"}>{`${vacancies}  ${vacancies > 1 ? "Vacancies" : "Vacancy"
-                  }`}</div>
-                {!is_closed && (
-                  <div className={"menu-container"}>
-                    <MenuBar
-                      menuData={MODIFY_OPTION}
-                      onClick={onScheduleMenuHandler}
-                    />
+            <div>
+              <ScreenHeading
+                text={capitalizeFirstLetter(position)}
+                subtitle={capitalizeFirstLetter(experience)}
+                children={
+                  <div className={"vacancies-container d-flex justify-content-end"}>
+                    <div className={"screen-heading"}>{`${vacancies}  ${vacancies > 1 ? "Vacancies" : "Vacancy"
+                      }`}</div>
+                    {!is_closed && (
+                      <div className={"menu-container"}>
+                        <MenuBar
+                          menuData={MODIFY_OPTION}
+                          onClick={onScheduleMenuHandler}
+                        />
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
+                }
+              />
             </div>
 
             <OpeningCandidates id={id} details={corporateScheduleDetails} />
@@ -358,12 +353,12 @@ function VariantInfo() {
             </div>
           </div>
         )}
-      </div>
+      </div >
 
       {/**
        * close js modal
        */}
-      <Alert
+      < Alert
         loading={scheduleActionLoader.loader}
         title={"Close JD"}
         subTitle={"Are you sure, want to close this JD?"}
@@ -427,21 +422,21 @@ function VariantInfo() {
             />
           </div>
         </div>
-        
+
       </Modal>
-      
+
       <Modal
-      loading={scheduleActionLoader.loader}
-      title={"Sections"}
-      isOpen={modifyvViewsectionModal.visible}
-      onClose={modifyvViewsectionModal.hide}
+        loading={scheduleActionLoader.loader}
+        title={"Sections"}
+        isOpen={modifyvViewsectionModal.visible}
+        onClose={modifyvViewsectionModal.hide}
       >
         <CommonTable
-        displayDataSet={normalizedTableData(jdSection)}
-       tableDataSet={jdSection}
+          displayDataSet={normalizedTableData(jdSection)}
+          tableDataSet={jdSection}
         />
 
-      
+
       </Modal>
 
     </>

@@ -1,5 +1,5 @@
 import { icons } from "@Assets";
-import { CommonTable, DropDown, Input, MenuBar, NoDataFound, Spinner, showToast } from "@Components";
+import { CommonTable, DropDown, Input, MenuBar, NoDataFound, ScreenHeading, Spinner, showToast } from "@Components";
 import { useDropDown, useInput, useKeyPress, useLoader, useNavigation } from "@Hooks";
 import { deleteInterview, getRecentInterviews, resetInterview } from "@Redux";
 import { ROUTES } from "@Routes";
@@ -164,6 +164,7 @@ const RecentInterviews = () => {
   return (
     <div className={'screen-padding'}>
 
+      <ScreenHeading text={'Recent Interviews'} />
 
       {(
         <div className={'row'}>

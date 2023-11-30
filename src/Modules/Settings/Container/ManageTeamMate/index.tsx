@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Spinner, NoDataFound, CommonTable, MenuBar, Modal, Input, DropDown, showToast, AutoFocusInput } from '@Components';
-import { SettingHeader } from '@Modules';
+import { Spinner, NoDataFound, CommonTable, MenuBar, Modal, Input, DropDown, showToast, AutoFocusInput, Button, ScreenHeading } from '@Components';
 import { useDropDown, useInput, useLoader, useModal } from '@Hooks';
 import { INITIAL_PAGE, paginationHandler, capitalizeFirstLetter, getDropDownDisplayData, getValidateError, ifObjectExist, validate, USER_FORM_RULES } from '@Utils';
 import { useSelector, useDispatch } from 'react-redux';
@@ -231,10 +230,19 @@ function ManageTeamMate() {
   return (
     <>
       <div className={'screen-padding'}>
-        <SettingHeader
-          title={'Team'}
-          buttonText={'Add'}
-          onClick={addTeamMateModal.show}
+        <ScreenHeading
+          text={'Team'}
+          children={
+            <div className={'d-flex justify-content-end'}>
+              <div className={'btn-wrapper'}>
+                <Button
+                  block
+                  text={'Add'}
+                  onClick={addTeamMateModal.show}
+                />
+              </div>
+            </div>
+          }
         />
 
         {
@@ -286,7 +294,7 @@ function ManageTeamMate() {
               value={firstName.value}
               onChange={firstName.onChange}
               innerRef={inFocus}
-              
+
             />
           </div>
           <div className={'col-sm-6'}>
