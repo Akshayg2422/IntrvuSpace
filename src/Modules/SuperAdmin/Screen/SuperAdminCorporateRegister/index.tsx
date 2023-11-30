@@ -105,7 +105,7 @@ function SuperAdminCorporateRegister() {
             referral_code,
             company_code,
             is_light_variant: is_light_variant,
-            logo: cleanedBase64Photo,
+            ...(cleanedBase64Photo && { logo: cleanedBase64Photo }),
         };
 
 
