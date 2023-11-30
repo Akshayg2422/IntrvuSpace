@@ -174,15 +174,16 @@ export function getDropDownCompanyDisplayData(
   data: any,
   key: "name" | "title" | 'display_name' = "name"
 ) {
-  return (
-    data &&
-    data?.map((item: any) => {
-      return {
-        ...item,
-        text: item[key].charAt(0).toUpperCase() + item[key].slice(1),
-      };
-    })
-  );
+  if (!data || typeof data?.map !== 'function') {
+    return [];
+  }
+
+  return data.map((item: any) => {
+    return {
+      ...item,
+      text: item[key].charAt(0).toUpperCase() + item[key].slice(1),
+    };
+  });
 }
 
 

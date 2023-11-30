@@ -13,10 +13,9 @@ import {
   Spinner,
   TextArea,
   showToast,
-  TopNavbarCorporateFlow,
-  TopNavbar,
   Checkbox,
   DateTimePicker,
+  Duration
 } from "@Components";
 import {
   useDropDown,
@@ -24,8 +23,9 @@ import {
   useLoader,
   useNavigation,
   useKeyPress,
+  useModal,
 } from "@Hooks";
-import { UploadCorporateOpeningsCard } from "@Modules";
+import { OpeningEmpty, AdminTopNavbar } from "@Modules";
 import {
   addDepartmentCorporate,
   addSectorCorporate,
@@ -58,16 +58,21 @@ import { useDispatch, useSelector } from "react-redux";
 import "./index.css";
 import moment from "moment";
 
-function Designation() {
+function Opening() {
+
+
   const {
     sectorsCorporate,
     departmentCorporate,
-    isCreateOpening,
     corporateSchedules,
     corporateScheduleCount,
     corporateScheduleNumOfPages,
     corporateScheduleCurrentPages,
   } = useSelector((state: any) => state.DashboardReducer);
+
+  const DEFAULT_DATE = moment().add(9, 'day').format('MMM D YYYY')
+  const DEFAULT_TIME = moment().set({ hour: 23, minute: 59, second: 0 }).format('LT')
+
 
 
   const { dashboardDetails } = useSelector((state: any) => state.AuthReducer);
@@ -93,6 +98,8 @@ function Designation() {
    *  create opening modal form state
    */
 
+  const createOpeningModal = useModal(false);
+
   const position = useInput("");
   const experience = useDropDown(EXPERIENCE_LIST[0]);
   const vacancies = useInput("1");
@@ -105,8 +112,8 @@ function Designation() {
   const [isPositionSearch, setIsPositionSearch] = useState(false);
   const [videoRecordMandatory, setVideoRecordMandatory] = useState(true)
 
-  const [scheduleEndDate, setScheduleEndDate] = useState<any>(moment().add(9, 'day').format('MMM D YYYY'));
-  const [scheduleEndTime, setScheduleEndTime] = useState<any>(moment().set({ hour: 23, minute: 59, second: 0 }).format('LT'));
+  const [scheduleEndDate, setScheduleEndDate] = useState<any>(DEFAULT_DATE);
+  const [scheduleEndTime, setScheduleEndTime] = useState<any>(DEFAULT_TIME);
 
   const formatDeadline = (date: string, time: string) => {
     const formattedDate = moment(date, 'MMM D YYYY').format('YYYY-MM-DD');
@@ -226,7 +233,8 @@ function Designation() {
   };
 
   function resetValues() {
-    hideCreateOpeningModal();
+
+    createOpeningModal.hide();
 
     position.set("");
     experience.set(EXPERIENCE_LIST[0]);
@@ -236,6 +244,12 @@ function Designation() {
     referenceId.set("");
     setSelectedSector("");
     setSelectedDepartment("");
+
+    setVideoRecordMandatory(true);
+
+    setScheduleEndDate(DEFAULT_DATE);
+    setScheduleEndTime(DEFAULT_TIME);
+
   }
 
   const getCorporateScheduleApiHandler = (page_number: number) => {
@@ -276,13 +290,6 @@ function Designation() {
 
 
 
-  /**
-   * close create opening modal
-   */
-
-  function hideCreateOpeningModal() {
-    dispatch(hideCreateOpeningsModal());
-  }
 
   function viewMoreDetailsHandler(status: boolean, index: number) {
     const updateData = [...corporateSchedules];
@@ -290,30 +297,23 @@ function Designation() {
     dispatch(updateCorporateSchedules(updateData));
   }
 
-  const modifyDeadlineHandler = () => {
-    const displayTime = moment(
-      getDisplayTime('candidate_deadline'),
-      "HH:mm:ss"
-    ).format("hh:mm A");
-    setScheduleEndDate(displayFormatDate('candidate_deadline', "date"));
-    setScheduleEndTime(displayTime);
-  };
+
 
   return (
-    <div className={"screen"}>
-      <TopNavbarCorporateFlow />
+    <div className={'screen'}>
+      <AdminTopNavbar
+        showCreateOpening={corporateScheduleCount > 0}
+        onCreateOpeningClick={createOpeningModal.show}
+      />
+      {
+        listLoader.loader && (
+          <div className={"loader-container"}>
+            <Spinner />
+          </div>
+        )
+      }
 
-      {listLoader.loader && (
-        <div className={"loader-container"}>
-          <Spinner />
-        </div>
-      )}
-
-      {!listLoader.loader && corporateScheduleCount <= 0 && (
-        <div>
-          <UploadCorporateOpeningsCard />
-        </div>
-      )}
+      {!listLoader.loader && corporateScheduleCount <= 0 && <OpeningEmpty onCreateOpeningClick={createOpeningModal.show} />}
       {corporateScheduleCount > 0 && (
         <div className={"screen-container"}>
           <div className="row">
@@ -375,35 +375,36 @@ function Designation() {
           </div>
 
           <div>
-            {corporateSchedules && corporateSchedules.length > 0 ? (
-              corporateSchedules.map((item: any, index: number) => {
-                return (
-                  <div
-                    className={
-                      index === 0
-                        ? "schedule-container-top"
-                        : "schedule-container"
-                    }
-                  >
-                    <DesignationItem
-                      key={index}
-                      item={item}
-                      onViewMore={(status) =>
-                        viewMoreDetailsHandler(status, index)
+            {
+              corporateSchedules && corporateSchedules.length > 0 ? (
+                corporateSchedules.map((item: any, index: number) => {
+                  return (
+                    <div
+                      className={
+                        index === 0
+                          ? "schedule-container-top"
+                          : "schedule-container"
                       }
-                      onViewDetails={() => {
-                        dispatch(setSelectedRole(item));
-                        goTo(ROUTES["designation-module"]["opening-detail"]);
-                      }}
-                    />
-                  </div>
-                );
-              })
-            ) : (
-              <div className={"no-data-container"}>
-                <NoDataFound />
-              </div>
-            )}
+                    >
+                      <DesignationItem
+                        key={index}
+                        item={item}
+                        onViewMore={(status) =>
+                          viewMoreDetailsHandler(status, index)
+                        }
+                        onViewDetails={() => {
+                          dispatch(setSelectedRole(item));
+                          goTo(ROUTES["designation-module"]["opening-detail"]);
+                        }}
+                      />
+                    </div>
+                  );
+                })
+              ) : (
+                <div className={"no-data-container"}>
+                  <NoDataFound />
+                </div>
+              )}
           </div>
           {corporateScheduleNumOfPages > 1 && (
             <div className="mt-3">
@@ -434,7 +435,7 @@ function Designation() {
 
       <Modal
         loading={createOpeningLoader.loader}
-        isOpen={isCreateOpening}
+        isOpen={createOpeningModal.visible}
         title={"Create Opening"}
         subTitle={
           "Input job details, specifying qualifications, requirements, interview duration"
@@ -496,36 +497,8 @@ function Designation() {
           onChange={jd.onChange}
         />
 
-        <div className={"duration-container"}>
-          <InputHeading heading={"Duration"} />
-          <div className={"duration-content-container"}>
-            {INTERVIEW_DURATIONS.map((item: any, index: number) => {
-              const { id, subText } = item;
-              return (
-                <div
-                  className={
-                    index === 0
-                      ? "each-duration"
-                      : "each-duration each-duration-space"
-                  }
-                >
-                  <Button
-                    block
-                    outline
-                    className={`${duration?.id === id
-                      ? "btn-outline-primary-active"
-                      : "btn-outline-primary-inactive"
-                      }`}
-                    text={subText}
-                    onClick={() => {
-                      setDuration(item);
-                    }}
-                  />
-                </div>
-              );
-            })}
-          </div>
-        </div>
+        <Duration selected={duration} onSelected={setDuration} />
+
         <div className="group-container row">
           <div className={"col-sm-6"}>
             <ReactAutoComplete
@@ -588,4 +561,4 @@ function Designation() {
   );
 }
 
-export { Designation };
+export { Opening };

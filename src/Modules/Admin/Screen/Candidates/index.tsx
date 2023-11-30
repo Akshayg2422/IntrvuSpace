@@ -1,7 +1,8 @@
 import { icons } from '@Assets';
-import { Button, CommonTable, Input, MenuBar, Modal, NoDataFound, ScreenHeading, Spinner, showToast } from '@Components';
+import {Button, CommonTable, Input, MenuBar, Modal, NoDataFound, ScreenHeading, Spinner, showToast } from '@Components';
 import { useInput, useLoader, useModal } from '@Hooks';
 import { addCandidate, getCandidates, getJdSection } from '@Redux';
+import { SettingHeader } from '@Modules';
 import { ADD_CANDIDATE_RULES, INITIAL_PAGE, capitalizeFirstLetter, getValidateError, ifObjectExist, paginationHandler, validate } from '@Utils';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -26,6 +27,9 @@ function Candidates() {
   /**
    * add,Edit candidate state
    */
+  /**
+   * add,Edit candidate state
+   */
   const addCandidateModel = useModal(false);
 
   const [editId, setEditId] = useState<any>()
@@ -40,6 +44,7 @@ function Candidates() {
   useEffect(() => {
     getCandidateApiHandler(INITIAL_PAGE)
   }, [])
+
 
 
 
@@ -60,6 +65,7 @@ function Candidates() {
       })
     );
   };
+  
 
 
   const addCandidateApiHandler = () => {
@@ -68,7 +74,6 @@ function Candidates() {
       first_name: firstName.value,
       last_name: lastName.value,
       mobile_number: mobileNumber.value,
-      ...(editId && { id: editId })
     }
 
     const validation = validate(ADD_CANDIDATE_RULES, params)
@@ -80,15 +85,18 @@ function Candidates() {
         addCandidate({
           params,
           onSuccess: (success: any) => () => {
+            const {message}=success
             addLoader.hide()
             modalCloseHandler()
             getCandidateApiHandler(candidatesCurrentPages)
             setEditId('')
-            showToast(success.message, 'success')
+            showToast(message, 'success')
           },
           onError: (error: any) => () => {
+            const {error_message}=error
+       
+            showToast(error_message, 'error')
             addLoader.hide()
-            showToast(error.error_message, 'error')
           },
         })
       )
@@ -108,6 +116,8 @@ function Candidates() {
         LastName: capitalizeFirstLetter(last_name),
         Email: email,
         MobileNumber: mobile_number,
+        
+
         '':
           <MenuBar
             menuData={MENU}
@@ -128,9 +138,7 @@ function Candidates() {
       };
     })
 
-  };
-
-
+  }
 
   function modalCloseHandler() {
     addCandidateModel.hide();
@@ -144,7 +152,8 @@ function Candidates() {
   return (
     <>
       <div className={'screen-padding'}>
-        <ScreenHeading
+
+      <ScreenHeading
           text={'Candidate'}
           children={
             <div className={'d-flex justify-content-end'}>
@@ -158,7 +167,6 @@ function Candidates() {
             </div>
           }
         />
-
         {
           loader.loader && <div className={'loader-container'}><Spinner /></div>
         }

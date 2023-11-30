@@ -33,9 +33,9 @@ import moment from "moment";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./index.css";
-import { Console } from "console";
 
-function VariantInfo() {
+
+function OpeningDetails() {
   const dispatch = useDispatch();
 
   /**
@@ -69,7 +69,6 @@ function VariantInfo() {
     created_at,
     vacancies,
     is_closed,
-    candidate_details,
     knowledge_group_variant_id
   } = corporateScheduleDetails || {};
   const { position, experience, details } = job_description || {};
@@ -77,7 +76,7 @@ function VariantInfo() {
 
 
 
-  const loader = useModal(false);
+  const loader = useLoader(false);
   const vacanciesCount = useInput(vacancies)
 
   // console.log(corporateScheduleDetails, "corporateScheduleDetails======///")
@@ -115,7 +114,10 @@ function VariantInfo() {
     const params = {
       corporate_openings_details_id: id,
     };
+
+
     loader.show();
+
     dispatch(
       getCorporateScheduleDetails({
         params,
@@ -243,7 +245,6 @@ function VariantInfo() {
   }
 
 
-
   function proceedModifyDeadlineApiHandler() {
     const convertedTime = moment(scheduleEndTime, "hh:mm A").format("HH:mm:ss");
     const formattedDate = moment(scheduleEndDate, "MMM DD YYYY").format(
@@ -264,37 +265,34 @@ function VariantInfo() {
     <>
       <div className={"screen-padding"}>
 
-        {!corporateScheduleDetails ? (
-          <div
-            className={
-              "vh-100 d-flex justify-content-center align-items-center"
-            }
-          >
+        {
+          loader.loader &&
+          <div className={'loader-container'}>
             <Spinner />
           </div>
-        ) : (
-          <div>
+        }
 
-            <div>
-              <ScreenHeading
-                text={capitalizeFirstLetter(position)}
-                subtitle={capitalizeFirstLetter(experience)}
-                children={
-                  <div className={"vacancies-container d-flex justify-content-end"}>
-                    <div className={"screen-heading"}>{`${vacancies}  ${vacancies > 1 ? "Vacancies" : "Vacancy"
-                      }`}</div>
-                    {!is_closed && (
-                      <div className={"menu-container"}>
-                        <MenuBar
-                          menuData={MODIFY_OPTION}
-                          onClick={onScheduleMenuHandler}
-                        />
-                      </div>
-                    )}
+        {
+          corporateScheduleDetails &&
+          <div>
+            <ScreenHeading
+              text={capitalizeFirstLetter(position)}
+              subtitle={capitalizeFirstLetter(experience)}
+
+            >
+              <div className={"vacancies-container d-flex justify-content-end"}>
+                <div className={"screen-heading"}>{`${vacancies}  ${vacancies > 1 ? "Vacancies" : "Vacancy"
+                  }`}</div>
+                {!is_closed && (
+                  <div className={"menu-container"}>
+                    <MenuBar
+                      menuData={MODIFY_OPTION}
+                      onClick={onScheduleMenuHandler}
+                    />
                   </div>
-                }
-              />
-            </div>
+                )}
+              </div>
+            </ScreenHeading>
 
             <OpeningCandidates id={id} details={corporateScheduleDetails} />
 
@@ -352,7 +350,7 @@ function VariantInfo() {
               </div>
             </div>
           </div>
-        )}
+        }
       </div >
 
       {/**
@@ -443,4 +441,4 @@ function VariantInfo() {
   );
 }
 
-export { VariantInfo };
+export { OpeningDetails };

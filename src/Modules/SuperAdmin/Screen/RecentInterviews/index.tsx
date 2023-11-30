@@ -1,7 +1,7 @@
 import { icons } from "@Assets";
 import { CommonTable, DropDown, Input, MenuBar, NoDataFound, ScreenHeading, Spinner, showToast } from "@Components";
 import { useDropDown, useInput, useKeyPress, useLoader, useNavigation } from "@Hooks";
-import { deleteInterview, getRecentInterviews, resetInterview } from "@Redux";
+import { deleteInterview, getRecentInterviews, resetInterview, getCompanies } from "@Redux";
 import { ROUTES } from "@Routes";
 import { DEFAULT_VALUE, INITIAL_PAGE, getDropDownCompanyDisplayData, paginationHandler } from "@Utils";
 import { useEffect, useState } from "react";
@@ -27,7 +27,6 @@ const RecentInterviews = () => {
   const filterCompanies = useDropDown(DEFAULT_VALUE);
   const status = useDropDown(STATUS_LIST[0]);
   const search = useInput("");
-  const [isSearch, setIsSearch] = useState(false);
   const enterPress = useKeyPress("Enter");
   const { goTo } = useNavigation();
 
@@ -43,10 +42,35 @@ const RecentInterviews = () => {
   }, [filterCompanies.value.id, status.value?.id]);
 
   useEffect(() => {
-    if (isSearch) {
+    if (enterPress) {
       getRecentInterviewsHandler(INITIAL_PAGE);
     }
   }, [enterPress]);
+
+
+
+  useEffect(() => {
+    getCompaniesApiHandler();
+  }, [])
+
+
+  const getCompaniesApiHandler = () => {
+    const params = {};
+    loader.show();
+
+    dispatch(
+      getCompanies({
+        params,
+        onSuccess: () => () => {
+          loader.hide();
+        },
+        onError: () => () => {
+          loader.hide();
+        },
+      })
+    );
+  };
+
 
   const getRecentInterviewsHandler = (page_number: number) => {
 
@@ -71,7 +95,6 @@ const RecentInterviews = () => {
         params,
         onSuccess: () => () => {
           loader.hide();
-          setIsSearch(false);
         },
         onError: () => () => {
           loader.hide();
@@ -134,6 +157,7 @@ const RecentInterviews = () => {
     if (data && data.length > 0)
       return data.map((each: any) => {
 
+
         const { id, interviewee_name, interviewee_role, interviewee_email, interviewee_experience, interview_duration, company_details } = each;
         const name = company_details?.name
 
@@ -163,56 +187,49 @@ const RecentInterviews = () => {
 
   return (
     <div className={'screen-padding'}>
+        <ScreenHeading text={'Recent Interviews'} />
 
-      <ScreenHeading text={'Recent Interviews'} />
-
-      {(
-        <div className={'row'}>
-          {companies && companies.length > 0 && (
-            <>
-              <div className="col-sm-3">
-                <Input
-                  id={'search'}
-                  heading={"Search"}
-                  type={"text"}
-                  placeHolder={"Name, Email..."}
-                  value={search?.value}
-                  onChange={search.onChange}
-                  onFocus={() => setIsSearch(true)}
-                  onBlur={() => setIsSearch(false)}
-                />
-              </div>
-              <div className={'col-sm-3'}>
-                <DropDown
-                  id={"companies"}
-                  heading={"Companies"}
-                  data={[DEFAULT_VALUE, ...getDropDownCompanyDisplayData(companies, 'display_name')]}
-                  selected={filterCompanies.value}
-                  onChange={filterCompanies.onChange}
-                />
-              </div>
-
-              <div className={'col-sm-3'}>
-                <DropDown
-                  id={"Status"}
-                  heading={"Status"}
-                  data={STATUS_LIST}
-                  selected={status.value}
-                  onChange={status.onChange}
-                />
-              </div>
-            </>
-          )}
+      <div className={'row'}>
+        <div className="col-sm-3">
+          <Input
+            id={'search'}
+            heading={"Search"}
+            type={"text"}
+            placeHolder={"Name, Email..."}
+            value={search?.value}
+            onChange={search.onChange}
+          />
         </div>
-      )}
 
-      {loader.loader && (
+        <div className={'col-sm-3'}>
+          <DropDown
+            id={"companies"}
+            heading={"Companies"}
+            data={[DEFAULT_VALUE, ...getDropDownCompanyDisplayData(companies, 'display_name')]}
+            selected={filterCompanies.value}
+            onChange={filterCompanies.onChange}
+          />
+        </div>
+
+        <div className={'col-sm-3'}>
+          <DropDown
+            id={"Status"}
+            heading={"Status"}
+            data={STATUS_LIST}
+            selected={status.value}
+            onChange={status.onChange}
+          />
+        </div>
+      </div>
+      {
+        loader.loader &&
         <div className={'loader-container'}>
           <Spinner />
         </div>
-      )}
+      }
 
-      {recentInterviews && recentInterviews.length > 0 && (
+      {
+        recentInterviews && recentInterviews.length > 0 &&
         <CommonTable
           isPagination
           tableDataSet={recentInterviews}
@@ -233,7 +250,7 @@ const RecentInterviews = () => {
             );
           }}
         />
-      )}
+      }
 
       {!loader.loader && recentInterviews?.length <= 0 && (
         <div className={"no-data-found"}>

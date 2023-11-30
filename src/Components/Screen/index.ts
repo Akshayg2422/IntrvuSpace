@@ -1,6 +1,6 @@
 export * from './DesignationItem'
 export * from './TopNavbar'
-export * from './TopNavbarCorporateFlow'
 export * from './ViewMore'
 export * from './WatchInterviewModal'
 export * from './WatchInterviewButtonIcon'
+export * from './Duration'

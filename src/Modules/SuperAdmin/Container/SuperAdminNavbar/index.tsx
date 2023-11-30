@@ -177,7 +177,7 @@ function SuperAdminNavbar() {
               <NavItem className="d-none d-lg-block ml-4">
                 <div className='row align-items-center m-auto'>
 
-                  <span className='mb-0 text-black font-weight-400 pointer' onClick={toggleDropdownHandler}>
+                  <span className='mb-0 text-secondary font-weight-400 pointer' onClick={toggleDropdownHandler}>
                     {capitalizeFirstLetter(name)}
                   </span>
 
@@ -190,14 +190,14 @@ function SuperAdminNavbar() {
                       <DropdownToggle className="nav-link pr-0" color="" tag="a">
                         <Media className="align-items-center">
                           <Media className="d-none d-lg-block ml--2 mr-2 pointer">
-                            <Image height={12} width={12} src={icons.downArrowBlack} />
+                            <Image height={12} width={12} src={icons.downArrowSecondary} />
                           </Media>
                         </Media>
                       </DropdownToggle>
                       <DropdownMenu right className='dropdown-menu-items'>
                         {HEADER_MENU.map((item) => {
                           return (
-                            <DropdownItem className='menu-items'
+                            <DropdownItem className='menu-items text-secondary'
                               onClick={(e) => {
                                 e.preventDefault()
                                 dropdownHandler(item);

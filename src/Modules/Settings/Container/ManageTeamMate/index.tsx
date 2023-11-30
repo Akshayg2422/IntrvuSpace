@@ -225,6 +225,7 @@ function ManageTeamMate() {
     mobileNumber.set('')
     teamDesignation.set({})
     teamDepartment.set({})
+    setSelectedTeam(undefined)
   }
 
   return (

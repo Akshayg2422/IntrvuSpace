@@ -530,188 +530,190 @@ function OpeningCandidates({ id, details }: OpeningCandidatesProps) {
 
   return (
     <>
-      {openingCandidates <= 0 && !is_department_admin && !isJdClosed && (
-        <div className={"empty-candidates-container"}>
-          <div className={"text-heading"}>
-            {"Start adding your Candidates Now !"}
-          </div>
-          <div className={"empty-candidates-des-container"}>
-            <div className={"text-des"}>
-              {
-                "Start adding the candidates with their email and phone number. intrvu SPACE instantly schedules interviews and sends the interview"
-              }
+      {
+        openingCandidatesCount <= 0 && !is_department_admin && !isJdClosed && (
+          <div className={"empty-candidates-container"}>
+            <div className={"text-heading"}>
+              {"Start adding your Candidates Now !"}
             </div>
-            <div className={"text-des"}>
-              {
-                "invite link over email and message with the deadlines before which they can join anytime of their preference"
-              }
-            </div>
-          </div>
-          {/* {!is_department_admin && !isJdClosed && ( */}
-          <div className={"empty-candidates-btn-container"}>
-            <div className={"empty-btn-container"}>
-              <Button
-                block
-                text={"Add Manually"}
-                onClick={addCandidateModal.show}
-              />
-            </div>
-            <div className={"empty-btn-container bulk-btn-container"}>
-              <Button
-                block
-                text={"Bulk Import"}
-                onClick={openBulkUploadHandler}
-              />
-            </div>
-          </div>
-          {/* )} */}
-        </div>
-      )}
-
-      {candidateCountDetails > 0 && (
-        <div>
-          <div className={"candidate-dashboard-container"}>
-            <div
-              className={
-                "dashboard-card-container dashboard-card-spacing  dashboard-card-left-spacing"
-              }
-            >
-              <div className={"dashboard-title"}>{"Total Candidates"}</div>
-              <div className={"text-heading"}>{total_candidates}</div>
-            </div>
-            <div className={"dashboard-card-container dashboard-card-spacing"}>
-              <div className={"dashboard-title"}>{"Selected Candidates"}</div>
-              <div>
-                <span
-                  className={`text-heading ${selected_candidates > 0 && "text-primary"
-                    }`}
-                >
-                  {selected_candidates}
-                </span>
-                <span className={"selected-sub-text"}>{`/${vacancies}`}</span>
+            <div className={"empty-candidates-des-container"}>
+              <div className={"text-des"}>
+                {
+                  "Start adding the candidates with their email and phone number. intrvu SPACE instantly schedules interviews and sends the interview"
+                }
+              </div>
+              <div className={"text-des"}>
+                {
+                  "invite link over email and message with the deadlines before which they can join anytime of their preference"
+                }
               </div>
             </div>
-            <div className={"dashboard-card-container dashboard-card-spacing "}>
-              <div className={"dashboard-title"}>{"Rejected Candidates"}</div>
-              <div className={"text-heading"}>{rejected_candidates}</div>
-            </div>
-            <div
-              className={
-                "dashboard-card-container dashboard-card-spacing dashboard-card-right-spacing"
-              }
-            >
-              <div className={"dashboard-title"}>{"Yet to Start "}</div>
-              <div className={"text-heading"}>{yet_to_attend_candidates}</div>
-            </div>
-          </div>
-
-          <div className={"card-container"}>
-            <div className={"table-heading "}>
-              <span className={"screen-heading"}>{"Candidates"}</span>
-              {selected_candidates > 0 && (
-                <div
-                  className={"badge-schedule"}
-                  style={{
-                    marginLeft: "20px",
-                  }}
-                >
-                  <span
-                    className={"badge-text"}
-                  >{`${selected_candidates} Selected`}</span>
-                </div>
-              )}
-            </div>
-
-            <div className={"table-search-container"}>
-              <div className={"col-sm-4 input-container"}>
-                <Input
-                  noSpace
-                  type={"text"}
-                  placeHolder={"Name, Email, ..."}
-                  value={searchCandidate?.value}
-                  onChange={searchCandidate?.onChange}
-                  onFocus={() => setIsCandidateSearch(true)}
-                  onBlur={() => setIsCandidateSearch(false)}
+            {/* {!is_department_admin && !isJdClosed && ( */}
+            <div className={"empty-candidates-btn-container"}>
+              <div className={"empty-btn-container"}>
+                <Button
+                  block
+                  text={"Add Manually"}
+                  onClick={addCandidateModal.show}
                 />
               </div>
-
-              <div className={"col-sm-3 input-container"}>
-                <DropDown
-                  noSpace
-                  id={"status"}
-                  data={USER_STATUS_FILTER}
-                  selected={candidateStatus.value}
-                  onChange={candidateStatus.onChange}
+              <div className={"empty-btn-container bulk-btn-container"}>
+                <Button
+                  block
+                  text={"Bulk Import"}
+                  onClick={openBulkUploadHandler}
                 />
               </div>
-
-              {!isJdClosed && (
-                <div className={"add-candidate-container"}>
-                  <div className={"add-button-container"}>
-                    {!is_department_admin && <Button
-                      block
-                      text={"Add"}
-                      onClick={addCandidateModal.show}
-                    />
-                    }
-                  </div>
-                  <div className={"add-button-container"}>
-                    {!is_department_admin && <Button
-                      block
-                      outline
-                      text={"Bulk Import"}
-                      onClick={openBulkUploadHandler}
-                    />
-                    }
-                  </div>
-                </div>
-              )}
             </div>
+            {/* )} */}
+          </div>
+        )}
 
-            {!loader.loader ? (
+      {
+        candidateCountDetails > 0 && (
+          <div>
+            <div className={"candidate-dashboard-container"}>
               <div
-                className={'table-container'}
-                style={{
-                  ...(openingCandidates?.length === 1 && { height: "280px" })
-                }}>
+                className={
+                  "dashboard-card-container dashboard-card-spacing  dashboard-card-left-spacing"
+                }
+              >
+                <div className={"dashboard-title"}>{"Total Candidates"}</div>
+                <div className={"text-heading"}>{total_candidates}</div>
+              </div>
+              <div className={"dashboard-card-container dashboard-card-spacing"}>
+                <div className={"dashboard-title"}>{"Selected Candidates"}</div>
+                <div>
+                  <span
+                    className={`text-heading ${selected_candidates > 0 && "text-primary"
+                      }`}
+                  >
+                    {selected_candidates}
+                  </span>
+                  <span className={"selected-sub-text"}>{`/${vacancies}`}</span>
+                </div>
+              </div>
+              <div className={"dashboard-card-container dashboard-card-spacing "}>
+                <div className={"dashboard-title"}>{"Rejected Candidates"}</div>
+                <div className={"text-heading"}>{rejected_candidates}</div>
+              </div>
+              <div
+                className={
+                  "dashboard-card-container dashboard-card-spacing dashboard-card-right-spacing"
+                }
+              >
+                <div className={"dashboard-title"}>{"Yet to Start "}</div>
+                <div className={"text-heading"}>{yet_to_attend_candidates}</div>
+              </div>
+            </div>
 
-                {openingCandidates?.length > 0 ? (
-                  <CommonTable
-                    isPagination={openingCandidatesNumOfPages > 1}
-                    tableDataSet={openingCandidates}
-                    displayDataSet={normalizedTableData(openingCandidates)}
-                    noOfPage={openingCandidatesNumOfPages}
-                    currentPage={openingCandidatesCurrentPages}
-                    paginationNumberClick={(currentPage) => {
-                      getCandidatesCorporate(
-                        paginationHandler("current", currentPage)
-                      );
+            <div className={"card-container"}>
+              <div className={"table-heading "}>
+                <span className={"screen-heading"}>{"Candidates"}</span>
+                {selected_candidates > 0 && (
+                  <div
+                    className={"badge-schedule"}
+                    style={{
+                      marginLeft: "20px",
                     }}
-                    previousClick={() => {
-                      getCandidatesCorporate(
-                        paginationHandler("prev", openingCandidatesCurrentPages)
-                      );
-                    }}
-                    nextClick={() => {
-                      getCandidatesCorporate(
-                        paginationHandler("next", openingCandidatesCurrentPages)
-                      );
-                    }}
-                  />
-                ) : (
-                  <div className={"no-data-found"}>
-                    <NoDataFound />
+                  >
+                    <span
+                      className={"badge-text"}
+                    >{`${selected_candidates} Selected`}</span>
                   </div>
                 )}
               </div>
-            ) : (
-              <div className={"loader-containers"}>
-                <Spinner />
+
+              <div className={"table-search-container"}>
+                <div className={"col-sm-4 input-container"}>
+                  <Input
+                    noSpace
+                    type={"text"}
+                    placeHolder={"Name, Email, ..."}
+                    value={searchCandidate?.value}
+                    onChange={searchCandidate?.onChange}
+                    onFocus={() => setIsCandidateSearch(true)}
+                    onBlur={() => setIsCandidateSearch(false)}
+                  />
+                </div>
+
+                <div className={"col-sm-3 input-container"}>
+                  <DropDown
+                    noSpace
+                    id={"status"}
+                    data={USER_STATUS_FILTER}
+                    selected={candidateStatus.value}
+                    onChange={candidateStatus.onChange}
+                  />
+                </div>
+
+                {!isJdClosed && (
+                  <div className={"add-candidate-container"}>
+                    <div className={"add-button-container"}>
+                      {!is_department_admin && <Button
+                        block
+                        text={"Add"}
+                        onClick={addCandidateModal.show}
+                      />
+                      }
+                    </div>
+                    <div className={"add-button-container"}>
+                      {!is_department_admin && <Button
+                        block
+                        outline
+                        text={"Bulk Import"}
+                        onClick={openBulkUploadHandler}
+                      />
+                      }
+                    </div>
+                  </div>
+                )}
               </div>
-            )}
+
+              {!loader.loader ? (
+                <div
+                  className={'table-container'}
+                  style={{
+                    ...(openingCandidates?.length === 1 && { height: "280px" })
+                  }}>
+
+                  {openingCandidates?.length > 0 ? (
+                    <CommonTable
+                      isPagination={openingCandidatesNumOfPages > 1}
+                      tableDataSet={openingCandidates}
+                      displayDataSet={normalizedTableData(openingCandidates)}
+                      noOfPage={openingCandidatesNumOfPages}
+                      currentPage={openingCandidatesCurrentPages}
+                      paginationNumberClick={(currentPage) => {
+                        getCandidatesCorporate(
+                          paginationHandler("current", currentPage)
+                        );
+                      }}
+                      previousClick={() => {
+                        getCandidatesCorporate(
+                          paginationHandler("prev", openingCandidatesCurrentPages)
+                        );
+                      }}
+                      nextClick={() => {
+                        getCandidatesCorporate(
+                          paginationHandler("next", openingCandidatesCurrentPages)
+                        );
+                      }}
+                    />
+                  ) : (
+                    <div className={"no-data-found"}>
+                      <NoDataFound />
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className={"loader-containers"}>
+                  <Spinner />
+                </div>
+              )}
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
       {/**
        * add candidate Modal
@@ -780,8 +782,8 @@ function OpeningCandidates({ id, details }: OpeningCandidatesProps) {
 
       <Alert
         isOpen={closeCandidateModal.visible}
-        title={"Block Interview"}
-        subTitle={"Are you sure, want to block this interview?"}
+        title={"Block Candidate's Interview"}
+        subTitle={"Are you sure, want to block this candidate's interview?"}
         onClose={() => {
           closeCandidateModal.hide();
         }}

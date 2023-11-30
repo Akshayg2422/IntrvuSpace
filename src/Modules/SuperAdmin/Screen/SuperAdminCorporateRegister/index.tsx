@@ -41,7 +41,10 @@ function SuperAdminCorporateRegister() {
 
         const { interview_limit, display_name, phone, email, sector, address, pincode, admin_name, referrer, referral_code, code, logo } = selectedCompany
 
-        const base64Logo = await urlToBase64(logo);
+        let base64Logo = "";
+        if (logo) {
+            base64Logo = await urlToBase64(logo) as string;
+        }
 
         setParams({
             first_name: admin_name,
@@ -60,7 +63,7 @@ function SuperAdminCorporateRegister() {
 
     }
 
-    console.log(JSON.stringify(params));
+
 
 
     const proceedRegisterCorporateApiHandler = () => {
@@ -80,7 +83,8 @@ function SuperAdminCorporateRegister() {
             interview_limit,
             referrer,
             referral_code,
-            company_code
+            company_code,
+            is_light_variant
         } = params as any;
 
         const base64Photo = photo && photo.length > 0 ? photo[0].base64 : "";
@@ -103,10 +107,10 @@ function SuperAdminCorporateRegister() {
             referrer,
             referral_code,
             company_code,
-            logo: cleanedBase64Photo,
+            is_light_variant: is_light_variant,
+            ...(cleanedBase64Photo && { logo: cleanedBase64Photo }),
         };
 
-        console.log(JSON.stringify(updatedParams));
 
         loader.show()
 
@@ -158,7 +162,8 @@ function SuperAdminCorporateRegister() {
             </div>
             <div className={'auth-container'}>
 
-                {formType === REGISTER_ADMIN &&
+                {
+                    formType === REGISTER_ADMIN &&
                     <SuperAdminRegisterAdmin
                         edit={isEdit}
                         params={params}
