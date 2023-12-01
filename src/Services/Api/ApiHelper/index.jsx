@@ -1,10 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { ROUTES } from '@Routes';
+import { store, userLogout } from "@Redux";
 import { USER_TOKEN } from '@Utils';
 import axios from 'axios';
-import { useDispatch } from 'react-redux';
-import { useNavigate as useNav } from "react-router-dom";
-import { store, userLogout } from "@Redux";
 
 
 
