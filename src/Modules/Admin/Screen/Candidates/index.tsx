@@ -1,8 +1,7 @@
 import { icons } from '@Assets';
-import { CommonTable, Input, MenuBar, Modal, NoDataFound, Spinner, showToast } from '@Components';
+import { Button, CommonTable, Input, MenuBar, Modal, NoDataFound, ScreenHeading, Spinner, showToast } from '@Components';
 import { useInput, useLoader, useModal } from '@Hooks';
-import { SettingHeader } from '@Modules';
-import { addCandidate, getCandidates, getJdSection } from '@Redux';
+import { addCandidate, getCandidates } from '@Redux';
 import { ADD_CANDIDATE_RULES, INITIAL_PAGE, capitalizeFirstLetter, getValidateError, ifObjectExist, paginationHandler, validate } from '@Utils';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -81,7 +80,7 @@ function Candidates() {
         addCandidate({
           params,
           onSuccess: (success: any) => () => {
-            const {message}=success
+            const { message } = success
             addLoader.hide()
             modalCloseHandler()
             getCandidateApiHandler(candidatesCurrentPages)
@@ -89,8 +88,8 @@ function Candidates() {
             showToast(message, 'success')
           },
           onError: (error: any) => () => {
-            const {error_message}=error
-       
+            const { error_message } = error
+
             showToast(error_message, 'error')
             addLoader.hide()
           },
@@ -108,10 +107,10 @@ function Candidates() {
       const { first_name, email, last_name, mobile_number } = el
 
       return {
-        FirstName: capitalizeFirstLetter(first_name),
-        LastName: capitalizeFirstLetter(last_name),
+        "First Name": capitalizeFirstLetter(first_name),
+        "Last Name": capitalizeFirstLetter(last_name),
         Email: email,
-        MobileNumber: mobile_number,
+        "Mobile Number": mobile_number,
         '':
           <MenuBar
             menuData={MENU}
@@ -146,10 +145,19 @@ function Candidates() {
   return (
     <>
       <div className={'screen-padding'}>
-        <SettingHeader
-          title={'Candidate'}
-          buttonText={'Add'}
-          onClick={addCandidateModel.show}
+        <ScreenHeading
+          text={'Candidate'}
+          children={
+            <div className={'d-flex justify-content-end'}>
+              <div className={'btn-wrapper'}>
+                <Button
+                  block
+                  text={'Add'}
+                  onClick={addCandidateModel.show}
+                />
+              </div>
+            </div>
+          }
         />
         {
           loader.loader && <div className={'loader-container'}><Spinner /></div>

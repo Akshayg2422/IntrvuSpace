@@ -1,23 +1,21 @@
 import {
   Alert,
+  CommonTable,
   DateTimePicker,
+  Input,
   MenuBar,
   Modal,
-  ViewMore,
-  showToast,
-  Back,
+  ScreenHeading,
   Spinner,
-  Input,
-  Button,
-  CommonTable,
+  ViewMore,
+  showToast
 } from "@Components";
 import { useInput, useLoader, useModal } from "@Hooks";
 import { OpeningCandidates } from "@Modules";
 import {
-  createCorporateSchedules,
   getCorporateScheduleDetails,
   getJdSection,
-  postCorporateScheduleActions,
+  postCorporateScheduleActions
 } from "@Redux";
 import {
   CREATE_CORPORATE_VACANCIES_RULES,
@@ -274,20 +272,11 @@ function OpeningDetails() {
         {
           corporateScheduleDetails &&
           <div>
-            <div className={"variant-header"}>
-              <div>
-                <div className={'back-container-vacancies'}>
-                  <Back />
-                </div>
-                <div className={"screen-heading"}>
-                  {capitalizeFirstLetter(position)}
-                </div>
-                <div className={"experience"}>
-                  {capitalizeFirstLetter(experience)}
-                </div>
-              </div>
-
-              <div className={"vacancies-container"}>
+            <ScreenHeading
+              text={capitalizeFirstLetter(position)}
+              subtitle={capitalizeFirstLetter(experience)}
+            >
+              <div className={"vacancies-container d-flex justify-content-end"}>
                 <div className={"screen-heading"}>{`${vacancies}  ${vacancies > 1 ? "Vacancies" : "Vacancy"
                   }`}</div>
                 {!is_closed && (
@@ -299,7 +288,7 @@ function OpeningDetails() {
                   </div>
                 )}
               </div>
-            </div>
+            </ScreenHeading>
 
             <OpeningCandidates id={id} details={corporateScheduleDetails} />
 

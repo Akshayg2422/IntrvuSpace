@@ -1,0 +1,21 @@
+.heading-wrapper {
+    display: flex;
+    flex-direction: row;
+}
+
+.back-btn-container {
+    position: absolute;
+    left: -50px;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+}
+
+.btn-image-container {
+    height: 14px;
+    width: 14px;
+    display: flex;
+    object-fit: contain;
+    align-items: center;
+    justify-content: center;
+}

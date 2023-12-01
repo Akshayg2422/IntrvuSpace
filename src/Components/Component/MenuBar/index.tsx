@@ -34,7 +34,7 @@ function MenuBar({ icon = icons.more, menuData, onClick, direction = "down" }: T
                       }
                     }}
                   >
-                    <div className="d-inline-flex justify-content-center align-items-center">
+                    <div className="d-inline-flex justify-content-center align-items-center text-secondary">
                       {icon && (
                         <Image
                           src={icon}
