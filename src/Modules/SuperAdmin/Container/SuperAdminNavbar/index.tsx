@@ -201,12 +201,9 @@ function SuperAdminNavbar() {
                               onClick={(e) => {
                                 e.preventDefault()
                                 dropdownHandler(item);
-
                               }}
                             >
-                              {/* <i className={item.icon}></i> */}
                               <span>{item.name}</span>
-
                             </DropdownItem>
                           );
                         })}
