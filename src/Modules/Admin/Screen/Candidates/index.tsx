@@ -146,7 +146,7 @@ function Candidates() {
     <>
       <div className={'screen-padding'}>
         <ScreenHeading
-          text={'Candidate'}
+          text={'Candidates'}
           children={
             <div className={'d-flex justify-content-end'}>
               <div className={'btn-wrapper'}>
