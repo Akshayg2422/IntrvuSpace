@@ -22,7 +22,7 @@ function Table({ tableDataSet, displayDataSet, tableOnClick }: TableProps) {
   function renderTableValue(eachObject: object) {
     return Object.keys(eachObject).map((key: string) => {
       let value = eachObject[key as keyof object]
-      return <td style={{ whiteSpace: 'normal', maxWidth: '220px', wordWrap: 'break-word' }} key={key} ><span>{value}</span></td>
+      return <td style={{ whiteSpace: 'normal', maxWidth: '230px', wordWrap: 'break-word' }} key={key} ><span>{value}</span></td>
     })
   }
 
