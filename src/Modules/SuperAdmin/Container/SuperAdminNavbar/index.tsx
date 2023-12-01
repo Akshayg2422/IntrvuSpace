@@ -197,7 +197,7 @@ function SuperAdminNavbar() {
                       <DropdownMenu right className='dropdown-menu-items'>
                         {HEADER_MENU.map((item) => {
                           return (
-                            <DropdownItem className='menu-items text-secondary'
+                            <DropdownItem className='menu-items'
                               onClick={(e) => {
                                 e.preventDefault()
                                 dropdownHandler(item);

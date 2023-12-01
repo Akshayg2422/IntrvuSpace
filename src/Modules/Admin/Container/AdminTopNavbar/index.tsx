@@ -219,7 +219,7 @@ function AdminTopNavbar({ showCreateOpening, onCreateOpeningClick }: AdminTopNav
                         {HEADER_MENU.map((item: any) => {
 
                           return (
-                            <DropdownItem className="menu-items text-secondary"
+                            <DropdownItem className="menu-items"
                               onClick={(e) => {
                                 e.preventDefault();
                                 dropdownHandler(item);
