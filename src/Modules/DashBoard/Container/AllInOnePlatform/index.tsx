@@ -143,7 +143,7 @@ function AllInOnePlatform() {
                               style={{
                                 width: 1.3,
                                 height: 300,
-                                backgroundColor: "#e8edff",
+                                backgroundColor: "#f2faf0",
                               }}
                             />
                           </div>
@@ -225,9 +225,9 @@ function AllInOnePlatform() {
                           <div className="d-none d-lg-block">
                             <div
                               style={{
-                                width: 1.2,
+                                width: 1.4,
                                 height: 300,
-                                backgroundColor: "#e8edff",
+                                backgroundColor: "#f2faf0",
                               }}
                             />
                           </div>

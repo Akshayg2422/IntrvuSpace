@@ -148,6 +148,7 @@ function SuperAdminDashboard() {
                     display_name,
                     interview_limit,
                     consumed_interviews,
+                    completed_interviews,
                     phone,
                     email,
                     address,
@@ -220,7 +221,8 @@ function SuperAdminDashboard() {
                     email,
                     address,
                     'limit': interview_limit,
-                    'consumed': consumed_interviews,
+                    'Created': consumed_interviews,
+                    'Completed': completed_interviews,
                     " ": (
                         <div className={"d-flex align-items-center"}>
                             {
@@ -261,28 +263,30 @@ function SuperAdminDashboard() {
                     }
                     {
                         companies && companies?.length > 0 &&
-                        <CommonTable
-                            isPagination
-                            tableDataSet={companies}
-                            displayDataSet={normalizedTableData(companies)}
-                            noOfPage={companiesNumOfPages}
-                            currentPage={companiesCurrentPages}
-                            paginationNumberClick={(currentPage) => {
-                                getCompaniesApiHandler(
-                                    paginationHandler("current", currentPage)
-                                );
-                            }}
-                            previousClick={() => {
-                                getCompaniesApiHandler(
-                                    paginationHandler("prev", companiesCurrentPages)
-                                );
-                            }}
-                            nextClick={() => {
-                                getCompaniesApiHandler(
-                                    paginationHandler("next", companiesCurrentPages)
-                                );
-                            }}
-                        />
+                        <div className={'overflow-auto pb-3'}>
+                            <CommonTable
+                                isPagination
+                                tableDataSet={companies}
+                                displayDataSet={normalizedTableData(companies)}
+                                noOfPage={companiesNumOfPages}
+                                currentPage={companiesCurrentPages}
+                                paginationNumberClick={(currentPage) => {
+                                    getCompaniesApiHandler(
+                                        paginationHandler("current", currentPage)
+                                    );
+                                }}
+                                previousClick={() => {
+                                    getCompaniesApiHandler(
+                                        paginationHandler("prev", companiesCurrentPages)
+                                    );
+                                }}
+                                nextClick={() => {
+                                    getCompaniesApiHandler(
+                                        paginationHandler("next", companiesCurrentPages)
+                                    );
+                                }}
+                            />
+                        </div>
                     }
                 </div>
 

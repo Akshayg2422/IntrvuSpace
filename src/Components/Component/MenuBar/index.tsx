@@ -20,7 +20,7 @@ function MenuBar({ icon = icons.more, menuData, onClick, direction = "down" }: T
         >
           <Image src={icon} width={20} height={20} />
         </DropdownToggle>
-        <DropdownMenu right className={'shadow-none dropdown-menu-items'} style={{ zIndex: 9999}} >
+        <DropdownMenu right className={'shadow-none dropdown-menu-items'} style={{ zIndex: 9999 }} >
           {menuData &&
             menuData.length > 0 &&
             menuData.map((el: any, index: number) => {
@@ -34,7 +34,7 @@ function MenuBar({ icon = icons.more, menuData, onClick, direction = "down" }: T
                       }
                     }}
                   >
-                    <div className="d-inline-flex justify-content-center align-items-center text-secondary">
+                    <div className="d-inline-flex justify-content-center align-items-center">
                       {icon && (
                         <Image
                           src={icon}
