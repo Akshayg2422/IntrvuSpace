@@ -1,5 +1,11 @@
+/* eslint-disable react-hooks/rules-of-hooks */
+import { ROUTES } from '@Routes';
+import { USER_TOKEN } from '@Utils';
 import axios from 'axios';
-import { USER_TOKEN } from '@Utils'
+import { useDispatch } from 'react-redux';
+import { useNavigate as useNav } from "react-router-dom";
+import { store, userLogout } from "@Redux";
+
 
 
 export const BUILD_TYPE_LIVE = 1;
@@ -80,6 +86,7 @@ export async function post(url, data, config, submissionUrl) {
 
   submissionUrl = submissionUrl || SERVER
 
+
   const baseUrl = axios.create({
     baseURL: submissionUrl,
     timeout: 240000, // 4 minutes
@@ -87,6 +94,7 @@ export async function post(url, data, config, submissionUrl) {
 
 
   let headers = { ...(await getHeaders()) };
+
 
   return await baseUrl
     .post(url, data, {
@@ -97,7 +105,33 @@ export async function post(url, data, config, submissionUrl) {
       return response.data;
     })
     .catch(error => {
-
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        if (error.response.status === 401) {
+          try {
+            store.dispatch(
+              userLogout({
+                onSuccess: () => {
+                  window.location.href = '/login';
+                },
+                onError: () => {
+                },
+              }));
+          } catch (e) {
+            console.log(e);
+          }
+        } else {
+          console.log('Error status:', error.response.status);
+          console.log('Error data:', error.response.data);
+        }
+      } else if (error.request) {
+        // The request was made but no response was received
+        console.log('No response received');
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.log('Error message:', error.message);
+      }
     });
 }
 

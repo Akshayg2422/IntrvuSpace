@@ -18,10 +18,7 @@ function Splash() {
 
 
     const { loginDetails } = useSelector((state: any) => state.AppReducer);
-
-
     const { isLoggedIn, user_type } = loginDetails || {}
-
 
     function getDashboardApiHandler() {
         const params = {}
