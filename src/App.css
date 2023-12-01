@@ -115,8 +115,8 @@ input[type=number] {
 }
 
 .screen-container {
-    margin-top: 50px;
-    padding: 4% 7%;
+    /* margin-top: 50px; */
+    padding: 10px 6%;
 }
 
 

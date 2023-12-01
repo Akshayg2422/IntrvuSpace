@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { SuperAdminNavbar } from '@Modules'
 import { useSelector, useDispatch } from 'react-redux'
 import { alterCompanyLimit, alterCompanyStatus, getCompanies, setSelectedCompany } from '@Redux'
-import { CommonTable, Image, Input, MenuBar, Modal, NoDataFound, Spinner, StatusIcon, showToast, Sidebar } from '@Components';
+import { CommonTable, Image, Input, MenuBar, Modal, NoDataFound, Spinner, StatusIcon, showToast } from '@Components';
 import { capitalizeFirstLetter, getPhoto, paginationHandler, INITIAL_PAGE } from '@Utils';
 import { icons } from '@Assets';
 import { useInput, useKeyPress, useLoader, useModal, useNavigation } from '@Hooks';
@@ -11,8 +11,6 @@ import { PhotoProvider, PhotoView } from "react-photo-view";
 import "react-photo-view/dist/react-photo-view.css";
 
 function SuperAdminDashboard() {
-
-    const [sidenavOpen, setSidenavOpen] = React.useState(true);
 
     const { companies, companiesNumOfPages, companiesCurrentPages } = useSelector((state: any) => state.SuperAdminReducer);
     const dispatch = useDispatch()
@@ -241,119 +239,64 @@ function SuperAdminDashboard() {
             });
     };
 
-    const toggleSidenav = () => {
-        if (document.body.classList.contains("g-sidenav-pinned")) {
-            document.body.classList.remove("g-sidenav-pinned");
-            document.body.classList.add("g-sidenav-hidden");
-        } else {
-            document.body.classList.add("g-sidenav-pinned");
-            document.body.classList.remove("g-sidenav-hidden");
-        }
-        setSidenavOpen(!sidenavOpen);
-    };
-
-
-    const routes = [
-        {
-            collapse: true,
-            name: "Dashboards",
-            icon: "ni ni-shop text-primary",
-            state: "dashboardsCollapse",
-            views: [
-                {
-                    path: "/dashboard",
-                    name: "Dashboard",
-                    miniName: "D",
-                    component: <></>,
-                    layout: "/admin",
-                },
-                {
-                    path: "/alternative-dashboard",
-                    name: "Alternative",
-                    miniName: "A",
-                    component: <></>,
-                    layout: "/admin",
-                },
-            ],
-        },
-    ];
-
-    const mainContentRef = React.useRef(null);
-
     return (
-        <React.Fragment>
-            <Sidebar
-                routes={routes}
-                toggleSidenav={toggleSidenav}
-                sidenavOpen={sidenavOpen}
-                logo={{
-                    innerLink: "/",
-                    imgSrc: require('/'),
-                    imgAlt: "...",
-                }}
-            />
-            <div className="main-content" ref={mainContentRef}>
-                <div className={'screen'}>
-                    <SuperAdminNavbar sidenavOpen={sidenavOpen} toggleSidenav={toggleSidenav} />
-                    <div className={'screen-container'}>
-                        <div className="col-sm-3 m-0 p-0">
-                            <Input
-                                id={'search'}
-                                heading={"Search"}
-                                type={"text"}
-                                placeHolder={"Name, Mobile, ..."}
-                                value={search?.value}
-                                onChange={search.onChange}
-                            />
-                        </div>
-                        {
-                            loader.loader &&
-                            <div className={'loader-container'}>
-                                <Spinner />
-                            </div>
-                        }
-                        {
-                            companies && companies?.length > 0 &&
-                            <div className={'overflow-auto py-3'}>
-                                <CommonTable
-                                    isPagination
-                                    tableDataSet={companies}
-                                    displayDataSet={normalizedTableData(companies)}
-                                    noOfPage={companiesNumOfPages}
-                                    currentPage={companiesCurrentPages}
-                                    paginationNumberClick={(currentPage) => {
-                                        getCompaniesApiHandler(
-                                            paginationHandler("current", currentPage)
-                                        );
-                                    }}
-                                    previousClick={() => {
-                                        getCompaniesApiHandler(
-                                            paginationHandler("prev", companiesCurrentPages)
-                                        );
-                                    }}
-                                    nextClick={() => {
-                                        getCompaniesApiHandler(
-                                            paginationHandler("next", companiesCurrentPages)
-                                        );
-                                    }}
-                                />
-                            </div>
-                        }
-                    </div>
+        <>
+            <div className={'screen'}>
+                <SuperAdminNavbar />
 
+                {/* <div className={'screen-container'}>
+                    <div className="col-sm-3 m-0 p-0">
+                        <Input
+                            id={'search'}
+                            heading={"Search"}
+                            type={"text"}
+                            placeHolder={"Name, Mobile, ..."}
+                            value={search?.value}
+                            onChange={search.onChange}
+                        />
+                    </div>
                     {
-                        !loader.loader && companies?.length <= 0 &&
-                        <div className={"no-data-found"}>
-                            <NoDataFound />
+                        loader.loader &&
+                        <div className={'loader-container'}>
+                            <Spinner />
                         </div>
                     }
-                </div>
+                    {
+                        companies && companies?.length > 0 &&
+                        <div className={'overflow-auto pb-3'}>
+                            <CommonTable
+                                isPagination
+                                tableDataSet={companies}
+                                displayDataSet={normalizedTableData(companies)}
+                                noOfPage={companiesNumOfPages}
+                                currentPage={companiesCurrentPages}
+                                paginationNumberClick={(currentPage) => {
+                                    getCompaniesApiHandler(
+                                        paginationHandler("current", currentPage)
+                                    );
+                                }}
+                                previousClick={() => {
+                                    getCompaniesApiHandler(
+                                        paginationHandler("prev", companiesCurrentPages)
+                                    );
+                                }}
+                                nextClick={() => {
+                                    getCompaniesApiHandler(
+                                        paginationHandler("next", companiesCurrentPages)
+                                    );
+                                }}
+                            />
+                        </div>
+                    }
+                </div> */}
+                {/* 
+                {
+                    !loader.loader && companies?.length <= 0 &&
+                    <div className={"no-data-found"}>
+                        <NoDataFound />
+                    </div>
+                } */}
             </div>
-
-
-            {sidenavOpen ? (
-                <div className="backdrop d-xl-none" onClick={toggleSidenav} />
-            ) : null}
 
             <Modal
                 loading={addLimitLoader.loader}
@@ -372,7 +315,7 @@ function SuperAdminDashboard() {
                     </div>
                 </div>
             </Modal>
-        </React.Fragment>
+        </>
     )
 }
 

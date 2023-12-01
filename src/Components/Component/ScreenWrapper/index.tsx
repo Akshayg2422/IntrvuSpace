@@ -1,3 +1,4 @@
+import React from 'react'
 import { ScreenWrapperProps } from "./interfaces";
 import { useOnlineStatus } from '@Hooks'
 import { useSelector } from 'react-redux'
@@ -13,12 +14,10 @@ function ScreenWrapper({ children }: ScreenWrapperProps) {
 
   if (!isOnline && (window.location.pathname !== '/' || isLoggedIn)) {
     return (
-
       <InternetError />
-
     );
   }
-  return <div>{children}</div>;
+  return <React.Fragment>{children}</React.Fragment>;
 
 }
 
