@@ -73,7 +73,7 @@ function Settings() {
           onClick={() => {
             gotoScreen(CANDIDATES)
           }}>
-          <div className={'setting-heading'}>{'Candidate'}</div>
+          <div className={'setting-heading'}>{'Candidates'}</div>
         </div>
 
 
