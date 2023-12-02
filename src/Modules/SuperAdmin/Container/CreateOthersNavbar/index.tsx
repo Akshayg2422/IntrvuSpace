@@ -3,9 +3,9 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 // reactstrap components
 import { icons } from "@Assets";
-import { Alert, Button, Image } from "@Components";
+import { Alert, Button, Image, showToast } from "@Components";
 import { useModal, useNavigation } from "@Hooks";
-import { showCreateForOthersJdModal, showCreateJddModal, userLogout } from "@Redux";
+import { showCreateForOthersJdModal, showCreateJddModal, submitLogout, userLogout } from "@Redux";
 import { ROUTES } from "@Routes";
 import { capitalizeFirstLetter, filteredName } from "@Utils";
 import { useDispatch, useSelector } from "react-redux";
@@ -60,17 +60,32 @@ function CreateOthersNavbar() {
 
 
   function proceedLogout() {
+    const params={}
     try {
       dispatch(
-        userLogout({
-          onSuccess: () => {
-            goTo(ROUTES["auth-module"].splash, true);
+        submitLogout({
+            params,
+            onSuccess: () => (response: any) => {
+              dispatch(
+                userLogout({
+                  onSuccess: () => {
+                    goTo(ROUTES["auth-module"].splash, true)
+                  },
+                  onError: () => {
+        
+                  },
+                })
+              );
+            },
+            onError: (error: any) => () => {
+              const { message } = error
+              showToast(message, 'error')
           },
-          onError: () => { },
-        })
-      );
+        }))
+      
     } catch (error) { }
   }
+
 
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
