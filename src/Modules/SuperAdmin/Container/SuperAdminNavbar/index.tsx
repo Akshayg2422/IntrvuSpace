@@ -36,10 +36,10 @@ function SuperAdminNavbar() {
   const logoutModal = useModal(false);
   const { goTo } = useNavigation()
   const loader = useLoader(false);
-
+  
   const { dashboardDetails } = useSelector((state: any) => state.AuthReducer);
 
-
+console.log('loader',loader.loader)
   const { name, } = dashboardDetails?.basic_info || {}
   const [isOpenDropdown, setIsOpenDropdown] = useState(false)
 
@@ -64,6 +64,7 @@ function SuperAdminNavbar() {
   function proceedLogout() {
     const params = {}
     loader.show();
+    
     try {
       dispatch(
         submitLogout({
@@ -84,7 +85,7 @@ function SuperAdminNavbar() {
           onError: (error: any) => () => {
             const { message } = error
             showToast(message, 'error')
-            loader.hide();
+            loader.hide()
           },
         }))
 
@@ -258,6 +259,7 @@ function SuperAdminNavbar() {
         onClose={logoutModal.hide}
         primary={"Proceed"}
         secondaryOnClick={logoutModal.hide}
+        loading={loader.loader}
         primaryOnClick={proceedLogout}
       />
     </>

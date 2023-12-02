@@ -32,7 +32,6 @@ function CreateOthersNavbar() {
   const { name, email, designation, department } = dashboardDetails?.basic_info || {}
   const loader = useLoader(false);
 
-
   const dispatch = useDispatch();
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -278,6 +277,7 @@ function CreateOthersNavbar() {
         onClose={logoutModal.hide}
         primary={"Proceed"}
         secondaryOnClick={logoutModal.hide}
+        loading={loader.loader}
         primaryOnClick={proceedLogout}
       />
     </>

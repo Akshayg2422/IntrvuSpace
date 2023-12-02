@@ -288,6 +288,7 @@ function AdminTopNavbar({ showCreateOpening, onCreateOpeningClick }: AdminTopNav
         onClose={logoutModal.hide}
         primary={"Proceed"}
         secondaryOnClick={logoutModal.hide}
+        loading={loader.loader}
         primaryOnClick={proceedLogout}
       />
     </>
