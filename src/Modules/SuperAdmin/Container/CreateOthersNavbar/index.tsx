@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 // reactstrap components
 import { icons } from "@Assets";
 import { Alert, Button, Image, showToast } from "@Components";
-import { useModal, useNavigation } from "@Hooks";
+import { useLoader, useModal, useNavigation } from "@Hooks";
 import { showCreateForOthersJdModal, showCreateJddModal, submitLogout, userLogout } from "@Redux";
 import { ROUTES } from "@Routes";
 import { capitalizeFirstLetter, filteredName } from "@Utils";
@@ -30,6 +30,7 @@ function CreateOthersNavbar() {
   const { goTo } = useNavigation();
   const { dashboardDetails } = useSelector((state: any) => state.AuthReducer);
   const { name, email, designation, department } = dashboardDetails?.basic_info || {}
+  const loader = useLoader(false);
 
 
   const dispatch = useDispatch();
@@ -61,11 +62,13 @@ function CreateOthersNavbar() {
 
   function proceedLogout() {
     const params={}
+    loader.show()
     try {
       dispatch(
         submitLogout({
             params,
             onSuccess: () => (response: any) => {
+              loader.hide()
               dispatch(
                 userLogout({
                   onSuccess: () => {
@@ -80,6 +83,7 @@ function CreateOthersNavbar() {
             onError: (error: any) => () => {
               const { message } = error
               showToast(message, 'error')
+              loader.hide()
           },
         }))
       

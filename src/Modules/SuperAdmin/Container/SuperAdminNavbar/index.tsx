@@ -1,7 +1,7 @@
 
 import { icons } from '@Assets';
 import { Alert, Button, Image, showToast } from '@Components';
-import { useModal, useNavigation } from '@Hooks';
+import { useLoader, useModal, useNavigation } from '@Hooks';
 import { userLogout, setSelectedCompany, submitLogout } from "@Redux";
 import { ROUTES } from '@Routes';
 import { useState } from "react";
@@ -35,6 +35,7 @@ function SuperAdminNavbar() {
 
   const logoutModal = useModal(false);
   const { goTo } = useNavigation()
+  const loader = useLoader(false);
 
   const { dashboardDetails } = useSelector((state: any) => state.AuthReducer);
 
@@ -61,29 +62,32 @@ function SuperAdminNavbar() {
 
 
   function proceedLogout() {
-    const params={}
+    const params = {}
+    loader.show();
     try {
       dispatch(
         submitLogout({
-            params,
-            onSuccess: () => (response: any) => {
-              dispatch(
-                userLogout({
-                  onSuccess: () => {
-                    goTo(ROUTES["auth-module"].splash, true)
-                  },
-                  onError: () => {
-        
-                  },
-                })
-              );
-            },
-            onError: (error: any) => () => {
-              const { message } = error
-              showToast(message, 'error')
+          params,
+          onSuccess: () => (response: any) => {
+            loader.hide();
+            dispatch(
+              userLogout({
+                onSuccess: () => {
+                  goTo(ROUTES["auth-module"].splash, true)
+                },
+                onError: () => {
+
+                },
+              })
+            );
+          },
+          onError: (error: any) => () => {
+            const { message } = error
+            showToast(message, 'error')
+            loader.hide();
           },
         }))
-      
+
     } catch (error) { }
   }
 

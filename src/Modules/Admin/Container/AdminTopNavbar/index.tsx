@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 // reactstrap components
 import { icons } from "@Assets";
 import { Alert, Button, Image, showToast } from "@Components";
-import { useModal, useNavigation } from "@Hooks";
+import { useLoader, useModal, useNavigation } from "@Hooks";
 import { userLogout, switchToAdvance, submitLogout } from "@Redux";
 import { ROUTES } from "@Routes";
 import { capitalizeFirstLetter, filteredName } from "@Utils";
@@ -35,7 +35,7 @@ function AdminTopNavbar({ showCreateOpening, onCreateOpeningClick }: AdminTopNav
   const dispatch = useDispatch();
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
-
+  const loader = useLoader(false);
   const { dashboardDetails } = useSelector((state: any) => state.AuthReducer);
 
   const { name } = dashboardDetails?.basic_info || {}
@@ -82,11 +82,13 @@ function AdminTopNavbar({ showCreateOpening, onCreateOpeningClick }: AdminTopNav
 
   function proceedLogout() {
     const params={}
+    loader.show();
     try {
       dispatch(
         submitLogout({
             params,
             onSuccess: () => (response: any) => {
+              loader.hide();
               dispatch(
                 userLogout({
                   onSuccess: () => {
@@ -101,6 +103,7 @@ function AdminTopNavbar({ showCreateOpening, onCreateOpeningClick }: AdminTopNav
             onError: (error: any) => () => {
               const { message } = error
               showToast(message, 'error')
+              loader.hide();
           },
         }))
       

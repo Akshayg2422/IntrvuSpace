@@ -1,7 +1,7 @@
 
 import { icons } from '@Assets';
 import { Alert, Button, Image, showToast } from '@Components';
-import { useModal, useNavigation } from '@Hooks';
+import { useLoader, useModal, useNavigation } from '@Hooks';
 import { showCreateJddModal, userLogout, submitLogout } from "@Redux";
 import { ROUTES } from '@Routes';
 import { useState } from "react";
@@ -36,6 +36,7 @@ function TopNavbar() {
   const { dashboardDetails } = useSelector((state: any) => state.AuthReducer);
 
   const { name, email, designation, department } = dashboardDetails?.basic_info || {}
+  const loader = useLoader(false);
 
 
 
@@ -55,11 +56,14 @@ function TopNavbar() {
 
   function proceedLogout() {
     const params={}
+    loader.show();
     try {
       dispatch(
         submitLogout({
             params,
             onSuccess: () => (response: any) => {
+            loader.hide();
+
               dispatch(
                 userLogout({
                   onSuccess: () => {
@@ -74,6 +78,7 @@ function TopNavbar() {
             onError: (error: any) => () => {
               const { message } = error
               showToast(message, 'error')
+              loader.show();
           },
         }))
       
