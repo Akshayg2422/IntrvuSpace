@@ -115,6 +115,9 @@ function Opening() {
   const [scheduleEndDate, setScheduleEndDate] = useState<any>(DEFAULT_DATE);
   const [scheduleEndTime, setScheduleEndTime] = useState<any>(DEFAULT_TIME);
 
+  const [corporateScheduleCounts, setCorporateScheduleCount] = useState(corporateScheduleCount)
+  
+
   const formatDeadline = (date: string, time: string) => {
     const formattedDate = moment(date, 'MMM D YYYY').format('YYYY-MM-DD');
     const formattedTime = moment(time, 'LT').format('HH:mm:ss');
@@ -299,22 +302,16 @@ function Opening() {
 
 
 
+
   return (
     <div className={'screen'}>
       <AdminTopNavbar
-        showCreateOpening={corporateScheduleCount > 0}
+        showCreateOpening={corporateScheduleCounts > 0}
         onCreateOpeningClick={createOpeningModal.show}
       />
-      {
-        listLoader.loader && (
-          <div className={"loader-container"}>
-            <Spinner />
-          </div>
-        )
-      }
-
-      {!listLoader.loader && corporateScheduleCount <= 0 && <OpeningEmpty onCreateOpeningClick={createOpeningModal.show} />}
-      {corporateScheduleCount > 0 && (
+    
+      {corporateScheduleCounts <= 0 ? <OpeningEmpty onCreateOpeningClick={createOpeningModal.show} />
+      : (
         <div className={"screen-container"}>
           <div className="row">
             <div className="col-sm-3">
@@ -373,6 +370,13 @@ function Opening() {
 
             <div></div>
           </div>
+          {
+        listLoader.loader && (
+          <div className={"loader-container"}>
+            <Spinner />
+          </div>
+        )
+      }
 
           <div>
             {
