@@ -76,3 +76,7 @@ export const CREATE_COMPANY_SUPER_ADMIN = 'CREATE_COMPANY_SUPER_ADMIN'
 
 
 export const SWITCH_TO_ADVANCE = 'SWITCH_TO_ADVANCE'
+
+/** logout api*/
+export const LOGOUT='LOGOUT'
+export const LOGOUT_SUCCESS='LOGOUT_SUCCESS'

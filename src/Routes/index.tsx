@@ -36,7 +36,6 @@ import {
   Candidates,
   SuperAdminCorporateRegister,
   Schedule
-
 } from '@Modules';
 
 export const ROUTES = {

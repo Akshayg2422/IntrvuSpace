@@ -15,13 +15,13 @@ import {
   Navbar,
   UncontrolledDropdown
 } from "reactstrap";
-import { Image, Alert } from '@Components'
+import { Image, Alert, showToast } from '@Components'
 import { icons } from '@Assets'
 import { ROUTES } from '@Routes'
 import { useDispatch, useSelector } from "react-redux";
-import { useModal, useNavigation } from '@Hooks';
+import { useModal, useNavigation, useLoader } from '@Hooks';
 import { capitalizeFirstLetter } from '@Utils';
-import { userLogout } from '@Redux'
+import { userLogout, submitLogout } from '@Redux'
 
 
 function SuperAdminNavbar({ theme, sidenavOpen, toggleSidenav }) {
@@ -35,10 +35,11 @@ function SuperAdminNavbar({ theme, sidenavOpen, toggleSidenav }) {
 
   const logoutModal = useModal(false);
   const { goTo } = useNavigation()
+  const loader = useLoader(false);
 
   const { dashboardDetails } = useSelector((state: any) => state.AuthReducer);
 
-
+  console.log('loader', loader.loader)
   const { name, } = dashboardDetails?.basic_info || {}
 
   const dropdownHandler = (item: any) => {
@@ -53,24 +54,39 @@ function SuperAdminNavbar({ theme, sidenavOpen, toggleSidenav }) {
   };
 
   function proceedLogout() {
+    const params = {}
+    loader.show();
+
     try {
-
       dispatch(
-        userLogout({
-          onSuccess: () => {
-            goTo(ROUTES["auth-module"].splash, true)
-          },
-          onError: () => {
+        submitLogout({
+          params,
+          onSuccess: () => (response: any) => {
+            loader.hide();
+            dispatch(
+              userLogout({
+                onSuccess: () => {
+                  goTo(ROUTES["auth-module"].splash, true)
+                },
+                onError: () => {
 
+                },
+              })
+            );
           },
-        })
-      );
+          onError: (error: any) => () => {
+            const { message } = error
+            showToast(message, 'error')
+            loader.hide()
+          },
+        }))
+
     } catch (error) { }
   }
 
   return (
     <>
-      <Navbar className={'navbar-top navbar-expand navbar-light py-4'} expand="lg">
+      <Navbar className={'navbar-top navbar-expand navbar-light py-4 bg-white'} expand="lg">
         <Container fluid>
           <Collapse navbar isOpen={true}>
             <Nav className="align-items-center ml-md-auto" navbar>
@@ -140,6 +156,7 @@ function SuperAdminNavbar({ theme, sidenavOpen, toggleSidenav }) {
         onClose={logoutModal.hide}
         primary={"Proceed"}
         secondaryOnClick={logoutModal.hide}
+        loading={loader.loader}
         primaryOnClick={proceedLogout}
       />
     </>

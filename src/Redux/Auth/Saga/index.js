@@ -171,7 +171,22 @@ function* createCompanySuperAdminSaga(action) {
         yield call(action.payload.onError(error));
     }
 }
+/**
+ * verify email (Submit api dont need success and failure state)
+ */
 
+function* logoutSaga(action) {
+    try {
+        const response = yield call(Api.logoutApi, action.payload.params);
+        if (response.success) {
+            yield call(action.payload.onSuccess(response));
+        } else {
+            yield call(action.payload.onError(response));
+        }
+    } catch (error) {
+        yield call(action.payload.onError(error));
+    }
+}
 /**
  * switch to Advance saga
  */
@@ -204,7 +219,8 @@ function* AuthSaga() {
     yield takeLatest(Action.GET_DASHBOARD, getDashboardSaga);
     yield takeLatest(Action.CREATE_COMPANY_SUPER_ADMIN, createCompanySuperAdminSaga);
     yield takeLatest(Action.SWITCH_TO_ADVANCE, switchToAdvanceSaga);
-
+    yield takeLatest(Action.LOGOUT, logoutSaga);
+   
 
 }
 

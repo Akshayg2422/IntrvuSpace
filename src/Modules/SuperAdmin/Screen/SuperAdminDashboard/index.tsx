@@ -32,9 +32,7 @@ function SuperAdminDashboard() {
     const enterPress = useKeyPress("Enter");
 
     useEffect(() => {
-
         getCompaniesApiHandler(INITIAL_PAGE);
-
     }, [])
 
     useEffect(() => {
@@ -54,8 +52,6 @@ function SuperAdminDashboard() {
 
 
     const getCompaniesApiHandler = (page_number: number) => {
-
-        console.log('called');
 
         const params = {
             page_number,
@@ -255,26 +251,11 @@ function SuperAdminDashboard() {
 
     const routes = [
         {
-            collapse: true,
-            name: "Dashboards",
-            icon: "ni ni-shop text-primary",
-            state: "dashboardsCollapse",
-            views: [
-                {
-                    path: "/dashboard",
-                    name: "Dashboard",
-                    miniName: "D",
-                    component: <></>,
-                    layout: "/admin",
-                },
-                {
-                    path: "/alternative-dashboard",
-                    name: "Alternative",
-                    miniName: "A",
-                    component: <></>,
-                    layout: "/admin",
-                },
-            ],
+            path: "/charts",
+            name: "Charts",
+            icon: "ni ni-chart-pie-35 text-info",
+            component: <></>,
+            layout: "/admin",
         },
     ];
 

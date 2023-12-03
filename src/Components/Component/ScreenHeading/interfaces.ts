@@ -1,5 +1,5 @@
 export interface ScreenHeadingProps {
-    text: string,
+    text?: string,
     subtitle?: string,
     children?: any,
 }
