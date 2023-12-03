@@ -496,7 +496,7 @@ function DetectFace({ onClick, heading, experience, duration, loading }) {
                                         micCheck ?
                                             <div className='mt-3 d-flex align-items-center'> <Image src={icons.wrong} height={20} width={12} style={{
                                                 objectFit: 'contain'
-                                            }} /> <span className='ml-3'> Audio input ia not clear</span></div>
+                                            }} /> <span className='ml-3'> Audio input is not clear</span></div>
 
                                             : <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.greenTick} height={12} width={12} style={{
                                                 objectFit: 'contain'
@@ -507,7 +507,7 @@ function DetectFace({ onClick, heading, experience, duration, loading }) {
                             <div className='mt-2'>
 
                                 {
-                                    noiseDetection === 'Checking' ? <div className='d-flex align-items-center'> <Spinner color='secondary' className={'d-inline-block  '} /> <span className='mt-1 ml-3'>Checking ambience sound stability</span></div> :
+                                    noiseDetection === 'Checking' ? <div className='d-flex align-items-center'> <Spinner color='secondary' className={'d-inline-block  '} /> <span className='mt-1 ml-3'>Validating ambience sound stability</span></div> :
                                         noiseDetection === true ?
                                             <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.greenTick} height={12} width={12} style={{
                                                 objectFit: 'contain'
@@ -521,7 +521,7 @@ function DetectFace({ onClick, heading, experience, duration, loading }) {
                             </div>
                             {
                                 proceed && <div className='text-secondary'>
-                                    <h2 className='mt-4 text-secondary '>Expected criteria's are met ! </h2>
+                                    <h2 className='mt-4 text-secondary '>Expected criteria's are met! </h2>
                                     <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.check} height={12} width={12} style={{
                                         objectFit: 'contain'
                                     }} />
@@ -539,9 +539,9 @@ function DetectFace({ onClick, heading, experience, duration, loading }) {
                                     </div>
                                 </div>}
 
-                                {
-                                    !proceed && !faceFound || !noiseDetection || micCheck === true ? <h2 className='mt-4 text-secondary '>Expected criteria's are not met ! </h2> : <></>
-                                }
+                            {
+                                !proceed && !faceFound || !noiseDetection || micCheck === true ? <h2 className='mt-4 text-secondary '>Expected criteria's are not met! </h2> : <></>
+                            }
 
                             {!faceFound && <div className='mt-4 text-secondary'>
                                 <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.frame} height={12} width={12} style={{
@@ -592,18 +592,18 @@ function DetectFace({ onClick, heading, experience, duration, loading }) {
                     </div>
 
                 </div> : showDetecting === 'permissionNotGranted' ? <div className='mt-4 text-secondary'>
-                <h2 className="text-secondary">
-                These are general guidelines for enabling webcam and microphone permissions:
+                    <h2 className="text-secondary">
+                        These are general guidelines for enabling webcam and microphone permissions:
                     </h2>
                     <h3 className='text-secondary mt-4'>For Web Browsers:</h3>
                     <p className="mt-3 font-weight-500">{"1. Open your web Browser."}</p>
                     <p className="mt-3 font-weight-500">
                         {"2. Go to the website or web application where you want to use the webcam or microphone."}</p>
-                        <p className="mt-3 font-weight-500">
+                    <p className="mt-3 font-weight-500">
                         {"3. Click on the padlock icon in the address bar."}</p>
-                        <p className="mt-3 font-weight-500">
-                        {"4. In the dropdown menu, locate 'Camera' or 'Microphone' and set it to 'Allow'."}</p> 
-                        <p className="mt-3 font-weight-500">
+                    <p className="mt-3 font-weight-500">
+                        {"4. In the dropdown menu, locate 'Camera' or 'Microphone' and set it to 'Allow'."}</p>
+                    <p className="mt-3 font-weight-500">
                         {"5. Reload the page and try again."}</p>
 
                 </div> : <></>
@@ -614,8 +614,8 @@ function DetectFace({ onClick, heading, experience, duration, loading }) {
             {/* </Modal> */}
 
 
-             {/** Microphone access modal */}
-             <Modal
+            {/** Microphone access modal */}
+            <Modal
                 isOpen={micPermissionModal.visible}
                 onClose={() => {
                     micPermissionModal.hide();
@@ -625,7 +625,7 @@ function DetectFace({ onClick, heading, experience, duration, loading }) {
                 buttonText='Close'
                 onClick={() => {
                     micPermissionModal.hide();
-                    
+
                 }}
             >
                 <div>
@@ -641,7 +641,7 @@ function DetectFace({ onClick, heading, experience, duration, loading }) {
                         >{`(${getOperatingSystem()})`}</span>
                     </p>
                 </div>
-               
+
             </Modal>
             {/**
        * Camera permission modal
@@ -651,14 +651,14 @@ function DetectFace({ onClick, heading, experience, duration, loading }) {
                 isOpen={camPermissionModal.visible}
                 onClose={() => {
                     camPermissionModal.hide();
-                //    goBack()
+                    //    goBack()
                 }}
                 title={"Camera Access Required"}
-               
+
                 buttonText="Close"
                 onClick={() => {
                     camPermissionModal.hide();
-                    
+
                 }}
             >
                 <div>
