@@ -3,9 +3,9 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 // reactstrap components
 import { icons } from "@Assets";
-import { Alert, Button, Image } from "@Components";
-import { useModal, useNavigation } from "@Hooks";
-import { showCreateForOthersJdModal, showCreateJddModal, userLogout } from "@Redux";
+import { Alert, Button, Image, showToast } from "@Components";
+import { useLoader, useModal, useNavigation } from "@Hooks";
+import { showCreateForOthersJdModal, showCreateJddModal, submitLogout, userLogout } from "@Redux";
 import { ROUTES } from "@Routes";
 import { capitalizeFirstLetter, filteredName } from "@Utils";
 import { useDispatch, useSelector } from "react-redux";
@@ -30,7 +30,7 @@ function CreateOthersNavbar() {
   const { goTo } = useNavigation();
   const { dashboardDetails } = useSelector((state: any) => state.AuthReducer);
   const { name, email, designation, department } = dashboardDetails?.basic_info || {}
-
+  const loader = useLoader(false);
 
   const dispatch = useDispatch();
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -60,17 +60,35 @@ function CreateOthersNavbar() {
 
 
   function proceedLogout() {
+    const params={}
+    loader.show()
     try {
       dispatch(
-        userLogout({
-          onSuccess: () => {
-            goTo(ROUTES["auth-module"].splash, true);
+        submitLogout({
+            params,
+            onSuccess: () => (response: any) => {
+              loader.hide()
+              dispatch(
+                userLogout({
+                  onSuccess: () => {
+                    goTo(ROUTES["auth-module"].splash, true)
+                  },
+                  onError: () => {
+        
+                  },
+                })
+              );
+            },
+            onError: (error: any) => () => {
+              const { message } = error
+              showToast(message, 'error')
+              loader.hide()
           },
-          onError: () => { },
-        })
-      );
+        }))
+      
     } catch (error) { }
   }
+
 
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
@@ -259,6 +277,7 @@ function CreateOthersNavbar() {
         onClose={logoutModal.hide}
         primary={"Proceed"}
         secondaryOnClick={logoutModal.hide}
+        loading={loader.loader}
         primaryOnClick={proceedLogout}
       />
     </>
