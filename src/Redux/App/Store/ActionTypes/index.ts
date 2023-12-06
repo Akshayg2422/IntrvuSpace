@@ -3,5 +3,7 @@ export const RESTORE_APP = 'RESTORE_APP';
 export const USER_LOGOUT = 'USER_LOGOUT';
 export const HANDLING_API = 'HANDLING_API';
 export const FCM_TOKEN = 'FCM_TOKEN';
+export const SIDE_NAV = 'SIDE_NAV';
+
 
 

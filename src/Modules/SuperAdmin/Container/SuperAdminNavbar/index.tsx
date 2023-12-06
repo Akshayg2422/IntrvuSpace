@@ -1,8 +1,14 @@
 // nodejs library that concatenates classes
 import classnames from "classnames";
 // nodejs library to set properties for components
-import PropTypes from "prop-types";
 // reactstrap components
+import { icons } from '@Assets';
+import { Alert, Image, showToast } from '@Components';
+import { useLoader, useModal, useNavigation } from '@Hooks';
+import { submitLogout, userLogout } from '@Redux';
+import { ROUTES } from '@Routes';
+import { capitalizeFirstLetter } from '@Utils';
+import { useDispatch, useSelector } from "react-redux";
 import {
   Collapse,
   Container,
@@ -13,23 +19,16 @@ import {
   Nav,
   NavItem,
   Navbar,
+
   UncontrolledDropdown
 } from "reactstrap";
-import { Image, Alert, showToast } from '@Components'
-import { icons } from '@Assets'
-import { ROUTES } from '@Routes'
-import { useDispatch, useSelector } from "react-redux";
-import { useModal, useNavigation, useLoader } from '@Hooks';
-import { capitalizeFirstLetter } from '@Utils';
-import { userLogout, submitLogout } from '@Redux'
+import { SuperAdminNavbarProps } from './interface';
 
-
-function SuperAdminNavbar({ theme, sidenavOpen, toggleSidenav }) {
+function SuperAdminNavbar({ children, sidenavOpen, toggleSidenav }: SuperAdminNavbarProps) {
 
   const dispatch = useDispatch();
+
   const HEADER_MENU = [
-    { id: '1', name: 'Home', value: 'HM', route: ROUTES['designation-module']['admin-schedule'] },
-    { id: '2', name: 'Ongoing Schedule', value: 'OGS', route: ROUTES['designation-module']['scheduling-interview'] },
     { id: '3', name: 'Logout', value: 'LG', route: "" }
   ]
 
@@ -39,8 +38,7 @@ function SuperAdminNavbar({ theme, sidenavOpen, toggleSidenav }) {
 
   const { dashboardDetails } = useSelector((state: any) => state.AuthReducer);
 
-  console.log('loader', loader.loader)
-  const { name, } = dashboardDetails?.basic_info || {}
+  const { name } = dashboardDetails?.basic_info || {}
 
   const dropdownHandler = (item: any) => {
 
@@ -95,7 +93,6 @@ function SuperAdminNavbar({ theme, sidenavOpen, toggleSidenav }) {
                   className={classnames(
                     "pr-3 sidenav-toggler",
                     { active: sidenavOpen },
-                    { "sidenav-toggler-dark": theme === "dark" }
                   )}
                   onClick={toggleSidenav}
                 >
@@ -107,7 +104,6 @@ function SuperAdminNavbar({ theme, sidenavOpen, toggleSidenav }) {
                 </div>
               </NavItem>
             </Nav>
-
             <Nav className="align-items-center ml-auto ml-md-0" navbar>
               <UncontrolledDropdown nav>
                 <DropdownToggle className="nav-link pr-0" color="" tag="a">
@@ -162,20 +158,6 @@ function SuperAdminNavbar({ theme, sidenavOpen, toggleSidenav }) {
     </>
   );
 }
-
-SuperAdminNavbar.defaultProps = {
-  toggleSidenav: () => { },
-  sidenavOpen: false,
-  theme: "dark",
-};
-
-
-SuperAdminNavbar.propTypes = {
-  toggleSidenav: PropTypes.func,
-  sidenavOpen: PropTypes.bool,
-  theme: PropTypes.oneOf(["dark", "light"]),
-};
-
 
 export { SuperAdminNavbar };
 

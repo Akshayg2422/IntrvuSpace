@@ -4,7 +4,7 @@
 * Argon Dashboard PRO React - v1.2.3
 =========================================================
 
-* Product Page: https://www.creative-tim.com/product/argon-dashboard-pro-react
+* Product Page: https://www.creative-tim.com/product/argon-companies-pro-react
 * Copyright 2021 Creative Tim (https://www.creative-tim.com)
 
 * Coded by Creative Tim
@@ -20,7 +20,7 @@ import { useLocation, NavLink as NavLinkRRD, Link } from "react-router-dom";
 // nodejs library that concatenates classes
 import classnames from "classnames";
 // nodejs library to set properties for components
-import PropTypes from "prop-types";
+
 // react library that creates nice scrollbar on windows devices
 import PerfectScrollbar from "react-perfect-scrollbar";
 // reactstrap components
@@ -34,9 +34,9 @@ import {
 } from "reactstrap";
 import { Image } from '@Components'
 import { icons } from '@Assets'
+import { SidebarProps } from './interfaces'
 
-
-function Sidebar({ toggleSidenav, sidenavOpen, routes, logo, rtlActive }) {
+function Sidebar({ toggleSideNav, sideNavOpen, routes, logo, rtlActive }: SidebarProps) {
   const [state, setState] = React.useState({});
   const location = useLocation();
   React.useEffect(() => {
@@ -92,7 +92,9 @@ function Sidebar({ toggleSidenav, sidenavOpen, routes, logo, rtlActive }) {
   // the sidebar will autoclose
   const closeSidenav = () => {
     if (window.innerWidth < 1200) {
-      toggleSidenav();
+      if (toggleSideNav) {
+        toggleSideNav();
+      }
     }
   };
   // this function creates the links and collapses that appear in the sidebar (left menu)
@@ -107,7 +109,6 @@ function Sidebar({ toggleSidenav, sidenavOpen, routes, logo, rtlActive }) {
         return (
           <NavItem key={key}>
             <NavLink
-              href="#pablo"
               data-toggle="collapse"
               aria-expanded={state[prop.state]}
               className={classnames({
@@ -126,7 +127,7 @@ function Sidebar({ toggleSidenav, sidenavOpen, routes, logo, rtlActive }) {
               ) : prop.miniName ? (
                 <>
                   <span className="sidenav-mini-icon"> {prop.miniName} </span>
-                  <span className="sidenav-normal"> {prop.name} </span>
+                  <span className="sidenav-normal bg-red"> {prop.name} </span>
                 </>
               ) : null}
             </NavLink>
@@ -147,14 +148,16 @@ function Sidebar({ toggleSidenav, sidenavOpen, routes, logo, rtlActive }) {
             tag={NavLinkRRD}
           >
             {prop.icon !== undefined ? (
-              <>
-                <i className={prop.icon} />
-                <span className="nav-link-text">{prop.name}</span>
-              </>
+              <React.Fragment>
+                <div className={'d-flex align-items-center justify-content-center'}>
+                  <Image src={icons.company} height={15} width={15} />
+                  <span className="nav-link-text m-0 p-0 ml-3">{prop.name}</span>
+                </div>
+              </React.Fragment>
             ) : prop.miniName !== undefined ? (
               <>
                 <span className="sidenav-mini-icon"> {prop.miniName} </span>
-                <span className="sidenav-normal"> {prop.name} </span>
+                <span className="sidenav-normal bg-red"> {prop.name} </span>
               </>
             ) : (
               prop.name
@@ -182,8 +185,8 @@ function Sidebar({ toggleSidenav, sidenavOpen, routes, logo, rtlActive }) {
       <div className="sidenav-header d-flex align-items-center">
         <NavbarBrand {...navbarBrandProps}>
           <Image
-            alt={logo.imgAlt}
-            className="navbar-brand-img"
+            alt={'side-nav-log'}
+            className={"navbar-brand-img"}
             src={icons.logoIcon}
             height={40}
             width={40}
@@ -196,9 +199,9 @@ function Sidebar({ toggleSidenav, sidenavOpen, routes, logo, rtlActive }) {
         <div className="ml-auto">
           <div
             className={classnames("sidenav-toggler d-none d-xl-block", {
-              active: sidenavOpen,
+              active: sideNavOpen,
             })}
-            onClick={toggleSidenav}
+            onClick={toggleSideNav}
           >
             <div className="sidenav-toggler-inner">
               <i className="sidenav-toggler-line" />
@@ -233,36 +236,4 @@ function Sidebar({ toggleSidenav, sidenavOpen, routes, logo, rtlActive }) {
 
   );
 }
-
-Sidebar.defaultProps = {
-  routes: [{}],
-  toggleSidenav: () => { },
-  sidenavOpen: false,
-  rtlActive: false,
-};
-
-Sidebar.propTypes = {
-  // function used to make sidenav mini or normal
-  toggleSidenav: PropTypes.func,
-  // prop to know if the sidenav is mini or normal
-  sidenavOpen: PropTypes.bool,
-  // links that will be displayed inside the component
-  routes: PropTypes.arrayOf(PropTypes.object),
-  // logo
-  logo: PropTypes.shape({
-    // innerLink is for links that will direct the user within the app
-    // it will be rendered as <Link to="...">...</Link> tag
-    innerLink: PropTypes.string,
-    // outterLink is for links that will direct the user outside the app
-    // it will be rendered as simple <a href="...">...</a> tag
-    outterLink: PropTypes.string,
-    // the image src of the logo
-    imgSrc: PropTypes.string.isRequired,
-    // the alt for the img
-    imgAlt: PropTypes.string.isRequired,
-  }),
-  // rtl active, this will make the sidebar to stay on the right side
-  rtlActive: PropTypes.bool,
-};
-
 export { Sidebar };

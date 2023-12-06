@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux'
-import { getInterviewScheduleDetails, getOngoingSchedules, onGoingSelectedIIds } from '@Redux'
-import { Image, Divider, Back, Spinner, NoRecordsFound } from '@Components'
-import { icons } from '@Assets'
-import { useLoader } from '@Hooks'
-import './index.css'
+import { icons } from '@Assets';
+import { Back, Image, NoRecordsFound, Spinner } from '@Components';
+import { useLoader } from '@Hooks';
+import { getOngoingSchedules, onGoingSelectedIIds } from '@Redux';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import './index.css';
 
 function OnGoingSchedule() {
     const dispatch = useDispatch()
@@ -22,7 +21,7 @@ function OnGoingSchedule() {
     useEffect(() => {
         loader.show();
         onGoingInterval()
-      
+
     }, [])
 
     // useEffect(()=>{
@@ -46,7 +45,7 @@ function OnGoingSchedule() {
     useEffect(() => {
 
         if (!onGoingSelectId) {
-           
+
             setOnGoingSelectId(onGoingScheduleMessage?.ongoing_schedules[0]?.id)
             dispatch(
                 onGoingSelectedIIds(onGoingScheduleMessage?.ongoing_schedules[0]?.id)
@@ -54,11 +53,11 @@ function OnGoingSchedule() {
         }
 
         if (onGoingInterviewDetails && onGoingInterviewDetails.length > 0) {
-         
+
             let setData = onGoingInterviewDetails.some((element) => element?.id === onGoingSelectId)
 
             if (!setData) {
-              
+
                 setOnGoingSelectId(onGoingScheduleMessage?.ongoing_schedules[0]?.id)
                 dispatch(
                     onGoingSelectedIIds(onGoingScheduleMessage?.ongoing_schedules[0]?.id)
@@ -67,8 +66,8 @@ function OnGoingSchedule() {
             }
 
         }
-       
-        
+
+
     }, [onGoingInterviewDetails])
 
 
@@ -81,9 +80,9 @@ function OnGoingSchedule() {
                     loader.hide();
                     setOnGoingInterviewDetails(response?.details?.ongoing_schedules)
 
-                    if (response?.details?.ongoing_schedules<=0) {
+                    if (response?.details?.ongoing_schedules <= 0) {
                         // console.log(response?.details?.ongoing_schedules.length,'pppppppppppp,,kkkk')
-        
+
                         setOnGoingSelectId('')
                         dispatch(
                             onGoingSelectedIIds('')
@@ -102,7 +101,7 @@ function OnGoingSchedule() {
     useEffect(() => {
         const interval = setInterval(() => {
             onGoingInterval()
-        
+
 
         }, 3000);
 
@@ -136,10 +135,10 @@ function OnGoingSchedule() {
                 </div>
 
                 {loader.loader &&
-                <div className='row align-items-center justify-content-center h-100vh'>
-                    <Spinner />
-                </div>
-            }
+                    <div className='row align-items-center justify-content-center h-100vh'>
+                        <Spinner />
+                    </div>
+                }
                 {onGoingInterviewDetails?.length > 0 ?
                     <div className='overflow-auto overflow-hide' >
                         {onGoingInterviewDetails?.map((el) => {
@@ -149,7 +148,7 @@ function OnGoingSchedule() {
                                     <div className='mt-0 mb-2 card m-2 p-3  pointer'
                                         style={{
                                             backgroundColor: `${id === onGoingSelectId ? '#fafbff' : hoverColor?.id === id ? '#f2f2f2' : ''}`,
-                                            borderColor:`${id === onGoingSelectId ? '#d3deff' : hoverColor?.id === id ? '#f2f2f2' : ''}`
+                                            borderColor: `${id === onGoingSelectId ? '#d3deff' : hoverColor?.id === id ? '#f2f2f2' : ''}`
 
                                         }}
                                         onClick={() => {
@@ -211,9 +210,9 @@ function OnGoingSchedule() {
                     </div>
                     : <>
 
-            <div className='custom-height   d-flex justify-content-center align-items-center'>
-  <NoRecordsFound text={'There are no ongoing schedules.'} />
-</div>
+                        <div className='custom-height   d-flex justify-content-center align-items-center'>
+                            <NoRecordsFound text={'There are no ongoing schedules.'} />
+                        </div>
                     </>
                 }
 
@@ -223,4 +222,4 @@ function OnGoingSchedule() {
     )
 }
 
-export { OnGoingSchedule }
+export { OnGoingSchedule };

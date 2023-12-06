@@ -122,7 +122,7 @@ function SuperAdminCorporateRegister() {
                     onSuccess: (response: any) => () => {
                         loader.hide()
                         showToast(response.message, 'success');
-                        goTo(ROUTES['super-admin'].dashboard, true)
+                        goTo(ROUTES['super-admin'].companies, true)
                     },
                     onError: (error) => () => {
                         loader.hide()

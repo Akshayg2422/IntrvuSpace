@@ -1,9 +1,9 @@
-import { USER_LOGIN_DETAILS, RESTORE_APP, USER_LOGOUT, HANDLING_API, FCM_TOKEN } from '../ActionTypes';
+import { USER_LOGIN_DETAILS, RESTORE_APP, USER_LOGOUT, HANDLING_API, FCM_TOKEN, SIDE_NAV } from '../ActionTypes';
 
 
 
 export const userLoginDetails = (params: any) => {
-  console.log(params,"params")
+  console.log(params, "params")
   return {
     type: USER_LOGIN_DETAILS,
     payload: params,
@@ -33,5 +33,12 @@ export const setFcmToken = (token: any) => {
   return {
     type: FCM_TOKEN,
     payload: token,
+  };
+};
+
+
+export const setSideNav = () => {
+  return {
+    type: SIDE_NAV,
   };
 };

@@ -46,7 +46,7 @@ function Splash() {
         } else if (user_type === TYPE_JOB_SEEKER) {
             reDirectRoute = ROUTES['designation-module'].client
         } else if (user_type === TYPE_SUPER_ADMIN) {
-            reDirectRoute = ROUTES["super-admin"].dashboard
+            reDirectRoute = ROUTES["super-admin"].companies
         }
 
         if (reDirectRoute) {

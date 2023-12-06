@@ -3,4 +3,5 @@ export interface AppStateProp {
   loginDetails: any;
   isSync: any;
   token: any
+  sideNavOpen: boolean
 }

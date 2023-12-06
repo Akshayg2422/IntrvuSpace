@@ -18251,7 +18251,7 @@ textarea[resize=horizontal] {
   margin-top: 2px;
 }
 .navbar-vertical.navbar-expand-xs .navbar-nav > .nav-item > .nav-link.active {
-  background: #f6f9fc;
+  background: #fbfcfa;
   margin-right: 0.5rem;
   margin-left: 0.5rem;
   padding-left: 1rem;
@@ -18349,7 +18349,7 @@ textarea[resize=horizontal] {
     margin-top: 2px;
   }
   .navbar-vertical.navbar-expand-sm .navbar-nav > .nav-item > .nav-link.active {
-    background: #f6f9fc;
+    background: #fbfcfa;
     margin-right: 0.5rem;
     margin-left: 0.5rem;
     padding-left: 1rem;
@@ -18448,7 +18448,7 @@ textarea[resize=horizontal] {
     margin-top: 2px;
   }
   .navbar-vertical.navbar-expand-md .navbar-nav > .nav-item > .nav-link.active {
-    background: #f6f9fc;
+    background: #fbfcfa;
     margin-right: 0.5rem;
     margin-left: 0.5rem;
     padding-left: 1rem;
@@ -18547,7 +18547,7 @@ textarea[resize=horizontal] {
     margin-top: 2px;
   }
   .navbar-vertical.navbar-expand-lg .navbar-nav > .nav-item > .nav-link.active {
-    background: #f6f9fc;
+    background: #fbfcfa;
     margin-right: 0.5rem;
     margin-left: 0.5rem;
     padding-left: 1rem;
@@ -18646,7 +18646,7 @@ textarea[resize=horizontal] {
     margin-top: 2px;
   }
   .navbar-vertical.navbar-expand-xl .navbar-nav > .nav-item > .nav-link.active {
-    background: #f6f9fc;
+    background: #fbfcfa;
     margin-right: 0.5rem;
     margin-left: 0.5rem;
     padding-left: 1rem;
@@ -18864,7 +18864,6 @@ textarea[resize=horizontal] {
   height: 40px;
   left: -11px;
   top: -14px;
-  background-color: black;
   border-radius: 50%;
   transform: scale(0);
   transition: all 0.15s cubic-bezier(0.68, -0.55, 0.265, 1.55);
