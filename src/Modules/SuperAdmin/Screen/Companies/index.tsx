@@ -1,5 +1,5 @@
 import { icons } from '@Assets';
-import { CommonTable, Image, Input, MenuBar, NoDataFound, Spinner, StatusIcon, showToast, Modal } from '@Components';
+import { CommonTable, Image, Input, MenuBar, NoDataFound, Spinner, StatusIcon, showToast, Modal, ProfilePhoto } from '@Components';
 import { useInput, useKeyPress, useLoader, useModal, useNavigation } from '@Hooks';
 import { alterCompanyLimit, alterCompanyStatus, getCompanies, setSelectedCompany } from '@Redux';
 import { ROUTES } from '@Routes';
@@ -14,6 +14,20 @@ function Companies() {
     const { companies, companiesNumOfPages, companiesCurrentPages } = useSelector((state: any) => state.SuperAdminReducer);
     const dispatch = useDispatch()
     const { goTo } = useNavigation();
+
+
+
+    const proceedCreateCompany = () => {
+        dispatch(setSelectedCompany(undefined))
+        goTo(ROUTES['super-admin']['super-admin-register-company'])
+    };
+
+
+
+    const NAV_LIST = [
+        { id: 1, text: 'Create Company', callback: proceedCreateCompany },
+    ];
+
 
     /**
      * add modal
@@ -161,52 +175,7 @@ function Companies() {
 
                     name: (
                         <div className={"d-flex align-items-center"}>
-                            <div>
-                                <div className={'image-container'}>
-                                    {logo ?
-                                        <PhotoProvider>
-                                            <div className={"pointer"}>
-                                                <PhotoView src={getPhoto(logo)}>
-                                                    <Image
-                                                        src={getPhoto(logo)}
-                                                        height={50}
-                                                        width={50}
-                                                        style={{
-                                                            objectFit: 'cover',
-                                                            overflow: 'hidden',
-                                                            padding: '1px',
-                                                            borderRadius: '30px',
-                                                            width: "45px",
-                                                            height: "45px",
-                                                        }}
-                                                    />
-                                                </PhotoView>
-                                            </div>
-                                        </PhotoProvider>
-                                        :
-                                        <div style={{
-                                            width: "45px",
-                                            height: "45px",
-                                            borderRadius: "30px",
-                                            backgroundColor: "#FAFBFF",
-                                            alignItems: 'center',
-                                            justifyContent: 'center',
-                                            display: 'flex',
-                                        }}>
-                                            <Image
-                                                src={icons.profile}
-                                                height={20}
-                                                width={20}
-                                                style={{
-                                                    objectFit: 'contain'
-                                                }}
-                                            />
-                                        </div>
-
-                                    }
-
-                                </div>
-                            </div>
+                            <ProfilePhoto photo={logo} />
                             <div className={"th-bold ml-3"}>
                                 {capitalizeFirstLetter(display_name)}
                             </div>
@@ -234,9 +203,10 @@ function Companies() {
             });
     };
 
+
     return (
         <>
-            <SuperAdminNavbarWrapper />
+            <SuperAdminNavbarWrapper actions={NAV_LIST} />
             <div className={'screen-container'}>
                 <div className="col-sm-3 m-0 p-0">
                     <Input

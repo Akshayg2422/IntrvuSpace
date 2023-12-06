@@ -11,11 +11,13 @@ import {
   Radio,
   Spinner,
   TextArea,
-  showToast
+  showToast,
+  DropDown,
+  Duration
 } from "@Components";
 
 
-import { useInput, useLoader, useModal, useNavigation } from "@Hooks";
+import { useInput, useLoader, useModal, useNavigation, useDropDown } from "@Hooks";
 
 import {
   PreparingYourInterview,
@@ -30,8 +32,6 @@ import {
   deleteInterview,
   deleteJd,
   getJdItemList,
-  hideCreateForOthersJdModal,
-  hideCreateJdModal,
   postJdVariant,
   resetInterview,
   selectedScheduleId,
@@ -49,7 +49,9 @@ import {
   getValidateError,
   ifObjectExist,
   paginationHandler,
-  validate
+  validate,
+  EXPERIENCE_LIST,
+  INTERVIEW_DURATIONS
 } from "@Utils";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -84,39 +86,50 @@ function SuperAdminSchedules() {
     CHAR_LENGTH +
     " characters.";
 
-  const { createJdModal, jdItem, createForOthersJdModal, jdItemNumOfPages, jdItemCurrentPages, interviewUrl } = useSelector(
+  const { jdItem, jdItemNumOfPages, jdItemCurrentPages } = useSelector(
     (state: any) => state.DashboardReducer
   );
 
+
+  const createInterviewModal = useModal(false);
+  const createInterviewForOthers = useModal(false);
+
+
+
+  /**
+   * create interview
+   */
+
   const { goTo } = useNavigation();
   const position = useInput("");
-  const experience = useInput("");
+  const experience = useDropDown(EXPERIENCE_LIST[0]);
   const jd = useInput("");
   const sector = useInput("");
+  const [duration, setDuration] = useState<any>(INTERVIEW_DURATIONS[0]);
+
+
   const generateJdModal = useModal(false);
   const completedModal = useModal(false);
+
   const [scheduleId, setScheduleId] = useState(undefined);
   const jdScheduleModal = useModal(false);
-  const [fresherChecked, setFresherChecked] = useState(false);
+
   const [notifyInterview, setNotifyInterview] = useState(false);
   const [notifyReport, setNotifyReport] = useState(false);
   const [jdDescriptionError, setJdDescriptionError] = useState<any>(undefined);
-  const [selectedDuration, setSelectedDuration] = useState(
-    interviewDurations[0]
-  );
-  const [selectedDurationForOthers, setSelectedDurationForOthers] = useState(
-    interviewDurations[0]
-  );
+
+
   const firstName = useInput("");
   const lastName = useInput("");
   const email = useInput(undefined);
   const mobileNumber = useInput("");
   const sectorForOthers = useInput("");
-  const experienceForOthers = useInput("");
+  const experienceForOthers = useDropDown(EXPERIENCE_LIST[0]);
   const positionForOthers = useInput("");
   const jdForOthers = useInput("");
   const noteForOthers = useInput("");
 
+  const [selectedDurationForOthers, setSelectedDurationForOthers] = useState<any>(INTERVIEW_DURATIONS[0])
   const startInterviewLoader = useLoader(false);
 
 
@@ -178,15 +191,15 @@ function SuperAdminSchedules() {
     const params = {
       sector_name: sector.value,
       position: position.value,
-      interview_duration: selectedDuration.value,
-      experience: fresherChecked ? "0" : experience.value,
+      interview_duration: duration?.value,
+      experience: parseInt(experience.value?.id),
       jd: jd.value,
     };
 
     const validation = validate(FROM_JD_RULES, params);
 
     if (ifObjectExist(validation)) {
-      dispatch(hideCreateJdModal());
+      createInterviewModal.hide();
       generateJdModal.show();
 
       dispatch(
@@ -316,7 +329,7 @@ function SuperAdminSchedules() {
       position: positionForOthers.value,
       is_notify_interview: notifyInterview,
       is_notify_report: notifyReport,
-      experience: experienceForOthers.value,
+      experience: parseInt(experienceForOthers.value?.id),
       interview_duration: selectedDurationForOthers.value,
       jd: jdForOthers.value,
       note: noteForOthers.value,
@@ -326,7 +339,7 @@ function SuperAdminSchedules() {
 
     if (ifObjectExist(validation)) {
       generateJdModal.show();
-      dispatch(hideCreateForOthersJdModal());
+      createInterviewForOthers.hide();
 
       dispatch(
         createSchedulesSuperAdmin({
@@ -461,7 +474,7 @@ function SuperAdminSchedules() {
 
   function proceedResponse(id: string) {
     if (id) {
-      goTo(ROUTES["designation-module"].response + "/" + id);
+      goTo(ROUTES['super-admin']["interview-info"] + "/" + id);
     }
   }
 
@@ -476,10 +489,27 @@ function SuperAdminSchedules() {
     stopInterval();
   });
 
+
+
+  const proceedCreateInterview = () => {
+    createInterviewModal.show();
+  };
+  const proceedCreateInterviewForOthers = () => {
+    createInterviewForOthers.show();
+  };
+
+
+
+  const NAV_LIST = [
+    { id: 0, text: 'Create for Others', callback: proceedCreateInterviewForOthers },
+    { id: 1, text: 'Create Interview', callback: proceedCreateInterview },
+  ];
+
+
   return (
     <>
       <div>
-        <SuperAdminNavbarWrapper></SuperAdminNavbarWrapper>
+        <SuperAdminNavbarWrapper actions={NAV_LIST} />
 
         {
           loader.loader &&
@@ -553,88 +583,46 @@ function SuperAdminSchedules() {
 
       <Modal
         title={"Create Interview"}
-        isOpen={createJdModal}
-        onClose={() => {
-          dispatch(hideCreateJdModal());
-        }}
+        isOpen={createInterviewModal.visible}
+        onClose={createInterviewModal.hide}
+        onClick={submitJdApiHandler}
       >
         <div className={"row"}>
           <div className={"col-sm-6"}>
             <Input
-              isMandatory
+              heading={"Position"}
+              placeHolder={PLACE_HOLDER.role}
+              value={position.value}
+              onChange={position.onChange}
+            />
+          </div>
+
+
+          <div className={"col-sm-6"}>
+            <DropDown
+              id={"experience"}
+              heading={"Experience"}
+              data={EXPERIENCE_LIST}
+              selected={experience.value}
+              onChange={experience.onChange}
+            />
+          </div>
+
+        </div>
+
+        <div className={"row"}>
+          <div className={"col-sm-6"}>
+            <Input
+              noSpace
               heading={"Sector"}
               placeHolder={PLACE_HOLDER.sector}
               value={sector.value}
               onChange={sector.onChange}
             />
           </div>
-          <div className={"col-sm-6"}>
-            <Input
-              isMandatory
-              heading={"Role"}
-              placeHolder={PLACE_HOLDER.role}
-              value={position.value}
-              onChange={position.onChange}
-            />
-          </div>
         </div>
 
-        <div className={"row"}>
-          <div className={"col-sm-6"}>
-            {fresherChecked ? (
-              <div className="ml-2">
-                <Input
-                  isMandatory
-                  heading={"Years of experience"}
-                  type={"text"}
-                  placeHolder={"Fresher"}
-                  value={"Fresher"}
-                  disabled
-                />
-              </div>
-            ) : (
-              <div>
-                <Input
-                  isMandatory
-                  heading={"Years of experience"}
-                  type={"number"}
-                  placeHolder={"Experience"}
-                  value={experience.value}
-                  onChange={experience.onChange}
-                />
-              </div>
-            )}
-            <span className={"position-absolute left-9 pl-5 top-0"}>
-              <Checkbox
-                id={"fresher"}
-                className={"text-primary"}
-                text={"Fresher"}
-                defaultChecked={fresherChecked}
-                onCheckChange={(checked) => {
-                  setFresherChecked(checked);
-                }}
-              />
-            </span>
-          </div>
-
-          <div className={"col-sm-6 mt-1"}>
-            <InputHeading
-              Class={"mb-0"}
-              heading={"Interview Duration"}
-              isMandatory
-            />
-            <Radio
-              selected={selectedDuration}
-              selectItem={selectedDuration}
-              data={interviewDurations}
-              onRadioChange={(selected) => {
-                if (selected) {
-                  setSelectedDuration(selected as never);
-                }
-              }}
-            />
-          </div>
-        </div>
+        <Duration selected={duration} onSelected={setDuration} />
 
         <TextArea
           isMandatory
@@ -652,15 +640,6 @@ function SuperAdminSchedules() {
             jd.set(value);
           }}
         />
-
-        <div className="text-center">
-          <Button
-            block
-            size="md"
-            text={"Submit"}
-            onClick={submitJdApiHandler}
-          />
-        </div>
       </Modal>
 
       <Modal
@@ -721,22 +700,20 @@ function SuperAdminSchedules() {
 
       <Modal
         title={"Create Interview for Others"}
-        isOpen={createForOthersJdModal}
-        onClose={() => {
-          dispatch(hideCreateForOthersJdModal());
-        }}
+        isOpen={createInterviewForOthers.visible}
+        onClose={createInterviewForOthers.hide}
+        onClick={createForOthersApiHandler}
       >
         <div className={"row"}>
           <div className={"col-sm-6"}>
             <Input
-              isMandatory
               heading={"First Name"}
               placeHolder={" First Name"}
               value={firstName.value}
               onChange={firstName.onChange}
             />
           </div>
-          <div className={"col-sm-6 mt-2"}>
+          <div className={"col-sm-6"}>
             <Input
               heading={"Last Name"}
               placeHolder={"Last Name"}
@@ -750,7 +727,7 @@ function SuperAdminSchedules() {
           <div className={"col-sm-6"}>
             <Input
               heading={"Email"}
-              placeHolder={"Email Id"}
+              placeHolder={"Email"}
               value={email.value}
               onChange={(e) => {
                 const value = e.target.value;
@@ -784,54 +761,37 @@ function SuperAdminSchedules() {
         <div className={"row"}>
           <div className={"col-sm-6"}>
             <Input
-              isMandatory
+              heading={"Position"}
+              placeHolder={"React, Java,.."}
+              value={positionForOthers.value}
+              onChange={positionForOthers.onChange}
+            />
+          </div>
+          <div className={"col-sm-6"}>
+            <Input
               heading={"Sector"}
               placeHolder={"Sector"}
               value={sectorForOthers.value}
               onChange={sectorForOthers.onChange}
             />
           </div>
-          <div className={"col-sm-6"}>
-            <Input
-              isMandatory
-              heading={"Role"}
-              placeHolder={"Role"}
-              value={positionForOthers.value}
-              onChange={positionForOthers.onChange}
-            />
-          </div>
+
         </div>
 
         <div className={"row"}>
           <div className={"col-sm-6"}>
-            <Input
-              isMandatory
-              type={"number"}
+            <DropDown
+              noSpace
+              id={"experience"}
               heading={"Experience"}
-              placeHolder={"Experience"}
-              value={experienceForOthers.value}
+              data={EXPERIENCE_LIST}
+              selected={experienceForOthers.value}
               onChange={experienceForOthers.onChange}
             />
           </div>
 
-          <div className={"col-sm-6 mt-1"}>
-            <InputHeading
-              Class={"mb-0"}
-              heading={"Interview Duration"}
-              isMandatory
-            />
-            <Radio
-              selected={selectedDurationForOthers}
-              selectItem={selectedDurationForOthers}
-              data={interviewDurations}
-              onRadioChange={(selected) => {
-                if (selected) {
-                  setSelectedDurationForOthers(selected as never);
-                }
-              }}
-            />
-          </div>
         </div>
+        <Duration selected={selectedDurationForOthers} onSelected={setSelectedDurationForOthers} />
 
         <TextArea
           isMandatory
@@ -888,14 +848,6 @@ function SuperAdminSchedules() {
             Please fill above email field to enable notification.
           </small>
         ) : null}
-        <div className="mt-5">
-          <Button
-            block
-            size="md"
-            text={"Submit"}
-            onClick={createForOthersApiHandler}
-          />
-        </div>
       </Modal>
 
       <Modal

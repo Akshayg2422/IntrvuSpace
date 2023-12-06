@@ -157,9 +157,9 @@ function SuperAdminCorporateRegister() {
 
     return (
         <div className={'auth-screen'}>
-            <div className={'auth-logo'}>
+            {/* <div className={'auth-logo'}>
                 <Logo />
-            </div>
+            </div> */}
             <div className={'auth-container'}>
 
                 {

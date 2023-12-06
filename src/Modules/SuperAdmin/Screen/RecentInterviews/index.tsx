@@ -1,10 +1,10 @@
 import { icons } from "@Assets";
 import { CommonTable, DropDown, Input, MenuBar, NoDataFound, ScreenHeading, Spinner, showToast } from "@Components";
 import { useDropDown, useInput, useKeyPress, useLoader, useNavigation } from "@Hooks";
-import { deleteInterview, getRecentInterviews, resetInterview, getCompanies } from "@Redux";
+import { deleteInterview, getCompanies, getRecentInterviews, resetInterview } from "@Redux";
 import { ROUTES } from "@Routes";
 import { DEFAULT_VALUE, INITIAL_PAGE, getDropDownCompanyDisplayData, paginationHandler } from "@Utils";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 
@@ -115,7 +115,7 @@ const RecentInterviews = () => {
 
   function proceedResponse(id: string) {
     if (id) {
-      goTo(ROUTES["designation-module"].response + "/" + id);
+      goTo(ROUTES['super-admin']["interview-info"] + "/" + id);
     }
   }
 
@@ -187,7 +187,7 @@ const RecentInterviews = () => {
 
   return (
     <div className={'screen-padding'}>
-        <ScreenHeading text={'Recent Interviews'} />
+      <ScreenHeading text={'Recent Interviews'} />
 
       <div className={'row'}>
         <div className="col-sm-3">

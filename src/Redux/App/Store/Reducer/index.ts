@@ -1,4 +1,4 @@
-import { USER_LOGIN_DETAILS, RESTORE_APP, HANDLING_API, FCM_TOKEN, SIDE_NAV } from '../ActionTypes';
+import { USER_LOGIN_DETAILS, RESTORE_APP, HANDLING_API, FCM_TOKEN } from '../ActionTypes';
 import { AppStateProp } from '../../Interfaces';
 
 
@@ -7,7 +7,6 @@ const initialState: AppStateProp = {
   loginDetails: undefined,
   isSync: { issues: false, tasks: false, companies: false, broadcast: false, },
   token: undefined,
-  sideNavOpen: false
 };
 
 const AppReducer = (state = initialState, action: any) => {
@@ -38,13 +37,6 @@ const AppReducer = (state = initialState, action: any) => {
       };
       break;
 
-    case SIDE_NAV:
-      state = {
-        ...state,
-        sideNavOpen: !state.sideNavOpen
-      };
-
-      break;
 
     default:
       state = state;

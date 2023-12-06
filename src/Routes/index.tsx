@@ -19,7 +19,7 @@ import {
   Questions, Register,
   Report,
   Reports,
-  Response,
+  InterviewInfo,
   ReturnAndRefund,
   OngoingInterviews,
   Sector,
@@ -73,7 +73,6 @@ export const ROUTES = {
     schedules: '/schedules',
     'opening-detail': '/opening-detail',
     settings: '/settings',
-    'response': '/response',
     'preparing-your-interview': '/preparing-your-interview',
     'department': '/department',
     'employeeDesignations': '/employeeDesignations',
@@ -87,6 +86,8 @@ export const ROUTES = {
     'recent-interviews': '/recent-interviews',
     'ongoing-interview': '/ongoing-interview',
     'admin-schedule': '/admin-schedule',
+    'interview-info': '/interview-info',
+
   }
 }
 
@@ -129,8 +130,8 @@ export const OLD_ROUTES = [
   ,
   {
     id: 10,
-    path: ROUTES['designation-module'].response + '/:schedule_id',
-    component: <Response />
+    path: ROUTES['super-admin']['interview-info'] + '/:schedule_id',
+    component: <InterviewInfo />
   },
 ]
 
@@ -244,8 +245,8 @@ export const SUPER_ADMIN_ROUTES = [
   },
   {
     id: 3,
-    path: ROUTES['designation-module'].response + '/:schedule_id',
-    component: <Response />
+    path: ROUTES['super-admin']['interview-info'] + '/:schedule_id',
+    component: <InterviewInfo />
   },
   {
     id: 4,

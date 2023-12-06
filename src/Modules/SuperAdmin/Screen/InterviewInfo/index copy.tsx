@@ -6,9 +6,10 @@ import { Image, Divider, Back, Spinner } from '@Components'
 import { icons } from '@Assets'
 import { useLoader } from '@Hooks'
 
-function Response() {
+function InterviewInfo() {
 
     const dispatch = useDispatch()
+
     const { schedule_id } = useParams();
 
     const { interviewScheduleDetails } = useSelector((state: any) => state.DashboardReducer);
@@ -101,7 +102,7 @@ function Response() {
                                                                 <div className='text-details text-black'>
                                                                     {jd.split('\n\n').map((paragraph, index) => (
                                                                         <React.Fragment key={index}>
-                                                                            {index > 0 && <br />} {/* Add <br /> between paragraphs except for the first one */}
+                                                                            {index > 0 && <br />}
                                                                             {paragraph}
                                                                         </React.Fragment>
                                                                     ))}
@@ -138,7 +139,7 @@ function Response() {
                         </div>
 
                         <Divider space={'5'} />
-
+                        {/* 
                         <div>
                             <h2 className='font-weight-700 mb-0'>Questions</h2>
                             <div className='col mt-3'>
@@ -217,7 +218,7 @@ function Response() {
                                     </div>
                                 </div>
                             </>
-                        }
+                        } */}
                     </div>
                 </div>
             }
@@ -225,4 +226,4 @@ function Response() {
     )
 }
 
-export { Response }
+export { InterviewInfo }

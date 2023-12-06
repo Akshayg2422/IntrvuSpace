@@ -20,6 +20,13 @@ export const RequireAuth = ({ children }: RequireAuthProps) => {
 
     const { loginDetails } = useSelector((state: any) => state.AppReducer);
 
+    const { isLoggedIn, user_type } = loginDetails || {}
+
+    console.log("user_type", user_type);
+
+
+
+
     const mainContentRef = useRef(null);
 
     const routes = [
@@ -53,18 +60,20 @@ export const RequireAuth = ({ children }: RequireAuthProps) => {
         },
     ];
 
-    if (!loginDetails?.isLoggedIn) {
+    if (!isLoggedIn) {
         localStorage.setItem('route', location.pathname);
         return <Navigate to={ROUTES['auth-module'].login} state={{ path: location.pathname }} />
     }
 
     return (
         <div className={'screen'}>
-            <Sidebar
-                routes={routes}
-                toggleSideNav={toggleSideNav}
-                sideNavOpen={sideNavOpen}
-            />
+            {user_type === 'SA' &&
+                <Sidebar
+                    routes={routes}
+                    toggleSideNav={toggleSideNav}
+                    sideNavOpen={sideNavOpen}
+                />
+            }
             <div className={'main-content'} ref={mainContentRef}>
                 {children}
             </div>

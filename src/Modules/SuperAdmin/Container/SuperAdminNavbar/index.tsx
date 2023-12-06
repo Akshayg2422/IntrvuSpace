@@ -3,7 +3,7 @@ import classnames from "classnames";
 // nodejs library to set properties for components
 // reactstrap components
 import { icons } from '@Assets';
-import { Alert, Image, showToast } from '@Components';
+import { Alert, Button, Image, showToast } from '@Components';
 import { useLoader, useModal, useNavigation } from '@Hooks';
 import { submitLogout, userLogout } from '@Redux';
 import { ROUTES } from '@Routes';
@@ -19,12 +19,11 @@ import {
   Nav,
   NavItem,
   Navbar,
-
   UncontrolledDropdown
 } from "reactstrap";
 import { SuperAdminNavbarProps } from './interface';
 
-function SuperAdminNavbar({ children, sidenavOpen, toggleSidenav }: SuperAdminNavbarProps) {
+function SuperAdminNavbar({ actions, sidenavOpen, toggleSidenav }: SuperAdminNavbarProps) {
 
   const dispatch = useDispatch();
 
@@ -84,7 +83,7 @@ function SuperAdminNavbar({ children, sidenavOpen, toggleSidenav }: SuperAdminNa
 
   return (
     <>
-      <Navbar className={'navbar-top navbar-expand navbar-light py-4 bg-white'} expand="lg">
+      <Navbar className={'navbar-top navbar-expand navbar-light py-4 bg-white'} expand={'lg'}>
         <Container fluid>
           <Collapse navbar isOpen={true}>
             <Nav className="align-items-center ml-md-auto" navbar>
@@ -104,11 +103,65 @@ function SuperAdminNavbar({ children, sidenavOpen, toggleSidenav }: SuperAdminNa
                 </div>
               </NavItem>
             </Nav>
+
+
+
+
             <Nav className="align-items-center ml-auto ml-md-0" navbar>
+              {
+                actions && actions.length > 0 &&
+                <>
+                  <div className="d-none d-xl-block ">
+                    <div className="d-flex mr-2">
+                      {
+                        actions.map((each: any) => {
+                          const { text, callback } = each
+                          return (
+                            <NavItem>
+                              <div className={'btn-wrapper ml-4'}>
+                                <Button block text={text} onClick={callback} />
+                              </div>
+                            </NavItem>
+                          )
+                        })
+                      }
+                    </div>
+                  </div>
+
+                  <UncontrolledDropdown nav className={"d-xl-none"}>
+                    <DropdownToggle className="nav-link p-0" color="" tag="a">
+                      <span className={"text-primary text-des font-weight-800 px-3"}>{'Add'}</span>
+                    </DropdownToggle>
+                    <DropdownMenu
+                      className="dropdown-menu-xl py-0 overflow-hidden"
+                      right
+                    >
+                      {
+                        actions.map((action: any) => {
+                          const { text, callback } = action
+                          return (
+                            <DropdownItem
+                              className="text-center text-primary font-weight-bold py-3"
+                              onClick={(e) => {
+                                e.preventDefault()
+                                if (callback)
+                                  callback();
+                              }}
+                            >
+                              {text}
+                            </DropdownItem>
+                          )
+                        })
+
+                      }
+                    </DropdownMenu>
+                  </UncontrolledDropdown>
+                </>
+              }
               <UncontrolledDropdown nav>
                 <DropdownToggle className="nav-link pr-0" color="" tag="a">
                   <Media className="align-items-center">
-                    <Media className="ml-2 d-lg-block d-flex align-items-center">
+                    <Media className="d-lg-block d-flex align-items-center">
                       <span className='mb-0 text-secondary font-weight-400 pointer mr-2'>
                         {capitalizeFirstLetter(name)}
                       </span>
@@ -142,6 +195,7 @@ function SuperAdminNavbar({ children, sidenavOpen, toggleSidenav }: SuperAdminNa
                 </DropdownMenu>
               </UncontrolledDropdown>
             </Nav>
+
           </Collapse>
         </Container>
       </Navbar >
@@ -160,4 +214,4 @@ function SuperAdminNavbar({ children, sidenavOpen, toggleSidenav }: SuperAdminNa
 }
 
 export { SuperAdminNavbar };
-
+export type { SuperAdminNavbarProps }

@@ -1,16 +1,18 @@
-import React from 'react'
-import { SuperAdminNavbar } from '@Modules'
-import { useSideNav } from '@Hooks'
+import { useSideNav } from '@Hooks';
+import { SuperAdminNavbar } from '@Modules';
+import { SuperNavbarWrapperProps } from './interfaces'
 
-function SuperAdminNavbarWrapper() {
+function SuperAdminNavbarWrapper({ actions }: SuperNavbarWrapperProps) {
   const { sideNavOpen, toggleSideNav } = useSideNav();
+
   return (
     <SuperAdminNavbar
-      sidenavOpen={sideNavOpen}
+      actions={actions}
+      sidenavOpen={sideNavOpen ?? false}
       toggleSidenav={toggleSideNav}
     />
   )
 
 }
 
-export { SuperAdminNavbarWrapper }
+export { SuperAdminNavbarWrapper };

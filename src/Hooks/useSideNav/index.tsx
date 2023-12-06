@@ -1,12 +1,9 @@
-import React from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { setSideNav } from '@Redux'
+
+import { useApp } from '@Contexts';
 
 function useSideNav() {
 
-    const dispatch = useDispatch()
-
-    const { sideNavOpen } = useSelector((state: any) => state.AppReducer);
+    const { sideNavOpen, setSideNavOpen } = useApp();
 
     const toggleSideNav = () => {
         if (document.body.classList.contains("g-sidenav-pinned")) {
@@ -17,7 +14,10 @@ function useSideNav() {
             document.body.classList.remove("g-sidenav-hidden");
         }
 
-        dispatch(setSideNav())
+        if (setSideNavOpen) {
+            setSideNavOpen(!sideNavOpen)
+        }
+
     };
 
 
@@ -28,4 +28,4 @@ function useSideNav() {
     }
 }
 
-export { useSideNav }
+export { useSideNav };

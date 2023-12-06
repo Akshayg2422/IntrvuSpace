@@ -1,4 +1,4 @@
-import { USER_LOGIN_DETAILS, RESTORE_APP, USER_LOGOUT, HANDLING_API, FCM_TOKEN, SIDE_NAV } from '../ActionTypes';
+import { USER_LOGIN_DETAILS, RESTORE_APP, USER_LOGOUT, HANDLING_API, FCM_TOKEN } from '../ActionTypes';
 
 
 
@@ -37,8 +37,4 @@ export const setFcmToken = (token: any) => {
 };
 
 
-export const setSideNav = () => {
-  return {
-    type: SIDE_NAV,
-  };
-};
+

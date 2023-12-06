@@ -115,7 +115,6 @@ input[type=number] {
 }
 
 .screen-container {
-    /* margin-top: 50px; */
     padding: 10px 6%;
 }
 
@@ -200,39 +199,4 @@ input[type=number] {
     width: 100%;
     justify-content: center;
     align-items: center;
-}
-
-.image-container {
-    display: flex;
-    background-color: #FAFBFF;
-    justify-content: center;
-    align-items: center;
-    width: 45px;
-    height: 45px;
-    border-radius: 30px;
-
-}
-
-.image-container .place-holder {
-    width: 20px;
-    height: 20px;
-}
-
-
-.profile-container {
-    object-fit: cover;
-    overflow: hidden;
-    border-radius: 30px;
-    width: 45px;
-    height: 45px;
-}
-
-.profile-placeholder-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 45px;
-    height: 45px;
-    border-radius: 30px;
-    background-color: var(--bg-container-light);
 }

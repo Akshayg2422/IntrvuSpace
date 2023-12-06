@@ -1,5 +1,6 @@
 export interface SuperAdminNavbarProps {
-    sidenavOpen: boolean;
+    actions?: any
+    sidenavOpen?: boolean;
     toggleSidenav?: () => void;
     children?: React.ReactNode
 }
