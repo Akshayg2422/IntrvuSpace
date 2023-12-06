@@ -11,7 +11,7 @@ import {
 } from "@Utils";
 import './index.css'
 
-function DetectFace({ onClick, heading, experience, duration, loading }) {
+function DetectFace({ onClick, heading, experience, duration, loading, callValidating }) {
 
 
 
@@ -41,6 +41,10 @@ function DetectFace({ onClick, heading, experience, duration, loading }) {
     const micPermissionModal = useModal(false);
     const [showDetecting, setShowDetecting] = useState<any>(false)
     // const [showCanvas, setShowCanvas] = useState(false)
+
+
+  
+    
 
     async function createFaceLandmarker() {
         try {
@@ -131,7 +135,12 @@ function DetectFace({ onClick, heading, experience, duration, loading }) {
 
             // Load face landMark model
             if (video) {
-                createFaceLandmarker();
+                console.log(callValidating, "callValidating");
+                
+                if(!callValidating){
+                     createFaceLandmarker();
+
+                }
             }
         });
     }
@@ -496,7 +505,7 @@ function DetectFace({ onClick, heading, experience, duration, loading }) {
                                         micCheck ?
                                             <div className='mt-3 d-flex align-items-center'> <Image src={icons.wrong} height={20} width={12} style={{
                                                 objectFit: 'contain'
-                                            }} /> <span className='ml-3'> Audio input ia not clear</span></div>
+                                            }} /> <span className='ml-3'> Audio input is not clear</span></div>
 
                                             : <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.greenTick} height={12} width={12} style={{
                                                 objectFit: 'contain'
@@ -521,7 +530,7 @@ function DetectFace({ onClick, heading, experience, duration, loading }) {
                             </div>
                             {
                                 proceed && <div className='text-secondary'>
-                                    <h2 className='mt-4 text-secondary '>Expected criteria's are met ! </h2>
+                                    <h2 className='mt-4 text-secondary '>Expected criteria's are met! </h2>
                                     <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.check} height={12} width={12} style={{
                                         objectFit: 'contain'
                                     }} />
@@ -540,7 +549,7 @@ function DetectFace({ onClick, heading, experience, duration, loading }) {
                                 </div>}
 
                                 {
-                                    !proceed && !faceFound || !noiseDetection || micCheck === true ? <h2 className='mt-4 text-secondary '>Expected criteria's are not met ! </h2> : <></>
+                                    !proceed && !faceFound || !noiseDetection || micCheck === true ? <h2 className='mt-4 text-secondary '>Expected criteria's are not met! </h2> : <></>
                                 }
 
                             {!faceFound && <div className='mt-4 text-secondary'>

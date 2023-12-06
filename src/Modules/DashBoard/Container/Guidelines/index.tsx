@@ -24,6 +24,7 @@ function Guidelines({
     loading = false,
     heading,
     onClick,
+    callValidating
 }: GuidelinesProps) {
 
 
@@ -58,7 +59,7 @@ function Guidelines({
     return (
         <>
             {
-                !scheduleInfo?.is_complete && <DetectFace onClick={onClick} heading={heading} experience={experience} duration={interview_duration} loading = {loading} />
+                !scheduleInfo?.is_complete && <DetectFace onClick={onClick} heading={heading} experience={experience} duration={interview_duration} loading = {loading} callValidating = {callValidating} />
             }
             {
                 //  !scheduleInfo?.is_complete && 
