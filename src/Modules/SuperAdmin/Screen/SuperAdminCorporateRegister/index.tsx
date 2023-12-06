@@ -39,7 +39,7 @@ function SuperAdminCorporateRegister() {
 
     async function prefillCompanyDetails() {
 
-        const { interview_limit, display_name, phone, email, sector, address, pincode, admin_name, referrer, referral_code, code, logo } = selectedCompany
+        const { interview_limit, display_name, phone, email, sector, address, pincode, admin_name, referrer, referral_code, code, logo, is_light_variant } = selectedCompany
 
         let base64Logo = "";
         if (logo) {
@@ -58,7 +58,8 @@ function SuperAdminCorporateRegister() {
             mobile_number: phone,
             referral_code,
             pincode,
-            photo: [{ id: 0, base64: base64Logo }]
+            photo: [{ id: 0, base64: base64Logo }],
+            is_light_variant
         })
 
     }
