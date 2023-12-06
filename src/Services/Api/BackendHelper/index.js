@@ -324,3 +324,5 @@ export const addCandidateCorporateLiteApi = payload => post(URL.URL_ADD_CANDIDAT
 export const switchToAdvanceApi = payload => post(URL.URL_SWITCH_TO_ADVANCE, payload, {})
 
 
+/**logout api */
+export const logoutApi = payload => post(URL.URL_LOGOUT, payload, {})

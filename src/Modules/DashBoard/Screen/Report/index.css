@@ -21,6 +21,11 @@
   flex-direction: row;
   align-items: center;
 }
+.report-back-button {
+  position: relative;
+  top: -6px;
+  right: 860px;
+}
 
 .print-container {
   position: fixed;

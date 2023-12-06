@@ -2,7 +2,8 @@ import {
   Button,
   DropDown,
   Spinner,
-  Image
+  Image,
+  ScreenHeading
 } from "@Components";
 
 import { useDropDown, useLoader } from "@Hooks";
@@ -90,6 +91,7 @@ function Report() {
         <Back />
       </div> */}
       <div className={'report-dropdown-container'}>
+        <div className={'report-back-button'}><ScreenHeading /></div>
         <div style={{
           width: "220px",
           maxWidth: '300px',
@@ -107,7 +109,6 @@ function Report() {
             documentTitle={fileName}
             trigger={() => (
               <Button
-
                 variant={'icon-rounded'}
                 color={'primary'}
                 icons={"bi bi-printer-fill fa-lg"}

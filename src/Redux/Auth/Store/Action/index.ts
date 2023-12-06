@@ -183,3 +183,13 @@ export const switchToAdvance = (params: any) => {
     };
 };
 
+/**
+ * log out
+ */
+
+export const submitLogout = (params: any) => {
+    return {
+        type: ActionTypes.LOGOUT,
+        payload: params,
+    };
+};

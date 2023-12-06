@@ -7,7 +7,7 @@ function InternetError() {
         <div className={"auth-screen d-flex flex-column"}>
 
             <Image
-                src={icons.noInternet}
+               src={process.env.PUBLIC_URL + '/assets/noInternet.png'}
                 height={150}
                 width={150}
                 style={{
