@@ -44,7 +44,7 @@ function CreateNew({ children, title, description, keyPoints, image, buttonText,
                             })}
                         </div>
                     </div>
-                    <div className={'create-opening-btn'}>
+                    <div className={'create-opening-btn mt-5'}>
                         <Button
                             block
                             text={buttonText}
@@ -54,7 +54,7 @@ function CreateNew({ children, title, description, keyPoints, image, buttonText,
 
                 </div>
 
-                <div className={'section-2'}>
+                <div className={'section-2  mt-5 mt-sm-0' }>
                     <Image
                         src={image}
                         className={'section-image'}

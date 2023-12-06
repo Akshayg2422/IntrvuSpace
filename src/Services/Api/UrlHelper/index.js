@@ -330,4 +330,6 @@ export const URL_ADD_CANDIDATE_CORPORATE_LITE = ASSISTANT + 'addCandidateCorpora
 export const URL_SWITCH_TO_ADVANCE = ASSISTANT + 'switchToAdvancedMode'
 
 
+/** logoutapi */
 
+export const URL_LOGOUT = EMPLOYEE + 'logout'
