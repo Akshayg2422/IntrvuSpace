@@ -53,7 +53,7 @@ import {
   paginationHandler,
   validate,
 } from "@Utils";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./index.css";
 import moment from "moment";
@@ -116,7 +116,7 @@ function Opening() {
   const [scheduleEndTime, setScheduleEndTime] = useState<any>(DEFAULT_TIME);
 
   const [corporateScheduleCounts, setCorporateScheduleCount] = useState(corporateScheduleCount)
-  
+
 
   const formatDeadline = (date: string, time: string) => {
     const formattedDate = moment(date, 'MMM D YYYY').format('YYYY-MM-DD');
@@ -282,7 +282,6 @@ function Opening() {
         params,
         onSuccess: () => () => {
           listLoader.hide();
-          setIsPositionSearch(false);
         },
         onError: () => () => {
           listLoader.hide();
@@ -404,7 +403,7 @@ function Opening() {
                     </div>
                   );
                 })
-              ) : (
+              ) : (!listLoader.loader &&
                 <div className={"no-data-container"}>
                   <NoDataFound />
                 </div>
