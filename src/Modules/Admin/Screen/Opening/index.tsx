@@ -406,7 +406,7 @@ function Opening() {
                     </div>
                   );
                 })
-              ) : (
+              ) : (!listLoader.loader &&
                 <div className={"no-data-container"}>
                   <NoDataFound />
                 </div>
