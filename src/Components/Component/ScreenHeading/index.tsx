@@ -13,7 +13,7 @@ function ScreenHeading({ text, subtitle, children }: ScreenHeadingProps) {
 
     return (
 
-        <div className={'mb-5'} >
+        <div className={'heading-wrapper'} >
             <div className={'d-flex'}>
                 <div className="screen-heading col-auto m-0 p-0 d-flex align-items-center" style={{ position: 'relative' }}>
                     <div

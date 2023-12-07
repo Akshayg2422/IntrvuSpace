@@ -479,4 +479,6 @@ export function capitalizeLetter(string: any) {
 }
 
 
-
+export function isKeyValueExistInArray(array: any[], key: string, value: any): boolean {
+  return array.some(item => item[key] === value);
+}

@@ -26,7 +26,9 @@ function SuperAdminCorporateRegister() {
     const [formType, setFormType] = useState(REGISTER_ADMIN);
     const loader = useLoader(false);
 
-    const isEdit = !selectedCompany
+    const isEdit = selectedCompany
+
+
 
     useEffect(() => {
 
@@ -39,12 +41,26 @@ function SuperAdminCorporateRegister() {
 
     async function prefillCompanyDetails() {
 
-        const { interview_limit, display_name, phone, email, sector, address, pincode, admin_name, referrer, referral_code, code, logo } = selectedCompany
+        console.log(JSON.stringify(selectedCompany));
 
-        let base64Logo = "";
-        if (logo) {
-            base64Logo = await urlToBase64(logo) as string;
-        }
+
+        const {
+            interview_limit = '',
+            display_name = '',
+            phone = '',
+            email = '',
+            sector = '',
+            address = '',
+            pincode = '',
+            admin_name = '',
+            referrer = '',
+            referral_code = '',
+            code = '',
+            logo,
+            is_light_variant = false
+        } = selectedCompany;
+
+        const base64Logo = logo ? await urlToBase64(logo) as string : '';
 
         setParams({
             first_name: admin_name,
@@ -58,8 +74,9 @@ function SuperAdminCorporateRegister() {
             mobile_number: phone,
             referral_code,
             pincode,
-            photo: [{ id: 0, base64: base64Logo }]
-        })
+            is_light_variant,
+            photo: logo ? [{ id: 0, base64: base64Logo }] : []
+        });
 
     }
 
@@ -94,7 +111,7 @@ function SuperAdminCorporateRegister() {
         const cleanedBase64Photo = cleanBase64(base64Photo);
 
         const updatedParams = {
-            ...(!isEdit && { id: selectedCompany?.id }),
+            ...(isEdit && { id: selectedCompany?.id }),
             first_name,
             email,
             password,
@@ -173,6 +190,7 @@ function SuperAdminCorporateRegister() {
                 }
                 {formType === REGISTER_COMPANY &&
                     <SuperAdminRegisterCompany
+                        edit={isEdit}
                         loading={loader.loader}
                         params={params}
                         onBackPress={setRegisterAdminHandler}

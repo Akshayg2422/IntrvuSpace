@@ -1,0 +1,18 @@
+.schedule-ongoing-item-container {
+  padding: 20px;
+}
+
+.d-no-data {
+  display: flex;
+  flex: 1;
+}
+
+.experience-ongoing {
+  color: var(--secondary);
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.background-selected {
+  background-color: var(--bg-container-dark);
+}

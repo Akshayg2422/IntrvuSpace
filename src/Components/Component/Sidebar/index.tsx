@@ -127,7 +127,7 @@ function Sidebar({ toggleSideNav, sideNavOpen, routes, logo, rtlActive }: Sideba
               ) : prop.miniName ? (
                 <>
                   <span className="sidenav-mini-icon"> {prop.miniName} </span>
-                  <span className="sidenav-normal bg-red"> {prop.name} </span>
+                  <span className="sidenav-normal"> {prop.name} </span>
                 </>
               ) : null}
             </NavLink>
@@ -150,7 +150,7 @@ function Sidebar({ toggleSideNav, sideNavOpen, routes, logo, rtlActive }: Sideba
             {prop.icon !== undefined ? (
               <React.Fragment>
                 <div className={'d-flex align-items-center justify-content-center'}>
-                  <Image src={icons.company} height={15} width={15} />
+                  <Image src={prop.icon} height={15} width={15} />
                   <span className="nav-link-text m-0 p-0 ml-3">{prop.name}</span>
                 </div>
               </React.Fragment>

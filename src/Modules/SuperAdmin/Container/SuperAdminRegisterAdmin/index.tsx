@@ -60,7 +60,7 @@ function SuperAdminRegisterAdmin({ edit, params, onParams, onSubmit }: SuperAdmi
             <div className='d-flex align-items-center admin-heading-container'>
                 <Back />
                 <div className={'admin-heading-txt'}>
-                    <div className="text-sub-heading m-0 p-0 text-center">{'Register Company'}</div>
+                    <div className="text-sub-heading m-0 p-0 text-center">{edit ? 'Edit Company' : "Register Company"}</div>
                 </div>
             </div>
 
@@ -86,7 +86,7 @@ function SuperAdminRegisterAdmin({ edit, params, onParams, onSubmit }: SuperAdmi
 
             />
             {
-                edit &&
+                !edit &&
                 <>
                     <InputPassword
                         id={'password'}

@@ -1,25 +1,27 @@
-import { ScreenHeading, Spinner, ViewMore } from '@Components';
+import { useRef } from 'react'
+import { Spinner, ViewMore } from '@Components';
 import { useLoader } from '@Hooks';
 import { getInterviewScheduleDetails } from '@Redux';
-import { capitalizeFirstLetter } from '@Utils';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { capitalizeFirstLetter } from '@Utils';
 
-import './index.css';
+import "./index.css";
 
 
-function InterviewInfo() {
+function OngoingScheduleDetails() {
 
     const dispatch = useDispatch()
 
-    const { schedule_id } = useParams();
+
 
     const { interviewScheduleDetails } = useSelector((state: any) => state.DashboardReducer);
+    const { selectedOngoingSchedule } = useSelector((state: any) => state.SuperAdminReducer);
 
-    const { name, jd, experience, duration, role } = interviewScheduleDetails?.basic_info || {}
+    const intervalIdRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-    const experience_txt = experience === 0 ? "Fresher" : "" + experience + (experience === 1 ? " year " : " years ") + "of experience"
+    const { name, jd, duration, role } = interviewScheduleDetails?.basic_info || {}
+
 
     const { qa, items } = interviewScheduleDetails || {}
     const [jdMore, setJdMore] = useState<any>(false)
@@ -29,8 +31,30 @@ function InterviewInfo() {
 
     useEffect(() => {
 
-        const params = { schedule_id }
-        loader.show();
+        getInterviewScheduleDetailsApiHandler(true);
+
+        intervalIdRef.current = setInterval(() => {
+            getInterviewScheduleDetailsApiHandler();
+        }, 5000);
+
+
+        return () => {
+            stopInterval();
+        }
+    }, [selectedOngoingSchedule])
+
+    const bottomRef = useRef<any>(null);
+
+    useEffect(() => {
+        if (bottomRef.current)
+            bottomRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    });
+
+    function getInterviewScheduleDetailsApiHandler(showLoader: boolean = false) {
+        const params = { schedule_id: selectedOngoingSchedule }
+
+        showLoader && loader.show();
+
         dispatch(
             getInterviewScheduleDetails({
                 params,
@@ -43,25 +67,30 @@ function InterviewInfo() {
                 },
             })
         );
+    }
 
-    }, [])
+    const stopInterval = () => {
+        if (intervalIdRef.current !== null) {
+            clearInterval(intervalIdRef.current);
+            intervalIdRef.current = null;
+        }
+    };
 
 
     return (
-        <div className='screen-padding'>
+        <div>
             {
                 loader.loader &&
                 <div className='loader-container'>
                     <Spinner />
                 </div>
             }
-
-            {role && <ScreenHeading text={`Interview for the role of ${role}`} subtitle={experience_txt} />}
-
             {
                 interviewScheduleDetails && !loader.loader &&
                 <div>
-                    <div className='d-flex align-items-center'>
+                    <div className={"screen-heading"}>{`${capitalizeFirstLetter(role)}`}</div>
+
+                    <div className='d-flex align-items-center mt-2'>
                         <div className={"text-des font-weight-700 text-secondary"}>{`${capitalizeFirstLetter(name)}`}</div>
                         <div className='mx-2'>{'|'}</div>
                         <div>
@@ -120,8 +149,6 @@ function InterviewInfo() {
                         }
                     </div>
 
-
-
                     {
                         items && items.length > 0 &&
                         <div>
@@ -152,6 +179,10 @@ function InterviewInfo() {
                             </div>
                         </div>
                     }
+                    <div ref={bottomRef}>
+                        {/* Content of your component */}
+                    </div>
+
                 </div>
 
             }
@@ -159,4 +190,4 @@ function InterviewInfo() {
     )
 }
 
-export { InterviewInfo };
+export { OngoingScheduleDetails };

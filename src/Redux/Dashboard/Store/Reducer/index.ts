@@ -7,7 +7,6 @@ import {
 
 import { DashboardProp } from "../../Interfaces";
 import * as ActionTypes from "../ActionTypes";
-import { ifObjectKeyExist } from "@Utils";
 
 const initialState: DashboardProp = {
   userLoggedIn: false,
@@ -694,7 +693,7 @@ const DashboardReducer = (state = initialState, action: any) => {
     // createScheduleSuperAdmin
 
     case ActionTypes.GET_INTERVIEW_SCHEDULE_DETAILS:
-      state = { ...state, interviewScheduleDetails: undefined };
+      state = { ...state };
       break;
     case ActionTypes.GET_INTERVIEW_SCHEDULE_DETAILS_SUCCESS:
       state = { ...state, interviewScheduleDetails: action.payload };
@@ -796,23 +795,7 @@ createScheduleSuperAdmin
       };
       break;
 
-    ///onGoing schedule
 
-    case ActionTypes.FETCH_ONGOING_SCHEDULES:
-      state = {
-        ...state,
-        onGoingScheduleMessage: undefined,
-      };
-      break;
-    case ActionTypes.FETCH_ONGOING_SCHEDULES_SUCCESS:
-      state = {
-        ...state,
-        onGoingScheduleMessage: action.payload?.details,
-      };
-      break;
-    case ActionTypes.FETCH_ONGOING_SCHEDULES_FAILURE:
-      state = { ...state, onGoingScheduleMessage: undefined };
-      break;
 
     //ongoing selected id
     case ActionTypes.ON_GOING_SELECTED_ID:

@@ -85,3 +85,42 @@ export const setSelectedCompany = (item: any) => {
         payload: item,
     };
 };
+
+
+/**
+ * get ongoing schedules
+ */
+
+
+export const getOngoingSchedules = (params: any) => {
+    return {
+        type: ActionTypes.FETCH_ONGOING_SCHEDULES,
+        payload: params,
+    };
+};
+
+
+export const getOngoingSchedulesSuccess = (response: any) => {
+    return {
+        type: ActionTypes.FETCH_ONGOING_SCHEDULES_SUCCESS,
+        payload: response,
+    };
+};
+
+export const getOngoingSchedulesFailure = (error: any) => {
+    return {
+        type: ActionTypes.FETCH_ONGOING_SCHEDULES_FAILURE,
+        payload: error,
+    };
+};
+
+/**
+ * set ongoing schedule
+ */
+
+export const setSelectedOngoingSchedule = (selected: any) => {
+    return {
+        type: ActionTypes.SET_SELECTED_ONGOING_SCHEDULE,
+        payload: selected,
+    };
+};

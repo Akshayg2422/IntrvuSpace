@@ -5,5 +5,7 @@ export interface SuperAdminProps {
     recentInterviews: any
     recentInterviewsNumOfPages: any,
     recentInterviewsCurrentPages: number,
-    selectedCompany: any
+    selectedCompany: any;
+    onGoingSchedules: any;
+    selectedOngoingSchedule: any
 }

@@ -5,7 +5,7 @@ import { SuperAdminRegisterCompanyProps } from './interfaces';
 import './index.css';
 
 
-function SuperAdminRegisterCompany({ loading, params, onParams, onBackPress, onSubmit }: SuperAdminRegisterCompanyProps) {
+function SuperAdminRegisterCompany({ edit, loading, params, onParams, onBackPress, onSubmit }: SuperAdminRegisterCompanyProps) {
 
 
 
@@ -66,7 +66,7 @@ function SuperAdminRegisterCompany({ loading, params, onParams, onBackPress, onS
                     }
                 }} />
                 <div className={'admin-heading-txt'}>
-                    <div className="text-sub-heading m-0 p-0 text-center">{'Register Company'}</div>
+                    <div className="text-sub-heading m-0 p-0 text-center">{edit ? 'Edit Company' : 'Register Company'}</div>
                 </div>
             </div>
             <div className={'field-wrapper'}>
@@ -141,7 +141,7 @@ function SuperAdminRegisterCompany({ loading, params, onParams, onBackPress, onS
 
                 <Checkbox
                     id={'is_light_variant'}
-                    text={'Light Variant'}
+                    text={'Is Light Variant'}
                     defaultChecked={params?.is_light_variant}
                     onCheckChange={(checked) => { checkboxOnChange(checked, 'is_light_variant') }}
                 />

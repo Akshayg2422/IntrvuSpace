@@ -1,3 +1,4 @@
+import { icons } from '@Assets';
 import { Sidebar } from '@Components';
 import { useSideNav } from '@Hooks';
 import { Companies, OngoingInterviews, RecentInterviews, SuperAdminSchedules } from '@Modules';
@@ -33,28 +34,28 @@ export const RequireAuth = ({ children }: RequireAuthProps) => {
         {
             path: ROUTES['super-admin'].companies,
             name: "Companies",
-            icon: "ni ni-chart-pie-35 text-info",
+            icon: icons.company,
             layout: "",
             component: <Companies />
         },
         {
             path: ROUTES['super-admin']['admin-schedule'],
             name: "Schedules",
-            icon: "ni ni-chart-pie-35 text-info",
+            icon: icons.schedule,
             layout: "",
             component: <SuperAdminSchedules />
         },
         {
             path: ROUTES['super-admin']['recent-interviews'],
             name: "Recent Interviews",
-            icon: "ni ni-chart-pie-35 text-info",
+            icon: icons.recentInterview,
             layout: "",
             component: <RecentInterviews />
         },
         {
             path: ROUTES['super-admin']['ongoing-interview'],
             name: "Ongoing Interviews",
-            icon: "ni ni-chart-pie-35 text-info",
+            icon: icons.ongoingInterview,
             layout: "",
             component: <OngoingInterviews />
         },
