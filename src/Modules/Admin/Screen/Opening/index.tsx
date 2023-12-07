@@ -117,8 +117,6 @@ function Opening() {
 
   const [corporateScheduleCounts, setCorporateScheduleCount] = useState(corporateScheduleCount)
 
-  // const inFocus = useRef<any>()
-  
 
   const formatDeadline = (date: string, time: string) => {
     const formattedDate = moment(date, 'MMM D YYYY').format('YYYY-MM-DD');
@@ -318,7 +316,6 @@ function Opening() {
             <div className="col-sm-3">
               <Input
                 id={'search'}
-                // innerRef={inFocus}
                 heading={"Search"}
                 type={"text"}
                 placeHolder={"Job Title, Reference No..."}
