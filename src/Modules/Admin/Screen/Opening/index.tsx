@@ -53,7 +53,7 @@ import {
   paginationHandler,
   validate,
 } from "@Utils";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./index.css";
 import moment from "moment";
@@ -116,6 +116,8 @@ function Opening() {
   const [scheduleEndTime, setScheduleEndTime] = useState<any>(DEFAULT_TIME);
 
   const [corporateScheduleCounts, setCorporateScheduleCount] = useState(corporateScheduleCount)
+
+  // const inFocus = useRef<any>()
   
 
   const formatDeadline = (date: string, time: string) => {
@@ -282,7 +284,6 @@ function Opening() {
         params,
         onSuccess: () => () => {
           listLoader.hide();
-          setIsPositionSearch(false);
         },
         onError: () => () => {
           listLoader.hide();
@@ -317,6 +318,7 @@ function Opening() {
             <div className="col-sm-3">
               <Input
                 id={'search'}
+                // innerRef={inFocus}
                 heading={"Search"}
                 type={"text"}
                 placeHolder={"Job Title, Reference No..."}
