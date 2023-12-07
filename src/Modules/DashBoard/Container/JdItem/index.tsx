@@ -1,12 +1,9 @@
-import { icons } from "@Assets";
 import {
   Button,
-  Image,
   StatusIcon,
   ViewMore,
   WatchInterviewButtonIcon,
-  WatchInterviewModal,
-  showToast,
+  WatchInterviewModal
 } from "@Components";
 import { useModal } from "@Hooks";
 import { watchInterviewVideoUrl } from "@Redux";
@@ -14,8 +11,7 @@ import {
   arrayOrderbyDate,
   capitalizeFirstLetter,
   formatDateTime,
-  getBrowserInfo,
-  getDisplayTimeAgoFromMoment,
+  getDisplayTimeAgoFromMoment
 } from "@Utils";
 import { useDispatch, useSelector } from "react-redux";
 import "./index.css";
@@ -81,7 +77,7 @@ function JdItem({
                 <>
                   {completedSchedules && completedSchedules.length > 0 && (
                     <div className={"completed-date-container"}>
-                      <StatusIcon/>
+                      <StatusIcon />
                       <div className={"completed-text-container"}>
                         <span className={"details-desc font-weight-700"}>
                           {"Completed on "}
@@ -163,7 +159,7 @@ function JdItem({
             </div>
             {completedSchedules.map((item: any, index: number) => {
               console.log("item", item);
-              
+
               const {
                 id,
                 report_analytics,
