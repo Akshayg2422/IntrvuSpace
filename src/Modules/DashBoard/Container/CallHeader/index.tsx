@@ -16,11 +16,19 @@ function CallHeader({
 }: CallHeaderProps) {
   const { scheduleInfo } = useSelector((state: any) => state.DashboardReducer);
 
-  const { is_video_recording_manditory } = scheduleInfo;
+  const { is_video_recording_manditory, time_spent } = scheduleInfo;
+
+  let timeSpent: any;
+
+  const totalSeconds = Math.floor(time_spent / 1000);
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+  timeSpent = { hours, minutes, seconds };
 
   const CALL_MENU = [{ id: 0, name: "End Interview" }];
 
-  const [time, setTime] = useState({ hours: 0, minutes: 0, seconds: 0 });
+  const [time, setTime] = useState(timeSpent);
   const endInterviewModal = useModal(false);
 
   useEffect(() => {

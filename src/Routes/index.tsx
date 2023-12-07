@@ -269,6 +269,11 @@ export const SUPER_ADMIN_ROUTES = [
     path: ROUTES['super-admin']['recent-interviews'],
     component: <RecentInterviews />
   },
+  {
+    id: 8,
+    path: ROUTES['designation-module'].report + '/:schedule_id',
+    component: <Report />
+  },
 ]
 
 
