@@ -20,7 +20,7 @@ const LOCAL_IP = "http://192.168.168.32:8000/"
 
 
 
-export const BUILD_TYPE = BUILD_TYPE_LIVE_DEMO;
+export const BUILD_TYPE = BUILD_TYPE_PRE_PROD_IP;
 
 
 export const SERVER =
