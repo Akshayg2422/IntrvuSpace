@@ -59,8 +59,6 @@ import "./index.css";
 import moment from "moment";
 
 function Opening() {
-
-
   const {
     sectorsCorporate,
     departmentCorporate,
@@ -70,14 +68,13 @@ function Opening() {
     corporateScheduleCurrentPages,
   } = useSelector((state: any) => state.DashboardReducer);
 
-  const DEFAULT_DATE = moment().add(9, 'day').format('MMM D YYYY')
-  const DEFAULT_TIME = moment().set({ hour: 23, minute: 59, second: 0 }).format('LT')
-
-
+  const DEFAULT_DATE = moment().add(9, "day").format("MMM D YYYY");
+  const DEFAULT_TIME = moment()
+    .set({ hour: 23, minute: 59, second: 0 })
+    .format("LT");
 
   const { dashboardDetails } = useSelector((state: any) => state.AuthReducer);
-  const { is_department_admin } = dashboardDetails?.rights || {}
-
+  const { is_department_admin } = dashboardDetails?.rights || {};
 
   const { goTo } = useNavigation();
   const dispatch = useDispatch();
@@ -110,17 +107,18 @@ function Opening() {
   const referenceId = useInput("");
 
   const [isPositionSearch, setIsPositionSearch] = useState(false);
-  const [videoRecordMandatory, setVideoRecordMandatory] = useState(true)
+  const [videoRecordMandatory, setVideoRecordMandatory] = useState(true);
 
   const [scheduleEndDate, setScheduleEndDate] = useState<any>(DEFAULT_DATE);
   const [scheduleEndTime, setScheduleEndTime] = useState<any>(DEFAULT_TIME);
 
-  const [corporateScheduleCounts, setCorporateScheduleCount] = useState(corporateScheduleCount)
-
+  const [corporateScheduleCounts, setCorporateScheduleCount] = useState(
+    corporateScheduleCount
+  );
 
   const formatDeadline = (date: string, time: string) => {
-    const formattedDate = moment(date, 'MMM D YYYY').format('YYYY-MM-DD');
-    const formattedTime = moment(time, 'LT').format('HH:mm:ss');
+    const formattedDate = moment(date, "MMM D YYYY").format("YYYY-MM-DD");
+    const formattedTime = moment(time, "LT").format("HH:mm:ss");
     return `${formattedDate}T${formattedTime}`;
   };
 
@@ -149,8 +147,8 @@ function Opening() {
     dispatch(
       getSectorCorporate({
         params,
-        onSuccess: () => () => { },
-        onError: () => () => { },
+        onSuccess: () => () => {},
+        onError: () => () => {},
       })
     );
   };
@@ -165,7 +163,7 @@ function Opening() {
           setSelectedSector(details);
           getSectorsCorporateApiHandler();
         },
-        onError: (error) => () => { },
+        onError: (error) => () => {},
       })
     );
   };
@@ -175,8 +173,8 @@ function Opening() {
     dispatch(
       getDepartmentCorporate({
         params,
-        onSuccess: (response: any) => () => { },
-        onError: () => () => { },
+        onSuccess: (response: any) => () => {},
+        onError: () => () => {},
       })
     );
   };
@@ -191,7 +189,7 @@ function Opening() {
           setSelectedDepartment(details);
           getDepartmentCorporateApiHandler();
         },
-        onError: (error) => () => { },
+        onError: (error) => () => {},
       })
     );
   };
@@ -204,10 +202,10 @@ function Opening() {
       experience: parseInt(experience.value?.id),
       jd: jd.value,
       reference_id: referenceId.value,
-      vacancies: vacancies?.value > 0 ? vacancies?.value : '',
+      vacancies: vacancies?.value > 0 ? vacancies?.value : "",
       interview_duration: duration?.value,
       video_recording_mandatory: videoRecordMandatory,
-      deadline: formatDeadline(scheduleEndDate, scheduleEndTime)
+      deadline: formatDeadline(scheduleEndDate, scheduleEndTime),
     };
 
     const validation = validate(CREATE_CORPORATE_SCHEDULE_RULES, params);
@@ -236,7 +234,6 @@ function Opening() {
   };
 
   function resetValues() {
-
     createOpeningModal.hide();
 
     position.set("");
@@ -252,7 +249,6 @@ function Opening() {
 
     setScheduleEndDate(DEFAULT_DATE);
     setScheduleEndTime(DEFAULT_TIME);
-
   }
 
   const getCorporateScheduleApiHandler = (page_number: number) => {
@@ -260,20 +256,20 @@ function Opening() {
       status.value?.id === "ACV"
         ? { is_active: true }
         : status.value?.id === "CSD"
-          ? { is_active: false }
-          : undefined;
+        ? { is_active: false }
+        : undefined;
     const params = {
       page_number,
       ...(positionSearch?.value && { position: positionSearch?.value }),
       ...(filterStatus && filterStatus),
       ...(filterSector &&
         filterSector.value.id !== "-1" && {
-        sector_id: filterSector?.value?.id,
-      }),
+          sector_id: filterSector?.value?.id,
+        }),
       ...(filterDepartment &&
         filterDepartment.value.id !== "-1" && {
-        department_id: filterDepartment?.value?.id,
-      }),
+          department_id: filterDepartment?.value?.id,
+        }),
     };
 
     listLoader.show();
@@ -290,32 +286,27 @@ function Opening() {
     );
   };
 
-
-
-
   function viewMoreDetailsHandler(status: boolean, index: number) {
     const updateData = [...corporateSchedules];
     updateData[index] = { ...updateData[index], is_view_more: status };
     dispatch(updateCorporateSchedules(updateData));
   }
 
-
-
-
   return (
-    <div className={'screen'}>
+    <div className={"screen"}>
       <AdminTopNavbar
         showCreateOpening={corporateScheduleCounts > 0}
         onCreateOpeningClick={createOpeningModal.show}
       />
-    
-      {corporateScheduleCounts <= 0 ? <OpeningEmpty onCreateOpeningClick={createOpeningModal.show} />
-      : (
+
+      {corporateScheduleCounts <= 0 ? (
+        <OpeningEmpty onCreateOpeningClick={createOpeningModal.show} />
+      ) : (
         <div className={"screen-container"}>
           <div className="row">
             <div className="col-sm-3">
               <Input
-                id={'search'}
+                id={"search"}
                 heading={"Search"}
                 type={"text"}
                 placeHolder={"Job Title, Reference No..."}
@@ -369,46 +360,39 @@ function Opening() {
 
             <div></div>
           </div>
-          {
-        listLoader.loader && (
-          <div className={"loader-container"}>
-            <Spinner />
-          </div>
-        )
-      }
-
-          <div>
-            {
-              corporateSchedules && corporateSchedules.length > 0 ? (
-                corporateSchedules.map((item: any, index: number) => {
-                  return (
-                    <div
-                      className={
-                        index === 0
-                          ? "schedule-container-top"
-                          : "schedule-container"
-                      }
-                    >
-                      <DesignationItem
-                        key={index}
-                        item={item}
-                        onViewMore={(status) =>
-                          viewMoreDetailsHandler(status, index)
-                        }
-                        onViewDetails={() => {
-                          dispatch(setSelectedRole(item));
-                          goTo(ROUTES["designation-module"]["opening-detail"]);
-                        }}
-                      />
-                    </div>
-                  );
-                })
-              ) : (!listLoader.loader &&
-                <div className={"no-data-container"}>
-                  <NoDataFound />
+          {listLoader.loader ? (
+            <div className={"no-data-container"}>
+              <Spinner />
+            </div>
+          ) : corporateSchedules && corporateSchedules.length > 0 ? (
+            corporateSchedules.map((item: any, index: number) => {
+              return (
+                <div
+                  className={
+                    index === 0
+                      ? "schedule-container-top"
+                      : "schedule-container"
+                  }
+                >
+                  <DesignationItem
+                    key={index}
+                    item={item}
+                    onViewMore={(status) =>
+                      viewMoreDetailsHandler(status, index)
+                    }
+                    onViewDetails={() => {
+                      dispatch(setSelectedRole(item));
+                      goTo(ROUTES["designation-module"]["opening-detail"]);
+                    }}
+                  />
                 </div>
-              )}
-          </div>
+              );
+            })
+          ) : (
+              <div className={"no-data-container"}>
+                <NoDataFound />
+              </div>
+          )}
           {corporateScheduleNumOfPages > 1 && (
             <div className="mt-3">
               <PageNation
@@ -558,7 +542,6 @@ function Opening() {
             />
           </div>
         </div>
-
       </Modal>
     </div>
   );
