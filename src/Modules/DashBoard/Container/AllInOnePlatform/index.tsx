@@ -1,4 +1,4 @@
-import { icons } from "@Assets";
+import { icons, image } from "@Assets";
 import { Button, Card, Image, StatusIcon } from "@Components";
 import { useDynamicHeight, useGrowingTitleLine } from "@Hooks";
 import { Col, Container, Row } from "reactstrap";
@@ -7,11 +7,7 @@ import "./index.css";
 const CREATE_JD_AND_ADD_CANDIDATE = [
   { id: 1, mainText: "Interview", subText: " with different duration" },
   { id: 2, mainText: "Notification", subText: " over Email & Phone" },
-  {
-    id: 3,
-    mainText: "Candidate",
-    subText: " can attend at their convenient time",
-  },
+  { id: 3, mainText: "Candidate", subText: " can attend at their convenient time"},
   { id: 4, mainText: "Deadlines", subText: " for interviews" },
   { id: 5, mainText: "Unlimited Candidates", subText: " for single JD" },
 ];
@@ -38,8 +34,8 @@ function AllInOnePlatform() {
       ref={effortlessInterviewsRef}
       style={{ backgroundColor: "#ffffff" }}
     >
-      <section className={`pt-3`}>
-        <Container>
+      <section className={`container-fluid`}>
+      <div className="m-6">
           <div className="header-body">
             <Row className="">
               {" "}
@@ -102,9 +98,20 @@ function AllInOnePlatform() {
                   </div>
                 </div>
                 <div >
+                <div className="mt-7">
+                <Col >
+              <div className="text-center mx-4 mt-sm-0 mt-2">
+                <Image
+                  src={image.StreamlinedAutomatedInterview}
+                  width={"80%"}
+                  height={"100%"}
+                />
+              </div>
+              </Col>
+              </div>
+              <div>
                   <Card
-                    className="text-left mt-6 mx-4"
-
+                    className="col-12 text-left mt-7 mx-4"
                     style={{
                       borderWidth: 1.5,
                       borderColor: "#e8edff",
@@ -259,10 +266,8 @@ function AllInOnePlatform() {
                       </div>
                     </div>
                   </Card>
-
+                  </div>
                 </div>
-
-
                 <div className="pt-md-6 pt-lg-6 pt-sm-0 pt-4">
                   <span className="display-3 font-weight-bolder text-secondary">
                     How it works ?
@@ -271,7 +276,7 @@ function AllInOnePlatform() {
               </Col>
             </Row>
           </div>
-        </Container>
+        </div>
       </section>
     </div>
   );

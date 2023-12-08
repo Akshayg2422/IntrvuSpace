@@ -11,8 +11,8 @@ const packageContent = [
 function WebsiteAutoApprovalForCandidatesPerformance() {
     return (
 
-        <Container>
-            <div className={'pb-md-5'}>
+        <div className='container-fluid'>
+            <div className={'m-6 pb-md-5'}>
                 <Row>
                     <Col lg="5">
                         <div className="mt-5">
@@ -55,7 +55,7 @@ function WebsiteAutoApprovalForCandidatesPerformance() {
                     </Col>
                 </Row>
             </div>
-        </Container>
+        </div>
     )
 }
 
