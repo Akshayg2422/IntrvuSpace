@@ -6,7 +6,7 @@ import { ROUTES } from "@Routes";
 import { TYPE_CORPORATE, TYPE_SUPER_ADMIN, TYPE_JOB_SEEKER } from "@Utils";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux';
-import { getDashboard } from '@Redux'
+import { getDashboard, userLogout } from '@Redux'
 
 
 function Splash() {
@@ -25,11 +25,27 @@ function Splash() {
         dispatch(
             getDashboard({
                 params,
-                onSuccess: () => () => {
-                    userRoutingHandler()
+                onSuccess: (response: any) => () => {
+
+                    const { basic_info: { company_active_status } } = response?.details
+                    console.log(JSON.stringify(response));
+
+                    if (company_active_status) {
+                        userRoutingHandler();
+                    } else {
+                        dispatch(
+                            userLogout({
+                                onSuccess: () => () => {
+                                    goTo(ROUTES['auth-module'].login, true)
+                                    showToast('Your company status is inactive. Please contact the administrator.')
+                                },
+                                onError: () => () => {
+                                },
+                            }))
+                    }
                 },
                 onError: (error: any) => () => {
-                    showToast(error.error_message, "error");
+                    showToast(error.error_message, 'error');
                 },
             })
         );
@@ -57,8 +73,7 @@ function Splash() {
                 goTo(reDirectRoute, true);
             }
         } else {
-            goTo(ROUTES['auth-module'].login)
-            // showToast('Invalid User Type')
+            goTo(ROUTES['auth-module'].login, true)
         }
     }
 

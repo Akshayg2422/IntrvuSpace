@@ -1,31 +1,29 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
 import {
-  Button,
+  Checkbox,
+  DateTimePicker,
   DesignationItem,
   DropDown,
+  Duration,
   Input,
-  InputHeading,
   Modal,
   NoDataFound,
   PageNation,
   ReactAutoComplete,
   Spinner,
   TextArea,
-  showToast,
-  Checkbox,
-  DateTimePicker,
-  Duration
+  showToast
 } from "@Components";
 import {
   useDropDown,
   useInput,
-  useLoader,
-  useNavigation,
   useKeyPress,
+  useLoader,
   useModal,
+  useNavigation,
 } from "@Hooks";
-import { OpeningEmpty, AdminTopNavbar } from "@Modules";
+import { AdminTopNavbar, OpeningEmpty } from "@Modules";
 import {
   addDepartmentCorporate,
   addSectorCorporate,
@@ -45,18 +43,16 @@ import {
   PLACEHOLDER_ROLES,
   STATUS_LIST,
   capitalizeLetter,
-  displayFormatDate,
-  getDisplayTime,
   getDropDownCompanyDisplayData,
   getValidateError,
   ifObjectExist,
   paginationHandler,
-  validate,
+  validate
 } from "@Utils";
-import { useEffect, useRef, useState } from "react";
+import moment from "moment";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./index.css";
-import moment from "moment";
 
 function Opening() {
   const {
@@ -300,7 +296,7 @@ function Opening() {
 
       {corporateScheduleCount <= 0 ? <OpeningEmpty onCreateOpeningClick={createOpeningModal.show} />
         : (
-          <div className={"screen-container"}>
+          <div className={"screen-container-other"}>
             <div className="row">
               <div className="col-sm-3">
                 <Input
