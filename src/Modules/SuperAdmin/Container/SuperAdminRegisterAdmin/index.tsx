@@ -104,7 +104,7 @@ function SuperAdminRegisterAdmin({ edit, params, onParams, onSubmit }: SuperAdmi
             }
             <Button
                 block
-                text={"Next"}
+                text={"Submit"}
                 onClick={validateCompanyAdminDetailsHandler}
             />
 
