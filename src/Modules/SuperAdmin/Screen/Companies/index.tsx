@@ -1,20 +1,33 @@
-import React, { useEffect, useState } from 'react'
-import { SuperAdminNavbar } from '@Modules'
-import { useSelector, useDispatch } from 'react-redux'
-import { alterCompanyLimit, alterCompanyStatus, getCompanies, setSelectedCompany } from '@Redux'
-import { CommonTable, Image, Input, MenuBar, Modal, NoDataFound, Spinner, StatusIcon, showToast } from '@Components';
-import { capitalizeFirstLetter, getPhoto, paginationHandler, INITIAL_PAGE } from '@Utils';
 import { icons } from '@Assets';
+import { CommonTable, Image, Input, MenuBar, NoDataFound, Spinner, StatusIcon, showToast, Modal, ProfilePhoto } from '@Components';
 import { useInput, useKeyPress, useLoader, useModal, useNavigation } from '@Hooks';
-import { ROUTES } from '@Routes'
+import { alterCompanyLimit, alterCompanyStatus, getCompanies, setSelectedCompany } from '@Redux';
+import { ROUTES } from '@Routes';
+import { INITIAL_PAGE, capitalizeFirstLetter, getPhoto, paginationHandler } from '@Utils';
+import { useEffect, useState } from 'react';
 import { PhotoProvider, PhotoView } from "react-photo-view";
-import "react-photo-view/dist/react-photo-view.css";
+import { useDispatch, useSelector } from 'react-redux';
+import { SuperAdminNavbarWrapper } from '@Modules'
 
-function SuperAdminDashboard() {
+function Companies() {
 
     const { companies, companiesNumOfPages, companiesCurrentPages } = useSelector((state: any) => state.SuperAdminReducer);
     const dispatch = useDispatch()
     const { goTo } = useNavigation();
+
+
+
+    const proceedCreateCompany = () => {
+        dispatch(setSelectedCompany(undefined))
+        goTo(ROUTES['super-admin']['super-admin-register-company'])
+    };
+
+
+
+    const NAV_LIST = [
+        { id: 1, text: 'Create Company', callback: proceedCreateCompany },
+    ];
+
 
     /**
      * add modal
@@ -30,9 +43,7 @@ function SuperAdminDashboard() {
     const enterPress = useKeyPress("Enter");
 
     useEffect(() => {
-
         getCompaniesApiHandler(INITIAL_PAGE);
-
     }, [])
 
     useEffect(() => {
@@ -52,8 +63,6 @@ function SuperAdminDashboard() {
 
 
     const getCompaniesApiHandler = (page_number: number) => {
-
-        console.log('called');
 
         const params = {
             page_number,
@@ -166,52 +175,7 @@ function SuperAdminDashboard() {
 
                     name: (
                         <div className={"d-flex align-items-center"}>
-                            <div>
-                                <div className={'image-container'}>
-                                    {logo ?
-                                        <PhotoProvider>
-                                            <div className={"pointer"}>
-                                                <PhotoView src={getPhoto(logo)}>
-                                                    <Image
-                                                        src={getPhoto(logo)}
-                                                        height={50}
-                                                        width={50}
-                                                        style={{
-                                                            objectFit: 'cover',
-                                                            overflow: 'hidden',
-                                                            padding: '1px',
-                                                            borderRadius: '30px',
-                                                            width: "45px",
-                                                            height: "45px",
-                                                        }}
-                                                    />
-                                                </PhotoView>
-                                            </div>
-                                        </PhotoProvider>
-                                        :
-                                        <div style={{
-                                            width: "45px",
-                                            height: "45px",
-                                            borderRadius: "30px",
-                                            backgroundColor: "#FAFBFF",
-                                            alignItems: 'center',
-                                            justifyContent: 'center',
-                                            display: 'flex',
-                                        }}>
-                                            <Image
-                                                src={icons.profile}
-                                                height={20}
-                                                width={20}
-                                                style={{
-                                                    objectFit: 'contain'
-                                                }}
-                                            />
-                                        </div>
-
-                                    }
-
-                                </div>
-                            </div>
+                            <ProfilePhoto photo={logo} />
                             <div className={"th-bold ml-3"}>
                                 {capitalizeFirstLetter(display_name)}
                             </div>
@@ -239,65 +203,61 @@ function SuperAdminDashboard() {
             });
     };
 
+
     return (
         <>
-            <div className={'screen'}>
-                <SuperAdminNavbar />
-
-                <div className={'screen-container'}>
-                    <div className="col-sm-3 m-0 p-0">
-                        <Input
-                            id={'search'}
-                            heading={"Search"}
-                            type={"text"}
-                            placeHolder={"Name, Mobile, ..."}
-                            value={search?.value}
-                            onChange={search.onChange}
-                        />
-                    </div>
-                    {
-                        loader.loader &&
-                        <div className={'loader-container'}>
-                            <Spinner />
-                        </div>
-                    }
-                    {
-                        companies && companies?.length > 0 &&
-                        <div className={'overflow-auto pb-3'}>
-                            <CommonTable
-                                isPagination
-                                tableDataSet={companies}
-                                displayDataSet={normalizedTableData(companies)}
-                                noOfPage={companiesNumOfPages}
-                                currentPage={companiesCurrentPages}
-                                paginationNumberClick={(currentPage) => {
-                                    getCompaniesApiHandler(
-                                        paginationHandler("current", currentPage)
-                                    );
-                                }}
-                                previousClick={() => {
-                                    getCompaniesApiHandler(
-                                        paginationHandler("prev", companiesCurrentPages)
-                                    );
-                                }}
-                                nextClick={() => {
-                                    getCompaniesApiHandler(
-                                        paginationHandler("next", companiesCurrentPages)
-                                    );
-                                }}
-                            />
-                        </div>
-                    }
+            <SuperAdminNavbarWrapper actions={NAV_LIST} />
+            <div className={'screen-container'}>
+                <div className="col-sm-3 m-0 p-0">
+                    <Input
+                        id={'search'}
+                        heading={"Search"}
+                        type={"text"}
+                        placeHolder={"Name, Mobile, ..."}
+                        value={search?.value}
+                        onChange={search.onChange}
+                    />
                 </div>
-
                 {
-                    !loader.loader && companies?.length <= 0 &&
-                    <div className={"no-data-found"}>
-                        <NoDataFound />
+                    loader.loader &&
+                    <div className={'loader-container'}>
+                        <Spinner />
+                    </div>
+                }
+                {
+                    companies && companies?.length > 0 &&
+                    <div className={'overflow-auto py-3'}>
+                        <CommonTable
+                            isPagination
+                            tableDataSet={companies}
+                            displayDataSet={normalizedTableData(companies)}
+                            noOfPage={companiesNumOfPages}
+                            currentPage={companiesCurrentPages}
+                            paginationNumberClick={(currentPage) => {
+                                getCompaniesApiHandler(
+                                    paginationHandler("current", currentPage)
+                                );
+                            }}
+                            previousClick={() => {
+                                getCompaniesApiHandler(
+                                    paginationHandler("prev", companiesCurrentPages)
+                                );
+                            }}
+                            nextClick={() => {
+                                getCompaniesApiHandler(
+                                    paginationHandler("next", companiesCurrentPages)
+                                );
+                            }}
+                        />
                     </div>
                 }
             </div>
-
+            {
+                !loader.loader && companies?.length <= 0 &&
+                <div className={"no-data-found"}>
+                    <NoDataFound />
+                </div>
+            }
             <Modal
                 loading={addLimitLoader.loader}
                 title={"Alter Limit"}
@@ -319,4 +279,4 @@ function SuperAdminDashboard() {
     )
 }
 
-export { SuperAdminDashboard }
+export { Companies };

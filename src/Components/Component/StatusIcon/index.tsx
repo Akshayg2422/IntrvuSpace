@@ -24,8 +24,8 @@ function StatusIcon({ variant = 'check' }: StatusIconProps) {
         <Image
             src={variantIcon}
             alt={`${variantIcon} icon`}
-            height={10}
-            width={10}
+            height={8}
+            width={8}
             style={{
                 objectFit: "contain",
             }}

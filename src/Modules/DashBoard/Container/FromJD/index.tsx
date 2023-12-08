@@ -67,7 +67,7 @@ function FromJD() {
     CHAR_LENGTH +
     " characters.";
 
-  const { createJdModal, jdItem ,jdItemNumOfPages,jdItemCurrentPages} = useSelector(
+  const { createJdModal, jdItem, jdItemNumOfPages, jdItemCurrentPages } = useSelector(
     (state: any) => state.DashboardReducer
   );
 
@@ -116,10 +116,11 @@ function FromJD() {
 
   const dispatch = useDispatch();
 
-  const getKnowledgeGroupFromJdHandler = (page_number:any) => {
-    const params = { from_jd: true ,
+  const getKnowledgeGroupFromJdHandler = (page_number: any) => {
+    const params = {
+      from_jd: true,
       page_number
-  };
+    };
     loading.show();
     dispatch(
       getJdItemList({
@@ -325,7 +326,7 @@ function FromJD() {
 
       {
         !loading.loader && jdItem?.length > 0 &&
-        <div className={'screen-container'}>
+        <div className={'screen-container-other'}>
           {
             jdItem.map((item: any, index: number) => {
               return (

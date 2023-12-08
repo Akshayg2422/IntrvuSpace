@@ -1,0 +1,18 @@
+.profile-container {
+    object-fit: cover;
+    overflow: hidden;
+    border-radius: 30px;
+    width: 45px;
+    height: 45px;
+    object-fit: contain;
+}
+
+.profile-placeholder-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 45px;
+    height: 45px;
+    border-radius: 30px;
+    background-color: var(--bg-container-light);
+}

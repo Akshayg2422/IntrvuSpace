@@ -85,11 +85,35 @@ function* getRecentInterviewsSaga(action) {
 }
 
 
+/**
+ * on going schedule
+ */
+
+function* fetchOnGoingSchedulesSaga(action) {
+  try {
+    const response = yield call(Api.getOngoingSchedulesApi, action.payload.params);
+    if (response.success) {
+      yield put(Action.getOngoingSchedulesSuccess(response));
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield put(Action.getOngoingSchedulesFailure(response.error_message));
+      yield call(action.payload.onError(response));
+    }
+  } catch (error) {
+    yield put(Action.getOngoingSchedulesFailure(error));
+    yield call(action.payload.onError(error));
+  }
+}
+
+
+
 function* SuperAdminSaga() {
   yield takeLatest(Action.GET_COMPANIES, getCompaniesSaga);
   yield takeLatest(Action.ALTER_COMPANY_STATUS, alterCompanyStatusSaga);
   yield takeLatest(Action.ALTER_COMPANY_LIMIT, alterCompanyLimitSaga);
   yield takeLatest(Action.GET_RECENT_INTERVIEWS, getRecentInterviewsSaga);
+  yield takeLatest(Action.FETCH_ONGOING_SCHEDULES, fetchOnGoingSchedulesSaga);
+
 
 }
 export default SuperAdminSaga;

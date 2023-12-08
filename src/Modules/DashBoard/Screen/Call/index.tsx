@@ -1,34 +1,31 @@
 import { icons } from "@Assets";
 import {
-  Alert,
   AnimatedImage,
   Back,
   Button,
-  Heading,
   Image,
   Modal,
   Spinner,
-  StatusIcon,
+  StatusIcon
 } from "@Components";
-import { useLoader, useModal, useNavigation } from "@Hooks";
+import { useLoader, useModal, useNavigation, useScreenRecorder } from "@Hooks";
 import { CallHeader, CallHeaderMobile, Guidelines, Report } from "@Modules";
 import {
   canStartInterview,
   closeInterview,
-  getJdItemList,
-  getScheduleBasicInfo,
+  getScheduleBasicInfo
 } from "@Redux";
 import { CALL_WEBSOCKET } from "@Services";
 import { color } from "@Themes";
 import {
   BROWSER_PERMISSION_CONTEXT,
+  ENTIRE_SCREEN_CONTEXT,
   capitalizeFirstLetter,
   getBrowserInfo,
   getOperatingSystem,
   getShortName,
-  gotoPermissionSetting,
   hasCameraPermission,
-  hasMicrophonePermission,
+  hasMicrophonePermission
 } from "@Utils";
 import type { Harker } from "hark";
 import type { Encoder } from "lamejs";
@@ -37,10 +34,6 @@ import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { RecordRTCPromisesHandler, StereoAudioRecorder } from "recordrtc";
-import { useScreenRecorder } from "@Hooks";
-import { ENTIRE_SCREEN_CONTEXT } from "@Utils";
-import DetectFace from "../DetectFace";
-import DetectFace2 from "../DetectFace/index copy";
 
 const compare_moment_format = "YYYY-MM-DDHH:mm:ss";
 
@@ -270,6 +263,9 @@ function Call() {
   const [isForceRecord, setIsForceRecord] = useState(true); // static state to force record by default setting false
 
   const openBrowserNotSupportedModal = useModal(false);
+
+
+  const [callvalidating, setcallValidating] = useState(false)
 
   {
     /** interview recording useEffect */
@@ -862,6 +858,8 @@ function Call() {
   };
 
   function canStartInterviewCheckHandler() {
+
+    setcallValidating(true)
     const { can_start_interview, is_video_recording_manditory } = scheduleInfo;
 
     if (
@@ -897,8 +895,8 @@ function Call() {
       if (hasMicPermission) {
         micPermissionModal.hide();
 
-        if (!recordStatus && is_video_recording_manditory ) {
-         
+        if (!recordStatus && is_video_recording_manditory) {
+
           await startScreenRecording();
         }
         else if (recordStatus || !is_video_recording_manditory) {
@@ -1201,6 +1199,7 @@ function Call() {
                 loading={startInterviewLoader.loader}
                 heading={scheduleInfo?.interviewee_expected_designation}
                 onClick={canStartInterviewCheckHandler}
+                callValidating = {callvalidating}
               />
             ) : (
               <></>

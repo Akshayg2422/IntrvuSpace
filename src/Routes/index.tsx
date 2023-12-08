@@ -19,9 +19,9 @@ import {
   Questions, Register,
   Report,
   Reports,
-  Response,
+  InterviewInfo,
   ReturnAndRefund,
-  Scheduling,
+  OngoingInterviews,
   Sector,
   Settings,
   TermsAndConditions,
@@ -30,12 +30,12 @@ import {
   EmailVerification,
   CorporateRegister,
   SettingDesignation,
-  AdminSchedules,
-  SuperAdminDashboard,
+  Companies,
   RecentInterviews,
   Candidates,
   SuperAdminCorporateRegister,
-  Schedule
+  Schedule,
+  SuperAdminSchedules
 } from '@Modules';
 
 export const ROUTES = {
@@ -58,12 +58,12 @@ export const ROUTES = {
     'mail-verification': '/mail-verification'
   },
   'designation-module': {
-    Dashboard: "/dashboard",
+    Dashboard: "/companies",
     'weightage-count-form': "/weightage-count-form",
     'create-question-form': "/create-question-form",
     'sector': "/sector",
     'interview': '/interview',
-    dashboard: "/dashboard",
+    companies: "/companies",
     schedule: "/schedule",
     client: "/home",
     questions: "/questions",
@@ -73,20 +73,20 @@ export const ROUTES = {
     schedules: '/schedules',
     'opening-detail': '/opening-detail',
     settings: '/settings',
-    'response': '/response',
     'preparing-your-interview': '/preparing-your-interview',
     'department': '/department',
     'employeeDesignations': '/employeeDesignations',
     'ManageTeamMate': '/ManageTeamMate',
     // 'Sectors':'/Sectors'
-    'scheduling-interview': '/scheduling-interview',
-    'admin-schedule': '/admin-schedule',
     'candidate': '/candidate'
   },
   'super-admin': {
-    dashboard: "/dashboard",
+    companies: "/companies",
     'super-admin-register-company': '/super-admin-register-company',
-    'recent-interviews': '/recent-interviews'
+    'recent-interviews': '/recent-interviews',
+    'ongoing-interview': '/ongoing-interview',
+    'admin-schedule': '/admin-schedule',
+    'interview-info': '/interview-info',
 
   }
 }
@@ -119,8 +119,8 @@ export const OLD_ROUTES = [
   },
   {
     id: 12,
-    path: ROUTES['designation-module']['scheduling-interview'],
-    component: <Scheduling />
+    path: ROUTES['super-admin']['ongoing-interview'],
+    component: <OngoingInterviews />
   },
   {
     id: 11,
@@ -130,8 +130,8 @@ export const OLD_ROUTES = [
   ,
   {
     id: 10,
-    path: ROUTES['designation-module'].response + '/:schedule_id',
-    component: <Response />
+    path: ROUTES['super-admin']['interview-info'] + '/:schedule_id',
+    component: <InterviewInfo />
   },
 ]
 
@@ -235,39 +235,38 @@ export const JOB_SEEKER_ROUTES = [
 export const SUPER_ADMIN_ROUTES = [
   {
     id: 1,
-    path: ROUTES['designation-module']['admin-schedule'],
-    component: <AdminSchedules />
+    path: ROUTES['super-admin']['admin-schedule'],
+    component: <SuperAdminSchedules />
   },
   {
     id: 2,
-    path: ROUTES['designation-module']['scheduling-interview'],
-    component: <Scheduling />
+    path: ROUTES['super-admin']['ongoing-interview'],
+    component: <OngoingInterviews />
   },
   {
     id: 3,
-    path: ROUTES['designation-module'].response + '/:schedule_id',
-    component: <Response />
+    path: ROUTES['super-admin']['interview-info'] + '/:schedule_id',
+    component: <InterviewInfo />
   },
   {
     id: 4,
-    path: ROUTES['designation-module'].settings,
-    component: <Settings />
+    path: ROUTES['super-admin'].companies,
+    component: <Companies />
   },
   {
     id: 5,
-    path: ROUTES['super-admin'].dashboard,
-    component: <SuperAdminDashboard />
-  },
-
-  {
-    id: 6,
     path: ROUTES['super-admin']['super-admin-register-company'],
     component: <SuperAdminCorporateRegister />
   },
   {
-    id: 7,
+    id: 6,
     path: ROUTES['super-admin']['recent-interviews'],
     component: <RecentInterviews />
+  },
+  {
+    id: 7,
+    path: ROUTES['designation-module'].report + '/:schedule_id',
+    component: <Report />
   },
 ]
 

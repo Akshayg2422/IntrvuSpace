@@ -1,10 +1,29 @@
+/*!
 
+=========================================================
+* Argon Dashboard PRO React - v1.2.3
+=========================================================
+
+* Product Page: https://www.creative-tim.com/product/argon-companies-pro-react
+* Copyright 2021 Creative Tim (https://www.creative-tim.com)
+
+* Coded by Creative Tim
+
+=========================================================
+
+* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+*/
 import React from "react";
+// react library for routing
 import { useLocation, NavLink as NavLinkRRD, Link } from "react-router-dom";
+// nodejs library that concatenates classes
 import classnames from "classnames";
+// nodejs library to set properties for components
+
+// react library that creates nice scrollbar on windows devices
 import PerfectScrollbar from "react-perfect-scrollbar";
-
-
+// reactstrap components
 import {
   Collapse,
   NavbarBrand,
@@ -13,21 +32,13 @@ import {
   NavLink,
   Nav,
 } from "reactstrap";
-import { SidebarProps } from './interfaces'
 import { Image } from '@Components'
-import { url } from "inspector";
-import { useDispatch, useSelector } from "react-redux";
-import { getPhoto } from "@Utils";
-import { icons } from "@Assets";
-import { settingSideNavRemove } from "@Redux";
-function Sidebar({ toggleSideNav, sideNavOpen, routes, logo, rtlActive }: SidebarProps) {
-  // const { dashboardDetails } = useSelector((state: any) => state.UserCompanyReducer);
-  // const { user_details, } = dashboardDetails || ''
-  const [state, setState] = React.useState({});
-  const dispatch = useDispatch()
-  const location = useLocation();
-  const { removeSideNav } = useSelector((state: any) => state.DashboardReducer)
+import { icons } from '@Assets'
+import { SidebarProps } from './interfaces'
 
+function Sidebar({ toggleSideNav, sideNavOpen, routes, logo, rtlActive }: SidebarProps) {
+  const [state, setState] = React.useState({});
+  const location = useLocation();
   React.useEffect(() => {
     setState(getCollapseStates(routes));
     // eslint-disable-next-line
@@ -81,8 +92,9 @@ function Sidebar({ toggleSideNav, sideNavOpen, routes, logo, rtlActive }: Sideba
   // the sidebar will autoclose
   const closeSidenav = () => {
     if (window.innerWidth < 1200) {
-      if (toggleSideNav)
+      if (toggleSideNav) {
         toggleSideNav();
+      }
     }
   };
   // this function creates the links and collapses that appear in the sidebar (left menu)
@@ -97,7 +109,6 @@ function Sidebar({ toggleSideNav, sideNavOpen, routes, logo, rtlActive }: Sideba
         return (
           <NavItem key={key}>
             <NavLink
-              href="#pablo"
               data-toggle="collapse"
               aria-expanded={state[prop.state]}
               className={classnames({
@@ -110,8 +121,8 @@ function Sidebar({ toggleSideNav, sideNavOpen, routes, logo, rtlActive }: Sideba
             >
               {prop.icon ? (
                 <>
-                  <Image className="image-Color" src={prop?.icon} width={18} height={18} />
-                  <span className="nav-link-text ml-3">{prop.name}</span>
+                  <i className={prop.icon} />
+                  <span className="nav-link-text">{prop.name}</span>
                 </>
               ) : prop.miniName ? (
                 <>
@@ -133,23 +144,20 @@ function Sidebar({ toggleSideNav, sideNavOpen, routes, logo, rtlActive }: Sideba
           <NavLink
             to={prop.layout + prop.path}
             activeClassName=""
-            onClick={() => {
-              closeSidenav()
-              if (prop.name === 'View as Member') {
-                dispatch(settingSideNavRemove(true))
-              }
-            }}
+            onClick={closeSidenav}
             tag={NavLinkRRD}
           >
             {prop.icon !== undefined ? (
-              <>
-                <Image className="image-Color" src={prop?.icon} width={18} height={18} />
-                <span className="nav-link-text ml-3">{prop.name}</span>
-              </>
+              <React.Fragment>
+                <div className={'d-flex align-items-center justify-content-center'}>
+                  <Image src={prop.icon} height={15} width={15} />
+                  <span className="nav-link-text m-0 p-0 ml-3">{prop.name}</span>
+                </div>
+              </React.Fragment>
             ) : prop.miniName !== undefined ? (
               <>
                 <span className="sidenav-mini-icon"> {prop.miniName} </span>
-                <span className="sidenav-normal"> {prop.name} </span>
+                <span className="sidenav-normal bg-red"> {prop.name} </span>
               </>
             ) : (
               prop.name
@@ -175,23 +183,19 @@ function Sidebar({ toggleSideNav, sideNavOpen, routes, logo, rtlActive }: Sideba
   const scrollBarInner = (
     <div className="scrollbar-inner">
       <div className="sidenav-header d-flex align-items-center">
-        {logo ? (
-          <NavbarBrand {...navbarBrandProps}>
-            <div className="row">
-              <Image
-                alt={logo.imgAlt}
-                className="navbar-brand-img rounded-circle "
-                src={icons.logoIcon}
-                height={33}
-                width={33}
+        <NavbarBrand {...navbarBrandProps}>
+          <Image
+            alt={'side-nav-log'}
+            className={"navbar-brand-img"}
+            src={icons.logoIcon}
+            height={40}
+            width={40}
+            style={{
+              objectFit: 'contain'
+            }}
+          />
+        </NavbarBrand>
 
-
-              />
-              {/* <div className="ml-2 text-sm mt-2">{user_details?.name}</div> */}
-
-            </div>
-          </NavbarBrand>
-        ) : null}
         <div className="ml-auto">
           <div
             className={classnames("sidenav-toggler d-none d-xl-block", {
@@ -212,29 +216,14 @@ function Sidebar({ toggleSideNav, sideNavOpen, routes, logo, rtlActive }: Sideba
           <Nav navbar>{createLinks(routes)}</Nav>
         </Collapse>
       </div>
-
-      {/* <div className="sidenav-header d-flex align-items-center ">
-        {logo && (
-          <NavbarBrand {...navbarBrandProps}>
-            <img
-              alt={logo.imgAlt}
-              className="navbar-brand-img fixed-bottom ml-3 mb-4"
-              src={logo.imgSrc}
-            />
-          </NavbarBrand>
-        )}
-      </div> */}
-
-
     </div>
   );
   return (
     <Navbar
       className={
-        "sidenav navbar-vertical navbar-expand-xs navbar-light " +
+        "sidenav navbar-vertical navbar-expand-xs navbar-light bg-white " +
         (rtlActive ? "" : "fixed-left")
       }
-      style={{ backgroundColor: '#f5f5f5' }}
       onMouseEnter={onMouseEnterSidenav}
       onMouseLeave={onMouseLeaveSidenav}
     >
@@ -244,10 +233,7 @@ function Sidebar({ toggleSideNav, sideNavOpen, routes, logo, rtlActive }: Sideba
         scrollBarInner
       )}
     </Navbar>
+
   );
 }
-
-
-
-
 export { Sidebar };

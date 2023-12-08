@@ -11,7 +11,7 @@ import {
 } from "@Utils";
 import './index.css'
 
-function DetectFace({ onClick, heading, experience, duration, loading }) {
+function DetectFace({ onClick, heading, experience, duration, loading, callValidating }) {
 
 
 
@@ -41,6 +41,10 @@ function DetectFace({ onClick, heading, experience, duration, loading }) {
     const micPermissionModal = useModal(false);
     const [showDetecting, setShowDetecting] = useState<any>(false)
     // const [showCanvas, setShowCanvas] = useState(false)
+
+
+  
+    
 
     async function createFaceLandmarker() {
         try {
@@ -131,7 +135,12 @@ function DetectFace({ onClick, heading, experience, duration, loading }) {
 
             // Load face landMark model
             if (video) {
-                createFaceLandmarker();
+                console.log(callValidating, "callValidating");
+                
+                if(!callValidating){
+                     createFaceLandmarker();
+
+                }
             }
         });
     }

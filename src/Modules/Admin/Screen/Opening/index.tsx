@@ -1,31 +1,29 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
 import {
-  Button,
+  Checkbox,
+  DateTimePicker,
   DesignationItem,
   DropDown,
+  Duration,
   Input,
-  InputHeading,
   Modal,
   NoDataFound,
   PageNation,
   ReactAutoComplete,
   Spinner,
   TextArea,
-  showToast,
-  Checkbox,
-  DateTimePicker,
-  Duration
+  showToast
 } from "@Components";
 import {
   useDropDown,
   useInput,
-  useLoader,
-  useNavigation,
   useKeyPress,
+  useLoader,
   useModal,
+  useNavigation,
 } from "@Hooks";
-import { OpeningEmpty, AdminTopNavbar } from "@Modules";
+import { AdminTopNavbar, OpeningEmpty } from "@Modules";
 import {
   addDepartmentCorporate,
   addSectorCorporate,
@@ -45,22 +43,18 @@ import {
   PLACEHOLDER_ROLES,
   STATUS_LIST,
   capitalizeLetter,
-  displayFormatDate,
-  getDisplayTime,
   getDropDownCompanyDisplayData,
   getValidateError,
   ifObjectExist,
   paginationHandler,
-  validate,
+  validate
 } from "@Utils";
+import moment from "moment";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./index.css";
-import moment from "moment";
 
 function Opening() {
-
-
   const {
     sectorsCorporate,
     departmentCorporate,
@@ -70,14 +64,13 @@ function Opening() {
     corporateScheduleCurrentPages,
   } = useSelector((state: any) => state.DashboardReducer);
 
-  const DEFAULT_DATE = moment().add(9, 'day').format('MMM D YYYY')
-  const DEFAULT_TIME = moment().set({ hour: 23, minute: 59, second: 0 }).format('LT')
-
-
+  const DEFAULT_DATE = moment().add(9, "day").format("MMM D YYYY");
+  const DEFAULT_TIME = moment()
+    .set({ hour: 23, minute: 59, second: 0 })
+    .format("LT");
 
   const { dashboardDetails } = useSelector((state: any) => state.AuthReducer);
-  const { is_department_admin } = dashboardDetails?.rights || {}
-
+  const { is_department_admin } = dashboardDetails?.rights || {};
 
   const { goTo } = useNavigation();
   const dispatch = useDispatch();
@@ -110,17 +103,16 @@ function Opening() {
   const referenceId = useInput("");
 
   const [isPositionSearch, setIsPositionSearch] = useState(false);
-  const [videoRecordMandatory, setVideoRecordMandatory] = useState(true)
+  const [videoRecordMandatory, setVideoRecordMandatory] = useState(true);
 
   const [scheduleEndDate, setScheduleEndDate] = useState<any>(DEFAULT_DATE);
   const [scheduleEndTime, setScheduleEndTime] = useState<any>(DEFAULT_TIME);
 
-  const [corporateScheduleCounts, setCorporateScheduleCount] = useState(corporateScheduleCount)
-  
+
 
   const formatDeadline = (date: string, time: string) => {
-    const formattedDate = moment(date, 'MMM D YYYY').format('YYYY-MM-DD');
-    const formattedTime = moment(time, 'LT').format('HH:mm:ss');
+    const formattedDate = moment(date, "MMM D YYYY").format("YYYY-MM-DD");
+    const formattedTime = moment(time, "LT").format("HH:mm:ss");
     return `${formattedDate}T${formattedTime}`;
   };
 
@@ -204,10 +196,10 @@ function Opening() {
       experience: parseInt(experience.value?.id),
       jd: jd.value,
       reference_id: referenceId.value,
-      vacancies: vacancies?.value > 0 ? vacancies?.value : '',
+      vacancies: vacancies?.value > 0 ? vacancies?.value : "",
       interview_duration: duration?.value,
       video_recording_mandatory: videoRecordMandatory,
-      deadline: formatDeadline(scheduleEndDate, scheduleEndTime)
+      deadline: formatDeadline(scheduleEndDate, scheduleEndTime),
     };
 
     const validation = validate(CREATE_CORPORATE_SCHEDULE_RULES, params);
@@ -236,7 +228,6 @@ function Opening() {
   };
 
   function resetValues() {
-
     createOpeningModal.hide();
 
     position.set("");
@@ -252,7 +243,6 @@ function Opening() {
 
     setScheduleEndDate(DEFAULT_DATE);
     setScheduleEndTime(DEFAULT_TIME);
-
   }
 
   const getCorporateScheduleApiHandler = (page_number: number) => {
@@ -282,7 +272,6 @@ function Opening() {
         params,
         onSuccess: () => () => {
           listLoader.hide();
-          setIsPositionSearch(false);
         },
         onError: () => () => {
           listLoader.hide();
@@ -291,131 +280,130 @@ function Opening() {
     );
   };
 
-
-
-
   function viewMoreDetailsHandler(status: boolean, index: number) {
     const updateData = [...corporateSchedules];
     updateData[index] = { ...updateData[index], is_view_more: status };
     dispatch(updateCorporateSchedules(updateData));
   }
 
-
-
-
   return (
-    <div className={'screen'}>
+    <div className={"screen"}>
       <AdminTopNavbar
-        showCreateOpening={corporateScheduleCounts > 0}
+        showCreateOpening={corporateScheduleCount > 0}
         onCreateOpeningClick={createOpeningModal.show}
       />
-    
-      {corporateScheduleCounts <= 0 ? <OpeningEmpty onCreateOpeningClick={createOpeningModal.show} />
-      : (
-        <div className={"screen-container"}>
-          <div className="row">
-            <div className="col-sm-3">
-              <Input
-                id={'search'}
-                heading={"Search"}
-                type={"text"}
-                placeHolder={"Job Title, Reference No..."}
-                value={positionSearch?.value}
-                onChange={positionSearch.onChange}
-                onFocus={() => setIsPositionSearch(true)}
-                onBlur={() => setIsPositionSearch(false)}
-              />
-            </div>
-            <div className="col-sm-3">
-              <DropDown
-                id={"status"}
-                heading={"Status"}
-                data={STATUS_LIST}
-                selected={status.value}
-                onChange={status.onChange}
-              />
-            </div>
 
-            {!is_department_admin && (
+      {corporateScheduleCount <= 0 ? <OpeningEmpty onCreateOpeningClick={createOpeningModal.show} />
+        : (
+          <div className={"screen-container-other"}>
+            <div className="row">
               <div className="col-sm-3">
-                {departmentCorporate && departmentCorporate.length > 0 && (
+                <Input
+                  id={'search'}
+                  heading={"Search"}
+                  type={"text"}
+                  placeHolder={"Job Title, Reference No..."}
+                  value={positionSearch?.value}
+                  onChange={positionSearch.onChange}
+                  onFocus={() => setIsPositionSearch(true)}
+                  onBlur={() => setIsPositionSearch(false)}
+                />
+              </div>
+              <div className="col-sm-3">
+                <DropDown
+                  id={"status"}
+                  heading={"Status"}
+                  data={STATUS_LIST}
+                  selected={status.value}
+                  onChange={status.onChange}
+                />
+              </div>
+
+              {!is_department_admin && (
+                <div className="col-sm-3">
+                  {departmentCorporate && departmentCorporate.length > 0 && (
+                    <DropDown
+                      id={"department"}
+                      heading={"Department"}
+                      data={[
+                        DEFAULT_VALUE,
+                        ...getDropDownCompanyDisplayData(departmentCorporate),
+                      ]}
+                      selected={filterDepartment.value}
+                      onChange={filterDepartment.onChange}
+                    />
+                  )}
+                </div>
+              )}
+
+              <div className="col-sm-3">
+                {sectorsCorporate && sectorsCorporate.length > 0 && (
                   <DropDown
-                    id={"department"}
-                    heading={"Department"}
+                    id={"sector"}
+                    heading={"Sector"}
                     data={[
                       DEFAULT_VALUE,
-                      ...getDropDownCompanyDisplayData(departmentCorporate),
+                      ...getDropDownCompanyDisplayData(sectorsCorporate),
                     ]}
-                    selected={filterDepartment.value}
-                    onChange={filterDepartment.onChange}
+                    selected={filterSector.value}
+                    onChange={filterSector.onChange}
                   />
                 )}
               </div>
-            )}
 
-            <div className="col-sm-3">
-              {sectorsCorporate && sectorsCorporate.length > 0 && (
-                <DropDown
-                  id={"sector"}
-                  heading={"Sector"}
-                  data={[
-                    DEFAULT_VALUE,
-                    ...getDropDownCompanyDisplayData(sectorsCorporate),
-                  ]}
-                  selected={filterSector.value}
-                  onChange={filterSector.onChange}
-                />
-              )}
+              <div></div>
+            </div>
+            {
+              listLoader.loader && (
+                <div className={"loader-container"}>
+                  <Spinner />
+                </div>
+              )
+            }
+
+            <div>
+              {
+                corporateSchedules && corporateSchedules.length > 0 && (
+                  corporateSchedules.map((item: any, index: number) => {
+                    return (
+                      <div
+                        className={
+                          index === 0
+                            ? "schedule-container-top"
+                            : "schedule-container"
+                        }
+                      >
+                        <DesignationItem
+                          key={index}
+                          item={item}
+                          onViewMore={(status) =>
+                            viewMoreDetailsHandler(status, index)
+                          }
+                          onViewDetails={() => {
+                            dispatch(setSelectedRole(item));
+                            goTo(ROUTES["designation-module"]["opening-detail"]);
+                          }}
+                        />
+                      </div>
+                    );
+                  })
+                )
+              }
             </div>
 
-            <div></div>
-          </div>
-          {
-        listLoader.loader && (
-          <div className={"loader-container"}>
-            <Spinner />
-          </div>
-        )
-      }
-
-          <div>
             {
-              corporateSchedules && corporateSchedules.length > 0 ? (
-                corporateSchedules.map((item: any, index: number) => {
-                  return (
-                    <div
-                      className={
-                        index === 0
-                          ? "schedule-container-top"
-                          : "schedule-container"
-                      }
-                    >
-                      <DesignationItem
-                        key={index}
-                        item={item}
-                        onViewMore={(status) =>
-                          viewMoreDetailsHandler(status, index)
-                        }
-                        onViewDetails={() => {
-                          dispatch(setSelectedRole(item));
-                          goTo(ROUTES["designation-module"]["opening-detail"]);
-                        }}
-                      />
-                    </div>
-                  );
-                })
-              ) : (
-                <div className={"no-data-container"}>
-                  <NoDataFound />
-                </div>
-              )}
-          </div>
-          {corporateScheduleNumOfPages > 1 && (
+              !listLoader.loader && corporateSchedules?.length <= 0 &&
+              <div className={"no-data-container"}>
+                <NoDataFound />
+              </div>
+            }
+
+
             <div className="mt-3">
               <PageNation
                 currentPage={corporateScheduleCurrentPages}
                 noOfPage={corporateScheduleNumOfPages}
-                isPagination={corporateScheduleNumOfPages}
+                isPagination={corporateScheduleNumOfPages > 1}
                 paginationNumberClick={(currentPage) => {
                   getCorporateScheduleApiHandler(
                     paginationHandler("current", currentPage)
@@ -433,9 +421,9 @@ function Opening() {
                 }}
               />
             </div>
-          )}
-        </div>
-      )}
+          </div>
+        )
+      }
 
       <Modal
         loading={createOpeningLoader.loader}
@@ -559,9 +547,8 @@ function Opening() {
             />
           </div>
         </div>
-
       </Modal>
-    </div>
+    </div >
   );
 }
 

@@ -9,7 +9,9 @@ const initialState: SuperAdminProps = {
   recentInterviews: [],
   recentInterviewsNumOfPages: undefined,
   recentInterviewsCurrentPages: 1,
-  selectedCompany: undefined
+  selectedCompany: undefined,
+  onGoingSchedules: [],
+  selectedOngoingSchedule: undefined
 };
 
 const SuperAdminReducer = (state = initialState, action: any) => {
@@ -71,11 +73,42 @@ const SuperAdminReducer = (state = initialState, action: any) => {
       state = { ...state, recentInterviews: undefined };
       break;
 
+    /**
+     * get ongoing schedules
+     */
 
+
+    case ActionTypes.FETCH_ONGOING_SCHEDULES:
+      state = {
+        ...state,
+      };
+      break;
+    case ActionTypes.FETCH_ONGOING_SCHEDULES_SUCCESS:
+      state = {
+        ...state,
+        onGoingSchedules: action.payload?.details?.ongoing_schedules,
+      };
+      break;
+    case ActionTypes.FETCH_ONGOING_SCHEDULES_FAILURE:
+      state = { ...state, onGoingSchedules: undefined };
+      break;
+
+    /**
+     * selected ongoing schedules
+     */
+
+    case ActionTypes.SET_SELECTED_ONGOING_SCHEDULE:
+      state = {
+        ...state,
+        selectedOngoingSchedule: action.payload
+      };
+      break;
 
     /**
      * get slelectd company
      */
+
+
 
     case ActionTypes.SELECTED_COMPANY:
       state = { ...state, selectedCompany: action.payload };

@@ -190,7 +190,7 @@ function ScheduleLiteItem({
               <Button
                 outline
                 block
-                text={'Try Another'}
+                text={'Add Candidate'}
                 onClick={() => {
                   if (onTryAnother) {
                     onTryAnother();

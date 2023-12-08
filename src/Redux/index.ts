@@ -2,7 +2,7 @@ export * from './App';
 export * from './Dashboard'
 export * from './Auth'
 export * from './SuperAdmin'
-export *from './Admin'
+export * from './Admin'
 
 
 
