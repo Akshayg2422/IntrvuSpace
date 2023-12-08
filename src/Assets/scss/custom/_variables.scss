@@ -769,9 +769,12 @@ $navbar-dark-active-bg: rgba(255, 255, 255, .1) !default;
 $navbar-dark-border-color: rgba(255, 255, 255, .1) !default;
 $navbar-dark-color: rgba($white, .95) !default;
 $navbar-dark-hover-color: rgba($white, .65) !default;
+
 $navbar-dark-active-color: rgba($white, .65) !default;
 $navbar-dark-disabled-color: rgba($white, .25) !default;
 $navbar-dark-toggler-border-color: transparent !default;
+
+
 
 $navbar-light-bg: $gray-100 !default;
 $navbar-light-hover-bg: darken($gray-100, 5%) !default;

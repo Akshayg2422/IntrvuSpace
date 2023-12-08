@@ -1,0 +1,23 @@
+.basic-info-container {
+    margin-bottom: 20px;
+}
+
+.questions-info-container {
+    margin-top: 50px;
+    margin-bottom: 25px;
+}
+
+.section-card-container {
+    height: auto;
+    display: flex;
+    padding: 25px 30px;
+    flex-direction: column;
+}
+
+.interview-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 25px;
+    width: 100%;
+    align-items: center;
+}

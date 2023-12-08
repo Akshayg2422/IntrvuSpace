@@ -227,5 +227,9 @@ export const icons = {
   greenTick: require('./GreenTick/icon.png'),
   wrong: require('./Wrong/icon.png'),
   downArrowSecondary: require('./DownArrowSecondary/icon.png'),
-  noInternet: require('./NoInternet/icon.png')
+  noInternet: require('./NoInternet/icon.png'),
+  recentInterview: require('./RecentInterview/icon.png'),
+  ongoingInterview: require('./OngoingInterview/icon.png'),
+
+
 };

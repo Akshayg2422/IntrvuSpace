@@ -18,6 +18,7 @@ import "react-perfect-scrollbar/dist/css/styles.css";
 import "select2/dist/css/select2.min.css";
 import "sweetalert2/dist/sweetalert2.min.css";
 import './App.css';
+
 import { TYPE_CORPORATE, TYPE_JOB_SEEKER, TYPE_SUPER_ADMIN } from "./Utils";
 
 
@@ -79,6 +80,7 @@ function App() {
 
   return (
     <ScreenWrapper>
+
       <Routes>
         <Route path="/" element={<Splash />} />
         {getRoutes(AUTH_ROUTES, AUTH)}
@@ -87,6 +89,7 @@ function App() {
         <Route path={"*"} element={<PageNotFound />} />
       </Routes>
       <ToastContainer />
+
     </ScreenWrapper >
 
   );

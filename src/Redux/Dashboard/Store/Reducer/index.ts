@@ -7,7 +7,6 @@ import {
 
 import { DashboardProp } from "../../Interfaces";
 import * as ActionTypes from "../ActionTypes";
-import { ifObjectKeyExist } from "@Utils";
 
 const initialState: DashboardProp = {
   userLoggedIn: false,
@@ -34,9 +33,9 @@ const initialState: DashboardProp = {
   recordingPermission: false,
   jdVariantData: undefined,
   jdItem: undefined,
-  jdItemNumOfPages:undefined,
-  jdItemCurrentPages:1,
-  jdItemCount:undefined,
+  jdItemNumOfPages: undefined,
+  jdItemCurrentPages: 1,
+  jdItemCount: undefined,
   scheduleInfo: undefined,
   selectedSection: 0,
   corporateScheduleDetails: undefined,
@@ -368,22 +367,24 @@ const DashboardReducer = (state = initialState, action: any) => {
      * get jd item list
      */
     case ActionTypes.GET_JD_ITEM_LIST:
-      state = { ...state,
-        jdItem:[],
-        jdItemNumOfPages:0,
-        jdItemCurrentPages:1
-        
-       };
+      state = {
+        ...state,
+        jdItem: [],
+        jdItemNumOfPages: 0,
+        jdItemCurrentPages: 1
+
+      };
       break;
     case ActionTypes.GET_JD_ITEM_LIST_SUCCESS:
-      const {jd_items}=action?.payload?.details
-      state = { ...state, 
-        jdItem: jd_items?.data?jd_items?.data:jd_items,
+      const { jd_items } = action?.payload?.details
+      state = {
+        ...state,
+        jdItem: jd_items?.data ? jd_items?.data : jd_items,
         jdItemNumOfPages: jd_items?.num_pages,
         jdItemCurrentPages:
-        jd_items?.next_page === -1
-          ? jd_items?.num_pages
-          :jd_items?.next_page - 1,
+          jd_items?.next_page === -1
+            ? jd_items?.num_pages
+            : jd_items?.next_page - 1,
       };
       break;
     case ActionTypes.GET_JD_ITEM_LIST_FAILURE:
@@ -394,7 +395,7 @@ const DashboardReducer = (state = initialState, action: any) => {
       state = { ...state, jdItem: action.payload };
       break;
 
-      /// neww 
+    /// neww 
 
     case ActionTypes.GET_SCHEDULE_BASIC_INFO:
       state = { ...state, scheduleInfo: undefined };
@@ -692,7 +693,7 @@ const DashboardReducer = (state = initialState, action: any) => {
     // createScheduleSuperAdmin
 
     case ActionTypes.GET_INTERVIEW_SCHEDULE_DETAILS:
-      state = { ...state, interviewScheduleDetails: undefined };
+      state = { ...state };
       break;
     case ActionTypes.GET_INTERVIEW_SCHEDULE_DETAILS_SUCCESS:
       state = { ...state, interviewScheduleDetails: action.payload };
@@ -794,23 +795,7 @@ createScheduleSuperAdmin
       };
       break;
 
-    ///onGoing schedule
 
-    case ActionTypes.FETCH_ONGOING_SCHEDULES:
-      state = {
-        ...state,
-        onGoingScheduleMessage: undefined,
-      };
-      break;
-    case ActionTypes.FETCH_ONGOING_SCHEDULES_SUCCESS:
-      state = {
-        ...state,
-        onGoingScheduleMessage: action.payload?.details,
-      };
-      break;
-    case ActionTypes.FETCH_ONGOING_SCHEDULES_FAILURE:
-      state = { ...state, onGoingScheduleMessage: undefined };
-      break;
 
     //ongoing selected id
     case ActionTypes.ON_GOING_SELECTED_ID:

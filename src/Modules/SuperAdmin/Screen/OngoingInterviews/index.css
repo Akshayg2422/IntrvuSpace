@@ -1,0 +1,21 @@
+.ongoing-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    padding: 25px 6%;
+}
+
+.d-row {
+    display: flex;
+    flex: 1;
+    overflow: scroll;
+}
+
+.d-col {
+    flex: 1;
+    overflow: scroll;
+}
+
+.d-col+.d-col {
+    margin-left: 20px;
+}

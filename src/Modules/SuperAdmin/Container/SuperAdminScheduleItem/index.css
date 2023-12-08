@@ -1,0 +1,91 @@
+.view-details-btn {
+  width: 215px;
+}
+
+.status-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 5px;
+}
+
+.status-active {
+  color: var(--secondary);
+  font-size: 14px;
+  margin-left: 5px;
+  font-weight: 600;
+}
+
+.status-closed {
+  color: var(--description);
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.experience {
+  margin-top: 5px;
+  color: var(--secondary);
+  font-size: 16px;
+  font-weight: 400;
+}
+
+
+.details-title {
+  color: var(--secondary);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.details-desc {
+  color: var(--secondary);
+  font-size: 14px;
+  font-weight: 400;
+  margin-left: 5px;
+}
+
+.details-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.details-container-space {
+  margin-left: 26px;
+}
+
+.details-wrapper {
+  margin-top: 15px;
+}
+
+.jd-container {
+  margin-top: 15px;
+}
+
+.section-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+
+.schedule-item-container {
+  margin-top: 40px;
+}
+
+
+@media (max-width: 768px) {
+
+  .section-container {
+    display: flex;
+    flex-direction: column;
+
+  }
+
+  .view-details-btn {
+    margin-top: 15px;
+    width: 100%;
+  }
+
+  .details-container-space {
+    margin-left: 10px;
+  }
+}

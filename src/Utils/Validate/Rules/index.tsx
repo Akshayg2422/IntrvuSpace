@@ -86,7 +86,7 @@ export const getRegisterRules = (isPasswordRequired: boolean = true) => ({
   ...FIRST_NAME_RULES,
   ...EMAIL_RULES,
   ...MOBILE_NUMBER_RULES,
-  ...(isPasswordRequired ? PASSWORD : {})
+  ...(!isPasswordRequired ? PASSWORD : {})
 })
 
 
@@ -366,7 +366,7 @@ export const CREATE_CORPORATE_SCHEDULE_LITE_RULES = {
   vacancies: {
     presence: { allowEmpty: false, message: "vacancies minimum 1 cannot be empty" },
   },
-  ...VALIDATE_ADD_NEW_CANDIDATES_RULES
+  // ...VALIDATE_ADD_NEW_CANDIDATES_RULES
 }
 
 export const CREATE_CORPORATE_VACANCIES_RULES = {

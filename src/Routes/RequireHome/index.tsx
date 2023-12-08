@@ -22,9 +22,9 @@ export const RequireHome = ({ children }: RequireHomeProps) => {
     }
 
     return (
-        <ScreenWrapper>
+        <React.Fragment>
             {children}
-        </ScreenWrapper>
+        </React.Fragment>
     )
 }
 

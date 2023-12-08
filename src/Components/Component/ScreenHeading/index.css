@@ -1,6 +1,7 @@
 .heading-wrapper {
     display: flex;
     flex-direction: row;
+    margin-bottom: 30px;
 }
 
 .back-btn-container {

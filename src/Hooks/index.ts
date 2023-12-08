@@ -16,6 +16,8 @@ export * from './useWhisperTranscription'
 export * from './useGrowingTitleLine'
 export * from './useScreenRecorder'
 export * from './useOnlineStatus'
+export * from './useSideNav'
+
 
 
 

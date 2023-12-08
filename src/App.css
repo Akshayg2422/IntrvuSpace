@@ -90,6 +90,7 @@ input[type=number] {
     left: 8%;
 }
 
+
 .screen {
     min-height: 100dvh;
     width: 100%;
@@ -115,8 +116,7 @@ input[type=number] {
 }
 
 .screen-container {
-    margin-top: 50px;
-    padding: 4% 7%;
+    padding: 10px 6%;
 }
 
 
@@ -193,27 +193,11 @@ input[type=number] {
 
 
 .btn-wrapper {
-    width: 215px;
+    width: 200px;
 }
 
 .no-data-container {
     width: 100%;
     justify-content: center;
     align-items: center;
-}
-
-.image-container {
-    display: flex;
-    background-color: #FAFBFF;
-    justify-content: center;
-    align-items: center;
-    width: 45px;
-    height: 45px;
-    border-radius: 30px;
-
-}
-
-.image-container .place-holder {
-    width: 20px;
-    height: 20px;
 }
