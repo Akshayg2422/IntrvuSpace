@@ -67,17 +67,19 @@ function Settings() {
         </div>
       </div>
 
-      <div className={'setting-container pr-4 '}>
+      <div className={'setting-container'}>
         <div
-          className={'card-container-no-padding setting-container-item col-6'}
+          className={'card-container-no-padding setting-container-item'}
           onClick={() => {
             gotoScreen(CANDIDATES)
           }}>
           <div className={'setting-heading'}>{'Candidates'}</div>
         </div>
+        <div className='setting-container-item' style={{
+          width: '100%'
+        }}>
 
-
-
+        </div>
       </div>
 
     </div>
