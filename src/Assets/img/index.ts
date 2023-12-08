@@ -64,6 +64,7 @@ export const image = {
     StreamlinedInterviewAndInsights: require('./theme/StreamlinedInterviewAndInsights.png'),
     passportImage: require('./theme/passportImage.jpg'),
     noVideo: require('./theme/noVideo.png'),
-    StreamlinedAutomatedInterview: require('./theme/StreamlinedAutomatedInterview.png')
+    StreamlinedAutomatedInterview: require('./theme/StreamlinedAutomatedInterview.png'),
+    intrvuSpaceIv:require('./theme/intrvuSpaceIv.png')
 
 }

@@ -12,11 +12,9 @@ import {
 
 function WebsiteFooter() {
   return (
-    <>
-      <footer className="pb-3 pt-3 mt-7 bg-container-dark" id="footer-main">
-        <section>
-          <div>
-            <div className="container mb-md--3">
+      <footer className="container-fluid pb-3  mt-7 bg-container-dark" id="footer-main">
+        <section className="m-6 pt-4">
+            <div className="mb-md--3">
               <div className="row">
                 <div className="col-lg-4 d-flex justify-content-start">
                   <div className="">
@@ -26,7 +24,11 @@ function WebsiteFooter() {
                       </NavbarBrand>
                       <p
                         className="text-secondary mt-1 mb-3 d-flex justify-content-start"
-                        style={{ fontSize: "15px", fontWeight: 400 }}
+                        style={{
+                          fontSize: "15px",
+                          fontWeight: 400,
+                          lineHeight: "1.6",
+                        }}
                       >
                         intrvu SPACE is your dedicated companion in the pursuit
                         of interview success. Prepare effectively, outshine the
@@ -56,7 +58,7 @@ function WebsiteFooter() {
                         </a>
                       </div>
                       <div>
-                        <span>Contact Us</span>
+                        <a className="link-text">Contact Us</a>
                       </div>
                     </p>
                   </div>
@@ -66,12 +68,12 @@ function WebsiteFooter() {
                     <h3 className="font-weight-800 text-secondary">LEGAL</h3>
                     <p
                       className="text-secondary"
-                      style={{ fontSize: "15px", fontWeight: 400 }}
+                      style={{ fontSize: "15px", fontWeight: 400, }}
                     >
                       <div>
                         <a
                           className="text-secondary text-decoration-underline-hover"
-                          // onClick={() => goTo(ROUTES["auth-module"].privacy)}
+                        // onClick={() => goTo(ROUTES["auth-module"].privacy)}
                         >
                           Privacy Policy
                         </a>
@@ -80,7 +82,7 @@ function WebsiteFooter() {
                         <a
                           className="text-secondary text-decoration-underline-hover"
                           onClick={
-                            () => {}
+                            () => { }
                             // goTo(ROUTES["auth-module"].TermsAndConditions)
                           }
                         >
@@ -123,7 +125,6 @@ function WebsiteFooter() {
                 </div>
               </div>
             </div>
-          </div>
         </section>
 
         <hr className="mx-lg-6 mx-md-4 mx-3"></hr>
@@ -153,7 +154,6 @@ function WebsiteFooter() {
           </div>
         </Container>
       </footer>
-    </>
   );
 }
 

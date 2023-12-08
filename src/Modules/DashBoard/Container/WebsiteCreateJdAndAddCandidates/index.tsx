@@ -10,9 +10,9 @@ const packageContent = [
 
 function WebsiteCreateJdAndAddCandidates() {
     return (
-        <div className={`pt-sm-6`}>
-            <Container>
-                <div className="mb-6">
+        <div className={`container-fluid`}>
+      <div className="m-6">
+                <div className="mb-6 ">
                     <Row>
                         <Col lg="5">
                             <div className="mt-5">
@@ -54,7 +54,7 @@ function WebsiteCreateJdAndAddCandidates() {
                         </Col>
                     </Row>
                 </div>
-            </Container>
+            </div>
         </div>
     )
 }
