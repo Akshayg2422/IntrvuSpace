@@ -244,7 +244,7 @@ function SuperAdminSchedules() {
 
   function resetValues() {
     position.set("");
-    experience.set("");
+    experience.set(EXPERIENCE_LIST[0]);
     jd.set("");
     sector.set("");
   }
@@ -388,7 +388,7 @@ function SuperAdminSchedules() {
     mobileNumber.set("");
     sectorForOthers.set("");
     positionForOthers.set("");
-    experienceForOthers.set("");
+    experienceForOthers.set(EXPERIENCE_LIST[0]);
     jdForOthers.set("");
     setNotifyInterview(false);
     setNotifyReport(false);
@@ -584,7 +584,9 @@ function SuperAdminSchedules() {
       <Modal
         title={"Create Interview"}
         isOpen={createInterviewModal.visible}
-        onClose={createInterviewModal.hide}
+        onClose={()=>{createInterviewModal.hide()
+          resetValues()
+        }}
         onClick={submitJdApiHandler}
       >
         <div className={"row"}>
@@ -701,7 +703,11 @@ function SuperAdminSchedules() {
       <Modal
         title={"Create Interview for Others"}
         isOpen={createInterviewForOthers.visible}
-        onClose={createInterviewForOthers.hide}
+        onClose={()=>{createInterviewForOthers.hide()
+
+          createForOthersResetValues()
+        }}
+        
         onClick={createForOthersApiHandler}
       >
         <div className={"row"}>
@@ -853,7 +859,10 @@ function SuperAdminSchedules() {
       <Modal
         title={"Create Interview for Others"}
         isOpen={addAnotherModal.visible}
-        onClose={addAnotherModal.hide}
+        onClose={()=>{
+          addAnotherModal.hide()
+          resetAddAnotherValues()
+        }}
         buttonText={'Submit'}
         onClick={createNewJdScheduleApiHandler}
       >
