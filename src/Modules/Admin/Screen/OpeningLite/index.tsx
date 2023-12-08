@@ -533,7 +533,7 @@ function OpeningLite() {
 
             <Modal
                 loading={addLoader.loader}
-                title={"Create Interview"}
+                title={"Add Candidate"}
                 isOpen={addCandidateModal.visible}
                 onClose={resetCandidatesValues}
                 onClick={addCandidateCorporateLiteApiHandler}

@@ -201,9 +201,9 @@ const NAME_RULES = {
 
 export const ADD_SECTOR_CORPORATE_RULES = {
   ...NAME_RULES,
-  description: {
-    presence: { allowEmpty: false, message: 'Description cannot be empty' },
-  },
+  // description: {
+  //   presence: { allowEmpty: false, message: 'Description cannot be empty' },
+  // },
 }
 
 

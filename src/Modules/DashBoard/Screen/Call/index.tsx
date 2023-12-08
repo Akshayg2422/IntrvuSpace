@@ -264,6 +264,9 @@ function Call() {
 
   const openBrowserNotSupportedModal = useModal(false);
 
+
+  const [callvalidating, setcallValidating] = useState(false)
+
   {
     /** interview recording useEffect */
   }
@@ -855,6 +858,8 @@ function Call() {
   };
 
   function canStartInterviewCheckHandler() {
+
+    setcallValidating(true)
     const { can_start_interview, is_video_recording_manditory } = scheduleInfo;
 
     if (
@@ -1194,6 +1199,7 @@ function Call() {
                 loading={startInterviewLoader.loader}
                 heading={scheduleInfo?.interviewee_expected_designation}
                 onClick={canStartInterviewCheckHandler}
+                callValidating = {callvalidating}
               />
             ) : (
               <></>

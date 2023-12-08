@@ -53,14 +53,12 @@ import {
   paginationHandler,
   validate,
 } from "@Utils";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./index.css";
 import moment from "moment";
 
 function Opening() {
-
-
   const {
     sectorsCorporate,
     departmentCorporate,
@@ -70,14 +68,13 @@ function Opening() {
     corporateScheduleCurrentPages,
   } = useSelector((state: any) => state.DashboardReducer);
 
-  const DEFAULT_DATE = moment().add(9, 'day').format('MMM D YYYY')
-  const DEFAULT_TIME = moment().set({ hour: 23, minute: 59, second: 0 }).format('LT')
-
-
+  const DEFAULT_DATE = moment().add(9, "day").format("MMM D YYYY");
+  const DEFAULT_TIME = moment()
+    .set({ hour: 23, minute: 59, second: 0 })
+    .format("LT");
 
   const { dashboardDetails } = useSelector((state: any) => state.AuthReducer);
-  const { is_department_admin } = dashboardDetails?.rights || {}
-
+  const { is_department_admin } = dashboardDetails?.rights || {};
 
   const { goTo } = useNavigation();
   const dispatch = useDispatch();
@@ -110,7 +107,7 @@ function Opening() {
   const referenceId = useInput("");
 
   const [isPositionSearch, setIsPositionSearch] = useState(false);
-  const [videoRecordMandatory, setVideoRecordMandatory] = useState(true)
+  const [videoRecordMandatory, setVideoRecordMandatory] = useState(true);
 
   const [scheduleEndDate, setScheduleEndDate] = useState<any>(DEFAULT_DATE);
   const [scheduleEndTime, setScheduleEndTime] = useState<any>(DEFAULT_TIME);
@@ -119,8 +116,8 @@ function Opening() {
 
 
   const formatDeadline = (date: string, time: string) => {
-    const formattedDate = moment(date, 'MMM D YYYY').format('YYYY-MM-DD');
-    const formattedTime = moment(time, 'LT').format('HH:mm:ss');
+    const formattedDate = moment(date, "MMM D YYYY").format("YYYY-MM-DD");
+    const formattedTime = moment(time, "LT").format("HH:mm:ss");
     return `${formattedDate}T${formattedTime}`;
   };
 
@@ -204,10 +201,10 @@ function Opening() {
       experience: parseInt(experience.value?.id),
       jd: jd.value,
       reference_id: referenceId.value,
-      vacancies: vacancies?.value > 0 ? vacancies?.value : '',
+      vacancies: vacancies?.value > 0 ? vacancies?.value : "",
       interview_duration: duration?.value,
       video_recording_mandatory: videoRecordMandatory,
-      deadline: formatDeadline(scheduleEndDate, scheduleEndTime)
+      deadline: formatDeadline(scheduleEndDate, scheduleEndTime),
     };
 
     const validation = validate(CREATE_CORPORATE_SCHEDULE_RULES, params);
@@ -236,7 +233,6 @@ function Opening() {
   };
 
   function resetValues() {
-
     createOpeningModal.hide();
 
     position.set("");
@@ -252,7 +248,6 @@ function Opening() {
 
     setScheduleEndDate(DEFAULT_DATE);
     setScheduleEndTime(DEFAULT_TIME);
-
   }
 
   const getCorporateScheduleApiHandler = (page_number: number) => {
@@ -282,7 +277,6 @@ function Opening() {
         params,
         onSuccess: () => () => {
           listLoader.hide();
-          setIsPositionSearch(false);
         },
         onError: () => () => {
           listLoader.hide();
@@ -291,20 +285,14 @@ function Opening() {
     );
   };
 
-
-
-
   function viewMoreDetailsHandler(status: boolean, index: number) {
     const updateData = [...corporateSchedules];
     updateData[index] = { ...updateData[index], is_view_more: status };
     dispatch(updateCorporateSchedules(updateData));
   }
 
-
-
-
   return (
-    <div className={'screen'}>
+    <div className={"screen"}>
       <AdminTopNavbar
         showCreateOpening={corporateScheduleCounts > 0}
         onCreateOpeningClick={createOpeningModal.show}
@@ -564,7 +552,6 @@ function Opening() {
             />
           </div>
         </div>
-
       </Modal>
     </div >
   );
