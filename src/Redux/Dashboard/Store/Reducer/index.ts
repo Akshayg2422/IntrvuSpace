@@ -702,17 +702,7 @@ const DashboardReducer = (state = initialState, action: any) => {
       state = { ...state, interviewScheduleDetails: undefined };
       break;
 
-    /**createScheduleSuperAdmin
-createScheduleSuperAdmin
-*/
 
-    case ActionTypes.GET_INTERVIEW_SCHEDULE_DETAILS_FAILURE:
-      state = {
-        ...state,
-        interviewScheduleDetails: undefined,
-        interviewUserScheduleDetails: undefined,
-      };
-      break;
     // resetPassword
 
     case ActionTypes.RESET_PASSWORD:

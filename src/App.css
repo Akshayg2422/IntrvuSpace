@@ -119,6 +119,10 @@ input[type=number] {
     padding: 10px 6%;
 }
 
+.screen-container-other {
+    margin-top: 50px;
+    padding: 4% 6%;
+}
 
 .card-container {
     width: 100%;

@@ -71,8 +71,6 @@ function EmailVerification() {
             otp: otp?.value
 
         }
-
-
         const validation = validate(EMAIL_VERIFICATION_RULES, params)
 
         if (ifObjectExist(validation)) {

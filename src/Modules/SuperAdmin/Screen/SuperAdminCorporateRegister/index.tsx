@@ -41,8 +41,6 @@ function SuperAdminCorporateRegister() {
 
     async function prefillCompanyDetails() {
 
-        console.log(JSON.stringify(selectedCompany));
-
 
         const {
             interview_limit = '',

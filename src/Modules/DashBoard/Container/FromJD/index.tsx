@@ -326,7 +326,7 @@ function FromJD() {
 
       {
         !loading.loader && jdItem?.length > 0 &&
-        <div className={'screen-container'}>
+        <div className={'screen-container-other'}>
           {
             jdItem.map((item: any, index: number) => {
               return (
