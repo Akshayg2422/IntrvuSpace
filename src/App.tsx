@@ -64,7 +64,7 @@ function App() {
           element={type === AUTH ?
             <RequireHome>{prop.component}</RequireHome>
             :
-            <RequireAuth>
+            <RequireAuth hideSideNac={prop?.hide_side_nav}>
               {prop.component}
             </RequireAuth>
           }
