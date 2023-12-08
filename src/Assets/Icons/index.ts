@@ -230,6 +230,7 @@ export const icons = {
   noInternet: require('./NoInternet/icon.png'),
   recentInterview: require('./RecentInterview/icon.png'),
   ongoingInterview: require('./OngoingInterview/icon.png'),
-
-
+  padlockIcon: require('./PadlockIcon/Lock.png'),
+  cameraAccess: require('./CameraAccess/Video Call.png'),
+  microPhoneAccess: require('./MicrophoneAccess/Microphone.png'),
 };

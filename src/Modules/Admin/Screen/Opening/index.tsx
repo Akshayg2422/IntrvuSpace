@@ -112,8 +112,6 @@ function Opening() {
   const [scheduleEndDate, setScheduleEndDate] = useState<any>(DEFAULT_DATE);
   const [scheduleEndTime, setScheduleEndTime] = useState<any>(DEFAULT_TIME);
 
-  const [corporateScheduleCounts, setCorporateScheduleCount] = useState(corporateScheduleCount)
-
 
   const formatDeadline = (date: string, time: string) => {
     const formattedDate = moment(date, "MMM D YYYY").format("YYYY-MM-DD");
@@ -290,15 +288,17 @@ function Opening() {
     updateData[index] = { ...updateData[index], is_view_more: status };
     dispatch(updateCorporateSchedules(updateData));
   }
+  console.log(corporateScheduleCount, "corporateScheduleCount");
+  
 
   return (
     <div className={"screen"}>
       <AdminTopNavbar
-        showCreateOpening={corporateScheduleCounts > 0}
+        showCreateOpening={corporateScheduleCount > 0}
         onCreateOpeningClick={createOpeningModal.show}
       />
 
-      {corporateScheduleCounts <= 0 ? <OpeningEmpty onCreateOpeningClick={createOpeningModal.show} />
+      {corporateScheduleCount <= 0 ? <OpeningEmpty onCreateOpeningClick={createOpeningModal.show} />
         : (
           <div className={"screen-container"}>
             <div className="row">

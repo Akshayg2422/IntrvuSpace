@@ -628,7 +628,7 @@ const DashboardReducer = (state = initialState, action: any) => {
         corporateSchedules: [],
         corporateScheduleNumOfPages: 0,
         corporateScheduleCurrentPages: 1,
-        corporateScheduleCount: undefined,
+        // corporateScheduleCount: undefined,
       };
       break;
     case ActionTypes.GET_CORPORATE_SCHEDULES_SUCCESS:
@@ -652,7 +652,7 @@ const DashboardReducer = (state = initialState, action: any) => {
       state = {
         ...state,
         corporateSchedules: [],
-        corporateScheduleCount: undefined,
+        // corporateScheduleCount: undefined,
       };
       break;
 
