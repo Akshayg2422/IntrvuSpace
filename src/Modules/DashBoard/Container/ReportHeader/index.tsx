@@ -72,8 +72,8 @@ const ReportHeader = ({ details }: ReportHeaderProps) => {
                                         objectFit: 'contain'
                                     }} />
                                     <span className='ml-1'>
-                                        {city && city !== '-' ? <span className={'screen-des'}>{city}</span> : <></>}
-                                        {region && region !== '-' ? <span className={'screen-des'}>, {region}</span> : <></>}
+                                        {/* {city && city !== '-' ? <span className={'screen-des'}>{city}</span> : <></>} */}
+                                        {region && region !== '-' ? <span className={'screen-des'}> {region}</span> : <></>}
                                         {country && country !== '-' ? <span className={'screen-des'}>, {getCountryName(country)}</span> : <></>}
                                     </span>
                                 </div>
