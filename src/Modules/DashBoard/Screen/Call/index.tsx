@@ -271,6 +271,8 @@ function Call() {
 
   const [callvalidating, setcallValidating] = useState(false);
 
+  const [isWebCamOff, setIsWebcamOff] = useState(false)
+
   {
     /** interview recording useEffect */
   }
@@ -891,13 +893,15 @@ function Call() {
 
     startInterviewLoader.show();
     const hasCamPermission = await hasCameraPermission();
-    if (hasCamPermission) {
+    if (hasCamPermission || !is_video_recording_manditory) {
       camPermissionModal.hide();
 
       const hasMicPermission = await hasMicrophonePermission();
       if (hasMicPermission) {
         micPermissionModal.hide();
-
+        if(!hasCamPermission){
+        setIsWebcamOff(true)
+      }
         if (!recordStatus && is_video_recording_manditory) {
           await startScreenRecording();
         } else if (recordStatus || !is_video_recording_manditory) {
@@ -1069,6 +1073,7 @@ function Call() {
                           show={interviewer_state === IV_PROCESSING}
                           name={getShortName(scheduleInfo?.interviewer_name)}
                           shouldBlink={interviewer_state === IV_SPEAKING}
+                          isWebCamOff = {true}
                         />
                         <h3 className="display-3 mb-4 text-primary mt-3">
                           {capitalizeFirstLetter(
@@ -1083,6 +1088,7 @@ function Call() {
                           showWebCam={showCam}
                           name={getShortName(scheduleInfo?.interviewee_name)}
                           shouldBlink={interviewee_state === IE_SPEAKING}
+                          isWebCamOff = {isWebCamOff}
                         />
                         <h3 className="display-3 mb-4 text-primary mt-3">
                           {capitalizeFirstLetter(
@@ -1096,12 +1102,12 @@ function Call() {
                         <CallHeader
                           webcam={
                             scheduleInfo?.is_video_recording_manditory
-                              ? true
+                              ? true : isWebCamOff ? false
                               : showCam
                           }
                           mic={!mute}
                           onWebCamChange={() => {
-                            if (!scheduleInfo?.is_video_recording_manditory) {
+                            if (!scheduleInfo?.is_video_recording_manditory && !isWebCamOff) {
                               webCamHandler();
                             }
                           }}
@@ -1161,6 +1167,7 @@ function Call() {
                                 scheduleInfo?.interviewee_name
                               )}
                               shouldBlink={interviewee_state === IE_SPEAKING}
+                              isWebCamOff ={isWebCamOff}
                             />
                             <h3 className="display-3 mb-4  mt-3 text-center">
                               {capitalizeFirstLetter(
@@ -1185,6 +1192,7 @@ function Call() {
                                   scheduleInfo?.interviewer_name
                                 )}
                                 shouldBlink={interviewer_state === IV_SPEAKING}
+                                isWebCamOff={true}
                               />
                               <h3 className="font-weight-600 mt-2 text-primary">
                                 {" "}

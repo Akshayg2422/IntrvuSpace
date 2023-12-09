@@ -10,11 +10,11 @@ import {
     hasMicrophonePermission,
 } from "@Utils";
 import './index.css'
+import { error } from 'console';
 
-function DetectFace1({ onClick, heading, experience, duration, loading }) {
+function DetectFace({ onClick, heading, experience, duration, loading, callValidating }) {
 
 
-    let deviceWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
 
     const videoRef = useRef<any>(null)
 
@@ -22,7 +22,7 @@ function DetectFace1({ onClick, heading, experience, duration, loading }) {
     let runningMode = "IMAGE";
 
     const webcamRunningRef = useRef<any>()
-    const videoWidth = deviceWidth / 2;
+    const videoWidth = 600;
     const faceDetected = useRef<any>(null)
     const canvasRef = useRef<any>(null)
     const audioContext = useRef<any>(null)
@@ -42,9 +42,11 @@ function DetectFace1({ onClick, heading, experience, duration, loading }) {
     const micPermissionModal = useModal(false);
     const [showDetecting, setShowDetecting] = useState<any>(false)
     // const [showCanvas, setShowCanvas] = useState(false)
+    const [permissionShow, setPermissionShow] = useState(false)
 
 
   
+    
 
     async function createFaceLandmarker() {
         try {
@@ -78,20 +80,13 @@ function DetectFace1({ onClick, heading, experience, duration, loading }) {
     let canvasCtx
     let drawingUtils
 
-    let hitCount = 0
+
     useEffect(() => {
-
-        if (hitCount === 0) {
             checkMicAndCameraPermission()
-            console.log('hit');
-            hitCount = hitCount + 1
-        }
-        console.log(hitCount, "hitCount");
-
-
     }, [])
     // checking camera and mic permission
     async function checkMicAndCameraPermission() {
+        setPermissionShow(true)
         const hasCamPermission = await hasCameraPermission();
         if (hasCamPermission) {
             camPermissionModal.hide();
@@ -100,14 +95,16 @@ function DetectFace1({ onClick, heading, experience, duration, loading }) {
             if (hasMicPermission) {
                 micPermissionModal.hide();
                 // detectFaceModal.show()
+                setPermissionShow(false)
                 setShowDetecting(true)
                 enableCam()
             } else {
                 micPermissionModal.show();
+                setShowDetecting('permissionNotGranted')
             }
         } else {
             camPermissionModal.show();
-
+            setShowDetecting('permissionNotGranted')
         }
     }
 
@@ -134,9 +131,17 @@ function DetectFace1({ onClick, heading, experience, duration, loading }) {
 
             // Load face landMark model
             if (video) {
-                createFaceLandmarker();
+                console.log(callValidating, "callValidating");
+                
+                if(!callValidating){
+                     createFaceLandmarker();
+
+                }
             }
-        });
+        }).catch((error)=>{
+            console.log(error);
+            
+        })
     }
 
     function detectingHandler() {
@@ -293,45 +298,6 @@ function DetectFace1({ onClick, heading, experience, duration, loading }) {
 
         const canvasWidth = ctx.canvas.width;
         const canvasHeight = ctx.canvas.height;
-        const barWidth = canvasWidth / bufferLength;
-
-        // const gradient = ctx.createLinearGradient(0, 100, 250, 0);
-
-        // // Add three color stops
-        // gradient.addColorStop(0, "#641df2");
-        // gradient.addColorStop(0.5, "#641df2");
-        // gradient.addColorStop(1, "#641df2");
-
-        // const draw = () => {
-
-        //     analyser.getByteFrequencyData(dataArray);
-        //     console.log(dataArray,"dataArray",bufferLength);
-
-
-
-        //     // Clear the canvas
-        //     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-        //     let add = 0
-        //     for (let i = 0; i < bufferLength; i++) {
-        //         add = add + dataArray[i];
-        //         const barHeight = dataArray[i];
-
-        //         // Use linear scaling
-        //         const scaledHeight = (barHeight / 255) * canvasHeight;
-
-        //         // Draw the bar
-        //         ctx.fillStyle = gradient;
-        //         ctx.fillRect(i * barWidth, canvasHeight - scaledHeight, barWidth, scaledHeight);
-        //     }
-        //     array.push(Math.round(add / bufferLength))
-        //     // console.log(add / bufferLength, 'addd');
-
-        //     if (audioStreamRunningRef.current) {
-        //         requestAnimationFrame(draw);
-        //     }
-        // };
-
-        // draw();
         const drawWaveform = () => {
 
             analyser.getByteFrequencyData(dataArray);
@@ -393,10 +359,10 @@ function DetectFace1({ onClick, heading, experience, duration, loading }) {
             if (array.length > 0) {
                 const sum = array.reduce((accumulator: number, currentValue: number) => accumulator + currentValue);
                 average = sum / array.length;
-                const micDisableSum = array.slice(array.length-10, array.length).reduce((accumulator: number, currentValue: number) => accumulator + currentValue);
+                const micDisableSum = array.slice(array.length - 10, array.length).reduce((accumulator: number, currentValue: number) => accumulator + currentValue);
                 MicDisableAverage = micDisableSum / 10
                 // console.log(micDisableSum,"micDisableSum");
-                
+
 
             }
             console.log(array, "average");
@@ -420,7 +386,7 @@ function DetectFace1({ onClick, heading, experience, duration, loading }) {
             else {
                 count = count + 1
                 setMicCheck(false)
-               
+
             }
 
             if (average < 30) {
@@ -429,7 +395,7 @@ function DetectFace1({ onClick, heading, experience, duration, loading }) {
                 console.log("average", average, 2)
                 array = []
             }
-          
+
             else {
                 console.log("average", average, 3)
                 setNoiseDetection(false)
@@ -450,7 +416,7 @@ function DetectFace1({ onClick, heading, experience, duration, loading }) {
     }
 
     const stopStream = () => {
-      
+        console.log(45);
         setNoiseDetection('Checking')
         setFaceFound('Checking')
         setMicCheck('Checking')
@@ -464,7 +430,7 @@ function DetectFace1({ onClick, heading, experience, duration, loading }) {
         }
 
         audioStreamRunningRef.current = false
-     
+        console.log(audioContext.current, 'js');
 
         // if (noiseDetection) {
         //     audioContext.current.close();
@@ -484,8 +450,8 @@ function DetectFace1({ onClick, heading, experience, duration, loading }) {
                 <div className='screen-back'>
                     <Back variant='override' onClick={stopStream} />
                 </div>
-
-                <div className={'text-secondary  mb-md-4 m-0 p-0'}>
+                <div>
+                <div className={'text-secondary col-md-9 mb-md-4 m-0 p-0'}>
                     <span className="screen-heading m-0 p-0 lh-120">{`Interview for the role of ${heading}`}<span className={'text-secondary text-des ml-2'}>{experience}</span></span>
                     <div
                         className='text-secondary text-des font-weight-700 mt-2'>
@@ -493,6 +459,29 @@ function DetectFace1({ onClick, heading, experience, duration, loading }) {
                         <span className={'font-weight-400 ml-1'}>{'Duration'}</span>
                     </div>
                 </div>
+                {
+                    permissionShow &&
+
+                <div className='text-secondary mt-4'>
+                    <h2 className='text-secondary'>
+                        Grant Permission :
+                    </h2>
+                    <p className="mt-3 font-weight-500 "><Image className='mb-1 mr-1' src={icons.check} height={8} width={8} style={{
+                                        objectFit: 'contain'
+                                    }} /> Grant webcam <Image className='mx-1' src={icons.cameraAccess} height={20} width={20} style={{
+                                            objectFit: 'contain'
+                                        }} /> access.</p>
+                    <p className="mt-3 font-weight-500"><Image  className='mb-1 mr-1' src={icons.check} height={8} width={8} style={{
+                                        objectFit: 'contain'
+                                    }} /> Grant microphone<Image className='mx-1' src={icons.microPhoneAccess} height={20} width={20} style={{
+                                            objectFit: 'contain'
+                                        }}/>access.</p>
+
+                </div>
+                }
+
+                </div>
+
                 {/* <Modal isOpen={detectFaceModal.visible}
                 onClose={() => {
                     detectFaceModal.hide()
@@ -509,10 +498,10 @@ function DetectFace1({ onClick, heading, experience, duration, loading }) {
                 title={'Validating face and noise'}
                 size='xl'> */}
 
-                {showDetecting && <div className='d-lg-flex text-secondary'>
-                    <div className='col-lg-7 col-12' style={{ position: 'relative'}}>
-                        <video id="webcam" ref={videoRef} autoPlay playsInline disablePictureInPicture style={{ position: 'absolute', left: 0, top: 0, width: "100%", height: "auto" }}></video>
-                        {!proceed && <><canvas id="output_canvas"  style={{ position: 'absolute', left: '0px', top: '0px' }}></canvas>
+                {showDetecting === true ? <div className='d-lg-flex text-secondary'>
+                    <div className='col-lg-7 col-12' style={{ position: 'relative', width: "600px", height: "450px" }}>
+                        <video id="webcam" ref={videoRef} autoPlay playsInline disablePictureInPicture height={450} width={600} style={{ position: 'absolute', left: '0px', top: '0px', bottom: "0px", right: '0px', }}></video>
+                        {!proceed && <><canvas id="output_canvas" height={450} width={600} style={{ position: 'absolute', left: '0px', top: '0px', bottom: "0px", right: '0px', }}></canvas>
                             <canvas ref={canvasRef} width={600} height={100} style={{ position: 'absolute', left: '0px', bottom: "0px", right: '0px' }} /></>}
                     </div>
                     <div className=' col-lg-5 col-12 position-relative'>
@@ -536,10 +525,10 @@ function DetectFace1({ onClick, heading, experience, duration, loading }) {
 
                                 {
                                     micCheck === 'Checking' ? <div className='d-flex align-items-center'> <Spinner color='secondary' className={'d-inline-block  '} /> <span className='mt-1 ml-3'>Validating audio input</span></div> :
-                                        micCheck  ?
+                                        micCheck ?
                                             <div className='mt-3 d-flex align-items-center'> <Image src={icons.wrong} height={20} width={12} style={{
                                                 objectFit: 'contain'
-                                            }} /> <span className='ml-3'> Audio input ia not clear</span></div>
+                                            }} /> <span className='ml-3'> Audio input is not clear</span></div>
 
                                             : <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.greenTick} height={12} width={12} style={{
                                                 objectFit: 'contain'
@@ -550,7 +539,7 @@ function DetectFace1({ onClick, heading, experience, duration, loading }) {
                             <div className='mt-2'>
 
                                 {
-                                    noiseDetection === 'Checking' ? <div className='d-flex align-items-center'> <Spinner color='secondary' className={'d-inline-block  '} /> <span className='mt-1 ml-3'>Checking ambience sound stability</span></div> :
+                                    noiseDetection === 'Checking' ? <div className='d-flex align-items-center'> <Spinner color='secondary' className={'d-inline-block  '} /> <span className='mt-1 ml-3'>Validating ambience sound stability</span></div> :
                                         noiseDetection === true ?
                                             <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.greenTick} height={12} width={12} style={{
                                                 objectFit: 'contain'
@@ -564,42 +553,46 @@ function DetectFace1({ onClick, heading, experience, duration, loading }) {
                             </div>
                             {
                                 proceed && <div className='text-secondary'>
-                                     <h2 className='mt-4 text-secondary '>Expected criteria's are met ! </h2>
-                                    <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.check} height={12} width={12} style={{
+                                    <h2 className='mt-4 text-secondary '>Expected criteria's are met! </h2>
+                                    <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.check} height={8} width={8} style={{
                                         objectFit: 'contain'
                                     }} />
                                         <span className='mb-0 ml-3  text-secondary '>Attend from a quiet and secluded space</span>
                                     </div>
-                                    <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.check} height={12} width={12} style={{
+                                    <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.check} height={8} width={8} style={{
                                         objectFit: 'contain'
                                     }} />
                                         <span className='mb-0 ml-3  text-secondary '>Verify the stability of your internet connection</span>
                                     </div>
-                                    <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.check} height={12} width={12} style={{
+                                    <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.check} height={8} width={8} style={{
                                         objectFit: 'contain'
                                     }} />
                                         <span className='mb-0 ml-3  text-secondary '>Keep the video function enabled throughout the session</span>
                                     </div>
                                 </div>}
 
+                            {
+                                !proceed && !faceFound || !noiseDetection || micCheck === true ? <h2 className='mt-4 text-secondary '>Expected criteria's are not met! </h2> : <></>
+                            }
+
                             {!faceFound && <div className='mt-4 text-secondary'>
-                                <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.frame} height={12} width={12} style={{
+                                <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.frame} height={8} width={8} style={{
                                     objectFit: 'contain'
-                                }} />  <span className='mb-0 ml-2  text-secondary '>We can't detect your face, please show your face clearly</span>
+                                }} />  <span className='mb-0 ml-3  text-secondary '>We can't detect your face, please show your face clearly</span>
                                 </div>
                             </div>
                             }
-                         {micCheck === true && <div className='mt-4 text-secondary'>
-                                <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.frame} height={12} width={12} style={{
+                            {micCheck === true && <div className='mt-4 text-secondary'>
+                                <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.frame} height={8} width={8} style={{
                                     objectFit: 'contain'
-                                }} />  <span className='mb-0 ml-2  text-secondary '>Please check your mic and try again</span>
+                                }} />  <span className='mb-0 ml-3  text-secondary '>Please check your mic and try again</span>
                                 </div>
                             </div>
                             }
                             {!noiseDetection && <div className='mt-4 text-secondary'>
-                                <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.frame} height={12} width={12} style={{
+                                <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.frame} height={8} width={8} style={{
                                     objectFit: 'contain'
-                                }} /><span className='mb-0 ml-2  text-secondary '>You are in noisy surrounding, please be there in silent room</span>
+                                }} /><span className='mb-0 ml-3  text-secondary '>You are in noisy surrounding, please be there in silent room</span>
                                 </div></div>}
 
                         </div>
@@ -610,7 +603,7 @@ function DetectFace1({ onClick, heading, experience, duration, loading }) {
                                     faceFound === 'Checking' && noiseDetection === 'Checking' ? <></> :
                                         <div className={"btn-wrapper"}>{
                                             proceed ? <Button
-                                            loading = {loading}
+                                                loading={loading}
                                                 block
                                                 text={'Join now'} className={'m-0'} onClick={() => {
                                                     onClick()
@@ -630,7 +623,26 @@ function DetectFace1({ onClick, heading, experience, duration, loading }) {
                         </div>
                     </div>
 
-                </div>
+                </div> : showDetecting === 'permissionNotGranted' ? <div className='mt-4 text-secondary'>
+                    <h2 className="text-secondary">
+                        These are general guidelines for enabling webcam and microphone permissions:
+                    </h2>
+                    <h3 className='text-secondary mt-4'>For Web Browsers :</h3>
+                    <p className="mt-3 font-weight-500">{"1. Open your web Browser."}</p>
+                    <p className="mt-3 font-weight-500">
+                        {"2. Go to the website or web application where you want to use the webcam or microphone."}</p>
+                    <p className="mt-3 font-weight-500">
+                        3. Click on the padlock icon <Image className=' mb-1 mx-1' src={icons.padlockIcon} height={18} width={18} style={{
+                                            objectFit: 'contain'
+                                        }}/> or <Image className=' mb-1 mx-1' src={icons.padlockIcon2} height={24} width={24} style={{
+                                            objectFit: 'contain'
+                                        }}/> in the address bar.</p>
+                    <p className="mt-3 font-weight-500">
+                        {"4. In the dropdown menu, locate 'Camera' or 'Microphone' and set it to 'Allow'."}</p>
+                    <p className="mt-3 font-weight-500">
+                        {"5. Reload the page and try again."}</p>
+
+                </div> : <></>
 
                 }
 
@@ -649,12 +661,12 @@ function DetectFace1({ onClick, heading, experience, duration, loading }) {
                 buttonText='Close'
                 onClick={() => {
                     micPermissionModal.hide();
-                    
+
                 }}
             >
                 <div>
                     <h3 className="text-secondary font-weight-500">
-                        To continue, grant microphone access:
+                        To continue, Grant microphone permission:
                     </h3>
                     <p className="mb-0">{"1. Check browser settings."}</p>
                     <p className="mb-0">
@@ -665,7 +677,7 @@ function DetectFace1({ onClick, heading, experience, duration, loading }) {
                         >{`(${getOperatingSystem()})`}</span>
                     </p>
                 </div>
-               
+
             </Modal>
             {/**
        * Camera permission modal
@@ -675,19 +687,19 @@ function DetectFace1({ onClick, heading, experience, duration, loading }) {
                 isOpen={camPermissionModal.visible}
                 onClose={() => {
                     camPermissionModal.hide();
-                //    goBack()
+                    //    goBack()
                 }}
                 title={"Camera Access Required"}
-               
+
                 buttonText="Close"
                 onClick={() => {
                     camPermissionModal.hide();
-                    
+
                 }}
             >
                 <div>
                     <h3 className="text-secondary font-weight-500">
-                        To continue, grant camera access:
+                        To continue, Grant Webcam Permission:
                     </h3>
                     <p className="mb-0">{"1. Check browser settings."}</p>
                     <p className="mb-0">
@@ -703,4 +715,4 @@ function DetectFace1({ onClick, heading, experience, duration, loading }) {
     );
 };
 
-export default DetectFace1;
+export default DetectFace;
