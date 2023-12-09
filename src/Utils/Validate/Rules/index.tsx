@@ -56,7 +56,7 @@ export const CREATE_QUESTION_FORM_RULES = {
     length: { minimum: 3, message: "Name minimum 3 chars" },
   },
   description: {
-    presence: { allowEmpty: false, message: "description cannot be empty" },
+    presence: { allowEmpty: false, message: "Description cannot be empty" },
   }
 };
 
@@ -101,7 +101,7 @@ export const getRegisterRules = (isPasswordRequired: boolean = true) => (
 
 export const REGISTER_COMPANY_RULES = {
   brand_name: {
-    presence: { allowEmpty: false, message: "company Name cannot be empty" },
+    presence: { allowEmpty: false, message: "Company Name cannot be empty" },
   },
   ...ADDRESS,
   ...MOBILE_NUMBER_RULES,
@@ -115,7 +115,7 @@ export const REGISTER_COMPANY_RULES = {
 
 export const REGISTER_COMPANY_SUPER_ADMIN_RULES = {
   brand_name: {
-    presence: { allowEmpty: false, message: "company name cannot be empty" },
+    presence: { allowEmpty: false, message: "Company Name cannot be empty" },
   },
   ...ADDRESS,
   ...MOBILE_NUMBER_RULES,
