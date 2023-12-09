@@ -109,7 +109,6 @@ function Opening() {
   const [scheduleEndTime, setScheduleEndTime] = useState<any>(DEFAULT_TIME);
 
 
-
   const formatDeadline = (date: string, time: string) => {
     const formattedDate = moment(date, "MMM D YYYY").format("YYYY-MM-DD");
     const formattedTime = moment(time, "LT").format("HH:mm:ss");
@@ -285,6 +284,8 @@ function Opening() {
     updateData[index] = { ...updateData[index], is_view_more: status };
     dispatch(updateCorporateSchedules(updateData));
   }
+  console.log(corporateScheduleCount, "corporateScheduleCount");
+  
 
   return (
     <div className={"screen"}>
