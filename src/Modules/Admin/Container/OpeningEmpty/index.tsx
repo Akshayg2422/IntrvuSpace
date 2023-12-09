@@ -1,5 +1,5 @@
 import { image } from '@Assets';
-import { CreateNew } from '@Modules';
+import { CreateNewOpenings } from '@Modules';
 import './index.css';
 import { OpeningEmptyProps } from './interface';
 
@@ -7,17 +7,16 @@ function OpeningEmpty({ onCreateOpeningClick }: OpeningEmptyProps) {
 
 
     const INSIGHTS_AND_REPORTS = [
-        { id: 1, description: "Multiple Candidates", description2: "for single JD" },
-        { id: 2, description: "Flexible Interview", description2: "timings with deadline" },
-        { id: 3, description: "Interview Video Recordings" },
-        { id: 4, description: "Objective", description2: "Reports on Interview" },
-        { id: 5, description: "Auto Approval", description2: "System" },
+        { id: 1, description: "Input job details specifying qualifications and requirements" },
+        { id: 2, description: "Select Interview duration for how long the interview needs to be conducted" },
+        { id: 3, description: "Choose the deadline before which the candidate should attend the interview" },
+        { id: 4, description: "Add the candidates with their name, email and phone number" },
     ];
 
     return (
-        <CreateNew
+        <CreateNewOpenings
             image={image.StreamlinedAutomatedInterview}
-            title={`Streamlined \n Interviews & Insights`}
+            title={'Streamlined Automated Interviews'}
             description={'Get access to interview video recordings and detailed curated reports on Candidates for watch interview'}
             keyPoints={INSIGHTS_AND_REPORTS}
             buttonText={'Create Opening'}
