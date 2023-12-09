@@ -6,14 +6,20 @@ import {
   Image,
   Modal,
   Spinner,
-  StatusIcon
+  StatusIcon,
 } from "@Components";
 import { useLoader, useModal, useNavigation, useScreenRecorder } from "@Hooks";
-import { CallHeader, CallHeaderMobile, Guidelines, Report } from "@Modules";
+import {
+  CallHeader,
+  CallHeaderMobile,
+  ContactHrModal,
+  Guidelines,
+  Report,
+} from "@Modules";
 import {
   canStartInterview,
   closeInterview,
-  getScheduleBasicInfo
+  getScheduleBasicInfo,
 } from "@Redux";
 import { CALL_WEBSOCKET } from "@Services";
 import { color } from "@Themes";
@@ -25,7 +31,7 @@ import {
   getOperatingSystem,
   getShortName,
   hasCameraPermission,
-  hasMicrophonePermission
+  hasMicrophonePermission,
 } from "@Utils";
 import type { Harker } from "hark";
 import type { Encoder } from "lamejs";
@@ -176,7 +182,7 @@ function Call() {
       setIsTtfSpeaking(false);
     };
 
-    audioElementRef.current.onloadstart = function () { };
+    audioElementRef.current.onloadstart = function () {};
     audioElementRef.current.onended = function () {
       setIsTtfSpeaking(false);
       if (closeCall.current === true) {
@@ -254,7 +260,6 @@ function Call() {
     setIsScreenRecordingReady,
   } = useScreenRecorder(handleRecordingStatusChange);
 
-
   const [isConfirmRecordingModalOpen, setIsConfirmRecordingModalOpen] =
     useState(false);
   const [isCancelRecording, setIsCancelRecording] = useState(false);
@@ -264,8 +269,7 @@ function Call() {
 
   const openBrowserNotSupportedModal = useModal(false);
 
-
-  const [callvalidating, setcallValidating] = useState(false)
+  const [callvalidating, setcallValidating] = useState(false);
 
   {
     /** interview recording useEffect */
@@ -355,7 +359,7 @@ function Call() {
           canConnect.current = false;
           socketRef.current.close();
           socketRef.current = null;
-        } catch (e) { }
+        } catch (e) {}
         clearInterval(reconnectInterval);
       }
     };
@@ -852,14 +856,13 @@ function Call() {
           stopInterval();
           startInterviewLoader.hide();
         },
-        onError: (error: any) => () => { },
+        onError: (error: any) => () => {},
       })
     );
   };
 
   function canStartInterviewCheckHandler() {
-
-    setcallValidating(true)
+    setcallValidating(true);
     const { can_start_interview, is_video_recording_manditory } = scheduleInfo;
 
     if (
@@ -896,10 +899,8 @@ function Call() {
         micPermissionModal.hide();
 
         if (!recordStatus && is_video_recording_manditory) {
-
           await startScreenRecording();
-        }
-        else if (recordStatus || !is_video_recording_manditory) {
+        } else if (recordStatus || !is_video_recording_manditory) {
           initiateSocket();
 
           proceedOpenCallView.current = true;
@@ -934,7 +935,7 @@ function Call() {
         onSuccess: () => () => {
           endInterviewHandler();
         },
-        onError: () => () => { },
+        onError: () => () => {},
       })
     );
   }
@@ -1004,6 +1005,32 @@ function Call() {
     setIsCancelRecording(false);
     startScreenRecording();
     startInterviewLoader.hide();
+  };
+
+  /**
+   * network error title based on status code handler
+   */
+
+  const getNetworkErrorResponseTitle = (status_code: number) => {
+    switch (status_code) {
+      case 1:
+        return "Opening Closed";
+
+      case 2:
+        return "Can't Participate";
+
+      case 3:
+        return "Server full";
+
+      case 4:
+        return "Can't Participate";
+
+      case 5:
+        return "Can't Participate";
+
+      default:
+        return "Something went wrong!";
+    }
   };
 
   return (
@@ -1199,12 +1226,21 @@ function Call() {
                 loading={startInterviewLoader.loader}
                 heading={scheduleInfo?.interviewee_expected_designation}
                 onClick={canStartInterviewCheckHandler}
-                callValidating = {callvalidating}
+                callValidating={callvalidating}
               />
             ) : (
               <></>
             )}
-            {scheduleInfo?.is_report_complete && <Report />}
+            {scheduleInfo?.is_report_complete &&
+            scheduleInfo?.is_super_admin_variant ? (
+              <Report />
+            ) : (
+              <ContactHrModal
+                onClick={() => {
+                  getBasicInfo();
+                }}
+              />
+            )}
           </>
         )}
         {loader.loader && (
@@ -1247,7 +1283,7 @@ function Call() {
             {"2. Enable microphone access in system settings. "}
             <span
               className="pointer text-primary font-weight-700"
-            // onClick={gotoPermissionSetting}
+              // onClick={gotoPermissionSetting}
             >{`(${getOperatingSystem()})`}</span>
           </p>
         </div>
@@ -1316,16 +1352,8 @@ function Call() {
 
       <Modal
         isOpen={interviewLimitModal.visible}
-        title={
-          networkErrorResponse?.status_code === 3
-            ? "Server Full"
-            : "Network Error"
-        }
-        subTitle={
-          networkErrorResponse?.status_code === 3
-            ? networkErrorResponse?.error_message
-            : "Technical breakdown please try again"
-        }
+        title={getNetworkErrorResponseTitle(networkErrorResponse?.status_code)}
+        subTitle={networkErrorResponse?.error_message}
         buttonText="Try Again"
         onClick={() => {
           interviewLimitModal.hide();
@@ -1378,7 +1406,7 @@ function Call() {
             return (
               <div key={id}>
                 <div className="d-flex align-items-center">
-                  <StatusIcon variant={'frame'} />
+                  <StatusIcon variant={"frame"} />
                   <div className="ml-2">{text}</div>
                 </div>
               </div>

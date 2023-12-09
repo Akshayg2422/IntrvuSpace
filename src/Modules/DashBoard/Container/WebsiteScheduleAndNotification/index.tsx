@@ -3,17 +3,17 @@ import { Col, Container, Row } from 'reactstrap';
 import { Image, StatusIcon } from '@Components'
 
 const packageContent = [
-    { id: 1, description: "Interview invite link will be sent over email and text message to the candidate" },
-    { id: 2, description: "Each added candidate will face the distinct questions but completely aligning to the JD expectations" },
-    { id: 3, description: "Candidates can complete their interview at their convenient time before the deadline" },
-    { id: 4, description: "Candidate can join with the provided lnk without authenticating or registering to the system" },
+    { id: 1, description: "Interview will be created for the specified duration" },
+    { id: 2, description: "Candidates will be notified email and text message with the interview link" },
+    { id: 3, description: "Each added candidate will face the distinct auto generated questions from one another" },
+    { id: 4, description: "Candidates can participate in their interview at any time of their comfort before the deadline" },
 ];
 
 function WebsiteScheduleAndNotification() {
     return (
 
-        <Container>
-            <div className="mb-md-6">
+      <div className="container-fluid">
+            <div className="m-6 mb-md-6">
                 <Row>
                     <Col lg="7" sm="12">
                         <div className={'mt-md-5 d-flex justify-content-center'}>
@@ -29,7 +29,7 @@ function WebsiteScheduleAndNotification() {
                         <div className="mt-5">
                             <div>
                                 <span style={{ lineHeight: '35px' }} className="display-3 text-secondary font-weight-bolder mb-0 ls-1">
-                                    Schedule & Notification
+                                Automated Schedules
                                 </span>
                             </div>
 
@@ -55,7 +55,7 @@ function WebsiteScheduleAndNotification() {
                     </Col>
                 </Row>
             </div>
-        </Container>
+        </div>
 
     )
 }

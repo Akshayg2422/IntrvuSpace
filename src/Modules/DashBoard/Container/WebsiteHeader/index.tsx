@@ -1,8 +1,9 @@
-import { icons, image } from "@Assets";
+import { icons, image, videos } from "@Assets";
 import { Button, Image, StatusIcon } from "@Components";
 import { useGrowingTitleLine, useNavigation } from "@Hooks";
 import { ROUTES } from "@Routes";
 import { Col, Container, Row } from "reactstrap";
+import { VideoStream } from "../VideoStream";
 
 const packageContent = [
   { id: 1, description: "Automated Video Interviews" },
@@ -21,13 +22,13 @@ function WebsiteHeader() {
 
   return (
     <div
-      className={`header pt-lg-8 pt-md-8 pt-sm-0 pt-7`}
+      className={`header pt-lg-6 pt-md-6 pt-sm-0 pt-5`}
       ref={websiteHeaderRef}
       style={{ backgroundColor: "" }}
       id="home"
     >
-      <Container>
-        <div className="mb-6">
+      <div className='container-fluid'>
+        <div className="m-6 mb-6">
           <Row>
             <Col lg="5">
               <div className="">
@@ -104,16 +105,20 @@ function WebsiteHeader() {
             </Col>
             <Col lg="7" sm="12">
               <div className="text-center mt-sm-0 mt-2">
-                <Image
-                  src={image.StreamlinedAutomatedInterview}
-                  width={"100%"}
-                  height={"100%"}
-                />
+              <video  
+                autoPlay={true} 
+                controls 
+                poster={image.intrvuSpaceIv} 
+                preload="metadata"
+                controlsList="nodownload"
+                width="100%" height="100%">
+              <source src={videos?.landingPageVideo} type="video/mp4" />
+              </video>
               </div>
             </Col>
           </Row>
         </div>
-      </Container>
+      </div>
     </div>
   );
 }
