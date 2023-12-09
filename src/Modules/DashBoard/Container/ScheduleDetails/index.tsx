@@ -13,10 +13,10 @@ function ScheduleDetails() {
     const { onGoingSelectedId, interviewScheduleDetails, onGoingScheduleMessage,interviewUserScheduleDetails, } = useSelector((state: any) => state.DashboardReducer);
 const loader =useLoader(false)
 
-console.log(interviewUserScheduleDetails,"interviewScheduleDetails============???",interviewScheduleDetails)
+
 
     useEffect(() => {
-        console.log(onGoingSelectedId,"onGoingSelectedId=++++++++++++")
+     
 
         if (onGoingSelectedId) {
         
