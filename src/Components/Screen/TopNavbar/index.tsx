@@ -1,8 +1,8 @@
 
 import { icons } from '@Assets';
-import { Alert, Button, Image, showToast } from '@Components';
-import { useLoader, useModal, useNavigation } from '@Hooks';
-import { showCreateJddModal, userLogout, submitLogout } from "@Redux";
+import { Alert, Button, Image } from '@Components';
+import { useLogout, useModal, useNavigation } from '@Hooks';
+import { showCreateJddModal } from "@Redux";
 import { ROUTES } from '@Routes';
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -28,21 +28,14 @@ function TopNavbar() {
     { id: '1', name: 'Logout', value: 'LG', icon: 'ni ni-button-power' },
   ]
 
+  const { loader, logout } = useLogout()
   const logoutModal = useModal(false);
   const { goTo } = useNavigation()
   const { jdItem } = useSelector((state: any) => state.DashboardReducer);
   const [isOpenDropdown, setIsOpenDropdown] = useState(false)
-
   const { dashboardDetails } = useSelector((state: any) => state.AuthReducer);
-
-  const { name, email, designation, department } = dashboardDetails?.basic_info || {}
-  const loader = useLoader(false);
-
-
-
-
+  const { name } = dashboardDetails?.basic_info || {}
   const dispatch = useDispatch();
-
 
 
   const dropdownHandler = (item: any) => {
@@ -54,37 +47,6 @@ function TopNavbar() {
     }
   };
 
-  function proceedLogout() {
-    const params = {}
-    loader.show();
-    try {
-      dispatch(
-        submitLogout({
-          params,
-          onSuccess: () => (response: any) => {
-            loader.hide();
-
-            dispatch(
-              userLogout({
-                onSuccess: () => {
-                  goTo(ROUTES["auth-module"].splash, true)
-                },
-                onError: () => {
-
-                },
-              })
-            );
-          },
-          onError: (error: any) => () => {
-            const { message } = error
-            showToast(message, 'error')
-            loader.show();
-          },
-        }))
-
-    } catch (error) { }
-  }
-
 
   const handleCreateInterviewClick = () => {
     dispatch(showCreateJddModal());
@@ -94,7 +56,6 @@ function TopNavbar() {
   const toggleDropdownHandler = () => {
     setIsOpenDropdown(!isOpenDropdown)
   }
-
 
 
   return (
@@ -248,7 +209,7 @@ function TopNavbar() {
         primary={"Proceed"}
         secondaryOnClick={logoutModal.hide}
         loading={loader.loader}
-        primaryOnClick={proceedLogout}
+        primaryOnClick={logout}
       />
     </>
 

@@ -3,10 +3,9 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 // reactstrap components
 import { icons } from "@Assets";
-import { Alert, Button, Image, showToast } from "@Components";
-import { useLoader, useModal, useNavigation } from "@Hooks";
-import { showCreateForOthersJdModal, showCreateJddModal, submitLogout, userLogout } from "@Redux";
-import { ROUTES } from "@Routes";
+import { Alert, Button, Image } from "@Components";
+import { useLogout, useModal, useNavigation } from "@Hooks";
+import { showCreateForOthersJdModal, showCreateJddModal } from "@Redux";
 import { capitalizeFirstLetter, filteredName } from "@Utils";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -26,12 +25,11 @@ import {
 } from "reactstrap";
 
 function CreateOthersNavbar() {
+  const { loader, logout } = useLogout()
   const logoutModal = useModal(false);
   const { goTo } = useNavigation();
   const { dashboardDetails } = useSelector((state: any) => state.AuthReducer);
-  const { name, email, designation, department } = dashboardDetails?.basic_info || {}
-  const loader = useLoader(false);
-
+  const { name } = dashboardDetails?.basic_info || {}
   const dispatch = useDispatch();
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -39,7 +37,6 @@ function CreateOthersNavbar() {
   const HEADER_MENU = [
     { id: '4', name: 'Logout', value: 'LG', route: "" }
   ]
-
 
 
   const dropdownHandler = (item: any) => {
@@ -57,37 +54,6 @@ function CreateOthersNavbar() {
   const handleCreateInterviewClick = () => {
     dispatch(showCreateJddModal());
   };
-
-
-  function proceedLogout() {
-    const params = {}
-    loader.show()
-    try {
-      dispatch(
-        submitLogout({
-          params,
-          onSuccess: () => (response: any) => {
-            loader.hide()
-            dispatch(
-              userLogout({
-                onSuccess: () => {
-                  goTo(ROUTES["auth-module"].splash, true)
-                },
-                onError: () => {
-
-                },
-              })
-            );
-          },
-          onError: (error: any) => () => {
-            const { message } = error
-            showToast(message, 'error')
-            loader.hide()
-          },
-        }))
-
-    } catch (error) { }
-  }
 
 
   const toggleDropdown = () => {
@@ -278,7 +244,7 @@ function CreateOthersNavbar() {
         primary={"Proceed"}
         secondaryOnClick={logoutModal.hide}
         loading={loader.loader}
-        primaryOnClick={proceedLogout}
+        primaryOnClick={logout}
       />
     </>
   );

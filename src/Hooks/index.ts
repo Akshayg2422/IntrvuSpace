@@ -17,6 +17,7 @@ export * from './useGrowingTitleLine'
 export * from './useScreenRecorder'
 export * from './useOnlineStatus'
 export * from './useSideNav'
+export * from './useLogout'
 
 
 
