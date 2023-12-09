@@ -247,6 +247,7 @@ function SuperAdminSchedules() {
     experience.set(EXPERIENCE_LIST[0]);
     jd.set("");
     sector.set("");
+    setDuration(INTERVIEW_DURATIONS[0])
   }
 
   function resetAddAnotherValues() {
@@ -392,6 +393,8 @@ function SuperAdminSchedules() {
     jdForOthers.set("");
     setNotifyInterview(false);
     setNotifyReport(false);
+    setNotifyError(false);
+    setSelectedDurationForOthers(INTERVIEW_DURATIONS[0])
   }
 
   function viewMoreDetailsHandler(status: boolean, index: number) {
