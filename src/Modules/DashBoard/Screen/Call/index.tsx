@@ -9,7 +9,13 @@ import {
   StatusIcon,
 } from "@Components";
 import { useLoader, useModal, useNavigation, useScreenRecorder } from "@Hooks";
-import { CallHeader, CallHeaderMobile, ContactHrModal, Guidelines, Report } from "@Modules";
+import {
+  CallHeader,
+  CallHeaderMobile,
+  ContactHrModal,
+  Guidelines,
+  Report,
+} from "@Modules";
 import {
   canStartInterview,
   closeInterview,
@@ -1225,7 +1231,16 @@ function Call() {
             ) : (
               <></>
             )}
-            {scheduleInfo?.is_report_complete && scheduleInfo?.is_super_admin_variant ? <Report /> : <ContactHrModal/>}
+            {scheduleInfo?.is_report_complete &&
+            scheduleInfo?.is_super_admin_variant ? (
+              <Report />
+            ) : (
+              <ContactHrModal
+                onClick={() => {
+                  getBasicInfo();
+                }}
+              />
+            )}
           </>
         )}
         {loader.loader && (
@@ -1337,9 +1352,7 @@ function Call() {
 
       <Modal
         isOpen={interviewLimitModal.visible}
-        title={
-          getNetworkErrorResponseTitle(networkErrorResponse?.status_code)
-        }
+        title={getNetworkErrorResponseTitle(networkErrorResponse?.status_code)}
         subTitle={networkErrorResponse?.error_message}
         buttonText="Try Again"
         onClick={() => {
