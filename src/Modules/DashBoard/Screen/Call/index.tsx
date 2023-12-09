@@ -1232,16 +1232,16 @@ function Call() {
               <></>
             )}
             {scheduleInfo?.is_report_complete &&
-            scheduleInfo?.is_super_admin_variant && (
+            scheduleInfo?.can_view_report ? (
               <Report />
             ) 
-            // : (
-            //   <ContactHrModal
-            //     onClick={() => {
-            //       getBasicInfo();
-            //     }}
-            //   />
-            // )
+            : scheduleInfo?.is_report_complete &&(
+              <ContactHrModal
+                onClick={() => {
+                  getBasicInfo();
+                }}
+              />
+            )
             }
           </>
         )}
