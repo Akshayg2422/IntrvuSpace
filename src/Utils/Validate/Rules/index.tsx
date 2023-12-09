@@ -5,6 +5,14 @@ export const FIRST_NAME_RULES = {
   },
 }
 
+
+export const FULL_NAME_RULES = {
+  first_name: {
+    presence: { allowEmpty: false, message: "Full name cannot be empty" },
+    length: { minimum: 3, message: "Full name minimum 3 chars" },
+  },
+}
+
 export const MOBILE_NUMBER_RULES = {
   mobile_number: {
     presence: { allowEmpty: false, message: "Mobile number cannot be empty" },
@@ -48,7 +56,7 @@ export const CREATE_QUESTION_FORM_RULES = {
     length: { minimum: 3, message: "Name minimum 3 chars" },
   },
   description: {
-    presence: { allowEmpty: false, message: "description cannot be empty" },
+    presence: { allowEmpty: false, message: "Description cannot be empty" },
   }
 };
 
@@ -76,14 +84,15 @@ export const RESET_PASSWORD_RULES = {
 }
 
 export const REGISTER_RULES = {
-  ...FIRST_NAME_RULES,
+  ...FULL_NAME_RULES,
   ...EMAIL_RULES,
   ...MOBILE_NUMBER_RULES,
   ...PASSWORD
 }
 
-export const getRegisterRules = (isPasswordRequired: boolean = true) => ({
-  ...FIRST_NAME_RULES,
+export const getRegisterRules = (isPasswordRequired: boolean = true) => (
+  {
+  ...FULL_NAME_RULES,
   ...EMAIL_RULES,
   ...MOBILE_NUMBER_RULES,
   ...(!isPasswordRequired ? PASSWORD : {})
@@ -92,7 +101,7 @@ export const getRegisterRules = (isPasswordRequired: boolean = true) => ({
 
 export const REGISTER_COMPANY_RULES = {
   brand_name: {
-    presence: { allowEmpty: false, message: "Brand Name cannot be empty" },
+    presence: { allowEmpty: false, message: "Company Name cannot be empty" },
   },
   ...ADDRESS,
   ...MOBILE_NUMBER_RULES,
@@ -106,7 +115,7 @@ export const REGISTER_COMPANY_RULES = {
 
 export const REGISTER_COMPANY_SUPER_ADMIN_RULES = {
   brand_name: {
-    presence: { allowEmpty: false, message: "Brand Name cannot be empty" },
+    presence: { allowEmpty: false, message: "Company Name cannot be empty" },
   },
   ...ADDRESS,
   ...MOBILE_NUMBER_RULES,
@@ -400,7 +409,7 @@ export const CREATE_FOR_OTHERS_RULES = {
   // },
   sector_name: {
     presence: { message: "Sector name cannot be empty" },
-    length: { minimum: 3, message: "Sector name should be at least 3 characters" },
+    length: { minimum: 2, message: "Sector name should be at least 2 characters" },
   },
   experience: {
     presence: { allowEmpty: false, message: "Experience cannot be empty" },

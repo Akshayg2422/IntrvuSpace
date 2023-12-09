@@ -266,7 +266,8 @@ export const SUPER_ADMIN_ROUTES = [
   {
     id: 7,
     path: ROUTES['designation-module'].report + '/:schedule_id',
-    component: <Report />
+    component: <Report />,
+    hide_side_nav: true
   },
 ]
 

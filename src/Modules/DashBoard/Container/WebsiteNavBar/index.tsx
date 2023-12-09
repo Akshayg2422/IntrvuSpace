@@ -21,7 +21,7 @@ function WebsiteNavBar() {
       expand="lg"
       id="navbar-main"
     >
-      <Container>
+      <div className="container-fluid mx-md-3 mx-sm-0 mx-2">
         <NavbarBrand to="/" tag={Link}>
           <div className="d-flex justify-content-between">
             <img className={'d-none d-lg-block d-md-block d-xl-block'} src={icons.logoText} alt="Logo" style={{ height: '20%', width: '20%' }} />
@@ -82,7 +82,7 @@ function WebsiteNavBar() {
             />
           </Nav>
         </UncontrolledCollapse>
-      </Container>
+      </div>
     </Navbar>
   );
 }

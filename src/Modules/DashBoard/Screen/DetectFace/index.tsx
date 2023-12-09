@@ -41,6 +41,7 @@ function DetectFace({ onClick, heading, experience, duration, loading, callValid
     const micPermissionModal = useModal(false);
     const [showDetecting, setShowDetecting] = useState<any>(false)
     // const [showCanvas, setShowCanvas] = useState(false)
+    const [permissionShow, setPermissionShow] = useState(false)
 
 
   
@@ -78,20 +79,13 @@ function DetectFace({ onClick, heading, experience, duration, loading, callValid
     let canvasCtx
     let drawingUtils
 
-    let hitCount = 0
+
     useEffect(() => {
-
-        if (hitCount === 0) {
             checkMicAndCameraPermission()
-            console.log('hit');
-            hitCount = hitCount + 1
-        }
-        console.log(hitCount, "hitCount");
-
-
     }, [])
     // checking camera and mic permission
     async function checkMicAndCameraPermission() {
+        setPermissionShow(true)
         const hasCamPermission = await hasCameraPermission();
         if (hasCamPermission) {
             camPermissionModal.hide();
@@ -100,6 +94,7 @@ function DetectFace({ onClick, heading, experience, duration, loading, callValid
             if (hasMicPermission) {
                 micPermissionModal.hide();
                 // detectFaceModal.show()
+                setPermissionShow(false)
                 setShowDetecting(true)
                 enableCam()
             } else {
@@ -451,6 +446,7 @@ function DetectFace({ onClick, heading, experience, duration, loading, callValid
                 <div className='screen-back'>
                     <Back variant='override' onClick={stopStream} />
                 </div>
+                <div>
                 <div className={'text-secondary col-md-9 mb-md-4 m-0 p-0'}>
                     <span className="screen-heading m-0 p-0 lh-120">{`Interview for the role of ${heading}`}<span className={'text-secondary text-des ml-2'}>{experience}</span></span>
                     <div
@@ -459,6 +455,29 @@ function DetectFace({ onClick, heading, experience, duration, loading, callValid
                         <span className={'font-weight-400 ml-1'}>{'Duration'}</span>
                     </div>
                 </div>
+                {
+                    permissionShow &&
+
+                <div className='text-secondary mt-4'>
+                    <h2 className='text-secondary'>
+                        Grant Permission :
+                    </h2>
+                    <p className="mt-3 font-weight-500 "><Image className='mb-1 mr-1' src={icons.check} height={8} width={8} style={{
+                                        objectFit: 'contain'
+                                    }} /> Grant webcam <Image className='mx-1' src={icons.cameraAccess} height={20} width={20} style={{
+                                            objectFit: 'contain'
+                                        }} /> access.</p>
+                    <p className="mt-3 font-weight-500"><Image  className='mb-1 mr-1' src={icons.check} height={8} width={8} style={{
+                                        objectFit: 'contain'
+                                    }} /> Grant microphone<Image className='mx-1' src={icons.microPhoneAccess} height={20} width={20} style={{
+                                            objectFit: 'contain'
+                                        }}/>access.</p>
+
+                </div>
+                }
+
+                </div>
+
                 {/* <Modal isOpen={detectFaceModal.visible}
                 onClose={() => {
                     detectFaceModal.hide()
@@ -531,17 +550,17 @@ function DetectFace({ onClick, heading, experience, duration, loading, callValid
                             {
                                 proceed && <div className='text-secondary'>
                                     <h2 className='mt-4 text-secondary '>Expected criteria's are met! </h2>
-                                    <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.check} height={12} width={12} style={{
+                                    <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.check} height={8} width={8} style={{
                                         objectFit: 'contain'
                                     }} />
                                         <span className='mb-0 ml-3  text-secondary '>Attend from a quiet and secluded space</span>
                                     </div>
-                                    <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.check} height={12} width={12} style={{
+                                    <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.check} height={8} width={8} style={{
                                         objectFit: 'contain'
                                     }} />
                                         <span className='mb-0 ml-3  text-secondary '>Verify the stability of your internet connection</span>
                                     </div>
-                                    <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.check} height={12} width={12} style={{
+                                    <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.check} height={8} width={8} style={{
                                         objectFit: 'contain'
                                     }} />
                                         <span className='mb-0 ml-3  text-secondary '>Keep the video function enabled throughout the session</span>
@@ -553,23 +572,23 @@ function DetectFace({ onClick, heading, experience, duration, loading, callValid
                             }
 
                             {!faceFound && <div className='mt-4 text-secondary'>
-                                <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.frame} height={12} width={12} style={{
+                                <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.frame} height={8} width={8} style={{
                                     objectFit: 'contain'
-                                }} />  <span className='mb-0 ml-2  text-secondary '>We can't detect your face, please show your face clearly</span>
+                                }} />  <span className='mb-0 ml-3  text-secondary '>We can't detect your face, please show your face clearly</span>
                                 </div>
                             </div>
                             }
                             {micCheck === true && <div className='mt-4 text-secondary'>
-                                <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.frame} height={12} width={12} style={{
+                                <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.frame} height={8} width={8} style={{
                                     objectFit: 'contain'
-                                }} />  <span className='mb-0 ml-2  text-secondary '>Please check your mic and try again</span>
+                                }} />  <span className='mb-0 ml-3  text-secondary '>Please check your mic and try again</span>
                                 </div>
                             </div>
                             }
                             {!noiseDetection && <div className='mt-4 text-secondary'>
-                                <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.frame} height={12} width={12} style={{
+                                <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.frame} height={8} width={8} style={{
                                     objectFit: 'contain'
-                                }} /><span className='mb-0 ml-2  text-secondary '>You are in noisy surrounding, please be there in silent room</span>
+                                }} /><span className='mb-0 ml-3  text-secondary '>You are in noisy surrounding, please be there in silent room</span>
                                 </div></div>}
 
                         </div>
@@ -604,12 +623,16 @@ function DetectFace({ onClick, heading, experience, duration, loading, callValid
                     <h2 className="text-secondary">
                         These are general guidelines for enabling webcam and microphone permissions:
                     </h2>
-                    <h3 className='text-secondary mt-4'>For Web Browsers:</h3>
+                    <h3 className='text-secondary mt-4'>For Web Browsers :</h3>
                     <p className="mt-3 font-weight-500">{"1. Open your web Browser."}</p>
                     <p className="mt-3 font-weight-500">
                         {"2. Go to the website or web application where you want to use the webcam or microphone."}</p>
                     <p className="mt-3 font-weight-500">
-                        {"3. Click on the padlock icon in the address bar."}</p>
+                        3. Click on the padlock icon <Image className=' mb-1 mx-1' src={icons.padlockIcon} height={18} width={18} style={{
+                                            objectFit: 'contain'
+                                        }}/> or <Image className=' mb-1 mx-1' src={icons.padlockIcon2} height={24} width={24} style={{
+                                            objectFit: 'contain'
+                                        }}/> in the address bar.</p>
                     <p className="mt-3 font-weight-500">
                         {"4. In the dropdown menu, locate 'Camera' or 'Microphone' and set it to 'Allow'."}</p>
                     <p className="mt-3 font-weight-500">
@@ -639,7 +662,7 @@ function DetectFace({ onClick, heading, experience, duration, loading, callValid
             >
                 <div>
                     <h3 className="text-secondary font-weight-500">
-                        To continue, grant microphone permission:
+                        To continue, Grant microphone permission:
                     </h3>
                     <p className="mb-0">{"1. Check browser settings."}</p>
                     <p className="mb-0">

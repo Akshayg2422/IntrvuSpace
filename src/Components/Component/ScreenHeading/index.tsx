@@ -15,26 +15,28 @@ function ScreenHeading({ text, subtitle, children }: ScreenHeadingProps) {
 
         <div className={'heading-wrapper'} >
             <div className={'d-flex'}>
-                <div className="screen-heading col-auto m-0 p-0 d-flex align-items-center" style={{ position: 'relative' }}>
-                    <div
-                        className='pointer back-btn-container'
-                        onClick={() => { goBack() }}
-                    >
-                        <Image
-                            className={'btn-image-container'}
-                            src={icons.backButton}
-                        />
+                <div className='col-auto'>
+                    <div className="screen-heading  m-0 p-0 d-flex align-items-center" style={{ position: 'relative' }}>
+                        <div
+                            className='pointer back-btn-container'
+                            onClick={() => { goBack() }}
+                        >
+                            <Image
+                                className={'btn-image-container'}
+                                src={icons.backButton}
+                            />
+                        </div>
+                        <div className='m-0'>
+                            {text}
+                        </div>
                     </div>
-                    <div className='m-0'>
-                        {text}
+                    <div className={'text-secondary'}>
+                        {subtitle}
                     </div>
                 </div>
-                <div className={'col'}>{children}</div>
             </div>
+            <div className={'col'}>{children}</div>
 
-            <div className={'text-secondary'}>
-                {subtitle}
-            </div>
         </div >
     )
 }

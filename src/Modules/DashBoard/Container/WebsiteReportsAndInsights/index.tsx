@@ -11,8 +11,8 @@ const packageContent = [
 function WebsiteReportsAndInsights() {
     return (
 
-        <Container>
-            <div className="mb-md-6">
+        <div className='container-fluid'>
+            <div className="m-6 mb-md-6">
                 <Row>
                     <Col lg="7" sm="12">
                         <div className={'mt-md-5 d-flex justify-content-center'}>
@@ -54,7 +54,7 @@ function WebsiteReportsAndInsights() {
                     </Col>
                 </Row>
             </div>
-        </Container>
+        </div>
 
     )
 }

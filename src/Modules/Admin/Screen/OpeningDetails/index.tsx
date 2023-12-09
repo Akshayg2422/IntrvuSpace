@@ -257,7 +257,7 @@ function OpeningDetails() {
     corporateScheduleActionsHandler(params);
   }
 
-  // getCorporateScheduleDetails
+
   return (
     <>
       <div className={"screen-padding"}>
