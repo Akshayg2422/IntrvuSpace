@@ -10,9 +10,10 @@ import { Navigate, useLocation } from 'react-router-dom';
 
 type RequireAuthProps = {
     children: React.ReactNode;
+    hideSideNac?: boolean
 }
 
-export const RequireAuth = ({ children }: RequireAuthProps) => {
+export const RequireAuth = ({ hideSideNac, children }: RequireAuthProps) => {
 
     const location = useLocation();
 
@@ -22,9 +23,6 @@ export const RequireAuth = ({ children }: RequireAuthProps) => {
     const { loginDetails } = useSelector((state: any) => state.AppReducer);
 
     const { isLoggedIn, user_type } = loginDetails || {}
-
-    console.log("user_type", user_type);
-
 
 
 
@@ -66,9 +64,12 @@ export const RequireAuth = ({ children }: RequireAuthProps) => {
         return <Navigate to={ROUTES['auth-module'].login} state={{ path: location.pathname }} />
     }
 
+    console.log(hideSideNac);
+
+
     return (
         <div className={'screen'}>
-            {user_type === 'SA' &&
+            {user_type === 'SA' && !hideSideNac &&
                 <Sidebar
                     routes={routes}
                     toggleSideNav={toggleSideNav}
