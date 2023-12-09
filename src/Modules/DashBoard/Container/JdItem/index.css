@@ -115,7 +115,7 @@
 }
 
 .completed-item-content-border {
-  border-bottom: 1px solid #D5DFFF;
+  border-bottom: 1.5px solid var(--bg-container-dark);
   margin-left: 25%;
   margin-right: 8%;
 }

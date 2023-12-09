@@ -3,7 +3,7 @@ import {
   StatusIcon,
   ViewMore,
   WatchInterviewButtonIcon,
-  WatchInterviewModal
+  WatchInterviewModal,
 } from "@Components";
 import { useModal } from "@Hooks";
 import { watchInterviewVideoUrl } from "@Redux";
@@ -11,7 +11,7 @@ import {
   arrayOrderbyDate,
   capitalizeFirstLetter,
   formatDateTime,
-  getDisplayTimeAgoFromMoment
+  getDisplayTimeAgoFromMoment,
 } from "@Utils";
 import { useDispatch, useSelector } from "react-redux";
 import "./index.css";
@@ -153,7 +153,9 @@ function JdItem({
                 <div className={"skill-value font-weight-bold"}>
                   {"Aptitude"}
                 </div>
-                <div className={"skill-value"}><div className={'report-btn-container'}>{""}</div></div>
+                <div className={"skill-value"}>
+                  <div className={"report-btn-container"}>{""}</div>
+                </div>
                 <div className={"skill-empty"}>{""}</div>
               </div>
             </div>
@@ -169,7 +171,7 @@ function JdItem({
                 recording_url,
                 interviewee_email,
                 interviewee_name,
-                is_video_recording_manditory
+                is_video_recording_manditory,
               } = item;
 
               const { skill_matrix, other_analytics } = report_analytics || {};
@@ -218,8 +220,11 @@ function JdItem({
                           </div>
                         )}
                       </div>
-                      <div className={"skill-empty d-flex align-items-center justify-content-center"}>
-
+                      <div
+                        className={
+                          "skill-empty d-flex align-items-center justify-content-center"
+                        }
+                      >
                         {recording_url && recording_url.length > 0 && (
                           <WatchInterviewButtonIcon
                             id={"1000"}
@@ -238,7 +243,9 @@ function JdItem({
                       </div>
                     </div>
                   </div>
-                  <div className={"completed-item-content-border"}></div>
+                  {completedSchedules.length !== index + 1 && (
+                    <div className={"completed-item-content-border"}></div>
+                  )}
                 </>
               );
             })}
