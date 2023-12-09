@@ -26,8 +26,9 @@ function SuperAdminCorporateRegister() {
     const [formType, setFormType] = useState(REGISTER_ADMIN);
     const loader = useLoader(false);
 
-    const isEdit = selectedCompany
+    const isEdit = selectedCompany||false
 
+    console.log(isEdit,":vvvv")
 
 
     useEffect(() => {

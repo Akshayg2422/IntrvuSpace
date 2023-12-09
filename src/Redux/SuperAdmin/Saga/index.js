@@ -9,6 +9,7 @@ import * as Action from '../Store'
  */
 
 function* getCompaniesSaga(action) {
+ 
   try {
     const response = yield call(Api.getCompaniesApi, action.payload.params);
     if (response.success) {
