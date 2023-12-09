@@ -462,12 +462,12 @@ function DetectFace({ onClick, heading, experience, duration, loading, callValid
                     <h2 className='text-secondary'>
                         Grant Permission :
                     </h2>
-                    <p className="mt-3 font-weight-500 "><Image className='mb-1 mr-1' src={icons.check} height={12} width={12} style={{
+                    <p className="mt-3 font-weight-500 "><Image className='mb-1 mr-1' src={icons.check} height={8} width={8} style={{
                                         objectFit: 'contain'
                                     }} /> Grant webcam <Image className='mx-1' src={icons.cameraAccess} height={20} width={20} style={{
                                             objectFit: 'contain'
                                         }} /> access.</p>
-                    <p className="mt-3 font-weight-500"><Image  className='mb-1 mr-1' src={icons.check} height={12} width={12} style={{
+                    <p className="mt-3 font-weight-500"><Image  className='mb-1 mr-1' src={icons.check} height={8} width={8} style={{
                                         objectFit: 'contain'
                                     }} /> Grant microphone<Image className='mx-1' src={icons.microPhoneAccess} height={20} width={20} style={{
                                             objectFit: 'contain'
@@ -550,17 +550,17 @@ function DetectFace({ onClick, heading, experience, duration, loading, callValid
                             {
                                 proceed && <div className='text-secondary'>
                                     <h2 className='mt-4 text-secondary '>Expected criteria's are met! </h2>
-                                    <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.check} height={12} width={12} style={{
+                                    <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.check} height={8} width={8} style={{
                                         objectFit: 'contain'
                                     }} />
                                         <span className='mb-0 ml-3  text-secondary '>Attend from a quiet and secluded space</span>
                                     </div>
-                                    <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.check} height={12} width={12} style={{
+                                    <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.check} height={8} width={8} style={{
                                         objectFit: 'contain'
                                     }} />
                                         <span className='mb-0 ml-3  text-secondary '>Verify the stability of your internet connection</span>
                                     </div>
-                                    <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.check} height={12} width={12} style={{
+                                    <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.check} height={8} width={8} style={{
                                         objectFit: 'contain'
                                     }} />
                                         <span className='mb-0 ml-3  text-secondary '>Keep the video function enabled throughout the session</span>
@@ -572,23 +572,23 @@ function DetectFace({ onClick, heading, experience, duration, loading, callValid
                             }
 
                             {!faceFound && <div className='mt-4 text-secondary'>
-                                <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.frame} height={12} width={12} style={{
+                                <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.frame} height={8} width={8} style={{
                                     objectFit: 'contain'
-                                }} />  <span className='mb-0 ml-2  text-secondary '>We can't detect your face, please show your face clearly</span>
+                                }} />  <span className='mb-0 ml-3  text-secondary '>We can't detect your face, please show your face clearly</span>
                                 </div>
                             </div>
                             }
                             {micCheck === true && <div className='mt-4 text-secondary'>
-                                <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.frame} height={12} width={12} style={{
+                                <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.frame} height={8} width={8} style={{
                                     objectFit: 'contain'
-                                }} />  <span className='mb-0 ml-2  text-secondary '>Please check your mic and try again</span>
+                                }} />  <span className='mb-0 ml-3  text-secondary '>Please check your mic and try again</span>
                                 </div>
                             </div>
                             }
                             {!noiseDetection && <div className='mt-4 text-secondary'>
-                                <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.frame} height={12} width={12} style={{
+                                <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.frame} height={8} width={8} style={{
                                     objectFit: 'contain'
-                                }} /><span className='mb-0 ml-2  text-secondary '>You are in noisy surrounding, please be there in silent room</span>
+                                }} /><span className='mb-0 ml-3  text-secondary '>You are in noisy surrounding, please be there in silent room</span>
                                 </div></div>}
 
                         </div>
@@ -629,6 +629,8 @@ function DetectFace({ onClick, heading, experience, duration, loading, callValid
                         {"2. Go to the website or web application where you want to use the webcam or microphone."}</p>
                     <p className="mt-3 font-weight-500">
                         3. Click on the padlock icon <Image className=' mb-1 mx-1' src={icons.padlockIcon} height={18} width={18} style={{
+                                            objectFit: 'contain'
+                                        }}/> or <Image className=' mb-1 mx-1' src={icons.padlockIcon2} height={24} width={24} style={{
                                             objectFit: 'contain'
                                         }}/> in the address bar.</p>
                     <p className="mt-3 font-weight-500">
