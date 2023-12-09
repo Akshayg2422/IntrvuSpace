@@ -2,7 +2,9 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Image } from '@Components'
 import { ImagePickerProps } from './interfaces'
 import Compressor from "compressorjs";
+
 import './index.css';
+import { urlToBase64 } from '@Utils';
 
 function ImagePicker({ defaultPhotos, variant = 'single', max = 3, onSelect }: ImagePickerProps) {
 
@@ -13,8 +15,26 @@ function ImagePicker({ defaultPhotos, variant = 'single', max = 3, onSelect }: I
 
   useEffect(() => {
     if (defaultPhotos && defaultPhotos.length > 0) {
-      setPhotos(defaultPhotos)
+ if(defaultPhotos[0]?.base64){
+  setPhotos(defaultPhotos)
+
+ }
+ else {
+  urlToBase64(defaultPhotos)
+  .then((result) => {
+    setPhotos([{id:0,base64:result}])
+  })
+
+  .catch((error) => {
+  
+    console.error(error,"error catch from imagePicker  default value ");
+  });
+
+ }
+    
+      
     }
+
   }, [defaultPhotos])
 
   const handleFilePickerHandler = () => {
