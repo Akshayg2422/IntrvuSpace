@@ -395,6 +395,7 @@ function SuperAdminSchedules() {
     setNotifyReport(false);
     setNotifyError(false);
     setSelectedDurationForOthers(INTERVIEW_DURATIONS[0])
+    noteForOthers.set("")
   }
 
   function viewMoreDetailsHandler(status: boolean, index: number) {

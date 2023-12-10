@@ -256,7 +256,7 @@ function SuperAdminScheduleItem({
           />
         </div>
 
-        <div className={'schedule-item-container'}>
+        <div className={'schedule-item-container overflow-auto py-3'}>
           {
             schedules &&
             schedules.length > 0 &&

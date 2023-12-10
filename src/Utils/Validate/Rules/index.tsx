@@ -366,6 +366,11 @@ export const CREATE_CORPORATE_SCHEDULE_LITE_RULES = {
     presence: { allowEmpty: false, message: "Position cannot be empty" },
     length: { minimum: 3, message: "Minimum 3 chars in Position" },
   },
+  sector_name :{
+    presence: { allowEmpty: false, message: "Sector cannot be empty" },
+    length: { minimum: 2, message: "Minimum 2 chars in sector" },
+
+  },
   experience: {
     presence: { allowEmpty: false, message: "Experience cannot be empty" },
   },
@@ -375,6 +380,9 @@ export const CREATE_CORPORATE_SCHEDULE_LITE_RULES = {
   vacancies: {
     presence: { allowEmpty: false, message: "vacancies minimum 1 cannot be empty" },
   },
+  ...FIRST_NAME_RULES,
+  ...EMAIL_RULES,
+  ...MOBILE_NUMBER_RULES,
   // ...VALIDATE_ADD_NEW_CANDIDATES_RULES
 }
 

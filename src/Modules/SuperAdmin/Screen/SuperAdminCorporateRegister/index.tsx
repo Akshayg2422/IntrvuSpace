@@ -4,7 +4,7 @@ import { useLoader, useNavigation } from "@Hooks";
 import { SuperAdminRegisterAdmin, SuperAdminRegisterCompany, } from '@Modules';
 import { createCompanySuperAdmin } from '@Redux';
 import { ROUTES } from "@Routes";
-import { REGISTER_COMPANY_SUPER_ADMIN_RULES, getRegisterRules, getValidateError, ifObjectExist, validate, urlToBase64 } from '@Utils';
+import { REGISTER_COMPANY_SUPER_ADMIN_RULES, getRegisterRules, getValidateError, ifObjectExist, validate } from '@Utils';
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import './index.css';
@@ -26,10 +26,9 @@ function SuperAdminCorporateRegister() {
     const [formType, setFormType] = useState(REGISTER_ADMIN);
     const loader = useLoader(false);
 
+   
+
     const isEdit = selectedCompany||false
-
-    console.log(isEdit,":vvvv")
-
 
     useEffect(() => {
 
@@ -59,7 +58,7 @@ function SuperAdminCorporateRegister() {
             is_light_variant = false
         } = selectedCompany;
 
-        const base64Logo = logo ? await urlToBase64(logo) as string : '';
+        // const base64Logo = logo ? await urlToBase64(logo) as string : '';
 
         setParams({
             first_name: admin_name,
@@ -74,7 +73,7 @@ function SuperAdminCorporateRegister() {
             referral_code,
             pincode,
             is_light_variant,
-            photo: logo ? [{ id: 0, base64: base64Logo }] : []
+            photo: logo ?  logo  : []
         });
 
     }
