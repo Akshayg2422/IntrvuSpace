@@ -3,12 +3,10 @@ import classnames from "classnames";
 // nodejs library to set properties for components
 // reactstrap components
 import { icons } from '@Assets';
-import { Alert, Button, Image, showToast } from '@Components';
-import { useLoader, useModal, useNavigation } from '@Hooks';
-import { submitLogout, userLogout } from '@Redux';
-import { ROUTES } from '@Routes';
+import { Alert, Button, Image } from '@Components';
+import { useLogout, useModal, useNavigation } from '@Hooks';
 import { capitalizeFirstLetter } from '@Utils';
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import {
   Collapse,
   Container,
@@ -25,15 +23,13 @@ import { SuperAdminNavbarProps } from './interface';
 
 function SuperAdminNavbar({ actions, sidenavOpen, toggleSidenav }: SuperAdminNavbarProps) {
 
-  const dispatch = useDispatch();
-
   const HEADER_MENU = [
     { id: '3', name: 'Logout', value: 'LG', route: "" }
   ]
+  const { loader, logout } = useLogout()
 
   const logoutModal = useModal(false);
   const { goTo } = useNavigation()
-  const loader = useLoader(false);
 
   const { dashboardDetails } = useSelector((state: any) => state.AuthReducer);
 
@@ -50,36 +46,6 @@ function SuperAdminNavbar({ actions, sidenavOpen, toggleSidenav }: SuperAdminNav
 
   };
 
-  function proceedLogout() {
-    const params = {}
-    loader.show();
-
-    try {
-      dispatch(
-        submitLogout({
-          params,
-          onSuccess: () => (response: any) => {
-            loader.hide();
-            dispatch(
-              userLogout({
-                onSuccess: () => {
-                  goTo(ROUTES["auth-module"].splash, true)
-                },
-                onError: () => {
-
-                },
-              })
-            );
-          },
-          onError: (error: any) => () => {
-            const { message } = error
-            showToast(message, 'error')
-            loader.hide()
-          },
-        }))
-
-    } catch (error) { }
-  }
 
   return (
     <>
@@ -207,7 +173,7 @@ function SuperAdminNavbar({ actions, sidenavOpen, toggleSidenav }: SuperAdminNav
         primary={"Proceed"}
         secondaryOnClick={logoutModal.hide}
         loading={loader.loader}
-        primaryOnClick={proceedLogout}
+        primaryOnClick={logout}
       />
     </>
   );

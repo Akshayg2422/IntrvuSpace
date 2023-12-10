@@ -87,11 +87,8 @@ function Report() {
   return (
     <div className={'screen'}>
 
-      {/* <div className={'back-container-vacancies'}>
-        <Back />
-      </div> */}
-      <div className={'report-dropdown-container'}>
-        <div className={'report-back-button'}><ScreenHeading /></div>
+      <div className={'report-back-button pointer'}><ScreenHeading /></div>
+      <div className={'report-dropdown-container'} style={{ display: 'flex', alignItems: 'start' }}>
         <div style={{
           width: "220px",
           maxWidth: '300px',

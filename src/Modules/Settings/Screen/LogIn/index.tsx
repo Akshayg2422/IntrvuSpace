@@ -130,9 +130,9 @@ function Login() {
 
           <div className="text-center font-size-md register">
             <span className="text-secondary font-weight-700"> {"Not a member yet?"}</span>
-            <span className="text-primary font-weight-700 pointer ml-1" onClick={goToRegisterScreen}> {"Sign Up"}</span>
-            <span className="text-secondary font-weight-700 ml-1"> {"/"}</span>
-            <span className="text-primary font-weight-700 pointer ml-1" onClick={goToRegisterCompanyScreen}> {"Corporate"}</span>
+            {/* <span className="text-primary font-weight-700 pointer ml-1" onClick={goToRegisterScreen}> {"Sign Up"}</span>
+            <span className="text-secondary font-weight-700 ml-1"> {"/"}</span> */}
+            <span className="text-primary font-weight-700 pointer ml-1" onClick={goToRegisterCompanyScreen}> {"Register as Enterprise"}</span>
           </div>
         </div>
 

@@ -21,10 +21,12 @@
   flex-direction: row;
   align-items: center;
 }
+
 .report-back-button {
-  position: relative;
-  top: -6px;
-  right: 860px;
+  position: absolute;
+  left: 4%;
+  top: 2%;
+  z-index: 999;
 }
 
 .print-container {
@@ -41,5 +43,12 @@
     width: 100%;
     margin: 0;
     top: 0px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .report-back-button {
+    right: 300%;
+    /* Adjust the percentage for smaller screens */
   }
 }
