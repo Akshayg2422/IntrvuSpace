@@ -40,7 +40,7 @@ function CreateNewOpenings({ title, keyPoints, image, buttonText, onButtonClick 
                                 </span>
                             </div>
 
-                            <div style={{ paddingTop: 35 }}>
+                            <div className={'ml-md--1 ml-lg--1'} style={{ paddingTop: 35 }}>
                                 {keyPoints.map((item) => {
                                     const { description, description2 } = item;
                                     return (
