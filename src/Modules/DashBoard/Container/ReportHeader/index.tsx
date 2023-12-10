@@ -11,7 +11,7 @@ const ReportHeader = ({ details }: ReportHeaderProps) => {
     const { name, role, experience, interview_duration, user_location_info } = interview_meta_info || {}
 
     const experience_txt = !experience ? "Fresher" : `${experience} ${experience > 1 ? "years" : experience === 1 ? "year" : ""}`
-    const { region, city, country } = user_location_info || {}
+    const { ISP, region, city, country } = user_location_info || {}
 
     const colorVariant = (percentage: any) => {
         if (percentage <= 20) return "red";
@@ -29,7 +29,13 @@ const ReportHeader = ({ details }: ReportHeaderProps) => {
 
 
     function userAuthCheck() {
-        return !!(candidate_photo || city !== '-' && city !== '' && region !== '-' && region !== '' && country !== '-' && country !== '');
+        return !!(
+            candidate_photo ||
+            (city !== '-' && city !== '') ||
+            (region !== '-' && region !== '') ||
+            (country !== '-' && country !== '') ||
+            ISP
+        );
     }
 
 
@@ -66,21 +72,21 @@ const ReportHeader = ({ details }: ReportHeaderProps) => {
                         </div>
 
                         {
-                            user_location_info ?
-                                <div className={'user-address-container'}>
-                                    <Image src={icons.mark} width={20} height={20} style={{
-                                        objectFit: 'contain'
-                                    }} />
+                            user_location_info ? (
+                                <div>
+                                    <Image src={icons.mark} width={20} height={20} style={{ objectFit: 'contain' }} />
                                     <span className='ml-1'>
-                                        {/* {city && city !== '-' ? <span className={'screen-des'}>{city}</span> : <></>} */}
-                                        {region && region !== '-' ? <span className={'screen-des'}> {region}</span> : <></>}
-                                        {country && country !== '-' ? <span className={'screen-des'}>, {getCountryName(country)}</span> : <></>}
+                                        {region && region !== '-' ? <span className={'screen-des'}> {region}</span> : null}
+                                        {country && country !== '-' ? <span className={'screen-des'}>, {getCountryName(country)}</span> : null}
                                     </span>
                                 </div>
-                                :
-                                <>
-                                </>
+                            ) : null
                         }
+
+                        {ISP && <div className={'ml-1'}>
+                            <span className={'screen-des'}>  {ISP}</span>
+                        </div>}
+
                     </div>
                 }
             </div>

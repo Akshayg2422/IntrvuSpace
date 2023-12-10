@@ -14,32 +14,23 @@ const useLogout = () => {
         loader.show();
 
         try {
-            dispatch(
-              submitLogout({
+            dispatch(submitLogout({
                 params,
-                onSuccess: () => (response: any) => {
-                  loader.hide();
-      
-                  dispatch(
-                    userLogout({
-                      onSuccess: () => {
-                        goTo(ROUTES["auth-module"].splash, true)
-                      },
-                      onError: () => {
-      
-                      },
-                    })
-                  );
+                onSuccess: () => () => {
+                    loader.hide();
+                    dispatch(userLogout({
+                        onSuccess: () => {
+                            goTo(ROUTES["auth-module"].splash, true);
+                        },
+                        onError: (error: any) => () => {
+                            const { message } = error;
+                            showToast(message, 'error');
+                            loader.hide();
+                        },
+                    }));
                 },
-                onError: (error: any) => () => {
-                  const { message } = error
-                  showToast(message, 'error')
-                  loader.show();
-                },
-              }))
-      
-          } catch (error) { }
-        
+            }));
+        } catch (error) { }
     };
 
 
