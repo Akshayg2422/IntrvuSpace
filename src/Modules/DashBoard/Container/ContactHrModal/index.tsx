@@ -9,7 +9,7 @@ const ContactHrModal = ({onClick}: ContactHrModalProps) => {
   return (
     <Modal
       isOpen
-      title={"Contact HR"}
+      title={"Your interview is completed"}
       subTitle={"Please contact HR to know about your post-interview details."}
       buttonText="OK"
       onClick={onClick}

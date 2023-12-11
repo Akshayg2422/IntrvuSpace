@@ -221,8 +221,7 @@ function Call() {
   const { scheduleInfo, recordingPermission } = useSelector(
     (state: any) => state.DashboardReducer
   );
-
-  const { loginDetails } = useSelector((state: any) => state.AppReducer);
+  
 
   const [processCallInprogress, setProcessCallInprogress] = useState(false);
 
@@ -1246,7 +1245,7 @@ function Call() {
             scheduleInfo?.can_view_report ? (
               <Report />
             ) 
-            : scheduleInfo?.is_report_complete && !loginDetails && (
+            : scheduleInfo?.is_report_complete && (
               <ContactHrModal
                 onClick={() => {
                   getBasicInfo();
