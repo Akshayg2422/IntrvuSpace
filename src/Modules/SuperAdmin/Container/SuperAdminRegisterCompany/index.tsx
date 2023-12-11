@@ -8,7 +8,6 @@ import './index.css';
 function SuperAdminRegisterCompany({ edit, loading, params, onParams, onBackPress, onSubmit }: SuperAdminRegisterCompanyProps) {
 
 
-
     const validateCompanyAdminDetailsHandler = () => {
         const validation = validate(REGISTER_COMPANY_SUPER_ADMIN_RULES, params)
 

@@ -6,7 +6,6 @@ import { SuperAdminRegisterAdminProps } from './interfaces';
 
 function SuperAdminRegisterAdmin({ edit, params, onParams, onSubmit }: SuperAdminRegisterAdminProps) {
 
-
     const validateCompanyAdminDetailsHandler = () => {
 
         const validation = validate(getRegisterRules(edit), params)

@@ -18,7 +18,7 @@ function WebsiteCreateJdAndAddCandidates() {
                             <div className="mt-5">
                                 <div>
                                     <span style={{ lineHeight: '35px' }} className="display-3 text-secondary font-weight-bolder mb-0 ls-1">
-                                        Create Jd & <br></br>Add Candidates
+                                        Create Jd <br></br>& Add Candidates
                                     </span>
                                 </div>
 
