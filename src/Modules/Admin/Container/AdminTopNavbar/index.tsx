@@ -3,9 +3,9 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 // reactstrap components
 import { icons } from "@Assets";
-import { Alert, Button, Image, showToast } from "@Components";
-import { useLoader, useModal, useNavigation } from "@Hooks";
-import { userLogout, switchToAdvance, submitLogout } from "@Redux";
+import { Alert, Button, Image } from "@Components";
+import { useLogout, useModal, useNavigation } from "@Hooks";
+import { switchToAdvance } from "@Redux";
 import { ROUTES } from "@Routes";
 import { capitalizeFirstLetter, filteredName } from "@Utils";
 import { useDispatch, useSelector } from "react-redux";
@@ -30,14 +30,10 @@ import { AdminTopNavbarProps } from './interfaces'
 function AdminTopNavbar({ showCreateOpening, onCreateOpeningClick }: AdminTopNavbarProps) {
   const logoutModal = useModal(false);
   const { goTo } = useNavigation();
-
-
+  const { loader, logout } = useLogout()
   const dispatch = useDispatch();
   const [dropdownOpen, setDropdownOpen] = useState(false);
-
-  const loader = useLoader(false);
   const { dashboardDetails } = useSelector((state: any) => state.AuthReducer);
-
   const { name } = dashboardDetails?.basic_info || {}
   const { is_super_admin, is_light_variant } = dashboardDetails?.rights || {}
 
@@ -79,36 +75,6 @@ function AdminTopNavbar({ showCreateOpening, onCreateOpeningClick }: AdminTopNav
     }
 
   };
-
-  function proceedLogout() {
-    const params = {}
-    loader.show();
-    try {
-      dispatch(
-        submitLogout({
-          params,
-          onSuccess: () => (response: any) => {
-            loader.hide();
-            dispatch(
-              userLogout({
-                onSuccess: () => {
-                  goTo(ROUTES["auth-module"].splash, true)
-                },
-                onError: () => {
-
-                },
-              })
-            );
-          },
-          onError: (error: any) => () => {
-            const { message } = error
-            showToast(message, 'error')
-            loader.hide();
-          },
-        }))
-
-    } catch (error) { }
-  }
 
 
   const toggleDropdown = () => {
@@ -289,7 +255,7 @@ function AdminTopNavbar({ showCreateOpening, onCreateOpeningClick }: AdminTopNav
         primary={"Proceed"}
         secondaryOnClick={logoutModal.hide}
         loading={loader.loader}
-        primaryOnClick={proceedLogout}
+        primaryOnClick={logout}
       />
     </>
   );

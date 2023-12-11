@@ -41,14 +41,17 @@ function EmailVerification() {
                 getOtpForEmailVerification({
                     params,
                     onSuccess: (response: any) => () => {
+
                         setActionType(SUBMIT_OTP)
+                        const { message } = response
                         loader.hide()
-                        showToast('Will you receive an OTP on your mail', "success");
+                        showToast(message, "success");
                     },
                     onError: (error: any) => () => {
+                        const { error_message } = error
                         setActionType(GET_OTP)
                         loader.hide()
-                        showToast(error.error_message, "error");
+                        showToast(error_message, "error");
 
                     }
                 }
@@ -80,8 +83,9 @@ function EmailVerification() {
                 verifyEmailUsingOtp({
                     params,
                     onSuccess: (response: any) => () => {
+                        const { message } = response
                         loader.hide()
-                        showToast(response.Success, 'success');
+                        showToast(message, 'success');
                         dispatch(
                             userLoginDetails({
                                 ...loginDetails,
@@ -91,8 +95,9 @@ function EmailVerification() {
                         goTo(ROUTES["auth-module"].splash, true);
                     },
                     onError: (error: any) => () => {
+                        const { error_message } = error
                         loader.hide()
-                        showToast(error.error_message, 'error');
+                        showToast(error_message, 'error');
                     }
                 })
             )

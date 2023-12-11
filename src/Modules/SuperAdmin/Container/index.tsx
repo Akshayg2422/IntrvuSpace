@@ -6,6 +6,7 @@ export * from './SuperNavbarWrapper'
 export * from './SuperAdminScheduleItem'
 export * from './OnGoingSchedules'
 export * from './OngoingScheduleDetails'
+export * from './CreateNewOpenings'
 
 
 
