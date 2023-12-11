@@ -12,7 +12,7 @@ function WebsiteAutoApprovalForCandidatesPerformance() {
     return (
 
         <div className='container-fluid'>
-            <div className={'m-6 pb-md-5'}>
+            <div className={'m-lg-6 m-md-6 m-sm-0 pb-md-5'}>
                 <Row>
                     <Col lg="5">
                         <div className="mt-5">
@@ -46,7 +46,7 @@ function WebsiteAutoApprovalForCandidatesPerformance() {
                     <Col className={'pt-5'} lg="7" sm="12">
                         <div className={'d-flex justify-content-center'}>
                             <img
-                                className={'ml-md-6'}
+                                className={'mr-md-6'}
                                 src={image.AutoApproval}
                                 width={"80%"}
                                 height={"80%"}
