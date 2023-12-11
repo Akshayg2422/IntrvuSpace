@@ -35,7 +35,7 @@ function AllInOnePlatform() {
       style={{ backgroundColor: "#ffffff" }}
     >
       <section className={`container-fluid`}>
-      <div className="m-6">
+      <div className="m-lg-6 m-md-6 m-sm-0">
           <div className="header-body">
             <Row className="">
               {" "}
@@ -111,14 +111,14 @@ function AllInOnePlatform() {
               </div>
               <div>
                   <Card
-                    className="col-12 text-left mt-7 mx-4"
+                    className="text-left mt-7 mx-lg-4 mx-md-4 mx-sm-0"
                     style={{
                       borderWidth: 1.5,
                       borderColor: "#e8edff",
                       backgroundColor: "transparent",
                     }}
                   >
-                    <div className="row "  >
+                    <div className="row">
                       <div className="col-md-4 d-flex flex-column justify-content-center">
                         {CREATE_JD_AND_ADD_CANDIDATE.map((item) => {
                           return (

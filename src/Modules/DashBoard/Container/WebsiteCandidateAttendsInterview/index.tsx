@@ -12,7 +12,7 @@ function WebsiteCandidateAttendsInterview() {
     return (
 
       <div className="container-fluid">
-            <div className="m-6 mb-6">
+            <div className="m-lg-6 m-md-6 m-sm-0 mb-6">
                 <Row>
                     <Col lg="5">
                         <div className="mt-5">
@@ -45,7 +45,7 @@ function WebsiteCandidateAttendsInterview() {
                     <Col className={'pt-5'} lg="7" sm="12">
                         <div className={'d-flex justify-content-center'}>
                             <img
-                                className={'ml-md-6'}
+                                className={'mr-md-6'}
                                 src={image.CandidatesAttendInterview}
                                 width={"80%"}
                                 height={"80%"}

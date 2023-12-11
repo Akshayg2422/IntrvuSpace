@@ -28,7 +28,7 @@ function WebsiteHeader() {
       id="home"
     >
       <div className='container-fluid'>
-        <div className="m-6 mb-6">
+        <div className="m-lg-6 m-md-6 m-sm-0 mb-6">
           <Row>
             <Col lg="5">
               <div className="">
@@ -103,10 +103,10 @@ function WebsiteHeader() {
                 </div>
               </div>
             </Col>
-            <Col lg="7" sm="12">
-              <div className="text-center mt-sm-0 mt-2">
+            <Col className="mt-xl-0 mt-lg-0 mt-7" lg="7" sm="12">
+              <div className="text-center ml-lg-3 ml-md-3 mt-2">
               <video  
-                autoPlay={true} 
+                // autoPlay={true} 
                 controls 
                 poster={image.intrvuSpaceIv} 
                 preload="metadata"

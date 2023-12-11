@@ -12,12 +12,12 @@ function WebsiteReportsAndInsights() {
     return (
 
         <div className='container-fluid'>
-            <div className="m-6 mb-md-6">
+            <div className="m-lg-6 m-md-6 m-sm-0 mb-md-6 pt-5">
                 <Row>
                     <Col lg="7" sm="12">
                         <div className={'mt-md-5 d-flex justify-content-center'}>
                             <img
-                                className={"mr-md-8"}
+                                className={"mr-md-6"}
                                 src={image.AccessReportsAndInsights}
                                 width={"80%"}
                                 height={"80%"}
@@ -25,7 +25,7 @@ function WebsiteReportsAndInsights() {
                         </div>
                     </Col>
                     <Col lg="5">
-                        <div className="mt-5 ml-md-4">
+                        <div className="mt-5">
                             <div>
                                 <span style={{ lineHeight: '35px' }} className="display-3 text-secondary font-weight-bolder mb-0 ls-1">
                                     Access on Interview <br></br>Reports & Insights
