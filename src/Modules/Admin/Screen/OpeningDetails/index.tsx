@@ -425,10 +425,18 @@ function OpeningDetails() {
         isOpen={modifyvViewsectionModal.visible}
         onClose={modifyvViewsectionModal.hide}
       >
-        <CommonTable
+          {
+          loader.loader ?
+          <div className={'loader-container'}>
+            <Spinner />
+          </div>
+          :
+          <CommonTable
           displayDataSet={normalizedTableData(jdSection)}
           tableDataSet={jdSection}
         />
+        }
+       
 
 
       </Modal>

@@ -56,7 +56,7 @@ function InterviewInfo() {
                 </div>
             }
 
-            {role && <ScreenHeading text={`Interview for the role of ${role}`} subtitle={experience_txt} />}
+            {role &&!loader.loader && <ScreenHeading text={`Interview for the role of ${role}`} subtitle={experience_txt} />}
 
             {
                 interviewScheduleDetails && !loader.loader &&

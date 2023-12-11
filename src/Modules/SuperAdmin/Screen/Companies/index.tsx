@@ -43,11 +43,13 @@ function Companies() {
     const enterPress = useKeyPress("Enter");
 
     useEffect(() => {
-        getCompaniesApiHandler(INITIAL_PAGE);
+        getCompaniesApiHandler(companiesCurrentPages);
+      
     }, [])
 
     useEffect(() => {
         if (enterPress) {
+            console.log(INITIAL_PAGE,"INITIAL_PAGE")
             getCompaniesApiHandler(INITIAL_PAGE);
         }
     }, [enterPress])

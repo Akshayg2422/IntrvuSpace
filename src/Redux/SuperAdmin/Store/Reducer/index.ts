@@ -15,6 +15,7 @@ const initialState: SuperAdminProps = {
 };
 
 const SuperAdminReducer = (state = initialState, action: any) => {
+ 
   switch (action.type) {
 
     /**
@@ -27,6 +28,10 @@ const SuperAdminReducer = (state = initialState, action: any) => {
         ...state,
         companies: undefined,
         companiesNumOfPages: 0,
+   /**
+ * if we want the current page after click the recent interview page we want to 
+ * comment the companiesCurrentPages else we have to put the state.companiesCurrentPages
+ */
         companiesCurrentPages: 1
       };
       break;
@@ -39,10 +44,10 @@ const SuperAdminReducer = (state = initialState, action: any) => {
         ...state,
         companies: modifiedCompanies,
         companiesNumOfPages: companies?.num_pages,
-        companiesCurrentPages:
-          companies.next_page === -1
-            ? companies.num_pages
-            : companies.next_page - 1,
+        companiesCurrentPages:companies?.data ?
+          companies?.next_page === -1
+            ? companies?.num_pages
+            : companies?.next_page - 1 : state.companiesCurrentPages,
       };
       break;
     case ActionTypes.GET_COMPANIES_FAILURE:
@@ -124,3 +129,5 @@ const SuperAdminReducer = (state = initialState, action: any) => {
 };
 
 export { SuperAdminReducer };
+
+

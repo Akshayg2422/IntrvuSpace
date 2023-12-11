@@ -38,7 +38,8 @@ const RecentInterviews = () => {
   } = useSelector((state: any) => state.SuperAdminReducer);
 
   useEffect(() => {
-    getRecentInterviewsHandler(INITIAL_PAGE);
+ 
+    getRecentInterviewsHandler(recentInterviewsCurrentPages);
   }, [filterCompanies.value.id, status.value?.id]);
 
   useEffect(() => {
