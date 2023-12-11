@@ -31,8 +31,6 @@ function DetectFace({ onClick, heading, experience, duration, loading, callValid
     let array: any = []
     const [faceFound, setFaceFound] = useState<any>('Checking')
     const [micCheck, setMicCheck] = useState<any>('Checking')
-
-    const detectFaceModal = useModal(false)
     const videoStreamRef = useRef<any>()
     const audioStreamRef = useRef<any>(null)
     const audioStreamRunningRef = useRef<any>()
@@ -97,8 +95,6 @@ function DetectFace({ onClick, heading, experience, duration, loading, callValid
     async function checkMicAndCameraPermission() {
         setPermissionShow(true)
         const hasCamPermission = await hasCameraPermission();
-        console.log(hasCamPermission || !is_video_recording_manditory, 'hk' , hasCamPermission,!is_video_recording_manditory);
-        
         if (hasCamPermission || !is_video_recording_manditory) {
             camPermissionModal.hide();
 
@@ -380,7 +376,6 @@ function DetectFace({ onClick, heading, experience, duration, loading, callValid
                 const micDisableSum = array.slice(array.length - 10, array.length).reduce((accumulator: number, currentValue: number) => accumulator + currentValue);
                 MicDisableAverage = micDisableSum / 10
             }
-            console.log(audioOnlyAuth, "come",faceDetected.current);
 
             if (faceDetected.current || !is_video_recording_manditory) {
                 setFaceFound(true)
@@ -432,7 +427,6 @@ function DetectFace({ onClick, heading, experience, duration, loading, callValid
     }
 
     const stopStream = () => {
-        console.log(45);
         setNoiseDetection('Checking')
         setFaceFound('Checking')
         setMicCheck('Checking')
@@ -452,12 +446,10 @@ function DetectFace({ onClick, heading, experience, duration, loading, callValid
         //     audioContext.current.close();
         // }
         if (audioStreamRef.current) {
-            console.log(audioStreamRef.current, "audioStreamRef");
-
             const tracks = audioStreamRef.current?.getTracks();
             tracks.forEach((track) => track.stop());
         }
-        console.log(audioStreamRef.current, "audioStreamRef");
+        
         goBack()
     }
     return (
@@ -498,22 +490,6 @@ function DetectFace({ onClick, heading, experience, duration, loading, callValid
 
                 </div>
 
-                {/* <Modal isOpen={detectFaceModal.visible}
-                onClose={() => {
-                    detectFaceModal.hide()
-                    setFaceFound(false)
-                    setNoiseDetection(false)
-
-                    setNoiseDetection('Checking')
-                    setFaceFound('Checking')
-                    clearTimeout(clearTimeOutRef.current)
-                    stopStream()
-                    // setCallDetectFace(false)
-                    goBack()
-                }}
-                title={'Validating face and noise'}
-                size='xl'> */}
-
                 {showDetecting === true ? <div className='d-lg-flex text-secondary'>
                     <div className='col-lg-7 col-12'>
                     <div className='d-flex align-items-center justify-content-center'  style={{ position: 'relative', width: "600px", height: "450px", backgroundColor: "#f2faf0" }}>
@@ -530,7 +506,7 @@ function DetectFace({ onClick, heading, experience, duration, loading, callValid
                             <h2 className='text-secondary'>Checking Prerequirites</h2>
                             <div className='mt-4'>
                                 {
-                                   !audioOnlyAuth ? faceFound === 'Checking' ? <div className='d-flex align-items-center'> <Spinner color='secondary' className={'d-inline-block  '} /> <span className='mt-1 ml-3'>Validating video input</span></div> : faceFound === true?
+                                   is_video_recording_manditory ? faceFound === 'Checking' ? <div className='d-flex align-items-center'> <Spinner color='secondary' className={'d-inline-block  '} /> <span className='mt-1 ml-3'>Validating video input</span></div> : faceFound === true?
                                         <div className=' d-flex align-items-baseline'> <Image src={icons.greenTick} height={12} width={12} style={{
                                             objectFit: 'contain'
                                         }} /> <span className='ml-3'>Face visible & valid</span></div>
@@ -583,11 +559,11 @@ function DetectFace({ onClick, heading, experience, duration, loading, callValid
                                     }} />
                                         <span className='mb-0 ml-3  text-secondary '>Verify the stability of your internet connection</span>
                                     </div>
-                                    <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.check} height={8} width={8} style={{
+                                   {is_video_recording_manditory && <div className='mt-3 d-flex align-items-baseline'> <Image src={icons.check} height={8} width={8} style={{
                                         objectFit: 'contain'
                                     }} />
                                         <span className='mb-0 ml-3  text-secondary '>Keep the video function enabled throughout the session</span>
-                                    </div>
+                                    </div>}
                                 </div>}
 
                             {
@@ -671,9 +647,6 @@ function DetectFace({ onClick, heading, experience, duration, loading, callValid
                 }
 
             </div>
-            {/* </Modal> */}
-
-
             {/** Microphone access modal */}
             <Modal
                 isOpen={micPermissionModal.visible}
