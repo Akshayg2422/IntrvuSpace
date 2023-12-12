@@ -1,31 +1,30 @@
 import React, { useState } from 'react';
 import { Button, Input } from 'reactstrap';
-import { FileUpViwerProps } from './interfaces'
+import { FileViewProps } from './interfaces'
 import { translate } from '@I18n';
 import { getPhoto } from '@Utils';
 import{Image}from '@Components'
 
-function FileViewer({ onChange, onSelect,icons,height,width ,selectedFileUrl}: FileUpViwerProps) {
-  const [fileUrl, setFileUrl] = useState<string | null>(selectedFileUrl);
+function FileViewer({ onChange, onSelect,icons,height='600px' ,width='100%' ,selectedFileUrl,title,className}: FileViewProps) {
+ 
 
-  const openFileInNewTab = () => {
-    if (fileUrl) {
-
-       window.open(getPhoto(fileUrl), '_blank');
-    }
-  };
   return (
-    <div >
-      <div  onClick={()=>openFileInNewTab()} >
-        <Image src={icons} height={height} width={width} />
+    <div className={` d-flex justify-content-center ${className} `}>
+      <iframe
+          title={title}
+          src={getPhoto(selectedFileUrl)}
+          width={width}
+          height={height}
+        />
       </div>
-    </div>
-  );
-}
+)
+  }
+
 
 export { FileViewer };
 
-/* this is type we use the fileViewer */
+/* we have to use like this */
 
-{/* <FileViewer
-icons={icons.document} height={70} width={70} selectedFileUrl={each?.attachment_file} /> */}
+// <FileViewer
+// selectedFileUrl={'https://www.arvindguptatoys.com/arvindgupta/orwellanimalfarm.pdf'} />
+

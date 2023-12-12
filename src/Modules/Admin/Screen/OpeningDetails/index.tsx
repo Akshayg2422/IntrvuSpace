@@ -2,6 +2,7 @@ import {
   Alert,
   CommonTable,
   DateTimePicker,
+  FileViewer,
   Input,
   MenuBar,
   Modal,
@@ -30,6 +31,7 @@ import moment from "moment";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./index.css";
+import { icons } from "@Assets";
 
 
 function OpeningDetails() {
@@ -261,7 +263,7 @@ function OpeningDetails() {
   return (
     <>
       <div className={"screen-padding"}>
-
+  
         {
           loader.loader &&
           <div className={'loader-container'}>
