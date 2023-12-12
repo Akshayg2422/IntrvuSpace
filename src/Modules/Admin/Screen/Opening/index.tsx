@@ -118,9 +118,9 @@ function Opening() {
   /**
    * loader state
    */
-  const listLoader = useLoader(false);
+  const listLoader = useLoader(true);
   const createOpeningLoader = useLoader(false);
-
+ 
   useEffect(() => {
     getCorporateScheduleApiHandler(corporateScheduleCurrentPages);
   }, [filterSector.value, filterDepartment.value, status.value]);
@@ -284,9 +284,7 @@ function Opening() {
     updateData[index] = { ...updateData[index], is_view_more: status };
     dispatch(updateCorporateSchedules(updateData));
   }
-  console.log(corporateScheduleCount, "corporateScheduleCount");
-  
-
+ 
   return (
     <div className={"screen"}>
       <AdminTopNavbar
@@ -352,7 +350,6 @@ function Opening() {
                 )}
               </div>
 
-              <div></div>
             </div>
             {
               listLoader.loader && (
