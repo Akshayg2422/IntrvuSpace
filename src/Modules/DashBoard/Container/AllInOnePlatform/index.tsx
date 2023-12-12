@@ -43,7 +43,7 @@ function AllInOnePlatform() {
               <Col className={`text-black  text-center mt-6`} >
                 <span
                   className={"display-3 font-weight-bolder text-secondary "}
-                // style={{ fontSize: 45 }}
+               
                 >
                   All-In-One Platform For Interview
                 </span>
@@ -143,9 +143,9 @@ function AllInOnePlatform() {
                         })}
                       </div>
 
-                      <div className="col-md-4 d-flex flex-column justify-content-center mt-5 mt-md-2">
+                      <div className="col-md-4 d-flex flex-column align-items-center justify-content-center mt-5 mt-md-2">
                         <div className="row">
-                          <div className="d-none d-lg-block">
+                          <div className="d-none d-xl-block">
                             <div
                               style={{
                                 width: 1.3,
@@ -154,7 +154,7 @@ function AllInOnePlatform() {
                               }}
                             />
                           </div>
-                          <div className="mx-lg-5 mb-2 mx-md-0 mx-3">
+                          <div className="mx-xl-4 mx-lg-1 mb-2 mx-md-0 mx-3">
                             <div
                               className="text-secondary boldText "
                               style={{ fontSize: 21 }}
@@ -171,7 +171,7 @@ function AllInOnePlatform() {
                                 className="text-gray"
                                 style={{ fontSize: 13, fontFamily: "cursive" }}
                               >
-                                {/* <s>{`₹ 700.00`}</s> */}
+                            
                                 <Image src={icons.moneyDefalt} height={50} width={60} style={{
                                   objectFit: 'contain'
                                 }} />
@@ -229,7 +229,7 @@ function AllInOnePlatform() {
                             </div>
                           </div>
 
-                          <div className="d-none d-lg-block">
+                          <div className="d-none d-xl-block">
                             <div
                               style={{
                                 width: 1.4,
@@ -238,6 +238,7 @@ function AllInOnePlatform() {
                               }}
                             />
                           </div>
+
                         </div>
                       </div>
 
