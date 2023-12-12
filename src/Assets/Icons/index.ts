@@ -234,4 +234,8 @@ export const icons = {
   cameraAccess: require('./CameraAccess/Video Call.png'),
   microPhoneAccess: require('./MicrophoneAccess/Microphone.png'),
   padlockIcon2: require('./PadlockIcon2/PadlockIcon2.png'),
+  addIcon: require('./ResumeAdd/icon.png'),
+  pdfIcon: require('./Pdf/icon.png'),
+  docIcon: require('./DocIcon/icon.png'),
+  docxIcon: require('./DocxIcon/icon.png')
 };
