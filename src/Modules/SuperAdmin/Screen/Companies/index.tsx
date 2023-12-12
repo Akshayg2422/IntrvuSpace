@@ -49,7 +49,7 @@ function Companies() {
 
     useEffect(() => {
         if (enterPress) {
-            console.log(INITIAL_PAGE,"INITIAL_PAGE")
+            
             getCompaniesApiHandler(INITIAL_PAGE);
         }
     }, [enterPress])
