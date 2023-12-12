@@ -7,6 +7,7 @@ import {
   InputHeading,
   Modal,
   PageNation,
+  ResumeUploader,
   Spinner,
   TextArea,
   showToast
@@ -314,9 +315,7 @@ function FromJD() {
     setDuration(INTERVIEW_DURATIONS[0]);
   }
 
-
   console.log("isQuestionGenerated", isQuestionGenerated);
-
   return (
     <>
       {
