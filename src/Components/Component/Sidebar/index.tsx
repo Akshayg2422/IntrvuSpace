@@ -139,6 +139,7 @@ function Sidebar({ toggleSideNav, sideNavOpen, routes, logo, rtlActive }: Sideba
           </NavItem>
         );
       }
+    
       return (
         <NavItem className={activeRoute(prop.layout + prop.path)} key={key}>
           <NavLink

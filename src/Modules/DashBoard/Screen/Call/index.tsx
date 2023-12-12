@@ -221,6 +221,8 @@ function Call() {
   const { scheduleInfo, recordingPermission } = useSelector(
     (state: any) => state.DashboardReducer
   );
+  
+
   const [processCallInprogress, setProcessCallInprogress] = useState(false);
 
   const responseDelayTimeOutRef = useRef<any>(undefined);
@@ -1243,7 +1245,7 @@ function Call() {
             scheduleInfo?.can_view_report ? (
               <Report />
             ) 
-            : scheduleInfo?.is_report_complete &&(
+            : scheduleInfo?.is_report_complete && (
               <ContactHrModal
                 onClick={() => {
                   getBasicInfo();

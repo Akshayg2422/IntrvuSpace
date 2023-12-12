@@ -13,12 +13,12 @@ function WebsiteScheduleAndNotification() {
     return (
 
       <div className="container-fluid">
-            <div className="m-6 mb-md-6">
+            <div className="m-lg-6 m-md-6 m-sm-0 mb-md-6">
                 <Row>
                     <Col lg="7" sm="12">
                         <div className={'mt-md-5 d-flex justify-content-center'}>
                             <img
-                                className={"mr-md-8"}
+                                className={"mr-md-6"}
                                 src={image.ScheduleAndNotification}
                                 width={"80%"}
                                 height={"80%"}
