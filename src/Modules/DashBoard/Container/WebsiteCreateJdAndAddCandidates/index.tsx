@@ -11,7 +11,7 @@ const packageContent = [
 function WebsiteCreateJdAndAddCandidates() {
     return (
         <div className={`container-fluid`}>
-      <div className="m-6">
+      <div className="m-lg-6 m-md-6 m-sm-0">
                 <div className="mb-6 ">
                     <Row>
                         <Col lg="5">
@@ -45,7 +45,7 @@ function WebsiteCreateJdAndAddCandidates() {
                         <Col lg="7" sm="12">
                             <div className="mt-5 d-flex justify-content-center">
                                 <img
-                                    className={'ml-md-6'}
+                                    className={'ml-md--6'}
                                     src={image.CreateJdAddCandidates}
                                     width={"80%"}
                                     height={"80%"}

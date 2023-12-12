@@ -13,7 +13,7 @@ import {
 function WebsiteFooter() {
   return (
       <footer className="container-fluid pb-3  mt-7 bg-container-dark" id="footer-main">
-        <section className="m-6 pt-4">
+        <section className="m-lg-6 m-md-6 m-sm-0 pt-4">
             <div className="mb-md--3">
               <div className="row">
                 <div className="col-lg-4 d-flex justify-content-start">
@@ -37,7 +37,7 @@ function WebsiteFooter() {
                     </div>
                   </div>
                 </div>
-                <div className="col d-flex justify-content-start mt-lg-0 mt-5 ml-md-5 ">
+                <div className="col d-flex justify-content-start mt-lg-0 mt-5 ">
                   <div className="">
                     <h3 className="text-secondary font-weight-800">COMPANY</h3>
                     <p
@@ -112,13 +112,13 @@ function WebsiteFooter() {
                       <div className="mt-1">
                         <Image src={icons.mark} height={18} />
 
-                        <span className="ml-2">
-                          No:03, Prithiv Nagar, G.N.T Road,
+                        <div className="ml-4 mt--4">
+                          <span>No:03, Prithiv Nagar, G.N.T Road,</span>
                           <br />{" "}
                           {/* <span className="ml-4" style={{ fontSize: '15px', fontWeight: 400 }}> Road</span>
                         <br />{" "} */}
-                          <span className="ml-4"> Gummidipoondi - 601 201</span>
-                        </span>
+                          <span> Gummidipoondi - 601 201</span>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -127,13 +127,13 @@ function WebsiteFooter() {
             </div>
         </section>
 
-        <hr className="mx-lg-6 mx-md-4 mx-3"></hr>
+        <hr className="mx-lg-6 mx-md-6 mx-3"></hr>
 
         <Container>
           <div
-            className={`mt--2 ml-0 d-flex flex-sm-row flex-column  align-items-center`}
+            className={`mt--2 ml-0 ml-md-4 d-flex flex-sm-row flex-column  align-items-center`}
           >
-            <div className={"col col-sm-6 text-secondary ml--3"}>
+            <div className={"col col-sm-6 text-secondary  ml--3"}>
               Copyright © {new Date().getFullYear()} www.intrvu.space | All
               Rights Reserved.
             </div>
