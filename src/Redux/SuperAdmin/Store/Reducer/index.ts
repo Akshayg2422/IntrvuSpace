@@ -12,7 +12,7 @@ const initialState: SuperAdminProps = {
   selectedCompany: undefined,
   onGoingSchedules: [],
   selectedOngoingSchedule: undefined,
-  filterCompanyInterview:undefined,
+  selectedCompanyId:undefined,
   reportRecapture:undefined,
 };
 
@@ -139,7 +139,7 @@ const SuperAdminReducer = (state = initialState, action: any) => {
       break;
 
       case ActionTypes.VIEW_COMPANY_INTERVIEW:
-        state = { ...state, filterCompanyInterview: action.payload };
+        state = { ...state, selectedCompanyId: action.payload };
         break;
 
 

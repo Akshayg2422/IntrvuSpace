@@ -28,6 +28,8 @@ export const RequireAuth = ({ hideSideNac, children }: RequireAuthProps) => {
 
     const mainContentRef = useRef(null);
 
+   
+
     const routes = [
         {
             path: ROUTES['super-admin'].companies,
@@ -58,14 +60,14 @@ export const RequireAuth = ({ hideSideNac, children }: RequireAuthProps) => {
             component: <OngoingInterviews />
         },
     ];
+ 
 
     if (!isLoggedIn) {
         localStorage.setItem('route', location.pathname);
         return <Navigate to={ROUTES['auth-module'].login} state={{ path: location.pathname }} />
     }
 
-    console.log(hideSideNac);
-
+ 
 
     return (
         <div className={'screen'}>

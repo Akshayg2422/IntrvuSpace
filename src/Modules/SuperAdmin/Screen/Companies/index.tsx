@@ -1,7 +1,7 @@
 import { icons } from '@Assets';
 import { CommonTable, Image, Input, MenuBar, NoDataFound, Spinner, StatusIcon, showToast, Modal, ProfilePhoto } from '@Components';
 import { useInput, useKeyPress, useLoader, useModal, useNavigation } from '@Hooks';
-import { alterCompanyLimit, alterCompanyStatus, getCompanies, setSelectedCompany, viewCompanyInterviews } from '@Redux';
+import { alterCompanyLimit, alterCompanyStatus, getCompanies, setSelectedCompany,selectedRecentInterviewCompanyId } from '@Redux';
 import { ROUTES } from '@Routes';
 import { INITIAL_PAGE, capitalizeFirstLetter, getPhoto, paginationHandler } from '@Utils';
 import { useEffect, useState } from 'react';
@@ -44,13 +44,13 @@ function Companies() {
 
     useEffect(() => {
         getCompaniesApiHandler(companiesCurrentPages);
-        dispatch(viewCompanyInterviews(undefined))
-
+        dispatch(selectedRecentInterviewCompanyId(undefined))
+      
     }, [])
 
     useEffect(() => {
         if (enterPress) {
-
+            
             getCompaniesApiHandler(INITIAL_PAGE);
         }
     }, [enterPress])
@@ -58,10 +58,10 @@ function Companies() {
 
     function getCandidateMenu(is_active: boolean) {
         return [
-            { id: 0, name: "Edit" },
-            { id: 1, name: is_active ? "Disable" : 'Enable' },
-            { id: 2, name: "Alter Limit" },
-            { id: 3, name: "View Interviews" },
+            { id:'ED', name: "Edit" },
+            { id: 'DE', name: is_active ? "Disable" : 'Enable' },
+            { id:'AL', name: "Alter Limit" },
+            { id:'RI', name: "Recent Interviews" },
         ]
     }
 
@@ -134,6 +134,7 @@ function Companies() {
     };
 
     function companyMenuHandler(action: any, item: any) {
+        console.log(action,"action============///")
         const { id, is_active, interview_limit } = item;
         setSelectedCompanyId(id);
         dispatch(setSelectedCompany(item))
@@ -152,8 +153,8 @@ function Companies() {
         }
         else if (MENU[3].id === action.id) {
             goTo(ROUTES['super-admin']['recent-interviews'])
-            dispatch(viewCompanyInterviews(id))
-
+             dispatch(selectedRecentInterviewCompanyId(id))
+         
         }
 
     }
@@ -189,7 +190,7 @@ function Companies() {
                             </div>
                         </div>
                     ),
-
+                
                     email,
                     Mobile: phone,
                     address,

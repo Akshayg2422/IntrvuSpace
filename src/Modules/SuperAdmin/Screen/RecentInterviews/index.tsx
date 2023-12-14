@@ -14,6 +14,7 @@ const RecentInterviews = () => {
     { id: 'ALL', text: 'All' },
     { id: 'IS_STARTED', text: 'Yet to start' },
     { id: 'IS_COMPLETED', text: 'Completed' },
+    {id:'IS_COMPLETE_REPORT',text:'Report not complete'}
   ]
 
   const SCHEDULE_MENU = [
@@ -35,11 +36,11 @@ const RecentInterviews = () => {
     recentInterviewsNumOfPages,
     recentInterviewsCurrentPages,
     companies,
-    filterCompanyInterview
+    selectedCompanyId
   } = useSelector((state: any) => state.SuperAdminReducer);
 
   useEffect(() => {
-    const PAGE_PATH_NUMBER =filterCompanyInterview?INITIAL_PAGE:recentInterviewsCurrentPages
+    const PAGE_PATH_NUMBER =selectedCompanyId?INITIAL_PAGE:recentInterviewsCurrentPages
     getRecentInterviewsHandler(PAGE_PATH_NUMBER);
   }, [filterCompanies.value.id, status.value?.id]);
 
@@ -48,7 +49,7 @@ const RecentInterviews = () => {
       getRecentInterviewsHandler(INITIAL_PAGE);
     }
   }, [enterPress]);
-console.log(recentInterviews,"recentInterviews======+++")
+
 
   useEffect(() => {
     getCompaniesApiHandler();
@@ -80,11 +81,12 @@ console.log(recentInterviews,"recentInterviews======+++")
 
   const getRecentInterviewsHandler = (page_number: number) => {
 
-    const companyId =filterCompanyInterview?filterCompanyInterview:filterCompanies.value.id;
+    const companyId =selectedCompanyId?selectedCompanyId:filterCompanies.value.id;
 
     const filterStatus = {
       ...(status.value?.id === "IS_STARTED" && { is_started: true }),
-      ...(status.value?.id === "IS_COMPLETED" && { is_complete: true })
+      ...(status.value?.id === "IS_COMPLETED" && { is_complete: true }),
+      ...(status.value?.id === "IS_COMPLETE_REPORT" && { is_report_complete: false })
     };
 
     const params = {
@@ -186,7 +188,7 @@ console.log(recentInterviews,"recentInterviews======+++")
         const name = company_details?.name
      
         return {
-          'Company Name':name,
+          'Company':name,
        
           'role':<div  style={{width:'180px'}} >
              <div className={"th-bold mb--1"} >
@@ -196,7 +198,7 @@ console.log(recentInterviews,"recentInterviews======+++")
                                 {`${interviewee_experience} years` }
                             </span>
           </div> ,
-           'interviewee name':<div style={{width:'200px'}} >
+           'interviewee':<div style={{width:'200px'}} >
            <div className={"font-weight-600 mb--1"} >
                               {capitalizeFirstLetter(interviewee_name)}
                           </div>
@@ -224,7 +226,7 @@ console.log(recentInterviews,"recentInterviews======+++")
                     />
                   </div>:
                   is_complete &&(
-                   <div className={"th-button"}>
+                   <div className={"th-button"} style={{width:'150px'}}>
                    <Button
                      block
                      outline
@@ -279,7 +281,7 @@ console.log(recentInterviews,"recentInterviews======+++")
           />
         </div>
 
-       {!filterCompanyInterview && <div className={'col-sm-3'}>
+       {!selectedCompanyId && <div className={'col-sm-3'}>
           <DropDown
             id={"companies"}
             heading={"Companies"}

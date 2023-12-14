@@ -8,6 +8,6 @@ export interface SuperAdminProps {
     selectedCompany: any;
     onGoingSchedules: any;
     selectedOngoingSchedule: any
-    filterCompanyInterview:any
+    selectedCompanyId:any
     reportRecapture:any
 }
