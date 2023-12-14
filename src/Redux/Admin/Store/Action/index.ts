@@ -143,3 +143,29 @@ export const createCorporateOpeningLite = (params: any) => {
         payload: params
     }
 }
+
+/*
+record Authentication Video
+*/
+
+export const postRecordAuthenticationVideo = (params: any) => {
+    return {
+        type: ActionTypes.POST_RECORD_AUTHENTICATION_VIDEO,
+        payload: params,
+    };
+};
+
+export const postRecordAuthenticationVideoSuccess = (response: any) => {
+
+    return {
+        type: ActionTypes.POST_RECORD_AUTHENTICATION_VIDEO_SUCCESS,
+        payload: response
+    }
+}
+
+export const postRecordAuthenticationVideoFailure = (error: any) => {
+    return {
+        type: ActionTypes.POST_RECORD_AUTHENTICATION_VIDEO_FAILURE,
+        payload: error
+    }
+}

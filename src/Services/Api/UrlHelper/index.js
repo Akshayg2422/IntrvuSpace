@@ -333,3 +333,7 @@ export const URL_SWITCH_TO_ADVANCE = ASSISTANT + 'switchToAdvancedMode'
 /** logoutapi */
 
 export const URL_LOGOUT = EMPLOYEE + 'logout'
+
+/** recordAuthenticationVideo */
+
+export const URL_RECORD_AUTHENTICATION_VIDEO = ASSISTANT + 'recordAuthenticationVideo'
