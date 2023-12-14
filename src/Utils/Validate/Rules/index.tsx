@@ -393,12 +393,6 @@ export const CREATE_CORPORATE_VACANCIES_RULES = {
 }
 
 
-
-
-
-
-
-
 export const CREATE_FOR_OTHERS_RULES = {
   custom_first_name: {
     presence: { message: "First name cannot be empty" },
