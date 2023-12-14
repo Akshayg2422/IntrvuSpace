@@ -5,7 +5,6 @@ import { Back, Button, Image, Modal, Spinner } from '@Components';
 import { icons } from '@Assets';
 import {
     getOperatingSystem,
-    gotoPermissionSetting,
     hasCameraPermission,
     hasMicrophonePermission,
 } from "@Utils";
@@ -137,14 +136,11 @@ function DetectFace({ onClick, heading, experience, duration, loading, callValid
             );
             canvasCtx = canvasElement?.getContext("2d");
             drawingUtils = new DrawingUtils(canvasCtx);
-            console.log(video, 'videooooo');
             if (video)
                 video.srcObject = stream;
 
             // Load face landMark model
             if (video) {
-                console.log(callValidating, "callValidating");
-
                 if (!callValidating) {
                     createFaceLandmarker();
 
@@ -220,6 +216,7 @@ function DetectFace({ onClick, heading, experience, duration, loading, callValid
 
             results = faceLandmarker?.detectForVideo(video, startTimeMs);
         }
+        
         if (results.faceLandmarks) {
 
             for (const landmarks of results.faceLandmarks) {
@@ -272,8 +269,6 @@ function DetectFace({ onClick, heading, experience, duration, loading, callValid
 
             }
         }
-
-        //   console.log(results,"results.faceBlendshapes");
 
         if (results.faceBlendshapes.length > 0) {
             faceDetected.current = true
@@ -403,12 +398,10 @@ function DetectFace({ onClick, heading, experience, duration, loading, callValid
             if (average < 30) {
                 setNoiseDetection(true)
                 count = count + 1
-                console.log("average", average, 2)
                 array = []
             }
 
             else {
-                console.log("average", average, 3)
                 setNoiseDetection(false)
                 audioStreamRunningRef.current = false
                 audioContext.current.close();
@@ -418,8 +411,6 @@ function DetectFace({ onClick, heading, experience, duration, loading, callValid
                 webcamRunningRef.current = false
                 audioStreamRunningRef.current = false
                 audioContext.current.close();
-                console.log(audioContext.current.state);
-
                 setProceed(true)
             }
 
@@ -440,8 +431,6 @@ function DetectFace({ onClick, heading, experience, duration, loading, callValid
         }
 
         audioStreamRunningRef.current = false
-        console.log(audioContext.current, 'js');
-
         // if (noiseDetection) {
         //     audioContext.current.close();
         // }

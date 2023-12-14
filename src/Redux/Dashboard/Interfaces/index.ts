@@ -65,6 +65,8 @@ export interface DashboardProp {
   refreshCorporateSchedules?: boolean;
   openingCandidatesCount?: number;
   interviewUrl?: any;
-  jdItemNumOfPages:any,
-  jdItemCurrentPages:any,
+  jdItemNumOfPages:any;
+  jdItemCurrentPages:any;
+  faceVisible:boolean;
+
 }

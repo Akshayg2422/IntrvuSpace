@@ -53,6 +53,7 @@ import moment from "moment";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./index.css";
+import ReverseTimer from "@Components//Component/ReverseTimer";
 
 function Opening() {
   const {
@@ -291,7 +292,6 @@ function Opening() {
         showCreateOpening={corporateScheduleCount > 0}
         onCreateOpeningClick={createOpeningModal.show}
       />
-
       {corporateScheduleCount <= 0 ? <OpeningEmpty onCreateOpeningClick={createOpeningModal.show} />
         : (
           <div className={"screen-container-other"}>

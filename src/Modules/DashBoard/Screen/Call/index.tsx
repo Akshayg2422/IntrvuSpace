@@ -218,9 +218,12 @@ function Call() {
   const dispatch = useDispatch();
   let { schedule_id } = useParams();
   let callModel = useModal(true);
-  const { scheduleInfo, recordingPermission } = useSelector(
+  const { scheduleInfo, recordingPermission,faceVisible } = useSelector(
     (state: any) => state.DashboardReducer
   );
+  console.log(scheduleInfo,"faceVisible");
+  const faceVisibleRef = useRef(null)
+  faceVisibleRef.current = faceVisible
   
 
   const [processCallInprogress, setProcessCallInprogress] = useState(false);
@@ -278,6 +281,8 @@ function Call() {
   {
     /** interview recording useEffect */
   }
+
+  
 
   useEffect(() => {
     if (recordStatus) {
@@ -420,7 +425,11 @@ function Call() {
       is_voiceup_current_chunk_state: isSpeakingRef.current,
       proceed_refresh: !intitalRequestSent.current,
       blob_data: "",
+      is_paused: faceVisibleRef.current,
+      paused_reason: faceVisibleRef.current ? 'face not found' : '',
     };
+console.log(syncD,"syncD");
+
 
     if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
       if (intitalRequestSent.current === false) {
@@ -1076,6 +1085,7 @@ function Call() {
                           name={getShortName(scheduleInfo?.interviewer_name)}
                           shouldBlink={interviewer_state === IV_SPEAKING}
                           isWebCamOff = {true}
+                          endInterview={()=>{}}
                         />
                         <h3 className="display-3 mb-4 text-primary mt-3">
                           {capitalizeFirstLetter(
@@ -1091,6 +1101,7 @@ function Call() {
                           name={getShortName(scheduleInfo?.interviewee_name)}
                           shouldBlink={interviewee_state === IE_SPEAKING}
                           isWebCamOff = {isWebCamOff}
+                          endInterview={closeInterviewAPiHandler}
                         />
                         <h3 className="display-3 mb-4 text-primary mt-3">
                           {capitalizeFirstLetter(
@@ -1170,6 +1181,7 @@ function Call() {
                               )}
                               shouldBlink={interviewee_state === IE_SPEAKING}
                               isWebCamOff ={isWebCamOff}
+                              endInterview={closeInterviewAPiHandler}
                             />
                             <h3 className="display-3 mb-4  mt-3 text-center">
                               {capitalizeFirstLetter(
@@ -1195,6 +1207,7 @@ function Call() {
                                 )}
                                 shouldBlink={interviewer_state === IV_SPEAKING}
                                 isWebCamOff={true}
+                                endInterview={()=>{}}
                               />
                               <h3 className="font-weight-600 mt-2 text-primary">
                                 {" "}

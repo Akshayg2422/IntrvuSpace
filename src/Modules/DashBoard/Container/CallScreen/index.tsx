@@ -22,9 +22,10 @@ type CallScreenProps = {
     conditionalButton: 'start' | 'processing' | 'end'
     startButtonOnclick?: any
     ReportButtonOnclick?: any
+    endInterview?: ()=> void;
 }
 
-const CallScreen = ({ basicInfo, onMicControl, onMic = false, loading = false, conditionalButton, ReportButtonOnclick, micDisable = false, onVolumeControl, onCallEnd, isMute = false, speaker, status, video = false, onVideoControl, variant, startButtonOnclick }: CallScreenProps) => {
+const CallScreen = ({ basicInfo, onMicControl, onMic = false, loading = false, conditionalButton, ReportButtonOnclick, micDisable = false, onVolumeControl, onCallEnd, isMute = false, speaker, status, video = false, onVideoControl, variant, startButtonOnclick, endInterview }: CallScreenProps) => {
 
     const [time, setTime] = useState({ hours: 0, minutes: 0, seconds: 0 });
     const isSmallScreen = window.innerWidth <= 768;
@@ -76,7 +77,7 @@ const CallScreen = ({ basicInfo, onMicControl, onMic = false, loading = false, c
         <div className='text-center'>
 
             <div className=''>
-                <AnimatedImage show={loading} name={basicInfo && basicInfo?.interviewer_name && getShortName(basicInfo?.interviewer_name)} variant={variant} shouldBlink={isMute} />
+                <AnimatedImage show={loading} name={basicInfo && basicInfo?.interviewer_name && getShortName(basicInfo?.interviewer_name)} variant={variant} shouldBlink={isMute} endInterview={endInterview} />
             </div>
             <h2 className='display-2 mb-4'>{basicInfo?.interviewer_name}</h2>
             {
