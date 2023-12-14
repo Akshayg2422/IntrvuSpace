@@ -1,7 +1,7 @@
 import { icons } from '@Assets';
 import { CommonTable, Image, Input, MenuBar, NoDataFound, Spinner, StatusIcon, showToast, Modal, ProfilePhoto } from '@Components';
 import { useInput, useKeyPress, useLoader, useModal, useNavigation } from '@Hooks';
-import { alterCompanyLimit, alterCompanyStatus, getCompanies, setSelectedCompany } from '@Redux';
+import { alterCompanyLimit, alterCompanyStatus, getCompanies, setSelectedCompany,viewCompanyInterviews } from '@Redux';
 import { ROUTES } from '@Routes';
 import { INITIAL_PAGE, capitalizeFirstLetter, getPhoto, paginationHandler } from '@Utils';
 import { useEffect, useState } from 'react';
@@ -44,6 +44,7 @@ function Companies() {
 
     useEffect(() => {
         getCompaniesApiHandler(companiesCurrentPages);
+        dispatch(viewCompanyInterviews(undefined))
       
     }, [])
 
@@ -60,6 +61,7 @@ function Companies() {
             { id: 0, name: "Edit" },
             { id: 1, name: is_active ? "Disable" : 'Enable' },
             { id: 2, name: "Alter Limit" },
+            { id: 3, name: "View Interviews" },
         ]
     }
 
@@ -133,6 +135,7 @@ function Companies() {
 
     function companyMenuHandler(action: any, item: any) {
         const { id, is_active, interview_limit } = item;
+        console.log(item,"iiiiiiiii===")
 
         setSelectedCompanyId(id);
         dispatch(setSelectedCompany(item))
@@ -148,6 +151,11 @@ function Companies() {
         else if (MENU[2].id === action.id) {
             limitModal.show();
             limit.set(interview_limit);
+        }
+        else if (MENU[3].id === action.id) {
+            goTo(ROUTES['super-admin']['recent-interviews'])
+             dispatch(viewCompanyInterviews(id))
+         
         }
 
     }
@@ -183,8 +191,9 @@ function Companies() {
                             </div>
                         </div>
                     ),
-                    Mobile: phone,
+                
                     email,
+                    Mobile: phone,
                     address,
                     'limit': interview_limit,
                     'Created': consumed_interviews,

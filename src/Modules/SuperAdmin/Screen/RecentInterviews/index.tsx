@@ -1,9 +1,9 @@
 import { icons } from "@Assets";
-import { CommonTable, DropDown, Input, MenuBar, NoDataFound, ScreenHeading, Spinner, showToast } from "@Components";
+import { Button, CommonTable, DropDown, Input, MenuBar, NoDataFound, ScreenHeading, Spinner, showToast } from "@Components";
 import { useDropDown, useInput, useKeyPress, useLoader, useNavigation } from "@Hooks";
-import { deleteInterview, getCompanies, getRecentInterviews, resetInterview } from "@Redux";
+import { deleteInterview, getCompanies, getRecentInterviews, resetInterview,fetchGenerateReport } from "@Redux";
 import { ROUTES } from "@Routes";
-import { DEFAULT_VALUE, INITIAL_PAGE, getDropDownCompanyDisplayData, paginationHandler } from "@Utils";
+import { DEFAULT_VALUE, INITIAL_PAGE, capitalizeFirstLetter, displayFormatDate, getDropDownCompanyDisplayData, paginationHandler } from "@Utils";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -34,12 +34,13 @@ const RecentInterviews = () => {
     recentInterviews,
     recentInterviewsNumOfPages,
     recentInterviewsCurrentPages,
-    companies
+    companies,
+    filterCompanyInterview
   } = useSelector((state: any) => state.SuperAdminReducer);
 
   useEffect(() => {
- 
-    getRecentInterviewsHandler(recentInterviewsCurrentPages);
+    const PAGE_PATH_NUMBER =filterCompanyInterview?INITIAL_PAGE:recentInterviewsCurrentPages
+    getRecentInterviewsHandler(PAGE_PATH_NUMBER);
   }, [filterCompanies.value.id, status.value?.id]);
 
   useEffect(() => {
@@ -47,13 +48,17 @@ const RecentInterviews = () => {
       getRecentInterviewsHandler(INITIAL_PAGE);
     }
   }, [enterPress]);
-
-
+console.log(recentInterviews,"recentInterviews======+++")
 
   useEffect(() => {
     getCompaniesApiHandler();
   }, [])
 
+  function proceedReport(id: string) {
+    if (id) {
+        goTo(ROUTES["designation-module"].report + "/" + id);
+    }
+}
 
   const getCompaniesApiHandler = () => {
     const params = {};
@@ -75,7 +80,7 @@ const RecentInterviews = () => {
 
   const getRecentInterviewsHandler = (page_number: number) => {
 
-    const companyId = filterCompanies.value.id;
+    const companyId =filterCompanyInterview?filterCompanyInterview:filterCompanies.value.id;
 
     const filterStatus = {
       ...(status.value?.id === "IS_STARTED" && { is_started: true }),
@@ -137,6 +142,23 @@ const RecentInterviews = () => {
     );
   }
 
+  const generateReportHandler =(id:any)=>{
+    const params ={schedule_id:id }
+    dispatch(
+      fetchGenerateReport({
+        params,
+        onSuccess:(response:any)=>()=>{
+          showToast(response.message, 'success')
+        },
+        onError: (error) => () => {
+          // showToast(message, 'success')
+         },
+      })
+    )
+  }
+
+
+
   function deleteInterviewApiHandler(sid: string) {
 
     const params = { sid };
@@ -159,16 +181,66 @@ const RecentInterviews = () => {
       return data.map((each: any) => {
 
 
-        const { id, interviewee_name, interviewee_role, interviewee_email, interviewee_experience, interview_duration, company_details } = each;
+        const { id, interviewee_name, interviewee_role, interviewee_email, interviewee_experience, interview_duration, company_details,is_report_complete,interview_end_time,is_complete
+        } = each;
         const name = company_details?.name
-
+     
         return {
-          name,
-          'interviewee name': interviewee_name,
-          role: interviewee_role,
-          email: interviewee_email,
-          experience: interviewee_experience,
+          'Company Name':name,
+       
+          'role':<div  style={{width:'180px'}} >
+             <div className={"th-bold mb--1"} >
+                                {capitalizeFirstLetter(interviewee_role)}
+                            </div>
+                            <span className={"th-light "}>
+                                {`${interviewee_experience} years` }
+                            </span>
+          </div> ,
+           'interviewee name':<div style={{width:'200px'}} >
+           <div className={"font-weight-600 mb--1"} >
+                              {capitalizeFirstLetter(interviewee_name)}
+                          </div>
+                          <span className={" "} style={{marginTop:'10px'}}>
+                             {interviewee_email}
+                          </span>
+        </div> ,
+          // email: interviewee_email,
           duration: interview_duration,
+          'Completed at':is_complete?<div style={{width:'140px'}}>
+            {displayFormatDate(interview_end_time)}
+          </div>:'',
+          " ": (
+            <div className={"d-flex align-items-center"}>
+              {
+                is_report_complete ?
+                  <div className={"th-button"}>
+                    <Button
+                      block
+                      outline
+                      text={"Report"}
+                      onClick={() => {
+                        proceedReport(id);
+                      }}
+                    />
+                  </div>:
+                  is_complete &&(
+                   <div className={"th-button"}>
+                   <Button
+                     block
+                     outline
+                     text={"Generate Report"}
+                     onClick={() => {
+                       generateReportHandler(id)
+                     }}
+                   />
+                 </div>
+                  )
+                    
+                }
+          
+          
+            </div>
+          ),
           '': <div className={""}>
             <MenuBar
               menuData={SCHEDULE_MENU}
@@ -180,7 +252,12 @@ const RecentInterviews = () => {
               }
               icon={icons.more}
             />
-          </div>
+          </div>,
+
+     
+
+
+
         };
 
       });
@@ -202,7 +279,7 @@ const RecentInterviews = () => {
           />
         </div>
 
-        <div className={'col-sm-3'}>
+       {!filterCompanyInterview && <div className={'col-sm-3'}>
           <DropDown
             id={"companies"}
             heading={"Companies"}
@@ -211,6 +288,7 @@ const RecentInterviews = () => {
             onChange={filterCompanies.onChange}
           />
         </div>
+}
 
         <div className={'col-sm-3'}>
           <DropDown
@@ -231,6 +309,7 @@ const RecentInterviews = () => {
 
       {
         recentInterviews && recentInterviews.length > 0 &&
+        <div className={'overflow-auto py-3'}>
         <CommonTable
           isPagination
           tableDataSet={recentInterviews}
@@ -251,6 +330,7 @@ const RecentInterviews = () => {
             );
           }}
         />
+        </div>
       }
 
       {!loader.loader && recentInterviews?.length <= 0 && (

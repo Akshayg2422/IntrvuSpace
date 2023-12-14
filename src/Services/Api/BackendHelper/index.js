@@ -326,3 +326,7 @@ export const switchToAdvanceApi = payload => post(URL.URL_SWITCH_TO_ADVANCE, pay
 
 /**logout api */
 export const logoutApi = payload => post(URL.URL_LOGOUT, payload, {})
+
+/* super admin report reGenerate */
+
+export const reGenerateReportApi = payload => post(URL.URL_GENERATED_REPORT, payload, {})
