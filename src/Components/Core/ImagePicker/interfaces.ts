@@ -2,6 +2,7 @@ export interface ImagePickerProps {
     defaultPhotos?: any
     max?: number;
     variant?: 'single' | 'multiple';
+    placeholder?: string
     onSelect?: (images: any) => void
 }
 

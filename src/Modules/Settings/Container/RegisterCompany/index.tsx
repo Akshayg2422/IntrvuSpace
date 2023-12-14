@@ -64,6 +64,7 @@ function RegisterCompany({ loading, params, onParams, onBackPress, onSubmit }: R
             </div>
             <div className={'field-wrapper'}>
                 <ImagePicker
+                    placeholder={'Logo'}
                     defaultPhotos={params?.photo}
                     onSelect={(images) => {
                         registerCompanyParamsHandler({ photo: [images] })

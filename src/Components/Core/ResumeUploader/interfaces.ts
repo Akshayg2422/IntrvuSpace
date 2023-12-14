@@ -1,3 +1,4 @@
 export interface ResumeUploaderProps {
-    onSelect?: any;
+    onSelect: any;
+    placeholder?: string;
 }

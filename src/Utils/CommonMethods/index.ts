@@ -482,3 +482,5 @@ export function capitalizeLetter(string: any) {
 export function isKeyValueExistInArray(array: any[], key: string, value: any): boolean {
   return array.some(item => item[key] === value);
 }
+
+export const cleanBase64 = (base64String: string) => base64String.replace(/^data:(.*,)?/, '');

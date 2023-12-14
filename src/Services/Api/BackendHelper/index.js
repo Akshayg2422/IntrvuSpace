@@ -326,3 +326,6 @@ export const switchToAdvanceApi = payload => post(URL.URL_SWITCH_TO_ADVANCE, pay
 
 /**logout api */
 export const logoutApi = payload => post(URL.URL_LOGOUT, payload, {})
+
+/** uploadResume */
+export const uploadResumeApi = payload => post(URL.URL_UPLOAD_RESUME, payload, {})

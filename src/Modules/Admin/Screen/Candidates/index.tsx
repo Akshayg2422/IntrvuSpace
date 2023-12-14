@@ -1,10 +1,12 @@
 import { icons } from '@Assets';
-import { Button, CommonTable, Input, MenuBar, Modal, NoDataFound, ScreenHeading, Spinner, showToast } from '@Components';
+import { Button, CommonTable, ImagePicker, Input, MenuBar, Modal, NoDataFound, ResumeUploader, ScreenHeading, Spinner, showToast, Image } from '@Components';
 import { useInput, useLoader, useModal } from '@Hooks';
-import { addCandidate, getCandidates } from '@Redux';
-import { ADD_CANDIDATE_RULES, INITIAL_PAGE, capitalizeFirstLetter, getValidateError, ifObjectExist, paginationHandler, validate } from '@Utils';
+import { addCandidate, getCandidates, uploadResume } from '@Redux';
+import { ADD_CANDIDATE_RULES, INITIAL_PAGE, capitalizeFirstLetter, cleanBase64, getPhoto, getValidateError, ifObjectExist, paginationHandler, validate } from '@Utils';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { PhotoProvider, PhotoView } from "react-photo-view";
+import "react-photo-view/dist/react-photo-view.css";
 
 
 function Candidates() {
@@ -19,6 +21,7 @@ function Candidates() {
 
 
   const MENU = [{ id: '0', name: "Edit", icon: icons.edit }]
+  const RESUMEMENU = [{ id: '0', name: "Pick From Resume" }]
 
   const loader = useLoader(true)
 
@@ -30,18 +33,20 @@ function Candidates() {
 
   const [editId, setEditId] = useState<any>()
   const addLoader = useLoader(false);
+  const resumeLoader = useLoader(false)
   const firstName = useInput("");
   const lastName = useInput("");
   const mail = useInput("");
   const mobileNumber = useInput("");
   const inFocus = useRef<any>()
+  const [selectedImage, setSelectedImage] = useState<any>(null)
+  const pickResumeModal = useModal(false)
+  const [selectedResume, setSelectedResume] = useState<string | null>(null);
 
 
   useEffect(() => {
     getCandidateApiHandler(INITIAL_PAGE)
   }, [])
-
-
 
   const getCandidateApiHandler = (page_number: number) => {
     const params = {
@@ -61,9 +66,17 @@ function Candidates() {
     );
   };
 
+  const base64Photo = selectedImage?.base64 ? selectedImage?.base64 : "";
+  console.log('base64Photo-------------->',base64Photo);
+  
+  const cleanedBase64Photo = cleanBase64(base64Photo)
+
+  console.log('cleanedBase64PhotocleanedBase64Photo-------->', cleanedBase64Photo);
+
 
   const addCandidateApiHandler = () => {
     const params = {
+      ...(cleanedBase64Photo && { photo: cleanedBase64Photo }),
       email: mail.value,
       first_name: firstName.value,
       last_name: lastName.value,
@@ -89,7 +102,6 @@ function Candidates() {
           },
           onError: (error: any) => () => {
             const { error_message } = error
-
             showToast(error_message, 'error')
             addLoader.hide()
           },
@@ -101,13 +113,97 @@ function Candidates() {
     }
   };
 
+  const prefillDataFromResume = (success) => {
+    const { message, details } = success;
+    const { first_name, last_name, email, mobile } = details;
+    setSelectedResume(null);
+    firstName.set(first_name);
+    lastName.set(last_name);
+    mail.set(email);
+    mobileNumber.set(mobile);
+    showToast(message, 'success');
+    resumeLoader.hide();
+    pickResumeModal.hide();
+  };
+
+  const uploadResumeHandler = () => {
+    const params = {
+      attachment: selectedResume
+    }
+    resumeLoader.show()
+    dispatch(
+      uploadResume({
+        params,
+        onSuccess: (success: any) => () => {
+          prefillDataFromResume(success)
+        },
+        onError: (error: any) => () => {
+          const { error_message } = error
+          showToast(error_message, 'error')
+          resumeLoader.hide()
+          pickResumeModal.hide()
+        }
+      })
+    )
+  }
+
 
   const normalizedTableData = (data: any) => {
     return data.map((el: any) => {
-      const { first_name, email, last_name, mobile_number } = el
+
+      const { id, first_name, email, last_name, mobile_number, candidate_photo } = el
 
       return {
-        "First Name": capitalizeFirstLetter(first_name),
+        "First Name": (
+          <div className={"d-flex align-items-center"}>
+            <div>
+              {candidate_photo ?
+                <PhotoProvider>
+                  <div className={"pointer"}>
+                    <PhotoView src={getPhoto(candidate_photo)}>
+                      <Image
+                        src={getPhoto(candidate_photo)}
+                        height={50}
+                        width={50}
+                        style={{
+                          objectFit: 'cover',
+                          overflow: 'hidden',
+                          padding: '1px',
+                          borderRadius: '30px',
+                          width: "45px",
+                          height: "45px",
+                        }}
+                      />
+                    </PhotoView>
+                  </div>
+                </PhotoProvider>
+                :
+                <div style={{
+                  width: "45px",
+                  height: "45px",
+                  borderRadius: "30px",
+                  backgroundColor: "#fbfcfa",
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  display: 'flex',
+                }}>
+                  <Image
+                    src={icons.profile}
+                    height={20}
+                    width={20}
+                    style={{
+                      objectFit: 'contain'
+                    }}
+                  />
+                </div>
+
+              }
+            </div>
+            <div className={"th-bold ml-3"}>
+              {capitalizeFirstLetter(first_name)}
+            </div>
+          </div>
+        ),
         "Last Name": capitalizeFirstLetter(last_name),
         Email: email,
         "Mobile Number": mobile_number,
@@ -116,14 +212,13 @@ function Candidates() {
             menuData={MENU}
             onClick={(item) => {
               if (item?.id === MENU[0].id) {
-                const { first_name, email, last_name, mobile_number, id } = el
                 setEditId(id)
+                setSelectedImage(candidate_photo)
                 firstName.set(first_name);
                 lastName.set(last_name)
                 mobileNumber.set(mobile_number)
                 mail.set(email)
                 addCandidateModel.show()
-
               }
             }}
           />
@@ -140,7 +235,20 @@ function Candidates() {
     mobileNumber.set('')
     mail.set('')
     setEditId('')
+    setSelectedImage([])
   }
+
+  const handleResumeSelect = (resumeData: string) => {
+    setSelectedResume(resumeData)
+  }
+
+  function closeResumeModal() {
+    pickResumeModal.hide()
+    setSelectedResume(null)
+  }
+
+  console.log('selectedImage', JSON.stringify(selectedImage));
+
 
   return (
     <>
@@ -202,7 +310,28 @@ function Candidates() {
         onClose={modalCloseHandler}
         onClick={addCandidateApiHandler}
       >
+
+        <div className={'row'}>
+
+          <div className={'col-6'}>
+            <ImagePicker
+              placeholder={'Photo'}
+              defaultPhotos={selectedImage}
+              onSelect={(images) => { setSelectedImage(images) }}
+            />
+          </div>
+
+          <div className={'col text-right'}>
+            <MenuBar
+              menuData={RESUMEMENU}
+              onClick={pickResumeModal.show}
+            />
+          </div>
+
+        </div>
+
         <div className='row'>
+
           <div className='col-sm-6'>
             <Input
               heading={"First Name"}
@@ -230,6 +359,7 @@ function Candidates() {
               onChange={mobileNumber.onChange}
             />
           </div>
+
           <div className='col-sm-6'>
             <Input
               heading={"Email"}
@@ -237,8 +367,23 @@ function Candidates() {
               onChange={mail.onChange}
             />
           </div>
+
         </div>
       </Modal >
+      <Modal
+        title={'Attach Resume'}
+        isOpen={pickResumeModal.visible}
+        loading={resumeLoader.loader}
+        onClose={closeResumeModal}
+        onClick={uploadResumeHandler}
+        buttonText={'Attach'}
+        size={'md'}
+      >
+        <div className={'d-flex justify-content-center'}>
+          <ResumeUploader placeholder={'Resume'} onSelect={handleResumeSelect} />
+        </div>
+
+      </Modal>
     </>
   )
 }

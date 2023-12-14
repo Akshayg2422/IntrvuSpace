@@ -143,3 +143,12 @@ export const createCorporateOpeningLite = (params: any) => {
         payload: params
     }
 }
+
+/** upload resume */
+
+export const uploadResume = (params: any) => {
+    return {
+        type: ActionTypes.UPLOAD_RESUME,
+        payload: params
+    }
+}

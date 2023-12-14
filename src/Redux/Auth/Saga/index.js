@@ -206,7 +206,6 @@ function* switchToAdvanceSaga(action) {
 
 
 
-
 function* AuthSaga() {
 
     yield takeLatest(Action.MEMBER_LOGIN_USING_PASSWORD, memberLoginUsingPasswordSaga);
@@ -220,8 +219,6 @@ function* AuthSaga() {
     yield takeLatest(Action.CREATE_COMPANY_SUPER_ADMIN, createCompanySuperAdminSaga);
     yield takeLatest(Action.SWITCH_TO_ADVANCE, switchToAdvanceSaga);
     yield takeLatest(Action.LOGOUT, logoutSaga);
-   
-
 }
 
 export default AuthSaga;

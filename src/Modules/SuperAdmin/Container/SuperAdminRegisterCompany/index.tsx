@@ -70,6 +70,7 @@ function SuperAdminRegisterCompany({ edit, loading, params, onParams, onBackPres
             </div>
             <div className={'field-wrapper'}>
                 <ImagePicker
+                    placeholder={'Logo'}
                     defaultPhotos={params?.photo}
                     onSelect={(images) => {
                         registerCompanyParamsHandler({ photo: [images] })

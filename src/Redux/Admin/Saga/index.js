@@ -118,7 +118,20 @@ function* addCandidateCorporateLiteSaga(action) {
     }
 }
 
+   /** uploadResumeApi */
 
+   function* uploadResumeSaga(action) {
+    try {
+        const response = yield call(Api.uploadResumeApi, action.payload.params);
+        if (response.success) {
+            yield call(action.payload.onSuccess(response));
+        } else {
+            yield call(action.payload.onError(response));
+        }
+    } catch (error) {
+        yield call(action.payload.onError(error));
+    }
+}
 
 
 
@@ -130,6 +143,7 @@ function* AdminSaga() {
     yield takeLatest(Action.GET_CORPORATE_SCHEDULES_LITE, getCorporateSchedulesLiteSaga);
     yield takeLatest(Action.CREATE_CORPORATE_OPENING_LITE, createCorporateOpeningLiteSaga);
     yield takeLatest(Action.ADD_CANDIDATE_CORPORATE_LITE, addCandidateCorporateLiteSaga);
+    yield takeLatest(Action.UPLOAD_RESUME, uploadResumeSaga);
 }
 
 

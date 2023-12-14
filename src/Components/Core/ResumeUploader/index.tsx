@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import { ResumeUploaderProps } from './interfaces';
 import { Button, showToast, Image } from '@Components';
 import { icons } from '@Assets';
+import './index.css';
 
 function getFileIcon(fileExtension: string) {
     switch (fileExtension) {
@@ -16,7 +17,7 @@ function getFileIcon(fileExtension: string) {
     }
 }
 
-function ResumeUploader({ onSelect }: ResumeUploaderProps) {
+function ResumeUploader({ onSelect, placeholder }: ResumeUploaderProps) {
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [fileUpload, setFileUpload] = useState<string | null>(null);
     const [fileExtension, setFileExtension] = useState<string | null>(null);
@@ -62,38 +63,36 @@ function ResumeUploader({ onSelect }: ResumeUploaderProps) {
     return (
         <div>
             {!fileUpload ? (
-                <Button
-                    className={'text-primary'}
-                    size={'lg'}
-                    variant={'icon-rounded'}
-                    icon={icons.addIcon}
-                    onClick={handleRefClick}
-                    height={80}
-                    width={80}
-                />
+
+                <>
+                    <div className={`resume-picker-container border pointer`} onClick={handleRefClick}>
+                        <div className={'resume-picker-placeholder'}>{placeholder}</div>
+                    </div>
+                </>
             ) : (
                 <div>
-                    <div style={{ position: 'absolute', left: '14%', zIndex: 999 }}>
+                    <div className={'position-absolute d-flex pl-6'}>
                         <Image
                             className={'pointer'}
                             src={icons.delete}
                             color='red'
                             variant={'default'}
-                            height={'3%'}
-                            width={'3%'}
+                            height={'5%'}
+                            width={'5%'}
                             style={{
                                 objectFit: 'cover',
                             }}
                             onClick={handleDelete}
                         />
                     </div>
-                    <div>
-                        <Button
-                            className={''}
-                            icon={getFileIcon(fileExtension as string)}
-                            variant={'icon-rounded'}
-                            height={80}
-                            width={80}
+
+
+                    <div className={`resume-picker-container card-border overflow-hidden`}>
+                        <Image
+                            variant={'default'}
+                            src={getFileIcon(fileExtension as string)}
+                            height={'100%'}
+                            width={'100%'}
                             style={{
                                 objectFit: 'cover',
                             }}
