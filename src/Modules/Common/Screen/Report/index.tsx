@@ -7,7 +7,7 @@ import {
 } from "@Components";
 
 import { useDropDown, useLoader } from "@Hooks";
-import { ReportHeader, DetailedReport, BasicReport, PdfBasicReport, PdfReportHeader, PdfDetailedReport, reportStyles } from '@Modules';
+import { ReportHeader, DetailedReport, BasicReport, PdfBasicReport, PdfReportHeader, PdfDetailedReport, rStyles } from '@Modules';
 import { fetchBasicReport } from "@Redux";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -19,7 +19,7 @@ import './index.css';
 
 import { PDFViewer } from '@react-pdf/renderer';
 
-import { Document, Page, StyleSheet } from '@react-pdf/renderer';
+import { Document, Page } from '@react-pdf/renderer';
 
 
 
@@ -139,15 +139,15 @@ function Report() {
             height: '600pt'
           }}>
             <Document>
-              <Page size={'A4'} style={reportStyles.page}>
+              <Page size={'A4'} style={rStyles.page}>
                 <PdfReportHeader details={report} />
-                {/* <PdfBasicReport details={report} /> */}
-                <PdfDetailedReport details={report} />
+                {reportType?.value?.id === REPORT_TYPE[0].id && <PdfBasicReport details={report} />}
+                {reportType?.value?.id === REPORT_TYPE[1].id && <PdfDetailedReport details={report} />}
               </Page>
             </Document>
           </PDFViewer>
 
-          {/* {reportType?.value?.id === REPORT_TYPE[0].id && <div id="content-id"><BasicReport details={report} /></div>}
+          {reportType?.value?.id === REPORT_TYPE[0].id && <div id="content-id"><BasicReport details={report} /></div>}
           {reportType?.value?.id === REPORT_TYPE[1].id && <DetailedReport details={report} />}
           <div className="d-flex justify-content-end mt-8 mb-6">
             <a
@@ -159,7 +159,7 @@ function Report() {
                 objectFit: 'contain'
               }} />
             </a>
-          </div> */}
+          </div>
         </div>
       }
     </div>
