@@ -1,28 +1,25 @@
 import {
   Button,
   DropDown,
-  Spinner,
   Image,
-  ScreenHeading
+  ScreenHeading,
+  Spinner
 } from "@Components";
 
 import { useDropDown, useLoader } from "@Hooks";
-import { BasicReport, ReportHeader, DetailedReport } from '@Modules';
+import { BasicReport, DetailedReport, PdfBasicReport, PdfBranding, PdfDetailedReport, PdfReportHeader, ReportHeader, rStyles } from '@Modules';
 import { fetchBasicReport } from "@Redux";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
-import ReactToPrint from "react-to-print";
-import { icons } from "@Assets";
 import './index.css';
-
+import { PDFDownloadLink, Document, Page } from '@react-pdf/renderer';
+import { icons } from '@Assets'
 
 
 function Report() {
 
   const dispatch = useDispatch();
-
-
   const { schedule_id } = useParams();
 
   const REPORT_TYPE = [
@@ -84,9 +81,10 @@ function Report() {
     );
   };
 
+
+
   return (
     <div className={'screen'}>
-
       <div className={'report-back-button pointer'}><ScreenHeading /></div>
       <div className={'report-dropdown-container'} style={{ display: 'flex', alignItems: 'start' }}>
         <div style={{
@@ -101,22 +99,27 @@ function Report() {
             onChange={reportType.onChange}
           />
         </div>
+
+
         <div className="ml-3">
-          <ReactToPrint
-            documentTitle={fileName}
-            trigger={() => (
-              <Button
-                variant={'icon-rounded'}
-                color={'primary'}
-                icons={"bi bi-printer-fill fa-lg"}
-              />
-            )}
-            content={() => componentRef.current}
-          />
+
+          <PDFDownloadLink document={
+            <Document >
+              <Page size={'A4'} style={rStyles.page} wrap>
+                <PdfReportHeader details={report} />
+                {reportType?.value?.id === REPORT_TYPE[0].id && <PdfBasicReport details={report} />}
+                {reportType?.value?.id === REPORT_TYPE[1].id && <PdfDetailedReport details={report} />}
+                <PdfBranding />
+              </Page>
+            </Document>
+          }
+            fileName={fileName}>
+            {({ blob, url, loading, error }) =>
+              <Button outline text={loading ? <Spinner /> : <Image src={icons.download} height={16} width={16} />} />
+            }
+          </PDFDownloadLink>
         </div>
       </div>
-
-
       {
         loader.loader && <div className={'loader-container'}> <Spinner /></div>
       }
@@ -127,7 +130,7 @@ function Report() {
           className={'screen-padding'}
         >
           <ReportHeader details={report} />
-          {reportType?.value?.id === REPORT_TYPE[0].id && <BasicReport details={report} />}
+          {reportType?.value?.id === REPORT_TYPE[0].id && <div id="content-id"><BasicReport details={report} /></div>}
           {reportType?.value?.id === REPORT_TYPE[1].id && <DetailedReport details={report} />}
           <div className="d-flex justify-content-end mt-8 mb-6">
             <a
