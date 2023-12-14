@@ -88,7 +88,7 @@ function EmailVerification() {
 
                 <div className='text-center m-0 p-0'>
                     <span className={'text-description'}>
-                        {'Enter the verification code sent you on your email'}
+                        {'Enter the verification code sended on your email'}
                     </span>
                 </div>
 
