@@ -86,6 +86,12 @@ function EmailVerification() {
                     maxLength={4}
                 />
 
+                <div className='text-center m-0 p-0'>
+                    <span className={'text-description'}>
+                        {'Enter the verification code sent you on your email'}
+                    </span>
+                </div>
+
                 <div className='mt-3'>
                     <Button
                         loading={loader.loader}
