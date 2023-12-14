@@ -46,19 +46,10 @@ const PdfReportHeader = ({ details }: PdfReportHeaderProps) => {
                         userAuthCheck() &&
                         <View>
                             <View>
-                                {
-                                    candidate_photo ?
-                                        <div className={'user-photo-container'}>
-                                            <Image
-                                                src={getPhoto(candidate_photo)}
-                                            />
-                                        </div>
-                                        :
-                                        <Image
-                                            style={hStyles['profile-placeholder']}
-                                            src={icons.profile}
-                                        />
-                                }
+                                <Image
+                                    src={candidate_photo ? getPhoto(candidate_photo) : icons.profile}
+                                    style={candidate_photo ? hStyles['user-photo-container'] : hStyles['profile-placeholder']}
+                                />
                             </View>
                             {
                                 user_location_info ? (

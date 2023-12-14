@@ -237,5 +237,7 @@ export const icons = {
   addIcon: require('./ResumeAdd/icon.png'),
   pdfIcon: require('./Pdf/icon.png'),
   docIcon: require('./DocIcon/icon.png'),
-  docxIcon: require('./DocxIcon/icon.png')
+  docxIcon: require('./DocxIcon/icon.png'),
+  download: require('./Download/icon.png')
+
 };

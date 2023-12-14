@@ -98,12 +98,11 @@ function PdfDetailedReport({ details }: PdfDetailedReportProps) {
           sections && sections.length > 0 && sections.map(each => {
             const { name, rating, questions, } = each;
             return (
-              <View style={[dStyles['sections-card-container'], bStyles['card-border']]}>
+              <View style={[dStyles['sections-card-container'], bStyles['card-border']]} wrap={false}>
                 <View style={dStyles['section-heading-container']}>
                   <Text style={bStyles['job-description-title']}>{capitalizeFirstLetter(name.replace(/_/g, ' '))}</Text>
                   <Text style={bStyles['job-description-title']}>{rating}</Text>
                 </View>
-
                 <View>
                   {
                     questions && questions.map((each: any) => {
@@ -117,9 +116,9 @@ function PdfDetailedReport({ details }: PdfDetailedReportProps) {
                             {
                               covered && covered?.length > 0 &&
                               covered.map(
-                                (ans: any) => {
+                                (ans: any, index: number) => {
                                   return (
-                                    <View style={dStyles['answer-item-container']}>
+                                    <View style={[dStyles['answer-item-container'], index ? { marginTop: '10pt' } : {}]}>
                                       {getStatusIcon()}
                                       <Text style={dStyles['note-text']}>
                                         {ans}
@@ -132,9 +131,9 @@ function PdfDetailedReport({ details }: PdfDetailedReportProps) {
                             {
                               covered_partial && covered_partial?.length > 0 &&
                               covered_partial.map(
-                                (ans: any) => {
+                                (ans: any, index: number) => {
                                   return (
-                                    <View style={dStyles['answer-item-container']}>
+                                    <View style={[dStyles['answer-item-container'], index ? { marginTop: 'pt' } : {}]}>
                                       {getStatusIcon('checkBlack')}
                                       <Text style={dStyles['note-text']}>
                                         {ans}
@@ -148,9 +147,9 @@ function PdfDetailedReport({ details }: PdfDetailedReportProps) {
                             {
                               covered_not_valid && covered_not_valid?.length > 0 &&
                               covered_not_valid.map(
-                                (ans: any) => {
+                                (ans: any, index: number) => {
                                   return (
-                                    <View style={dStyles['answer-item-container']}>
+                                    <View style={[dStyles['answer-item-container'], index ? { marginTop: '10pt' } : {}]}>
                                       {getStatusIcon('frame')}
                                       <Text style={dStyles['note-text']}>
                                         {ans}
@@ -200,7 +199,7 @@ function PdfDetailedReport({ details }: PdfDetailedReportProps) {
                       <View style={[dStyles['detailed-job-description-item'], bStyles['card-border']]}>
                         <View style={{ marginRight: "50pt" }}>
                           <Text style={bStyles['job-description-title']}>{metrics_name}</Text>
-                          <Text style={[dStyles['note-text'], { marginLeft: '0pt', marginTop: '4pt' }]}>{description}</Text>
+                          <Text style={[dStyles['note-text'], { marginLeft: '0pt', marginTop: '2pt' }]}>{description}</Text>
                         </View>
                         <Text style={[bStyles['job-description-title'], { marginLeft: "20pt" }]}>{rating}</Text>
                       </View>
@@ -212,7 +211,7 @@ function PdfDetailedReport({ details }: PdfDetailedReportProps) {
           )
         })
       }
-    </View>
+    </View >
   )
 }
 

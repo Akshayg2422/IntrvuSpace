@@ -51,6 +51,16 @@ const rStyles = StyleSheet.create({
   regular: {
     fontFamily: 'DMSans-Regular',
     fontWeight: 400
+  },
+  'brand-container': {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    marginTop: '50pt'
+  },
+  logo: {
+    height: '40pt',
+    objectFit: 'contain',
   }
 })
 
@@ -70,7 +80,8 @@ const hStyles = StyleSheet.create({
     flexDirection: 'row',
   },
   'user-info-container': {
-    flex: 1
+    flex: 1,
+    marginTop: '4pt'
   },
   'user-detail-container': {
     display: 'flex',
@@ -80,12 +91,19 @@ const hStyles = StyleSheet.create({
   'mark-container': {
     flex: 1,
     display: 'flex',
-    alignItems: 'flex-end'
+    alignItems: 'flex-end',
   },
   'profile-placeholder': {
     height: '40pt',
     width: '40pt',
     objectFit: 'contain'
+  },
+  'user-photo-container': {
+    display: 'flex',
+    width: '65pt',
+    height: '65pt',
+    borderRadius: '4px',
+    overflow: 'hidden',
   },
   'location-container': {
     display: 'flex',
@@ -111,11 +129,11 @@ const hStyles = StyleSheet.create({
     textTransform: 'capitalize',
     marginBottom: '4pt',
     color: colors.secondary,
-    ...rStyles['semi-bold']
+    ...rStyles['semi-bold'],
   },
   "mark-text": {
     fontSize: '35pt',
-    ...rStyles.bold
+    ...rStyles.bold,
   },
   'experience-container': {
     marginTop: '2pt',
@@ -133,7 +151,7 @@ const hStyles = StyleSheet.create({
 
 const bStyles = StyleSheet.create({
   "basic-report-container": {
-    marginVertical: '50pt'
+    marginTop: '50pt'
   },
   "report-dashboard-container": {
     display: 'flex',
@@ -252,8 +270,8 @@ const dStyles = StyleSheet.create({
     flexDirection: 'row'
   },
   'note-list-icon': {
-    width: '6pt',
-    height: '6pt',
+    width: '5pt',
+    height: '5pt',
     objectFit: 'contain'
   },
   'note-text': {
@@ -275,13 +293,12 @@ const dStyles = StyleSheet.create({
     width: '100%'
   },
   'question-container': {
-    marginTop: '10pt'
+    marginTop: '10pt',
   },
   'answer-item-container': {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: '5px'
   },
   'question-text': {
     fontSize: '10pt',
@@ -289,7 +306,7 @@ const dStyles = StyleSheet.create({
     ...rStyles.regular
   },
   'answer-container': {
-    marginTop: '8pt'
+    marginTop: '10pt'
   },
   'detailed-job-description-item': {
     display: 'flex',

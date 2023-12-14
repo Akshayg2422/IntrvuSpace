@@ -5,6 +5,8 @@ export * from './ReportHeader'
 export * from './PdfBasicReport'
 export * from './PdfReportHeader'
 export * from './PdfDetailedReport'
+export * from './PdfBranding'
+
 
 
 
