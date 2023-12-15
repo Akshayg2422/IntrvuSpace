@@ -154,18 +154,3 @@ export const postRecordAuthenticationVideo = (params: any) => {
         payload: params,
     };
 };
-
-export const postRecordAuthenticationVideoSuccess = (response: any) => {
-
-    return {
-        type: ActionTypes.POST_RECORD_AUTHENTICATION_VIDEO_SUCCESS,
-        payload: response
-    }
-}
-
-export const postRecordAuthenticationVideoFailure = (error: any) => {
-    return {
-        type: ActionTypes.POST_RECORD_AUTHENTICATION_VIDEO_FAILURE,
-        payload: error
-    }
-}
