@@ -59,7 +59,7 @@ const rStyles = StyleSheet.create({
     marginTop: '50pt'
   },
   logo: {
-    height: '40pt',
+    height: '30pt',
     objectFit: 'contain',
   }
 })
@@ -215,7 +215,7 @@ const dStyles = StyleSheet.create({
     alignItems: 'center',
     padding: '35pt',
     marginVertical: '50pt',
-    marginHorizontal: '30pt'
+    marginHorizontal: '30pt',
   },
   'card-border': {
     borderWidth: '1pt',
@@ -246,7 +246,8 @@ const dStyles = StyleSheet.create({
   'skill-matrix-heading-container': {
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+
   },
   'note-container': {
     marginTop: '25pt',
@@ -270,8 +271,8 @@ const dStyles = StyleSheet.create({
     flexDirection: 'row'
   },
   'note-list-icon': {
-    width: '5pt',
-    height: '5pt',
+    width: '6pt',
+    height: '6pt',
     objectFit: 'contain'
   },
   'note-text': {

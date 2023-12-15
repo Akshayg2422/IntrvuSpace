@@ -11,7 +11,7 @@ function StatusIcon({ variant = 'check', type = 'round' }: StatusIconProps) {
             case 'frame':
                 return icons.frameRound;
             case 'checkBlack':
-                return icons.checkBlack;
+                return icons.checkBlackRound;
             default:
                 return null;
         }
@@ -24,21 +24,23 @@ function StatusIcon({ variant = 'check', type = 'round' }: StatusIconProps) {
             case 'frame':
                 return icons.frameIcon;
             case 'checkBlack':
-                return icons.checkBlack;
+                return icons.checkBlackIcon;
             default:
                 return null;
         }
     }
 
 
-    const variantIcon = type? getVariantColor(variant) : getVariantIcon(variant)
+    const variantIcon = type === 'icon' ? getVariantIcon(variant) : getVariantColor(variant)
+
+    const size = 8
 
     return (
         <Image
             src={variantIcon}
             alt={`${variantIcon} icon`}
-            height={8}
-            width={8}
+            height={size}
+            width={size}
             style={{
                 objectFit: "contain",
             }}
