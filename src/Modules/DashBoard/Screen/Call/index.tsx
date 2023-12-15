@@ -221,14 +221,10 @@ function Call() {
   const { scheduleInfo, recordingPermission,faceVisible } = useSelector(
     (state: any) => state.DashboardReducer
   );
-<<<<<<< HEAD
   console.log(scheduleInfo,"faceVisible");
   const faceVisibleRef = useRef(null)
   faceVisibleRef.current = faceVisible
   
-=======
-
->>>>>>> 63e953c12561463a9dbba99ded827c9a7561f55d
 
   const [processCallInprogress, setProcessCallInprogress] = useState(false);
 
@@ -1088,12 +1084,8 @@ console.log(syncD,"syncD");
                           show={interviewer_state === IV_PROCESSING}
                           name={getShortName(scheduleInfo?.interviewer_name)}
                           shouldBlink={interviewer_state === IV_SPEAKING}
-<<<<<<< HEAD
                           isWebCamOff = {true}
                           endInterview={()=>{}}
-=======
-                          isWebCamOff={true}
->>>>>>> 63e953c12561463a9dbba99ded827c9a7561f55d
                         />
                         <h3 className="display-3 mb-4 text-primary mt-3">
                           {capitalizeFirstLetter(
@@ -1108,12 +1100,8 @@ console.log(syncD,"syncD");
                           showWebCam={showCam}
                           name={getShortName(scheduleInfo?.interviewee_name)}
                           shouldBlink={interviewee_state === IE_SPEAKING}
-<<<<<<< HEAD
                           isWebCamOff = {isWebCamOff}
                           endInterview={closeInterviewAPiHandler}
-=======
-                          isWebCamOff={isWebCamOff}
->>>>>>> 63e953c12561463a9dbba99ded827c9a7561f55d
                         />
                         <h3 className="display-3 mb-4 text-primary mt-3">
                           {capitalizeFirstLetter(
@@ -1192,12 +1180,8 @@ console.log(syncD,"syncD");
                                 scheduleInfo?.interviewee_name
                               )}
                               shouldBlink={interviewee_state === IE_SPEAKING}
-<<<<<<< HEAD
                               isWebCamOff ={isWebCamOff}
                               endInterview={closeInterviewAPiHandler}
-=======
-                              isWebCamOff={isWebCamOff}
->>>>>>> 63e953c12561463a9dbba99ded827c9a7561f55d
                             />
                             <h3 className="display-3 mb-4  mt-3 text-center">
                               {capitalizeFirstLetter(

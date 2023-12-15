@@ -1,10 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
-<<<<<<< HEAD
-    getOperatingSystem,
-    hasCameraPermission,
-    hasMicrophonePermission,
-=======
   FilesetResolver,
   DrawingUtils,
   FaceLandmarker,
@@ -17,7 +12,6 @@ import {
   gotoPermissionSetting,
   hasCameraPermission,
   hasMicrophonePermission,
->>>>>>> 63e953c12561463a9dbba99ded827c9a7561f55d
 } from "@Utils";
 import "./index.css";
 import { error } from "console";
@@ -179,37 +173,6 @@ function DetectFace({
 
     webcamRunningRef.current = true;
 
-<<<<<<< HEAD
-    function enableCam() {
-        // getUsermedia parameters.
-        const constraints = {
-            video: true
-        } as any;
-
-        // Activate the webcam stream.
-        navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
-            videoStreamRef.current = stream
-            video = videoRef?.current
-            canvasElement = document?.getElementById(
-                "output_canvas"
-            );
-            canvasCtx = canvasElement?.getContext("2d");
-            drawingUtils = new DrawingUtils(canvasCtx);
-            if (video)
-                video.srcObject = stream;
-
-            // Load face landMark model
-            if (video) {
-                if (!callValidating) {
-                    createFaceLandmarker();
-
-                }
-            }
-        }).catch((error) => {
-            console.log(error);
-
-        })
-=======
     if (!faceLandmarker) {
       console.log("Wait! faceLandmarker not loaded yet.");
       return;
@@ -218,7 +181,6 @@ function DetectFace({
       timeoutFunc();
       // video.addEventListener("loadeddata", predictWebcam);
       predictWebcam();
->>>>>>> 63e953c12561463a9dbba99ded827c9a7561f55d
     }
   }
 
@@ -365,73 +327,12 @@ function DetectFace({
       ctx.strokeStyle = "#4cc916";
       ctx.beginPath();
 
-<<<<<<< HEAD
-            results = faceLandmarker?.detectForVideo(video, startTimeMs);
-        }
-        
-        if (results.faceLandmarks) {
-
-            for (const landmarks of results.faceLandmarks) {
-
-                drawingUtils.drawConnectors(
-                    landmarks,
-                    FaceLandmarker.FACE_LANDMARKS_TESSELATION,
-                    { color: "#C0C0C070", lineWidth: 0.4 }
-                );
-                drawingUtils.drawConnectors(
-                    landmarks,
-                    FaceLandmarker.FACE_LANDMARKS_RIGHT_EYE,
-                    { color: "#E0E0E0", lineWidth: 0.3 }
-                );
-                // drawingUtils.drawConnectors(
-                //     landmarks,
-                //     FaceLandmarker.FACE_LANDMARKS_RIGHT_EYEBROW,
-                //     { color: "#E0E0E0", lineWidth: 1 }
-                // );
-                drawingUtils.drawConnectors(
-                    landmarks,
-                    FaceLandmarker.FACE_LANDMARKS_LEFT_EYE,
-                    { color: "#E0E0E0", lineWidth: 0.3 }
-                );
-                // drawingUtils.drawConnectors(
-                //     landmarks,
-                //     FaceLandmarker.FACE_LANDMARKS_LEFT_EYEBROW,
-                //     { color: "#E0E0E0", lineWidth: 1 }
-                // );
-                drawingUtils.drawConnectors(
-                    landmarks,
-                    FaceLandmarker.FACE_LANDMARKS_FACE_OVAL,
-                    { color: "#4cc916", lineWidth: 1 }
-                );
-                drawingUtils.drawConnectors(
-                    landmarks,
-                    FaceLandmarker.FACE_LANDMARKS_LIPS,
-                    { color: "#E0E0E0", lineWidth: 0.4 }
-                );
-                drawingUtils.drawConnectors(
-                    landmarks,
-                    FaceLandmarker.FACE_LANDMARKS_RIGHT_IRIS,
-                    { color: "#E0E0E0", lineWidth: 0.3 }
-                );
-                drawingUtils.drawConnectors(
-                    landmarks,
-                    FaceLandmarker.FACE_LANDMARKS_LEFT_IRIS,
-                    { color: "#E0E0E0", lineWidth: 0.4 }
-                );
-
-            }
-        }
-
-        if (results.faceBlendshapes.length > 0) {
-            faceDetected.current = true
-=======
       const sliceWidth = (canvasWidth * 1.0) / bufferLength;
       let x = 0;
 
       for (let i = 0; i < bufferLength; i++) {
         const v = dataArray[i] / 128.0;
         const y = (v * canvasHeight) / 2;
->>>>>>> 63e953c12561463a9dbba99ded827c9a7561f55d
 
         if (i === 0) {
           ctx.moveTo(x, y);
@@ -514,28 +415,6 @@ function DetectFace({
     }, 7000);
   }
 
-<<<<<<< HEAD
-            if (average < 30) {
-                setNoiseDetection(true)
-                count = count + 1
-                array = []
-            }
-
-            else {
-                setNoiseDetection(false)
-                audioStreamRunningRef.current = false
-                audioContext.current.close();
-                array = []
-            }
-            if (count === 3) {
-                webcamRunningRef.current = false
-                audioStreamRunningRef.current = false
-                audioContext.current.close();
-                setProceed(true)
-            }
-
-        }, 7000);
-=======
   const stopStream = () => {
     setNoiseDetection("Checking");
     setFaceFound("Checking");
@@ -547,38 +426,17 @@ function DetectFace({
       videoStreamRef.current?.getTracks().forEach(function (track) {
         track.stop();
       });
->>>>>>> 63e953c12561463a9dbba99ded827c9a7561f55d
     }
 
     audioStreamRunningRef.current = false;
     console.log(audioContext.current, "js");
 
-<<<<<<< HEAD
-        webcamRunningRef.current = false
-        if (videoStreamRef) {
-            videoStreamRef.current?.getTracks().forEach(function (track) {
-                track.stop();
-            });
-        }
-
-        audioStreamRunningRef.current = false
-        // if (noiseDetection) {
-        //     audioContext.current.close();
-        // }
-        if (audioStreamRef.current) {
-            const tracks = audioStreamRef.current?.getTracks();
-            tracks.forEach((track) => track.stop());
-        }
-        
-        goBack()
-=======
     // if (noiseDetection) {
     //     audioContext.current.close();
     // }
     if (audioStreamRef.current) {
       const tracks = audioStreamRef.current?.getTracks();
       tracks.forEach((track) => track.stop());
->>>>>>> 63e953c12561463a9dbba99ded827c9a7561f55d
     }
 
     goBack();
