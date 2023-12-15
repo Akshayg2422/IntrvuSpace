@@ -107,7 +107,6 @@ const AdminReducer = (state = initialState, action: any) => {
       state = { ...state, schedulesLite: action.payload };
       break;
 
-
     default:
       state = state;
       break;

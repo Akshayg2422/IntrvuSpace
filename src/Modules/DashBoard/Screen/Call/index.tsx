@@ -182,7 +182,7 @@ function Call() {
       setIsTtfSpeaking(false);
     };
 
-    audioElementRef.current.onloadstart = function () {};
+    audioElementRef.current.onloadstart = function () { };
     audioElementRef.current.onended = function () {
       setIsTtfSpeaking(false);
       if (closeCall.current === true) {
@@ -221,10 +221,14 @@ function Call() {
   const { scheduleInfo, recordingPermission,faceVisible } = useSelector(
     (state: any) => state.DashboardReducer
   );
+<<<<<<< HEAD
   console.log(scheduleInfo,"faceVisible");
   const faceVisibleRef = useRef(null)
   faceVisibleRef.current = faceVisible
   
+=======
+
+>>>>>>> 63e953c12561463a9dbba99ded827c9a7561f55d
 
   const [processCallInprogress, setProcessCallInprogress] = useState(false);
 
@@ -368,7 +372,7 @@ function Call() {
           canConnect.current = false;
           socketRef.current.close();
           socketRef.current = null;
-        } catch (e) {}
+        } catch (e) { }
         clearInterval(reconnectInterval);
       }
     };
@@ -869,7 +873,7 @@ console.log(syncD,"syncD");
           stopInterval();
           startInterviewLoader.hide();
         },
-        onError: (error: any) => () => {},
+        onError: (error: any) => () => { },
       })
     );
   };
@@ -910,9 +914,9 @@ console.log(syncD,"syncD");
       const hasMicPermission = await hasMicrophonePermission();
       if (hasMicPermission) {
         micPermissionModal.hide();
-        if(!hasCamPermission){
-        setIsWebcamOff(true)
-      }
+        if (!hasCamPermission) {
+          setIsWebcamOff(true)
+        }
         if (!recordStatus && is_video_recording_manditory) {
           await startScreenRecording();
         } else if (recordStatus || !is_video_recording_manditory) {
@@ -950,7 +954,7 @@ console.log(syncD,"syncD");
         onSuccess: () => () => {
           endInterviewHandler();
         },
-        onError: () => () => {},
+        onError: () => () => { },
       })
     );
   }
@@ -1084,8 +1088,12 @@ console.log(syncD,"syncD");
                           show={interviewer_state === IV_PROCESSING}
                           name={getShortName(scheduleInfo?.interviewer_name)}
                           shouldBlink={interviewer_state === IV_SPEAKING}
+<<<<<<< HEAD
                           isWebCamOff = {true}
                           endInterview={()=>{}}
+=======
+                          isWebCamOff={true}
+>>>>>>> 63e953c12561463a9dbba99ded827c9a7561f55d
                         />
                         <h3 className="display-3 mb-4 text-primary mt-3">
                           {capitalizeFirstLetter(
@@ -1100,8 +1108,12 @@ console.log(syncD,"syncD");
                           showWebCam={showCam}
                           name={getShortName(scheduleInfo?.interviewee_name)}
                           shouldBlink={interviewee_state === IE_SPEAKING}
+<<<<<<< HEAD
                           isWebCamOff = {isWebCamOff}
                           endInterview={closeInterviewAPiHandler}
+=======
+                          isWebCamOff={isWebCamOff}
+>>>>>>> 63e953c12561463a9dbba99ded827c9a7561f55d
                         />
                         <h3 className="display-3 mb-4 text-primary mt-3">
                           {capitalizeFirstLetter(
@@ -1116,7 +1128,7 @@ console.log(syncD,"syncD");
                           webcam={
                             scheduleInfo?.is_video_recording_manditory
                               ? true : isWebCamOff ? false
-                              : showCam
+                                : showCam
                           }
                           mic={!mute}
                           onWebCamChange={() => {
@@ -1180,8 +1192,12 @@ console.log(syncD,"syncD");
                                 scheduleInfo?.interviewee_name
                               )}
                               shouldBlink={interviewee_state === IE_SPEAKING}
+<<<<<<< HEAD
                               isWebCamOff ={isWebCamOff}
                               endInterview={closeInterviewAPiHandler}
+=======
+                              isWebCamOff={isWebCamOff}
+>>>>>>> 63e953c12561463a9dbba99ded827c9a7561f55d
                             />
                             <h3 className="display-3 mb-4  mt-3 text-center">
                               {capitalizeFirstLetter(
@@ -1255,16 +1271,16 @@ console.log(syncD,"syncD");
               <></>
             )}
             {scheduleInfo?.is_report_complete &&
-            scheduleInfo?.can_view_report ? (
+              scheduleInfo?.can_view_report ? (
               <Report />
-            ) 
-            : scheduleInfo?.is_report_complete && (
-              <ContactHrModal
-                onClick={() => {
-                  getBasicInfo();
-                }}
-              />
             )
+              : scheduleInfo?.is_report_complete && (
+                <ContactHrModal
+                  onClick={() => {
+                    getBasicInfo();
+                  }}
+                />
+              )
             }
           </>
         )}
@@ -1308,7 +1324,7 @@ console.log(syncD,"syncD");
             {"2. Enable microphone access in system settings. "}
             <span
               className="pointer text-primary font-weight-700"
-              // onClick={gotoPermissionSetting}
+            // onClick={gotoPermissionSetting}
             >{`(${getOperatingSystem()})`}</span>
           </p>
         </div>

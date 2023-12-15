@@ -21585,6 +21585,12 @@ button.section-darker:focus {
   color: var(--secondary);
 }
 
+.th-light {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--secondary);
+}
+
 .bullet-key-point {
   font-size: 0.875rem !important;
   color: var(--description);

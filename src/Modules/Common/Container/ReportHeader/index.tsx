@@ -46,26 +46,29 @@ const ReportHeader = ({ details }: ReportHeaderProps) => {
                     userAuthCheck() &&
                     <div className={'user-auth-container'}>
 
-                        <div className={'user-photo-container'}>
+                        <div>
                             {
                                 candidate_photo ?
-                                    <Image
-                                        src={getPhoto(candidate_photo)}
-                                        height={'100%'}
-                                        width={'100%'}
-                                        style={{
-                                            objectFit: 'cover',
-                                            overflow: 'hidden',
-                                            borderRadius: '4px'
-                                        }}
-                                    />
+                                    <div className={'user-photo-container'}>
+                                        <Image
+                                            src={getPhoto(candidate_photo)}
+                                            height={'100%'}
+                                            width={'100%'}
+                                            style={{
+                                                objectFit: 'cover',
+                                                overflow: 'hidden',
+                                                borderRadius: '4px'
+                                            }}
+                                        />
+                                    </div>
                                     :
                                     <Image
                                         src={icons.profile}
                                         width={70}
                                         height={70}
                                         style={{
-                                            objectFit: 'contain'
+                                            objectFit: 'contain',
+                                            marginBottom: '15px',
                                         }}
                                     />
                             }

@@ -1,7 +1,7 @@
 import { icons } from '@Assets';
 import { CommonTable, Image, Input, MenuBar, NoDataFound, Spinner, StatusIcon, showToast, Modal, ProfilePhoto } from '@Components';
 import { useInput, useKeyPress, useLoader, useModal, useNavigation } from '@Hooks';
-import { alterCompanyLimit, alterCompanyStatus, getCompanies, setSelectedCompany } from '@Redux';
+import { alterCompanyLimit, alterCompanyStatus, getCompanies, setSelectedCompany,setSelectedCompanyId } from '@Redux';
 import { ROUTES } from '@Routes';
 import { INITIAL_PAGE, capitalizeFirstLetter, getPhoto, paginationHandler } from '@Utils';
 import { useEffect, useState } from 'react';
@@ -36,7 +36,7 @@ function Companies() {
     const limitModal = useModal(false);
     const addLimitLoader = useLoader(false);
     const loader = useLoader(false);
-    const [selectedCompanyId, setSelectedCompanyId] = useState(undefined)
+    const [selectCompanyId, setSelectCompanyId] = useState(undefined)
     const limit = useInput("")
     const search = useInput("");
 
@@ -44,6 +44,7 @@ function Companies() {
 
     useEffect(() => {
         getCompaniesApiHandler(companiesCurrentPages);
+      
       
     }, [])
 
@@ -57,9 +58,10 @@ function Companies() {
 
     function getCandidateMenu(is_active: boolean) {
         return [
-            { id: 0, name: "Edit" },
-            { id: 1, name: is_active ? "Disable" : 'Enable' },
-            { id: 2, name: "Alter Limit" },
+            { id:'ED', name: "Edit" },
+            { id: 'DE', name: is_active ? "Disable" : 'Enable' },
+            { id:'AL', name: "Alter Limit" },
+            { id:'RI', name: "Recent Interviews" },
         ]
     }
 
@@ -111,7 +113,7 @@ function Companies() {
 
     const alterCompanyLimitApiHandler = () => {
         const params = {
-            id: selectedCompanyId,
+            id: selectCompanyId,
             new_limit: limit.value
         };
         dispatch(
@@ -132,22 +134,29 @@ function Companies() {
     };
 
     function companyMenuHandler(action: any, item: any) {
+      
         const { id, is_active, interview_limit } = item;
-
-        setSelectedCompanyId(id);
+        setSelectCompanyId(id);
         dispatch(setSelectedCompany(item))
 
         const MENU = getCandidateMenu(is_active)
 
-        if (MENU[0].id === action.id) {
+        if ('ED' === action.id) {
             goTo(ROUTES['super-admin']['super-admin-register-company'])
         }
-        else if (MENU[1].id === action.id) {
+        else if ('DE' === action.id) {
             alterCompanyStatusApiHandler(id, is_active);
         }
-        else if (MENU[2].id === action.id) {
+        else if ('AL' === action.id) {
             limitModal.show();
             limit.set(interview_limit);
+        }
+        else if ('RI' === action.id) {
+            goTo(ROUTES['super-admin']['recent-interviews'])
+              dispatch(
+                setSelectedCompanyId(id)
+              )
+         
         }
 
     }
@@ -183,8 +192,9 @@ function Companies() {
                             </div>
                         </div>
                     ),
-                    Mobile: phone,
+                
                     email,
+                    Mobile: phone,
                     address,
                     'limit': interview_limit,
                     'Created': consumed_interviews,
