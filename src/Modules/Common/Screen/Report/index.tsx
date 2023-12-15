@@ -84,68 +84,72 @@ function Report() {
 
 
   return (
-    <div className={'screen'}>
-      <div className={'report-back-button pointer'}><ScreenHeading /></div>
-      <div className={'report-dropdown-container'} style={{ display: 'flex', alignItems: 'start' }}>
-        <div style={{
-          width: "220px",
-          maxWidth: '300px',
-        }}>
-          <DropDown
-            noSpace
-            id={"status"}
-            data={REPORT_TYPE}
-            selected={reportType.value}
-            onChange={reportType.onChange}
-          />
+    <>
+
+      <div className={'screen'}>
+        <div className="padding-back">
+          <ScreenHeading>
+            <div className={"d-flex align-items-center justify-content-end"}>
+              <div style={{
+                width: "220px",
+                maxWidth: '300px',
+              }}>
+                <DropDown
+                  noSpace
+                  id={"status"}
+                  data={REPORT_TYPE}
+                  selected={reportType.value}
+                  onChange={reportType.onChange}
+                />
+              </div>
+              <div className="ml-3">
+
+                <PDFDownloadLink document={
+                  <Document >
+                    <Page size={'A4'} style={rStyles.page} wrap>
+                      <PdfReportHeader details={report} />
+                      {reportType?.value?.id === REPORT_TYPE[0].id && <PdfBasicReport details={report} />}
+                      {reportType?.value?.id === REPORT_TYPE[1].id && <PdfDetailedReport details={report} />}
+                      <PdfBranding />
+                    </Page>
+                  </Document>
+                }
+                  fileName={fileName}>
+                  {({ blob, url, loading, error }) =>
+                    <Button outline text={loading ? <Spinner /> : <Image src={icons.download} height={16} width={16} />} />
+                  }
+                </PDFDownloadLink>
+              </div>
+            </div>
+          </ScreenHeading>
         </div>
-
-
-        <div className="ml-3">
-
-          <PDFDownloadLink document={
-            <Document >
-              <Page size={'A4'} style={rStyles.page} wrap>
-                <PdfReportHeader details={report} />
-                {reportType?.value?.id === REPORT_TYPE[0].id && <PdfBasicReport details={report} />}
-                {reportType?.value?.id === REPORT_TYPE[1].id && <PdfDetailedReport details={report} />}
-                <PdfBranding />
-              </Page>
-            </Document>
-          }
-            fileName={fileName}>
-            {({ blob, url, loading, error }) =>
-              <Button outline text={loading ? <Spinner /> : <Image src={icons.download} height={16} width={16} />} />
-            }
-          </PDFDownloadLink>
-        </div>
-      </div>
-      {
-        loader.loader && <div className={'loader-container'}> <Spinner /></div>
-      }
-      {
-        !loader.loader && report &&
-        <div
-          ref={componentRef}
-          className={'screen-padding'}
-        >
-          <ReportHeader details={report} />
-          {reportType?.value?.id === REPORT_TYPE[0].id && <div id="content-id"><BasicReport details={report} /></div>}
-          {reportType?.value?.id === REPORT_TYPE[1].id && <DetailedReport details={report} />}
-          <div className="d-flex justify-content-end mt-8 mb-6">
-            <a
-              href={"https://www.intrvu.space"}
-              target="_blank"
-              rel="noreferrer"
-            >
-              <Image src={icons.poweredBy} height={50} style={{
-                objectFit: 'contain'
-              }} />
-            </a>
+        {
+          loader.loader && <div className={'loader-container'}> <Spinner /></div>
+        }
+        {
+          !loader.loader && report &&
+          <div
+            ref={componentRef}
+            className="screen-padding pt-0"
+          >
+            <ReportHeader details={report} />
+            {reportType?.value?.id === REPORT_TYPE[0].id && <div id="content-id"><BasicReport details={report} /></div>}
+            {reportType?.value?.id === REPORT_TYPE[1].id && <DetailedReport details={report} />}
+            <div className="d-flex justify-content-end mt-8 mb-6">
+              <a
+                href={"https://www.intrvu.space"}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <Image src={icons.poweredBy} height={50} style={{
+                  objectFit: 'contain'
+                }} />
+              </a>
+            </div>
           </div>
-        </div>
-      }
-    </div>
+        }
+      </div>
+    </>
   );
 }
 
