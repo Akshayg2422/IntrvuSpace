@@ -124,3 +124,40 @@ export const setSelectedOngoingSchedule = (selected: any) => {
         payload: selected,
     };
 };
+
+
+/**
+ * VIEW COMPANY INTERVIEW
+ */
+
+export const setSelectedCompanyId = (selectedId: any) => {
+    return {
+        type: ActionTypes.VIEW_COMPANY_INTERVIEW,
+        payload: selectedId,
+    };
+};
+
+
+/* POST super admin report reGenerate */
+
+export const fetchGenerateReport = (params: any) => {
+    return {
+        type: ActionTypes.FETCH_GENERATE_REPORT,
+        payload: params,
+    };
+};
+
+
+export const fetchGenerateReportSuccess = (response: any) => {
+    return {
+        type: ActionTypes.FETCH_GENERATE_REPORT_SUCCESS,
+        payload: response,
+    };
+};
+
+export const fetchGenerateReportFailure = (error: any) => {
+    return {
+        type: ActionTypes.FETCH_GENERATE_REPORT_FAILURE,
+        payload: error,
+    };
+};

@@ -51,7 +51,8 @@ import {
   paginationHandler,
   validate,
   EXPERIENCE_LIST,
-  INTERVIEW_DURATIONS
+  INTERVIEW_DURATIONS,
+  CREATE_FOR_OTHERS_SUPER_ADMIN_RULES
 } from "@Utils";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -139,7 +140,7 @@ function SuperAdminSchedules() {
 
   const addAnotherFirstName = useInput("");
   const addAnotherLastName = useInput("");
-  const addAnotherEmail = useInput(undefined);
+  const addAnotherEmail = useInput('');
   const addAnotherMobileNumber = useInput("");
   const addAnotherNote = useInput("");
 
@@ -273,7 +274,7 @@ function SuperAdminSchedules() {
         is_notify_report: addAnotherNotifyReport,
         note: addAnotherNote.value,
       };
-
+console.log(params,"pppppp")
       const validation = validate(CREATE_FOR_ADD_ANOTHER_RULES, params);
 
       if (ifObjectExist(validation)) {
@@ -336,7 +337,7 @@ function SuperAdminSchedules() {
       note: noteForOthers.value,
     };
 
-    const validation = validate(CREATE_FOR_OTHERS_RULES, params);
+    const validation = validate(firstName?.value?CREATE_FOR_OTHERS_SUPER_ADMIN_RULES:CREATE_FOR_OTHERS_RULES, params);
 
     if (ifObjectExist(validation)) {
       generateJdModal.show();
