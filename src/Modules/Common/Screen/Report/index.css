@@ -36,6 +36,12 @@
   z-index: 999;
 }
 
+.padding-back{
+  padding-left: 6%;
+  padding-right: 30px;
+  padding-top: 30px;
+}
+
 @media(max-width: 768px) {
   .report-dropdown-container {
     display: flex;
@@ -45,6 +51,8 @@
     top: 0px;
   }
 }
+
+
 
 @media screen and (max-width: 768px) {
   .report-back-button {
