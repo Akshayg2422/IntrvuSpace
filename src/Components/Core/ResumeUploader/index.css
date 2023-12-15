@@ -13,3 +13,32 @@
     font-size: 21px;
     font-weight: 400;
 }
+
+.file-name {
+    color: var(--placeholder);
+    font-size: 21px;
+    font-weight: 400;
+    margin: 0px 20px 0px 20px;
+    text-align: center;
+    line-height: 25px;
+}
+
+.delete-icon {
+    position: absolute;
+    margin: 14px 0px 0px 190px;
+}
+
+.title {
+    text-align: center;
+    margin: 0px 0px 30px 0px;
+}
+
+.bottom-btn {
+    width: 229px;
+}
+
+.bottom-btn-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

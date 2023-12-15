@@ -5,10 +5,12 @@ import {
   CommonTable,
   DropDown,
   Image,
+  ImagePicker,
   Input,
   MenuBar,
   Modal,
   NoDataFound,
+  ResumeUploader,
   Spinner,
   StatusIcon,
   WatchInterviewModal,
@@ -22,13 +24,14 @@ import {
   useModal,
   useNavigation,
 } from "@Hooks";
-import { BulkUpload } from "@Modules";
+import { BulkUpload, CandidateModal } from "@Modules";
 import {
   bulkUploadCandidates,
   createSchedule,
   fetchCandidatesCorporate,
   postManualApprovalOnCandidate,
   refreshCorporateSchedule,
+  uploadResume,
   watchInterviewVideoUrl,
 } from "@Redux";
 import { ROUTES } from "@Routes";
@@ -43,6 +46,7 @@ import {
   paginationHandler,
   validate,
   WATCH_VIDEO_PERMISSION_CONTEXT,
+  cleanBase64,
 } from "@Utils";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -152,6 +156,14 @@ function OpeningCandidates({ id, details }: OpeningCandidatesProps) {
   const searchCandidate = useInput("");
 
   const [selectedCandidates, setSelectedCandidates] = useState(undefined);
+  const RESUMEMENU = [{ id: '0', name: "Pick From Resume" }]
+  const pickResumeModal = useModal(false)
+  const resumeLoader = useLoader(false)
+  const [selectedResume, setSelectedResume] = useState<string | null>(null);
+  // const [selectedImage, setSelectedImage] = useState<any>(null)
+
+
+
 
   /**
    * remove candidate
@@ -353,9 +365,17 @@ function OpeningCandidates({ id, details }: OpeningCandidatesProps) {
       });
   };
 
+  // const base64Photo = selectedImage?.base64 ? selectedImage?.base64 : "";
+  // console.log('base64Photo-------------->', base64Photo);
+
+  // const cleanedBase64Photo = cleanBase64(base64Photo)
+
+  // console.log('cleanedBase64PhotocleanedBase64Photo-------->', cleanedBase64Photo);
+
   function generateNewCandidateHandler() {
     const params = {
       corporate_openings_details_id: id,
+      // ...(cleanedBase64Photo && { photo: cleanedBase64Photo }),
       first_name: firstName.value,
       last_name: lastName.value,
       mobile_number: mobileNumber.value,
@@ -527,6 +547,57 @@ function OpeningCandidates({ id, details }: OpeningCandidatesProps) {
       })
     );
   }
+
+  const prefillDataFromResume = (success) => {
+    const { message, details } = success;
+    const { first_name, last_name, email, mobile } = details;
+    setSelectedResume(null);
+    firstName.set(first_name);
+    lastName.set(last_name);
+    email.set(email);
+    mobileNumber.set(mobile);
+    showToast(message, 'success');
+    resumeLoader.hide();
+    pickResumeModal.hide();
+  };
+
+  const uploadResumeHandler = () => {
+    const params = {
+      attachment: selectedResume
+    }
+    resumeLoader.show()
+    dispatch(
+      uploadResume({
+        params,
+        onSuccess: (success: any) => () => {
+          prefillDataFromResume(success)
+        },
+        onError: (error: any) => () => {
+          const { error_message } = error
+          showToast(error_message, 'error')
+          resumeLoader.hide()
+          pickResumeModal.hide()
+        }
+      })
+    )
+  }
+
+  const handleResumeSelect = (resumeData: string) => {
+    setSelectedResume(resumeData)
+  }
+
+  const closeResumeModal = () => {
+    pickResumeModal.hide()
+    setSelectedResume(null)
+  }
+
+  const resetStateValues = () => {
+    firstName.set('');
+    lastName.set('');
+    mobileNumber.set('');
+    email.set('');
+    // setSelectedImage([]);
+  };
 
   return (
     <>
@@ -718,12 +789,26 @@ function OpeningCandidates({ id, details }: OpeningCandidatesProps) {
       {/**
        * add candidate Modal
        */}
-      <Modal
+      <CandidateModal
         loading={addCandidateLoader.loader}
         title={"Add Candidate"}
         isOpen={addCandidateModal.visible}
         onClose={resetValues}
         onClick={generateNewCandidateHandler}
+        onClickOutline={resetStateValues}
+        menubar={
+          <MenuBar
+            menuData={RESUMEMENU}
+            onClick={pickResumeModal.show}
+          />
+        }
+        // imagePicker={
+        //   <ImagePicker
+        //     placeholder={'Photo'}
+        //     defaultPhotos={selectedImage}
+        //     onSelect={(images) => { setSelectedImage(images) }}
+        //   />
+        // }
       >
         <div className={"row"}>
           <div className={"col-sm-6"}>
@@ -763,6 +848,22 @@ function OpeningCandidates({ id, details }: OpeningCandidatesProps) {
             />
           </div>
         </div>
+      </CandidateModal>
+
+      <Modal
+        isOpen={pickResumeModal.visible}
+        loading={resumeLoader.loader}
+        onClose={closeResumeModal}
+      >
+        <div className={'d-flex justify-content-center'}>
+          <ResumeUploader
+            loading={resumeLoader.loader}
+            title={'Upload File'}
+            placeholder={'Click to upload file'}
+            onSelect={handleResumeSelect}
+            onClick={uploadResumeHandler} />
+        </div>
+
       </Modal>
 
       {/**

@@ -68,12 +68,7 @@ function Candidates() {
   };
 
   const base64Photo = selectedImage?.base64 ? selectedImage?.base64 : "";
-  console.log('base64Photo-------------->', base64Photo);
-
   const cleanedBase64Photo = cleanBase64(base64Photo)
-
-  console.log('cleanedBase64PhotocleanedBase64Photo-------->', cleanedBase64Photo);
-
 
   const addCandidateApiHandler = () => {
     const params = {
@@ -236,19 +231,28 @@ function Candidates() {
     mobileNumber.set('')
     mail.set('')
     setEditId('')
-    setSelectedImage([])
+    setSelectedImage(null)
   }
 
   const handleResumeSelect = (resumeData: string) => {
     setSelectedResume(resumeData)
   }
 
-  function closeResumeModal() {
+  const closeResumeModal = () => {
     pickResumeModal.hide()
     setSelectedResume(null)
   }
 
-  console.log('selectedImage', JSON.stringify(selectedImage));
+  const resetStateValues = () => {
+    firstName.set('');
+    lastName.set('');
+    mobileNumber.set('');
+    mail.set('');
+    setSelectedImage(null);
+    console.log('setSelectedImage---------', selectedImage)
+  };
+
+  // console.log('selectedImage', JSON.stringify(selectedImage));
 
 
   return (
@@ -310,7 +314,7 @@ function Candidates() {
         isOpen={addCandidateModel.visible}
         onClose={modalCloseHandler}
         onClick={addCandidateApiHandler}
-        onClickOutline={() => { }}
+        onClickOutline={resetStateValues}
         menubar={
           <MenuBar
             menuData={RESUMEMENU}
@@ -335,7 +339,6 @@ function Candidates() {
               value={firstName.value}
               onChange={firstName.onChange}
             />
-
           </div>
 
           <div className='col-sm-6'>
@@ -367,16 +370,17 @@ function Candidates() {
         </div>
       </CandidateModal >
       <Modal
-        title={'Attach Resume'}
         isOpen={pickResumeModal.visible}
         loading={resumeLoader.loader}
         onClose={closeResumeModal}
-        onClick={uploadResumeHandler}
-        buttonText={'Attach'}
-        size={'md'}
       >
         <div className={'d-flex justify-content-center'}>
-          <ResumeUploader placeholder={'Click to upload file'} onSelect={handleResumeSelect} />
+          <ResumeUploader
+            loading={resumeLoader.loader}
+            title={'Upload File'}
+            placeholder={'Click to upload file'}
+            onSelect={handleResumeSelect}
+            onClick={uploadResumeHandler} />
         </div>
 
       </Modal>

@@ -17,10 +17,13 @@ function getFileIcon(fileExtension: string) {
     }
 }
 
-function ResumeUploader({ onSelect, placeholder }: ResumeUploaderProps) {
+function ResumeUploader({ onSelect, placeholder, title, buttonText = 'Submit', loading, onClick }: ResumeUploaderProps) {
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [fileUpload, setFileUpload] = useState<string | null>(null);
     const [fileExtension, setFileExtension] = useState<string | null>(null);
+    const [fileName, setFileName] = useState<string | null>(null);
+
+
 
     const handleRefClick = () => {
         fileInputRef.current?.click();
@@ -44,6 +47,7 @@ function ResumeUploader({ onSelect, placeholder }: ResumeUploaderProps) {
                     onSelect(e.target.result);
                     setFileUpload(e.target.result as string);
                     setFileExtension(fileExtension);
+                    setFileName(file.name);
                 }
             };
 
@@ -63,43 +67,46 @@ function ResumeUploader({ onSelect, placeholder }: ResumeUploaderProps) {
     return (
         <div>
             {!fileUpload ? (
-
-                <div className={`resume-picker-container card-border pointer`} onClick={handleRefClick}>
-                    <Image src={icons.Equalizer} height={30} width={30} />
-                    <div className={' resume-picker-placeholder'}>
-                        {placeholder}
+                <>
+                    <div>
+                        <div className={'screen-heading title'}>{title}</div>
+                    </div><div className={`resume-picker-container card-border pointer`} onClick={handleRefClick}>
+                        <Image className={'mb-3'} src={icons.upload} height={35} width={35} />
+                        <div className={' resume-picker-placeholder'}>
+                            {placeholder}
+                        </div>
                     </div>
-                </div>
+                </>
 
             ) : (
                 <div>
-                    <div className={'position-absolute d-flex pl-6'}>
+                    <div className={'delete-icon'}>
                         <Image
                             className={'pointer'}
                             src={icons.delete}
                             color='red'
                             variant={'default'}
-                            height={'5%'}
-                            width={'5%'}
+                            height={28}
+                            width={28}
                             style={{
                                 objectFit: 'cover',
                             }}
                             onClick={handleDelete}
                         />
                     </div>
-
-
-                    <div className={`resume-picker-container card-border overflow-hidden`}>
-                        <Image
-                            variant={'default'}
-                            src={getFileIcon(fileExtension as string)}
-                            height={'100%'}
-                            width={'100%'}
-                            style={{
-                                objectFit: 'cover',
-                            }}
-                        />
+                    <div className={`resume-picker-container card-border pointer`} onClick={handleRefClick}>
+                        <Image className={'mb-3'} src={getFileIcon(fileExtension as string)} height={70} width={60} />
+                        <div className={'file-name'}>
+                            {fileName}
+                        </div>
                     </div>
+                    {onClick &&
+                        <div className={'bottom-btn-container'}>
+                            <div className={'bottom-btn'}>
+                                <Button loading={loading} block text={buttonText} onClick={onClick} />
+                            </div>
+                        </div>
+                    }
                 </div>
             )}
             <form>
