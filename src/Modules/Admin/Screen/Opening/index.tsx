@@ -104,6 +104,7 @@ function Opening() {
 
   const [isPositionSearch, setIsPositionSearch] = useState(false);
   const [videoRecordMandatory, setVideoRecordMandatory] = useState(true);
+  const [isSingleQuestionSet, setIsSingleQuestionSet] = useState(false);
 
   const [scheduleEndDate, setScheduleEndDate] = useState<any>(DEFAULT_DATE);
   const [scheduleEndTime, setScheduleEndTime] = useState<any>(DEFAULT_TIME);
@@ -198,6 +199,7 @@ function Opening() {
       vacancies: vacancies?.value > 0 ? vacancies?.value : "",
       interview_duration: duration?.value,
       video_recording_mandatory: videoRecordMandatory,
+      is_single_question_set:isSingleQuestionSet,
       deadline: formatDeadline(scheduleEndDate, scheduleEndTime),
     };
 
@@ -239,7 +241,7 @@ function Opening() {
     setSelectedDepartment("");
 
     setVideoRecordMandatory(true);
-
+    setIsSingleQuestionSet(false)
     setScheduleEndDate(DEFAULT_DATE);
     setScheduleEndTime(DEFAULT_TIME);
   }
@@ -541,6 +543,17 @@ function Opening() {
               defaultChecked={videoRecordMandatory}
               onCheckChange={(checked) => {
                 setVideoRecordMandatory(checked);
+              }}
+            />
+          </div>
+          <div className={"ml--6"}>
+            <Checkbox
+              id={"Single-question-set"}
+              className={"text-primary"}
+              text={"Single Question Set"}
+              defaultChecked={isSingleQuestionSet}
+              onCheckChange={(checked) => {
+                setIsSingleQuestionSet(checked);
               }}
             />
           </div>
