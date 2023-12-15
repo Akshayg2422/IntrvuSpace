@@ -53,7 +53,6 @@ import moment from "moment";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./index.css";
-import ReverseTimer from "@Components//Component/ReverseTimer";
 
 function Opening() {
   const {

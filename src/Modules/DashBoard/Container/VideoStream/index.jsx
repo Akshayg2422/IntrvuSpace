@@ -1,14 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { getScheduleBasicInfo, setFaceVisible, syncVideo } from "@Redux";
-import { Modal } from '@Components'
+import { CountdownTimer, Modal } from "@Components";
 import { useModal } from "@Hooks";
-import { Button } from '@Components'
+import { Button } from "@Components";
 
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { FilesetResolver, FaceLandmarker } from '@mediapipe/tasks-vision';
-
+import { FilesetResolver, FaceLandmarker } from "@mediapipe/tasks-vision";
 
 const VideoStream = (props) => {
   const videoRef = useRef(null);
@@ -21,17 +20,15 @@ const VideoStream = (props) => {
   const interviewPauseFinalModal = useModal(false);
   const interviewEndModal = useModal(false);
 
+  const { scheduleInfo } = useSelector((state) => state.DashboardReducer);
 
-  const { scheduleInfo } = useSelector(
-    (state) => state.DashboardReducer)
-
-  const { pause_request_count } = scheduleInfo
+  const { pause_request_count } = scheduleInfo;
 
   let faceLandmarker;
-  const webcamRunningRef = useRef(null)
+  const webcamRunningRef = useRef(null);
   let runningMode = "IMAGE";
-  let array = []
-  let faceVisibleCount = 0
+  let array = [];
+  let faceVisibleCount = 0;
 
   console.log("rendered");
 
@@ -44,7 +41,7 @@ const VideoStream = (props) => {
           videoRef.current.muted = true;
           videoRef.current.srcObject = stream;
           startRecording();
-          createFaceLandmarker()
+          createFaceLandmarker();
         })
         .catch((error) => {
           console.error("Error accessing webcam:", error);
@@ -58,12 +55,10 @@ const VideoStream = (props) => {
     };
   }, [props.isRecording]);
 
-
   // detect face landmark
 
   async function createFaceLandmarker() {
     try {
-
       const filesetResolver = await FilesetResolver.forVisionTasks(
         "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3/wasm"
       );
@@ -71,34 +66,29 @@ const VideoStream = (props) => {
       faceLandmarker = await FaceLandmarker.createFromOptions(filesetResolver, {
         baseOptions: {
           modelAssetPath: `https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task`,
-          delegate: "GPU"
+          delegate: "GPU",
         },
         outputFaceBlendshapes: true,
-        runningMode: 'VIDEO',
+        runningMode: "VIDEO",
         numFaces: 1,
       });
-      // After loading model, start detecting face and noise detection 
-      detectingHandler()
-    }
-    catch (error) {
-      console.log(error, 'error1');
+      // After loading model, start detecting face and noise detection
+      detectingHandler();
+    } catch (error) {
+      console.log(error, "error1");
     }
   }
 
   function detectingHandler() {
-
-    webcamRunningRef.current = true
+    webcamRunningRef.current = true;
 
     if (!faceLandmarker) {
       console.log("Wait! faceLandmarker not loaded yet.");
       return;
+    } else {
+      predictWebcam();
     }
-    else {
-      predictWebcam()
-    }
-
   }
-
 
   const getBasicInfo = () => {
     const params = { schedule_id: schedule_id };
@@ -123,25 +113,21 @@ const VideoStream = (props) => {
     );
   };
 
-
-
   let lastVideoTime = -1;
   let results = undefined;
 
-  // predicting faceLandMark 
+  // predicting faceLandMark
 
   async function predictWebcam() {
-
     // Now let's start detecting the stream.
     if (runningMode === "IMAGE") {
       runningMode = "VIDEO";
-      optionSet()
+      optionSet();
     }
     async function optionSet() {
       try {
-        await faceLandmarker?.setOptions({ runningMode: 'VIDEO' });
-      }
-      catch (error) {
+        await faceLandmarker?.setOptions({ runningMode: "VIDEO" });
+      } catch (error) {
         console.log(error, "error");
       }
     }
@@ -150,22 +136,18 @@ const VideoStream = (props) => {
       if (lastVideoTime !== videoRef.current.currentTime) {
         results = faceLandmarker?.detectForVideo(videoRef.current, startTimeMs);
         lastVideoTime = videoRef.current.currentTime;
-
       }
     }
     if (results.faceBlendshapes.length > 0) {
-      console.log('face visible');
-      faceVisibleCount = 0
-
+      console.log("face visible");
+      faceVisibleCount = 0;
     } else {
-      console.log('show Face clearly')
-      faceVisibleCount = faceVisibleCount + 1
+      console.log("show Face clearly");
+      faceVisibleCount = faceVisibleCount + 1;
       if (faceVisibleCount === 60) {
-        showAlert()
+        showAlert();
       }
-
     }
-
 
     // Call this function again to keep predicting when the browser is ready.
     if (webcamRunningRef.current) {
@@ -174,18 +156,15 @@ const VideoStream = (props) => {
   }
 
   function showAlert() {
-    faceVisibleCount = 0
+    faceVisibleCount = 0;
     if (pause_request_count < 3) {
-      interviewPauseModal.show()
+      interviewPauseModal.show();
+    } else if (pause_request_count == 3) {
+      interviewPauseFinalModal.show();
+    } else {
+      interviewEndModal.show();
     }
-    else if (pause_request_count == 3) {
-      interviewPauseFinalModal.show()
-    }
-    else {
-      interviewEndModal.show()
-    }
-    dispatch(setFaceVisible(true))
-    
+    dispatch(setFaceVisible(true));
   }
 
   // recording
@@ -246,9 +225,6 @@ const VideoStream = (props) => {
 
   if (!props.isRecording) return null;
 
-
-  
-
   return (
     <div>
       <div className="d-block d-md-none d-lg-none d-xl-none">
@@ -283,41 +259,51 @@ const VideoStream = (props) => {
         />
       </div>
       <Modal
-        title={'Interview Paused!'}
-        subTitle={'Your face is not visible, adjust your position / camera to continue.'}
+        title={"Interview Paused!"}
+        subTitle={
+          "Your face is not visible, adjust your position / camera to continue."
+        }
         isOpen={interviewPauseModal.visible}
-        buttonText={'Fix & Proceed'}
+        buttonText={"Fix & Proceed"}
         onClick={() => {
-          dispatch(setFaceVisible(false))
-          interviewPauseModal.hide()
-          getBasicInfo()
+          dispatch(setFaceVisible(false));
+          interviewPauseModal.hide();
+          getBasicInfo();
         }}
       />
 
       <Modal
-        title={'Face Not Visible!'}
-        subTitle={'Unable to process your face clearly. Failing another attempt, would close the interview!'}
+        title={"Face Not Visible!"}
+        subTitle={
+          "Unable to process your face clearly. Failing another attempt, would close the interview!"
+        }
         isOpen={interviewPauseFinalModal.visible}
-        buttonText={'Proceed'}
+        buttonText={"Proceed"}
         onClick={() => {
-          dispatch(setFaceVisible(false))
-          interviewPauseFinalModal.hide()
-          getBasicInfo()
+          dispatch(setFaceVisible(false));
+          interviewPauseFinalModal.hide();
+          getBasicInfo();
         }}
       />
 
       <Modal
-        title={'Interview Closed'}
-        subTitle={'Your interview has ended since we are unable to track your face properly.'}
+        title={"Interview Closed"}
+        subTitle={
+          "Your interview has ended since we are unable to track your face properly."
+        }
         isOpen={interviewEndModal.visible}
-        buttonText={'Done'}
+        buttonText={"Done"}
         onClick={() => {
-          getBasicInfo()
-          dispatch(setFaceVisible(false))
-          interviewEndModal.hide()
-            props.endInterview()
+          getBasicInfo();
+          dispatch(setFaceVisible(false));
+          interviewEndModal.hide();
+          props.endInterview();
         }}
-      />
+      >
+        <div>
+          <CountdownTimer initialSeconds={5} endCall={props.endInterview} />
+        </div>
+      </Modal>
     </div>
   );
 };
