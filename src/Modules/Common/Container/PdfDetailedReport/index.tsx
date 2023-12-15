@@ -18,9 +18,9 @@ function PdfDetailedReport({ details }: PdfDetailedReportProps) {
 
 
   const NOTE = [
-    { id: 1, icon: icons.check, text: "Completely Covered" },
+    { id: 1, icon: icons.checkIcon, text: "Completely Covered" },
     { id: 2, icon: icons.checkBlack, text: "Partially Covered" },
-    { id: 3, icon: icons.frame, text: "Covered but Invalid", },
+    { id: 3, icon: icons.frameIcon, text: "Covered but Invalid", },
   ];
 
 
@@ -29,9 +29,9 @@ function PdfDetailedReport({ details }: PdfDetailedReportProps) {
 
   function getStatusIcon(variant: 'frame' | 'checkBlack' | 'check' = 'check') {
     const iconMap = {
-      'check': icons.check,
+      'check': icons.checkIcon,
       'checkBlack': icons.checkBlack,
-      'frame': icons.frame
+      'frame': icons.frameIcon
     };
     return <Image src={iconMap[variant]} style={dStyles['note-list-icon']} />
   }

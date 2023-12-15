@@ -102,7 +102,7 @@ const hStyles = StyleSheet.create({
     display: 'flex',
     width: '65pt',
     height: '65pt',
-    borderRadius: '4px',
+    borderRadius: '4pt',
     overflow: 'hidden',
   },
   'location-container': {

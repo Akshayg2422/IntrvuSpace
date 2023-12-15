@@ -2,15 +2,14 @@ import { icons } from '@Assets';
 import { ImageVariant, StatusIconProps } from './interfaces';
 import { Image } from '@Components'
 
-function StatusIcon({ variant = 'check' }: StatusIconProps) {
+function StatusIcon({ variant = 'check', type = 'round' }: StatusIconProps) {
 
-    function getVariantIcon(variant: ImageVariant) {
-
+    function getVariantColor(variant: ImageVariant) {
         switch (variant) {
             case 'check':
-                return icons.check;
+                return icons.checkRound;
             case 'frame':
-                return icons.frame;
+                return icons.frameRound;
             case 'checkBlack':
                 return icons.checkBlack;
             default:
@@ -18,7 +17,21 @@ function StatusIcon({ variant = 'check' }: StatusIconProps) {
         }
     }
 
-    const variantIcon = getVariantIcon(variant)
+    function getVariantIcon(variant: ImageVariant) {
+        switch (variant) {
+            case 'check':
+                return icons.checkIcon;
+            case 'frame':
+                return icons.frameIcon;
+            case 'checkBlack':
+                return icons.checkBlack;
+            default:
+                return null;
+        }
+    }
+
+
+    const variantIcon = type? getVariantColor(variant) : getVariantIcon(variant)
 
     return (
         <Image
