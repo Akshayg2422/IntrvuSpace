@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { PhotoProvider, PhotoView } from "react-photo-view";
 import "react-photo-view/dist/react-photo-view.css";
+import { CandidateModal } from '@Modules';
 
 
 function Candidates() {
@@ -67,8 +68,8 @@ function Candidates() {
   };
 
   const base64Photo = selectedImage?.base64 ? selectedImage?.base64 : "";
-  console.log('base64Photo-------------->',base64Photo);
-  
+  console.log('base64Photo-------------->', base64Photo);
+
   const cleanedBase64Photo = cleanBase64(base64Photo)
 
   console.log('cleanedBase64PhotocleanedBase64Photo-------->', cleanedBase64Photo);
@@ -303,32 +304,27 @@ function Candidates() {
         }
       </div >
 
-      <Modal
+      <CandidateModal
         loading={addLoader.loader}
-        title={`${editId ? "Edit" : "Add"}`}
+        title={`${editId ? "Edit" : "Add Candidate"}`}
         isOpen={addCandidateModel.visible}
         onClose={modalCloseHandler}
         onClick={addCandidateApiHandler}
+        onClickOutline={() => { }}
+        menubar={
+          <MenuBar
+            menuData={RESUMEMENU}
+            onClick={pickResumeModal.show}
+          />
+        }
+        imagePicker={
+          <ImagePicker
+            placeholder={'Photo'}
+            defaultPhotos={selectedImage}
+            onSelect={(images) => { setSelectedImage(images) }}
+          />
+        }
       >
-
-        <div className={'row'}>
-
-          <div className={'col-6'}>
-            <ImagePicker
-              placeholder={'Photo'}
-              defaultPhotos={selectedImage}
-              onSelect={(images) => { setSelectedImage(images) }}
-            />
-          </div>
-
-          <div className={'col text-right'}>
-            <MenuBar
-              menuData={RESUMEMENU}
-              onClick={pickResumeModal.show}
-            />
-          </div>
-
-        </div>
 
         <div className='row'>
 
@@ -369,7 +365,7 @@ function Candidates() {
           </div>
 
         </div>
-      </Modal >
+      </CandidateModal >
       <Modal
         title={'Attach Resume'}
         isOpen={pickResumeModal.visible}
@@ -380,7 +376,7 @@ function Candidates() {
         size={'md'}
       >
         <div className={'d-flex justify-content-center'}>
-          <ResumeUploader placeholder={'Resume'} onSelect={handleResumeSelect} />
+          <ResumeUploader placeholder={'Click to upload file'} onSelect={handleResumeSelect} />
         </div>
 
       </Modal>

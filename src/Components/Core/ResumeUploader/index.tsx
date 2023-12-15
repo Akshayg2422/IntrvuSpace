@@ -64,11 +64,13 @@ function ResumeUploader({ onSelect, placeholder }: ResumeUploaderProps) {
         <div>
             {!fileUpload ? (
 
-                <>
-                    <div className={`resume-picker-container border pointer`} onClick={handleRefClick}>
-                        <div className={'resume-picker-placeholder'}>{placeholder}</div>
+                <div className={`resume-picker-container card-border pointer`} onClick={handleRefClick}>
+                    <Image src={icons.Equalizer} height={30} width={30} />
+                    <div className={' resume-picker-placeholder'}>
+                        {placeholder}
                     </div>
-                </>
+                </div>
+
             ) : (
                 <div>
                     <div className={'position-absolute d-flex pl-6'}>

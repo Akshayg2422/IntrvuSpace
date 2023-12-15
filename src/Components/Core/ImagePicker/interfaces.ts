@@ -2,8 +2,9 @@ export interface ImagePickerProps {
     defaultPhotos?: any
     max?: number;
     variant?: 'single' | 'multiple';
-    placeholder?: string
-    onSelect?: (images: any) => void
+    placeholder?: string;
+    onSelect?: (images: any) => void;
+    title?: string
 }
 
 export interface DropZoneImageProps {
