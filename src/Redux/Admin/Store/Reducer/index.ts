@@ -107,21 +107,6 @@ const AdminReducer = (state = initialState, action: any) => {
       state = { ...state, schedulesLite: action.payload };
       break;
 
-      //record Authentication Video
-
-    case ActionTypes.POST_RECORD_AUTHENTICATION_VIDEO:
-      state = { ...state };
-      break;
-
-    case ActionTypes.POST_RECORD_AUTHENTICATION_VIDEO_SUCCESS:
-      state = { ...state };
-      break;
-
-    case ActionTypes.POST_RECORD_AUTHENTICATION_VIDEO_FAILURE:
-      state = { ...state };
-      break;
-
-
     default:
       state = state;
       break;
