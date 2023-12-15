@@ -35,9 +35,13 @@ import {
 import { Image } from '@Components'
 import { icons } from '@Assets'
 import { SidebarProps } from './interfaces'
+import { useDispatch } from "react-redux";
+import { setSelectedCompanyId } from '@Redux';
 
 function Sidebar({ toggleSideNav, sideNavOpen, routes, logo, rtlActive }: SidebarProps) {
+
   const [state, setState] = React.useState({});
+  const dispatch = useDispatch()
   const location = useLocation();
   React.useEffect(() => {
     setState(getCollapseStates(routes));
@@ -64,6 +68,7 @@ function Sidebar({ toggleSideNav, sideNavOpen, routes, logo, rtlActive }: Sideba
   const getCollapseStates = (routes) => {
     let initialState = {};
     routes.map((prop, key) => {
+     
       if (prop.collapse) {
         initialState = {
           [prop.state]: getCollapseInitialState(prop.views),
@@ -115,8 +120,10 @@ function Sidebar({ toggleSideNav, sideNavOpen, routes, logo, rtlActive }: Sideba
                 active: getCollapseInitialState(prop.views),
               })}
               onClick={(e) => {
+               
                 e.preventDefault();
                 setState(st);
+               
               }}
             >
               {prop.icon ? (
@@ -145,7 +152,15 @@ function Sidebar({ toggleSideNav, sideNavOpen, routes, logo, rtlActive }: Sideba
           <NavLink
             to={prop.layout + prop.path}
             activeClassName=""
-            onClick={closeSidenav}
+            onClick={()=>{
+              console.log(prop.path,"prop.path===")
+              if( prop.path==='/recent-interviews'){
+                dispatch(setSelectedCompanyId(undefined))
+              }
+              closeSidenav()
+            }
+         
+            }
             tag={NavLinkRRD}
           >
             {prop.icon !== undefined ? (

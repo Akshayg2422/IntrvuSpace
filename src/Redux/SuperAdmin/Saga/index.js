@@ -106,6 +106,24 @@ function* fetchOnGoingSchedulesSaga(action) {
   }
 }
 
+/* super admin report reGenerate */
+
+function* fetchGenerateReportSaga(action) {
+  try {
+    const response = yield call(Api.reGenerateReportApi, action.payload.params);
+    if (response.success) {
+      yield put(Action.fetchGenerateReportSuccess(response));
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield put(Action.fetchGenerateReportFailure(response.error_message));
+      yield call(action.payload.onError(response));
+    }
+  } catch (error) {
+    yield put(Action.fetchGenerateReportFailure(error));
+    yield call(action.payload.onError(error));
+  }
+}
+
 
 
 function* SuperAdminSaga() {
@@ -114,6 +132,7 @@ function* SuperAdminSaga() {
   yield takeLatest(Action.ALTER_COMPANY_LIMIT, alterCompanyLimitSaga);
   yield takeLatest(Action.GET_RECENT_INTERVIEWS, getRecentInterviewsSaga);
   yield takeLatest(Action.FETCH_ONGOING_SCHEDULES, fetchOnGoingSchedulesSaga);
+  yield takeLatest(Action.FETCH_GENERATE_REPORT, fetchGenerateReportSaga);
 
 
 }
