@@ -153,7 +153,8 @@ function Sidebar({ toggleSideNav, sideNavOpen, routes, logo, rtlActive }: Sideba
             to={prop.layout + prop.path}
             activeClassName=""
             onClick={()=>{
-              if( prop.path==='recent-interviews'){
+              console.log(prop.path,"prop.path===")
+              if( prop.path==='/recent-interviews'){
                 dispatch(selectedRecentInterviewCompanyId(undefined))
               }
               closeSidenav()
