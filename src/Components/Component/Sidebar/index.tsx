@@ -36,7 +36,7 @@ import { Image } from '@Components'
 import { icons } from '@Assets'
 import { SidebarProps } from './interfaces'
 import { useDispatch } from "react-redux";
-import { selectedRecentInterviewCompanyId } from '@Redux';
+import { setSelectedCompanyId } from '@Redux';
 
 function Sidebar({ toggleSideNav, sideNavOpen, routes, logo, rtlActive }: SidebarProps) {
 
@@ -155,7 +155,7 @@ function Sidebar({ toggleSideNav, sideNavOpen, routes, logo, rtlActive }: Sideba
             onClick={()=>{
               console.log(prop.path,"prop.path===")
               if( prop.path==='/recent-interviews'){
-                dispatch(selectedRecentInterviewCompanyId(undefined))
+                dispatch(setSelectedCompanyId(undefined))
               }
               closeSidenav()
             }

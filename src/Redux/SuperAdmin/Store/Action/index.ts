@@ -130,7 +130,7 @@ export const setSelectedOngoingSchedule = (selected: any) => {
  * VIEW COMPANY INTERVIEW
  */
 
-export const selectedRecentInterviewCompanyId = (selectedId: any) => {
+export const setSelectedCompanyId = (selectedId: any) => {
     return {
         type: ActionTypes.VIEW_COMPANY_INTERVIEW,
         payload: selectedId,
