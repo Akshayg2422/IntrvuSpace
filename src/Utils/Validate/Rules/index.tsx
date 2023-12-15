@@ -436,7 +436,7 @@ export const CREATE_FOR_ADD_ANOTHER_RULES = {
     presence: { message: "First name cannot be empty" },
     length: { minimum: 3, message: "First name should be at least 3 characters" },
   },
-    custom_email: {
+  custom_email: {
     email: { message: "Email cannot be empty" },
   },
   custom_mobile_number: {

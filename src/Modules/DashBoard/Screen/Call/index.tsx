@@ -182,7 +182,7 @@ function Call() {
       setIsTtfSpeaking(false);
     };
 
-    audioElementRef.current.onloadstart = function () {};
+    audioElementRef.current.onloadstart = function () { };
     audioElementRef.current.onended = function () {
       setIsTtfSpeaking(false);
       if (closeCall.current === true) {
@@ -221,7 +221,7 @@ function Call() {
   const { scheduleInfo, recordingPermission } = useSelector(
     (state: any) => state.DashboardReducer
   );
-  
+
 
   const [processCallInprogress, setProcessCallInprogress] = useState(false);
 
@@ -363,7 +363,7 @@ function Call() {
           canConnect.current = false;
           socketRef.current.close();
           socketRef.current = null;
-        } catch (e) {}
+        } catch (e) { }
         clearInterval(reconnectInterval);
       }
     };
@@ -860,7 +860,7 @@ function Call() {
           stopInterval();
           startInterviewLoader.hide();
         },
-        onError: (error: any) => () => {},
+        onError: (error: any) => () => { },
       })
     );
   };
@@ -901,9 +901,9 @@ function Call() {
       const hasMicPermission = await hasMicrophonePermission();
       if (hasMicPermission) {
         micPermissionModal.hide();
-        if(!hasCamPermission){
-        setIsWebcamOff(true)
-      }
+        if (!hasCamPermission) {
+          setIsWebcamOff(true)
+        }
         if (!recordStatus && is_video_recording_manditory) {
           await startScreenRecording();
         } else if (recordStatus || !is_video_recording_manditory) {
@@ -941,7 +941,7 @@ function Call() {
         onSuccess: () => () => {
           endInterviewHandler();
         },
-        onError: () => () => {},
+        onError: () => () => { },
       })
     );
   }
@@ -1075,7 +1075,7 @@ function Call() {
                           show={interviewer_state === IV_PROCESSING}
                           name={getShortName(scheduleInfo?.interviewer_name)}
                           shouldBlink={interviewer_state === IV_SPEAKING}
-                          isWebCamOff = {true}
+                          isWebCamOff={true}
                         />
                         <h3 className="display-3 mb-4 text-primary mt-3">
                           {capitalizeFirstLetter(
@@ -1090,7 +1090,7 @@ function Call() {
                           showWebCam={showCam}
                           name={getShortName(scheduleInfo?.interviewee_name)}
                           shouldBlink={interviewee_state === IE_SPEAKING}
-                          isWebCamOff = {isWebCamOff}
+                          isWebCamOff={isWebCamOff}
                         />
                         <h3 className="display-3 mb-4 text-primary mt-3">
                           {capitalizeFirstLetter(
@@ -1105,7 +1105,7 @@ function Call() {
                           webcam={
                             scheduleInfo?.is_video_recording_manditory
                               ? true : isWebCamOff ? false
-                              : showCam
+                                : showCam
                           }
                           mic={!mute}
                           onWebCamChange={() => {
@@ -1169,7 +1169,7 @@ function Call() {
                                 scheduleInfo?.interviewee_name
                               )}
                               shouldBlink={interviewee_state === IE_SPEAKING}
-                              isWebCamOff ={isWebCamOff}
+                              isWebCamOff={isWebCamOff}
                             />
                             <h3 className="display-3 mb-4  mt-3 text-center">
                               {capitalizeFirstLetter(
@@ -1242,16 +1242,16 @@ function Call() {
               <></>
             )}
             {scheduleInfo?.is_report_complete &&
-            scheduleInfo?.can_view_report ? (
+              scheduleInfo?.can_view_report ? (
               <Report />
-            ) 
-            : scheduleInfo?.is_report_complete && (
-              <ContactHrModal
-                onClick={() => {
-                  getBasicInfo();
-                }}
-              />
             )
+              : scheduleInfo?.is_report_complete && (
+                <ContactHrModal
+                  onClick={() => {
+                    getBasicInfo();
+                  }}
+                />
+              )
             }
           </>
         )}
@@ -1295,7 +1295,7 @@ function Call() {
             {"2. Enable microphone access in system settings. "}
             <span
               className="pointer text-primary font-weight-700"
-              // onClick={gotoPermissionSetting}
+            // onClick={gotoPermissionSetting}
             >{`(${getOperatingSystem()})`}</span>
           </p>
         </div>

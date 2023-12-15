@@ -330,3 +330,6 @@ export const logoutApi = payload => post(URL.URL_LOGOUT, payload, {})
 /* super admin report reGenerate */
 
 export const reGenerateReportApi = payload => post(URL.URL_GENERATED_REPORT, payload, {})
+/** recordAuthenticationVideo */
+
+export const recordAuthenticationVideoApi = payload => post(URL.URL_RECORD_AUTHENTICATION_VIDEO, payload, {})
