@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-function CountDownTimer({ timeInSec }) {
+function CountDownTimer2({ timeInSec }) {
   const [time, setTime] = useState<any>(timeInSec);
 
   useEffect(() => {
@@ -39,4 +39,4 @@ function CountDownTimer({ timeInSec }) {
   );
 }
 
-export { CountDownTimer };
+export { CountDownTimer2 };

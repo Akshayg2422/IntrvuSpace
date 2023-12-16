@@ -293,7 +293,6 @@ function Opening() {
         showCreateOpening={corporateScheduleCount > 0}
         onCreateOpeningClick={createOpeningModal.show}
       />
-
       {corporateScheduleCount <= 0 ? <OpeningEmpty onCreateOpeningClick={createOpeningModal.show} />
         : (
           <div className={"screen-container-other"}>
