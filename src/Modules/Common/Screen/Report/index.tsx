@@ -142,7 +142,7 @@ function Report() {
             className="screen-padding pt-0"
           >
 
-            <PDFViewer style={{
+            {/* <PDFViewer style={{
               width: '100%',
               height: '600pt'
             }}>
@@ -153,7 +153,7 @@ function Report() {
                   <PdfBranding />
                 </Page>
               </Document>
-            </PDFViewer>
+            </PDFViewer> */}
             <ReportHeader details={report} />
             {reportType?.value?.id === REPORT_TYPE[0].id ? <BasicReport details={report} /> : <DetailedReport details={report} />}
             <div className="d-flex justify-content-end mt-8 mb-6">
