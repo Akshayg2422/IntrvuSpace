@@ -18,29 +18,39 @@ function PdfDetailedReport({ details }: PdfDetailedReportProps) {
 
 
   const NOTE = [
-    { id: 1, icon: icons.check, text: "Completely Covered" },
-    { id: 2, icon: icons.checkBlack, text: "Partially Covered" },
-    { id: 3, icon: icons.frame, text: "Covered but Invalid", },
+    { id: 1, type: 'check', text: "Completely Covered" },
+    { id: 2, type: 'checkBlack', text: "Partially Covered" },
+    { id: 3, type: 'frame', text: "Covered but Invalid", },
   ];
-
-
-  console.log(JSON.stringify(modifiedHlv_r));
 
 
   function getStatusIcon(variant: 'frame' | 'checkBlack' | 'check' = 'check') {
     const iconMap = {
-      'check': icons.check,
-      'checkBlack': icons.checkBlack,
-      'frame': icons.frame
+      'check': icons.checkIcon,
+      'checkBlack': icons.checkBlackIcon,
+      'frame': icons.frameIcon
     };
-    return <Image src={iconMap[variant]} style={dStyles['note-list-icon']} />
+
+    const size = variant === 'frame' ? "6pt" : "7pt";
+
+    return (
+      <View style={{
+        width: "15pt",
+        height: '15pt',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}>
+        <Image src={iconMap[variant]} style={{ objectFit: 'contain', height: size, width: size }} />
+      </View>
+    )
   }
 
   return (
     <View>
       <View style={[dStyles['detailed-report-card-container'], dStyles['card-border']]}>
         <View style={dStyles['detailed-each-container']}>
-          <Text style={bStyles['text-heading-primary']}>{skill_matrix_overal_percent}%</Text>
+          <Text style={bStyles['text-heading-secondary']}>{skill_matrix_overal_percent}%</Text>
           <Text style={bStyles['report-title']}>{'Skill Matrix'}</Text>
         </View>
 
@@ -56,134 +66,147 @@ function PdfDetailedReport({ details }: PdfDetailedReportProps) {
         }
       </View>
 
-      <View style={bStyles['job-description-container']}>
-        <Text style={bStyles['text-heading-secondary']}>{'Job Description Key Areas'}</Text>
-        {sections && sections.length > 0 && sections.map((each => {
-          const { name, rating } = each
-          return (
-            <View style={[bStyles['job-description-item'], bStyles['card-border']]}>
-              <Text style={bStyles['job-description-title']}>{name}</Text>
-              <Text style={bStyles['job-description-title']}>{rating}</Text>
-            </View>
-          )
-        }))}
-      </View>
 
-      <View break>
-        <View style={dStyles['skill-matrix-container']}>
-          <View style={dStyles['skill-matrix-heading-container']}>
-            <Text style={bStyles['text-heading-secondary']}>{'Skill Matrix Report'}</Text>
-            <Text style={bStyles['text-heading-secondary']}>{skill_matrix_overal_percent}%</Text>
-          </View>
-          <View style={dStyles['note-container']}>
-            <View>
-              <Text style={dStyles['note-title']}>{'Note'}</Text>
-              <View style={dStyles['note-list-container']}>
-                {
-                  NOTE.map(each => {
-                    const { id, icon, text } = each
-                    return (
-                      <View key={id} style={dStyles['note-list-item']}>
-                        <Image src={icon} style={dStyles['note-list-icon']} />
-                        <Text style={dStyles['note-text']}>{text}</Text>
-                      </View>
-                    )
-                  })
-                }
-              </View>
-            </View>
-          </View>
-        </View>
+
+      <View>
         {
-          sections && sections.length > 0 && sections.map(each => {
-            const { name, rating, questions, } = each;
-            return (
-              <View style={[dStyles['sections-card-container'], bStyles['card-border']]} wrap={false}>
-                <View style={dStyles['section-heading-container']}>
-                  <Text style={bStyles['job-description-title']}>{capitalizeFirstLetter(name.replace(/_/g, ' '))}</Text>
-                  <Text style={bStyles['job-description-title']}>{rating}</Text>
-                </View>
+          sections && sections.length > 0 &&
+          <View>
+            <View style={bStyles['job-description-container']}>
+              <Text style={bStyles['text-heading-secondary']}>{'Job Description Key Areas'}</Text>
+              {sections && sections.length > 0 && sections.map((each => {
+                const { name, rating } = each
+                return (
+                  <View style={[bStyles['job-description-item'], bStyles['card-border']]}>
+                    <Text style={bStyles['job-description-title']}>{name}</Text>
+                    <Text style={bStyles['job-description-title']}>{rating}</Text>
+                  </View>
+                )
+              }))}
+            </View>
+
+            <View style={dStyles['skill-matrix-container']} break>
+              <View style={dStyles['skill-matrix-heading-container']}>
+                <Text style={bStyles['text-heading-secondary']}>{'Skill Matrix Report'}</Text>
+                <Text style={bStyles['text-heading-secondary']}>{skill_matrix_overal_percent}%</Text>
+              </View>
+              <View style={dStyles['note-container']}>
                 <View>
-                  {
-                    questions && questions.map((each: any) => {
-                      const { question, suggestions } = each
-
-                      const { covered, covered_partial, covered_not_valid } = suggestions || {}
-                      return (
-                        <View style={dStyles['question-container']}>
-                          <Text style={dStyles['question-text']}>{question}</Text>=
-                          <View style={dStyles['answer-container']}>
+                  <Text style={dStyles['note-title']}>{'Note'}</Text>
+                  <View style={dStyles['note-list-container']}>
+                    {
+                      NOTE.map(each => {
+                        const { id, type, text } = each
+                        return (
+                          <View key={id} style={dStyles['note-list-item']}>
                             {
-                              covered && covered?.length > 0 &&
-                              covered.map(
-                                (ans: any, index: number) => {
-                                  return (
-                                    <View style={[dStyles['answer-item-container'], index ? { marginTop: '10pt' } : {}]}>
-                                      {getStatusIcon()}
-                                      <Text style={dStyles['note-text']}>
-                                        {ans}
-                                      </Text>
-                                    </View>
-                                  );
-                                }
-                              )}
-
-                            {
-                              covered_partial && covered_partial?.length > 0 &&
-                              covered_partial.map(
-                                (ans: any, index: number) => {
-                                  return (
-                                    <View style={[dStyles['answer-item-container'], index ? { marginTop: 'pt' } : {}]}>
-                                      {getStatusIcon('checkBlack')}
-                                      <Text style={dStyles['note-text']}>
-                                        {ans}
-                                      </Text>
-                                    </View>
-                                  );
-                                }
-                              )}
-
-
-                            {
-                              covered_not_valid && covered_not_valid?.length > 0 &&
-                              covered_not_valid.map(
-                                (ans: any, index: number) => {
-                                  return (
-                                    <View style={[dStyles['answer-item-container'], index ? { marginTop: '10pt' } : {}]}>
-                                      {getStatusIcon('frame')}
-                                      <Text style={dStyles['note-text']}>
-                                        {ans}
-                                      </Text>
-                                    </View>
-                                  );
-                                }
-                              )
+                              getStatusIcon(type as "frame" | "checkBlack" | "check" | undefined)
                             }
-                            {
-                              covered_not_valid?.length <= 0 &&
-                              covered?.length <= 0 &&
-                              covered_partial?.length <= 0 && (
-                                <View style={dStyles['answer-item-container']}>
-                                  {getStatusIcon('frame')}
-                                  <Text style={dStyles['note-text']}>
-                                    {"Not Answered"}
-                                  </Text>
-                                </View>
-                              )}
-
+                            <Text style={dStyles['note-text']}>{text}</Text>
                           </View>
-                        </View>
-                      )
-                    })
-                  }
+                        )
+                      })
+                    }
+                  </View>
                 </View>
               </View>
-            )
-          })
+            </View>
+
+
+            <View>
+              {
+                sections.map(each => {
+                  const { name, rating, questions, } = each;
+                  return (
+                    <View style={[dStyles['sections-card-container'], bStyles['card-border']]} wrap={false}>
+                      <View style={dStyles['section-heading-container']}>
+                        <Text style={bStyles['job-description-title']}>{capitalizeFirstLetter(name.replace(/_/g, ' '))}</Text>
+                        <Text style={bStyles['job-description-title']}>{rating}</Text>
+                      </View>
+                      <View>
+                        {
+                          questions && questions.map((each: any) => {
+                            const { question, suggestions } = each
+
+                            const { covered, covered_partial, covered_not_valid } = suggestions || {}
+                            return (
+                              <View style={dStyles['question-container']}>
+                                <Text style={dStyles['question-text']}>{question}</Text>=
+                                <View style={dStyles['answer-container']}>
+                                  {
+                                    covered && covered?.length > 0 &&
+                                    covered.map(
+                                      (ans: any, index: number) => {
+                                        return (
+                                          <View style={[dStyles['answer-item-container'], index ? { marginTop: '5pt' } : {}]}>
+                                            {getStatusIcon()}
+                                            <Text style={dStyles['note-text']}>
+                                              {ans}
+                                            </Text>
+                                          </View>
+                                        );
+                                      }
+                                    )}
+
+                                  {
+                                    covered_partial && covered_partial?.length > 0 &&
+                                    covered_partial.map(
+                                      (ans: any, index: number) => {
+                                        return (
+                                          <View style={[dStyles['answer-item-container'], { marginTop: '5pt' }]}>
+                                            {getStatusIcon('checkBlack')}
+                                            <Text style={dStyles['note-text']}>
+                                              {ans}
+                                            </Text>
+                                          </View>
+                                        );
+                                      }
+                                    )}
+
+
+                                  {
+                                    covered_not_valid && covered_not_valid?.length > 0 &&
+                                    covered_not_valid.map(
+                                      (ans: any, index: number) => {
+                                        return (
+                                          <View style={[dStyles['answer-item-container'], { marginTop: '5pt' }]}>
+                                            {getStatusIcon('frame')}
+                                            <Text style={dStyles['note-text']}>
+                                              {ans}
+                                            </Text>
+                                          </View>
+                                        );
+                                      }
+                                    )
+                                  }
+                                  {
+                                    covered_not_valid?.length <= 0 &&
+                                    covered?.length <= 0 &&
+                                    covered_partial?.length <= 0 && (
+                                      <View style={dStyles['answer-item-container']}>
+                                        {getStatusIcon('frame')}
+                                        <Text style={dStyles['note-text']}>
+                                          {"Not Answered"}
+                                        </Text>
+                                      </View>
+                                    )}
+
+                                </View>
+                              </View>
+                            )
+                          })
+                        }
+                      </View>
+                    </View>
+                  )
+                })
+              }
+            </View>
+          </View>
         }
       </View>
       {
-        modifiedHlv_r && Object.keys(modifiedHlv_r).map((key, index, array) => {
+        modifiedLlrv && Object.keys(modifiedLlrv).map((key, index, array) => {
           const list = modifiedLlrv[key]
           return (
             <View break>

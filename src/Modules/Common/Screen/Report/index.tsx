@@ -13,7 +13,7 @@ import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import './index.css';
-import { PDFDownloadLink, Document, Page } from '@react-pdf/renderer';
+import { PDFDownloadLink, Document, Page, PDFViewer } from '@react-pdf/renderer';
 import { icons } from '@Assets'
 
 
@@ -23,9 +23,19 @@ function Report() {
   const { schedule_id } = useParams();
 
   const REPORT_TYPE = [
-    { id: "BR", text: "Basic Report" },
-    { id: "DR", text: "Detailed Report" },
+    { id: "BR", text: "Basic Report", params: {} },
+    { id: "DR", text: "Detailed Report", params: { is_detailed: true } },
+    { id: "SR", text: "Skill Report", params: { is_skill_matrix: true } },
+    { id: "CR", text: "Communication Report", params: { is_communication: true } },
+    { id: "AR", text: "Aptitude Report", params: { is_aptitude: true } },
+    { id: "CFR", text: "Cultural Fit Report", params: { is_cultural_fit: true } },
   ];
+
+
+  function getParamsById(reportId: string) {
+    const report = REPORT_TYPE.find(item => item.id === reportId);
+    return report ? report.params : null;
+  }
 
 
   const loader = useLoader(false);
@@ -49,7 +59,7 @@ function Report() {
     loader.show();
     const params = {
       schedule_id: schedule_id,
-      ...(reportType.value.id === 'DR' && { is_detailed: true }),
+      ...(getParamsById(reportType.value.id)),
     };
 
     dispatch(
@@ -108,8 +118,7 @@ function Report() {
                   <Document >
                     <Page size={'A4'} style={rStyles.page} wrap>
                       <PdfReportHeader details={report} />
-                      {reportType?.value?.id === REPORT_TYPE[0].id && <PdfBasicReport details={report} />}
-                      {reportType?.value?.id === REPORT_TYPE[1].id && <PdfDetailedReport details={report} />}
+                      {reportType?.value?.id === REPORT_TYPE[0].id ? <PdfBasicReport details={report} /> : <PdfDetailedReport details={report} />}
                       <PdfBranding />
                     </Page>
                   </Document>
@@ -132,9 +141,21 @@ function Report() {
             ref={componentRef}
             className="screen-padding pt-0"
           >
+
+            {/* <PDFViewer style={{
+              width: '100%',
+              height: '600pt'
+            }}>
+              <Document >
+                <Page size={'A4'} style={rStyles.page} wrap>
+                  <PdfReportHeader details={report} />
+                  {reportType?.value?.id === REPORT_TYPE[0].id ? <PdfBasicReport details={report} /> : <PdfDetailedReport details={report} />}
+                  <PdfBranding />
+                </Page>
+              </Document>
+            </PDFViewer> */}
             <ReportHeader details={report} />
-            {reportType?.value?.id === REPORT_TYPE[0].id && <div id="content-id"><BasicReport details={report} /></div>}
-            {reportType?.value?.id === REPORT_TYPE[1].id && <DetailedReport details={report} />}
+            {reportType?.value?.id === REPORT_TYPE[0].id ? <BasicReport details={report} /> : <DetailedReport details={report} />}
             <div className="d-flex justify-content-end mt-8 mb-6">
               <a
                 href={"https://www.intrvu.space"}

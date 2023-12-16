@@ -547,7 +547,7 @@ function DetectFace({
               <p className="mt-3 font-weight-500 ">
                 <Image
                   className="mb-1 mr-1"
-                  src={icons.check}
+                  src={icons.checkIcon}
                   height={8}
                   width={8}
                   style={{
@@ -569,7 +569,7 @@ function DetectFace({
               <p className="mt-3 font-weight-500">
                 <Image
                   className="mb-1 mr-1"
-                  src={icons.check}
+                  src={icons.checkIcon}
                   height={8}
                   width={8}
                   style={{
@@ -783,7 +783,7 @@ function DetectFace({
                     <div className="mt-3 d-flex align-items-baseline">
                       {" "}
                       <Image
-                        src={icons.check}
+                        src={icons.checkIcon}
                         height={8}
                         width={8}
                         style={{
@@ -797,7 +797,7 @@ function DetectFace({
                     <div className="mt-3 d-flex align-items-baseline">
                       {" "}
                       <Image
-                        src={icons.check}
+                        src={icons.checkIcon}
                         height={8}
                         width={8}
                         style={{
@@ -812,7 +812,7 @@ function DetectFace({
                       <div className="mt-3 d-flex align-items-baseline">
                         {" "}
                         <Image
-                          src={icons.check}
+                          src={icons.checkIcon}
                           height={8}
                           width={8}
                           style={{
@@ -842,7 +842,7 @@ function DetectFace({
                     <div className="mt-3 d-flex align-items-baseline">
                       {" "}
                       <Image
-                        src={icons.frame}
+                        src={icons.frameIcon}
                         height={8}
                         width={8}
                         style={{
@@ -860,7 +860,7 @@ function DetectFace({
                     <div className="mt-3 d-flex align-items-baseline">
                       {" "}
                       <Image
-                        src={icons.frame}
+                        src={icons.frameIcon}
                         height={8}
                         width={8}
                         style={{
@@ -878,7 +878,7 @@ function DetectFace({
                     <div className="mt-3 d-flex align-items-baseline">
                       {" "}
                       <Image
-                        src={icons.frame}
+                        src={icons.frameIcon}
                         height={8}
                         width={8}
                         style={{

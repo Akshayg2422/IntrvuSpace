@@ -6,7 +6,7 @@ import { rStyles } from '@Modules'
 
 function PdfBranding() {
     return (
-        <View style={rStyles['brand-container']}>
+        <View style={rStyles['brand-container']} wrap={false}>
             <Link src={"https://www.intrvu.space"}>
                 <Image src={icons.poweredBy} style={rStyles['logo']} />
             </Link>
