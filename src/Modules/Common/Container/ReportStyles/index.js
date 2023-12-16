@@ -278,7 +278,7 @@ const dStyles = StyleSheet.create({
   'note-text': {
     fontSize: "10pt",
     color: colors.desc,
-    marginLeft: '5pt',
+    marginLeft: '2pt',
     ...rStyles.regular
   },
   'sections-card-container': {
@@ -299,7 +299,6 @@ const dStyles = StyleSheet.create({
   'answer-item-container': {
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center',
   },
   'question-text': {
     fontSize: '10pt',

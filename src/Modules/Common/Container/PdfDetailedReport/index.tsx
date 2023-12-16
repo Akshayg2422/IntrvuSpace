@@ -18,9 +18,9 @@ function PdfDetailedReport({ details }: PdfDetailedReportProps) {
 
 
   const NOTE = [
-    { id: 1, icon: icons.checkIcon, text: "Completely Covered" },
-    { id: 2, icon: icons.checkBlackIcon, text: "Partially Covered" },
-    { id: 3, icon: icons.frameIcon, text: "Covered but Invalid", },
+    { id: 1, type: 'check', text: "Completely Covered" },
+    { id: 2, type: 'checkBlack', text: "Partially Covered" },
+    { id: 3, type: 'frame', text: "Covered but Invalid", },
   ];
 
 
@@ -30,7 +30,20 @@ function PdfDetailedReport({ details }: PdfDetailedReportProps) {
       'checkBlack': icons.checkBlackIcon,
       'frame': icons.frameIcon
     };
-    return <Image src={iconMap[variant]} style={dStyles['note-list-icon']} />
+
+    const size = variant === 'frame' ? "6pt" : "7pt";
+
+    return (
+      <View style={{
+        width: "15pt",
+        height: '15pt',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}>
+        <Image src={iconMap[variant]} style={{ objectFit: 'contain', height: size, width: size }} />
+      </View>
+    )
   }
 
   return (
@@ -83,10 +96,12 @@ function PdfDetailedReport({ details }: PdfDetailedReportProps) {
                   <View style={dStyles['note-list-container']}>
                     {
                       NOTE.map(each => {
-                        const { id, icon, text } = each
+                        const { id, type, text } = each
                         return (
                           <View key={id} style={dStyles['note-list-item']}>
-                            <Image src={icon} style={dStyles['note-list-icon']} />
+                            {
+                              getStatusIcon(type as "frame" | "checkBlack" | "check" | undefined)
+                            }
                             <Text style={dStyles['note-text']}>{text}</Text>
                           </View>
                         )

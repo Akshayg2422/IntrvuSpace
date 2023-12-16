@@ -33,18 +33,31 @@ function StatusIcon({ variant = 'check', type = 'round' }: StatusIconProps) {
 
     const variantIcon = type === 'icon' ? getVariantIcon(variant) : getVariantColor(variant)
 
-    const size = 8
+    let size: number;
+    if (type === 'icon') {
+        size = variant === 'frame' ? 10 : 12;
+    } else {
+        size = 8;
+    }
 
     return (
-        <Image
-            src={variantIcon}
-            alt={`${variantIcon} icon`}
-            height={size}
-            width={size}
-            style={{
-                objectFit: "contain",
-            }}
-        />
+        <div style={{
+            width: "15px",
+            height: '15px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+        }}>
+            <Image
+                src={variantIcon}
+                alt={`${variantIcon} icon`}
+                height={size}
+                width={size}
+                style={{
+                    objectFit: "contain",
+                }}
+            />
+        </div>
     )
 }
 
