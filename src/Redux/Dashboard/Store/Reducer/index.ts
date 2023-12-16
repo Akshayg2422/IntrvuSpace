@@ -818,9 +818,9 @@ const DashboardReducer = (state = initialState, action: any) => {
       };
       break;
 
-      // setfacevisible
+    // setfacevisible
 
-      case ActionTypes.SET_FACE_VISIBLE:
+    case ActionTypes.SET_FACE_VISIBLE:
       state = {
         ...state,
         faceVisible: action.payload,

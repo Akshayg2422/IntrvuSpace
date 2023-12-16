@@ -1230,7 +1230,7 @@ export const watchInterviewVideoUrl = (response: any) => {
 // facevisible
 
 export const setFaceVisible = (response: any) => {
-console.log('face params', response);
+  console.log('face params', response);
 
   return {
     type: ActionTypes.SET_FACE_VISIBLE,
@@ -1238,4 +1238,4 @@ console.log('face params', response);
   };
 };
 
-  
+

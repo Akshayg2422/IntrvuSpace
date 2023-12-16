@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { getScheduleBasicInfo, setFaceVisible, syncVideo } from "@Redux";
+import { getScheduleBasicInfo, setFaceVisible, syncVideo } from '@Redux';
 import { CountdownTimer, Modal } from "@Components";
 import { useModal } from "@Hooks";
 import { Button } from "@Components";
