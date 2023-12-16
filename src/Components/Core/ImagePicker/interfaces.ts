@@ -5,6 +5,7 @@ export interface ImagePickerProps {
     placeholder?: string;
     onSelect?: (images: any) => void;
     title?: string
+    resetKey?: any;
 }
 
 export interface DropZoneImageProps {

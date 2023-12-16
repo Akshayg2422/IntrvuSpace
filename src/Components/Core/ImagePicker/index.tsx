@@ -12,27 +12,23 @@ function ImagePicker({ defaultPhotos, title = 'Profile Picture', variant = 'sing
   const [photos, setPhotos] = useState<any>([])
 
 
-
   useEffect(() => {
-    if (defaultPhotos && defaultPhotos.length > 0) {
-      if (defaultPhotos[0]?.base64) {
-        setPhotos(defaultPhotos)
+    console.log(defaultPhotos.length);
 
-      }
-      else {
-        urlToBase64(defaultPhotos)
-          .then((result) => {
-            setPhotos([{ id: 0, base64: result }])
-          })
+    var newArray = defaultPhotos.filter(value => Object.keys(value).length !== 0);
 
-          .catch((error) => {
+    if (newArray && newArray.length > 0) {
+      urlToBase64(newArray)
+        .then((result) => {
+          setPhotos([{ id: 0, base64: result }])
+        })
+        .catch((error) => {
+          console.error(error, "error catch from imagePicker  default value ");
+        });
+    } else {
+      console.log('came');
 
-            console.error(error, "error catch from imagePicker  default value ");
-          });
-
-      }
-
-
+      setPhotos(newArray)
     }
 
   }, [defaultPhotos])
@@ -82,6 +78,7 @@ function ImagePicker({ defaultPhotos, title = 'Profile Picture', variant = 'sing
     }
   };
 
+
   return (
     <div>
       <div className={'title-alignment form-control-label font-weight-600'}>{title}</div>
@@ -108,9 +105,7 @@ function ImagePicker({ defaultPhotos, title = 'Profile Picture', variant = 'sing
                 />
               </div>
             )
-
           })
-
         }
         {
           photos.length <= 0 &&

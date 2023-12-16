@@ -160,7 +160,7 @@ function OpeningCandidates({ id, details }: OpeningCandidatesProps) {
   const pickResumeModal = useModal(false)
   const resumeLoader = useLoader(false)
   const [selectedResume, setSelectedResume] = useState<string | null>(null);
-  // const [selectedImage, setSelectedImage] = useState<any>(null)
+  const [selectedImage, setSelectedImage] = useState<any>({})
 
 
 
@@ -252,6 +252,7 @@ function OpeningCandidates({ id, details }: OpeningCandidatesProps) {
           is_complete,
           is_skipped,
           interviewee_photo,
+          candidate_photo,
           recording_url
         } = item;
 
@@ -272,12 +273,12 @@ function OpeningCandidates({ id, details }: OpeningCandidatesProps) {
           name: (
             <div className={"d-flex align-items-center"}>
               <div>
-                {interviewee_photo ?
+                {candidate_photo ?
                   <PhotoProvider>
                     <div className={"pointer"}>
-                      <PhotoView src={getPhoto(interviewee_photo)}>
+                      <PhotoView src={getPhoto(candidate_photo)}>
                         <Image
-                          src={getPhoto(interviewee_photo)}
+                          src={getPhoto(candidate_photo)}
                           height={50}
                           width={50}
                           style={{
@@ -291,26 +292,46 @@ function OpeningCandidates({ id, details }: OpeningCandidatesProps) {
                         />
                       </PhotoView>
                     </div>
-                  </PhotoProvider>
-                  :
-                  <div style={{
-                    width: "45px",
-                    height: "45px",
-                    borderRadius: "30px",
-                    backgroundColor: "#fbfcfa",
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    display: 'flex',
-                  }}>
-                    <Image
-                      src={icons.profile}
-                      height={20}
-                      width={20}
-                      style={{
-                        objectFit: 'contain'
-                      }}
-                    />
-                  </div>
+                  </PhotoProvider> :
+                  interviewee_photo ?
+                    <PhotoProvider>
+                      <div className={"pointer"}>
+                        <PhotoView src={getPhoto(interviewee_photo)}>
+                          <Image
+                            src={getPhoto(interviewee_photo)}
+                            height={50}
+                            width={50}
+                            style={{
+                              objectFit: 'cover',
+                              overflow: 'hidden',
+                              padding: '1px',
+                              borderRadius: '30px',
+                              width: "45px",
+                              height: "45px",
+                            }}
+                          />
+                        </PhotoView>
+                      </div>
+                    </PhotoProvider>
+                    :
+                    <div style={{
+                      width: "45px",
+                      height: "45px",
+                      borderRadius: "30px",
+                      backgroundColor: "#fbfcfa",
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      display: 'flex',
+                    }}>
+                      <Image
+                        src={icons.profile}
+                        height={20}
+                        width={20}
+                        style={{
+                          objectFit: 'contain'
+                        }}
+                      />
+                    </div>
 
                 }
               </div>
@@ -365,17 +386,17 @@ function OpeningCandidates({ id, details }: OpeningCandidatesProps) {
       });
   };
 
-  // const base64Photo = selectedImage?.base64 ? selectedImage?.base64 : "";
-  // console.log('base64Photo-------------->', base64Photo);
+  const base64Photo = selectedImage?.base64 ? selectedImage?.base64 : "";
+  console.log('base64Photo-------------->', base64Photo);
 
-  // const cleanedBase64Photo = cleanBase64(base64Photo)
+  const cleanedBase64Photo = cleanBase64(base64Photo)
 
-  // console.log('cleanedBase64PhotocleanedBase64Photo-------->', cleanedBase64Photo);
+  console.log('cleanedBase64PhotocleanedBase64Photo-------->', cleanedBase64Photo);
 
   function generateNewCandidateHandler() {
     const params = {
       corporate_openings_details_id: id,
-      // ...(cleanedBase64Photo && { photo: cleanedBase64Photo }),
+      ...(cleanedBase64Photo && { photo: cleanedBase64Photo }),
       first_name: firstName.value,
       last_name: lastName.value,
       mobile_number: mobileNumber.value,
@@ -596,7 +617,7 @@ function OpeningCandidates({ id, details }: OpeningCandidatesProps) {
     lastName.set('');
     mobileNumber.set('');
     email.set('');
-    // setSelectedImage([]);
+    setSelectedImage({});
   };
 
   return (
@@ -802,13 +823,13 @@ function OpeningCandidates({ id, details }: OpeningCandidatesProps) {
             onClick={pickResumeModal.show}
           />
         }
-        // imagePicker={
-        //   <ImagePicker
-        //     placeholder={'Photo'}
-        //     defaultPhotos={selectedImage}
-        //     onSelect={(images) => { setSelectedImage(images) }}
-        //   />
-        // }
+        imagePicker={
+          <ImagePicker
+            placeholder={'Photo'}
+            defaultPhotos={[selectedImage]}
+            onSelect={setSelectedImage}
+          />
+        }
       >
         <div className={"row"}>
           <div className={"col-sm-6"}>

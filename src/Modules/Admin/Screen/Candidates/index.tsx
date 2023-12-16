@@ -40,10 +40,9 @@ function Candidates() {
   const mail = useInput("");
   const mobileNumber = useInput("");
   const inFocus = useRef<any>()
-  const [selectedImage, setSelectedImage] = useState<any>(null)
+  const [selectedImage, setSelectedImage] = useState<any>({})
   const pickResumeModal = useModal(false)
   const [selectedResume, setSelectedResume] = useState<string | null>(null);
-
 
   useEffect(() => {
     getCandidateApiHandler(INITIAL_PAGE)
@@ -231,7 +230,7 @@ function Candidates() {
     mobileNumber.set('')
     mail.set('')
     setEditId('')
-    setSelectedImage(null)
+    setSelectedImage({})
   }
 
   const handleResumeSelect = (resumeData: string) => {
@@ -248,11 +247,9 @@ function Candidates() {
     lastName.set('');
     mobileNumber.set('');
     mail.set('');
-    setSelectedImage(null);
-    console.log('setSelectedImage---------', selectedImage)
+    setSelectedImage({});
   };
 
-  // console.log('selectedImage', JSON.stringify(selectedImage));
 
 
   return (
@@ -324,8 +321,8 @@ function Candidates() {
         imagePicker={
           <ImagePicker
             placeholder={'Photo'}
-            defaultPhotos={selectedImage}
-            onSelect={(images) => { setSelectedImage(images) }}
+            defaultPhotos={[selectedImage]}
+            onSelect={setSelectedImage}
           />
         }
       >
