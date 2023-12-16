@@ -6,6 +6,7 @@ import { InputProps } from './interfaces';
 import { FormGroup, Input as RsInput } from 'reactstrap';
 
 const Input = React.forwardRef(({ id, className, heading, innerRef, variant = 'default', isMandatory, textColor, noSpace, ...rest }: InputProps,ref:any) => {
+    
     const inputFocus = useRef<any>();
 
     useEffect(() => {

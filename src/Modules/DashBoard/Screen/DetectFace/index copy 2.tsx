@@ -450,22 +450,22 @@ drawWaveform()
                         <div className='mt-3 mb--5'>
                             {
                                 faceFound === 'Checking' ? <></> : faceFound === true ? <div>
-                                    <Image src={icons.check} height={12} width={12} style={{
+                                    <Image src={icons.checkIcon} height={12} width={12} style={{
                                         objectFit: 'contain'
                                     }} />
                                     <span className='ml-2'>Face detected</span>
-                                </div> : <div> <Image src={icons.frame} height={20} width={12} style={{
+                                </div> : <div> <Image src={icons.frameIcon} height={20} width={12} style={{
                                     objectFit: 'contain'
                                 }} /> <span className='ml-1'>Face not detected</span></div>
                             }
                             {
                                 noiseDetection === 'Checking' ? <></> :
                                     noiseDetection === true ? <div>
-                                        <Image src={icons.check} height={12} width={12} style={{
+                                        <Image src={icons.checkIcon} height={12} width={12} style={{
                                             objectFit: 'contain'
                                         }} />
                                         <span className='ml-2'>No noise captured</span>
-                                    </div> : <div> <Image src={icons.frame} height={20} width={12} style={{
+                                    </div> : <div> <Image src={icons.frameIcon} height={20} width={12} style={{
                                         objectFit: 'contain'
                                     }} /> <span className='ml-1'>Noise occurred</span></div>
                             }

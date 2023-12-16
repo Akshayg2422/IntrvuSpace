@@ -1226,3 +1226,16 @@ export const watchInterviewVideoUrl = (response: any) => {
     payload: response,
   };
 };
+
+// facevisible
+
+export const setFaceVisible = (response: any) => {
+  console.log('face params', response);
+
+  return {
+    type: ActionTypes.SET_FACE_VISIBLE,
+    payload: response,
+  };
+};
+
+

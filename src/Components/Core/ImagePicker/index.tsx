@@ -10,12 +10,15 @@ function ImagePicker({ defaultPhotos, title = 'Profile Picture', variant = 'sing
 
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [photos, setPhotos] = useState<any>([])
+  console.log('came');
 
 
   useEffect(() => {
-    console.log(defaultPhotos.length);
 
-    var newArray = defaultPhotos.filter(value => Object.keys(value).length !== 0);
+    const newArray = defaultPhotos.filter(value => Object.keys(value).length !== 0);
+
+    console.log(JSON.stringify(newArray));
+
 
     if (newArray && newArray.length > 0) {
       urlToBase64(newArray)
@@ -39,6 +42,8 @@ function ImagePicker({ defaultPhotos, title = 'Profile Picture', variant = 'sing
   }
 
   const imagePickerHandleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log('came');
+
 
     if (event.target.files && event.target.files.length > 0) {
       const file = event.target.files[0];

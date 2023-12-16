@@ -31,7 +31,7 @@ export * from './StatusIcon'
 export * from './ScreenHeading'
 export * from './InternetError'
 export *from './FileViewer'
-
+export * from './CountDownTimer'
 
 
 

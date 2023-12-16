@@ -11,7 +11,9 @@ const initialState: SuperAdminProps = {
   recentInterviewsCurrentPages: 1,
   selectedCompany: undefined,
   onGoingSchedules: [],
-  selectedOngoingSchedule: undefined
+  selectedOngoingSchedule: undefined,
+  selectedCompanyId:undefined,
+  reportRecapture:undefined,
 };
 
 const SuperAdminReducer = (state = initialState, action: any) => {
@@ -109,6 +111,23 @@ const SuperAdminReducer = (state = initialState, action: any) => {
       };
       break;
 
+      /* super admin report reGenerate */
+      case ActionTypes.FETCH_GENERATE_REPORT:
+        state = {
+          ...state,
+        };
+        break;
+      case ActionTypes.FETCH_GENERATE_REPORT_SUCCESS:
+        state = {
+          ...state,
+          reportRecapture: action.payload,
+        };
+        break;
+      case ActionTypes.FETCH_GENERATE_REPORT_FAILURE:
+        state = { ...state, reportRecapture: undefined };
+        break;
+
+
     /**
      * get slelectd company
      */
@@ -118,6 +137,10 @@ const SuperAdminReducer = (state = initialState, action: any) => {
     case ActionTypes.SELECTED_COMPANY:
       state = { ...state, selectedCompany: action.payload };
       break;
+
+      case ActionTypes.VIEW_COMPANY_INTERVIEW:
+        state = { ...state, selectedCompanyId: action.payload };
+        break;
 
 
     default:

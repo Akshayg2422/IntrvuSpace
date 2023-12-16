@@ -60,3 +60,8 @@ export const ADD_CANDIDATE_CORPORATE_LITE = 'ADD_CANDIDATE_CORPORATE_LITE'
 /** uploadResume */
 
 export const UPLOAD_RESUME = 'UPLOAD_RESUME'
+/**
+ * record Authentication Video
+ */
+
+export const POST_RECORD_AUTHENTICATION_VIDEO = 'POST_RECORD_AUTHENTICATION_VIDEO'

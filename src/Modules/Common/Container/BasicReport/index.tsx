@@ -3,17 +3,15 @@ import { BasicReportProps } from './interfaces'
 import { createNewObjectWithoutNullOrNaNValues } from '@Utils';
 import './index.css'
 
-
 function BasicReport({ details }: BasicReportProps) {
 
     const { skill_matrix_overal_percent, report_other_analytics, skill_matrix } = details || {}
 
     const { sections } = skill_matrix || {};
-
     const modifiedAnalytics = createNewObjectWithoutNullOrNaNValues(report_other_analytics)
 
-
     return (
+
         <div className='basic-report-container'>
             <div className={'report-dashboard-container'}>
                 <div className={'report-card-container report-card-spacing report-card-left-spacing'}>
@@ -25,11 +23,11 @@ function BasicReport({ details }: BasicReportProps) {
 
                         let additionalClass = '';
                         if (index === array.length - 1) {
-                            additionalClass = ' report-card-right-spacing';
+                            additionalClass = 'report-card-right-spacing';
                         }
 
                         return (
-                            <div className={`report-card-container report-card-spacing${additionalClass}`}>
+                            <div className={`report-card-container report-card-spacing ${additionalClass}`}>
                                 <div className={'report-title'}>{key.replace(/_/g, ' ')}</div>
                                 <div className={'text-heading'}>{modifiedAnalytics[key]}</div>
                             </div>
@@ -52,6 +50,7 @@ function BasicReport({ details }: BasicReportProps) {
                 }))}
             </div>
         </div >
+
     )
 }
 

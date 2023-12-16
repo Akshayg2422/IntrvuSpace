@@ -336,3 +336,10 @@ export const URL_LOGOUT = EMPLOYEE + 'logout'
 
 /** uploadResume */
 export const URL_UPLOAD_RESUME = ASSISTANT + 'uploadResume'
+/* super admin report reGenerate */
+
+export const URL_GENERATED_REPORT = ASSISTANT + 'generateReport'
+
+/** recordAuthenticationVideo */
+
+export const URL_RECORD_AUTHENTICATION_VIDEO = ASSISTANT + 'recordAuthenticationVideo'

@@ -14,8 +14,8 @@ function ScreenHeading({ text, subtitle, children }: ScreenHeadingProps) {
     return (
 
         <div className={'heading-wrapper'} >
-            <div className={'d-flex'}>
-                <div className='col-auto'>
+            <div className={'d-flex align-items-center'}>
+                <div>
                     <div className="screen-heading  m-0 p-0 d-flex align-items-center" style={{ position: 'relative' }}>
                         <div
                             className='pointer back-btn-container'
@@ -35,8 +35,10 @@ function ScreenHeading({ text, subtitle, children }: ScreenHeadingProps) {
                     </div>
                 </div>
             </div>
-            <div className={'col'}>{children}</div>
-
+            <div 
+            style={{
+                flex:1,
+            }}>{children}</div>
         </div >
     )
 }

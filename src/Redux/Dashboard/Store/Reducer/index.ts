@@ -77,6 +77,8 @@ const initialState: DashboardProp = {
   onGoingSelectedId: undefined,
   onGoingMessage: undefined,
   interviewUrl: undefined,
+  faceVisible: false,
+
 };
 
 const DashboardReducer = (state = initialState, action: any) => {
@@ -815,6 +817,17 @@ const DashboardReducer = (state = initialState, action: any) => {
         interviewUrl: action.payload,
       };
       break;
+
+    // setfacevisible
+
+    case ActionTypes.SET_FACE_VISIBLE:
+      state = {
+        ...state,
+        faceVisible: action.payload,
+      };
+      break;
+
+
 
     default:
       state = state;

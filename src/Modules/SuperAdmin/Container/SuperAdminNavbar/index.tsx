@@ -38,6 +38,7 @@ function SuperAdminNavbar({ actions, sidenavOpen, toggleSidenav }: SuperAdminNav
   const dropdownHandler = (item: any) => {
 
     const { route } = item
+    
     if (item.value === 'LG') {
       logoutModal.show()
     } else {
