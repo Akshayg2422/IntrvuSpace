@@ -66,13 +66,10 @@ function ImagePicker({ defaultPhotos, title = 'Profile Picture', variant = 'sing
                   onSelect(currentImage)
                 }
               } else {
-
-
                 if (updatedPhotos.length < max) {
                   updatedPhotos = [...updatedPhotos, currentImage]
                   setPhotos(updatedPhotos)
                 }
-
               }
             }
           };
