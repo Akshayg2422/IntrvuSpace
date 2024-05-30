@@ -19,4 +19,4 @@ const useKeyPress = (targetKey: any) => {
     return keyPressed;
 };
 
-export { useKeyPress }
+export { useKeyPress };

@@ -1,90 +1,79 @@
-import { icons } from '@Assets';
-import { Sidebar } from '@Components';
-import { useSideNav } from '@Hooks';
-import { Companies, OngoingInterviews, RecentInterviews, SuperAdminSchedules } from '@Modules';
-import { ROUTES } from '@Routes';
-import React, { useRef } from 'react';
-import { useSelector } from "react-redux";
-import { Navigate, useLocation } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Navigate, useLocation } from 'react-router-dom'
+import { useSelector, useDispatch } from "react-redux";
+import { HOME_ROUTES, ROUTES } from '@Routes'
+import { Sidebar } from '@Components'
+import { icons } from '@Assets'
+import { FCM_TOKEN, getDeviceInfo } from '@Utils'
+import { PushNotification } from "@Modules";
 
 
 type RequireAuthProps = {
     children: React.ReactNode;
-    hideSideNac?: boolean
 }
 
-export const RequireAuth = ({ hideSideNac, children }: RequireAuthProps) => {
+export const RequireAuth = ({ children }: RequireAuthProps) => {
 
+
+    const [sideNavOpen, setSideNavOpen] = useState(true);
+    const mainContentRef = React.useRef<HTMLDivElement | null>(null);
     const location = useLocation();
-
-
-    const { sideNavOpen, toggleSideNav } = useSideNav();
-
     const { loginDetails } = useSelector((state: any) => state.AppReducer);
-
-    const { isLoggedIn, user_type } = loginDetails || {}
-
+    const { removeSideNav } = useSelector((state: any) => state.DashboardReducer)
 
 
-    const mainContentRef = useRef(null);
 
-   
+    useEffect(() => {
+        document.documentElement.scrollTop = 0;
+        document.scrollingElement!.scrollTop = 0;
+        if (mainContentRef.current) {
+            mainContentRef.current.scrollTop = 0;
+        }
+    }, [location]);
 
-    const routes = [
-        {
-            path: ROUTES['super-admin'].companies,
-            name: "Companies",
-            icon: icons.company,
-            layout: "",
-            component: <Companies />
-        },
-        {
-            path: ROUTES['super-admin']['admin-schedule'],
-            name: "Schedules",
-            icon: icons.schedule,
-            layout: "",
-            component: <SuperAdminSchedules />
-        },
-        {
-            path: ROUTES['super-admin']['recent-interviews'],
-            name: "Recent Interviews",
-            icon: icons.recentInterview,
-            layout: "",
-            component: <RecentInterviews />
-        },
-        {
-            path: ROUTES['super-admin']['ongoing-interview'],
-            name: "Ongoing Interviews",
-            icon: icons.ongoingInterview,
-            layout: "",
-            component: <OngoingInterviews />
-        },
-    ];
- 
 
-    if (!isLoggedIn) {
+
+    if (!loginDetails?.isLoggedIn) {
         localStorage.setItem('route', location.pathname);
         return <Navigate to={ROUTES['auth-module'].login} state={{ path: location.pathname }} />
     }
 
- 
+
+
+
+    const toggleSideNav = () => {
+        if (document.body.classList.contains("g-sidenav-pinned")) {
+            document.body.classList.remove("g-sidenav-pinned");
+            document.body.classList.add("g-sidenav-hidden");
+        } else {
+            document.body.classList.add("g-sidenav-pinned");
+            document.body.classList.remove("g-sidenav-hidden");
+        }
+        setSideNavOpen(!sideNavOpen);
+    };
 
     return (
-        <div className={'screen'}>
-            {user_type === 'SA' && !hideSideNac &&
-                <Sidebar
-                    routes={routes}
-                    toggleSideNav={toggleSideNav}
-                    sideNavOpen={sideNavOpen}
-                />
-            }
-            <div className={'main-content'} ref={mainContentRef}>
+        <>
+            {loginDetails?.is_admin && !removeSideNav && <Sidebar
+                routes={HOME_ROUTES}
+                toggleSideNav={toggleSideNav}
+                sideNavOpen={sideNavOpen}
+                logo={{
+                    innerLink: "/",
+                    imgSrc: icons.logo,
+                    imgAlt: "...",
+                }}
+            />}
+            <div className='main-content' ref={mainContentRef}>
+                <PushNotification />
                 {children}
             </div>
-            {
-                sideNavOpen ? <div className="backdrop d-xl-none" onClick={toggleSideNav} /> : null
-            }
-        </div>
+
+
+            {sideNavOpen ? (
+                <div className={"backdrop d-xl-none"} onClick={toggleSideNav} />
+            ) : null}
+        </>
     )
 }
 

@@ -56,17 +56,18 @@ const useWhisperTranscription = () => {
     };
 
     const onStartSpeaking = () => {
-
+        console.log('start speaking')
         setSpeaking(true)
-    }
+      }
 
-    const onStopSpeaking = () => {
+      const onStopSpeaking = () => {
+        console.log('stop speaking')
         setSpeaking(false)
-    }
+      }
 
     const handleStartRecording = async () => {
         try {
-            const stream: any = await navigator.mediaDevices.getUserMedia({ audio: true });
+            const stream:any = await navigator.mediaDevices.getUserMedia({ audio: true });
             setIsRecording(true);
             setTranscribing(false)
             const options = { mimeType: 'audio/webm' };
@@ -75,12 +76,12 @@ const useWhisperTranscription = () => {
             if (!listener.current) {
                 const { default: hark } = await import('hark')
                 listener.current = hark(stream.current, {
-                    interval: 100,
-                    play: false,
+                  interval: 100,
+                  play: false,
                 })
                 listener.current.on('speaking', onStartSpeaking)
                 listener.current.on('stopped_speaking', onStopSpeaking)
-            }
+              }
         } catch (error) {
             console.error('Error accessing microphone:', error);
         }
@@ -101,7 +102,7 @@ const useWhisperTranscription = () => {
                     recorder.current.ondataavailable = onDataAvailable;
                     recorder.current.stop();
                     setIsRecording(false);
-
+                   
                 }
             }
         } catch (error) {
@@ -129,7 +130,7 @@ const useWhisperTranscription = () => {
             if (chunks.current) {
                 chunks.current = []
             }
-
+            
             if (stream.current) {
                 stream.current.getTracks().forEach((track) => track.stop())
                 stream.current = undefined
@@ -139,7 +140,7 @@ const useWhisperTranscription = () => {
                 listener.current.off('speaking', onStartSpeaking)
                 // @ts-ignore
                 listener.current.off('stopped_speaking', onStopSpeaking)
-            }
+              }
         }
     }, []);
 

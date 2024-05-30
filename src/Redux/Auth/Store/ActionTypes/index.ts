@@ -5,7 +5,8 @@ export const REGISTER_AS_MEMBER_FAILURE = 'REGISTER_AS_MEMBER_FAILURE'
 // URL_MEMBER_LOGIN_USING_PASSWORD
 
 export const MEMBER_LOGIN_USING_PASSWORD = 'MEMBER_LOGIN_USING_PASSWORD'
-
+export const MEMBER_LOGIN_USING_PASSWORD_SUCCESS = 'MEMBER_LOGIN_USING_PASSWORD_SUCCESS'
+export const MEMBER_LOGIN_USING_PASSWORD_FAILURE = 'MEMBER_LOGIN_USING_PASSWORD_FAILURE'
 
 
 // GET otp
@@ -20,63 +21,3 @@ export const FETCH_OTP_FAILURE = 'FETCH_OTP_FAILURE'
 export const FETCH_MEMBER_USING_LOGIN_OTP = 'FETCH_MEMBER_USING_LOGIN_OTP'
 export const FETCH_MEMBER_USING_LOGIN_OTP_SUCCESS = 'FETCH_MEMBER_USING_LOGIN_OTP_SUCCESS'
 export const FETCH_MEMBER_USING_LOGIN_OTP_FAILURE = 'FETCH_MEMBER_USING_LOGIN_OTP_FAILURE'
-
-/**
- * register company
- */
-
-export const REGISTER_AS_COMPANY = 'REGISTER_AS_COMPANY'
-
-
-
-/**
- *  verify email using otp
- */
-
-
-export const VERIFY_EMAIL_USING_OTP = 'VERIFY_EMAIL_USING_OTP'
-
-
-/**
- * save user email
- */
-
-export const SAVE_USER_EMAIL = 'SAVE_USER_EMAIL'
-
-/**
- *  get otp for email verification
- */
-
-
-export const GET_OTP_FOR_EMAIL_VERIFICATION = 'GET_OTP_FOR_EMAIL_VERIFICATION'
-
-/**
- * GET DASHBOARD 
- */
-
-// get member using login otp
-
-export const GET_DASHBOARD = 'GET_DASHBOARD'
-export const GET_DASHBOARD_SUCCESS = 'GET_DASHBOARD_SUCCESS'
-export const GET_DASHBOARD_FAILURE = 'GET_DASHBOARD_FAILURE'
-
-
-
-/**
- * 
- */
-
-
-export const CREATE_COMPANY_SUPER_ADMIN = 'CREATE_COMPANY_SUPER_ADMIN'
-
-
-/**
- * switch to advance
- */
-
-
-export const SWITCH_TO_ADVANCE = 'SWITCH_TO_ADVANCE'
-
-/** logout api*/
-export const LOGOUT='LOGOUT'
-export const LOGOUT_SUCCESS='LOGOUT_SUCCESS'

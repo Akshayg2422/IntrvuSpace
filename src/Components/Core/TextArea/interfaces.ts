@@ -1,5 +1,5 @@
-import { InputHeadingProps } from '@Components'
-export interface TextAreaProps extends InputHeadingProps {
+
+export interface TextAreaProps {
   heading?: string;
   id?: any;
   value?: any;
@@ -7,6 +7,5 @@ export interface TextAreaProps extends InputHeadingProps {
   className?: string;
   placeholder?: any;
   error?: any
-  height?: any
 
 }

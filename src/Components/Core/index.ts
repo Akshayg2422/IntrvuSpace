@@ -33,12 +33,7 @@ export * from './DownloadImage'
 export * from './ButtonGroup'
 export * from './TextArea'
 export * from './DragAndReorder'
-export * from './Sliders'
-export * from './ReactAutoComplete'
-export * from './DropZoneFilePicker'
-export * from './InputPassword'
-export * from './AutoFocusInput'
-export * from './ResumeUploader'
+// export * from './Slider'
 
 
 

@@ -1,5 +1,5 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
-import { NoRecordsFound, Table } from "@Components";
+import React from 'react'
+import { Table, NoRecordsFound, Heading } from "@Components";
 
 
 interface CommonTableProps {
@@ -37,7 +37,7 @@ function CommonTable({ card = false, title, displayDataSet, tableDataSet, isPagi
     return (
       <>
         {card ? <div className='col ' >
-          <div className='card shadow-none overflow-auto overflow-hide '>
+          <div className='card shadow-none'>
             {title && <div className="card-header border-0">
               <div className="row align-items-center">
                 <div className="col" >
@@ -100,8 +100,8 @@ function CommonTable({ card = false, title, displayDataSet, tableDataSet, isPagi
       }
 
       return (
-        <div>
-          <ul className="pagination col justify-content-end mb-0 pointer">
+        <div className="card-footer">
+          <ul className="pagination col justify-content-end mb-0">
             <li className={`${currentPage === 1 ? 'disabled' : ''} page-item `} onClick={currentPage === 1 ? undefined : previousClick}>
               <a className="page-link">
                 <i className="fas fa-angle-left"></i>
@@ -126,11 +126,11 @@ function CommonTable({ card = false, title, displayDataSet, tableDataSet, isPagi
   }
   return (
     <CommonHeader>
-      {displayDataSet && displayDataSet.length > 0 ? <Table tableDataSet={tableDataSet} displayDataSet={displayDataSet} tableOnClick={tableOnClick} /> : <div className='mb-4'><NoRecordsFound /></div>}
+      {displayDataSet && displayDataSet.length > 0 ? <Table tableDataSet={tableDataSet} displayDataSet={displayDataSet} tableOnClick={tableOnClick}  /> : <div className='mb-4'><NoRecordsFound /></div>}
       {isPagination && <GetPaginatorSet currentPage={currentPage} totalPages={noOfPage} />}
     </CommonHeader >
 
   );
 }
 
-export { CommonTable };
+export { CommonTable }

@@ -130,8 +130,7 @@ function AdminLogin() {
                                                 style={{
                                                     borderTopRightRadius: '0px',
                                                     borderBottomRightRadius: '0px',
-                                                    borderRight: '0px',
-                                                    borderRadius: 0
+                                                    borderRight: '0px'
                                                 }}
                                                 value={password.value}
                                                 type={showPassword ? 'text' : 'password'}
@@ -175,7 +174,7 @@ function AdminLogin() {
                                     <div className="row justify-content-between align-items-center ml-0 mr-0 pt-3 pb-2">
                                         <div className="custom-control custom-checkbox custom-checkbox-success ">
                                             <input
-                                                className="custom-control-input rounded-0"
+                                                className="custom-control-input"
                                                 defaultChecked
                                                 id="chk-todo-task-1"
                                                 type="checkbox"
@@ -187,7 +186,7 @@ function AdminLogin() {
                                             <label className="text-black text-sm">Remember me</label>
                                         </div>
                                         <div className="text-right">
-                                            <a className="text-primary text-sm" onClick={() => { goTo(ROUTES["auth-module"].forgotPassword) }} href="/">Forgot Password ?</a>
+                                            <a className="text-primary text-sm" href="/">Forgot Password ?</a>
                                         </div>
                                     </div>
                                     <div className="py-3 ">

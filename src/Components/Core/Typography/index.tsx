@@ -4,9 +4,9 @@ const Title = ({ heading, variant }: TitleProps) => {
   return <p className={variant}>{heading}</p>;
 };
 
-const Heading = ({ heading, variant = "h2", size, style, className }: HeadingProps) => {
+const Heading = ({ heading, variant = "h2", size, style }: HeadingProps) => {
   return (
-    <p className={`${size} ${variant} ${className}`} style={style}>
+    <p className={`${size} ${variant}`} style={style}>
       {heading}
     </p>
   );

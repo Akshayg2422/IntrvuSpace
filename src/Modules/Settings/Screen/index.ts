@@ -1,4 +1,4 @@
-
+export * from './Designation'
 export * from './Sector'
 export * from './WeightageCountForm'
 export * from './CreateQuestionForm'
@@ -9,18 +9,10 @@ export * from './Otp'
 export * from './Register'
 export * from './Splash'
 export * from './AdminLogin'
+export * from './VariantInfo'
 export * from './PrivacyPolicy'
 export * from './TermsAndConditions'
 export * from './ReturnAndRefund'
-export * from './Settings'
-export * from './CreateNewPassword'
-export * from './ForgotPassword'
-export * from './VerifyEmail'
-export * from './EmailVerification'
-export * from './CorporateRegister'
-
-
-
 
 
 

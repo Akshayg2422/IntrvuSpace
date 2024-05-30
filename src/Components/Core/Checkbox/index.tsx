@@ -1,33 +1,32 @@
-import React from 'react'
-import { FormGroup } from 'reactstrap'
+import React, { useEffect, useState } from 'react'
 import { CheckboxProps } from './interfaces'
-
+import { FormGroup } from 'reactstrap'
 
 function Checkbox({ id = '0', text, defaultChecked, variant = 'primary', onCheckChange, ...rest }: CheckboxProps) {
 
-    // const [checked, setChecked] = useState(defaultChecked);
+    const [checked, setChecked] = useState(defaultChecked);
 
 
-    // useEffect(() => {
-    //     setChecked(defaultChecked)
-    // }, [defaultChecked])
+    useEffect(() => {
+        setChecked(defaultChecked)
+    }, [defaultChecked])
 
     function onChangeHandler(e: React.ChangeEvent<HTMLInputElement>) {
         if (onCheckChange) {
             const checkStatus = e.target.checked
-            // setChecked(checkStatus)
+            setChecked(checkStatus)
             onCheckChange(checkStatus)
         }
     }
 
     return (
-        <FormGroup className='m-0 p-0'>
-            <div className={`custom-control custom-checkbox custom-checkbox-${variant} `} >
+        <FormGroup>
+            <div className={`custom-control custom-checkbox custom-checkbox-${variant} mb-3`}>
                 <input
                     {...rest}
                     id={id}
-                    checked={defaultChecked}
-                    className={'custom-control-input border'}
+                    checked={checked}
+                    className={'custom-control-input'}
                     type={'checkbox'}
                     onChange={onChangeHandler}
                 />
@@ -35,7 +34,7 @@ function Checkbox({ id = '0', text, defaultChecked, variant = 'primary', onCheck
                     className={'custom-control-label'}
                     htmlFor={id}>
                     {
-                        <span className={'position-relative left--1'}>{text}</span>
+                        <span className={'position-absolute left--2'}>{text}</span>
                     }
                 </label>
             </div>
@@ -43,5 +42,5 @@ function Checkbox({ id = '0', text, defaultChecked, variant = 'primary', onCheck
     )
 }
 
-export { Checkbox }
-export type { CheckboxProps }
+export { Checkbox };
+export type { CheckboxProps };

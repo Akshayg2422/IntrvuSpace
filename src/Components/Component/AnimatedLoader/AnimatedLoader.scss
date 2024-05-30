@@ -2,8 +2,6 @@ $base: #263238;
 $lite: #ffff;
 $brand: #78f67a;
 $size: 48px;
-$size-sm: 32px;
-
 
 
 *,
@@ -69,10 +67,13 @@ $size-sm: 32px;
 
 
 .loader-43 {
-  width: 100px;
+  width: 10px;
   height: 10px;
+  border-radius: 50%;
   display: inline-block;
+  position: relative;
   color: $brand;
+  left: -100px;
   animation: shadowRolling 2s linear infinite;
 }
 
@@ -149,18 +150,9 @@ $size-sm: 32px;
   height: $size;
   display: inline-block;
   position: relative;
+  border-radius: 4px;
+  left: -60px;
   color: $lite;
-  left: -45px;
-  animation: animloader64 0.6s linear infinite;
-}
-
-.loader-32 {
-  width: $size /7;
-  height: $size-sm;
-  display: inline-block;
-  position: relative;
-  color: $lite;
-  left: -40px;
   animation: animloader64 0.6s linear infinite;
 }
 

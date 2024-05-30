@@ -1,38 +1,40 @@
-import React from 'react'
-import { Table, NoRecordsFound, Heading } from "@Components";
 
-interface CommonPageProps {
+
+
+interface CommonTableProps {
   isPagination?: boolean
   currentPage?: number
   noOfPage?: number
   previousClick?: () => void;
   nextClick?: () => void;
   paginationNumberClick?: (text: number) => void;
-  card?: boolean
+  rightArrow?:boolean,
+  leftArrow?:boolean,
+
 }
 
-interface ChildComponentProps {
-  text: number;
-}
-
-
+// interface ChildComponentProps {
+ 
+//   text:number;
+// }
 interface GetPaginatorSetProps {
   currentPage?: number;
   totalPages?: number;
+  leftArrow?:boolean;
+  rightArrow?:boolean;
 }
 
 
 
 
-function PageNation({ isPagination, currentPage, noOfPage, previousClick, nextClick, paginationNumberClick }: CommonPageProps) {
+function PageNation({ isPagination, currentPage, noOfPage,previousClick, nextClick, rightArrow,leftArrow }: CommonTableProps) {
 
 
-  const GetPaginatorSet = ({ currentPage, totalPages }: GetPaginatorSetProps) => {
+
+  const GetPaginatorSet = ({ currentPage, totalPages,leftArrow=false ,rightArrow=false}: GetPaginatorSetProps) => {
 
 
     if (currentPage && totalPages) {
-
-      const children = [];
       if (currentPage && noOfPage) {
 
 
@@ -47,6 +49,7 @@ function PageNation({ isPagination, currentPage, noOfPage, previousClick, nextCl
           let adjust = Math.abs(page_range_start)
           page_range_start = page_range_start + adjust + 1
           page_range_end = page_range_end + adjust + 1
+
         }
 
         if (total_pages < page_range_end) {
@@ -56,35 +59,26 @@ function PageNation({ isPagination, currentPage, noOfPage, previousClick, nextCl
           if (page_range_start <= 0)
             page_range_start = 1
         }
-
-        const ChildComponent = ({ text }: ChildComponentProps) => {
-          return (<li className={`${currentPage + "" === text + "" ? 'active' : ''} page-item `} onClick={() => { if (paginationNumberClick) paginationNumberClick(text) }}  ><a className="page-link" >{text}</a></li>);
-        }
-
-
-        for (var i = page_range_start; i <= page_range_end; i++) {
-          children.push(<ChildComponent text={i} /> as never)
-        }
-
-
       }
 
       return (
-        <div className="mb-3 pointer">
+        <div className="">
           <ul className="pagination col justify-content-end mb-0">
-            <li className={`${currentPage === 1 ? 'disabled' : ''} page-item `} onClick={currentPage === 1 ? undefined : previousClick}>
-              <a className="page-link">
+        {leftArrow &&
+           <li className={`${currentPage === 1 ? 'disabled' : ''} page-item `} onClick={currentPage === 1 ? undefined : previousClick}>
+              <a className="">
                 <i className="fas fa-angle-left"></i>
                 <span className="sr-only">Previous</span>
               </a>
             </li>
-            {children}
-            <li className={`${currentPage >= totalPages ? 'disabled' : ''} page-item `} onClick={currentPage >= totalPages ? undefined : nextClick} >
-              <a className="page-link">
+    }
+          {rightArrow &&  <li className={`${currentPage >= totalPages ? 'disabled' : ''} page-item `} onClick={currentPage >= totalPages ? undefined : nextClick} >
+              <a className="">
                 <i className="fas fa-angle-right"></i>
                 <span className="sr-only">Next</span>
               </a>
             </li>
+    }
           </ul>
 
         </div >
@@ -95,10 +89,11 @@ function PageNation({ isPagination, currentPage, noOfPage, previousClick, nextCl
 
   }
   return (
-    <>
-      {isPagination && <GetPaginatorSet currentPage={currentPage} totalPages={noOfPage} />}
+   <>
+      {isPagination && <GetPaginatorSet currentPage={currentPage} totalPages={noOfPage}leftArrow={leftArrow} rightArrow={rightArrow} />}
+      </>
+  
 
-    </>
   );
 }
 

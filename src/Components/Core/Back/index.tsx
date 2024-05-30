@@ -3,23 +3,15 @@ import { Image } from '@Components'
 import { icons } from '@Assets'
 import { BackProps } from './interfaces'
 import { useNavigation } from '@Hooks'
-function Back({ variant = 'default', icon = icons.backButton, h = 16, w = 16, onClick }: BackProps) {
+function Back({ icon = icons.backArrow }: BackProps) {
 
+
+
+    
     const { goBack } = useNavigation()
     return (
-        <div onClick={() => {
-            if (variant === 'default') {
-                goBack()
-            } else if (variant === 'override') {
-                if (onClick) {
-                    onClick();
-                }
-            }
-
-        }} className='pointer d-flex align-items-center'>
-            <Image src={icon} height={h} width={w} style={{
-                objectFit: 'contain',
-            }} />
+        <div onClick={() => { goBack() }} className='pointer'>
+            <Image src={icon} width={20} height={20} />
         </div>
     )
 }

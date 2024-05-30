@@ -10,6 +10,7 @@ const Breadcrumbs = () => {
   const { goBack } = useNavigation();
   const { breadCrumb } = useSelector((state: any) => state.DashboardReducer)
 
+  console.log('breadcrumbbbbbbbbbbbbbbbbbbbbbbbb------------------>', breadCrumb)
 
   return (
     <div className='row mx-1 my-2'>

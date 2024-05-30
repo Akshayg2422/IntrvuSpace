@@ -6,7 +6,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import GetToken from './GetToken';
 import { onMessageListener } from './OnMessaging';
 import { icons } from '@Assets';
-import { ROUTES } from "@Routes";
+import {  ROUTES } from "@Routes";
 import { useDispatch } from 'react-redux'
 
 const MAX_LENGTH = 70
@@ -95,13 +95,17 @@ const PushNotification = () => {
 
             const route_type = JSON.parse(payload?.data?.extra_data.replace(/'/g, '"')).route_type
 
+
+
+
             new Notification(title, options).addEventListener('click', function () {
                 routingHandler(payload)
+                console.log("foreground message--------------->", payload);
                 this.close()
             });
 
         })
-        .catch((err: any) => { });
+        .catch((err: any) => console.log('failed: ', err));
 
     return (
         <>

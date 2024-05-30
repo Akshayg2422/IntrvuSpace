@@ -25,9 +25,9 @@ function AuthenticationAndDashboardModule() {
                                     <h1 className={'text-black display-3 font-weight-bolder col'}>Authentication Module</h1>
                                 </div>
 
-                                <p className={'custom-text-color'} style={{ maxWidth: '550px' }} >
-                                    The Authentication Module is the cornerstone of intrvu SPACE's commitment to secure and reliable interview experiences. In an era where data privacy and security are paramount, we understand the importance of safeguarding your personal information. <br></br>
-                                    Our Authentication Module employs cutting-edge encryption and multi-factor authentication techniques to ensure that your data remains confidential and protected. With intrvu SPACE, you can trust that your information is in safe hands, allowing you to focus solely on your interview preparation and success.
+                                <p className={'custom-text-color'} style={{maxWidth:'550px'}} >
+                                    The Authentication Module is the cornerstone of MockEazy's commitment to secure and reliable interview experiences. In an era where data privacy and security are paramount, we understand the importance of safeguarding your personal information. <br></br>
+                                    Our Authentication Module employs cutting-edge encryption and multi-factor authentication techniques to ensure that your data remains confidential and protected. With MockEazy, you can trust that your information is in safe hands, allowing you to focus solely on your interview preparation and success.
                                 </p>
                             </Col>
 

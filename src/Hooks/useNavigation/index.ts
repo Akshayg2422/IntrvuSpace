@@ -6,14 +6,16 @@ const useNavigation = () => {
   const params = useParams();
   const location = useLocation();
 
-  const goTo = (to: string, replace: boolean = false) =>{
+  const goTo = (to: string, replace: boolean = false) =>
     navigation(to, { replace: replace });
-    console.log(replace,to,"replace======")
 
-  }
+
 
   const goBack = (action: number = -1) => {
     const doesAnyHistoryEntryExist = location.key !== "default";
+
+    console.log(doesAnyHistoryEntryExist + '========doesAnyHistoryEntryExist');
+
 
     if (doesAnyHistoryEntryExist) {
       navigation(action)

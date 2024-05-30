@@ -153,7 +153,7 @@ function FromSkills() {
         <>
             <div>
                 <div className={'mx--1'}>
-                    <Button size={'md'} className='mt-3' block text={'Upload key skills and start interview'} onClick={addJdModal.show} />
+                <Button size={'md'} className='mt-3' block text={'Upload key skills and start interview'} onClick={addJdModal.show} />
                 </div>
                 {/* <div
                     style={{
@@ -293,25 +293,27 @@ function FromSkills() {
             </GenerateModal>
 
             <Modal isOpen={completedModal.visible} onClose={completedModal.hide}>
-                <div className='text-center '>
-                    <div className='display-1 text-black'>
-                        Your Interview is Ready!
+                <div className='mt--5 pb-4'>
+                    <div className='text-center '>
+                        <div className='display-1 text-black'>
+                            Your Interview is Ready!
+                        </div>
                     </div>
-                </div>
-                <div className='text-center py-3 mb-5'>
-                    <small className='text-black'>Click below to start Interview</small>
-                    <div className='row justify-content-center pt-1'>
-                        <div className='col-4'>
-                            <Button
-                                block
-                                size='md'
-                                text={'Start Now'}
-                                onClick={() => {
-                                    if (scheduleId) {
-                                        proceedInterview(scheduleId)
-                                    }
-                                }}
-                            />
+                    <div className='text-center py-3'>
+                        <small className='text-black'>Click Below to Start Interview</small>
+                        <div className='row justify-content-center pt-1'>
+                            <div className='col-4'>
+                                <Button
+                                    block
+                                    size='md'
+                                    text={'Start Now'}
+                                    onClick={() => {
+                                        if (scheduleId) {
+                                            proceedInterview(scheduleId)
+                                        }
+                                    }}
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>

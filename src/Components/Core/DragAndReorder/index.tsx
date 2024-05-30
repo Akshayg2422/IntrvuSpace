@@ -35,6 +35,7 @@ function DragAndReorder({
         })
 
 
+        console.log("newItemId", newItemId)
 
         const newArrayElement = newItemId.map((item: any, index) => {
             return { ...item, display_order: index + 1 }
@@ -42,6 +43,7 @@ function DragAndReorder({
         let newArray = items.map((item: any, index) => {
             return { ...item, display_order: index + 1 }
         });
+        console.log("items==============>", newArray)
 
         setDragAndReorderData(newArray);
         setDndIdSequenceObj(newArrayElement as never)
@@ -49,6 +51,7 @@ function DragAndReorder({
 
 
 
+    console.log("dndIdSequenceObj", dndIdSequenceObj)
 
     return (
         <>
@@ -68,6 +71,7 @@ function DragAndReorder({
                                 {(provided: any) => (
                                     <div {...provided.droppableProps} ref={provided.innerRef}>
                                         {dragAndReorderData.map(({ id, name }, index) => {
+                                            console.log("opopopo", dragAndReorderData)
                                             return (
                                                 <div className="">
                                                     <Draggable key={id + ''} draggableId={id + ''} index={index}>
@@ -77,7 +81,7 @@ function DragAndReorder({
                                                                     <p>
                                                                         {name}
                                                                     </p>
-                                                                    {dragAndReorderData.length > 0 && <Divider space="4" />}
+                                                                    {dragAndReorderData.length > 0 && <Divider space="4"/>}
                                                                 </div>
                                                             </div>
                                                         )}

@@ -19,7 +19,8 @@ function WeightageCountForm() {
   const [displayOrderCount, setDisplayOrderCount] = useState(1);
   const loginLoader = useLoader(false);
   const [loading, setLoading] = useState(false)
-  const { selectedRole, selectedQuestionForm, questionSection } = useSelector((state: any) => state.DashboardReducer)
+  const { selectedRole, selectedQuestionForm,questionSection } = useSelector((state: any) => state.DashboardReducer)
+  console.log('questions----------->',selectedQuestionForm)
 
 
   useEffect(() => {
@@ -107,10 +108,12 @@ function WeightageCountForm() {
   const getTotalWeightage = () => {
     return questionSection.reduce((total, task) => total + parseInt(task.weightage, 10), 0);
   };
+  console.log('questionSection=--------->', JSON.stringify(questionSection))
 
   const normalizedTableData = (data: any) => {
     if (data && data?.length > 0)
       return data.map((el: any) => {
+        console.log('--------->', el)
         return {
 
           "name":

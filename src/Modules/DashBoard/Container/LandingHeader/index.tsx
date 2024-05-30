@@ -35,14 +35,14 @@ function LandingHeader() {
                                     <h1 className="display-1 custom-black font-weight-bolder mb-0" style={{ fontSize: '60px' }}>
                                         Welcome to
                                         <br></br>
-                                        <div className={'mt--3'}>intrvu SPACE</div>
+                                        <div className={'mt--3'}>Mock Eazy</div>
                                     </h1>
                                     <p className="custom-text-color" style={{ fontSize: '17px' }}>
-                                        Step into the Future of Interviews with intrvu SPACE.
+                                        Step into the Future of Interviews with MockEazy.
                                     </p>
                                     <div className="mt-4">
-                                        <Button
-                                            className={'px-6 bg-primary rounded-0 text-white'}
+                                        <Button className={'px-6'}
+                                            style={{ borderRadius: '25px' }}
                                             size={'lg'}
                                             text={'Register Now'}
                                             onClick={() => { goTo(ROUTES['auth-module'].register) }}

@@ -21,6 +21,7 @@ function PageNotFound({ }: PageNotFoundProps) {
                                 <h3 className="h2">
                                     Look like you're lost
                                 </h3>
+
                                 <p>The page you are looking for not available!</p>
                                 <Button text={'Go to Home'} size='md' onClick={() => { goTo(ROUTES['auth-module'].splash, true) }} />
                             </div>

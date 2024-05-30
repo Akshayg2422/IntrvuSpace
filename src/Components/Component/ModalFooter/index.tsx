@@ -1,30 +1,25 @@
 import React from "react";
 import { ModalFooterProps } from "./interfaces";
 import { Button } from "@Components";
-import './index.css'
-
 function ModalFooter({
-  loading,
   primary = 'Proceed',
   secondary = 'Cancel',
   primaryOnClick,
   secondaryOnClick,
 }: ModalFooterProps) {
   return (
-    <div className={'modal-alert-wrapper'}>
-      <div className={'btn-wrapper'}>
+    <div className={"row justify-content-end px-3"}>
+      <div>
         {secondary && (
           <Button
-            block
-            color={'white'}
+            color={"black"}
             text={secondary}
             onClick={secondaryOnClick}
           />
         )}
       </div>
-
-      <div className={'btn-wrapper btn-spacing'}>
-        {primary && <Button block loading={loading} text={primary} onClick={primaryOnClick} />}
+      <div className="ml-3">
+        {primary && <Button text={primary} onClick={primaryOnClick} />}
       </div>
     </div>
   );

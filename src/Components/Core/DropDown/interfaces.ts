@@ -1,6 +1,5 @@
 import { Option, InputHeadingProps } from '@Components'
 export interface DropDownProps extends InputHeadingProps {
-    id: string,
     placeHolder?: string;
     data?: Array<Option>;
     defaultValue?: Option;
@@ -10,6 +9,5 @@ export interface DropDownProps extends InputHeadingProps {
     disabled?: boolean;
     selected?: Option;
     className?: string;
-    Class?: any;
-    noSpace?: boolean;
+    Class?: any
 }

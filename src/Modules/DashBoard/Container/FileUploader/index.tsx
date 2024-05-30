@@ -71,6 +71,7 @@ const FileUploader = ({
       multiple: true,
     });
 
+  console.log("uploadedFiles", uploadedFiles);
 
   return (
     <div className="container">
@@ -78,8 +79,9 @@ const FileUploader = ({
         <div className="col-sm-6">
           <div
             {...getRootProps()}
-            className={`file-uploader text-center ${isDragActive ? "drag-active" : ""
-              }`}
+            className={`file-uploader text-center ${
+              isDragActive ? "drag-active" : ""
+            }`}
           >
             <input {...getInputProps()} />
             {isDragActive ? (
@@ -99,6 +101,7 @@ const FileUploader = ({
           <p className="text-white">{"Uploaded Files"}</p>
           <div className="d-flex flex-wrap">
             {uploadedFiles.map((fileIdentifier: any, index: any) => {
+              console.log("fileIdentifier", fileIdentifier);
               const isImage = fileIdentifier?.toString()?.search(":image");
 
               return (

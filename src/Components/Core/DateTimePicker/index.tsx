@@ -1,48 +1,45 @@
-import { InputHeading } from '@Components';
-import moment, { isMoment, Moment } from 'moment';
+
+import { DateTimePickerProps } from './interfaces';
 import ReactDatetime from "react-datetime";
 import { FormGroup } from 'reactstrap';
-import { DateTimePickerProps } from './interfaces';
+import { InputHeading } from '@Components'
+import { Moment, isMoment } from 'moment'
 
 
-function DateTimePicker({ id, heading, noSpace, placeholder, type = 'date', dateFormatType = "LT", onChange, disableFuture = false, dateShowingFormat = "after", ...rest }: DateTimePickerProps) {
+function DateTimePicker({ id, heading, placeholder, type = 'date', format = "", onChange, ...rest }: DateTimePickerProps) {
+    return (
+        <FormGroup>
+            {heading && <InputHeading id={id} heading={heading} />}
 
-  const currentDate = moment();
-  const currentDate1 = moment().subtract(1, 'day')
-  const disableDt = disableFuture
-    ? (current: any) => current.isAfter(currentDate1, 'day')
-    : (current: any) => current.isBefore(currentDate, 'day');
-    
+            <ReactDatetime
+                {...rest}
 
-  return (
-    <FormGroup className={noSpace ? 'm-0 b-0' : ""}>
-      {heading && <InputHeading id={id} heading={heading} />}
+                inputProps={
+                    {
 
-      <ReactDatetime
-        {...rest}
-        inputProps={
-          {
-            placeholder: placeholder,
-            onKeyDown: (e) => { e.preventDefault() },
-          }
-        }
-        closeOnSelect={true}
-        timeFormat={type !== 'date' && true}
-        dateFormat={type === 'time' ? false : 'MMM D YYYY'}
-        onChange={
-          (date: any) => {
-            if (onChange)
-              if (isMoment(date))   
-                onChange(type === 'time' ? date.format('LT') : type === 'both' ? date.format() : date.format('MMM D YYYY'))
-              else
-                onChange(date)
-          }
-        }
-        isValidDate={disableDt}
-        
-      />
-    </FormGroup >
-  )
+                        placeholder: placeholder
+
+                    }
+                }
+
+                dateFormat={type !== 'time' && 'D MMM YYYY'}
+                timeFormat={type !== 'date' && 'h:mm A'}
+                onChange={
+                    (date: Moment | string) => {
+                        if (onChange) {
+
+                            if (isMoment(date)) {
+                                onChange(date.format(format).toString())
+                            }
+                            else {
+                                onChange(date)
+                            }
+                        }
+                    }
+                }
+            />
+        </FormGroup >
+    )
 }
 
 export { DateTimePicker };

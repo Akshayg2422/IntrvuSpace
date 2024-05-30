@@ -12,7 +12,7 @@ function Tab4() {
 
 
   return (
-    <div style={{ backgroundColor: '#001532', borderRadius: '20px' }}>
+    <div style={{ backgroundColor: '#c7f2c1', borderRadius: '20px' }}>
 
       <section className="m-3 m-md-5">
         <Container>
@@ -21,8 +21,8 @@ function Tab4() {
               <div className='pt-4 pb-2'>
                 <img className={''} src={icons.traitReport} alt="Authentication icon" height={45} width={45} style={{ borderRadius: '10px' }} />
               </div>
-              <div className={'text-white h2 font-weight-bolder'}>Traits Reports</div>
-              <p className={'text-white'} style={{ maxWidth: '400px' }}>
+              <div className={'text-black h2 font-weight-bolder'}>Traits Reports</div>
+              <p className={'custom-text-color'} style={{ maxWidth: '400px' }}>
                 Your personal traits and qualities play a significant role in how you present yourself during interviews. The Trait Report evaluates your personality traits and how they may influence your interview performance. It offers valuable insights into your strengths and potential areas for improvement in showcasing your unique qualities to potential employers.
               </p>
             </Col>

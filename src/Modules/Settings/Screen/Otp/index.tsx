@@ -6,7 +6,7 @@ import { OTP_RESEND_DEFAULT_TIME, USER_TOKEN } from '@Utils';
 import { useInput, useKeyPress, useLoader, useNavigation, useTimer } from '@Hooks';
 import { ROUTES } from '@Routes';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchMemberUsingLoginOtp, settingRegisterData, userLoginDetails } from '@Redux';
+import { fetchMemberUsingLoginOtp, memberLoginUsingPasswordSuccess, settingRegisterData, userLoginDetails } from '@Redux';
 
 function Otp() {
     const { seconds, setSeconds } = useTimer(OTP_RESEND_DEFAULT_TIME);
@@ -53,6 +53,7 @@ function Otp() {
                                 ...details
                             }),
                         );
+
                         localStorage.setItem(USER_TOKEN, response.details.token);
                         goTo(ROUTES['auth-module'].splash)
                         dispatch(settingRegisterData(undefined))
@@ -105,7 +106,7 @@ function Otp() {
                                     </div> : `You OTP should arrive in ${(seconds < 10 ? "0" + seconds : seconds)} Seconds`}
                             </h3>
                             <h4 className='text-black  font-weight-normal text-sm'>
-                                An OTP has been sent to {registerData?.mobile_number || registerData?.email}. You may not receive the OTP if the email/number is not registered with intrvu SPACE.
+                                An OTP has been sent to {registerData?.mobile_number || registerData?.email}. You may not receive the OTP if the email/number is not registered with Mockeazy.
                             </h4>
 
                             <div className="py-3 ">

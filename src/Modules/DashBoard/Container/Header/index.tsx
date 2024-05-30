@@ -17,9 +17,9 @@ function Header({ selected, onClick }: HeaderProps) {
         <div className='row'>
             <div className='col'>
                 <div className='row align-items-center'>
-                    <Image src={icons.logoText} height={40} width={40} />
+                    <Image src={icons.logo} height={40} width={40} />
                     <div className='d-flex align-items-center ml-2'>
-                        <h1 className='display-4 font-weight-bolder text-primary mb-0'>intrvu<b className='text-black'>SPACE</b></h1>
+                        <h1 className='display-4 font-weight-bolder text-primary mb-0'>MOCK <b className='text-black'>EAZY</b></h1>
                     </div>
                 </div>
             </div>

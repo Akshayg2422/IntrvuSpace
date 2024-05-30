@@ -19,6 +19,7 @@ const CodeEditorWindow = ({ value, onChange, language, fileType, ide, theme, isF
   let height = window.innerHeight
 
   const selectedLanguage = (value: any) => {
+    // console.log("action===>",value)
     let selectedFileName = fileType
 
     switch (selectedFileName) {

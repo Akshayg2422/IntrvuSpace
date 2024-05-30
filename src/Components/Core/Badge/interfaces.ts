@@ -4,5 +4,4 @@ export interface BadgeProps extends RsBadgeProps {
     text?: string | null | undefined
     color?: Color
     size?: 'sm' | 'md' | 'lg'
-    pill?: any
 }

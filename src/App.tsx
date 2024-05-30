@@ -1,56 +1,48 @@
 /* eslint-disable @typescript-eslint/no-redeclare */
-import { PageNotFound, ScreenWrapper } from "@Components";
-import { Call, Splash } from '@Modules';
-import { AUTH_ROUTES, JOB_SEEKER_ROUTES, ADMIN_ROUTES, ROUTES, RequireAuth, RequireHome, SUPER_ADMIN_ROUTES } from "@Routes";
+import { ScreenWrapper, Breadcrumbs, Back, PageNotFound } from "@Components";
 import { Route, Routes } from "react-router-dom";
+import { HOME_ROUTES, RequireAuth, DASHBOARD_ROUTES, AUTH_ROUTES, RequireHome } from "@Routes";
 import { ToastContainer } from "react-toastify";
-import { useSelector } from 'react-redux';
-
+import { Splash } from '@Modules'
 /**
  *  select-react  - important need to add this app.js
  */
-import "@fortawesome/fontawesome-free/css/all.min.css";
-import "@fullcalendar/common/main.min.css";
-import "@fullcalendar/daygrid/main.min.css";
-import "quill/dist/quill.core.css";
+import "select2/dist/css/select2.min.css";
 import "react-notification-alert/dist/animate.css";
 import "react-perfect-scrollbar/dist/css/styles.css";
-import "select2/dist/css/select2.min.css";
+import "@fullcalendar/common/main.min.css";
+import "@fullcalendar/daygrid/main.min.css";
 import "sweetalert2/dist/sweetalert2.min.css";
-import './App.css';
+import "quill/dist/quill.core.css";
+import "@fortawesome/fontawesome-free/css/all.min.css";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { settingSideNavRemove } from "./Redux";
 
-import { TYPE_CORPORATE, TYPE_JOB_SEEKER, TYPE_SUPER_ADMIN } from "./Utils";
 
 
 
 
 function App() {
 
-
-  const { loginDetails } = useSelector((state: any) => state.AppReducer);
-
-
-  const { user_type } = loginDetails || {};
-
-  const userRoutes = () => {
-    switch (user_type) {
-      case TYPE_CORPORATE:
-        return ADMIN_ROUTES;
-      case TYPE_JOB_SEEKER:
-        return JOB_SEEKER_ROUTES;
-      case TYPE_SUPER_ADMIN:
-        return SUPER_ADMIN_ROUTES;
-      default:
-        return null;
-    }
-  }
-
   const AUTH = 1
 
-  const getRoutes = (routes: any, type?: any) => {
+  const { removeSideNav } = useSelector((state: any) => state.DashboardReducer)
+  const [pathName, setPathName] = useState<any>('/home')
+  const dispatch = useDispatch()
 
-    return routes && routes.length > 0 && routes.map((prop, key) => {
+  useEffect(() => {
+    if (window.location.pathname !== pathName && window.location.pathname !== '/schedules' && window.location.pathname !== '/call') {
+      dispatch(settingSideNavRemove(false))
+    }
+    else if (window.location.pathname === pathName || window.location.pathname === '/schedules' || window.location.pathname === '/call') {
+      dispatch(settingSideNavRemove(true))
+    }
+  }, [window.location.pathname])
 
+
+  const getRoutes = (routes, type?: any) => {
+    return routes.map((prop, key) => {
       if (prop.collapse) {
         return getRoutes(prop.views);
       }
@@ -64,7 +56,7 @@ function App() {
           element={type === AUTH ?
             <RequireHome>{prop.component}</RequireHome>
             :
-            <RequireAuth hideSideNac={prop?.hide_side_nav}>
+            <RequireAuth>
               {prop.component}
             </RequireAuth>
           }
@@ -76,20 +68,19 @@ function App() {
     });
   };
 
-  const routes = userRoutes();
-
   return (
     <ScreenWrapper>
 
       <Routes>
         <Route path="/" element={<Splash />} />
         {getRoutes(AUTH_ROUTES, AUTH)}
-        {routes && getRoutes(routes)}
-        <Route path={ROUTES['designation-module'].interview + '/:schedule_id'} element={<Call />} />
+        {getRoutes(HOME_ROUTES)}
+        {getRoutes(DASHBOARD_ROUTES)}
         <Route path={"*"} element={<PageNotFound />} />
       </Routes>
-      <ToastContainer />
 
+
+      <ToastContainer />
     </ScreenWrapper >
 
   );

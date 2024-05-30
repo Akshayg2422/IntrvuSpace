@@ -1,3 +1,234 @@
 .input-group.is-invalid ~ .invalid-feedback {
   display: block;
 }
+
+@media only screen and (max-width:350px ) and (min-width: 300px) {
+  .designation-input {
+    width:208px;
+    height:43px
+  }
+  .designation-scroll-bar {
+    width:208px;
+    height:120px;
+    overflow-y: scroll;
+  }
+
+  .designations-input {
+    width:208px;
+    height:43px
+  }
+  .designations-scroll-bar {
+    width:208px;
+    height:120px;
+    overflow-y: scroll;
+  }
+}
+
+@media only screen and (max-width:380px ) and (min-width: 350px) {
+  .designation-input {
+    width:268px;
+    height:43px
+  }
+  .designation-scroll-bar {
+    width:268px;
+    height:120px;
+    overflow-y: scroll;
+  }
+  .designations-input {
+    width:268px;
+    height:43px
+  }
+  .designations-scroll-bar {
+    width:268px;
+    height:120px;
+    overflow-y: scroll;
+  }
+}
+@media only screen and (max-width:400px ) and (min-width: 380px) {
+  .designation-input {
+    width:283px;
+    height:43px
+  }
+  .designation-scroll-bar {
+    width:283px;
+    height:120px;
+    overflow-y: scroll;
+  }
+  .designations-input {
+    width:283px;
+    height:43px
+  }
+  .designation-scroll-bar {
+    width:283px;
+    height:120px;
+    overflow-y: scroll;
+  }
+}
+@media only screen and (max-width:450px ) and (min-width: 400px) {
+  .designation-input {
+    width:304px;
+    height:43px
+  }
+  .designation-scroll-bar {
+    width:304px;
+    height:120px;
+    overflow-y: scroll;
+  }
+
+  .designations-input {
+    width:504px;
+    height:43px
+  }
+  .designation-scroll-bar {
+    width:504px;
+    height:120px;
+    overflow-y: scroll;
+  }
+}
+@media only screen and (max-width:550px ) and (min-width: 450px) {
+  .designation-input {
+    width:430px;
+    height:43px
+  }
+  .designation-scroll-bar {
+    width:430px;
+    height:120px;
+    overflow-y: scroll;
+  }
+
+  .designations-input {
+    width:530px;
+    height:43px
+  }
+  .designation-scroll-bar {
+    width:530px;
+    height:120px;
+    overflow-y: scroll;
+  }
+}
+@media only screen and (max-width:780px ) and (min-width: 550px) {
+  .designation-input {
+    width:315px;
+    height:43px
+  }
+  .designation-scroll-bar {
+    width:305px;
+    height:120px;
+    overflow-y: scroll;
+  }
+  .designations-input {
+    width:515px;
+    height:43px
+  }
+  .designation-scroll-bar {
+    width:515px;
+    height:120px;
+    overflow-y: scroll;
+  }
+}
+@media only screen and (max-width:992px ) and (min-width: 780px ) {
+  .designation-input {
+    width:343px;
+    height:43px
+  }
+  .designation-scroll-bar {
+    width:343px;
+    height:120px;
+    overflow-y: scroll;
+  }
+  .designations-input {
+    width:543px;
+    height:43px
+  }
+  .designation-scroll-bar {
+    width:543px;
+    height:120px;
+    overflow-y: scroll;
+  }
+}
+@media only screen and (max-width:1200px ) and (min-width: 992px ) {
+  .designation-input {
+    width:330px;
+    height:43px
+  }
+  .designation-scroll-bar {
+    width:330px;
+    height:120px;
+    overflow-y: scroll;
+  }
+  .designations-input {
+    width:530px;
+    height:43px
+  }
+  .designations-scroll-bar {
+    width:530px;
+    height:120px;
+    overflow-y: scroll;
+  }
+}
+
+//its work
+
+@media only screen and (max-width:1280px ) and (min-width: 1200px ) {
+  .designation-input {
+    width:440px;
+    height:43px
+  }
+  .designation-scroll-bar {
+    width:440px;
+    height:120px;
+    overflow-y: scroll;
+  }
+  .designation-auto-input {
+    width:530px;
+    height:43px
+  }
+  .designation-auto-scroll-bar {
+    width:530px;
+    height:120px;
+    overflow-y: scroll;
+  }
+  .designations-input {
+    width:515px;
+    height:43px
+  }
+  .designations-scroll-bar {
+    width:515px;
+    height:120px;
+    overflow-y: scroll;
+  }
+  .designations-auto-input {
+    width:623px;
+    height:43px
+  }
+  .designations-auto-scroll-bar {
+    width:623px;
+    height:120px;
+    overflow-y: scroll;
+  }
+}
+@media only screen and (max-width:1780px ) and (min-width: 1290px ) {
+  .designation-input {
+    width:376px;
+    height:43px
+  }
+  .designation-scroll-bar {
+    width:376px;
+    height:120px;
+    overflow-y: scroll;
+  }
+  .designations-input {
+    width:500px;
+    height:43px
+  }
+  .designation-scroll-bar {
+    width:500px;
+    height:120px;
+    overflow-y: scroll;
+  }
+
+}
+
+
+
+

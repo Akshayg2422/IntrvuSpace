@@ -3,19 +3,19 @@ import { SpinnerProps } from './interfaces'
 import { Spinner as RsSpinner } from 'reactstrap'
 import './style.scss'
 
-function Spinner({ color = 'primary', spinner = true, className, size = 'sm' }: SpinnerProps) {
+function Spinner({ color = 'black', spinner = true }: SpinnerProps) {
     return (
-        <div className = {className}>
+        <>
             {spinner ?
 
-                <RsSpinner className={className} color={color} size={size} >
+                <RsSpinner className='' color={color} size={'sm'} >
                     Loading...
                 </RsSpinner>
                 :
                 <span className="loader"></span>
 
             }
-        </div>
+        </>
     )
 }
 

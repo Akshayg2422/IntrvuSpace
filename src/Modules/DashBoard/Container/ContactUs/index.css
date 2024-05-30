@@ -1,11 +1,11 @@
 .button {
   font-family: inherit;
-  background: linear-gradient(112.2deg, #001532 -1.1%, #001532 100.7%);
+  background: linear-gradient(112.2deg, #68d75c -1.1%, #68d75c 100.7%);
   color: #ffffff;
   padding: 0.35em 0;
   font-size: 15px;
   border: none;
-  /* border-radius: 0.4em; */
+  border-radius: 0.7em;
   letter-spacing: 0.08em;
   position: relative;
   display: flex;
@@ -21,7 +21,7 @@
   background: #fff;
   height: 2em;
   width: 2em;
-  /* border-radius: 2em; */
+  border-radius: 2em;
   position: absolute;
   display: flex;
   align-items: center;
@@ -32,7 +32,7 @@
 
 .icon svg {
   transition: all 0.5s;
-  color: #001532;
+  color: #68d75c;
   width: 1.2rem;
   height: 1.2rem;
 }
@@ -43,7 +43,7 @@
 
 .button:hover .icon {
   width: calc(100% - 0.85rem);
-  /* border-radius: 0.3em; */
+  border-radius: 0.5em;
 }
 
 .NavItem:hover .NavLink {

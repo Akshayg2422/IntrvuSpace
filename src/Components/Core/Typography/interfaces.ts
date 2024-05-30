@@ -7,7 +7,6 @@ export interface HeadingProps {
   variant?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
   size?: string | undefined;
   style?: any;
-  className?: any;
 }
 
 export interface ParagraphProps {
@@ -31,7 +30,7 @@ export type PVariant =  HeadingTag
 
 
 export interface HProps extends React.HTMLAttributes<HTMLHeadingElement> {
-  tag?: HeadingTag;
+  tag: HeadingTag;
   text: string | undefined | null
   variant?: HeadingVariant
 }

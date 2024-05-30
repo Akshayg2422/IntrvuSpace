@@ -3,9 +3,8 @@ import { useNavigation } from '@Hooks'
 import { ROUTES } from '@Routes'
 import React from 'react'
 import { Link } from 'react-router-dom'
-import {Image} from '@Components'
 import { Navbar, Container, NavbarBrand, UncontrolledCollapse, Row, Col, Nav, NavItem, NavLink, Button } from 'reactstrap'
-import './index.css'
+
 function LandingNavBar() {
 
     const { goTo } = useNavigation()
@@ -18,15 +17,19 @@ function LandingNavBar() {
                 id="navbar-main"
                 style={{
                     backgroundColor: '#ffffff',
-                    // boxShadow: '0 2px 6px 0 rgba(0, 0, 0, 0.12), inset 0 -1px 0 0 #dadce0'
+                    boxShadow: '0 2px 6px 0 rgba(0, 0, 0, 0.12), inset 0 -1px 0 0 #dadce0'
                 }}
+
             >
                 <Container>
                     <NavbarBrand to="/" tag={Link}>
                         <img className={'mt--1'}
                             alt="..."
-                            src={icons.logoText}
+                            src={icons.logo}
                         />
+                        <span className='h3 ml-2 text-primary'>
+                            Mock Eazy
+                        </span>
                     </NavbarBrand>
                     <button
                         aria-controls="navbar-collapse"
@@ -38,8 +41,7 @@ function LandingNavBar() {
                         id="navbar-collapse"
                         type="button"
                     >
-                        {/* <span style={{}} className="navbar-toggler-icon " /> */}
-                        <div className={'pt-2'}><Image height={30} width={30} src={icons.navbarToggler} /></div>
+                        <span className="navbar-toggler-icon" />
                     </button>
                     <UncontrolledCollapse
                         className="navbar-custom-collapse"
@@ -50,10 +52,10 @@ function LandingNavBar() {
                             <Row>
                                 <Col className="collapse-brand" xs="6">
                                     <Link to="/admin/dashboard">
-                                        <img alt="..." src={icons.logoIcon} />
-                                        {/* <span className='h6 ml-2 text-primary'>
-                                            intrvu SPACE
-                                        </span> */}
+                                        <img alt="..." src={icons.logo} />
+                                        <span className='h6 ml-2 text-black'>
+                                            Mock Eazy
+                                        </span>
                                     </Link>
                                 </Col>
                                 <Col className="collapse-close" xs="6">
@@ -61,7 +63,7 @@ function LandingNavBar() {
                                         aria-controls="navbar-collapse"
                                         aria-expanded={false}
                                         aria-label="Toggle navigation"
-                                        className="navbar-toggler text-black"
+                                        className="navbar-toggler"
                                         data-target="#navbar-collapse"
                                         data-toggle="collapse"
                                         id="navbar-collapse"
@@ -75,10 +77,11 @@ function LandingNavBar() {
                         </div>
 
                         <Nav className="align-items-lg-center ml-lg-auto" navbar>
-                            <NavItem className="d-block ml-lg-4">
+                            <NavItem className="d-none d-lg-block ml-lg-4">
                                 <Button
-                                    className="bg-primary rounded-0 text-white"
-                                    size='sm'
+                                    className="bg-primary px-4 text-white"
+                                    style={{ borderRadius: '25px' }}
+                                    size='md'
                                     onClick={() => {
                                         goTo(ROUTES['auth-module'].login)
                                     }}

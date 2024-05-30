@@ -1,236 +1,51 @@
 // Weight and italics
 
-.font-weight-300 {
-	font-weight: 300 !important;
-}
-
-.font-weight-400 {
-	font-weight: 400 !important;
-}
-
-.font-weight-500 {
-	font-weight: 500 !important;
-}
-
-.font-weight-600 {
-	font-weight: 600 !important;
-}
-
-.font-weight-700 {
-	font-weight: 700 !important;
-}
-
-.font-weight-800 {
-	font-weight: 800 !important;
-}
-
-.font-weight-900 {
-	font-weight: 900 !important;
-}
+.font-weight-300 { font-weight: 300 !important; }
+.font-weight-400 { font-weight: 400 !important; }
+.font-weight-500 { font-weight: 500 !important; }
+.font-weight-600 { font-weight: 600 !important; }
+.font-weight-700 { font-weight: 700 !important; }
+.font-weight-800 { font-weight: 800 !important; }
+.font-weight-900 { font-weight: 900 !important; }
 
 
 // Text decorations
 
-.text-underline {
-	text-decoration: underline;
-}
-
-.text-through {
-	text-decoration: line-through;
-}
+.text-underline { text-decoration: underline; }
+.text-through { text-decoration: line-through; }
 
 
 // Text size
 
+.text-xs { font-size: $font-size-xs !important; }
+.text-sm { font-size: $font-size-sm !important; }
+.text-lg { font-size: $font-size-lg !important; }
+.text-xl { font-size: $font-size-xl !important; }
+.text-xxs { font-size: $font-size-xxs !important; }
 
 
-.text-xs {
-	font-size: $font-size-xs !important;
-}
-
-.text-sm {
-	font-size: $font-size-sm !important;
-}
-
-.text-lg {
-	font-size: $font-size-lg !important;
-}
-
-.text-xl {
-	font-size: $font-size-xl !important;
-}
-
-.screen-heading {
-	font-size: 1.5rem !important;
-	font-weight: 700;
-	color: $secondary;
-	line-height: 1;
-}
-
-.text-sub-heading {
-	font-size: 1.5rem !important;
-	font-weight: 700 !important;
-	color: $secondary !important;
-}
-
-
-.text-heading {
-	font-size: 2.25rem !important;
-	font-weight: 700 !important;
-	color: $secondary;
-	line-height: 1;
-}
-
-
-.text-sub-heading {
-	font-size: 1.5rem !important;
-	font-weight: 700 !important;
-	color: $secondary !important;
-}
-
-
-
-.text-des {
-	font-size: 1rem;
-	color: #727586;
-	font-weight: 400;
-}
-
-
-.screen-des {
-	font-size: 0.938rem !important;
-	color: #5A5D73;
-	font-weight: 400;
-	line-height: 1;
-}
-
-.view-more-text {
-	margin-left: 5px;
-	font-size: 0.938rem !important;
-	color: $primary !important;
-	font-weight: 700 !important;
-	cursor: pointer;
-}
-
-.point-heading {
-	font-weight: 700 !important;
-	font-size: 0.875rem !important;
-	color: $secondary;
-}
-
-.point-sub-heading {
-	font-weight: 400 !important;
-	font-size: 0.875rem !important;
-	color: $secondary;
-	margin-left: 5px;
-}
-
-.badge-text {
-	font-size: 0.875rem !important;
-	color: $primary;
-	font-weight: 600;
-	letter-spacing: 1.1;
-}
-
-
-.th-bold {
-	font-size: 14px;
-	font-weight: 600;
-	color: var(--secondary);
-}
-
-
-.th-regular {
-	font-size: 14px;
-	font-weight: 400;
-	color: var(--secondary);
-}
-
-.th-light {
-	font-size: 13px;
-	font-weight: 400;
-	color: var(--secondary);
-
-  }
-
-
-.bullet-key-point {
-	font-size: 0.875rem !important;
-	color: var(--description);
-	font-weight: 400;
-}
 
 // Line heights
 
-.lh-100 {
-	line-height: 1;
-}
-
-.lh-110 {
-	line-height: 1.1;
-}
-
-.lh-120 {
-	line-height: 1.2;
-}
-
-.lh-130 {
-	line-height: 1.3;
-}
-
-.lh-140 {
-	line-height: 1.4;
-}
-
-.lh-150 {
-	line-height: 1.5;
-}
-
-.lh-160 {
-	line-height: 1.6;
-}
-
-.lh-170 {
-	line-height: 1.7;
-}
-
-.lh-180 {
-	line-height: 1.8;
-}
+.lh-100 { line-height: 1; }
+.lh-110 { line-height: 1.1; }
+.lh-120 { line-height: 1.2; }
+.lh-130 { line-height: 1.3; }
+.lh-140 { line-height: 1.4; }
+.lh-150 { line-height: 1.5; }
+.lh-160 { line-height: 1.6; }
+.lh-170 { line-height: 1.7; }
+.lh-180 { line-height: 1.8; }
 
 
 // Letter spacings
 
-.ls-1 {
-	letter-spacing: .0625rem;
-}
-
-.ls-15 {
-	letter-spacing: .09375rem;
-}
-
-.ls-2 {
-	letter-spacing: 0.125rem;
-}
+.ls-1 { letter-spacing: .0625rem; }
+.ls-15 { letter-spacing: .09375rem; }
+.ls-2 { letter-spacing: 0.125rem; }
 
 // Color variations
 
 @each $color, $value in $colors {
 	@include text-emphasis-variant(".text-#{$color}", $value, $ignore-warning: true);
-}
-
-@media(max-width: 768px) {
-
-	.text-heading {
-		font-size: 1.25rem !important;
-		font-weight: 700 !important;
-		color: $secondary;
-	}
-
-
-	.screen-heading {
-		font-size: 1rem !important;
-		font-weight: 700 !important;
-		color: $secondary;
-	}
 }

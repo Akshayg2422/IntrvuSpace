@@ -1,24 +1,9 @@
-import React from 'react'
+import React, { useEffect } from "react";
 import { ScreenWrapperProps } from "./interfaces";
-import { useOnlineStatus } from '@Hooks'
-import { useSelector } from 'react-redux'
-import { InternetError } from '@Components'
+import { useWindowDimensions } from '@Hooks'
 
 function ScreenWrapper({ children }: ScreenWrapperProps) {
-
-  const { loginDetails } = useSelector((state: any) => state.AppReducer);
-
-  const { isLoggedIn } = loginDetails || {}
-
-  const isOnline = useOnlineStatus();
-
-  if (!isOnline && (window.location.pathname !== '/' || isLoggedIn)) {
-    return (
-      <InternetError />
-    );
-  }
-  return <React.Fragment>{children}</React.Fragment>;
-
+  return <div>{children}</div>;
 }
 
 export { ScreenWrapper };

@@ -1,8 +1,8 @@
+import React, { useState } from 'react';
+import { Container, Row, Col } from 'reactstrap';
 import { icons, image } from '@Assets';
-import { Tabs } from "@Components";
+import { Image, Tabs } from "@Components";
 import { Tab1, Tab2, Tab3, Tab4, Tab5, Tab6 } from '@Modules';
-import { useState } from 'react';
-import { Col, Container, Row } from 'reactstrap';
 
 function Reports() {
     const TABS = [
@@ -26,7 +26,7 @@ function Reports() {
                                     <img className="mt--1 ml-3" src={icons.horizontalLine} alt="Authentication icon" height={45} width={80} style={{ borderRadius: '10px' }} />
                                     <h3 className="text-primary ml-3">Reports</h3>
                                 </div>
-                                <div className="display-4 text-black font-weight-bolder">Unlocking Your Interview <br /><div className="mt--2">Potential with intrvu SPACE Reports</div></div>
+                                <div className="display-4 text-black font-weight-bolder">Unlocking Your Interview <br /><div className="mt--2">Potential with Mock Eazy Reports</div></div>
                             </div>
                         </Col>
                     </Row>

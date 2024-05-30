@@ -1,8 +1,20 @@
-/* eslint-disable no-self-assign */
 import {
+  CREATE_KNOWLEDGE_GROUP,
+  CREATE_KNOWLEDGE_GROUP_FAILURE,
+  CREATE_KNOWLEDGE_GROUP_SUCCESS,
+  CREATE_KNOWLEDGE_GROUP_VARIANT,
+  CREATE_KNOWLEDGE_GROUP_VARIANT_FAILURE,
+  CREATE_KNOWLEDGE_GROUP_VARIANT_SUCCESS,
   CREATE_SECTOR,
   CREATE_SECTOR_FAILURE,
   CREATE_SECTOR_SUCCESS,
+  GET_KNOWLEDGE_GROUP,
+  GET_KNOWLEDGE_GROUP_FAILURE,
+  GET_KNOWLEDGE_GROUP_SUCCESS,
+  GET_KNOWLEDGE_GROUP_VARIANT,
+  GET_KNOWLEDGE_GROUP_VARIANT_FAILURE,
+  GET_KNOWLEDGE_GROUP_VARIANT_SUCCESS,
+  GET_START_CHAT,
 } from "../ActionTypes";
 
 import { DashboardProp } from "../../Interfaces";
@@ -33,52 +45,13 @@ const initialState: DashboardProp = {
   recordingPermission: false,
   jdVariantData: undefined,
   jdItem: undefined,
-  jdItemNumOfPages: undefined,
-  jdItemCurrentPages: 1,
-  jdItemCount: undefined,
   scheduleInfo: undefined,
   selectedSection: 0,
-  corporateScheduleDetails: undefined,
+  variantDetails: undefined,
   loading: false,
   studentCodeOutput: undefined,
   codeOutputData: undefined,
   selectedSectionId: undefined,
-  canStartInterview: undefined,
-  createJdModal: false,
-  departmentCorporate: undefined,
-  departmentCorporateNumOfPages: undefined,
-  departmentsCorporateCurrentPages: 1,
-  refreshCorporateSchedules: false,
-  corporateSchedules: [],
-  corporateScheduleCount: undefined,
-  createForOthersJdModal: false,
-  interviewScheduleDetails: undefined,
-  interviewUserScheduleDetails: undefined,
-  retrieveEmail: undefined,
-  isCreateOpening: false,
-  corporateScheduleNumOfPages: undefined,
-  corporateScheduleCurrentPages: 1,
-  openingCandidates: [],
-  openingCandidatesCount: undefined,
-  openingCandidatesNumOfPages: undefined,
-  openingCandidatesCurrentPages: 1,
-  designations: undefined,
-  designationsNumOfPage: undefined,
-  designationsCurrentPage: 1,
-  error: "",
-  addTeamMates: undefined,
-  teams: undefined,
-  teamNumOfPages: undefined,
-  teamCurrentPages: 1,
-  sectorsCorporate: undefined,
-  sectorsCorporateNumOfPages: undefined,
-  sectorsCorporateCurrentPages: 1,
-  onGoingScheduleMessage: undefined,
-  onGoingSelectedId: undefined,
-  onGoingMessage: undefined,
-  interviewUrl: undefined,
-  faceVisible: false,
-
 };
 
 const DashboardReducer = (state = initialState, action: any) => {
@@ -362,42 +335,24 @@ const DashboardReducer = (state = initialState, action: any) => {
 
     case ActionTypes.CLEAR_LAST_BREADCRUMB:
       const updatedBreadCrumb = state.breadCrumb.pop();
-      state = { ...state, breadCrumb: updatedBreadCrumb };
+      return { ...state, breadCrumb: updatedBreadCrumb };
       break;
 
     /**
      * get jd item list
      */
     case ActionTypes.GET_JD_ITEM_LIST:
-      state = {
-        ...state,
-        jdItem: [],
-        jdItemNumOfPages: 0,
-        jdItemCurrentPages: 1
-
-      };
+      state = { ...state, jdItem: undefined };
       break;
     case ActionTypes.GET_JD_ITEM_LIST_SUCCESS:
-      const { jd_items } = action?.payload?.details
-      state = {
-        ...state,
-        jdItem: jd_items?.data ? jd_items?.data : jd_items,
-        jdItemNumOfPages: jd_items?.num_pages,
-        jdItemCurrentPages:
-          jd_items?.next_page === -1
-            ? jd_items?.num_pages
-            : jd_items?.next_page - 1,
-      };
+      console.log("==========>", action.payload.details);
+      state = { ...state, jdItem: action.payload.details?.jd_items };
       break;
     case ActionTypes.GET_JD_ITEM_LIST_FAILURE:
       state = { ...state, jdItem: undefined };
       break;
 
-    case ActionTypes.UPDATE_JD_ITEM:
-      state = { ...state, jdItem: action.payload };
-      break;
-
-    /// neww 
+    // GET_SCHEDULE_BASIC_INFO
 
     case ActionTypes.GET_SCHEDULE_BASIC_INFO:
       state = { ...state, scheduleInfo: undefined };
@@ -432,20 +387,16 @@ const DashboardReducer = (state = initialState, action: any) => {
       state = { ...state, selectedSection: action.payload };
       break;
 
-    // GET_CORPORATE_SCHEDULE_DETAILS
+    // GET_KNOWLEDGE_GROUP_VARIANT_DETAILS
 
-    case ActionTypes.GET_CORPORATE_SCHEDULE_DETAILS:
-      state = { ...state, corporateScheduleDetails: undefined };
+    case ActionTypes.GET_KNOWLEDGE_GROUP_VARIANT_DETAILS:
+      state = { ...state, variantDetails: undefined };
       break;
-    case ActionTypes.GET_CORPORATE_SCHEDULE_DETAILS_SUCCESS:
-      state = {
-        ...state,
-        corporateScheduleDetails:
-          action?.payload?.details?.corporate_schedule_details,
-      };
+    case ActionTypes.GET_KNOWLEDGE_GROUP_VARIANT_DETAILS_SUCCESS:
+      state = { ...state, variantDetails: action.payload };
       break;
-    case ActionTypes.GET_CORPORATE_SCHEDULE_DETAILS_FAILURE:
-      state = { ...state, corporateScheduleDetails: undefined };
+    case ActionTypes.GET_KNOWLEDGE_GROUP_VARIANT_DETAILS_FAILURE:
+      state = { ...state, variantDetails: undefined };
       break;
 
     /**
@@ -473,361 +424,6 @@ const DashboardReducer = (state = initialState, action: any) => {
     case ActionTypes.SETTING_SELECTED_SECTION_ID:
       state = { ...state, selectedSectionId: action.payload };
       break;
-
-    // open jd modal
-
-    case ActionTypes.SHOW_CREATE_JD_MODAL:
-      state = { ...state, createJdModal: true };
-      break;
-
-    case ActionTypes.HIDE_CREATE_JD_MODAL:
-      state = { ...state, createJdModal: false };
-      break;
-
-    /**getDepartments */
-
-    case ActionTypes.GET_DEPARTMENT_CORPORATE:
-      state = {
-        ...state,
-        departmentCorporate: undefined,
-        departmentCorporateNumOfPages: 0,
-        departmentsCorporateCurrentPages: 1,
-
-        loading: true,
-      };
-      break;
-    case ActionTypes.GET_DEPARTMENT_CORPORATE_SUCCESS:
-      const data = action.payload?.details?.data || action.payload?.details;
-
-      state = {
-        ...state,
-        departmentCorporate: data,
-        departmentCorporateNumOfPages: action.payload?.details?.num_pages,
-        departmentsCorporateCurrentPages:
-          action.payload?.details.next_page === -1
-            ? action?.payload?.details.num_pages
-            : action?.payload?.details?.next_page - 1,
-      };
-      break;
-    case ActionTypes.GET_DEPARTMENT_CORPORATE_FAILURE:
-      state = {
-        ...state,
-        error: action.payload,
-        loading: false,
-      };
-      break;
-
-    /**getDesignation */
-
-    case ActionTypes.GET_FETCH_DESIGNATION:
-      // state = { ...state, designationsCorporate: undefined };
-      state = {
-        ...state,
-        designations: undefined,
-        designationsNumOfPage: 0,
-        designationsCurrentPage: 1,
-      };
-      break;
-    case ActionTypes.GET_FETCH_DESIGNATION_SUCCESS:
-      const designations =
-        action.payload?.details?.data || action.payload?.details;
-      state = {
-        ...state,
-        designations: designations,
-        designationsNumOfPage: action.payload?.details?.num_pages,
-        designationsCurrentPage:
-          action.payload.details.next_page === -1
-            ? action?.payload?.details.num_pages
-            : action?.payload?.details?.next_page - 1,
-      };
-      break;
-    case ActionTypes.GET_FETCH_DESIGNATION_FAILURE:
-      state = {
-        ...state,
-        error: action.payload,
-      };
-      break;
-
-    //get TeamMate
-
-    case ActionTypes.GET_TEAM_MATE_DATA:
-      state = {
-        ...state,
-        teams: undefined,
-        teamNumOfPages: 0,
-        teamCurrentPages: 1,
-      };
-      break;
-    case ActionTypes.GET_TEAM_MATE_DATA_SUCCESS:
-      state = {
-        ...state,
-        teams: action.payload?.details?.data,
-        teamNumOfPages: action.payload?.details?.num_pages,
-        teamCurrentPages:
-          action.payload?.details.next_page === -1
-            ? action?.payload?.details.num_pages
-            : action?.payload?.details?.next_page - 1,
-      };
-      break;
-    case ActionTypes.GET_TEAM_MATE_DATA_FAILURE:
-      state = {
-        ...state,
-        error: action.payload,
-      };
-      break;
-
-    /**
-     * getSectorsCorporate
-     */
-
-    case ActionTypes.GET_SECTORS_CORPORATE:
-      state = {
-        ...state,
-        sectorsCorporate: undefined,
-        sectorsCorporateNumOfPages: 0,
-        sectorsCorporateCurrentPages: 1,
-      };
-      break;
-
-    case ActionTypes.GET_SECTORS_CORPORATE_SUCCESS:
-      const sectors =
-        action.payload?.details?.knowledege_groups?.data ||
-        action.payload?.details?.knowledege_groups;
-
-      state = {
-        ...state,
-        sectorsCorporate: sectors,
-        sectorsCorporateNumOfPages:
-          action.payload?.details?.knowledege_groups?.num_pages,
-        sectorsCorporateCurrentPages:
-          action.payload.details?.knowledege_groups?.next_page === -1
-            ? action?.payload?.details?.knowledege_groups?.num_pages
-            : action?.payload?.details?.knowledege_groups?.next_page - 1,
-      };
-      break;
-
-    case ActionTypes.GET_SECTORS_CORPORATE_FAILURE:
-      state = { ...state, sectorsCorporate: undefined };
-      break;
-
-    /**createCorporateSchedule */
-
-    case ActionTypes.CREATE_CORPORATE_SCHEDULES:
-      state = { ...state };
-      break;
-    case ActionTypes.CREATE_CORPORATE_SCHEDULES_SUCCESS:
-      state = { ...state };
-      break;
-    case ActionTypes.CREATE_CORPORATE_SCHEDULES_FAILURE:
-      state = { ...state };
-      break;
-
-    /**getCorporateSchedulesD */
-
-    case ActionTypes.GET_CORPORATE_SCHEDULES:
-      state = {
-        ...state,
-        corporateSchedules: [],
-        corporateScheduleNumOfPages: 0,
-        corporateScheduleCurrentPages: 1,
-        // corporateScheduleCount: undefined,
-      };
-      break;
-    case ActionTypes.GET_CORPORATE_SCHEDULES_SUCCESS:
-      console.log(action.payload?.details);
-
-      const { corporate_jd_items, schedule_count } = action.payload?.details;
-
-      state = {
-        ...state,
-        corporateSchedules: corporate_jd_items?.data,
-        corporateScheduleCount: schedule_count,
-        corporateScheduleNumOfPages: corporate_jd_items.num_pages,
-        corporateScheduleCurrentPages:
-          corporate_jd_items.next_page === -1
-            ? corporate_jd_items.num_pages
-            : corporate_jd_items.next_page - 1,
-      };
-      break;
-
-    case ActionTypes.GET_CORPORATE_SCHEDULES_FAILURE:
-      state = {
-        ...state,
-        corporateSchedules: [],
-        // corporateScheduleCount: undefined,
-      };
-      break;
-
-    case ActionTypes.UPDATE_CORPORATE_SCHEDULE:
-      state = {
-        ...state,
-        corporateSchedules: action.payload,
-      };
-      break;
-
-    case ActionTypes.REFRESH_CORPORATE_SCHEDULE_DETAILS:
-      state = {
-        ...state,
-        refreshCorporateSchedules: !state.refreshCorporateSchedules,
-      };
-      break;
-
-    case ActionTypes.SHOW_CREATE_FOR_OTHERS_JD_MODAL:
-      state = { ...state, createForOthersJdModal: true };
-      break;
-
-    case ActionTypes.HIDE_CREATE_FOR_OTHERS_JD_MODAL:
-      state = { ...state, createForOthersJdModal: false };
-      break;
-
-    // createScheduleSuperAdmin
-
-    case ActionTypes.CREATE_SCHEDULES_SUPER_ADMIN:
-      state = { ...state };
-      break;
-    case ActionTypes.CREATE_SCHEDULES_SUPER_ADMIN_SUCCESS:
-      state = { ...state };
-      break;
-    case ActionTypes.CREATE_SCHEDULES_SUPER_ADMIN_FAILURE:
-      state = { ...state };
-      break;
-
-    // createScheduleSuperAdmin
-
-    case ActionTypes.GET_INTERVIEW_SCHEDULE_DETAILS:
-      state = { ...state };
-      break;
-    case ActionTypes.GET_INTERVIEW_SCHEDULE_DETAILS_SUCCESS:
-      state = { ...state, interviewScheduleDetails: action.payload };
-      break;
-    case ActionTypes.GET_INTERVIEW_SCHEDULE_DETAILS_FAILURE:
-      state = { ...state, interviewScheduleDetails: undefined };
-      break;
-
-
-    // resetPassword
-
-    case ActionTypes.RESET_PASSWORD:
-      state = { ...state };
-      break;
-    case ActionTypes.RESET_PASSWORD_SUCCESS:
-      state = { ...state };
-      break;
-    case ActionTypes.RESET_PASSWORD_FAILURE:
-      state = { ...state };
-      break;
-
-    // forgotPassword
-
-    case ActionTypes.FORGOT_PASSWORD:
-      state = { ...state, retrieveEmail: undefined };
-      break;
-    case ActionTypes.FORGOT_PASSWORD_SUCCESS:
-      state = { ...state, retrieveEmail: action.payload };
-      break;
-    case ActionTypes.FORGOT_PASSWORD_FAILURE:
-      state = { ...state, retrieveEmail: action.payload };
-      break;
-
-    // showCreateOpeningsModal
-
-    case ActionTypes.SHOW_CREATE_OPENINGS_MODAL:
-      state = { ...state, isCreateOpening: true };
-      break;
-
-    case ActionTypes.HIDE_CREATE_OPENINGS_MODAL:
-      state = { ...state, isCreateOpening: false };
-      break;
-
-    // postManualApprovalOnCandidate
-
-    case ActionTypes.POST_MANUAL_APPROVALS_ON_CANDIDATE:
-      state = { ...state };
-      break;
-    case ActionTypes.POST_MANUAL_APPROVALS_ON_CANDIDATE_SUCCESS:
-      state = { ...state };
-      break;
-    case ActionTypes.POST_MANUAL_APPROVALS_ON_CANDIDATE_FAILURE:
-      state = { ...state };
-      break;
-
-    // getCandidatesCorporate
-
-    case ActionTypes.FETCH_CANDIDATES_CORPORATE:
-      state = {
-        ...state,
-        openingCandidates: undefined,
-        openingCandidatesNumOfPages: 0,
-        openingCandidatesCurrentPages: 1,
-        openingCandidatesCount: undefined,
-      };
-      break;
-
-    case ActionTypes.FETCH_CANDIDATES_CORPORATE_SUCCESS:
-      const { corporate_candidate_details, candidate_count } =
-        action.payload?.details;
-
-      state = {
-        ...state,
-        openingCandidatesCount: candidate_count,
-        openingCandidates: corporate_candidate_details?.data,
-        openingCandidatesNumOfPages: corporate_candidate_details.num_pages,
-        openingCandidatesCurrentPages:
-          corporate_candidate_details.next_page === -1
-            ? corporate_candidate_details.num_pages
-            : corporate_candidate_details.next_page - 1,
-      };
-      break;
-
-    case ActionTypes.FETCH_CANDIDATES_CORPORATE_FAILURE:
-      state = {
-        ...state,
-        openingCandidates: undefined,
-        openingCandidatesCount: undefined,
-      };
-      break;
-
-
-
-    //ongoing selected id
-    case ActionTypes.ON_GOING_SELECTED_ID:
-      state = {
-        ...state,
-        onGoingSelectedId: action.payload,
-      };
-      break;
-
-    // corporateScheduleActions
-
-    case ActionTypes.POST_CORPORATE_SCHEUDULE_ACTIONS:
-      state = { ...state };
-      break;
-    case ActionTypes.POST_CORPORATE_SCHEUDULE_ACTIONS_SUCCESS:
-      state = { ...state };
-      break;
-    case ActionTypes.POST_CORPORATE_SCHEUDULE_ACTIONS_FAILURE:
-      state = { ...state };
-      break;
-
-    // watch interview video
-
-    case ActionTypes.WATCH_INTERVIEW_VIDEO_URL:
-      state = {
-        ...state,
-        interviewUrl: action.payload,
-      };
-      break;
-
-    // setfacevisible
-
-    case ActionTypes.SET_FACE_VISIBLE:
-      state = {
-        ...state,
-        faceVisible: action.payload,
-      };
-      break;
-
-
 
     default:
       state = state;

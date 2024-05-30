@@ -1,11 +1,10 @@
 //
-// Base variables
+// Variables
 //
 
-
-
-
-$screen-text-color: #5A5D73 !default;
+//
+// Base variables
+//
 
 // Global settings
 
@@ -80,22 +79,27 @@ $colors: map-merge(("blue": $blue,
       "gray-dark": $gray-800), $colors
 );
 
-$default: #172b4d !default;
-
-$primary: #4cc916 !default;
-// $primary: #3ddc57 !default;
-// $primary: #5e72e4 !default;
-// $secondary: #0c4c15 !default;
-// $secondary: #0c4c15 !default;
-$secondary: #014d0d !default;
-// $secondary: #083710 !default;
+$default: black !default;
+$primary: #68d75c !default;
+$secondary: #F6E7E0 !default;
 $success: $green !default;
 $info: $teal !default;
 $warning: $orange !default;
-$danger: $red !default;
+$danger: #BFEDF0 !default;
 $light: $gray-500 !default;
 $dark: $gray-900 !default;
 $darker: darken($gray-900, 15%) !default;
+$black: #000000 !default;
+// $bgColor: '#F6E7E0'!default;
+
+$color-1: #FCC9E0;
+// $color-2: #EFD8D6;
+$color-3: #99C8E6;
+
+.custom-gradient {
+  background: linear-gradient(to bottom, $color-1, $color-3);
+}
+
 
 $facebook: #3b5999 !default;
 $twitter: #1da1f2 !default;
@@ -120,6 +124,7 @@ $theme-colors: map-merge(("default": $default,
       "white": $white,
       "neutral": $white,
       "dark": $dark,
+      "black": $black,
       "darker": $darker), $theme-colors
 );
 
@@ -312,14 +317,9 @@ $shape-height-sm: 1.5 !default;
 // Border
 
 $border-width: 1px !default;
-$border-color: #DADCE0 !default;
-$border-color-modal: #c8e0cc !default;
-// $border-color-modal: #D5DFFF !default;
+$border-color: $gray-200 !default;
 
-
-
-
-$border-radius: 0.25rem !default;
+$border-radius: .375rem !default;
 $border-radius-xl: .5rem !default;
 $border-radius-lg: .4375rem !default;
 $border-radius-sm: .25rem !default;
@@ -368,7 +368,7 @@ $icon-font-family: NucleoIcons, sans-serif !default;
 
 // Fonts
 
-$font-family-sans-serif: "DM Sans", sans-serif !default;
+$font-family-sans-serif: Open Sans, sans-serif !default;
 $font-family-base: $font-family-sans-serif !default;
 
 $font-size-base: 1rem !default; // Assumes the browser default, typically `16px`
@@ -384,10 +384,9 @@ $font-size-sm: (
 $font-size-xs: (
   $font-size-base * .75
 );
-
-
-$font-size-md : $font-size-base;
-
+$font-size-xxs: (
+  $font-size-base * .45
+);
 
 $font-weight-light: 300 !default;
 $font-weight-normal: 400 !default;
@@ -405,7 +404,9 @@ $h4-font-size: $font-size-base * .9375 !default;
 $h5-font-size: $font-size-base * .8125 !default;
 $h6-font-size: $font-size-base * .625 !default;
 
-$headings-margin-bottom: calc($spacer / 2);
+$headings-margin-bottom: (
+  $spacer / 2
+);
 $headings-font-family: inherit !default;
 $headings-font-weight: $font-weight-bold !default;
 $headings-line-height: 1.5 !default;
@@ -467,6 +468,301 @@ $mark-bg: #fcf8e3 !default;
 
 $hr-margin-y: $spacer * 2 !default;
 
+.overflow-hide::-webkit-scrollbar {
+  display: none;
+}
+
+// control textArea height
+$textarea-id: myTextarea;
+
+#{$textarea-id} {
+  resize: none;
+}
+
+// landing page media Queries
+
+@media screen and (max-width: 600px) {
+  .hvh {
+    height: 100vh;
+  }
+
+  .mainHeading {
+    font-size: 10vw;
+    font-weight: 700;
+    text-align: center;
+  }
+
+  .sub-heading {
+    font-size: 4vh;
+  }
+
+  .btn-pos {
+    display: flex;
+    justify-content: center;
+  }
+
+  .mainSubtext {
+    font-size: 4.3vw;
+    text-align: center;
+    font-weight: light;
+  }
+
+  .mainImg {
+    width: 100%;
+    display: flex;
+
+  }
+
+  .scroll {
+    display: flex;
+    justify-content: center;
+  }
+
+  .secondHeading {
+    font-size: 5.8vw;
+    font-weight: 600;
+    line-height: 130%;
+  }
+
+  .seventh-screen-heading {
+    font-size: 1.5rem;
+    line-height: 140%;
+  }
+
+  .subText {
+    font-size: 3.3vw;
+    line-height: 130%;
+    font-weight: light;
+  }
+
+  .tabText {
+    font-size: 4vw;
+    font-weight: 500;
+    text-align: justify;
+  }
+
+  .rrr {
+    font-size: 13vw;
+    color: black;
+    font-weight: bold;
+    line-height: 140%;
+  }
+
+  .mutedtitle {
+    font-weight: 600;
+  }
+
+  .disc {
+    font-size: 7vw;
+    font-weight: 600;
+  }
+
+  .seventh-screen-subtext {
+    font-size: 16px;
+    font-weight: light;
+    line-height: 130%;
+
+
+  }
+
+  .people {
+    font-size: 7vw;
+  }
+
+  .people-subtext {
+    font-size: 4vw;
+  }
+
+  .tag34 {
+    font-size: 5vw;
+  }
+
+  .card-size {
+    height: 430px;
+    text-align: justify;
+  }
+
+  .card-text {
+    font-size: 1rem;
+  }
+}
+
+@media screen and (min-width: 600) and (max-width: 1020px) {
+  .hvh {
+    height: 100%;
+  }
+
+  .mainHeading {
+    font-size: 4.5vw;
+    font-weight: 900;
+
+  }
+
+  .sub-heading {
+    font-size: 6vh;
+    line-height: 135%;
+  }
+
+  .mainSubtext {
+    font-size: 1.4vw;
+    line-height: 145%;
+    font-weight: light;
+  }
+
+  .secondHeading {
+    font-size: 2.5vw;
+    word-spacing: 2px;
+    font-weight: 700;
+    line-height: 130%;
+  }
+
+  .seventh-screen-heading {
+    font-size: 2rem;
+  }
+
+  .subText {
+    font-size: 1.3vw;
+    line-height: 145%;
+    font-weight: light;
+  }
+
+  .tabText {
+    font-size: 1.2vw;
+    font-weight: 500;
+  }
+
+  .rrr {
+    font-size: 4.7vw;
+    color: black;
+    font-weight: 600;
+  }
+
+  .mutedtitle {
+    font-size: 27px;
+    font-weight: 600;
+  }
+
+  .disc {
+    font-size: 48px;
+    font-weight: 600;
+  }
+
+  .seventh-screen-subtext {
+    font-size: 18px;
+    font-weight: light;
+    line-height: 120%;
+  }
+
+  .tag34 {
+    font-size: 1.4vw;
+  }
+
+  .people {
+    font-size: 3vw;
+  }
+
+  .people-subtext {
+    font-size: 1.5vw;
+  }
+
+  .card-size {
+    height: 380px;
+  }
+
+}
+
+
+
+@media screen and (min-width:1020px) and (max-width:2000px) {
+  .hvh {
+    height: 76vh;
+  }
+
+  .mainHeading {
+    font-size: 4.5vw;
+    font-weight: 900;
+
+  }
+
+  .sub-heading {
+    font-size: 6vh;
+    line-height: 135%;
+  }
+
+  .mainSubtext {
+    font-size: 1.4vw;
+    line-height: 145%;
+    font-weight: light;
+  }
+
+  .secondHeading {
+    font-size: 2.5vw;
+    word-spacing: 2px;
+    font-weight: 700;
+    line-height: 130%;
+  }
+
+  .seventh-screen-heading {
+    font-size: 2rem;
+  }
+
+  .subText {
+    font-size: 1.3vw;
+    line-height: 145%;
+    font-weight: light;
+  }
+
+  .tabText {
+    font-size: 1.2vw;
+    font-weight: 500;
+  }
+
+  .rrr {
+    font-size: 4.7vw;
+    color: black;
+    font-weight: 600;
+  }
+
+  .mutedtitle {
+    font-size: 27px;
+    font-weight: 600;
+  }
+
+  .disc {
+    font-size: 48px;
+    font-weight: 600;
+  }
+
+  .seventh-screen-subtext {
+    font-size: 18px;
+    font-weight: light;
+    line-height: 120%;
+  }
+
+  .tag34 {
+    font-size: 1.4vw;
+  }
+
+  .people {
+    font-size: 3vw;
+  }
+
+  .people-subtext {
+    font-size: 1.5vw;
+  }
+
+  .card-size {
+    height: 380px;
+
+  }
+
+  .card-text {
+    font-size: 1rem;
+    text-align: justify;
+  }
+
+}
+
 
 
 // Icons
@@ -518,8 +814,8 @@ $table-dark-action-color: lighten(theme-color("default"), 35%) !default;
 
 // Buttons + Forms
 
-$input-btn-padding-y: .75rem !default;
-$input-btn-padding-x: 1rem !default;
+$input-btn-padding-y: .625rem !default;
+$input-btn-padding-x: .75rem !default;
 $input-btn-line-height: $shape-height-base !default;
 
 $input-btn-focus-width: 0 !default;
@@ -567,10 +863,8 @@ $input-disabled-bg: $gray-200 !default;
 $input-muted-bg: #F7FAFE !default;
 $input-focus-muted-bg: lighten($input-muted-bg, 1%) !default;
 
-
-$input-color: $black !default;
-
-$input-border-color: $border-color !default;
+$input-color: $gray-600 !default;
+$input-border-color: $gray-300 !default;
 $input-border-width: $input-btn-border-width !default;
 $input-box-shadow: 0 3px 2px rgba($gray-200, .05) !default;
 
@@ -581,7 +875,7 @@ $input-focus-width: 0 !default;
 $input-focus-box-shadow: 0 3px 9px rgba(50, 50, 9, 0), 3px 4px 8px rgba($primary, .1) !default;
 
 $input-placeholder-color: $gray-500 !default;
-$input-focus-placeholder-color: #727586 !default;
+$input-focus-placeholder-color: $gray-500 !default;
 
 $input-height-border: $input-border-width * 2 !default;
 
@@ -648,7 +942,7 @@ $custom-control-indicator-disabled-bg: $gray-200 !default;
 $custom-control-label-disabled-color: $gray-600 !default;
 
 $custom-checkbox-indicator-border-radius: $border-radius-sm !default;
-//$custom-checkbox-indicator-icon-checked: str-replace(url("data:image/svg+xml !default;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3E%3Cpath fill='%23fff' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z'/%3E%3C/svg%3E"), "#", "%23") !default;
+//$custom-checkbox-indicator-icon-checked:      str-replace(url("data:image/svg+xml !default;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3E%3Cpath fill='%23fff' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z'/%3E%3C/svg%3E"), "#", "%23") !default;
 
 // Custom toggle
 
@@ -769,12 +1063,9 @@ $navbar-dark-active-bg: rgba(255, 255, 255, .1) !default;
 $navbar-dark-border-color: rgba(255, 255, 255, .1) !default;
 $navbar-dark-color: rgba($white, .95) !default;
 $navbar-dark-hover-color: rgba($white, .65) !default;
-
 $navbar-dark-active-color: rgba($white, .65) !default;
 $navbar-dark-disabled-color: rgba($white, .25) !default;
 $navbar-dark-toggler-border-color: transparent !default;
-
-
 
 $navbar-light-bg: $gray-100 !default;
 $navbar-light-hover-bg: darken($gray-100, 5%) !default;
@@ -983,15 +1274,15 @@ $tooltip-font-size: $font-size-sm !default;
 // Modals
 
 $modal-inner-padding: 1.5rem !default;
-
-$modal-lg: 755px !default;
+$modal-xl: 1000px !default;
+$modal-lg: 800px !default;
 $modal-md: 500px !default;
 $modal-sm: 380px !default;
 
 $modal-title-font-size: $h3-font-size !default;
 $modal-title-line-height: 1.1 !default;
 
-$modal-content-bg: #FFFFFF !default;
+$modal-content-bg: $white !default;
 $modal-content-border-color: rgba($black, .2) !default;
 $modal-content-border-width: 0 !default;
 $modal-content-border-radius: $border-radius-lg !default;
@@ -999,8 +1290,8 @@ $modal-content-box-shadow-xs: 0 15px 35px rgba(50, 50, 93, .2), 0 5px 15px rgba(
 $modal-content-box-shadow-sm-up: 0 15px 35px rgba(50, 50, 93, .2), 0 5px 15px rgba(0, 0, 0, .17) !default;
 
 $modal-backdrop-bg: $black !default;
-$modal-backdrop-opacity: .16 !default;
-$modal-header-border-color: $primary !default;
+$modal-backdrop-opacity: .3 !default;
+$modal-header-border-color: $gray-200 !default;
 $modal-footer-border-color: $modal-header-border-color !default;
 $modal-header-border-width: $modal-content-border-width !default;
 $modal-footer-border-width: $modal-header-border-width !default;
@@ -1020,13 +1311,6 @@ $footer-link-color: $gray-600 !default;
 $footer-link-hover-color: $gray-700 !default;
 $footer-heading-color: $gray-600 !default;
 $footer-heading-font-size: $font-size-sm !default;
-
-
-
-//
-// Plugins
-//
-
 
 // Datepicker
 
@@ -1155,6 +1439,55 @@ $tag-close-color: color-yiq(theme-color("default"));
 $tag-box-shadow: 0 1px 2px rgba(68, 68, 68, 0.25);
 
 
+
+.image-Color {
+  filter: invert(53%) sepia(58%) saturate(793%) hue-rotate(68deg) brightness(112%) contrast(85%);
+}
+
+
+.hoverColor {
+  color: black;
+}
+
+.hoverColor:hover {
+  color: #68d75c
+}
+
+.landing {
+  color: #67f60e;
+}
+
+.landing-primary-color {
+  background-color: #67f60e;
+}
+
+
+.bg-customGradient {
+  background: linear-gradient(112.2deg, #ffffff -1.1%, #fafafa 100.7%);
+}
+
+.bg-custom {
+  background: linear-gradient(112.2deg, #5bf707 -1.1%, #5ede41 100.7%);
+}
+
+.custom-color {
+  color: #424242
+}
+
+.custom-text-color {
+  color: #1e1e1e
+}
+
+.custom-font-size {
+  font-size: 17px; // Override the font size
+  font-weight: $paragraph-font-weight; // Use the default font weight
+  line-height: $paragraph-line-height; // Use the default line height
+  color: #424242
+}
+.text-decoration-underline-hover:hover {
+  text-decoration: underline;
+  color:#67f60e;
+}
 // Import Bootstrap variable defaults
 
 @import "~bootstrap/scss/variables";

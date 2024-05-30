@@ -42,6 +42,7 @@ function CreateQuestionForm() {
         }
         const validation = validate(CREATE_QUESTION_FORM_RULES, params)
 
+        console.log(JSON.stringify(validation));
 
         if (ifObjectExist(validation)) {
             addManualLoader.show()
@@ -147,9 +148,9 @@ function CreateQuestionForm() {
             </Card>
 
             <div className={'my--9'}>
-                <GenerateModal isOpen={generateJdModal.visible} onClose={generateJdModal.hide}>
-                    <AnalyzingAnimation />
-                </GenerateModal>
+            <GenerateModal isOpen={generateJdModal.visible} onClose={generateJdModal.hide}>
+                <AnalyzingAnimation />
+            </GenerateModal>
             </div>
 
         </>

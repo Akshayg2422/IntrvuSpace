@@ -1,7 +1,7 @@
 import { RsButtonProps, Color, ButtonVariants } from '@Components'
 
 export interface ButtonProps extends RsButtonProps {
-    text?: string | null | undefined | any
+    text?: string | null | undefined |any
     color?: Color
     variant?: ButtonVariants
     size?: 'sm' | 'md' | 'lg'
@@ -9,6 +9,5 @@ export interface ButtonProps extends RsButtonProps {
     onEnter?: () => void
     icons?: any
     height?: number;
-    width?: number;
-    outline?: boolean
+    width?: number
 }

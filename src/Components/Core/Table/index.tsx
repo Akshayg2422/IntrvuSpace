@@ -14,7 +14,7 @@ function Table({ tableDataSet, displayDataSet, tableOnClick }: TableProps) {
     if (displayDataSet) {
       const header = Object.keys(displayDataSet[0])
       return header.map(key => {
-        return <th className='text-secondary font-weight-800' scope="col" key={key}>{key}</th>
+        return <th scope="col"  key={key}>{key}</th>
       })
     }
   }
@@ -22,7 +22,7 @@ function Table({ tableDataSet, displayDataSet, tableOnClick }: TableProps) {
   function renderTableValue(eachObject: object) {
     return Object.keys(eachObject).map((key: string) => {
       let value = eachObject[key as keyof object]
-      return <td style={{ whiteSpace: 'normal', maxWidth: '230px', wordWrap: 'break-word' }} key={key} ><span>{value}</span></td>
+      return <td style={{ whiteSpace: 'pre-wrap' }} key={key} ><span>{value}</span></td>
     })
   }
 
@@ -34,7 +34,7 @@ function Table({ tableDataSet, displayDataSet, tableOnClick }: TableProps) {
 
     <table className="table align-items-center table-flush">
       <thead className="thead-light ">
-        <tr>
+        <tr >
           {
             renderTableHeader()
           }

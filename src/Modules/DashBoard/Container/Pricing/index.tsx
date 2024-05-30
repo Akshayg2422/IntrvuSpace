@@ -68,6 +68,7 @@ function Pricing() {
                                         {option.price === 'FREE' ? (
                                             <div
                                                 className="custom-btn text-center border-0 col mt-3"
+                                                style={{ borderRadius: '20px' }}
                                                 onClick={option.onClick}
                                             >
                                                 Try Now
@@ -84,7 +85,7 @@ function Pricing() {
                                                     width: '100%',
                                                 }}
                                             >
-                                                <div className="custom-btn text-center border-0 col mt-3">
+                                                <div className="custom-btn text-center border-0 col mt-3" style={{ borderRadius: '20px' }}>
                                                     Buy Now
                                                 </div>
                                             </a>

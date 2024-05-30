@@ -69,6 +69,8 @@ function QuestionSections() {
   const generateQuestionsLoader = useLoader(false);
   const editQuestionsLoader = useLoader(false);
 
+  console.log("breadCrumb-------->", breadCrumb);
+
   useEffect(() => {
     getQuestionSectionsApi();
     return () => {
@@ -94,7 +96,7 @@ function QuestionSections() {
             !selectedSectionId &&
             dispatch(settingSelectedSectionId(sections[0]?.id)); //SetSelectedSectionId(sections[0]?.id
         },
-        onError: () => () => { },
+        onError: () => () => {},
       })
     );
   };
@@ -111,7 +113,7 @@ function QuestionSections() {
         onSuccess: (success: any) => () => {
           setSelectedSectionDetails(success?.details?.questions);
         },
-        onError: () => () => { },
+        onError: () => () => {},
       })
     );
   };
@@ -124,7 +126,7 @@ function QuestionSections() {
       ...(includeQuestions && { questions_count: noOfQuestions.value }),
       generate_questions: includeQuestions,
     };
-
+    console.log("params----------->", params);
     const validation = validate(REGENERATE_SECTION_RULES, params);
     if (ifObjectExist(validation)) {
       generateFormSectionsAndQuestionsLoader.show();
@@ -229,12 +231,12 @@ function QuestionSections() {
   const breadcrumbString =
     breadCrumb.length > 0
       ? breadCrumb
-        .map((item: any, index: number) =>
-          index === 0 ? item : separator + item
-        )
-        .join("")
+          .map((item: any, index: number) =>
+            index === 0 ? item : separator + item
+          )
+          .join("")
       : "";
-
+  console.log("breadcrumbString", JSON.stringify(breadcrumbString));
 
   return (
     <>
@@ -342,7 +344,7 @@ function QuestionSections() {
                   style={{ height: height - 153 }}
                 >
                   {selectedSectionsDetails &&
-                    selectedSectionsDetails?.length > 0 ? (
+                  selectedSectionsDetails?.length > 0 ? (
                     selectedSectionsDetails?.map(
                       (sectionQuestions: any, index: number) => {
                         const { id, question, expected_answer } =

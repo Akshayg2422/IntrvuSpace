@@ -13,7 +13,6 @@
         text-transform: $table-head-text-transform;
         letter-spacing: $table-head-letter-spacing;
         border-bottom: $table-border-width solid $table-border-color;
-        border: none;
     }
 
     th {
@@ -32,8 +31,6 @@
     th {
         font-size: $table-body-font-size;
         white-space: nowrap;
-        border: none;
-        padding: 25px;
     }
 
 
@@ -66,13 +63,11 @@
 
     .thead-light {
         th {
-            height: 50px;
-            background-color: var(--bg-container-light);
-            color: $table-head-color;
+            background-color: #68d75c;
+            color: #fefefe;
 
             a {
-                color: $secondary;
-                text-transform: capitalize;
+                color: $table-head-color;
             }
         }
     }

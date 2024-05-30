@@ -1,5 +1,7 @@
 import React from 'react'
 import { ImageProps, ImageVariant } from './interfaces'
+import { color } from '@Themes';
+import { hexToHue } from '@Utils'
 
 function Image({ variant = 'default', className, alt, size, tintColor, ...rest }: ImageProps) {
 
@@ -22,7 +24,9 @@ function Image({ variant = 'default', className, alt, size, tintColor, ...rest }
 
 
     return (
-        <img className={`${getVariantStyle(variant)} ${className}`} alt={alt} {...rest} ></img>
+        <img className={`${getVariantStyle(variant)} ${className}`} alt={alt} {...rest} style={{
+            ...(tintColor && { filter: `sepia(100%) hue-rotate(${hexToHue(tintColor)}deg)` })
+        }}></img>
     )
 }
 

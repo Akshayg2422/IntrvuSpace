@@ -112,16 +112,20 @@ function* getSectorsSaga(action) {
   try {
 
     const response = yield call(Api.getSectorsApi, action.payload.params);
+    console.log('sasasasas');
 
     if (response.success) {
+      console.log('success');
       yield put(Action.getSectorsSuccess(response));
       yield call(action.payload.onSuccess(response));
     } else {
+      console.log('erroe');
 
       yield put(Action.getSectorsFailure(response.error_message));
       yield call(action.payload.onError(response));
     }
   } catch (error) {
+    console.log('erroe00000');
 
     yield put(Action.getSectorsFailure(error));
     yield call(action.payload.onError(error));
@@ -151,6 +155,7 @@ function* createQuestionFormSaga(action) {
 function* getQuestionFormSaga(action) {
   try {
     const response = yield call(Api.getQuestionFormApi, action.payload.params);
+    console.log(JSON.stringify(response));
     if (response.success) {
       yield put(Action.getQuestionFormSuccess(response));
       yield call(action.payload.onSuccess(response));
@@ -452,20 +457,20 @@ function* createCorporateFormSaga(action) {
   }
 }
 
-// getCorporateScheduleDetailsSaga
+// getKnowledgeGroupVariantDetails
 
-function* getCorporateScheduleDetailsSaga(action) {
+function* getKnowledgeGroupVariantDetailsSaga(action) {
   try {
-    const response = yield call(Api.getCorporateScheduleDetailsApi, action.payload.params);
+    const response = yield call(Api.getKnowledgeGroupVariantDetails, action.payload.params);
     if (response.success) {
-      yield put(Action.getCorporateScheduleDetailsSuccess(response));
+      yield put(Action.getKnowledgeGroupVariantDetailsSuccess(response?.details?.variant_details));
       yield call(action.payload.onSuccess(response));
     } else {
-      yield put(Action.getCorporateScheduleDetailsFailure(response.error_message));
+      yield put(Action.getKnowledgeGroupVariantDetailsFailure(response.error_message));
       yield call(action.payload.onError(response));
     }
   } catch (error) {
-    yield put(Action.getCorporateScheduleDetailsFailure(error));
+    yield put(Action.getKnowledgeGroupVariantDetailsFailure(error));
     yield call(action.payload.onError(error));
   }
 }
@@ -476,7 +481,8 @@ function* getCorporateScheduleDetailsSaga(action) {
 function* postStudentCodeSubmissionSaga(action) {
   try {
     const response = yield call(Api.postStudentCodeSubmissionApi, action.payload.params);
-    if (response.success) {
+    console.log("response============--->", response);
+    if (response) {
       yield put(Action.postStudentCodeSubmissionSuccess(response));
       yield call(action.payload.onSuccess(response));
     } else {
@@ -485,27 +491,6 @@ function* postStudentCodeSubmissionSaga(action) {
     }
   } catch (error) {
     yield put(Action.postStudentCodeSubmissionFailure(error));
-    yield call(action.payload.onError(error));
-  }
-}
-
-
-/**
- * can start interview
- * @param {} action 
- */
-
-
-function* canStartInterviewSaga(action) {
-  try {
-    const response = yield call(Api.canStartInterviewApi, action.payload.params);
-
-    if (response.success) {
-      yield call(action.payload.onSuccess(response));
-    } else {
-      yield call(action.payload.onError(response));
-    }
-  } catch (error) {
     yield call(action.payload.onError(error));
   }
 }
@@ -527,404 +512,6 @@ function* closeInterviewSaga(action) {
     yield call(action.payload.onError(error));
   }
 }
-
-// getSectorsCorporate
-
-function* getSectorsCorporateSaga(action) {
-  try {
-    const response = yield call(Api.createCorporateSectorApi, action.payload.params);
-    if (response.success) {
-      yield put(Action.getSectorCorporateSuccess(response));
-      yield call(action.payload.onSuccess(response));
-    } else {
-      yield put(Action.getSectorCorporateFailure(response.error_message));
-      yield call(action.payload.onError(response));
-    }
-
-  } catch (error) {
-    yield put(Action.getSectorCorporateFailure(error));
-    yield call(action.payload.onError(error));
-  }
-}
-
-
-function* addSectorsCorporateSaga(action) {
-  try {
-    const response = yield call(Api.addCorporateSectorApi, action.payload.params);
-    if (response.success) {
-      yield call(action.payload.onSuccess(response));
-    } else {
-      yield call(action.payload.onError(response));
-    }
-
-  } catch (error) {
-    yield call(action.payload.onError(error));
-  }
-}
-
-/**
- * Add department
- */
-
-function* addDepartmentCorporateSaga(action) {
-  try {
-    const response = yield call(Api.addDepartmentCorporateApi, action.payload.params);
-    if (response.success) {
-      yield call(action.payload.onSuccess(response));
-    } else {
-      yield call(action.payload.onError(response));
-    }
-
-  } catch (error) {
-    yield call(action.payload.onError(error));
-  }
-}
-
-// getDepartments 
-
-function* getDepartmentCorporateSaga(action) {
-  try {
-    const response = yield call(Api.getDepartmentCorporateApi, action.payload.params);
-    if (response.success) {
-      yield put(Action.getDepartmentCorporateSuccess(response));
-      yield call(action.payload.onSuccess(response));
-    } else {
-      yield put(Action.getDepartmentCorporateFailure(response.error_message));
-      yield call(action.payload.onError(response));
-    }
-
-  } catch (error) {
-    yield put(Action.getDepartmentCorporateFailure(error));
-    yield call(action.payload.onError(error));
-  }
-}
-
-// addDesignation 
-
-function* addDesignationSaga(action) {
-  try {
-    const response = yield call(Api.addDesignationApi, action.payload.params);
-    if (response.success) {
-      yield call(action.payload.onSuccess(response));
-    } else {
-      yield call(action.payload.onError(response));
-    }
-
-  } catch (error) {
-    yield call(action.payload.onError(error));
-  }
-}
-
-// getDesignation 
-
-function* getDesignationsSaga(action) {
-  try {
-    const response = yield call(Api.getDesignationApi, action.payload.params);
-    if (response.success) {
-      yield put(Action.getDesignationsSuccess(response));
-      yield call(action.payload.onSuccess(response));
-    } else {
-      yield put(Action.getDesignationsFailure(response.error_message));
-      yield call(action.payload.onError(response));
-    }
-
-  } catch (error) {
-    yield put(Action.getDesignationsFailure(error));
-    yield call(action.payload.onError(error));
-  }
-}
-
-// createCorporateSchedule
-
-function* createCorporateSchedulesSaga(action) {
-  try {
-    const response = yield call(Api.createCorporateScheduleApi, action.payload.params);
-    if (response.success) {
-      yield put(Action.createCorporateSchedulesSuccess(response));
-      yield call(action.payload.onSuccess(response));
-    } else {
-      yield put(Action.createCorporateSchedulesFailure(response.error_message));
-      yield call(action.payload.onError(response));
-    }
-  } catch (error) {
-    yield put(Action.createCorporateSchedulesFailure(error));
-    yield call(action.payload.onError(error));
-  }
-}
-
-// getCorporateSchedules
-
-function* getCorporateSchedulesSaga(action) {
-  try {
-    const response = yield call(Api.getCorporateSchedulesApi, action.payload.params);
-
-
-    if (response.success) {
-      yield put(Action.getCorporateSchedulesSuccess(response));
-      yield call(action.payload.onSuccess(response));
-    } else {
-      yield put(Action.getCorporateSchedulesFailure(response.error_message));
-      yield call(action.payload.onError(response));
-    }
-  } catch (error) {
-    yield put(Action.getCorporateSchedulesFailure(error));
-    yield call(action.payload.onError(error));
-  }
-}
-
-// createScheduleSuperAdmin
-
-function* createSchedulesSuperAdminSaga(action) {
-  try {
-    const response = yield call(Api.createSchedulesSuperAdminApi, action.payload.params);
-    if (response.success) {
-      yield put(Action.createSchedulesSuperAdminSuccess(response));
-      yield call(action.payload.onSuccess(response));
-    } else {
-      yield put(Action.createSchedulesSuperAdminFailure(response.error_message));
-      yield call(action.payload.onError(response));
-    }
-  } catch (error) {
-    yield put(Action.createSchedulesSuperAdminFailure(error));
-    yield call(action.payload.onError(error));
-  }
-}
-
-/**
- * get interview schedules details
- */
-
-function* getInterviewScheduleDetailsSaga(action) {
-  try {
-    const response = yield call(Api.getInterviewScheduleDetailsApi, action.payload.params);
-
-    if (response.success) {
-      yield put(Action.getInterviewScheduleDetailsSuccess(response?.details));
-      yield call(action.payload.onSuccess(response));
-    } else {
-      yield put(Action.getInterviewScheduleDetailsFailure(response.error_message));
-      yield call(action.payload.onError(response));
-    }
-  } catch (error) {
-    yield put(Action.getInterviewScheduleDetailsFailure(error));
-    yield call(action.payload.onError(error));
-  }
-}
-
-// resetPassword
-
-function* resetPasswordSaga(action) {
-  try {
-    const response = yield call(Api.resetPasswordApi, action.payload.params);
-    if (response.success) {
-      yield put(Action.resetPasswordSuccess(response?.details));
-      yield call(action.payload.onSuccess(response));
-    } else {
-      yield put(Action.resetPasswordFailure(response.error_message));
-      yield call(action.payload.onError(response));
-    }
-  } catch (error) {
-    yield put(Action.resetPasswordFailure(error));
-    yield call(action.payload.onError(error));
-  }
-}
-
-// forgotPassword
-
-function* forgotPasswordSaga(action) {
-  try {
-    const response = yield call(Api.forgotPasswordApi, action.payload.params);
-    if (response.success) {
-
-      yield put(Action.forgotPasswordSuccess(response?.details));
-      yield call(action.payload.onSuccess(response));
-    } else {
-      yield put(Action.forgotPasswordFailure(response.error_message));
-      yield call(action.payload.onError(response));
-    }
-  } catch (error) {
-    yield put(Action.forgotPasswordFailure(error));
-    yield call(action.payload.onError(error));
-  }
-}
-
-
-/**
- * reset Interview
- */
-
-function* resetInterviewSaga(action) {
-  try {
-    const response = yield call(Api.resetInterviewApi, action.payload.params);
-    if (response.success) {
-      yield call(action.payload.onSuccess(response));
-    } else {
-      yield call(action.payload.onError(response));
-    }
-  } catch (error) {
-    yield call(action.payload.onError(error));
-  }
-}
-
-
-/**
- * delete Interview
- */
-
-function* deleteInterviewSaga(action) {
-  try {
-    const response = yield call(Api.deleteInterviewApi, action.payload.params);
-    if (response.success) {
-      yield call(action.payload.onSuccess(response));
-    } else {
-      yield call(action.payload.onError(response));
-    }
-  } catch (error) {
-    yield call(action.payload.onError(error));
-  }
-}
-
-/**
- * delete JD
- */
-
-function* deleteJdSaga(action) {
-  try {
-    const response = yield call(Api.deleteJdApi, action.payload.params);
-    if (response.success) {
-      yield call(action.payload.onSuccess(response));
-    } else {
-      yield call(action.payload.onError(response));
-    }
-  } catch (error) {
-    yield call(action.payload.onError(error));
-  }
-}
-
-// bulkUploadCandidatesCP
-
-function* bulkUploadCandidatesCpSaga(action) {
-  try {
-    const response = yield call(Api.bulkUploadCandidatesCpApi, action.payload.params);
-    if (response.success) {
-      yield call(action.payload.onSuccess(response));
-    } else {
-      yield call(action.payload.onError(response));
-    }
-  } catch (error) {
-    yield call(action.payload.onError(error));
-  }
-}
-
-// postManualApprovalOnCandidateSaga
-
-function* postManualApprovalOnCandidateSaga(action) {
-  try {
-    const response = yield call(Api.postManualApprovalOnCandidateApi, action.payload.params);
-    if (response.success) {
-      yield put(Action.postManualApprovalOnCandidateSuccess(response?.details));
-      yield call(action.payload.onSuccess(response));
-    } else {
-      yield put(Action.postManualApprovalOnCandidateFailure(response.error_message));
-      yield call(action.payload.onError(response));
-    }
-  } catch (error) {
-    yield put(Action.postManualApprovalOnCandidateFailure(error));
-    yield call(action.payload.onError(error));
-  }
-}
-
-// fetchCandidatesCorporateSaga
-
-function* fetchCandidatesCorporateSaga(action) {
-  try {
-    const response = yield call(Api.fetchCandidatesCorporateApi, action.payload.params);
-    if (response.success) {
-      yield put(Action.fetchCandidatesCorporateSuccess(response));
-      yield call(action.payload.onSuccess(response));
-    } else {
-      yield put(Action.fetchCandidatesCorporateFailure(response.error_message));
-      yield call(action.payload.onError(response));
-    }
-  } catch (error) {
-    yield put(Action.fetchCandidatesCorporateFailure(error));
-    yield call(action.payload.onError(error));
-  }
-}
-
-
-
-/**
- * delete JD
- */
-
-function* syncVideoSaga(action) {
-  try {
-    const response = yield call(Api.syncVideoApi, action.payload.params);
-    if (response.success) {
-      yield call(action.payload.onSuccess(response));
-    } else {
-      yield call(action.payload.onError(response));
-    }
-  } catch (error) {
-    yield call(action.payload.onError(error));
-  }
-}
-
-// postCorporateScheduleActionsSaga
-
-
-function* postCorporateScheduleActionsSaga(action) {
-  try {
-    const response = yield call(Api.postCorporateScheduleActionsApi, action.payload.params);
-    if (response.success) {
-      yield put(Action.postCorporateScheduleActionsSuccess(response));
-      yield call(action.payload.onSuccess(response));
-    } else {
-      yield put(Action.postCorporateScheduleActionsFailure(response.error_message));
-      yield call(action.payload.onError(response));
-    }
-  } catch (error) {
-    yield put(Action.postCorporateScheduleActionsFailure(error));
-    yield call(action.payload.onError(error));
-  }
-}
-
-//Add teamMate
-
-function* addTeamMateDataSaga(action) {
-  try {
-    const response = yield call(Api.addTeamMateDataApi, action.payload.params);
-    if (response.success) {
-      yield call(action.payload.onSuccess(response))
-    } else {
-      yield call(action.payload.onError(response));
-    }
-  } catch (error) {
-    yield call(action.payload.onError(error));
-  }
-}
-
-//Get teamMate
-
-function* getTeamMateDataSaga(action) {
-  try {
-    const response = yield call(Api.getTeamMateDataApi, action.payload.params);
-    if (response.success) {
-      yield put(Action.getTeamMateDataSuccess(response));
-      yield call(action.payload.onSuccess(response))
-    } else {
-      yield put(Action.getTeamMateDataFailure(response.error_message));
-      yield call(action.payload.onError(response));
-    }
-  } catch (error) {
-    yield put(Action.getTeamMateDataFailure(error));
-    yield call(action.payload.onError(error));
-  }
-}
-
-
-
 
 
 function* DashboardSaga() {
@@ -953,36 +540,9 @@ function* DashboardSaga() {
   yield takeLatest(Action.GET_SCHEDULE_BASIC_INFO, getScheduleBasicInfoSaga);
   yield takeLatest(Action.CREATE_NEW_JD_SCHEDULE, createNewJdScheduleSaga);
   yield takeLatest(Action.CREATE_CORPORATE_VARIANT, createCorporateFormSaga);
-  yield takeLatest(Action.GET_CORPORATE_SCHEDULE_DETAILS, getCorporateScheduleDetailsSaga);
+  yield takeLatest(Action.GET_KNOWLEDGE_GROUP_VARIANT_DETAILS, getKnowledgeGroupVariantDetailsSaga);
   yield takeLatest(Action.STUDENT_CODE_SUBMISSION, postStudentCodeSubmissionSaga);
   yield takeLatest(Action.CLOSE_INTERVIEW, closeInterviewSaga);
-  yield takeLatest(Action.CAN_START_INTERVIEW, canStartInterviewSaga);
-  yield takeLatest(Action.GET_SECTORS_CORPORATE, getSectorsCorporateSaga);
-  yield takeLatest(Action.ADD_SECTORS_CORPORATE, addSectorsCorporateSaga);
-  yield takeLatest(Action.ADD_DEPARTMENT_CORPORATE, addDepartmentCorporateSaga);
-  yield takeLatest(Action.GET_DEPARTMENT_CORPORATE, getDepartmentCorporateSaga);
-  yield takeLatest(Action.ADD_DESIGNATION, addDesignationSaga)
-  yield takeLatest(Action.GET_FETCH_DESIGNATION, getDesignationsSaga);
-  yield takeLatest(Action.CREATE_CORPORATE_SCHEDULES, createCorporateSchedulesSaga);
-  yield takeLatest(Action.GET_CORPORATE_SCHEDULES, getCorporateSchedulesSaga);
-  yield takeLatest(Action.CREATE_SCHEDULES_SUPER_ADMIN, createSchedulesSuperAdminSaga);
-  yield takeLatest(Action.GET_INTERVIEW_SCHEDULE_DETAILS, getInterviewScheduleDetailsSaga);
-  yield takeLatest(Action.RESET_PASSWORD, resetPasswordSaga);
-  yield takeLatest(Action.FORGOT_PASSWORD, forgotPasswordSaga);
-  yield takeLatest(Action.RESET_INTERVIEW, resetInterviewSaga);
-  yield takeLatest(Action.DELETE_INTERVIEW, deleteInterviewSaga);
-  yield takeLatest(Action.DELETE_JD, deleteJdSaga);
-  yield takeLatest(Action.BULK_UPLOAD_CANDIDATES_CP, bulkUploadCandidatesCpSaga);
-  yield takeLatest(Action.POST_MANUAL_APPROVALS_ON_CANDIDATE, postManualApprovalOnCandidateSaga);
-  yield takeLatest(Action.FETCH_CANDIDATES_CORPORATE, fetchCandidatesCorporateSaga);
-  yield takeLatest(Action.SYNC_VIDEO, syncVideoSaga);
-  yield takeLatest(Action.POST_CORPORATE_SCHEUDULE_ACTIONS, postCorporateScheduleActionsSaga);
-  yield takeLatest(Action.ADD_TEAM_MATE_DATA, addTeamMateDataSaga);
-  yield takeLatest(Action.GET_TEAM_MATE_DATA, getTeamMateDataSaga);
-
-
-
-
 
 
 }

@@ -6,14 +6,16 @@ function Radio({
   data,
   selected,
   onRadioChange,
-  variant = 'row',
+  variant = "row",
   disableId,
   selectItem,
   ...rest
 }: RadioProps) {
+  // const [selectItem, setSelectedItem] = useState<any>(selected);
 
   function onChangeHandler(selected: RadioItem) {
     if (onRadioChange) {
+      // setSelectedItem(selected);
       onRadioChange(selected);
     }
   }
@@ -23,7 +25,7 @@ function Radio({
     return (
       <>
         {data?.map((item: RadioItem, index: number) => {
-          const { id, text, subText, noSpace = false } = item;
+          const { id, text } = item;
           let isSelected: boolean = false;
           const disable = disableId?.some(each => each.id === item.id)
 
@@ -34,24 +36,22 @@ function Radio({
           return (
             <div
               key={id}
-              className={`custom-control custom-radio  mb-2 ${variant === 'row' && (index !== 0 && !noSpace ) && 'ml-lg-4 ml-sm-0 ml-2'}`}
+              className={`custom-control custom-radio  mb-2 ${variant === "row" && index !== 0 && "ml-4"
+                }`}
             >
               <input
-                className={'custom-control-input'}
+                className={"custom-control-input"}
                 id={id}
                 name={id}
                 disabled={disable}
-                type={'radio'}
+                type={"radio"}
                 onChange={() => onChangeHandler(item)}
                 checked={isSelected}
                 {...rest}
               />
-              <label className={'custom-control-label mt-1'} htmlFor={id}>
-                <span >{text}</span>
+              <label className={"custom-control-label"} htmlFor={id}>
+                {text}
               </label>
-              <div className={'d-flex justify-content-center'}>
-                <span style={{ fontSize: '9px',fontWeight:'500' }}>{subText}</span>
-              </div>
             </div>
           );
         })}
@@ -60,8 +60,8 @@ function Radio({
   }
   return (
     <Form>
-      {variant === 'row' && <Row className={'ml-1'}>{renderContent()}</Row>}
-      {variant === 'column' && renderContent()}
+      {variant === "row" && <Row className={"ml-1"}>{renderContent()}</Row>}
+      {variant === "column" && renderContent()}
     </Form>
   );
 }

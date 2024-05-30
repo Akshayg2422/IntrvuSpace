@@ -1,5 +1,4 @@
 export const palette = {
-  primary: "#673de6",
   lightBlack: '#1d1d1d',
   white: '#ffffff',
   offWhite: '#e6e6e6',
@@ -35,5 +34,4 @@ export const palette = {
   buttonDarkGrey: '#030303',
   primaryButtonBlack: '#30303',
   buttonRed: '#FB403D',
-  callFooter: "#f5f5f5"
 };

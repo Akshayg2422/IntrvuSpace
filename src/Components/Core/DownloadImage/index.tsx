@@ -14,12 +14,14 @@ function ImageDownloadButton({ Url, size = 'sm', color = 'primary', title }: Dow
         const responses = await Promise.all(requests);
         responses.forEach((response) => saveAs(response.data, title));
 
+        // console.log('response=======>>>',responses)
 
       } else {
         const response = await axios.get(Url, { responseType: 'blob' });
         saveAs(response.data, title);
       }
     } catch (error) {
+      // console.error('Error=====>>', error);
     }
   };
 
